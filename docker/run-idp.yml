@@ -1,0 +1,20 @@
+# This docker-compose file launches the Token Generator
+#
+# To run, call:
+#   $ docker-compose -f run-idp.yml up
+#
+version: '3.1'
+services:
+  cafienne-test-token-service:
+    image: spectare/oidc-token-test-service:latest
+    labels:
+      component: idp-test-service-for-cafienne
+    networks: 
+      - dev
+    expose:
+      - 2377
+    ports:
+      - "2377:8080"
+networks:
+  dev: 
+    driver: bridge
