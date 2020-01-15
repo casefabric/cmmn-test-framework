@@ -1,26 +1,39 @@
-import PlanItem from "./planitem";
-import User from "../user";
 
 export default class Task {
-    name: string = '';
     id: string = '';
-    type: string = '';
+    taskName: string = '';
+    taskState: string = '';
+    assignee: string = '';
+    owner: string = '';
+    caseInstanceId: string = '';
+    tenant: string = '';
+    role: string = '';
+    lastModified: string = '';
+    modifiedBy: string = '';
+    dueDate: string = '';
+    createdOn: string = '';
+    createdBy: string = '';
+    input: any = {};
+    output: any = {};
 
-    constructor(planItem: PlanItem) {
-        this.name = planItem.name;
-        this.id = planItem.id;
-        this.type = planItem.type;
+    constructor(json: any) {
+        // Copy and fill our properties from the json.
+        for (const key in this) {
+            if (Object.getOwnPropertyNames(this).indexOf(key) >= 0) {
+                this[key] = json[key];
+            }
+        }
     }
 
     toString() {
-        return "Type: " + this.type + ", ID: " + this.id + ", name: " + this.name;
+        return this.taskName + '[' + this.id + ']';
     }
 
-    getURL() {
-        return '/tasks/' + this.id;
+    isCompleted() {
+        return this.taskState === 'Completed';
     }
 
-    fillFromJson(json: any) {
-        throw new Error("Method not implemented.");
+    isAssigned() {
+        return this.taskState === 'Assigned';
     }
 }

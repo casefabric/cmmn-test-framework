@@ -71,7 +71,9 @@ The test framework exposes a few configuration options. These are stored inside 
 var Config = {
     CaseService: {
         // End-point of case engine
-        url: 'http://localhost:2027/'
+        url: 'http://localhost:2027/',
+        // Log HTTP traffic (method, user, url, body) sent to the case engine
+        logTraffic: false
     },
     TokenService: {
         // End-point of token service

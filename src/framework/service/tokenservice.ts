@@ -14,7 +14,7 @@ export default class TokenService {
     }
 
     async getToken(user: User): Promise<User> {
-        console.log("Fetching token for user " + user.id);
+        // console.log("Fetching token for user " + user.id);
         const now = new Date();
         const in2Days = new Date().setDate(now.getDate() + 2);
 

@@ -5,7 +5,6 @@ import User from '../user';
 
 export async function mustBeValidJSON(response: Response) {
     //  TODO: This should become a generic that enables casting the response to desired type
-    console.log("Checking whether json is valid")
     if (!response.ok) {
         const text = await response.text();
         throw new Error("Request failed! " + response.status + ": " + response.statusText + ":\n" + text);
@@ -16,7 +15,7 @@ export async function mustBeValidJSON(response: Response) {
 
 export default class CafienneService {
     baseURL: string;
-    headers = new Headers({
+    static headers = new Headers({
         'Content-Type': 'application/json'
     });;
 
@@ -24,16 +23,16 @@ export default class CafienneService {
         this.baseURL = baseURL;
     }
 
-    updateCaseLastModified(response: Response) {
+    async updateCaseLastModified(response: Response) {
+        // TODO: this currently is not a Singleton, but it should be...
         if (response.ok) {
-            console.log("Post went ok")
             const caseLastModified = 'Case-Last-Modified';
             const clm = response.headers.get(caseLastModified);
             if (clm) {
-                console.log("Updating case last modified");
-                this.headers.set(caseLastModified, clm);
-            } else {
-                console.log("No clm")
+                if (Config.CaseService.logTraffic) {
+                    console.log("Updating case last modified to " + clm);
+                }
+                CafienneService.headers.set(caseLastModified, clm);
             }
         }
         return response;
@@ -45,12 +44,13 @@ export default class CafienneService {
     }
 
     async post(url: string, request: object, user: User, method = 'POST') {
-        const headers = this.headers;
+        const headers = Object.create(CafienneService.headers);
         if (user) headers.set('Authorization', user.token);
-        const info = { method, headers, body: JSON.stringify(request) };
-        console.log("\n\nHTTP - Posting - " + url, info)
-        const response = await this.fetch(url, info);
-        return this.updateCaseLastModified(response);
+        const requestJSON = JSON.stringify(request, undefined, 2);
+        const info = { method, headers, body: requestJSON };
+        const response = await this.fetch(url, info, method, user, requestJSON);
+        await this.updateCaseLastModified(response);
+        return response;
     }
 
     async put(url: string, request: object, user: User) {
@@ -60,16 +60,18 @@ export default class CafienneService {
 
     async get(url: string, user: User) {
         const method = 'GET';
-        const headers = this.headers;
+        const headers = Object.create(CafienneService.headers);
         if (user) headers.set('Authorization', user.token);
         const info = { method, headers };
-        console.log("\n\nHTTP - Getting - " + url, info);
-        const response = await this.fetch(url, info);
+        const response = await this.fetch(url, info, method, user);
         return mustBeValidJSON(response);
     }
 
-    async fetch(url: string, info: object) {
+    async fetch(url: string, request: object, method: string, user: User, logInfo: string = '') {
         url = this.baseURL + (url.startsWith('/') ? url.substring(1) : url);
-        return fetch(url, info);
+        if (Config.CaseService.logTraffic) {
+            console.log('HTTP:' + method + ' from [' + user.id + '] to ' + url + ' ' + logInfo + '\n');
+        }
+        return fetch(url, request);
     }
 }

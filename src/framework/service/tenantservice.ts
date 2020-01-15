@@ -6,7 +6,12 @@ export default class TenantService {
     cafienneService = new CafienneService();
 
     async createTenant(user: User, tenant: Tenant) {
-        return this.cafienneService.post('/registration', tenant, user);
+        const response = await this.cafienneService.post('/registration', tenant, user);
+        if (! response.ok) {
+            const reason = await response.text();
+            console.log('Creation of tenant failed. Reason: ' + reason);
+        }
+        return response;
     }
 
     async getUserInformation(user: User) {

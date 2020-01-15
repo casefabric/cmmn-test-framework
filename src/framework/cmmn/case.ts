@@ -14,7 +14,8 @@ export default class CaseInstance {
     caseFile: any = undefined;
 
     /**
-     * 
+     * Create a local case instance proxy.
+     * This can be used to 
      * @param {String} definition 
      * @param {String} tenant 
      * @param {*} inputs
@@ -35,13 +36,18 @@ export default class CaseInstance {
         this.caseInstanceId = caseInstanceId ? caseInstanceId : '';
     }
 
+    /**
+     * Fetches a new copy of the case information from the backend.
+     * @param user 
+     */
     async refreshData(user: User) {
         return caseService.getCase(this, user);
     }
 
     fillFromJson(json: any) {
-        console.log("Refreshed case information")
+        // console.log("Refreshed case information");
         this.json = json;
+        // console.log("PIs:: "+JSON.stringify(json.planitems, undefined, 2))
         this.planItems = <Array<PlanItem>>json.planitems;
         this.caseFile = json.file;
     }

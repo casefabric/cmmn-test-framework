@@ -15,19 +15,24 @@ export default class CaseService {
         const url = '/cases';
         const caseInstanceId = Case.caseInstanceId ? Case.caseInstanceId : undefined;
         const request = {
-            inputs : Case.inputs,
+            inputs: Case.inputs,
             caseTeam: Case.caseTeam,
             definition: Case.definition,
             tenant: Case.tenant,
             caseInstanceId
         }
         const json = await cafienneService.postForJson(url, request, user);
-        console.log("Created case instance: ", json);
+        console.log("Created case instance with id: \t" + json.caseInstanceId);
         Case.caseInstanceId = json.caseInstanceId;
         return Case;
     }
 
 
+    /**
+     * Fetches and refreshes the case information from the backend
+     * @param Case 
+     * @param user 
+     */
     async getCase(Case: CaseInstance, user: User) {
         if (!Case.caseInstanceId) {
             console.log("Oops. First try to succesfully start a case ?!");

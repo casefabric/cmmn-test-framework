@@ -23,14 +23,14 @@ export default class User {
     }
 
     async setToken(token: string) {
-        console.log("Token: " + token);
+        // console.log("Token: " + token);
         this.token = token;
         return this;
     }
 
     setTenantInformation(userInformation: any) {
         this.tenantInformation = userInformation;
-        console.log("Tenant info: " , this.tenantInformation);
+        // console.log("Tenant info: " , this.tenantInformation);
         return this;
     }
 }
