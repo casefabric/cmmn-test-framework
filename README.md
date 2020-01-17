@@ -17,7 +17,7 @@ To run the engine, simply invoke the following command
 ```bash
     docker-compose -f ./docker/run-idp.yml up
 ```
-This will start a token generator on port http://localhost:2378
+This will start a token generator on port http://localhost:2377
 
 ## Configure Cafienne Engine to trust this IDP
 ```yml
@@ -72,8 +72,11 @@ var Config = {
     CaseService: {
         // End-point of case engine
         url: 'http://localhost:2027/',
-        // Log HTTP traffic (method, user, url, body) sent to the case engine
-        logTraffic: false
+        // Log settings for HTTP traffic
+        log: {
+            traffic: false, // Log HTTP traffic metadata (method, user, url)
+            content: true // Log HTTP content. Only use when 'traffic = true'
+        }
     },
     TokenService: {
         // End-point of token service

@@ -1,7 +1,10 @@
 const Config = {
     CaseService: {
         url: 'http://localhost:2027/',
-        logTraffic: false,
+        log: {
+            traffic: false,
+            content: true
+        }
     },
     TokenService: {
         url: 'http://localhost:2377/token',

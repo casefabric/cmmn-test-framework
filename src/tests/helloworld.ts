@@ -18,25 +18,31 @@ const caseService = new CaseService();
 const taskService = new TaskService();
 
 export default class TestHelloworld {
+    private tenantHasBeenSetup = false;
 
     constructor() {
-        console.log("Running Helloworld testcase");
-        this.run();
+        console.log('Creating test case for helloworld');
     }
 
     async setupTenantInformation() {
-        const sendingTenantUser = new TenantUser(sendingUser, ['Sender'], 'sender', 'sender@senders.com');
-        const receivingTenantUser = new TenantUser(receivingUser, ['Receiver'], 'receiver', 'receiver@receivers.com');
+        console.log('Setting up tenant information for test case helloworld')
+        const sendingTenantUser = new TenantUser(sendingUser.id, ['Sender'], 'sender', 'sender@senders.com');
+        const receivingTenantUser = new TenantUser(receivingUser.id, ['Receiver'], 'receiver', 'receiver@receivers.com');
         const owners = [sendingTenantUser, receivingTenantUser];
         const tenant = new Tenant(tenantName, owners);
         await platformAdmin.login();
 
         await tenantService.createTenant(platformAdmin, tenant);
+
+        this.tenantHasBeenSetup = true;
     }
 
     async run() {
-        await this.setupTenantInformation();
+        if (this.tenantHasBeenSetup === false) {
+            await this.setupTenantInformation();
+        }
 
+        console.log('Running Helloworld testcase');
         const caseInput = {
             Greeting: {
                 Message: 'Hello there',
@@ -51,7 +57,7 @@ export default class TestHelloworld {
         };
 
         await sendingUser.login();
-        await caseService.start(caseInstance, sendingUser);
+        await caseService.startCase(caseInstance, sendingUser);
         await caseService.getCase(caseInstance, sendingUser);
 
         const taskName = 'Receive Greeting and Send response';
@@ -74,6 +80,8 @@ export default class TestHelloworld {
         await caseService.getCase(caseInstance, sendingUser);
         await taskService.completeTask(receiveGreetingTask, sendingUser, taskOutput);
         await caseService.getCase(caseInstance, sendingUser);
+
+        // Validate whether Receive Greeting is in Completed state. It can be done in 2 ways.
         const completedTask = await taskService.getTask(receiveGreetingTask, sendingUser);
         if (!completedTask.isCompleted()) {
             console.log('Task is expected to be completed, but it is in state ' + receiveGreetingTask.taskState);
@@ -98,9 +106,9 @@ export default class TestHelloworld {
 
         const casePlan = caseInstance.planItems.find(p => p.type === 'CasePlan')
         if (casePlan?.currentState !== 'Completed') {
-            throw new Error('Expecting case to be completed at the end');
+            throw new Error('Expecting case to be completed at the end, but it is in state ' + casePlan?.currentState);
         } else {
-            console.log("Case completed!")
+            console.log('Case completed!')
         }
     }
 }

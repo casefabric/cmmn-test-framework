@@ -7,7 +7,7 @@ const cafienneService = new CafienneService();
 
 
 export default class CaseService {
-    async start(Case: CaseInstance, user: User) {
+    async startCase(Case: CaseInstance, user: User) {
         if (!user) {
             throw new Error("User must be specified");
         }
@@ -21,7 +21,7 @@ export default class CaseService {
             tenant: Case.tenant,
             caseInstanceId
         }
-        const json = await cafienneService.postForJson(url, request, user);
+        const json = await cafienneService.postForJson(url, user, request);
         console.log("Created case instance with id: \t" + json.caseInstanceId);
         Case.caseInstanceId = json.caseInstanceId;
         return Case;
@@ -38,7 +38,7 @@ export default class CaseService {
             console.log("Oops. First try to succesfully start a case ?!");
             return Case;
         }
-        const json = await cafienneService.get('/cases/' + Case.caseInstanceId, user);
+        const json = await cafienneService.getJson('/cases/' + Case.caseInstanceId, user);
         return Case.fillFromJson(json);
     }
 }

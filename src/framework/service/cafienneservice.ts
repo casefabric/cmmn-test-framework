@@ -2,6 +2,7 @@ import { Response, Headers } from 'node-fetch';
 import fetch from 'node-fetch';
 import Config from '../../config';
 import User from '../user';
+import CaseService from './caseservice';
 
 export async function mustBeValidJSON(response: Response) {
     //  TODO: This should become a generic that enables casting the response to desired type
@@ -29,7 +30,7 @@ export default class CafienneService {
             const caseLastModified = 'Case-Last-Modified';
             const clm = response.headers.get(caseLastModified);
             if (clm) {
-                if (Config.CaseService.logTraffic) {
+                if (Config.CaseService.log.traffic) {
                     console.log("Updating case last modified to " + clm);
                 }
                 CafienneService.headers.set(caseLastModified, clm);
@@ -38,24 +39,25 @@ export default class CafienneService {
         return response;
     }
 
-    async postForJson(url: string, request: object, user: User, method = 'POST') {
-        const response = await this.post(url, request, user, method);
+    async postForJson(url: string, user: User, request?: object, method = 'POST') {
+        const response = await this.post(url, user, request, method);
         return mustBeValidJSON(response);
     }
 
-    async post(url: string, request: object, user: User, method = 'POST') {
+    async post(url: string, user: User, request?: object, method = 'POST') {
         const headers = Object.create(CafienneService.headers);
         if (user) headers.set('Authorization', user.token);
-        const requestJSON = JSON.stringify(request, undefined, 2);
-        const info = { method, headers, body: requestJSON };
-        const response = await this.fetch(url, info, method, user, requestJSON);
-        await this.updateCaseLastModified(response);
-        return response;
+        const body = request ? JSON.stringify(request, undefined, 2) : undefined;
+        const info = { method, headers, body };
+        return this.fetch(url, info, method, user, body).then(this.updateCaseLastModified);
+        // const response = await this.fetch(url, info, method, user, requestJSON);
+        // await this.updateCaseLastModified(response);
+        // return response;
     }
 
-    async put(url: string, request: object, user: User) {
+    async put(url: string, user: User, request?: object) {
         // Sorry, bit of a hack here...
-        return this.post(url, request, user, 'PUT');
+        return this.post(url, user, request, 'PUT');
     }
 
     async get(url: string, user: User) {
@@ -63,15 +65,25 @@ export default class CafienneService {
         const headers = Object.create(CafienneService.headers);
         if (user) headers.set('Authorization', user.token);
         const info = { method, headers };
-        const response = await this.fetch(url, info, method, user);
-        return mustBeValidJSON(response);
+        return this.fetch(url, info, method, user);
     }
 
-    async fetch(url: string, request: object, method: string, user: User, logInfo: string = '') {
+    async getJson(url: string, user: User) {
+        return this.get(url, user).then(mustBeValidJSON);
+    }
+
+    async fetch(url: string, request: object, method: string, user: User, body: string = '') {
+        const myCallNumber = callNumber++;
         url = this.baseURL + (url.startsWith('/') ? url.substring(1) : url);
-        if (Config.CaseService.logTraffic) {
-            console.log('HTTP:' + method + ' from [' + user.id + '] to ' + url + ' ' + logInfo + '\n');
+        if (Config.CaseService.log.traffic) {
+            console.log(`HTTP:${method}[${callNumber}] from [${user.id}] to ${url}${Config.CaseService.log.content?' '+body:''}`);
         }
-        return fetch(url, request);
+        const response = await fetch(url, request);
+        if (Config.CaseService.log.traffic) {
+            console.log(` [${callNumber}]==> ${response.status} ${response.statusText}`);
+        }
+        return response;
     }
 }
+
+let callNumber: number = 0;

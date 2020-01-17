@@ -1,11 +1,10 @@
 import TenantUser from "./tenantuser";
 
 export default class Tenant {
-    name: string;
-    owners: TenantUser[];
-
-    constructor(name: string, owners: TenantUser[]) {
-        this.name = name;
-        this.owners = owners;
-    }
+    /**
+     * Simple wrapper class for Tenant.
+     * @param name Name (and id) of the tenant.
+     * @param owners List of Tenant Users that are owner of the tenant.
+     */
+    constructor(public name: string, public owners: TenantUser[]) { }
 }
