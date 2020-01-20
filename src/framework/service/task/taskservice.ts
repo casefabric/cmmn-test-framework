@@ -1,14 +1,15 @@
 import User from '../../user';
 import CafienneService from '../cafienneservice';
 import Task from '../../cmmn/task';
-import CaseInstance from '../../cmmn/case';
+import Case from '../../cmmn/case';
 import TaskFilter from './taskfilter';
+
+const cafienneService = new CafienneService();
 
 /**
  * Base class for invoking the Cafienne Tasks API (http://localhost:2027/tasks)
  */
 export default class TaskService {
-    cafienneService = new CafienneService();
     async checkResponse(response: any, errorMsg: string, expectNoFailures: boolean) {
         if (response.ok) {
             if (!expectNoFailures) throw new Error(errorMsg);
@@ -30,7 +31,7 @@ export default class TaskService {
      * @param expectNoFailures defaults to true; if false is specified, then a failure is expected in the invocation.
      */
     async claimTask(task: Task, user: User, expectNoFailures: boolean = true) {
-        const response = await this.cafienneService.put('tasks/' + task.id + '/claim', user);
+        const response = await cafienneService.put('tasks/' + task.id + '/claim', user);
         return this.checkResponse(response, 'Task ' + task + ' was claimed succesfully, but this was not expected', expectNoFailures);
     }
 
@@ -74,7 +75,7 @@ export default class TaskService {
      * @param expectNoFailures defaults to true; if false is specified, then a failure is expected in the invocation.
      */
     async completeTask(task: Task, user: User, taskOutput = {}, expectNoFailures: boolean = true) {
-        const response = await this.cafienneService.post('tasks/' + task.id + '/complete', user, taskOutput);
+        const response = await cafienneService.post('tasks/' + task.id + '/complete', user, taskOutput);
         return this.checkResponse(response, 'Task ' + task + ' was completed succesfully, but this was not expected', expectNoFailures);
     }
 
@@ -111,7 +112,7 @@ export default class TaskService {
             console.log("Oops. First try to succesfully start a case ?!");
             return task;
         }
-        const json = await this.cafienneService.getJson('tasks/' + task.id, user);
+        const json = await cafienneService.getJson('tasks/' + task.id, user);
         return new Task(json);
     }
 
@@ -120,8 +121,8 @@ export default class TaskService {
      * @param caseInstance
      * @param user 
      */
-    async getCaseTasks(caseInstance: CaseInstance, user: User) {
-        const json = await this.cafienneService.getJson('/tasks/case/' + caseInstance.caseInstanceId, user);
+    async getCaseTasks(caseInstance: Case, user: User) {
+        const json = await cafienneService.getJson('/tasks/case/' + caseInstance.id, user);
         const jsonArray = <Array<any>>json;
         return jsonArray.map(task => new Task(task))
     }
@@ -141,7 +142,7 @@ export default class TaskService {
      * @param filter Optional filter for the tasks (e.g., to get only Active tasks)
      */
     async getTasks(user: User, filter?: TaskFilter): Promise<Array<Task>> {
-        const json = await this.cafienneService.getJson('/tasks', user, filter);
+        const json = await cafienneService.getJson('/tasks', user, filter);
         const jsonArray = <Array<any>>json;
         return jsonArray.map(task => new Task(task))
     }

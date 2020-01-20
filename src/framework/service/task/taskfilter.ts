@@ -8,22 +8,18 @@ export default interface TaskFilter extends QueryFilter {
      * Only fetch tasks from this tenant
      */
     tenant?: string,
-
     /**
      * Filter tasks that have a case definition with this name
      */
     definition?: string,
-
     /**
      * Filter tasks for this assignee
      */
     assignee?: string,
-
     /**
      * Filter tasks of this owner
      */
     owner?: string,
-
     /**
      * Filter tasks with the specified state
      */

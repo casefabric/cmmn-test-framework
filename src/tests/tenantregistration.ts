@@ -2,17 +2,21 @@ import User from "../framework/user";
 import TenantService from "../framework/service/tenantservice";
 import Tenant from "../framework/tenant/tenant";
 import TenantUser from "../framework/tenant/tenantuser";
+import TestCase from "../framework/test/testcase";
 
 const tenantName = 'helloworld';
 const platformAdmin = new User('admin');
 
 const tenantService = new TenantService();
 
-export default class TestTenantRegistration {
+export default class TestTenantRegistration extends TestCase {
     constructor() {
-        console.log('Creating test case for tenant registration');
+        super('Tenant Registration');
     }
 
+    /**
+     * @override
+     */
     async run() {
         console.log('Running tenant registration test');
         const guid = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
@@ -43,13 +47,13 @@ export default class TestTenantRegistration {
 
         await tenantOwner1.login();
 
-        // For now we wait 2 seconds, since backend has no sync-option for tenant registry
-        setTimeout(() => {
-            tenantService.getTenantOwners(tenantOwner1, tenant1).then(owners => {
-                console.log('Tenant owners: ', JSON.stringify(owners))
-            });
+        // // For now we wait 2 seconds, since backend has no sync-option for tenant registry
+        // setTimeout(() => {
+        //     tenantService.getTenantOwners(tenantOwner1, tenant1).then(owners => {
+        //         console.log('Tenant owners: ', JSON.stringify(owners))
+        //     });
     
-        }, 2000)
+        // }, 2000)
 
     }
 }

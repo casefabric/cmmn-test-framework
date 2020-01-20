@@ -1,13 +1,12 @@
 'use strict';
 
 import User from '../framework/user'
-import CaseInstance from '../framework/cmmn/case'
 import CaseService from '../framework/service/case/caseservice';
 import TaskService from '../framework/service/task/taskservice';
 import Tenant from '../framework/tenant/tenant';
 import TenantUser from '../framework/tenant/tenantuser';
 import TenantService from '../framework/service/tenantservice';
-import TaskFilter from '../framework/service/task/taskfilter';
+import TestCase from '../framework/test/testcase';
 
 const tenantName = 'helloworld';
 const platformAdmin = new User('admin');
@@ -18,31 +17,22 @@ const tenantService = new TenantService();
 const caseService = new CaseService();
 const taskService = new TaskService();
 
-export default class TestHelloworld {
-    private tenantHasBeenSetup = false;
-
+export default class TestHelloworld extends TestCase {
     constructor() {
-        console.log('Creating test case for helloworld');
+        super('Hello World');
     }
 
-    async setupTenantInformation() {
+    async onPrepareTest() {
         console.log('Setting up tenant information for test case helloworld')
         const sendingTenantUser = new TenantUser(sendingUser.id, ['Sender'], 'sender', 'sender@senders.com');
         const receivingTenantUser = new TenantUser(receivingUser.id, ['Receiver'], 'receiver', 'receiver@receivers.com');
         const owners = [sendingTenantUser, receivingTenantUser];
         const tenant = new Tenant(tenantName, owners);
         await platformAdmin.login();
-
         await tenantService.createTenant(platformAdmin, tenant);
-
-        this.tenantHasBeenSetup = true;
     }
 
     async run() {
-        if (this.tenantHasBeenSetup === false) {
-            await this.setupTenantInformation();
-        }
-
         console.log('Running Helloworld testcase');
         const startCaseInput = {
             Greeting: {
@@ -50,7 +40,7 @@ export default class TestHelloworld {
                 From: sendingUser.id
             }
         };
-        const caseInstance = new CaseInstance('helloworld.xml', tenantName, startCaseInput)
+        const startCase = { tenant: tenantName, definition: 'helloworld.xml', inputs: startCaseInput};
         const taskOutput = {
             Response: {
                 Message: 'Toedeledoki',
@@ -58,8 +48,8 @@ export default class TestHelloworld {
         };
 
         await sendingUser.login();
-        await caseService.startCase(caseInstance, sendingUser);
-        await caseService.getCase(caseInstance, sendingUser);
+        let caseInstance = await caseService.startCase(startCase, sendingUser);
+        caseInstance = await caseService.getCase(caseInstance, sendingUser);
 
         // Simple test
         const availableTasks = await taskService.getTasks(sendingUser, { tenant: tenantName, taskState: 'Unassigned' });
@@ -68,10 +58,11 @@ export default class TestHelloworld {
         await taskService.getTasks(sendingUser, { tenant: tenantName, taskState: 'Unassigned' });
 
         // 
-        await caseService.getCases(sendingUser, { tenant: tenantName, numberOfResults: 1 });
+        const cases = await caseService.getCases(sendingUser, { tenant: tenantName, numberOfResults: 10000});
+        console.log("We have "+cases.length+" cases ...");
 
         const taskName = 'Receive Greeting and Send response';
-        const receiveGreetingPlanItem = caseInstance.planItems.find(p => p.name === taskName);
+        const receiveGreetingPlanItem = caseInstance.planitems.find(p => p.name === taskName);
         if (!receiveGreetingPlanItem) {
             throw new Error('Cannot find task ' + taskName);
         }
@@ -87,9 +78,9 @@ export default class TestHelloworld {
         }
 
         await taskService.claimTask(receiveGreetingTask, sendingUser);
-        await caseService.getCase(caseInstance, sendingUser);
+        caseInstance = await caseService.getCase(caseInstance, sendingUser);
         await taskService.completeTask(receiveGreetingTask, sendingUser, taskOutput);
-        await caseService.getCase(caseInstance, sendingUser);
+        caseInstance = await caseService.getCase(caseInstance, sendingUser);
 
         // Validate whether Receive Greeting is in Completed state. It can be done in 2 ways.
         const completedTask = await taskService.getTask(receiveGreetingTask, sendingUser);
@@ -112,9 +103,9 @@ export default class TestHelloworld {
             throw new Error('Expecting task to be assigned to sending user');
         }
         await taskService.completeTask(readResponseTask, sendingUser);
-        await caseService.getCase(caseInstance, sendingUser);
+        caseInstance = await caseService.getCase(caseInstance, sendingUser);
 
-        const casePlan = caseInstance.planItems.find(p => p.type === 'CasePlan')
+        const casePlan = caseInstance.planitems.find(p => p.type === 'CasePlan')
         if (casePlan?.currentState !== 'Completed') {
             throw new Error('Expecting case to be completed at the end, but it is in state ' + casePlan?.currentState);
         } else {
