@@ -84,6 +84,9 @@ export default class TestHelloworld extends TestCase {
 
         await taskService.revokeTask(receiveGreetingTask, sendingUser);
 
+        await caseService.changeDebugMode(caseInstance, sendingUser, true);
+        await caseService.changeDebugMode(caseInstance, sendingUser, false);
+
         await taskService.assignTask(receiveGreetingTask, sendingUser, receivingUser);
 
         await taskService.revokeTask(receiveGreetingTask, receivingUser);

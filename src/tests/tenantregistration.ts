@@ -4,7 +4,6 @@ import Tenant from "../framework/tenant/tenant";
 import TenantUser from "../framework/tenant/tenantuser";
 import TestCase from "../framework/test/testcase";
 
-const tenantName = 'helloworld';
 const platformAdmin = new User('admin');
 
 const tenantService = new TenantService();

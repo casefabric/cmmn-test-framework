@@ -3,6 +3,8 @@ import CafienneService from '../cafienneservice';
 import Case from '../../cmmn/case';
 import CaseFilter from './casefilter';
 import StartCase from './startcase';
+import StatisticsFilter from './statisticsfilter';
+import DiscretionaryItem from '../../cmmn/discretionaryitem';
 
 const cafienneService = new CafienneService();
 
@@ -25,7 +27,7 @@ export default class CaseService {
         // Hack: copy "StartCaseResponse.caseInstanceId" to "CaseInstance.id" in the json prior to instantiating CaseInstance.
         // TODO: consider whether it is better to work with a "StartCaseResponse" object instead
         json.id = json.caseInstanceId;
-        const caseInstance = <Case> json;
+        const caseInstance = <Case>json;
         console.log("Created case instance with id: \t" + caseInstance.id);
         return caseInstance;
     }
@@ -36,15 +38,12 @@ export default class CaseService {
      * @param user 
      */
     async getCase(Case: Case, user: User) {
-        if (!Case.id) {
-            console.log("Oops. First try to succesfully start a case ?!");
-            return Case;
-        }
+        checkCaseID(Case);
         const json = await cafienneService.getJson('/cases/' + Case.id, user);
 
         // console.log("\n\n" + JSON.stringify(json, undefined, 2))
 
-        return <Case> json;
+        return <Case>json;
     }
 
     /**
@@ -54,10 +53,7 @@ export default class CaseService {
      */
     async getDefinition(Case: Case, user: User) {
         throw new Error('This functionality is not yet implemented');
-        if (!Case.id) {
-            console.log("Oops. First try to succesfully start a case ?!");
-            return Case;
-        }
+        checkCaseID(Case);
         const xml = await cafienneService.getXml('/cases/definition/' + Case.id, user);
     }
 
@@ -68,7 +64,86 @@ export default class CaseService {
      */
     async getCases(user: User, filter?: CaseFilter) {
         const json = await cafienneService.getJson('/cases', user, filter);
-        const jsonArray = <Array<any>>json;
-        return jsonArray.map(instance => <Case> instance)
+        const caseArray = <Array<Case>>json;
+        return caseArray;
     }
+
+    /**
+     * Retrieves the list of cases for the user (those that the user started or participates in).
+     * @param user 
+     */
+    async getUserCases(user: User, filter?: CaseFilter) {
+        const json = await cafienneService.getJson('/cases/user', user, filter);
+        const caseArray = <Array<Case>>json;
+        return caseArray;
+    }
+
+    /**
+     * Retrieves the list of discretionary items of the case instance
+     * @param Case 
+     * @param user 
+     */
+    async getDiscretionaryItems(Case: Case, user: User) {
+        checkCaseID(Case);
+        const json = await cafienneService.getJson('/cases/' + Case.id + '/discretionaryitems', user);
+        const response = <DiscretionaryItemsResponse> json;
+        return response.discretionaryItems;
+    }
+
+    /**
+     * Add a discretionary item to the case plan.
+     * @param Case
+     * @param user User planning the item
+     * @param item Item to be planned.
+     * @param planItemId Optional id for the plan item resulting of the planning. If not specified, server will generate one.
+     * @returns The id of the newly planned item
+     */
+    async planDiscretionaryItem(Case: Case, user: User, item: DiscretionaryItem, planItemId?: string): Promise<string> {
+        checkCaseID(Case);
+        const itemToPlan = { name : item.name, parentId: item.parentId, definitionId: item.definitionId, planItemId}
+        const response = await cafienneService.postForJson('cases/' + Case.id + '/discretionaryitems/plan', user, itemToPlan);
+        return response.planItemId;
+    }
+
+    /**
+     * Fetch statistics of cases across the system.
+     * @param user 
+     * @param filter 
+     */
+    async getCaseStatistics(user: User, filter?: StatisticsFilter) {
+        const json = await cafienneService.getJson('/cases/stats', user, filter);
+        const caseArray = <Array<Case>>json;
+        return caseArray;
+    }
+
+    /**
+     * Enable or disable debug mode in the specified Case instance
+     * @param Case 
+     * @param user 
+     * @param debugEnabled 
+     */
+    async changeDebugMode(Case: Case, user: User, debugEnabled: boolean) {
+        checkCaseID(Case);
+        const response = await cafienneService.put('cases/' + Case.id + '/debug/' + debugEnabled, user);
+        return response;
+    }
+}
+
+/**
+ * Throw an error if Case.id is not filled.
+ * @param Case 
+ */
+function checkCaseID(Case: Case) {
+    if (! Case.id) {
+        throw new Error('Case id has not been set. First the case has to be started');
+    }
+}
+
+/**
+ * Simple JSON interface wrapper
+ */
+interface DiscretionaryItemsResponse {
+    caseInstanceId: string;
+    name: string,
+    discretionaryItems: Array<DiscretionaryItem>;
 }

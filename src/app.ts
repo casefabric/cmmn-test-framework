@@ -1,9 +1,17 @@
+import TestCase from './framework/test/testcase';
+import TestStatsAPI from './tests/api/case/stats';
+import TestUsersCaseAPI from './tests/api/case/usercases';
+import TestDiscretionaryItems from './tests/api/discretionary/testdiscretionaryitems';
+import TestDebugMode from './tests/api/debug/testdebugmode';
 import TestHelloworld from './tests/helloworld';
 import TestTenantRegistration from './tests/tenantregistration';
-import TestCase from './framework/test/testcase';
 
 const testDeclarations = [
-    new TestHelloworld()
+    TestUsersCaseAPI
+    , TestStatsAPI
+    , TestDiscretionaryItems
+    , TestDebugMode
+    , new TestHelloworld()
     , TestTenantRegistration
 ];
 
