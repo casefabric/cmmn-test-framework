@@ -2,7 +2,8 @@ import { Response, Headers } from 'node-fetch';
 import fetch from 'node-fetch';
 import Config from '../../config';
 import User from '../user';
-import CaseService from './caseservice';
+import CaseService from './case/caseservice';
+import QueryFilter, { extendURL } from './queryfilter';
 
 export async function mustBeValidJSON(response: Response) {
     //  TODO: This should become a generic that enables casting the response to desired type
@@ -18,7 +19,7 @@ export default class CafienneService {
     baseURL: string;
     static headers = new Headers({
         'Content-Type': 'application/json'
-    });;
+    });
 
     constructor(baseURL: string = Config.CaseService.url) {
         this.baseURL = baseURL;
@@ -60,16 +61,27 @@ export default class CafienneService {
         return this.post(url, user, request, 'PUT');
     }
 
-    async get(url: string, user: User) {
+    async get(url: string, user: User, headers: Headers = Object.create(CafienneService.headers)) {
         const method = 'GET';
-        const headers = Object.create(CafienneService.headers);
         if (user) headers.set('Authorization', user.token);
         const info = { method, headers };
         return this.fetch(url, info, method, user);
     }
 
-    async getJson(url: string, user: User) {
+    async getJson(url: string, user: User, filter?: QueryFilter) {
+        if (filter) {
+            url = extendURL(url, filter);
+        }
         return this.get(url, user).then(mustBeValidJSON);
+    }
+
+    async getXml(url: string, user: User) {
+        return this.get(url, user, new Headers({ 'Content-Type':'text/xml'})).then(response => {
+            console.log("Got a response: ", response)
+            response.text().then(t => {
+                console.log("RT: "+t)
+            })
+        })
     }
 
     async fetch(url: string, request: object, method: string, user: User, body: string = '') {

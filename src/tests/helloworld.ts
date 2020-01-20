@@ -1,12 +1,13 @@
-"use strict";
+'use strict';
 
 import User from '../framework/user'
 import CaseInstance from '../framework/cmmn/case'
-import CaseService from '../framework/service/caseservice';
-import TaskService from '../framework/service/taskservice';
+import CaseService from '../framework/service/case/caseservice';
+import TaskService from '../framework/service/task/taskservice';
 import Tenant from '../framework/tenant/tenant';
 import TenantUser from '../framework/tenant/tenantuser';
 import TenantService from '../framework/service/tenantservice';
+import TaskFilter from '../framework/service/task/taskfilter';
 
 const tenantName = 'helloworld';
 const platformAdmin = new User('admin');
@@ -43,13 +44,13 @@ export default class TestHelloworld {
         }
 
         console.log('Running Helloworld testcase');
-        const caseInput = {
+        const startCaseInput = {
             Greeting: {
                 Message: 'Hello there',
                 From: sendingUser.id
             }
         };
-        const caseInstance = new CaseInstance('helloworld.xml', 'helloworld', caseInput)
+        const caseInstance = new CaseInstance('helloworld.xml', tenantName, startCaseInput)
         const taskOutput = {
             Response: {
                 Message: 'Toedeledoki',
@@ -60,19 +61,28 @@ export default class TestHelloworld {
         await caseService.startCase(caseInstance, sendingUser);
         await caseService.getCase(caseInstance, sendingUser);
 
+        // Simple test
+        const availableTasks = await taskService.getTasks(sendingUser, { tenant: tenantName, taskState: 'Unassigned' });
+        console.log('We have ' + availableTasks.length + ' unassigned tasks in tenant ' + tenantName);
+
+        await taskService.getTasks(sendingUser, { tenant: tenantName, taskState: 'Unassigned' });
+
+        // 
+        await caseService.getCases(sendingUser, { tenant: tenantName, numberOfResults: 1 });
+
         const taskName = 'Receive Greeting and Send response';
         const receiveGreetingPlanItem = caseInstance.planItems.find(p => p.name === taskName);
         if (!receiveGreetingPlanItem) {
-            throw new Error('Cannot find task "' + taskName + '"');
+            throw new Error('Cannot find task ' + taskName);
         }
 
         const tasks = await taskService.getCaseTasks(caseInstance, sendingUser);
         const receiveGreetingTask = tasks.find(task => task.taskName === taskName);
         if (!receiveGreetingTask) {
-            throw new Error('Cannot find task "' + taskName + '"');
+            throw new Error('Cannot find task ' + taskName);
         }
 
-        if (!sameJSON(receiveGreetingTask.input, caseInput)) {
+        if (!sameJSON(receiveGreetingTask.input, startCaseInput)) {
             throw new Error('Task input is not the same as given to the case');
         }
 
@@ -96,7 +106,7 @@ export default class TestHelloworld {
         const responseTaskName = 'Read response';
         const readResponseTask = nextTasks.find(task => task.taskName === responseTaskName);
         if (!readResponseTask) {
-            throw new Error('Cannot find task "' + responseTaskName + '"');
+            throw new Error('Cannot find task ' + responseTaskName);
         }
         if (readResponseTask.assignee !== sendingUser.id) {
             throw new Error('Expecting task to be assigned to sending user');

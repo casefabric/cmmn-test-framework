@@ -1,5 +1,5 @@
 import User from '../user';
-import CaseService from '../service/caseservice'
+import CaseService from '../service/case/caseservice'
 import PlanItem from './planitem';
 
 const caseService = new CaseService();

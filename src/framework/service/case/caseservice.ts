@@ -1,6 +1,7 @@
-import User from '../user';
-import CafienneService from './cafienneservice';
-import CaseInstance from '../cmmn/case';
+import User from '../../user';
+import CafienneService from '../cafienneservice';
+import CaseInstance from '../../cmmn/case';
+import CaseFilter from './casefilter';
 
 
 const cafienneService = new CafienneService();
@@ -27,7 +28,6 @@ export default class CaseService {
         return Case;
     }
 
-
     /**
      * Fetches and refreshes the case information from the backend
      * @param Case 
@@ -40,5 +40,34 @@ export default class CaseService {
         }
         const json = await cafienneService.getJson('/cases/' + Case.caseInstanceId, user);
         return Case.fillFromJson(json);
+    }
+
+    /**
+     * Fetches the XML file with the CaseDefinition of the case instance.
+     * @param Case 
+     * @param user 
+     */
+    async getDefinition(Case: CaseInstance, user: User) {
+        throw new Error('This functionality is not yet implemented');
+        if (!Case.caseInstanceId) {
+            console.log("Oops. First try to succesfully start a case ?!");
+            return Case;
+        }
+        const xml = await cafienneService.getXml('/cases/definition/' + Case.caseInstanceId, user);
+    }
+
+    /**
+     * Fetch cases for the user (optionally matching the filter)
+     * @param filter 
+     * @param user 
+     */
+    async getCases(user: User, filter?: CaseFilter) {
+        const json = await cafienneService.getJson('/cases', user, filter);
+        const jsonArray = <Array<any>>json;
+        return jsonArray;
+        // TODO: convert CaseInstance structure to the JSON response
+        // return jsonArray.map(caseInstance => new CaseInstance(caseInstance))
+
+
     }
 }
