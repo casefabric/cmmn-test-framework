@@ -1,19 +1,13 @@
-import { Response, Headers } from 'node-fetch';
 import fetch from 'node-fetch';
-import Config from '../../config';
-import User from '../user';
+import Config from '../../../config';
+import User from '../../user';
 
 export default class TokenService {
-    baseURL: string;
-    headers = new Headers({
-        'Content-Type': 'application/json'
-    });;
-
-    constructor(baseURL: string = Config.TokenService.url) {
-        this.baseURL = baseURL;
-    }
-
-    async getToken(user: User): Promise<User> {
+    /**
+     * Fetches a token for the user that is valid for 2 days.
+     * @param user 
+     */
+    async getToken(user: User): Promise<string> {
         // console.log("Fetching token for user " + user.id);
         const now = new Date();
         const in2Days = new Date().setDate(now.getDate() + 2);
@@ -31,8 +25,8 @@ export default class TokenService {
             method: 'POST',
             body: JSON.stringify(claims)
         }
-        const response = await fetch(this.baseURL, object);
+        const response = await fetch(Config.TokenService.url, object);
         const token = await response.text();
-        return user.setToken('Bearer ' + token);
+        return token;
     }
 }

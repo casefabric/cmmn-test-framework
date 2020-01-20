@@ -1,6 +1,7 @@
-import User from '../user';
-import CafienneService, { mustBeValidJSON } from './cafienneservice';
-import Tenant from '../tenant/tenant';
+import User from '../../user';
+import CafienneService, { mustBeValidJSON } from '../cafienneservice';
+import Tenant from '../../tenant/tenant';
+import UserInformation from '../../tenant/userinformation';
 
 export default class TenantService {
     cafienneService = new CafienneService();
@@ -33,10 +34,14 @@ export default class TenantService {
         }
     }
 
-    async getUserInformation(user: User) {
+    /**
+     * Fetches all information the case engine has on this user.
+     * @param user 
+     */
+    async getUserInformation(user: User): Promise<UserInformation> {
         const url = '/registration/user-information';
         const userInformation = await this.cafienneService.getJson(url, user);
-        return user.setTenantInformation(userInformation);
+        return <UserInformation> userInformation;
     }
 
 }

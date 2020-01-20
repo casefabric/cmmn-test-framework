@@ -69,7 +69,7 @@ It assumes that the engine has `admin` as platform owner, as shown in the `local
 The test framework exposes a few configuration options. These are stored inside the file `./build/config.js`.
 ```js
 var Config = {
-    CaseService: {
+    CafienneService: {
         // End-point of case engine
         url: 'http://localhost:2027/',
         // Log settings for HTTP traffic

@@ -5,7 +5,7 @@ import CaseService from '../framework/service/case/caseservice';
 import TaskService from '../framework/service/task/taskservice';
 import Tenant from '../framework/tenant/tenant';
 import TenantUser from '../framework/tenant/tenantuser';
-import TenantService from '../framework/service/tenantservice';
+import TenantService from '../framework/service/tenant/tenantservice';
 import TestCase from '../framework/test/testcase';
 
 const tenantName = 'helloworld';

@@ -1,36 +1,37 @@
-import TokenService from './service/tokenservice';
-import CafienneService from './service/cafienneservice';
-import TenantService from './service/tenantservice';
+import TokenService from './service/tenant/tokenservice';
+import TenantService from './service/tenant/tenantservice';
+import UserInformation from './tenant/userinformation';
+
+const tenantService = new TenantService();
+const tokenService = new TokenService();
 
 export default class User {
-    id: string;
-    token: string;
-    tenantInformation: any;
+    /**
+     * Current user token. Is available upon login of the user.
+     */
+    token?: string;
+    /**
+     * Information about the user as known within the case service
+     * Is only available upon login of the user
+     */
+    userInformation?: UserInformation;
 
-    tenantService = new TenantService();
-    cafienneService = new CafienneService();
-    tokenService = new TokenService();
-    
-    constructor(id: string) {
-        this.id = id;
-        this.token = '';
-    }
+    /**
+     * 
+     * @param id Id of the user, with which is must be registered within the case system
+     */
+    constructor(public id: string) { }
 
+    /**
+     * Login the user in 2 steps:
+     * - first fetch a token from the token service,
+     * - then invoke tenant service to retrieve the user information.
+     * 
+     * The second call fails if the user is not (yet) registered in the case system.
+     */
     async login() {
-        await this.tokenService.getToken(this);
-        await this.tenantService.getUserInformation(this);
-        return this;
-    }
-
-    async setToken(token: string) {
-        // console.log("Token: " + token);
-        this.token = token;
-        return this;
-    }
-
-    setTenantInformation(userInformation: any) {
-        this.tenantInformation = userInformation;
-        // console.log("Tenant info: " , this.tenantInformation);
+        this.token = await tokenService.getToken(this);
+        this.userInformation = await tenantService.getUserInformation(this);
         return this;
     }
 }

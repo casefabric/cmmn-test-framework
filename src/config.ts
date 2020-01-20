@@ -1,5 +1,5 @@
 const Config = {
-    CaseService: {
+    CafienneService: {
         url: 'http://localhost:2027/',
         log: {
             traffic: false,

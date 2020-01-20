@@ -1,5 +1,5 @@
 import User from "../framework/user";
-import TenantService from "../framework/service/tenantservice";
+import TenantService from "../framework/service/tenant/tenantservice";
 import Tenant from "../framework/tenant/tenant";
 import TenantUser from "../framework/tenant/tenantuser";
 import TestCase from "../framework/test/testcase";
