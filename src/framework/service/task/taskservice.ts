@@ -42,7 +42,8 @@ export default class TaskService {
      * @param expectNoFailures defaults to true; if false is specified, then a failure is expected in the invocation.
      */
     async revokeTask(task: Task, user: User, expectNoFailures: boolean = true) {
-        throw new Error('Not yet implemented');
+        const response = await cafienneService.put('tasks/' + task.id + '/revoke', user);
+        return this.checkResponse(response, 'Task ' + task + ' was revoked succesfully, but this was not expected', expectNoFailures);
     }
 
     /**
@@ -53,7 +54,8 @@ export default class TaskService {
      * @param expectNoFailures defaults to true; if false is specified, then a failure is expected in the invocation.
      */
     async assignTask(task: Task, user: User, assignee: User, expectNoFailures: boolean = true) {
-        throw new Error('Not yet implemented');
+        const response = await cafienneService.put('tasks/' + task.id + '/assign', user, { assignee: assignee.id});
+        return this.checkResponse(response, 'Task ' + task + ' was assigned succesfully, but this was not expected', expectNoFailures);
     }
 
     /**
@@ -64,7 +66,8 @@ export default class TaskService {
      * @param expectNoFailures defaults to true; if false is specified, then a failure is expected in the invocation.
      */
     async delegateTask(task: Task, user: User, assignee: User, expectNoFailures: boolean = true) {
-        throw new Error('Not yet implemented');
+        const response = await cafienneService.put('tasks/' + task.id + '/delegate', user, { assignee: assignee.id});
+        return this.checkResponse(response, 'Task ' + task + ' was delegated succesfully, but this was not expected', expectNoFailures);
     }
 
     /**

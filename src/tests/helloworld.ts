@@ -48,6 +48,8 @@ export default class TestHelloworld extends TestCase {
         };
 
         await sendingUser.login();
+        await receivingUser.login();
+
         let caseInstance = await caseService.startCase(startCase, sendingUser);
         caseInstance = await caseService.getCase(caseInstance, sendingUser);
 
@@ -62,8 +64,8 @@ export default class TestHelloworld extends TestCase {
         console.log("We have "+cases.length+" cases ...");
 
         const taskName = 'Receive Greeting and Send response';
-        const receiveGreetingPlanItem = caseInstance.planitems.find(p => p.name === taskName);
-        if (!receiveGreetingPlanItem) {
+        const planItem = caseInstance.planitems.find(p => p.name === taskName);
+        if (!planItem) {
             throw new Error('Cannot find task ' + taskName);
         }
 
@@ -79,7 +81,28 @@ export default class TestHelloworld extends TestCase {
 
         await taskService.claimTask(receiveGreetingTask, sendingUser);
         caseInstance = await caseService.getCase(caseInstance, sendingUser);
-        await taskService.completeTask(receiveGreetingTask, sendingUser, taskOutput);
+
+        await taskService.revokeTask(receiveGreetingTask, sendingUser);
+
+        await taskService.assignTask(receiveGreetingTask, sendingUser, receivingUser);
+
+        await taskService.revokeTask(receiveGreetingTask, receivingUser);
+
+        await taskService.claimTask(receiveGreetingTask, receivingUser);
+
+        await taskService.delegateTask(receiveGreetingTask, receivingUser, sendingUser);
+
+        await taskService.revokeTask(receiveGreetingTask, sendingUser);
+
+        await taskService.getTask(receiveGreetingTask, sendingUser);
+
+        // TODO: below 3 statements are not working currently, because of bug #24 in the cafienne-engine
+
+        // await taskService.revokeTask(receiveGreetingTask, receivingUser);
+        // await taskService.getTask(receiveGreetingTask, sendingUser).then(task => console.log("Task after second revoke: ", task));
+        // await taskService.claimTask(receiveGreetingTask, receivingUser);
+
+        await taskService.completeTask(receiveGreetingTask, receivingUser, taskOutput);
         caseInstance = await caseService.getCase(caseInstance, sendingUser);
 
         // Validate whether Receive Greeting is in Completed state. It can be done in 2 ways.
