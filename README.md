@@ -1,4 +1,5 @@
-# cmmn-test-framework
+
+# Cafienne Test Framework
 A Typescript based test framework for CMMN case models
 
 The test framework is intended to provide an easy means of building test cases against the Cafienne engine.
@@ -8,16 +9,17 @@ The Cafienne engine has the following aspects
 - The multi-tenant environment requires user registration before you can start running cases.
 
 # Setup environment
-The test framework uses a simple test IDP to generate tokens.
+The test framework uses a simple test IDP to generate tokens. This "IDP" generates any JWT token that we ask it to generate, and in using that the test framework circumvents the Open ID Connect protocol that a normal Cafienne deployment uses.
 In order to make Cafienne Engine "trust" these tokens, the config settings of the engine have to be changed.
 
-## Running the test idp
-Inside the `./docker` directory of this test framework is a file called `run-idp.yml`.
-To run the engine, simply invoke the following command
+## Running the fake IDP
+Inside the `./docker` directory of this test framework is a file called `docker-compose.yml`.
+To run the fake IDP, make sure docker is started, and then run `docker-compose up` in the `./docker` directory.
 ```bash
-    docker-compose -f ./docker/run-idp.yml up
+    cd ./docker
+    docker-compose up
 ```
-This will start a token generator on port http://localhost:2377
+This will start a token generator on port http://localhost:2377.
 
 ## Configure Cafienne Engine to trust this IDP
 ```yml
@@ -56,10 +58,12 @@ In there, search for `oidc` and change it in the below
 ## Off we go ...
 Now you can run the test script, simply by entering
 ```bash
+npm install
 npm run dev
 ```
 or
 ```bash
+npm install
 npm run production
 ```
 The current test framework runs a simple test on the HelloWorld case model.

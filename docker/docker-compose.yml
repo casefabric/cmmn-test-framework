@@ -1,7 +1,7 @@
 # This docker-compose file launches the Token Generator
 #
 # To run, call:
-#   $ docker-compose -f run-idp.yml up
+#   $ docker-compose up
 #
 version: '3.1'
 services:
