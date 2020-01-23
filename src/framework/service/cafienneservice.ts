@@ -84,7 +84,8 @@ export default class CafienneService {
 
         const myCallNumber = callNumber++;
         if (Config.CafienneService.log.traffic) {
-            console.log(`HTTP:${method}[${myCallNumber}] from [${user.id}] to ${url}${Config.CafienneService.log.content ? ' ' + body : ''}`);
+            const logBody = body ? body : ''; 
+            console.log(`HTTP:${method}[${myCallNumber}] from [${user.id}] to ${url}${Config.CafienneService.log.content ? ' ' + logBody : ''}\nHeaders: ${JSON.stringify(headers)}`);
         }
 
         const response = await fetch(url, { method, headers, body });

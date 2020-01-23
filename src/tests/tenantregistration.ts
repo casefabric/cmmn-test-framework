@@ -44,15 +44,16 @@ export default class TestTenantRegistration extends TestCase {
 
         await tenantService.getTenantOwners(platformAdmin, tenant1, true);
 
+        console.log("Waiting 200 milliseconds after tenant creation before logging in the owner")
+        const [arr] = await Promise.all([
+            new Promise(resolve => setTimeout(resolve, 200))
+        ]);
+        console.log("Done with tenant creation and waiting")    
+
         await tenantOwner1.login();
 
-        // // For now we wait 2 seconds, since backend has no sync-option for tenant registry
-        // setTimeout(() => {
-        //     tenantService.getTenantOwners(tenantOwner1, tenant1).then(owners => {
-        //         console.log('Tenant owners: ', JSON.stringify(owners))
-        //     });
-    
-        // }, 2000)
-
+        tenantService.getTenantOwners(tenantOwner1, tenant1).then(owners => {
+            console.log('Tenant owners: ', JSON.stringify(owners))
+        });
     }
 }

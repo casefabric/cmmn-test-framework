@@ -29,7 +29,16 @@ export default class TestHelloworld extends TestCase {
         const owners = [sendingTenantUser, receivingTenantUser];
         const tenant = new Tenant(tenantName, owners);
         await platformAdmin.login();
-        await tenantService.createTenant(platformAdmin, tenant);
+        const response = await tenantService.createTenant(platformAdmin, tenant);
+        if (response.status !== 400) {
+            console.log("Waiting 2 seconds after tenant creation")
+            const [arr] = await Promise.all([
+                new Promise(resolve => setTimeout(resolve, 200))
+            ]);
+            console.log("Done with tenant creation and waiting")    
+        } else {
+            console.log("Tenant already exists. Let's just move on quickly.")
+        }
     }
 
     async run() {
