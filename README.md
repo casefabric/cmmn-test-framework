@@ -9,12 +9,12 @@ The Cafienne engine has the following aspects
 - The multi-tenant environment requires user registration before you can start running cases.
 
 # Setup environment
-The test framework uses a simple test IDP to generate tokens. This "IDP" generates any JWT token that we ask it to generate, and in using that the test framework circumvents the Open ID Connect protocol that a normal Cafienne deployment uses.
+The test framework uses a simple Token Generator to generate JWT tokens that the Cafienne Engine can trust. This "IDP" generates any JWT token that we ask it to generate, and in using that the test framework circumvents the Open ID Connect protocol that a normal Cafienne deployment uses.
 In order to make Cafienne Engine "trust" these tokens, the config settings of the engine have to be changed.
 
-## Running the fake IDP
+## Running the Token Generator
 Inside the `./docker` directory of this test framework is a file called `docker-compose.yml`.
-To run the fake IDP, make sure docker is started, and then run `docker-compose up` in the `./docker` directory.
+To run the Token Generator, make sure docker is started, and then run `docker-compose up` in the `./docker` directory.
 ```bash
     cd ./docker
     docker-compose up

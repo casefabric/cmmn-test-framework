@@ -17,7 +17,6 @@ export default class TestTenantRegistration extends TestCase {
      * @override
      */
     async run() {
-        console.log('Running tenant registration test');
         const guid = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
         const tenantName = 'test-tenant' + guid;
 
@@ -27,21 +26,17 @@ export default class TestTenantRegistration extends TestCase {
         const tenant1 = new Tenant(tenantName, [new TenantUser(tenantOwner1.id),new TenantUser(tenantOwner2.id), new TenantUser(tenantOwner3.id)]);
 
         await platformAdmin.login();
-        await tenantService.createTenant(tenantOwner1, tenant1).then(response => {
-            if (response.ok) {
-                throw new Error('Creation of tenant succeeded unexpectedly.');
-            }
-        });
 
+        // Creating tenant as tenantOwner should fail.
+        await tenantService.createTenant(tenantOwner1, tenant1, true);
+
+        // Creating tenant as platformOwner should succeed.
         await tenantService.createTenant(platformAdmin, tenant1);
-        console.log('Succesfully created tenant');
 
-        await tenantService.createTenant(platformAdmin, tenant1).then(response => {
-            if (response.ok) {
-                throw new Error('Second creation of tenant succeeded unexpectedly.');
-            }
-        });
+        // Creating tenant again should fail
+        await tenantService.createTenant(platformAdmin, tenant1, true)
 
+        // Getting tenant owners as platformOwner should fail.
         await tenantService.getTenantOwners(platformAdmin, tenant1, true);
 
         console.log("Waiting 200 milliseconds after tenant creation before logging in the owner")

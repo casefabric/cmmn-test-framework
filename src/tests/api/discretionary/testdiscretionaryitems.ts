@@ -30,10 +30,7 @@ export default class TestDiscretionaryItems extends TestCase {
     }
 
     async run() {
-        const startCaseInput = {
-            
-        };
-        const startCase = { tenant: tenantName, definition: 'planning.xml', inputs: startCaseInput};
+        const startCase = { tenant: tenantName, definition: 'planning.xml'};
 
         await user.login();
 
