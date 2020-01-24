@@ -1,20 +1,15 @@
 'use strict';
 
-import User from '../../../framework/user'
 import CaseService from '../../../framework/service/case/caseservice';
 import TaskService from '../../../framework/service/task/taskservice';
-import Tenant from '../../../framework/tenant/tenant';
-import TenantUser from '../../../framework/tenant/tenantuser';
-import TenantService from '../../../framework/service/tenant/tenantservice';
 import TestCase from '../../../framework/test/testcase';
+import WorldWideTestTenant from '../../worldwidetesttenant';
 
-const tenantName = 'helloworld';
-const platformAdmin = new User('admin');
-const user = new User('sending-user');
-
-const tenantService = new TenantService();
 const caseService = new CaseService();
 const taskService = new TaskService();
+const tenant = new WorldWideTestTenant();
+const user = tenant.sender;
+const tenantName = tenant.name;
 
 export default class TestDiscretionaryItems extends TestCase {
     constructor() {
@@ -22,11 +17,7 @@ export default class TestDiscretionaryItems extends TestCase {
     }
 
     async onPrepareTest() {
-        const sendingTenantUser = new TenantUser(user.id, ['Sender'], 'sender', 'sender@senders.com');
-        const owners = [sendingTenantUser];
-        const tenant = new Tenant(tenantName, owners);
-        await platformAdmin.login();
-        await tenantService.createTenant(platformAdmin, tenant);
+        await tenant.create();
     }
 
     async run() {

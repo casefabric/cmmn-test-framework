@@ -1,19 +1,14 @@
 'use strict';
 
-import User from '../../../framework/user'
 import CaseService from '../../../framework/service/case/caseservice';
-import Tenant from '../../../framework/tenant/tenant';
-import TenantUser from '../../../framework/tenant/tenantuser';
-import TenantService from '../../../framework/service/tenant/tenantservice';
 import TestCase from '../../../framework/test/testcase';
 
-const tenantName = 'helloworld';
-const platformAdmin = new User('admin');
-const sendingUser = new User('sending-user');
-const receivingUser = new User('receiving-user');
+import WorldWideTestTenant from '../../worldwidetesttenant';
 
-const tenantService = new TenantService();
 const caseService = new CaseService();
+const tenant = new WorldWideTestTenant();
+const sendingUser = tenant.sender;
+const tenantName = tenant.name;
 
 export default class TestDebugMode extends TestCase {
     constructor() {
@@ -21,12 +16,7 @@ export default class TestDebugMode extends TestCase {
     }
 
     async onPrepareTest() {
-        const sendingTenantUser = new TenantUser(sendingUser.id, ['Sender'], 'sender', 'sender@senders.com');
-        const receivingTenantUser = new TenantUser(receivingUser.id, ['Receiver'], 'receiver', 'receiver@receivers.com');
-        const owners = [sendingTenantUser, receivingTenantUser];
-        const tenant = new Tenant(tenantName, owners);
-        await platformAdmin.login();
-        await tenantService.createTenant(platformAdmin, tenant);
+        await tenant.create();
     }
 
     async run() {

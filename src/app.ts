@@ -3,8 +3,8 @@ import TestStatsAPI from './tests/api/case/stats';
 import TestUsersCaseAPI from './tests/api/case/usercases';
 import TestDiscretionaryItems from './tests/api/discretionary/testdiscretionaryitems';
 import TestDebugMode from './tests/api/debug/testdebugmode';
-import TestHelloworld from './tests/helloworld';
-import TestTenantRegistration from './tests/tenantregistration';
+import TestHelloworld from './tests/helloworld/helloworld';
+import TestTenantRegistration from './tests/api/tenant/tenantregistration';
 
 
 function findTestsFromCommandLineArguments() : Array<string> {
