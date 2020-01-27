@@ -90,7 +90,15 @@ export default class TaskService {
      * @param expectNoFailures defaults to true; if false is specified, then a failure is expected in the invocation.
      */
     async validateTaskOutput(task: Task, user: User, taskOutput = {}, expectNoFailures: boolean = true) {
-        throw new Error('Not yet implemented');
+        const response = await cafienneService.post('tasks/' + task.id, user, taskOutput);
+        const res = await this.checkResponse(response, 'Task output for ' + task + ' was validated succesfully, but this was not expected', expectNoFailures);
+        if (expectNoFailures) {
+            const json = await response.json();
+            return json;
+        } else {
+            const text = await response.text();
+            return text;
+        }
     }
 
     /**
@@ -101,7 +109,8 @@ export default class TaskService {
      * @param expectNoFailures defaults to true; if false is specified, then a failure is expected in the invocation.
      */
     async saveTaskOutput(task: Task, user: User, taskOutput = {}, expectNoFailures: boolean = true) {
-        throw new Error('Not yet implemented');
+        const response = await cafienneService.put('tasks/' + task.id, user, taskOutput);
+        await this.checkResponse(response, 'Task output for ' + task + ' was saved succesfully, but this was not expected', expectNoFailures);
     }
 
     /**

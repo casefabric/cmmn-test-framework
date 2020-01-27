@@ -5,6 +5,8 @@ import TestDiscretionaryItems from './tests/api/discretionary/testdiscretionaryi
 import TestDebugMode from './tests/api/debug/testdebugmode';
 import TestHelloworld from './tests/helloworld/helloworld';
 import TestTenantRegistration from './tests/api/tenant/tenantregistration';
+import TestTaskValidationAPI from './tests/api/task/taskvalidation';
+
 
 function findTestsFromCommandLineArguments(): Array<string> {
     // TODO: it will be nice if we can implement running test cases given from command line,
@@ -26,6 +28,8 @@ function getHardCodedTestDeclarations(): Array<any> {
 
         // For now, TestDiscretionaryItems is commented out, because planning.xml is not deployed by default
         // , TestDiscretionaryItems
+        //  And same for testing task validation, which requires taskoutputvalidation.xml
+        // , TestTaskValidationAPI
         , TestDebugMode
         , TestTenantRegistration
     ];
