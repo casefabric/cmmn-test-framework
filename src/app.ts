@@ -6,8 +6,7 @@ import TestDebugMode from './tests/api/debug/testdebugmode';
 import TestHelloworld from './tests/helloworld/helloworld';
 import TestTenantRegistration from './tests/api/tenant/tenantregistration';
 
-
-function findTestsFromCommandLineArguments() : Array<string> {
+function findTestsFromCommandLineArguments(): Array<string> {
     // TODO: it will be nice if we can implement running test cases given from command line,
     //  but as of now (because TypeScript transpiling the class names?) they cannot be found in runtime based on string
     const stringList = process.argv.slice(2);
@@ -17,14 +16,14 @@ function findTestsFromCommandLineArguments() : Array<string> {
     return [];
 }
 
-function getHardCodedTestDeclarations() : Array<any> {
+function getHardCodedTestDeclarations(): Array<any> {
     return [
         TestHelloworld
         , TestUsersCaseAPI
-        
+
         // Test currently fails with in-memory configuration of Cafienne Engine. (it works in cassandra+postgres combination)
         // , TestStatsAPI
-    
+
         // For now, TestDiscretionaryItems is commented out, because planning.xml is not deployed by default
         // , TestDiscretionaryItems
         , TestDebugMode
@@ -79,8 +78,8 @@ async function runTests(testDeclarations: Array<any>) {
         } catch (error) {
             throw {
                 test: test.name,
-                number: i+1,
-                error                
+                number: i + 1,
+                error
             }
         }
     }
@@ -92,7 +91,8 @@ console.log('=========\n\nStarting test cases at ' + startTime + '\n');
 runTests(testDeclarations).then(done => {
     const endTime = new Date();
     console.log('\n=========\n\nTesting completed in ' + (endTime.getTime() - startTime.getTime()) + ' milliseconds at ' + endTime + '\n');
+    process.exit(0)
 }).catch(e => {
     console.error(`\n\nTest ${e.number} "${e.test}" failed with error\n\n`, e.error);
-    return;
+    process.exit(-1);
 });
