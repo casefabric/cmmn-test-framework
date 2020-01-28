@@ -61,9 +61,9 @@ export default class TaskValidationMock {
 
                 const taskContent = post['task-output'];
 
-                const isInvalidDecision = Util.compareJSON(taskContent, TaskContent.TaskOutputInvalidDecision);
-                const isKillSwitch = Util.compareJSON(taskContent, TaskContent.TaskOutputThatFailsValidation);
-                const isValidDecision = Util.compareJSON(taskContent, TaskContent.TaskOutputDecisionApproved) || Util.compareJSON(post, TaskContent.TaskOutputDecisionCanceled);
+                const isInvalidDecision = Util.sameJSON(taskContent, TaskContent.TaskOutputInvalidDecision);
+                const isKillSwitch = Util.sameJSON(taskContent, TaskContent.TaskOutputThatFailsValidation);
+                const isValidDecision = Util.sameJSON(taskContent, TaskContent.TaskOutputDecisionApproved) || Util.sameJSON(post, TaskContent.TaskOutputDecisionCanceled);
                 if (isKillSwitch) {
                     res.writeHead(500);
                     res.write('Something went really wrong in here');

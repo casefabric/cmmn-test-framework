@@ -4,12 +4,16 @@ import CaseService from '../../../framework/service/case/caseservice';
 import TaskService from '../../../framework/service/task/taskservice';
 import TestCase from '../../../framework/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
+import RepositoryService from '../../../framework/service/case/repositoryservice';
 
 const caseService = new CaseService();
 const taskService = new TaskService();
-const tenant = new WorldWideTestTenant();
-const user = tenant.sender;
-const tenantName = tenant.name;
+const repositoryService = new RepositoryService();
+
+const worldwideTenant = new WorldWideTestTenant();
+const user = worldwideTenant.sender;
+const tenant = worldwideTenant.name;
+const definition = 'planning.xml';
 
 export default class TestDiscretionaryItems extends TestCase {
     constructor() {
@@ -17,13 +21,13 @@ export default class TestDiscretionaryItems extends TestCase {
     }
 
     async onPrepareTest() {
-        await tenant.create();
+        await worldwideTenant.create();
+        await user.login();
+        await repositoryService.validateAndDeploy(definition, user, tenant);
     }
 
     async run() {
-        const startCase = { tenant: tenantName, definition: 'planning.xml'};
-
-        await user.login();
+        const startCase = { tenant, definition };
 
         let caseInstance = await caseService.startCase(startCase, user);
         caseInstance = await caseService.getCase(caseInstance, user);
@@ -46,12 +50,12 @@ export default class TestDiscretionaryItems extends TestCase {
 
         const newItem = discretionaries[0];
         const plannedItem = await caseService.planDiscretionaryItem(caseInstance, user, newItem);
-        console.log("Planned item: "+plannedItem)
+        console.log("Planned item: " + plannedItem)
 
         caseInstance = await caseService.getCase(caseInstance, user);
         // console.log("Plan items now is: ", caseInstance.planitems)
 
         const newSetOfTasks = await taskService.getCaseTasks(caseInstance, user);
-        console.log("Old number of tasks: "+numTasksBeforePlanning+", new number after planning: "+newSetOfTasks.length)
+        console.log("Old number of tasks: " + numTasksBeforePlanning + ", new number after planning: " + newSetOfTasks.length)
     }
 }

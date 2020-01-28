@@ -9,6 +9,12 @@ const Config = {
     TokenService: {
         url: 'http://localhost:2377/token',
         issuer: 'Cafienne Test Framework'
+    },
+    RepositoryService: {
+        log: false
+    },
+    TestCase: {
+        log: false
     }
 }
 

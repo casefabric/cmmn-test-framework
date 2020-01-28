@@ -22,16 +22,13 @@ function getHardCodedTestDeclarations(): Array<any> {
     return [
         TestHelloworld
         , TestUsersCaseAPI
+        , TestDiscretionaryItems
+        , TestTaskValidationAPI
+        , TestDebugMode
+        , TestTenantRegistration
 
         // Test currently fails with in-memory configuration of Cafienne Engine. (it works in cassandra+postgres combination)
         // , TestStatsAPI
-
-        // For now, TestDiscretionaryItems is commented out, because planning.xml is not deployed by default
-        // , TestDiscretionaryItems
-        //  And same for testing task validation, which requires taskoutputvalidation.xml
-        // , TestTaskValidationAPI
-        , TestDebugMode
-        , TestTenantRegistration
     ];
 }
 
@@ -53,30 +50,30 @@ async function runTests(testDeclarations: Array<any>) {
     const tests: Array<TestCase> = getTestCaseInstances(testDeclarations);
     for (let i = 0; i < tests.length; i++) {
         const test = tests[i];
-        const calculatedWhitespace = '                            '.substring(test.name.length)
+        const calculatedWhitespace = '                               '.substring(test.name.length)
         try {
             console.log(`\n
-#######################################################
-#                                                     #
+##########################################################
+#                                                        #
 #      PREPARING TEST:  "${test.name}"${calculatedWhitespace}#
-#                                                     #
-#######################################################
+#                                                        #
+##########################################################
                         `);
             const preparationDone = await test.onPrepareTest();
             console.log(`\n
-#######################################################
-#                                                     #
+##########################################################
+#                                                        #
 #      STARTING TEST:   "${test.name}"${calculatedWhitespace}#
-#                                                     #
-#######################################################
+#                                                        #
+##########################################################
                         `);
             const testRun = await test.run();
             console.log(`\n
-#######################################################
-#                                                     #
+##########################################################
+#                                                        #
 #      CLOSING TEST:    "${test.name}"${calculatedWhitespace}#
-#                                                     #
-#######################################################
+#                                                        #
+##########################################################
                         `);
             const closeDone = await test.onCloseTest();
         } catch (error) {

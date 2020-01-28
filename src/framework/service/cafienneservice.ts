@@ -1,8 +1,8 @@
 import { Response, Headers } from 'node-fetch';
 import fetch from 'node-fetch';
+import { DOMParser } from 'xmldom';
 import Config from '../../config';
 import User from '../user';
-import CaseService from './case/caseservice';
 import QueryFilter, { extendURL } from './queryfilter';
 
 export async function mustBeValidJSON(response: Response) {
@@ -51,6 +51,12 @@ export default class CafienneService {
         return this.fetch(user, url, method, headers, body).then(this.updateCaseLastModified);
     }
 
+    async postXML(url: string, user: User, request: Document, method = 'POST') {
+        const headers = new Headers({ 'Content-Type': 'application/xml' });
+        const body = request.toString();
+        return this.fetch(user, url, method, headers, body);
+    }
+
     async put(url: string, user: User, request?: object) {
         // Sorry, bit of a hack here...
         return this.post(url, user, request, 'PUT');
@@ -68,12 +74,11 @@ export default class CafienneService {
     }
 
     async getXml(url: string, user: User) {
-        return this.get(url, user, new Headers({ 'Content-Type': 'text/xml' })).then(response => {
-            console.log("Got a response: ", response)
-            response.text().then(t => {
-                console.log("RT: " + t)
-            })
-        })
+        const response = await this.get(url, user, new Headers({ 'Content-Type': 'text/xml' }))
+        const xml = await response.text();
+        const parser = new DOMParser();
+        const document = parser.parseFromString(xml, 'application/xml');
+        return document;
     }
 
     async fetch(user: User, url: string, method: string, headers: Headers, body?: string) {
@@ -84,8 +89,8 @@ export default class CafienneService {
 
         const myCallNumber = callNumber++;
         if (Config.CafienneService.log.traffic) {
-            const logBody = body ? body : ''; 
-            console.log(`HTTP:${method}[${myCallNumber}] from [${user.id}] to ${url}${Config.CafienneService.log.content ? ' ' + logBody : ''}\nHeaders: ${JSON.stringify(headers)}`);
+            const logBody = body ? body : '';
+            console.log(`HTTP:${method}[${myCallNumber}] from [${user.id}] to ${url}\nHeaders:${JSON.stringify(headers.raw(), undefined, 2)}\n${Config.CafienneService.log.content ? ' ' + logBody : ''}\nHeaders: ${JSON.stringify(headers)}`);
         }
 
         const response = await fetch(url, { method, headers, body });

@@ -2,6 +2,7 @@ import User from "../framework/user";
 import TenantService from "../framework/service/tenant/tenantservice";
 import TenantUser from "../framework/tenant/tenantuser";
 import Tenant from "../framework/tenant/tenant";
+import Util from "../framework/test/util";
 
 const tenantService = new TenantService();
 
@@ -24,11 +25,9 @@ export default class WorldWideTestTenant {
         await this.platformAdmin.login();
         const response = await tenantService.createTenant(this.platformAdmin, tenant);
         if (response.status !== 400) {
-            console.log("Waiting 2 seconds after tenant creation")
-            const [arr] = await Promise.all([
-                new Promise(resolve => setTimeout(resolve, 200))
-            ]);
-            console.log("Done with tenant creation and waiting")
+            const waitTime = 200;
+            console.log(`Waiting ${waitTime} milliseconds after tenant creation`)
+            await Util.holdYourHorses(200);
         } else {
         }
     }

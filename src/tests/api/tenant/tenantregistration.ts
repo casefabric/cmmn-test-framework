@@ -3,6 +3,7 @@ import TenantService from "../../../framework/service/tenant/tenantservice";
 import Tenant from "../../../framework/tenant/tenant";
 import TenantUser from "../../../framework/tenant/tenantuser";
 import TestCase from "../../../framework/test/testcase";
+import Util from "../../../framework/test/util";
 
 const platformAdmin = new User('admin');
 
@@ -40,10 +41,7 @@ export default class TestTenantRegistration extends TestCase {
         await tenantService.getTenantOwners(platformAdmin, tenant1, true);
 
         console.log("Waiting 200 milliseconds after tenant creation before logging in the owner")
-        const [arr] = await Promise.all([
-            new Promise(resolve => setTimeout(resolve, 200))
-        ]);
-        console.log("Done with tenant creation and waiting")    
+        await Util.holdYourHorses(200);
 
         await tenantOwner1.login();
 

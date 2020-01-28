@@ -5,9 +5,9 @@ import TestCase from '../../../framework/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 
 const caseService = new CaseService();
-const tenant = new WorldWideTestTenant();
-const user = tenant.sender;
-const tenantName = tenant.name;
+const worldwideTenant = new WorldWideTestTenant();
+const user = worldwideTenant.sender;
+const tenant = worldwideTenant.name;
 
 export default class TestUsersCaseAPI extends TestCase {
     constructor() {
@@ -15,7 +15,7 @@ export default class TestUsersCaseAPI extends TestCase {
     }
 
     async onPrepareTest() {
-        await tenant.create();
+        await worldwideTenant.create();
     }
 
     async run() {
@@ -23,8 +23,8 @@ export default class TestUsersCaseAPI extends TestCase {
 
         const allMyCases = await caseService.getUserCases(user, { numberOfResults: 10000 });
 
-        const myCompletedCases = await caseService.getUserCases(user, { state: 'Completed', tenant: tenantName, numberOfResults: 10000 });
-        const myActiveCases = await caseService.getUserCases(user, { state: 'Active', tenant: tenantName, numberOfResults: 10000 });
+        const myCompletedCases = await caseService.getUserCases(user, { state: 'Completed', tenant, numberOfResults: 10000 });
+        const myActiveCases = await caseService.getUserCases(user, { state: 'Active', tenant, numberOfResults: 10000 });
 
         console.log("All my cases: ", allMyCases.length);
         console.log("My completed cases: ", myCompletedCases.length);

@@ -4,13 +4,18 @@ import CaseService from '../../framework/service/case/caseservice';
 import TaskService from '../../framework/service/task/taskservice';
 import TestCase from '../../framework/test/testcase';
 import WorldWideTestTenant from '../worldwidetesttenant';
+import RepositoryService from '../../framework/service/case/repositoryservice';
+import Util from '../../framework/test/util';
+
+const repositoryService = new RepositoryService();
+const definition = 'helloworld.xml';
 
 const caseService = new CaseService();
 const taskService = new TaskService();
-const tenant = new WorldWideTestTenant();
-const tenantName = tenant.name;
-const sender = tenant.sender;
-const receiver = tenant.receiver;
+const worldwideTenant = new WorldWideTestTenant();
+const tenant = worldwideTenant.name;
+const sender = worldwideTenant.sender;
+const receiver = worldwideTenant.receiver;
 
 export default class TestHelloworld extends TestCase {
     constructor() {
@@ -19,38 +24,40 @@ export default class TestHelloworld extends TestCase {
 
     async onPrepareTest() {
         console.log('Setting up tenant information for test case helloworld')
-        await tenant.create();
+        await worldwideTenant.create();
+        await sender.login();
+        await receiver.login();
+
+        await repositoryService.validateAndDeploy(definition, sender, tenant);
+
     }
 
     async run() {
-        const startCaseInput = {
+        const inputs = {
             Greeting: {
                 Message: 'Hello there',
                 From: sender.id
             }
         };
-        const startCase = { tenant: tenantName, definition: 'helloworld.xml', inputs: startCaseInput};
+        const startCase = { tenant, definition, inputs };
         const taskOutput = {
             Response: {
                 Message: 'Toedeledoki',
             }
         };
 
-        await sender.login();
-        await receiver.login();
-
         let caseInstance = await caseService.startCase(startCase, sender);
         caseInstance = await caseService.getCase(caseInstance, sender);
 
         // Simple test
-        const availableTasks = await taskService.getTasks(sender, { tenant: tenantName, taskState: 'Unassigned' });
-        console.log('We have ' + availableTasks.length + ' unassigned tasks in tenant ' + tenantName);
+        const availableTasks = await taskService.getTasks(sender, { tenant: tenant, taskState: 'Unassigned' });
+        console.log('We have ' + availableTasks.length + ' unassigned tasks in tenant ' + tenant);
 
-        await taskService.getTasks(sender, { tenant: tenantName, taskState: 'Unassigned' });
+        await taskService.getTasks(sender, { tenant: tenant, taskState: 'Unassigned' });
 
         // 
-        const cases = await caseService.getCases(sender, { tenant: tenantName, numberOfResults: 10000});
-        console.log("We have "+cases.length+" cases ...");
+        const cases = await caseService.getCases(sender, { tenant: tenant, numberOfResults: 10000 });
+        console.log("We have " + cases.length + " cases ...");
 
         const taskName = 'Receive Greeting and Send response';
         const planItem = caseInstance.planitems.find(p => p.name === taskName);
@@ -64,7 +71,7 @@ export default class TestHelloworld extends TestCase {
             throw new Error('Cannot find task ' + taskName);
         }
 
-        if (!sameJSON(receiveGreetingTask.input, startCaseInput)) {
+        if (!Util.sameJSON(receiveGreetingTask.input, inputs)) {
             throw new Error('Task input is not the same as given to the case');
         }
 
@@ -127,9 +134,4 @@ export default class TestHelloworld extends TestCase {
             console.log('Case completed!')
         }
     }
-}
-
-function sameJSON(obj1: any, obj2: any) {
-    // TODO: make this a decent helper function in the framework side of the house
-    return JSON.stringify(obj1) === JSON.stringify(obj2);
 }

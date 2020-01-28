@@ -6,9 +6,9 @@ import TestCase from '../../../framework/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 
 const caseService = new CaseService();
-const tenant = new WorldWideTestTenant();
-const sendingUser = tenant.sender;
-const tenantName = tenant.name;
+const worldwideTenant = new WorldWideTestTenant();
+const sendingUser = worldwideTenant.sender;
+const tenant = worldwideTenant.name;
 
 export default class TestDebugMode extends TestCase {
     constructor() {
@@ -16,7 +16,7 @@ export default class TestDebugMode extends TestCase {
     }
 
     async onPrepareTest() {
-        await tenant.create();
+        await worldwideTenant.create();
     }
 
     async run() {
@@ -26,7 +26,7 @@ export default class TestDebugMode extends TestCase {
                 From: sendingUser.id
             }
         };
-        const startCaseInDebugMode = { tenant: tenantName, definition: 'helloworld.xml', inputs: startCaseInput, debug: true};
+        const startCaseInDebugMode = { tenant, definition: 'helloworld.xml', inputs: startCaseInput, debug: true};
 
         await sendingUser.login();
 

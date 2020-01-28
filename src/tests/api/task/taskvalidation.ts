@@ -1,6 +1,7 @@
 'use strict';
 
 import CaseService from '../../../framework/service/case/caseservice';
+import RepositoryService from '../../../framework/service/case/repositoryservice';
 import TaskService from '../../../framework/service/task/taskservice';
 import TestCase from '../../../framework/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
@@ -8,12 +9,15 @@ import TaskValidationMock from './task-validation-mock';
 import Util from '../../../framework/test/util';
 import TaskContent from './taskcontent';
 
+const repositoryService = new RepositoryService();
+const definition = 'taskoutputvalidation.xml';
+
 const caseService = new CaseService();
 const taskService = new TaskService();
-const tenant = new WorldWideTestTenant();
-const tenantName = tenant.name;
-const pete = tenant.sender;
-const gimy = tenant.receiver;
+const worldwideTenant = new WorldWideTestTenant();
+const tenant = worldwideTenant.name;
+const pete = worldwideTenant.sender;
+const gimy = worldwideTenant.receiver;
 
 const mockPort = 17382;
 const mock = new TaskValidationMock(mockPort);
@@ -27,12 +31,14 @@ export default class TestTaskValidationAPI extends TestCase {
         // console.log("Starting mock servive in test preparation");
         await mock.start();
         // console.log("\n\n============Started mock server. Now creating tenant\n\n");
-        await tenant.create();
+        await worldwideTenant.create();
 
         // Login for pete and gimy (actually, sending-user and receiving-user ...).
         await pete.login();
         await gimy.login();
 
+        // Deploy the case model
+        await repositoryService.validateAndDeploy(definition, pete, tenant);
     }
 
     async run() {
@@ -48,7 +54,7 @@ export default class TestTaskValidationAPI extends TestCase {
                 port: mockPort
             }
         }
-        const startCase = { tenant: tenantName, definition: 'taskoutputvalidation.xml', inputs };
+        const startCase = { tenant, definition, inputs };
         let caseInstance = await caseService.startCase(startCase, pete);
         caseInstance = await caseService.getCase(caseInstance, pete);
 
@@ -96,14 +102,14 @@ export default class TestTaskValidationAPI extends TestCase {
         // Sending an invalid task output should not result in an error, be it should return non-empty json matching InvalidDecisionResponse
         await taskService.validateTaskOutput(decisionTask, pete, TaskContent.TaskOutputInvalidDecision).then(validationResult => {
             // TODO: this should probably become some sort of an assertion
-            if (! Util.compareJSON(validationResult, TaskContent.InvalidDecisionResponse)) {
+            if (! Util.sameJSON(validationResult, TaskContent.InvalidDecisionResponse)) {
                 throw new Error('Task validation did not result in the right error. Received ' + JSON.stringify(validationResult));
             }    
         });
 
         // Sending valid task output should result in an empty json response.
         await taskService.validateTaskOutput(decisionTask, pete, TaskContent.TaskOutputDecisionCanceled).then(validationResult => {
-            if (! Util.compareJSON(validationResult, {})) {
+            if (! Util.sameJSON(validationResult, {})) {
                 throw new Error('Expecting empty json structure from task validation. Unexpectedly received ' + JSON.stringify(validationResult));
             }    
         });

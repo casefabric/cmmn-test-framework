@@ -2,8 +2,8 @@ import TokenService from './service/tenant/tokenservice';
 import TenantService from './service/tenant/tenantservice';
 import UserInformation from './tenant/userinformation';
 
-const tenantService = new TenantService();
 const tokenService = new TokenService();
+const tenantService = new TenantService();
 
 export default class User {
     /**
