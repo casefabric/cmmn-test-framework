@@ -1,6 +1,4 @@
-import Config from "../../config";
-
-export default class Util {
+export default class Comparison {
     /**
      * Compare the stringified JSON version of both objects and return true if they are the same.
      * @param obj1 
@@ -17,22 +15,9 @@ export default class Util {
      */
     static sameXML(tree1: Node, tree2: Node) {
         return contains(tree1, tree2) && contains(tree2, tree1);
-    }
-
-    /**
-    * Simple helper method to wait some time.
-    * @param millis Number of milliseconds to wait
-    * @param msg Optional message shown in debug information
-    */
-    static async holdYourHorses(millis: number, msg: string = `Waiting ${millis} milliseconds`) {
-        await new Promise(resolve => {
-            if (Config.TestCase.log) {
-                console.log(msg);
-            }
-            setTimeout(resolve, millis);
-        });
-    }
+    }    
 }
+
 
 /**
  * Return true if xml1 contains xml2 content.
@@ -94,7 +79,7 @@ function compareElements(xml1: Element, xml2: Element): boolean {
     for (let i = 0; i < attr1.length; i++) {
         const a1 = attr1.item(i);
         const a2 = attr2.getNamedItem(a1?.name || '');
-        if (! a2) {
+        if (!a2) {
             // console.log("Cannot find attribute with name "+a1?.name+" in other element")
             return false;
         }

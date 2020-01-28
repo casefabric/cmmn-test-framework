@@ -2,7 +2,7 @@ import User from "../framework/user";
 import TenantService from "../framework/service/tenant/tenantservice";
 import TenantUser from "../framework/tenant/tenantuser";
 import Tenant from "../framework/tenant/tenant";
-import Util from "../framework/test/util";
+import { ServerSideProcessing } from "../framework/test/time";
 
 const tenantService = new TenantService();
 
@@ -25,9 +25,7 @@ export default class WorldWideTestTenant {
         await this.platformAdmin.login();
         const response = await tenantService.createTenant(this.platformAdmin, tenant);
         if (response.status !== 400) {
-            const waitTime = 200;
-            console.log(`Waiting ${waitTime} milliseconds after tenant creation`)
-            await Util.holdYourHorses(200);
+            await ServerSideProcessing('Giving server time to handle tenant creation');
         } else {
         }
     }

@@ -5,16 +5,6 @@ import Config from '../../config';
 import User from '../user';
 import QueryFilter, { extendURL } from './queryfilter';
 
-export async function mustBeValidJSON(response: Response) {
-    //  TODO: This should become a generic that enables casting the response to desired type
-    if (!response.ok) {
-        const text = await response.text();
-        throw new Error("Request failed! " + response.status + ": " + response.statusText + ":\n" + text);
-    } else {
-        return response.json();
-    }
-}
-
 export default class CafienneService {
     baseURL: string;
     static headers = new Headers({
@@ -40,18 +30,13 @@ export default class CafienneService {
         return response;
     }
 
-    async postForJson(url: string, user: User, request?: object, method = 'POST') {
-        const response = await this.post(url, user, request, method);
-        return mustBeValidJSON(response);
-    }
-
     async post(url: string, user: User, request?: object, method = 'POST') {
         const headers = Object.create(CafienneService.headers);
         const body = request ? JSON.stringify(request, undefined, 2) : undefined;
         return this.fetch(user, url, method, headers, body).then(this.updateCaseLastModified);
     }
 
-    async postXML(url: string, user: User, request: Document, method = 'POST') {
+    async postXML(url: string, user: User, request: Document, method = 'POST'): Promise<Response> {
         const headers = new Headers({ 'Content-Type': 'application/xml' });
         const body = request.toString();
         return this.fetch(user, url, method, headers, body);
@@ -62,26 +47,27 @@ export default class CafienneService {
         return this.post(url, user, request, 'PUT');
     }
 
-    async get(url: string, user: User, headers: Headers = Object.create(CafienneService.headers)) {
-        return this.fetch(user, url, 'GET', headers);
+    async delete(url: string, user: User) {
+        const headers = Object.create(CafienneService.headers);
+        return this.fetch(user, url, 'DELETE', headers);
     }
 
-    async getJson(url: string, user: User, filter?: QueryFilter) {
+    async get(url: string, user: User, filter?: QueryFilter, headers: Headers = Object.create(CafienneService.headers)) {
         if (filter) {
             url = extendURL(url, filter);
         }
-        return this.get(url, user).then(mustBeValidJSON);
+        return this.fetch(user, url, 'GET', headers);
     }
 
     async getXml(url: string, user: User) {
-        const response = await this.get(url, user, new Headers({ 'Content-Type': 'text/xml' }))
+        const response = await this.get(url, user, undefined, new Headers({ 'Content-Type': 'text/xml' }))
         const xml = await response.text();
         const parser = new DOMParser();
         const document = parser.parseFromString(xml, 'application/xml');
         return document;
     }
 
-    async fetch(user: User, url: string, method: string, headers: Headers, body?: string) {
+    async fetch(user: User, url: string, method: string, headers: Headers, body?: string): Promise<Response> {
         if (user) {
             headers.set('Authorization', 'Bearer ' + user.token);
         }
@@ -93,7 +79,7 @@ export default class CafienneService {
             console.log(`HTTP:${method}[${myCallNumber}] from [${user.id}] to ${url}\nHeaders:${JSON.stringify(headers.raw(), undefined, 2)}\n${Config.CafienneService.log.content ? ' ' + logBody : ''}\nHeaders: ${JSON.stringify(headers)}`);
         }
 
-        const response = await fetch(url, { method, headers, body });
+        const response: Response = await fetch(url, { method, headers, body });
         if (Config.CafienneService.log.traffic) {
             console.log(` [${myCallNumber}]==> ${response.status} ${response.statusText}`);
         }

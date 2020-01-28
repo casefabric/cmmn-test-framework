@@ -3,13 +3,13 @@ import { DOMParser } from 'xmldom';
 import CafienneService from '../cafienneservice';
 import DeployCase from './command/repository/deploycase';
 import TaskService from '../task/taskservice';
-import Util from '../../test/util';
 import Config from '../../../config';
 import User from '../../user';
+import { checkResponse, checkJSONResponse } from '../response';
+import Comparison from '../../test/comparison';
 
 const FileSystem = fs;
 const cafienneService = new CafienneService();
-const taskService = new TaskService();
 
 export default class RepositoryService {
     /**
@@ -25,7 +25,7 @@ export default class RepositoryService {
         // Hmmm... Duplicate '/repository/repository/' is needed currently...
         const url = `/repository/repository/deploy/${command.modelName}?${tenantQueryParameter}`;
         const response = await cafienneService.postXML(url, user, command.definition);
-        return taskService.checkResponse(response, 'Deployment of case ' + command.modelName + ' failed', expectNoFailures);
+        return checkResponse(response, 'Deployment of case ' + command.modelName + ' failed', expectNoFailures);
     }
 
     /**
@@ -47,7 +47,7 @@ export default class RepositoryService {
      * @param user 
      */
     async listCaseDefinitions(user: User, tenant: string = '') {
-        const json = await cafienneService.getJson('/repository/list?tenant=' + tenant, user);
+        const json = await cafienneService.get('/repository/list?tenant=' + tenant, user).then(checkJSONResponse);
         if (Config.RepositoryService.log) {
             console.log('Cases deployed in the server: ' + JSON.stringify(json, undefined, 2))
         }
@@ -84,7 +84,7 @@ export default class RepositoryService {
         const definition = parser.parseFromString(xml, 'application/xml');
 
         const serverVersion = await this.loadCaseDefinition(fileName, user, tenant);
-        if (Util.sameXML(definition, serverVersion)) {
+        if (Comparison.sameXML(definition, serverVersion)) {
             if (Config.RepositoryService.log) {
                 console.log(`Skipping deployment of ${fileName}, as server already has it`);
             }

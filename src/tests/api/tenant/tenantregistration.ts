@@ -3,7 +3,8 @@ import TenantService from "../../../framework/service/tenant/tenantservice";
 import Tenant from "../../../framework/tenant/tenant";
 import TenantUser from "../../../framework/tenant/tenantuser";
 import TestCase from "../../../framework/test/testcase";
-import Util from "../../../framework/test/util";
+import { ServerSideProcessing } from "../../../framework/test/time";
+import Comparison from "../../../framework/test/comparison";
 
 const platformAdmin = new User('admin');
 
@@ -24,29 +25,105 @@ export default class TestTenantRegistration extends TestCase {
         const tenantOwner1 = new User('tenant-owner1');
         const tenantOwner2 = new User('tenant-owner2');
         const tenantOwner3 = new User('tenant-owner3');
-        const tenant1 = new Tenant(tenantName, [new TenantUser(tenantOwner1.id),new TenantUser(tenantOwner2.id), new TenantUser(tenantOwner3.id)]);
+        const user4 = new User('tenant-user-4');
+        const tenant1 = new Tenant(tenantName, [new TenantUser(tenantOwner1.id), new TenantUser(tenantOwner2.id), new TenantUser(tenantOwner3.id)]);
 
         await platformAdmin.login();
 
         // Creating tenant as tenantOwner should fail.
-        await tenantService.createTenant(tenantOwner1, tenant1, true);
+        await tenantService.createTenant(tenantOwner1, tenant1, false);
 
         // Creating tenant as platformOwner should succeed.
         await tenantService.createTenant(platformAdmin, tenant1);
 
         // Creating tenant again should fail
-        await tenantService.createTenant(platformAdmin, tenant1, true)
+        await tenantService.createTenant(platformAdmin, tenant1, false)
 
         // Getting tenant owners as platformOwner should fail.
-        await tenantService.getTenantOwners(platformAdmin, tenant1, true);
+        await tenantService.getTenantOwners(platformAdmin, tenant1, false);
 
-        console.log("Waiting 200 milliseconds after tenant creation before logging in the owner")
-        await Util.holdYourHorses(200);
+        await ServerSideProcessing('Give the system a second to handle the addition of the tenant owners');
 
         await tenantOwner1.login();
 
-        tenantService.getTenantOwners(tenantOwner1, tenant1).then(owners => {
-            console.log('Tenant owners: ', JSON.stringify(owners))
+        await tenantService.getTenantOwners(tenantOwner1, tenant1).then(owners => {
+            const expectedOwnerIDs = tenant1.owners.map(o => o.userId);
+            if (!Comparison.sameJSON(owners, expectedOwnerIDs)) {
+                throw new Error('List of tenant owners does not match. Received ' + JSON.stringify(owners));
+            }
         });
+
+        const tenantUser4 = new TenantUser(user4.id, ['role-x', 'role-y']);
+        // Add the user as a tenant user
+        await tenantService.addTenantUser(tenantOwner1, tenant1, tenantUser4);
+        await ServerSideProcessing('Give the system a second to handle projection of adding user4');
+
+        // Also make the user a tenant owner
+        await tenantService.addTenantOwner(tenantOwner1, tenant1, tenantUser4.userId);
+        // Check the list of tenant owners
+        await tenantService.getTenantOwners(tenantOwner1, tenant1).then(owners => {
+            const expectedOwnerIDs = tenant1.owners.concat([tenantUser4]).map(o => o.userId);
+            if (!Comparison.sameJSON(owners, expectedOwnerIDs)) {
+                throw new Error('List of tenant owners does not match. Received ' + JSON.stringify(owners));
+            }
+        });
+
+        // Remove the user as tenant owner
+        await tenantService.removeTenantOwner(tenantOwner1, tenant1, tenantUser4.userId);
+
+        // List of tenant owners should be the original one again
+        await tenantService.getTenantOwners(tenantOwner1, tenant1).then(owners => {
+            const expectedOwnerIDs = tenant1.owners.map(o => o.userId);
+            if (!Comparison.sameJSON(owners, expectedOwnerIDs)) {
+                throw new Error('List of tenant owners does not match. Received ' + JSON.stringify(owners));
+            }
+        });
+
+        // Tenant owner 1 may not disable the tenant
+        await tenantService.disableTenant(tenantOwner1, tenant1, false);
+
+
+// NOTE: DISABLING and ENABLING tenants currently does not seem to work.
+
+        // But the platform admin is allowed to
+        // await tenantService.disableTenant(platformAdmin, tenant1);
+
+        // And the platform admin is allowed to enable it as well
+        // await tenantService.enableTenant(platformAdmin, tenant1);
+
+        // Lets get the list of tenant users. There should be 4. But platform admin is not allowed to get them.
+        await tenantService.getTenantUsers(platformAdmin, tenant1, false);
+
+        // Lets get the list of tenant users. There should be 4. Tenant owners should be able to do so
+        await tenantService.getTenantUsers(tenantOwner1, tenant1);
+
+        // But also normal users are allowed to fetch the user list of a tenant... Are they?
+        await tenantService.getTenantUsers(user4, tenant1, false);
+        await user4.login();
+        // ... well i guess only if they are logged in...
+        await tenantService.getTenantUsers(user4, tenant1).then(users => {
+            if (users instanceof Array) {
+                if (users.length != 4) {
+                    throw new Error('Expected 4 tenant users, but found ' + users.length + ': ' + JSON.stringify(users));
+                }
+            } else {
+                throw new Error('Expecting list of users, but got something of type ' + users.constructor.name);
+            }
+        });
+
+        const u4 = await tenantService.getTenantUser(tenantOwner1, tenant1, tenantUser4.userId);
+        const roles = u4.roles;
+        console.log('User 4 has roles ' + roles);
+
+        const firstRole = roles[1];
+        await tenantService.removeTenantUserRole(tenantOwner1, tenant1, u4.userId, firstRole);
+
+        // Let the projection process the event as well.
+        await ServerSideProcessing();
+
+        const u4Again = await tenantService.getTenantUser(tenantOwner1, tenant1, tenantUser4.userId);
+        console.log(JSON.stringify(u4Again, undefined, 3))
+        const rolesAgain = u4Again.roles;
+        console.log('User 4 has roles ' + rolesAgain);
     }
 }

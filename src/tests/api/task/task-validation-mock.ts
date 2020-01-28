@@ -1,7 +1,8 @@
 import express from 'express';
 import { Server } from 'http';
-import Util from '../../../framework/test/util';
+import { SomeTime } from '../../../framework/test/time';
 import TaskContent from './taskcontent';
+import Comparison from '../../../framework/test/comparison';
 
 /**
  * Simple mock service, leveraging Express to handle POST and GET requests, specifically for the TaskValidationTest.
@@ -34,7 +35,7 @@ export default class TaskValidationMock {
         });
         // Small, too much of state holding internal timeout promise. But ok for now.
         const timeout = new Promise(async expired => {
-            await Util.holdYourHorses(millis);
+            await SomeTime(millis);
             if (!this.pinged) {
                 // Not clear how to work with Promise.reject
                 console.error(new Error(`Ping service has not been invoked within ${millis} milliseconds. Aborting test`));
@@ -61,9 +62,9 @@ export default class TaskValidationMock {
 
                 const taskContent = post['task-output'];
 
-                const isInvalidDecision = Util.sameJSON(taskContent, TaskContent.TaskOutputInvalidDecision);
-                const isKillSwitch = Util.sameJSON(taskContent, TaskContent.TaskOutputThatFailsValidation);
-                const isValidDecision = Util.sameJSON(taskContent, TaskContent.TaskOutputDecisionApproved) || Util.sameJSON(post, TaskContent.TaskOutputDecisionCanceled);
+                const isInvalidDecision = Comparison.sameJSON(taskContent, TaskContent.TaskOutputInvalidDecision);
+                const isKillSwitch = Comparison.sameJSON(taskContent, TaskContent.TaskOutputThatFailsValidation);
+                const isValidDecision = Comparison.sameJSON(taskContent, TaskContent.TaskOutputDecisionApproved) || Comparison.sameJSON(post, TaskContent.TaskOutputDecisionCanceled);
                 if (isKillSwitch) {
                     res.writeHead(500);
                     res.write('Something went really wrong in here');

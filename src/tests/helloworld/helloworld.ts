@@ -5,7 +5,7 @@ import TaskService from '../../framework/service/task/taskservice';
 import TestCase from '../../framework/test/testcase';
 import WorldWideTestTenant from '../worldwidetesttenant';
 import RepositoryService from '../../framework/service/case/repositoryservice';
-import Util from '../../framework/test/util';
+import Comparison from '../../framework/test/comparison';
 
 const repositoryService = new RepositoryService();
 const definition = 'helloworld.xml';
@@ -40,6 +40,8 @@ export default class TestHelloworld extends TestCase {
             }
         };
         const startCase = { tenant, definition, inputs };
+        // const startCase = { tenant, definition, inputs, caseInstanceId: 'Ueè' };
+        // const startCase = { tenant, definition, inputs, caseInstanceId: tenant };
         const taskOutput = {
             Response: {
                 Message: 'Toedeledoki',
@@ -48,6 +50,9 @@ export default class TestHelloworld extends TestCase {
 
         let caseInstance = await caseService.startCase(startCase, sender);
         caseInstance = await caseService.getCase(caseInstance, sender);
+
+        // console.log("CI: "+ caseInstance)
+        // return;
 
         // Simple test
         const availableTasks = await taskService.getTasks(sender, { tenant: tenant, taskState: 'Unassigned' });
@@ -71,7 +76,7 @@ export default class TestHelloworld extends TestCase {
             throw new Error('Cannot find task ' + taskName);
         }
 
-        if (!Util.sameJSON(receiveGreetingTask.input, inputs)) {
+        if (!Comparison.sameJSON(receiveGreetingTask.input, inputs)) {
             throw new Error('Task input is not the same as given to the case');
         }
 

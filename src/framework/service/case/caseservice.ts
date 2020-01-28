@@ -5,6 +5,7 @@ import CaseFilter from './casefilter';
 import StartCase from './startcase';
 import StatisticsFilter from './statisticsfilter';
 import DiscretionaryItem from '../../cmmn/discretionaryitem';
+import { checkJSONResponse } from '../response';
 
 const cafienneService = new CafienneService();
 
@@ -23,8 +24,8 @@ export default class CaseService {
             tenant: command.tenant,
             caseInstanceId
         }
-        const json = await cafienneService.postForJson(url, user, request);
-        // Hack: copy "StartCaseResponse.caseInstanceId" to "CaseInstance.id" in the json prior to instantiating CaseInstance.
+        const json = await cafienneService.post(url, user, request).then(checkJSONResponse);
+        // Hack: copy "StartCaseResponse.caseInstanceId" to "Case.id" in the json prior to instantiating Case.
         // TODO: consider whether it is better to work with a "StartCaseResponse" object instead
         json.id = json.caseInstanceId;
         const caseInstance = <Case>json;
@@ -39,7 +40,7 @@ export default class CaseService {
      */
     async getCase(Case: Case, user: User) {
         checkCaseID(Case);
-        const json = await cafienneService.getJson('/cases/' + Case.id, user);
+        const json = await cafienneService.get('/cases/' + Case.id, user).then(checkJSONResponse);
 
         // console.log("\n\n" + JSON.stringify(json, undefined, 2))
 
@@ -63,7 +64,7 @@ export default class CaseService {
      * @param user 
      */
     async getCases(user: User, filter?: CaseFilter) {
-        const json = await cafienneService.getJson('/cases', user, filter);
+        const json = await cafienneService.get('/cases', user, filter).then(checkJSONResponse);
         const caseArray = <Array<Case>>json;
         return caseArray;
     }
@@ -73,7 +74,7 @@ export default class CaseService {
      * @param user 
      */
     async getUserCases(user: User, filter?: CaseFilter) {
-        const json = await cafienneService.getJson('/cases/user', user, filter);
+        const json = await cafienneService.get('/cases/user', user, filter).then(checkJSONResponse);
         const caseArray = <Array<Case>>json;
         return caseArray;
     }
@@ -85,7 +86,7 @@ export default class CaseService {
      */
     async getDiscretionaryItems(Case: Case, user: User) {
         checkCaseID(Case);
-        const json = await cafienneService.getJson('/cases/' + Case.id + '/discretionaryitems', user);
+        const json = await cafienneService.get('/cases/' + Case.id + '/discretionaryitems', user).then(checkJSONResponse);
         const response = <DiscretionaryItemsResponse> json;
         return response.discretionaryItems;
     }
@@ -101,8 +102,8 @@ export default class CaseService {
     async planDiscretionaryItem(Case: Case, user: User, item: DiscretionaryItem, planItemId?: string): Promise<string> {
         checkCaseID(Case);
         const itemToPlan = { name : item.name, parentId: item.parentId, definitionId: item.definitionId, planItemId}
-        const response = await cafienneService.postForJson('cases/' + Case.id + '/discretionaryitems/plan', user, itemToPlan);
-        return response.planItemId;
+        const json = await cafienneService.post('cases/' + Case.id + '/discretionaryitems/plan', user, itemToPlan).then(checkJSONResponse);
+        return json.planItemId;
     }
 
     /**
@@ -111,9 +112,8 @@ export default class CaseService {
      * @param filter 
      */
     async getCaseStatistics(user: User, filter?: StatisticsFilter) {
-        const json = await cafienneService.getJson('/cases/stats', user, filter);
-        const caseArray = <Array<Case>>json;
-        return caseArray;
+        const json = await cafienneService.get('/cases/stats', user, filter).then(checkJSONResponse);
+        return <Array<Case>>json;
     }
 
     /**

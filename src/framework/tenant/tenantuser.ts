@@ -1,5 +1,3 @@
-import User from "../user";
-
 export default class TenantUser {
     /**
      * Simple wrapper for a TenantUser object.
@@ -11,5 +9,5 @@ export default class TenantUser {
      * @param name Optional name for the user inside the tenant.
      * @param email Optional email for the user inside the tenant.
      */
-    constructor(public userId: string, public roles: Array<String> = [], public name?: string, public email?: string) { }
+    constructor(public userId: string, public roles: Array<string> = [], public name?: string, public email?: string) { }
 }

@@ -6,8 +6,9 @@ import TaskService from '../../../framework/service/task/taskservice';
 import TestCase from '../../../framework/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 import TaskValidationMock from './task-validation-mock';
-import Util from '../../../framework/test/util';
+import { ServerSideProcessing } from '../../../framework/test/time';
 import TaskContent from './taskcontent';
+import Comparison from '../../../framework/test/comparison';
 
 const repositoryService = new RepositoryService();
 const definition = 'taskoutputvalidation.xml';
@@ -64,7 +65,7 @@ export default class TestTaskValidationAPI extends TestCase {
 
         // Since process completion happens asynchronously in the Cafienne engine, we will still wait 
         //  a second before continuing the test script
-        await Util.holdYourHorses(1000);
+        await ServerSideProcessing();
 
         caseInstance = await caseService.getCase(caseInstance, pete);
 
@@ -102,14 +103,14 @@ export default class TestTaskValidationAPI extends TestCase {
         // Sending an invalid task output should not result in an error, be it should return non-empty json matching InvalidDecisionResponse
         await taskService.validateTaskOutput(decisionTask, pete, TaskContent.TaskOutputInvalidDecision).then(validationResult => {
             // TODO: this should probably become some sort of an assertion
-            if (! Util.sameJSON(validationResult, TaskContent.InvalidDecisionResponse)) {
+            if (! Comparison.sameJSON(validationResult, TaskContent.InvalidDecisionResponse)) {
                 throw new Error('Task validation did not result in the right error. Received ' + JSON.stringify(validationResult));
             }    
         });
 
         // Sending valid task output should result in an empty json response.
         await taskService.validateTaskOutput(decisionTask, pete, TaskContent.TaskOutputDecisionCanceled).then(validationResult => {
-            if (! Util.sameJSON(validationResult, {})) {
+            if (! Comparison.sameJSON(validationResult, {})) {
                 throw new Error('Expecting empty json structure from task validation. Unexpectedly received ' + JSON.stringify(validationResult));
             }    
         });
