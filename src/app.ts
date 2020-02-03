@@ -23,7 +23,7 @@ function getHardCodedTestDeclarations(): Array<any> {
         TestHelloworld
         , TestUsersCaseAPI
         , TestDiscretionaryItems
-        // , TestTaskValidationAPI
+        , TestTaskValidationAPI
         , TestDebugMode
         , TestTenantRegistration
 
