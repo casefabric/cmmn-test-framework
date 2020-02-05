@@ -17,8 +17,6 @@ export default class TestStatsAPI extends TestCase {
     }
 
     async run() {
-        await tenant.sender.login();
-
         const allStats = await caseService.getCaseStatistics(tenant.sender);
 
         const hwStats = await caseService.getCaseStatistics(tenant.sender, { definition: 'HelloWorld', tenant: tenant.name});

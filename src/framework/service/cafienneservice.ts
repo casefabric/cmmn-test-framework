@@ -6,13 +6,12 @@ import User from '../user';
 import QueryFilter, { extendURL } from './queryfilter';
 
 export default class CafienneService {
-    baseURL: string;
     static headers = new Headers({
         'Content-Type': 'application/json'
     });
 
-    constructor(baseURL: string = Config.CafienneService.url) {
-        this.baseURL = baseURL;
+    get baseURL() {
+        return Config.CafienneService.url;
     }
 
     async updateCaseLastModified(response: Response) {

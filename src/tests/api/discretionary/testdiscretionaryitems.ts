@@ -22,7 +22,6 @@ export default class TestDiscretionaryItems extends TestCase {
 
     async onPrepareTest() {
         await worldwideTenant.create();
-        await user.login();
         await repositoryService.validateAndDeploy(definition, user, tenant);
     }
 

@@ -2,7 +2,7 @@ import User from "../framework/user";
 import TenantService from "../framework/service/tenant/tenantservice";
 import TenantUser from "../framework/tenant/tenantuser";
 import Tenant from "../framework/tenant/tenant";
-import { ServerSideProcessing } from "../framework/test/time";
+import { ServerSideProcessing, SomeTime } from "../framework/test/time";
 
 const tenantService = new TenantService();
 
@@ -17,6 +17,9 @@ export default class WorldWideTestTenant {
 
     }
 
+    /**
+     * Creates the tenant, and logs in for sender user and receiver user.
+     */
     async create() {
         const tenantUserSender = new TenantUser(this.sender.id, ['Sender'], 'sender', 'sender@senders.com');
         const tenantUserReceiver = new TenantUser(this.receiver.id, ['Receiver'], 'receiver', 'receiver@receivers.com');
@@ -24,9 +27,16 @@ export default class WorldWideTestTenant {
         const tenant = new Tenant(this.name, owners);
         await this.platformAdmin.login();
         const response = await tenantService.createTenant(this.platformAdmin, tenant);
-        if (response.status !== 400) {
+        if (response.status === 204) {
             await ServerSideProcessing('Giving server time to handle tenant creation');
         } else {
         }
+        try {
+            await this.sender.login();
+        } catch (error) {
+            await ServerSideProcessing('Giving server even more time to handle the tenant creation');
+            await this.sender.login();
+        }
+        await this.receiver.login();
     }
 }

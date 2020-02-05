@@ -6,6 +6,7 @@ import TestDebugMode from './tests/api/debug/testdebugmode';
 import TestHelloworld from './tests/helloworld/helloworld';
 import TestTenantRegistration from './tests/api/tenant/tenantregistration';
 import TestTaskValidationAPI from './tests/api/task/taskvalidation';
+import pingTestEnvironment from './tests/api/environment/ping';
 
 
 function findTestsFromCommandLineArguments(): Array<string> {
@@ -23,12 +24,10 @@ function getHardCodedTestDeclarations(): Array<any> {
         TestHelloworld
         , TestUsersCaseAPI
         , TestDiscretionaryItems
+        , TestStatsAPI
         , TestTaskValidationAPI
         , TestDebugMode
         , TestTenantRegistration
-
-        // Test currently fails with in-memory configuration of Cafienne Engine. (it works in cassandra+postgres combination)
-        // , TestStatsAPI
     ];
 }
 
@@ -47,6 +46,8 @@ function getTestCaseInstances(testDeclarations: Array<any>) {
 }
 
 async function runTests(testDeclarations: Array<any>) {
+    await pingTestEnvironment(undefined, 1, 100);
+
     const tests: Array<TestCase> = getTestCaseInstances(testDeclarations);
     for (let i = 0; i < tests.length; i++) {
         const test = tests[i];
@@ -77,11 +78,7 @@ async function runTests(testDeclarations: Array<any>) {
                         `);
             const closeDone = await test.onCloseTest();
         } catch (error) {
-            throw {
-                test: test.name,
-                number: i + 1,
-                error
-            }
+            throw new TestError(error, `\n\nTest ${i+1} "${test.name}" failed. Type of error: ${error.constructor.name}.\nError message: ${error.message}\n\n`);
         }
     }
 }
@@ -94,6 +91,12 @@ runTests(testDeclarations).then(done => {
     console.log('\n=========\n\nTesting completed in ' + (endTime.getTime() - startTime.getTime()) + ' milliseconds at ' + endTime + '\n');
     process.exit(0)
 }).catch(e => {
-    console.error(`\n\nTest ${e.number} "${e.test}" failed with error\n\n`, e.error);
+    console.error(e);
     process.exit(-1);
 });
+
+class TestError extends Error {
+    constructor(public error:Error, message:string) {
+        super(message);
+    }
+}

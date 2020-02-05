@@ -19,8 +19,6 @@ export default class TestUsersCaseAPI extends TestCase {
     }
 
     async run() {
-        await user.login();
-
         const allMyCases = await caseService.getUserCases(user, { numberOfResults: 10000 });
 
         const myCompletedCases = await caseService.getUserCases(user, { state: 'Completed', tenant, numberOfResults: 10000 });

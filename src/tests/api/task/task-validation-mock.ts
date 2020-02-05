@@ -33,9 +33,9 @@ export default class TaskValidationMock {
         const promise = new Promise(done => {
             this.checkPingDoneOrWait(done, this.pinged, 'Starting to wait')
         });
-        // Small, too much of state holding internal timeout promise. But ok for now.
+        // Small, too much of state holding internal timeout promise. But ok-ish for now.
         const timeout = new Promise(async expired => {
-            await SomeTime(millis);
+            await SomeTime(millis, 'Registering error callback for ping service; error will be raised in '+millis+' milliseconds.');
             if (!this.pinged) {
                 // Not clear how to work with Promise.reject
                 console.error(new Error(`Ping service has not been invoked within ${millis} milliseconds. Aborting test`));

@@ -6,6 +6,9 @@ import TestCase from '../../framework/test/testcase';
 import WorldWideTestTenant from '../worldwidetesttenant';
 import RepositoryService from '../../framework/service/case/repositoryservice';
 import Comparison from '../../framework/test/comparison';
+import { SomeTime } from '../../framework/test/time';
+import Config from '../../config';
+import User from '../../framework/user';
 
 const repositoryService = new RepositoryService();
 const definition = 'helloworld.xml';
@@ -23,13 +26,8 @@ export default class TestHelloworld extends TestCase {
     }
 
     async onPrepareTest() {
-        console.log('Setting up tenant information for test case helloworld')
         await worldwideTenant.create();
-        await sender.login();
-        await receiver.login();
-
         await repositoryService.validateAndDeploy(definition, sender, tenant);
-
     }
 
     async run() {

@@ -28,8 +28,6 @@ export default class TestDebugMode extends TestCase {
         };
         const startCaseInDebugMode = { tenant, definition: 'helloworld.xml', inputs: startCaseInput, debug: true};
 
-        await sendingUser.login();
-
         // This should include a "DebugEnabled" event
         let debugCase = await caseService.startCase(startCaseInDebugMode, sendingUser);
         debugCase = await caseService.getCase(debugCase, sendingUser);

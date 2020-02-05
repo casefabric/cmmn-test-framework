@@ -9,7 +9,7 @@ const Config = {
             content: true
         },
         // CQRS Wait Time is the time the engine needs to process events from commands (e.g. StartCase, CompleteTask, CreateTenant) into the server side query database
-        cqrsWaitTime: 200
+        cqrsWaitTime: 5000
     },
     TokenService: {
         // URL of token service
@@ -19,7 +19,7 @@ const Config = {
     },
     RepositoryService: {
         // Whether or not to show log messages on the console from the repository APIs (e.g., list of case definitions returned from server)
-        log: false
+        log: true
     },
     TestCase: {
         // Whether or not to show log messages on the console (e.g. wait time messages for server side processing)
