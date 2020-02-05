@@ -5,10 +5,12 @@ import TenantUser from "../../../framework/tenant/tenantuser";
 import TestCase from "../../../framework/test/testcase";
 import { ServerSideProcessing } from "../../../framework/test/time";
 import Comparison from "../../../framework/test/comparison";
+import PlatformService from "../../../framework/service/platform/platformservice";
 
 const platformAdmin = new User('admin');
 
 const tenantService = new TenantService();
+const platformService = new PlatformService();
 
 export default class TestTenantRegistration extends TestCase {
     constructor() {
@@ -31,13 +33,13 @@ export default class TestTenantRegistration extends TestCase {
         await platformAdmin.login();
 
         // Creating tenant as tenantOwner should fail.
-        await tenantService.createTenant(tenantOwner1, tenant1, false);
+        await platformService.createTenant(tenantOwner1, tenant1, false);
 
         // Creating tenant as platformOwner should succeed.
-        await tenantService.createTenant(platformAdmin, tenant1);
+        await platformService.createTenant(platformAdmin, tenant1);
 
         // Creating tenant again should fail
-        await tenantService.createTenant(platformAdmin, tenant1, false)
+        await platformService.createTenant(platformAdmin, tenant1, false)
 
         // Getting tenant owners as platformOwner should fail.
         await tenantService.getTenantOwners(platformAdmin, tenant1, false);
@@ -80,16 +82,18 @@ export default class TestTenantRegistration extends TestCase {
         });
 
         // Tenant owner 1 may not disable the tenant
-        await tenantService.disableTenant(tenantOwner1, tenant1, false);
-
-
-// NOTE: DISABLING and ENABLING tenants currently does not seem to work.
+        await platformService.disableTenant(tenantOwner1, tenant1, false);
 
         // But the platform admin is allowed to
-        // await tenantService.disableTenant(platformAdmin, tenant1);
+        await platformService.disableTenant(platformAdmin, tenant1);
 
         // And the platform admin is allowed to enable it as well
-        // await tenantService.enableTenant(platformAdmin, tenant1);
+        await platformService.enableTenant(platformAdmin, tenant1);
+
+        // And the platform admin is not allowed to enable/disable a non-existing tenant
+        const nonExistingTenant = new Tenant("not-created", [new TenantUser(tenantOwner1.id)]);
+        await platformService.enableTenant(platformAdmin, nonExistingTenant, false);
+        await platformService.disableTenant(platformAdmin, nonExistingTenant, false);
 
         // Lets get the list of tenant users. There should be 4. But platform admin is not allowed to get them.
         await tenantService.getTenantUsers(platformAdmin, tenant1, false);

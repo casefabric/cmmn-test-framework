@@ -1,9 +1,10 @@
-import TokenService from './service/tenant/tokenservice';
+import TokenService from './service/platform/tokenservice';
 import TenantService from './service/tenant/tenantservice';
 import UserInformation from './tenant/userinformation';
+import PlatformService from './service/platform/platformservice';
 
 const tokenService = new TokenService();
-const tenantService = new TenantService();
+const platformService = new PlatformService();
 
 export default class User {
     /**
@@ -31,7 +32,7 @@ export default class User {
      */
     async login() {
         this.token = await tokenService.getToken(this);
-        this.userInformation = await tenantService.getUserInformation(this);
+        this.userInformation = await platformService.getUserInformation(this);
         return this;
     }
 }

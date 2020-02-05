@@ -1,10 +1,10 @@
 import User from "../framework/user";
-import TenantService from "../framework/service/tenant/tenantservice";
 import TenantUser from "../framework/tenant/tenantuser";
 import Tenant from "../framework/tenant/tenant";
 import { ServerSideProcessing, SomeTime } from "../framework/test/time";
+import PlatformService from "../framework/service/platform/platformservice";
 
-const tenantService = new TenantService();
+const platformService = new PlatformService();
 
 /**
  * Simple test tenant to avoid duplicate code
@@ -26,7 +26,7 @@ export default class WorldWideTestTenant {
         const owners = [tenantUserSender, tenantUserReceiver];
         const tenant = new Tenant(this.name, owners);
         await this.platformAdmin.login();
-        const response = await tenantService.createTenant(this.platformAdmin, tenant);
+        const response = await platformService.createTenant(this.platformAdmin, tenant);
         if (response.status === 204) {
             await ServerSideProcessing('Giving server time to handle tenant creation');
         } else {

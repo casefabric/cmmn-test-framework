@@ -7,12 +7,19 @@ import TestHelloworld from './tests/helloworld/helloworld';
 import TestTenantRegistration from './tests/api/tenant/tenantregistration';
 import TestTaskValidationAPI from './tests/api/task/taskvalidation';
 import pingTestEnvironment from './tests/api/environment/ping';
+import Config from './config';
 
 
 function findTestsFromCommandLineArguments(): Array<string> {
+    const time = process.argv[2];
+    if (time && !isNaN(Number(time))) {
+        console.log('Setting CQRS wait time to '+time)
+        Config.CafienneService.cqrsWaitTime = Number(time);
+    }
+
     // TODO: it will be nice if we can implement running test cases given from command line,
     //  but as of now (because TypeScript transpiling the class names?) they cannot be found in runtime based on string
-    const stringList = process.argv.slice(2);
+    const stringList = process.argv.slice(3);
     if (stringList.length > 0) {
         console.log('Command line arguments are not yet supported')
     }

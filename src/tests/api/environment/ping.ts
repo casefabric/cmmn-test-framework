@@ -28,10 +28,10 @@ async function login(platformAdmin: User): Promise<Boolean> {
         await platformAdmin.login();
         return true;
     } catch (error) {
-        if (error instanceof FetchError) {
-            console.log("Cannot fetch. Means engine is not up")
+        // if (error instanceof FetchError) {
+            console.log("Cannot fetch. Means engine is not up. Error:", error)
             return false;
-        }
+        // }
         return false;
     }
 }
