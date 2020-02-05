@@ -186,7 +186,7 @@ export default class TenantService {
      * @param expectNoFailures 
      */
     async removeTenantUserRole(user: User, tenant: Tenant, tenantUserId: string, formerRole: string, expectNoFailures = true) {
-        const response = await this.cafienneService.put(`/registration/${tenant.name}/users/${tenantUserId}/roles/${formerRole}`, user);
+        const response = await this.cafienneService.delete(`/registration/${tenant.name}/users/${tenantUserId}/roles/${formerRole}`, user);
         const msg = `Removing role ${formerRole} from user ${tenantUserId} is not expected to succeed for user ${user.id} in tenant ${tenant.name}`;
         return checkResponse(response, msg, expectNoFailures);
     }
