@@ -46,7 +46,7 @@ function getTestCaseInstances(testDeclarations: Array<any>) {
 }
 
 async function runTests(testDeclarations: Array<any>) {
-    await pingTestEnvironment(undefined, 1, 100);
+    await pingTestEnvironment();
 
     const tests: Array<TestCase> = getTestCaseInstances(testDeclarations);
     for (let i = 0; i < tests.length; i++) {
