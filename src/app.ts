@@ -8,6 +8,7 @@ import TestTenantRegistration from './tests/api/tenant/tenantregistration';
 import TestTaskValidationAPI from './tests/api/task/taskvalidation';
 import pingTestEnvironment from './tests/api/environment/ping';
 import Config from './config';
+import TestRepositoryAPI from './tests/api/repository/repositorytest';
 
 
 function findTestsFromCommandLineArguments(): Array<string> {
@@ -35,6 +36,8 @@ function getHardCodedTestDeclarations(): Array<any> {
         , TestTaskValidationAPI
         , TestDebugMode
         , TestTenantRegistration
+        , TestRepositoryAPI
+
     ];
 }
 

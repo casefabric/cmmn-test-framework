@@ -2,7 +2,6 @@ import fs from 'fs';
 import { DOMParser } from 'xmldom';
 import CafienneService from '../cafienneservice';
 import DeployCase from './command/repository/deploycase';
-import TaskService from '../task/taskservice';
 import Config from '../../../config';
 import User from '../../user';
 import { checkResponse, checkJSONResponse } from '../response';
@@ -23,7 +22,7 @@ export default class RepositoryService {
         }
         const tenantQueryParameter = command.tenant ? 'tenant=' + command.tenant : '';
         // Hmmm... Duplicate '/repository/repository/' is needed currently...
-        const url = `/repository/repository/deploy/${command.modelName}?${tenantQueryParameter}`;
+        const url = `/repository/deploy/${command.modelName}?${tenantQueryParameter}`;
         const response = await cafienneService.postXML(url, user, command.definition);
         return checkResponse(response, 'Deployment of case ' + command.modelName + ' failed', expectNoFailures);
     }
@@ -42,11 +41,11 @@ export default class RepositoryService {
     }
 
     /**
-     * Fetch cases for the user (optionally within the tenant)
+     * Fetch cases for the user
      * @param tenant 
      * @param user 
      */
-    async listCaseDefinitions(user: User, tenant: string = '') {
+    async listCaseDefinitions(user: User, tenant: string) {
         const json = await cafienneService.get('/repository/list?tenant=' + tenant, user).then(checkJSONResponse);
         if (Config.RepositoryService.log) {
             console.log('Cases deployed in the server: ' + JSON.stringify(json, undefined, 2))
@@ -56,11 +55,12 @@ export default class RepositoryService {
 
     /**
      * Invokes the validation API
-     * @param definition 
+     * @param source 
      */
-    async validateCaseDefinition(definition: Document, user: User, expectNoFailures: boolean = true) {
+    async validateCaseDefinition(source: Document|string, user: User, expectNoFailures: boolean = true) {
         const url = `/repository/validate`;
-        const response = await cafienneService.postXML(url, user, definition);
+        const xml = parseXMLDocument(source);
+        const response = await cafienneService.postXML(url, user, xml);
         if (response.ok) {
             return response;
         } else {
@@ -79,11 +79,10 @@ export default class RepositoryService {
      * @param tenant Tenant in which the definition is deployed.
      */
     async validateAndDeploy(fileName: string, user: User, tenant: string) {
-        const xml = FileSystem.readFileSync(fileName, 'utf8');
-        const parser = new DOMParser();
-        const definition = parser.parseFromString(xml, 'application/xml');
+        const definition = parseXMLDocument(fileName);
+        const modelName = fileName;
 
-        const serverVersion = await this.loadCaseDefinition(fileName, user, tenant);
+        const serverVersion = await this.loadCaseDefinition(modelName, user, tenant);
         if (Comparison.sameXML(definition, serverVersion)) {
             if (Config.RepositoryService.log) {
                 console.log(`Skipping deployment of ${fileName}, as server already has it`);
@@ -92,7 +91,15 @@ export default class RepositoryService {
         }
 
         await this.validateCaseDefinition(definition, user);
-        const modelName = fileName.endsWith('.xml') ? fileName.substring(0, fileName.length - 4) : fileName;
         await this.deployCase({ definition, modelName, tenant }, user)
     }
+}
+
+function parseXMLDocument(content: any): Document {
+    if (content.constructor.name == 'Document') {
+        return content;
+    }
+    const xml = FileSystem.readFileSync(content, 'utf8');
+    const parser = new DOMParser();
+    return parser.parseFromString(xml, 'application/xml');
 }
