@@ -9,6 +9,7 @@ import Comparison from '../../framework/test/comparison';
 import { SomeTime } from '../../framework/test/time';
 import Config from '../../config';
 import User from '../../framework/user';
+import Task from '../../framework/cmmn/task';
 
 const repositoryService = new RepositoryService();
 const definition = 'helloworld.xml';
@@ -78,45 +79,58 @@ export default class TestHelloworld extends TestCase {
             throw new Error('Task input is not the same as given to the case');
         }
 
-        await taskService.claimTask(receiveGreetingTask, sender);
-        caseInstance = await caseService.getCase(caseInstance, sender);
-
-        await taskService.revokeTask(receiveGreetingTask, sender);
-
-        await caseService.changeDebugMode(caseInstance, sender, true);
-        await caseService.changeDebugMode(caseInstance, sender, false);
-
-        await taskService.assignTask(receiveGreetingTask, sender, receiver);
-
-        await taskService.revokeTask(receiveGreetingTask, receiver);
-
-        await taskService.claimTask(receiveGreetingTask, receiver);
-
-        await taskService.delegateTask(receiveGreetingTask, receiver, sender);
-
-        await taskService.revokeTask(receiveGreetingTask, sender);
-
-        await taskService.getTask(receiveGreetingTask, sender);
-
-        // TODO: below 3 statements are not working currently, because of bug #24 in the cafienne-engine
-
-        // await taskService.revokeTask(receiveGreetingTask, receivingUser);
-        // await taskService.getTask(receiveGreetingTask, sendingUser).then(task => console.log("Task after second revoke: ", task));
-        // await taskService.claimTask(receiveGreetingTask, receivingUser);
-
-        await taskService.completeTask(receiveGreetingTask, receiver, taskOutput);
-        caseInstance = await caseService.getCase(caseInstance, sender);
-
-        // Validate whether Receive Greeting is in Completed state. It can be done in 2 ways.
-        const completedTask = await taskService.getTask(receiveGreetingTask, sender);
-        if (!completedTask.isCompleted()) {
-            console.log('Task is expected to be completed, but it is in state ' + receiveGreetingTask.taskState);
+        const assertTask = async (task: Task, action: string, expectedState: string = '', expectedAssignee?: User, expectedOwner?: User) => {
+            await taskService.getTask(receiveGreetingTask, sender).then(task => {
+                console.log(`Task after ${action}:\tstate = ${task.taskState},\tassignee = '${task.assignee}',\towner = '${task.owner}' `);
+                if (task.taskState !== expectedState) {
+                    throw new Error(`Task ${task.taskName} is not in state '${expectedState}' but in state '${task.taskState}'`);
+                }
+                if (expectedAssignee && task.assignee !== expectedAssignee.id) {
+                    throw new Error(`Task ${task.taskName} is not assigned to '${expectedAssignee}' but to user '${task.assignee}'`);
+                }
+                if (expectedOwner && task.owner !== expectedOwner.id) {
+                    throw new Error(`Task ${task.taskName} is not owned by '${expectedAssignee}' but by '${task.assignee}'`);
+                }
+            });
         }
 
-        // Check whether task is completed in an alternative way (then instead of checking the result)
-        await taskService.getTask(receiveGreetingTask, sender).then(task => {
-            if (!task.isCompleted()) throw Error('Task is expected to be completed, but it is in state ' + task.taskState);
-        });
+        await taskService.claimTask(receiveGreetingTask, sender);
+        await assertTask(receiveGreetingTask, 'Claim', 'Assigned', sender, sender);
+
+        caseInstance = await caseService.getCase(caseInstance, sender);
+
+        await taskService.revokeTask(receiveGreetingTask, sender);
+        await assertTask(receiveGreetingTask, 'Revoke', 'Unassigned', User.NONE);
+
+        await taskService.assignTask(receiveGreetingTask, sender, receiver);
+        await assertTask(receiveGreetingTask, 'Assign', 'Assigned', receiver, receiver);
+
+        await taskService.revokeTask(receiveGreetingTask, receiver);
+        await assertTask(receiveGreetingTask, 'Revoke', 'Unassigned', User.NONE);
+
+        await taskService.claimTask(receiveGreetingTask, receiver);
+        await assertTask(receiveGreetingTask, 'Claim', 'Assigned', receiver, receiver);
+
+        await taskService.delegateTask(receiveGreetingTask, receiver, sender);
+        await assertTask(receiveGreetingTask, 'Delegate', 'Delegated', sender, receiver);
+
+        await taskService.revokeTask(receiveGreetingTask, sender);
+        await assertTask(receiveGreetingTask, 'Revoke', 'Assigned', receiver);
+
+        await taskService.revokeTask(receiveGreetingTask, receiver);
+        await assertTask(receiveGreetingTask, 'Revoke', 'Unassigned', User.NONE);
+
+        await taskService.claimTask(receiveGreetingTask, receiver);
+        await assertTask(receiveGreetingTask, 'Claim', 'Assigned', receiver);
+
+        // User 'sender' may not complete a task assigned to 'receiver' 
+        await taskService.completeTask(receiveGreetingTask, sender, taskOutput, false);
+        await assertTask(receiveGreetingTask, 'Claim', 'Assigned', receiver);
+
+        await taskService.completeTask(receiveGreetingTask, receiver, taskOutput);
+        await assertTask(receiveGreetingTask, 'Complete', 'Completed', receiver);
+
+        caseInstance = await caseService.getCase(caseInstance, sender);
 
         const nextTasks = await taskService.getCaseTasks(caseInstance, sender);
         const responseTaskName = 'Read response';
