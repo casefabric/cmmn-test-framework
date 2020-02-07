@@ -10,16 +10,29 @@ export default class TokenService {
      * @param issuedAt
      * @param expiresAt 
      */
-    async getToken(user: User, issuedAt: Date = new Date(), expiresAt?: Date): Promise<string> {
-        const iss = Config.TokenService.issuer;
+    async getToken(user: User, issuer:string = Config.TokenService.issuer, issuedAt: Date = new Date(), expiresAt?: Date): Promise<string> {
+        if (! expiresAt) {
+            expiresAt = new Date();
+            expiresAt.setDate(expiresAt.getDate() + 2);
+        }
+        const iss = issuer;
         const sub = user.id;
-        const iat = Number(issuedAt);
-        const exp = Number(expiresAt ? expiresAt : new Date().setDate(new Date().getDate() + 2));
+        const iat = dateAsSeconds(issuedAt);
+        const exp = dateAsSeconds(expiresAt);
 
         const claims = { iss, sub, iat, exp };
+
+        return this.fetchToken(claims);
+    }
+
+    async fetchToken(claims: object) {
         const object = {
             method: 'POST',
             body: JSON.stringify(claims)
+        }
+
+        if (Config.TokenService.log) {
+            console.log("Getting token " + JSON.stringify(claims, undefined, 2));
         }
         const response = await fetch(Config.TokenService.url, object);
         const token = await response.text();
@@ -28,4 +41,14 @@ export default class TokenService {
         }
         return token;
     }
+}
+
+/**
+ * Converts a date to seconds (instead of milliseconds).
+ * Is needed for JWT tokens.
+ * @param date 
+ */
+export function dateAsSeconds(date?: Date) {
+    if (! date) return;
+    return Math.floor(Number(date)/1000);
 }
