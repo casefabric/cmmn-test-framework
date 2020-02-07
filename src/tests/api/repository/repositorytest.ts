@@ -40,17 +40,6 @@ export default class TestRepositoryAPI extends TestCase {
         // Validating the valid case model should not result in an error
         await repositoryService.validateCaseDefinition(validCaseDefinition, tenantOwner);
         
-        const invalidDeployName = 'asldfj>ds';
-        const definition = this.loadCMMNDefinition(validCaseDefinition);
-        
-        // Deploying a valid case definition to an invalid file name should result in an error.
-        const deployToInvalidModelName = { 
-            definition, 
-            modelName: invalidDeployName,
-            tenant
-        };
-        await repositoryService.deployCase(deployToInvalidModelName, tenantOwner, false);
-
         // Deploying an invalid case definition to a valid file name should result in an error.
         const deployInvalidCaseDefinition = { 
             definition: this.loadCMMNDefinition(invalidCaseDefinition),
