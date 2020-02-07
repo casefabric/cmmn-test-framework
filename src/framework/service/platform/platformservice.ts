@@ -19,10 +19,11 @@ export default class PlatformService {
      * @param expectNoFailures 
      */
     async createTenant(user: User, tenant: Tenant, expectNoFailures = true) {
+        if (Config.PlatformService.log) console.log(`Creating Tenant ${tenant.name}`);
         const response = await this.cafienneService.post('/platform', user, tenant);
         if (response.status === 400) {
             // Tenant already exists.
-            if (Config.CafienneService.log.traffic) console.log('Tenant ' + tenant.name + ' already exists.')
+            if (Config.PlatformService.log) console.log(`Tenant ${tenant.name} already exists.'`)
             return response;
         }
         return checkResponse(response, 'CreateTenant is not expected to succeed for user ' + user.id + ' in tenant ' + tenant.name, expectNoFailures);

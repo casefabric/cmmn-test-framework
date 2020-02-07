@@ -3,10 +3,11 @@ const Config = {
         // URL of backend engine
         url: 'http://localhost:2027/',
         log: {
-            // Whether or not to log HTTP call meta information (user, url, method type, headers)
-            traffic: true,
-            // Whether or not to log HTTP call content (body)
-            content: true
+            // Whether or not to log HTTP call information (user, url, method type, headers)
+            url: true, // URL includes call number, method type and user id
+            headers: true, // Shows request headers
+            request: true, // Shows request body
+            response: true, // Shows response status, response text and case last modified
         },
         // CQRS Wait Time is the time the engine needs to process events from commands (e.g. StartCase, CompleteTask, CreateTenant) into the server side query database
         cqrsWaitTime: 5000
@@ -15,7 +16,13 @@ const Config = {
         // URL of token service
         url: 'http://localhost:2377/token',
         // Issuer can be configured. The issuer must equal what is configure inside the Cafienne Engine
-        issuer: 'Cafienne Test Framework'
+        issuer: 'Cafienne Test Framework',
+        // Whether or not to show the tokens requested and updated in the user
+        log: true
+    },
+    PlatformService: {
+        // Whether or not to show log messages on the console from the platform APIs (e.g., whether tenant already exists or not)
+        log: true
     },
     RepositoryService: {
         // Whether or not to show log messages on the console from the repository APIs (e.g., list of case definitions returned from server)

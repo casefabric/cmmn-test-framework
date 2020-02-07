@@ -71,22 +71,42 @@ It assumes that the engine has `admin` as platform owner, as shown in the `local
 
 ## Custom configuration
 The test framework exposes a few configuration options. These are stored inside the file `./build/config.js`.
+
+By default all logging is enabled.
 ```js
 var Config = {
     CafienneService: {
-        // End-point of case engine
+        // URL of backend engine
         url: 'http://localhost:2027/',
-        // Log settings for HTTP traffic
         log: {
-            traffic: false, // Log HTTP traffic metadata (method, user, url)
-            content: true // Log HTTP content. Only use when 'traffic = true'
-        }
+            // Whether or not to log HTTP call information (user, url, method type, headers)
+            url: true, // URL includes call number, method type and user id
+            headers: true, // Shows request headers
+            request: true, // Shows request body
+            response: true, // Shows response status, response text and case last modified
+        },
+        // CQRS Wait Time is the time the engine needs to process events from commands (e.g. StartCase, CompleteTask, CreateTenant) into the server side query database
+        cqrsWaitTime: 5000
     },
     TokenService: {
-        // End-point of token service
+        // URL of token service
         url: 'http://localhost:2377/token',
-        // Issuer as put inside the JWT token. Must match with local.conf settings of engine.
+        // Issuer can be configured. The issuer must equal what is configure inside the Cafienne Engine
         issuer: 'Cafienne Test Framework',
+        // Whether or not to show the tokens requested and updated in the user
+        log: true
+    },
+    PlatformService: {
+        // Whether or not to show log messages on the console from the platform APIs (e.g., whether tenant already exists or not)
+        log: true
+    },
+    RepositoryService: {
+        // Whether or not to show log messages on the console from the repository APIs (e.g., list of case definitions returned from server)
+        log: true
+    },
+    TestCase: {
+        // Whether or not to show log messages on the console (e.g. wait time messages for server side processing)
+        log: true
     }
 };
 ```

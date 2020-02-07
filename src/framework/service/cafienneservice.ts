@@ -20,7 +20,7 @@ export default class CafienneService {
             const caseLastModified = 'Case-Last-Modified';
             const clm = response.headers.get(caseLastModified);
             if (clm) {
-                if (Config.CafienneService.log.traffic) {
+                if (Config.CafienneService.log.response) {
                     console.log("Updating case last modified to " + clm);
                 }
                 CafienneService.headers.set(caseLastModified, clm);
@@ -67,19 +67,26 @@ export default class CafienneService {
     }
 
     async fetch(user: User, url: string, method: string, headers: Headers, body?: string): Promise<Response> {
-        if (user) {
+        // Each time make sure we take the latest Authorization header from the user, or send no Authorization along
+        headers.delete('Authorization');
+        if (user && user.token) {
             headers.set('Authorization', 'Bearer ' + user.token);
-        }
+        } 
         url = this.baseURL + (url.startsWith('/') ? url.substring(1) : url);
 
         const myCallNumber = callNumber++;
-        if (Config.CafienneService.log.traffic) {
-            const logBody = body ? body : '';
-            console.log(`HTTP:${method}[${myCallNumber}] from [${user.id}] to ${url}\nHeaders:${JSON.stringify(headers.raw(), undefined, 2)}\n${Config.CafienneService.log.content ? ' ' + logBody : ''}\nHeaders: ${JSON.stringify(headers)}`);
+        if (Config.CafienneService.log.url) {
+            console.log(`HTTP:${method}[${myCallNumber}] from [${user.id}] to ${url}`);
+        }
+        if (Config.CafienneService.log.headers) {
+            console.log(`Headers:${JSON.stringify(headers.raw(), undefined, 2)}`);
+        }
+        if (Config.CafienneService.log.request && body) {
+            console.log(body);
         }
 
         const response: Response = await fetch(url, { method, headers, body });
-        if (Config.CafienneService.log.traffic) {
+        if (Config.CafienneService.log.response) {
             console.log(` [${myCallNumber}]==> ${response.status} ${response.statusText}`);
         }
         return response;
