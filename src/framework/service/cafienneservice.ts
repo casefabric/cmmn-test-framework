@@ -1,9 +1,9 @@
 import { Response, Headers } from 'node-fetch';
 import fetch from 'node-fetch';
-import { DOMParser } from 'xmldom';
 import Config from '../../config';
 import User from '../user';
 import QueryFilter, { extendURL } from './queryfilter';
+import CafienneResponse from './response';
 
 export default class CafienneService {
     static headers = new Headers({
@@ -14,13 +14,13 @@ export default class CafienneService {
         return Config.CafienneService.url;
     }
 
-    async updateCaseLastModified(response: Response) {
+    async updateCaseLastModified(response: CafienneResponse) {
         // TODO: this currently is not a Singleton, but it should be...
         if (response.ok) {
             const caseLastModified = 'Case-Last-Modified';
             const clm = response.headers.get(caseLastModified);
             if (clm) {
-                if (Config.CafienneService.log.response) {
+                if (Config.CafienneService.log.response.headers) {
                     console.log("Updating case last modified to " + clm);
                 }
                 CafienneService.headers.set(caseLastModified, clm);
@@ -35,7 +35,7 @@ export default class CafienneService {
         return this.fetch(user, url, method, headers, body).then(this.updateCaseLastModified);
     }
 
-    async postXML(url: string, user: User, request: Document, method = 'POST'): Promise<Response> {
+    async postXML(url: string, user: User, request: Document, method = 'POST'): Promise<CafienneResponse> {
         const headers = new Headers({ 'Content-Type': 'application/xml' });
         const body = request.toString();
         return this.fetch(user, url, method, headers, body);
@@ -58,15 +58,11 @@ export default class CafienneService {
         return this.fetch(user, url, 'GET', headers);
     }
 
-    async getXml(url: string, user: User) {
-        const response = await this.get(url, user, undefined, new Headers({ 'Content-Type': 'text/xml' }))
-        const xml = await response.text();
-        const parser = new DOMParser();
-        const document = parser.parseFromString(xml, 'application/xml');
-        return document;
+    async getXml(url: string, user: User) : Promise<Document> {
+        return (await this.get(url, user, undefined, new Headers({ 'Content-Type': 'text/xml' }))).xml();
     }
 
-    async fetch(user: User, url: string, method: string, headers: Headers, body?: string): Promise<Response> {
+    async fetch(user: User, url: string, method: string, headers: Headers, body?: string): Promise<CafienneResponse> {
         // Each time make sure we take the latest Authorization header from the user, or send no Authorization along
         headers.delete('Authorization');
         if (user && user.token) {
@@ -76,20 +72,34 @@ export default class CafienneService {
 
         const myCallNumber = callNumber++;
         if (Config.CafienneService.log.url) {
-            console.log(`HTTP:${method}[${myCallNumber}] from [${user.id}] to ${url}`);
+            console.log(`\n\nHTTP:${method}[${myCallNumber}] from [${user.id}] to ${url}`);
         }
-        if (Config.CafienneService.log.headers) {
-            console.log(`Headers:${JSON.stringify(headers.raw(), undefined, 2)}`);
+        if (Config.CafienneService.log.request.headers) {
+            printHeaders('Request headers:', headers.raw());
         }
-        if (Config.CafienneService.log.request && body) {
+        if (Config.CafienneService.log.request.body && body) {
             console.log(body);
         }
 
-        const response: Response = await fetch(url, { method, headers, body });
-        if (Config.CafienneService.log.response) {
-            console.log(` [${myCallNumber}]==> ${response.status} ${response.statusText}`);
+        const response = await fetch(url, { method, headers, body }).then(response => new CafienneResponse(response));
+        if (Config.CafienneService.log.response.status) {
+            console.log(`\n [${myCallNumber}]==> ${response.status} ${response.statusText}`);
         }
+        if (Config.CafienneService.log.response.headers) {
+            printHeaders('Response headers:', response.headers.raw());
+        }
+        if (Config.CafienneService.log.response.body) {
+            await response.text().then(text => console.log(text));
+        }
+        
         return response;
+    }
+}
+
+function printHeaders(msg: String, headers: any) {
+    console.log(msg)
+    for (const key in headers) {
+        console.log(` ${key}\t: ${headers[key].join(', ')}`)
     }
 }
 

@@ -5,9 +5,15 @@ const Config = {
         log: {
             // Whether or not to log HTTP call information (user, url, method type, headers)
             url: true, // URL includes call number, method type and user id
-            headers: true, // Shows request headers
-            request: true, // Shows request body
-            response: true, // Shows response status, response text and case last modified
+            request: {
+                headers: true, // Shows request headers
+                body: true, // Shows request body
+            },
+            response: {
+                status: true, // Shows response statusCode and statusMessage, including call number 
+                headers: true, // Shows response headers
+                body: true // Shows response body
+            }
         },
         // CQRS Wait Time is the time the engine needs to process events from commands (e.g. StartCase, CompleteTask, CreateTenant) into the server side query database
         cqrsWaitTime: 5000
