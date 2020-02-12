@@ -31,7 +31,7 @@ export default class CafienneService {
 
     async post(url: string, user: User, request?: object, method = 'POST') {
         const headers = Object.create(CafienneService.headers);
-        const body = request ? JSON.stringify(request, undefined, 2) : undefined;
+        const body = (typeof request === 'string') ? `"${request}"`: request ? JSON.stringify(request, undefined, 2) : undefined;
         return this.fetch(user, url, method, headers, body).then(this.updateCaseLastModified);
     }
 
@@ -75,7 +75,7 @@ export default class CafienneService {
             console.log(`\n\nHTTP:${method}[${myCallNumber}] from [${user.id}] to ${url}`);
         }
         if (Config.CafienneService.log.request.headers) {
-            printHeaders('Request headers:', headers.raw());
+            printHeaders('Request headers:', headers);
         }
         if (Config.CafienneService.log.request.body && body) {
             console.log(body);
@@ -86,7 +86,7 @@ export default class CafienneService {
             console.log(`\n [${myCallNumber}]==> ${response.status} ${response.statusText}`);
         }
         if (Config.CafienneService.log.response.headers) {
-            printHeaders('Response headers:', response.headers.raw());
+            printHeaders('Response headers:', response.headers);
         }
         if (Config.CafienneService.log.response.body) {
             await response.text().then(text => console.log(text));
@@ -96,10 +96,11 @@ export default class CafienneService {
     }
 }
 
-function printHeaders(msg: String, headers: any) {
+function printHeaders(msg: string, headers: Headers) {
     console.log(msg)
-    for (const key in headers) {
-        console.log(` ${key}\t: ${headers[key].join(', ')}`)
+    const rawHeaders = headers.raw();
+    for (const key in rawHeaders) {
+        console.log(` ${key}\t: ${rawHeaders[key].join(', ')}`)
     }
 }
 

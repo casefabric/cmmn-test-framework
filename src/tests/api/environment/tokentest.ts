@@ -9,10 +9,6 @@ const tokenService = new TokenService();
 const user = new User('admin')
 
 export default class TestTokenValidation extends TestCase {
-    constructor() {
-        super('Test API /repository/');
-    }
-
     async run() {
 
         await checkMissingToken();
@@ -37,7 +33,7 @@ export default class TestTokenValidation extends TestCase {
     }
 }
 
-function createClaims(sub?: String, iss?: String, issuedAt?: Date, expiresAt?: Date) {
+function createClaims(sub?: string, iss?: string, issuedAt?: Date, expiresAt?: Date) {
     return {
         iss,
         sub,

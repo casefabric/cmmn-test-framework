@@ -10,6 +10,7 @@ import pingTestEnvironment from './tests/api/environment/ping';
 import Config from './config';
 import TestRepositoryAPI from './tests/api/repository/repositorytest';
 import TestTokenValidation from './tests/api/environment/tokentest';
+import TestCaseFileAPI from './tests/api/casefile/testcasefileapi';
 
 
 function findTestsFromCommandLineArguments(): Array<string> {
@@ -39,6 +40,7 @@ function getHardCodedTestDeclarations(): Array<any> {
         , TestTenantRegistration
         , TestRepositoryAPI
         , TestTokenValidation
+        , TestCaseFileAPI
 
     ];
 }

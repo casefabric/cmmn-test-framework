@@ -17,10 +17,6 @@ const tenantOwner = worldwideTenant.sender;
 const tenantUser = new User('tenant-user');
 
 export default class TestRepositoryAPI extends TestCase {
-    constructor() {
-        super('Test API /repository/');
-    }
-
     async onPrepareTest() {
         await worldwideTenant.create();
 

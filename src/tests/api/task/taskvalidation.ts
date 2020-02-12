@@ -24,10 +24,6 @@ const mockPort = 17382;
 const mock = new TaskValidationMock(mockPort);
 
 export default class TestTaskValidationAPI extends TestCase {
-    constructor() {
-        super('Test API /tasks/');
-    }
-
     async onPrepareTest() {
         // console.log("Starting mock servive in test preparation");
         await mock.start();

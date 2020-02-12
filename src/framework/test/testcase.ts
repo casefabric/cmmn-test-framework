@@ -5,12 +5,13 @@ import { DOMParser } from 'xmldom';
  * Extremely simple generic TestCase class.
  */
 export default class TestCase {
+    public name: string = this.constructor.name
+
     /**
      * Create a new TestCase with the given name.
      * The name can be used for logging purposes.
-     * @param name Name of the test case.
      */
-    constructor(public name: string) { }
+    constructor() { }
 
     /**
      * Hook that can be implemented to setup information inside the TestCase before the run method is being invoked.

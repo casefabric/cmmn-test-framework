@@ -13,10 +13,6 @@ const tenantService = new TenantService();
 const platformService = new PlatformService();
 
 export default class TestTenantRegistration extends TestCase {
-    constructor() {
-        super('Tenant Registration');
-    }
-
     /**
      * @override
      */

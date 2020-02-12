@@ -10,10 +10,6 @@ const user = worldwideTenant.sender;
 const tenant = worldwideTenant.name;
 
 export default class TestUsersCaseAPI extends TestCase {
-    constructor() {
-        super('Test API /cases/user');
-    }
-
     async onPrepareTest() {
         await worldwideTenant.create();
     }

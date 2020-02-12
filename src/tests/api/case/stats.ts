@@ -8,10 +8,6 @@ const caseService = new CaseService();
 const tenant = new WorldWideTestTenant();
 
 export default class TestStatsAPI extends TestCase {
-    constructor() {
-        super('Test statistics API');
-    }
-
     async onPrepareTest() {
         await tenant.create();
     }

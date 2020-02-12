@@ -23,7 +23,7 @@ export default async function pingTestEnvironment(platformAdmin: User = new User
     throw new Error('Engine is not running; tried many times ;)')
 }
 
-async function login(platformAdmin: User): Promise<Boolean> {
+async function login(platformAdmin: User): Promise<boolean> {
     try {
         await platformAdmin.login();
         return true;

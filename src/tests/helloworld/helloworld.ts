@@ -22,10 +22,6 @@ const sender = worldwideTenant.sender;
 const receiver = worldwideTenant.receiver;
 
 export default class TestHelloworld extends TestCase {
-    constructor() {
-        super('Hello World');
-    }
-
     async onPrepareTest() {
         await worldwideTenant.create();
         await repositoryService.validateAndDeploy(definition, sender, tenant);
