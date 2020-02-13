@@ -15,7 +15,41 @@ export default class Comparison {
      */
     static sameXML(tree1: Node, tree2: Node) {
         return contains(tree1, tree2) && contains(tree2, tree1);
-    }    
+    }
+
+    /**
+     * Checks whether the arrays have equal content.
+     * Based on == comparison of array elements.
+     * @param array1 
+     * @param array2 
+     */
+    static sameArray(array1?: Array<any>, array2?: Array<any>) {
+        if (array1 === array2) {
+            return true;
+        }
+        if (array1 && !array2) {
+            return false;
+        }
+        if (array2 && !array1) {
+            return false;
+        }
+        const a1 = array1 ? array1 : [];
+        const a2 = array2 ? array2 : [];
+
+        if (a1.length != a2.length) {
+            return false;
+        }
+
+        for (let i = 0; i<a1.length; i++) {
+            const v1 = a1[i];
+            const v2 = a2[i];
+            if (v1 != v2) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
 
 

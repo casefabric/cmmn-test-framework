@@ -24,6 +24,7 @@ export default class TestTenantRegistration extends TestCase {
         const tenantOwner2 = new User('tenant-owner2');
         const tenantOwner3 = new User('tenant-owner3');
         const user4 = new User('tenant-user-4');
+        const user4TenantRoles = ['role-x', 'role-y'];
         const tenant1 = new Tenant(tenantName, [new TenantUser(tenantOwner1.id), new TenantUser(tenantOwner2.id), new TenantUser(tenantOwner3.id)]);
 
         await platformAdmin.login();
@@ -51,13 +52,18 @@ export default class TestTenantRegistration extends TestCase {
             }
         });
 
-        const tenantUser4 = new TenantUser(user4.id, ['role-x', 'role-y']);
+        const tenantUser4 = new TenantUser(user4.id, user4TenantRoles);
         // Add the user as a tenant user
         await tenantService.addTenantUser(tenantOwner1, tenant1, tenantUser4);
+        // Adding user twice should result in an error
+        await tenantService.addTenantUser(tenantOwner1, tenant1, tenantUser4, false);
         await ServerSideProcessing('Give the system a second to handle projection of adding user4');
 
         // Also make the user a tenant owner
         await tenantService.addTenantOwner(tenantOwner1, tenant1, tenantUser4.userId);
+        // Adding tenant owner twice should not give any different results.
+        await tenantService.addTenantOwner(tenantOwner1, tenant1, tenantUser4.userId);
+
         // Check the list of tenant owners
         await tenantService.getTenantOwners(tenantOwner1, tenant1).then(owners => {
             const expectedOwnerIDs = tenant1.owners.concat([tenantUser4]).map(o => o.userId);
@@ -111,19 +117,36 @@ export default class TestTenantRegistration extends TestCase {
             }
         });
 
-        const u4 = await tenantService.getTenantUser(tenantOwner1, tenant1, tenantUser4.userId);
-        const roles = u4.roles;
-        console.log('User 4 has roles ' + roles);
+        await tenantService.getTenantUser(tenantOwner1, tenant1, tenantUser4.userId).then(user => {
+            if (! Comparison.sameArray(user.roles, user4TenantRoles)) {
+                throw new Error('Expected user 4 to have roles ' + user4TenantRoles + ', but found ' + user.roles);
+            }
+            console.log('User 4 has roles ' + user.roles);
+        });
 
-        const firstRole = roles[1];
-        await tenantService.removeTenantUserRole(tenantOwner1, tenant1, u4.userId, firstRole);
+        await tenantService.removeTenantUserRole(tenantOwner1, tenant1, tenantUser4.userId, user4TenantRoles[0]);
 
         // Let the projection process the event as well.
         await ServerSideProcessing();
 
-        const u4Again = await tenantService.getTenantUser(tenantOwner1, tenant1, tenantUser4.userId);
-        console.log(JSON.stringify(u4Again, undefined, 3))
-        const rolesAgain = u4Again.roles;
-        console.log('User 4 has roles ' + rolesAgain);
+        await tenantService.getTenantUser(tenantOwner1, tenant1, tenantUser4.userId).then(user => {
+            const expectedNewRoles = user4TenantRoles.splice(1);
+            if (! Comparison.sameArray(user.roles, expectedNewRoles)) {
+                throw new Error('Expected user 4 to have roles ' + expectedNewRoles + ', but found ' + user.roles);
+            }
+            console.log('User 4 has roles ' + user.roles);
+        });
+
+        const nextOwnerId = 'next-owner';
+        const nextTenantUser = new TenantUser(nextOwnerId, []);
+
+        // Adding the owner without registering first as a user should fail.
+        await tenantService.addTenantOwner(tenantOwner1, tenant1, nextOwnerId, false);
+
+        // Register the tenant user
+        await tenantService.addTenantUser(tenantOwner1, tenant1, nextTenantUser);
+
+        // Adding the user as an owner now should succeed.
+        await tenantService.addTenantOwner(tenantOwner1, tenant1, nextOwnerId);
     }
 }
