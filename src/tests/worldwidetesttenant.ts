@@ -12,6 +12,7 @@ const platformService = new PlatformService();
 export default class WorldWideTestTenant {
     sender: User = new User('sending-user');
     receiver: User = new User('receiving-user');
+    tenant: Tenant = new Tenant(this.name, []);
 
     constructor(public readonly name: string = 'World-Wide-Test-Tenant', public platformAdmin: User = new User('admin')) {
 
@@ -23,10 +24,9 @@ export default class WorldWideTestTenant {
     async create() {
         const tenantUserSender = new TenantUser(this.sender.id, ['Sender'], 'sender', 'sender@senders.com');
         const tenantUserReceiver = new TenantUser(this.receiver.id, ['Receiver'], 'receiver', 'receiver@receivers.com');
-        const owners = [tenantUserSender, tenantUserReceiver];
-        const tenant = new Tenant(this.name, owners);
+        this.tenant.owners = [tenantUserSender, tenantUserReceiver];
         await this.platformAdmin.login();
-        const response = await platformService.createTenant(this.platformAdmin, tenant);
+        const response = await platformService.createTenant(this.platformAdmin, this.tenant);
         if (response.status === 204) {
             await ServerSideProcessing('Giving server time to handle tenant creation');
         } else {
