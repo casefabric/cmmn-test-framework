@@ -75,21 +75,6 @@ export default class TestHelloworld extends TestCase {
             throw new Error('Task input is not the same as given to the case');
         }
 
-        const assertTask = async (task: Task, action: string, expectedState: string = '', expectedAssignee?: User, expectedOwner?: User) => {
-            await taskService.getTask(receiveGreetingTask, sender).then(task => {
-                console.log(`Task after ${action}:\tstate = ${task.taskState},\tassignee = '${task.assignee}',\towner = '${task.owner}' `);
-                if (task.taskState !== expectedState) {
-                    throw new Error(`Task ${task.taskName} is not in state '${expectedState}' but in state '${task.taskState}'`);
-                }
-                if (expectedAssignee && task.assignee !== expectedAssignee.id) {
-                    throw new Error(`Task ${task.taskName} is not assigned to '${expectedAssignee}' but to user '${task.assignee}'`);
-                }
-                if (expectedOwner && task.owner !== expectedOwner.id) {
-                    throw new Error(`Task ${task.taskName} is not owned by '${expectedAssignee}' but by '${task.assignee}'`);
-                }
-            });
-        }
-
         await taskService.claimTask(receiveGreetingTask, sender);
         await assertTask(receiveGreetingTask, 'Claim', 'Assigned', sender, sender);
 
@@ -147,4 +132,19 @@ export default class TestHelloworld extends TestCase {
             console.log('Case completed!')
         }
     }
+}
+
+async function assertTask(task: Task, action: string, expectedState: string = '', expectedAssignee?: User, expectedOwner?: User) {
+    await taskService.getTask(task, sender).then(task => {
+        console.log(`Task after ${action}:\tstate = ${task.taskState},\tassignee = '${task.assignee}',\towner = '${task.owner}' `);
+        if (task.taskState !== expectedState) {
+            throw new Error(`Task ${task.taskName} is not in state '${expectedState}' but in state '${task.taskState}'`);
+        }
+        if (expectedAssignee && task.assignee !== expectedAssignee.id) {
+            throw new Error(`Task ${task.taskName} is not assigned to '${expectedAssignee}' but to user '${task.assignee}'`);
+        }
+        if (expectedOwner && task.owner !== expectedOwner.id) {
+            throw new Error(`Task ${task.taskName} is not owned by '${expectedAssignee}' but by '${task.assignee}'`);
+        }
+    });
 }

@@ -1,7 +1,7 @@
 import User from "../../user";
 import Case from "../../cmmn/case";
 import CafienneService from "../cafienneservice";
-import { checkJSONResponse } from "../response";
+import { checkJSONResponse, checkResponse } from "../response";
 
 const cafienneService = new CafienneService();
 
@@ -11,23 +11,10 @@ export default class CaseFileService {
      * @param Case 
      * @param user 
      */
-    async getCaseFile(Case: Case, user: User) {
-        const json = await cafienneService.get(`/cases/${Case.id}/casefile`, user).then(checkJSONResponse);
-        return json;
-    }
-
-    /**
-     * Get the case file item of the specified path.
-     * E.g., on Helloworld you can get with path 'Greeting/Message'
-     * @param Case 
-     * @param user 
-     * @param path 
-     * @param index Optional index if the case file item has multiplicity * (e.g., Order/Lines[12])
-     */
-    async getCaseFileItem(Case: Case, user: User, path: string, index?: number) {
-        path = path + (index !== undefined ? `[${index}]` : ''); // Add optional index to the path
-        const json = await cafienneService.get(`/cases/${Case.id}/casefile?${path}`, user).then(checkJSONResponse);
-        return json;
+    async getCaseFile(Case: Case, user: User, expectNoFailures: boolean = true) {
+        const response = await cafienneService.get(`/cases/${Case.id}/casefile`, user);
+        const msg = `GetCaseFile is not expected to succeed for user ${user.id} in case ${Case.id}`;
+        return checkJSONResponse(response, msg, expectNoFailures);
     }
 
     /**
@@ -37,9 +24,10 @@ export default class CaseFileService {
      * @param path 
      * @param data Any json structure matching the case file definition
      */
-    async createCaseFileItem(Case: Case, user: User, path: string, data: object) {
+    async createCaseFileItem(Case: Case, user: User, path: string, data: object, expectNoFailures: boolean = true) {
         const response = await cafienneService.post(`/cases/${Case.id}/casefile/create/${path}`, user, data);
-        return response;
+        const msg = `CreateCaseFileItem is not expected to succeed for user ${user.id} in case ${Case.id}`;
+        return checkResponse(response, msg, expectNoFailures);
     }
 
     /**
@@ -49,9 +37,10 @@ export default class CaseFileService {
      * @param path 
      * @param data 
      */
-    async updateCaseFileItem(Case: Case, user: User, path: string, data: any) {
+    async updateCaseFileItem(Case: Case, user: User, path: string, data: any, expectNoFailures: boolean = true) {
         const response = await cafienneService.put(`/cases/${Case.id}/casefile/update/${path}`, user, data);
-        return response;
+        const msg = `UpdateCaseFileItem is not expected to succeed for user ${user.id} in case ${Case.id}`;
+        return checkResponse(response, msg, expectNoFailures);
     }
 
     /**
@@ -61,9 +50,10 @@ export default class CaseFileService {
      * @param path 
      * @param data 
      */
-    async replaceCaseFileItem(Case: Case, user: User, path: string, data: object) {
+    async replaceCaseFileItem(Case: Case, user: User, path: string, data: object, expectNoFailures: boolean = true) {
         const response = await cafienneService.put(`/cases/${Case.id}/casefile/replace/${path}`, user, data);
-        return response;
+        const msg = `ReplaceCaseFileItem is not expected to succeed for user ${user.id} in case ${Case.id}`;
+        return checkResponse(response, msg, expectNoFailures);
     }
 
     /**
@@ -72,8 +62,9 @@ export default class CaseFileService {
      * @param user 
      * @param path 
      */
-    async deleteCaseFileItem(Case: Case, user: User, path: string) {
+    async deleteCaseFileItem(Case: Case, user: User, path: string, expectNoFailures: boolean = true) {
         const response = await cafienneService.delete(`/cases/${Case.id}/casefile/delete/${path}`, user);
-        return response;
+        const msg = `DeleteCaseFileItem is not expected to succeed for user ${user.id} in case ${Case.id}`;
+        return checkResponse(response, msg, expectNoFailures);
     }
 }
