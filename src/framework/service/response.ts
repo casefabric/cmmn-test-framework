@@ -4,6 +4,7 @@ import { DOMParser } from 'xmldom';
 export default class CafienneResponse {
     private json_prop?: any;
     private text_prop?: string;
+    private hasText: boolean = false;
 
     /**
      * Simple wrapper around node-fetch response.
@@ -47,11 +48,12 @@ export default class CafienneResponse {
     }
 
     async text() {
-        if (this.text_prop) {
+        if (this.hasText) {
             return this.text_prop;
         }
         return this.response.text().then(text => {
             this.text_prop = text;
+            this.hasText = true;
             return text;
         });
     }
