@@ -14,7 +14,12 @@ services:
     expose:
       - 2377
     ports:
-      - "2377:8080"
+      - "2377:2377"
+    environment:
+      BIND: 0.0.0.0
+      PORT: 2377
+    hostname: cafienne-test-token-service
+    container_name: cafienne-test-token-service
 networks:
   dev: 
     driver: bridge
