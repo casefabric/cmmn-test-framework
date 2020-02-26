@@ -1,0 +1,40 @@
+<definitions>
+    <case id="eventlistener.case" name="eventlistener">
+        <caseFileModel>
+            <caseFileItem id="_vdfDP_15" name="Root" multiplicity="ExactlyOne" definitionRef="root.cfid"/>
+        </caseFileModel>
+        <casePlanModel id="cm__vdfDP_0" name="eventlistener" autoComplete="false">
+            <planItem id="pi_ht__vdfDP_0" name="T1" definitionRef="ht__vdfDP_0">
+                <entryCriterion id="_vdfDP_11" name="UserEventOccurred" sentryRef="crit__vdfDP_1"/>
+            </planItem>
+            <planItem id="pi_ue__vdfDP_0" name="UserEvent" definitionRef="ue__vdfDP_0"/>
+            <sentry id="crit__vdfDP_1">
+                <planItemOnPart id="_vdfDP_12" sourceRef="pi_ue__vdfDP_0">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <humanTask id="ht__vdfDP_0" name="T1" isBlocking="true"/>
+            <userEvent id="ue__vdfDP_0" name="UserEvent"/>
+        </casePlanModel>
+    </case>
+    <caseFileItemDefinition name="root" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="root.cfid">
+        <property name="Outcome" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
+    </caseFileItemDefinition>
+    <CMMNDI>
+        <CMMNDiagram>
+            <CMMNShape cmmnElementRef="cm__vdfDP_0">
+                <Bounds x="40" y="50" width="800" height="500"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__vdfDP_0">
+                <Bounds x="170" y="130" width="100" height="60"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ue__vdfDP_0">
+                <Bounds x="360" y="140" width="32" height="32"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_vdfDP_11">
+                <Bounds x="264" y="150" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNEdge sourceCMMNElementRef="pi_ue__vdfDP_0" targetCMMNElementRef="_vdfDP_11"/>
+        </CMMNDiagram>
+    </CMMNDI>
+</definitions>

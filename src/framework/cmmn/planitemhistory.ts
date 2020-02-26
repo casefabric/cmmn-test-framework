@@ -1,11 +1,13 @@
 /**
  * JSON Wrapper for plan items in a case instance
  */
-export default class PlanItem {
+export default class PlanItemHistory {
     /**
      * 
      * @param id Plan item id
+     * @param sequenceNr The occurence within the history list (0 was first change, then 1, etc.)
      * @param name Plan item name
+     * @param eventType A string with the java class name of the event that caused this plan item history record
      * @param stageId Id of the stage to which this plan item belongs, or empty if it is the CasePlan itself.
      * @param type Type of plan item. E.g. HumanTask, Milestone, Stage, TimerEvent, UserEvent, ProcessTask, CaseTask, CasePlan.
      * @param currentState Current state of plan item. E.g. Available, Active, Completed, Terminated, Suspended, Failed
@@ -19,6 +21,7 @@ export default class PlanItem {
      */
     constructor(
         public id: string,
+        public sequenceNr: number,
         public name: string,
         public stageId: string,
         public type: string,
@@ -28,6 +31,7 @@ export default class PlanItem {
         public isRequired: boolean,
         public isRepeating: boolean,
         public index: number,
+        public eventType: string,
         public lastModified: string,
         public modifiedBy: string
     ) { }

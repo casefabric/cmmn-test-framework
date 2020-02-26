@@ -11,6 +11,7 @@ import Config from './config';
 import TestRepositoryAPI from './tests/api/repository/repositorytest';
 import TestTokenValidation from './tests/api/environment/tokentest';
 import TestCaseFileAPI from './tests/api/casefile/testcasefileapi';
+import TestCasePlanAPI from './tests/api/caseplan/testcaseplanapi';
 
 
 function findTestsFromCommandLineArguments(): Array<string> {
@@ -41,7 +42,7 @@ function getHardCodedTestDeclarations(): Array<any> {
         , TestRepositoryAPI
         , TestTokenValidation
         , TestCaseFileAPI
-
+        , TestCasePlanAPI
     ];
 }
 
