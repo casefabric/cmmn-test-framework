@@ -13,7 +13,7 @@ export default class CafienneResponse {
      */
     constructor(public response: Response) {
     }
-    
+
     get ok() {
         return this.response.ok;
     }
@@ -23,15 +23,15 @@ export default class CafienneResponse {
     get status() {
         return this.response.status;
     }
-    
+
     get statusText() {
         return this.response.statusText;
     }
-    
+
     get type() {
         return this.response.type;
     }
-    
+
     get url() {
         return this.response.url;
     }
@@ -99,10 +99,30 @@ export async function checkResponse(response: CafienneResponse, errorMsg: string
  * @param errorMsg 
  * @param expectNoFailures 
  */
-export async function checkJSONResponse(response: CafienneResponse, errorMsg: string = '', expectNoFailures: boolean = true): Promise<any> {
+export async function checkJSONResponse(response: CafienneResponse, errorMsg: string = '', expectNoFailures: boolean = true, returnType?: Function | Array<Function>): Promise<any> {
     await checkResponse(response, errorMsg, expectNoFailures);
     if (response.ok) {
-        return response.json();
+        const json = await response.json();
+        if (returnType) {
+            // console.log("Response is " + JSON.stringify(json, undefined, 2))
+            // console.log("\n\n Return type is " , returnType)
+            if (returnType instanceof Array) {
+                if (returnType.length == 0) {
+                    throw new Error('Return type must have at least 1 element');
+                }
+                const constructorCall = returnType[0];
+                if (json instanceof Array) {
+                    const array = <Array<object>>json;
+                    return array.map(tenantUser => Object.assign(new constructorCall, tenantUser));    
+                } else {
+                    throw new Error(`Expected a json array with objects of type ${constructorCall.name}, but the response was not an array: ${JSON.stringify(json, undefined, 2)}`);
+                }
+            } else if (returnType !== undefined) {
+                const constructorCall = returnType;
+                return Object.assign(new constructorCall, json);
+            }
+        }
+        return json;
     } else {
         return response;
     }

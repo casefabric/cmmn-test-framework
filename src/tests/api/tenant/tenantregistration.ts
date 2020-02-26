@@ -6,6 +6,7 @@ import TestCase from "../../../framework/test/testcase";
 import { ServerSideProcessing } from "../../../framework/test/time";
 import Comparison from "../../../framework/test/comparison";
 import PlatformService from "../../../framework/service/platform/platformservice";
+import { json } from "express";
 
 const platformAdmin = new User('admin');
 
@@ -18,7 +19,7 @@ export default class TestTenantRegistration extends TestCase {
      */
     async run() {
         const guid = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-        const tenantName = 'test-tenant' + guid;
+        const tenantName = 'test_tenant' + guid;
 
         const tenantOwner1 = new User('tenant-owner1');
         const tenantOwner2 = new User('tenant-owner2');
@@ -52,9 +53,13 @@ export default class TestTenantRegistration extends TestCase {
             }
         });
 
-        const tenantUser4 = new TenantUser(user4.id, user4TenantRoles);
+        // Also not allowed to get a non-existing user
+        await tenantService.getTenantUser(tenantOwner1, tenant1, "not a tenant user at all", false);
+
+        const tenantUser4 = new TenantUser(user4.id, user4TenantRoles, 'user-4', 'user4@users-and-owners.com');
         // Add the user as a tenant user
         await tenantService.addTenantUser(tenantOwner1, tenant1, tenantUser4);
+
         // Adding user twice should result in an error
         await tenantService.addTenantUser(tenantOwner1, tenant1, tenantUser4, false);
         await ServerSideProcessing('Give the system a second to handle projection of adding user4');
@@ -101,40 +106,51 @@ export default class TestTenantRegistration extends TestCase {
         await tenantService.getTenantUsers(platformAdmin, tenant1, false);
 
         // Lets get the list of tenant users. There should be 4. Tenant owners should be able to do so
-        await tenantService.getTenantUsers(tenantOwner1, tenant1);
+        await tenantService.getTenantUsers(tenantOwner1, tenant1).then(users => checkUserCount(users, 4));
+
+        // Now disable and enable a tenant user.
+        await tenantService.disableTenantUser(tenantOwner1, tenant1, tenantOwner2.id)
+        await ServerSideProcessing();
+        // There should be one less tenant user
+        await tenantService.getTenantUsers(tenantOwner1, tenant1).then(users => checkUserCount(users, 3));
+        // There should be 1 disabled user account
+        await tenantService.getDisabledUserAccounts(tenantOwner1, tenant1).then(users => checkUserCount(users, 1));
+        // Not allowed to get a disabled user account
+        await tenantService.getTenantUser(tenantOwner1, tenant1, tenantOwner2.id, false);
+        // Enable the user account again and validate that the user can be retrieved again.
+        await tenantService.enableTenantUser(tenantOwner1, tenant1, tenantOwner2.id)
+        await ServerSideProcessing();
+        await tenantService.getTenantUsers(tenantOwner1, tenant1).then(users => checkUserCount(users, 4));
+        await tenantService.getTenantUser(tenantOwner1, tenant1, tenantOwner2.id);
+
+
 
         // But also normal users are allowed to fetch the user list of a tenant... Are they?
         await tenantService.getTenantUsers(user4, tenant1, false);
         await user4.login();
         // ... well i guess only if they are logged in...
-        await tenantService.getTenantUsers(user4, tenant1).then(users => {
-            if (users instanceof Array) {
-                if (users.length != 4) {
-                    throw new Error('Expected 4 tenant users, but found ' + users.length + ': ' + JSON.stringify(users));
-                }
-            } else {
-                throw new Error('Expecting list of users, but got something of type ' + users.constructor.name);
-            }
-        });
+        await tenantService.getTenantUsers(user4, tenant1).then(users => checkUserCount(users, 4));
 
         await tenantService.getTenantUser(tenantOwner1, tenant1, tenantUser4.userId).then(user => {
-            if (! Comparison.sameArray(user.roles, user4TenantRoles)) {
+            if (!Comparison.sameArray(user.roles, user4TenantRoles)) {
                 throw new Error('Expected user 4 to have roles ' + user4TenantRoles + ', but found ' + user.roles);
             }
-            console.log('User 4 has roles ' + user.roles);
+            // console.log('User 4 has roles ' + user.roles);
         });
 
-        await tenantService.removeTenantUserRole(tenantOwner1, tenant1, tenantUser4.userId, user4TenantRoles[0]);
+        const roleToRemove = user4TenantRoles[0];
+        const expectedNewRoles = user4TenantRoles.slice(1);
+
+        await tenantService.removeTenantUserRole(tenantOwner1, tenant1, tenantUser4.userId, roleToRemove);
 
         // Let the projection process the event as well.
         await ServerSideProcessing();
 
         await tenantService.getTenantUser(tenantOwner1, tenant1, tenantUser4.userId).then(user => {
-            const expectedNewRoles = user4TenantRoles.splice(1);
-            if (! Comparison.sameArray(user.roles, expectedNewRoles)) {
+            if (!Comparison.sameArray(user.roles, expectedNewRoles)) {
                 throw new Error('Expected user 4 to have roles ' + expectedNewRoles + ', but found ' + user.roles);
             }
-            console.log('User 4 has roles ' + user.roles);
+            // console.log('User 4 has roles ' + user.roles);
         });
 
         const nextOwnerId = 'next-owner';
@@ -148,5 +164,24 @@ export default class TestTenantRegistration extends TestCase {
 
         // Adding the user as an owner now should succeed.
         await tenantService.addTenantOwner(tenantOwner1, tenant1, nextOwnerId);
+
+        await ServerSideProcessing();
+
+        await tenantService.getTenantUsers(tenantOwner1, tenant1).then(users => checkUserCount(users, 5));
+    }
+}
+
+/**
+ * Check the count of users in the array. Also validates that 'users' is of type Array
+ * @param users 
+ * @param expectedSize 
+ */
+const checkUserCount = (users: any, expectedSize: number) => {
+    if (users instanceof Array) {
+        if (users.length != expectedSize) {
+            throw new Error(`Expected ${expectedSize} tenant users, but found ${users.length}: ${JSON.stringify(users, undefined, 2)}`);
+        }
+    } else {
+        throw new Error('Expecting list of users, but got something of type ' + users.constructor.name);
     }
 }

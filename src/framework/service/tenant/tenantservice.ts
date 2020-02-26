@@ -22,7 +22,7 @@ export default class TenantService {
     async getTenantOwners(user: User, tenant: Tenant, expectNoFailures = true) {
         const response = await this.cafienneService.get(`/tenant/${tenant.name}/owners`, user);
         const msg = `GetTenantOwners is not expected to succeed for user ${user.id} in tenant ${tenant.name}`;
-        return <Promise<Array<TenantUser>>> checkJSONResponse(response, msg, expectNoFailures);
+        return checkJSONResponse(response, msg, expectNoFailures);
     }
 
     /**
@@ -58,13 +58,19 @@ export default class TenantService {
     async getTenantUsers(user: User, tenant: Tenant, expectNoFailures = true) {
         const response = await this.cafienneService.get(`/tenant/${tenant.name}/users`, user);
         const msg = `GetTenantUsers is not expected to succeed for user ${user.id} in tenant ${tenant.name}`;
-        await checkResponse(response, msg, expectNoFailures);
-        if (expectNoFailures) {
-            const json = await response.json();
-            return <Array<TenantUser>>json;    
-        } else {
-            return response;
-        }
+        return checkJSONResponse(response, msg, expectNoFailures, [TenantUser]);
+    }
+
+    /**
+     * Returns a list of the tenant users
+     * @param user Must be a valid user in the tenant
+     * @param tenant 
+     * @param expectNoFailures 
+     */
+    async getDisabledUserAccounts(user: User, tenant: Tenant, expectNoFailures = true) {
+        const response = await this.cafienneService.get(`/tenant/${tenant.name}/disabled-accounts`, user);
+        const msg = `GettingDisabledAccounts is not expected to succeed for user ${user.id} in tenant ${tenant.name}`;
+        return checkJSONResponse(response, msg, expectNoFailures, [TenantUser]);
     }
 
     /**
@@ -77,8 +83,7 @@ export default class TenantService {
     async getTenantUser(user: User, tenant: Tenant, tenantUserId: string, expectNoFailures = true) {
         const response = await this.cafienneService.get(`/tenant/${tenant.name}/users/${tenantUserId}`, user);
         const msg = `GetTenantUser(${tenantUserId}) is not expected to succeed for user ${user.id} in tenant ${tenant.name}`;
-        const json = await checkJSONResponse(response, msg, expectNoFailures);
-        return <TenantUser>json;
+        return checkJSONResponse(response, msg, expectNoFailures, TenantUser);
     }
 
     /**
