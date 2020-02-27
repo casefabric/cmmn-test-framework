@@ -10,7 +10,7 @@ import { ServerSideProcessing } from "../../../framework/test/time";
 
 const repositoryService = new RepositoryService();
 const tenantService = new TenantService();
- 
+
 const worldwideTenant = new WorldWideTestTenant('For-repository-testing');
 const tenant = worldwideTenant.name;
 const tenantOwner = worldwideTenant.sender;
@@ -20,7 +20,14 @@ export default class TestRepositoryAPI extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
 
-        await tenantService.addTenantUser(tenantOwner, new Tenant(worldwideTenant.name, []), new TenantUser(tenantUser.id, []));
+        try {
+            await tenantService.addTenantUser(tenantOwner, new Tenant(worldwideTenant.name, []), new TenantUser(tenantUser.id, []));
+        } catch (e) {
+            if (!e.message.indexOf('already exists')) {
+                console.log(e);
+                throw e;
+            }
+        }
 
         // give it some good time.
         await ServerSideProcessing();
@@ -35,9 +42,9 @@ export default class TestRepositoryAPI extends TestCase {
 
         // Validating the valid case model should not result in an error
         await repositoryService.validateCaseDefinition(validCaseDefinition, tenantOwner);
-        
+
         // Deploying an invalid case definition to a valid file name should result in an error.
-        const deployInvalidCaseDefinition = { 
+        const deployInvalidCaseDefinition = {
             definition: this.loadCMMNDefinition(invalidCaseDefinition),
             modelName: invalidCaseDefinition,
             tenant
@@ -57,7 +64,7 @@ export default class TestRepositoryAPI extends TestCase {
         await repositoryService.listCaseDefinitions(tenantUser, tenant);
 
         // Deploying an valid case definition should work for a tenant owner, but fail for a tenant user
-        const deployValidCaseDefinition = { 
+        const deployValidCaseDefinition = {
             definition: this.loadCMMNDefinition(validCaseDefinition),
             modelName: invalidCaseDefinition,
             tenant
