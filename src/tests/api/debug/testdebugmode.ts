@@ -5,6 +5,7 @@ import TestCase from '../../../framework/test/testcase';
 
 import WorldWideTestTenant from '../../worldwidetesttenant';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
+import DebugService from '../../../framework/service/case/debugservice';
 
 const repositoryService = new RepositoryService();
 const definition = 'helloworld.xml';
@@ -41,5 +42,13 @@ export default class TestDebugMode extends TestCase {
         debugCase = await caseService.getCase(debugCase, user);
 
         // TODO: we can also query the events to see if they are indeed present.
+        const debugService = new DebugService();
+        await debugService.getEvents(debugCase.id).then(response => {
+            if (response.status === 401 || response.status === 200) {
+                // This is the right status messages
+            } else {
+                throw new Error('Debug Event API did not give proper response code, but gave ' + response.status + ' ' + response.statusText);
+            }
+        });
     }
 }
