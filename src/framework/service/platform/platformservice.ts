@@ -69,7 +69,7 @@ export default class PlatformService {
      * Returns a json with the platform health
      */
     async getHealth() {
-        const url = '/platform/health';
+        const url = '/health';
         const json = await this.cafienneService.get(url, undefined).then(response => response.asJSON());
         console.log("JSON: " + json)
         return json;
@@ -79,7 +79,7 @@ export default class PlatformService {
      * Returns a json with the platform version
      */
     async getVersion() {
-        const url = '/platform/version';
+        const url = '/version';
         const json = await this.cafienneService.get(url, undefined).then(checkJSONResponse);
         return json;
     }
