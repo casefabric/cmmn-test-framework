@@ -1,6 +1,8 @@
 import User from "../../../framework/user";
-import { FetchError } from "node-fetch";
 import { SomeTime } from "../../../framework/test/time";
+import PlatformService from "../../../framework/service/platform/platformservice";
+
+const platform = new PlatformService();
 
 /**
  * Ping whether the test environment is up & running by logging in as platform admin.
@@ -11,11 +13,19 @@ import { SomeTime } from "../../../framework/test/time";
  */
 export default async function pingTestEnvironment(platformAdmin: User = new User('admin'), times: number = 5, waitTime: number = 5000) {
     do {
-        console.log("Pinging engine ... ");
-        const loggedIn = await login(platformAdmin);
-        if (loggedIn) {
-            console.log("Engine is running just fine ;)")
-            return;
+        console.log("Pinging engine for health and version ... ");
+        
+        try {
+            await platform.getHealth().then(health => console.log("Platform health: "  + JSON.stringify(health, undefined, 2)));
+            await platform.getVersion().then(version => console.log("Platform version: "  + JSON.stringify(version, undefined, 2)));    
+
+            console.log("Login to IDP and case engine as platform admin ... ");
+            const loggedIn = await login(platformAdmin);
+            if (loggedIn) {
+                console.log("Engine is running just fine ;)")
+                return;
+            }
+        } catch (error) {
         }
         await SomeTime(waitTime, 'Engine is not yet up & running, waiting some time');
         times--;

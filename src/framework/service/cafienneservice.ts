@@ -31,7 +31,7 @@ export default class CafienneService {
 
     async post(url: string, user: User, request?: object, method = 'POST') {
         const headers = Object.create(CafienneService.headers);
-        const body = (typeof request === 'string') ? `"${request}"`: request ? JSON.stringify(request, undefined, 2) : undefined;
+        const body = (typeof request === 'string') ? `"${request}"` : request ? JSON.stringify(request, undefined, 2) : undefined;
         return this.fetch(user, url, method, headers, body).then(this.updateCaseLastModified);
     }
 
@@ -51,28 +51,28 @@ export default class CafienneService {
         return this.fetch(user, url, 'DELETE', headers);
     }
 
-    async get(url: string, user: User, filter?: QueryFilter, headers: Headers = Object.create(CafienneService.headers)) {
+    async get(url: string, user: User | undefined, filter?: QueryFilter, headers: Headers = Object.create(CafienneService.headers)) {
         if (filter) {
             url = extendURL(url, filter);
         }
         return this.fetch(user, url, 'GET', headers);
     }
 
-    async getXml(url: string, user: User) : Promise<Document> {
+    async getXml(url: string, user: User): Promise<Document> {
         return (await this.get(url, user, undefined, new Headers({ 'Content-Type': 'text/xml' }))).xml();
     }
 
-    async fetch(user: User, url: string, method: string, headers: Headers, body?: string): Promise<CafienneResponse> {
+    async fetch(user: User | undefined, url: string, method: string, headers: Headers, body?: string): Promise<CafienneResponse> {
         // Each time make sure we take the latest Authorization header from the user, or send no Authorization along
         headers.delete('Authorization');
         if (user && user.token) {
             headers.set('Authorization', 'Bearer ' + user.token);
-        } 
+        }
         url = this.baseURL + (url.startsWith('/') ? url.substring(1) : url);
 
         const myCallNumber = callNumber++;
         if (Config.CafienneService.log.url) {
-            console.log(`\n\nHTTP:${method}[${myCallNumber}] from [${user.id}] to ${url}`);
+            console.log(`\n\nHTTP:${method}[${myCallNumber}] from [${user? user.id: ''}] to ${url}`);
         }
         if (Config.CafienneService.log.request.headers) {
             printHeaders('Request headers:', headers);
@@ -91,7 +91,7 @@ export default class CafienneService {
         if (Config.CafienneService.log.response.body) {
             await response.text().then(text => console.log(text));
         }
-        
+
         return response;
     }
 }

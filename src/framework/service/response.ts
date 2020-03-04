@@ -14,6 +14,26 @@ export default class CafienneResponse {
     constructor(public response: Response) {
     }
 
+    /**
+     * Creates a json object structure with response status code, status text and response message
+     */
+    async asJSON() {
+        const tryParseJSON = async (text: string|undefined) => {
+            try {
+                return JSON.parse(text || '');
+            } catch (e) {
+                console.log("Could not parse json: " , e)
+                return text;
+            }
+        }
+        const body = await this.text().then(tryParseJSON);
+        return {
+            statusCode: this.status,
+            statusMessage: this.statusText,
+            body
+        }
+    }    
+
     get ok() {
         return this.response.ok;
     }
@@ -63,7 +83,7 @@ export default class CafienneResponse {
             return this.json_prop;
         }
         const text = await this.text();
-        this.json_prop = JSON.parse(text);
+        this.json_prop = JSON.parse(text || '');
         return this.json_prop;
     }
 }
