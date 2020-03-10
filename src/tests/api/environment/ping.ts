@@ -1,8 +1,15 @@
 import User from "../../../framework/user";
 import { SomeTime } from "../../../framework/test/time";
 import PlatformService from "../../../framework/service/platform/platformservice";
+import TestCase from "../../../framework/test/testcase";
 
 const platform = new PlatformService();
+
+export default class PingTestEnvironment extends TestCase {
+    async run() {
+        await pingTestEnvironment();
+    }
+}
 
 /**
  * Ping whether the test environment is up & running by logging in as platform admin.
@@ -11,7 +18,7 @@ const platform = new PlatformService();
  * @param times Number of times to try to ping the environment
  * @param waitTime Number of milliseconds to wait inbetween various login attempts
  */
-export default async function pingTestEnvironment(platformAdmin: User = new User('admin'), times: number = 5, waitTime: number = 5000) {
+export async function pingTestEnvironment(platformAdmin: User = new User('admin'), times: number = 5, waitTime: number = 5000) {
     do {
         console.log("Pinging engine for health and version ... ");
         

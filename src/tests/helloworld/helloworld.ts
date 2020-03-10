@@ -62,7 +62,7 @@ export default class TestHelloworld extends TestCase {
         const taskName = 'Receive Greeting and Send response';
         const planItem = caseInstance.planitems.find(p => p.name === taskName);
         if (!planItem) {
-            throw new Error('Cannot find task ' + taskName);
+            throw new Error('Cannot find plan item ' + taskName);
         }
 
         const tasks = await taskService.getCaseTasks(caseInstance, sender);

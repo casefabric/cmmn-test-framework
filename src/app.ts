@@ -13,6 +13,7 @@ import TestTokenValidation from './tests/api/environment/tokentest';
 import TestCaseFileAPI from './tests/api/casefile/testcasefileapi';
 import TestCasePlanAPI from './tests/api/caseplan/testcaseplanapi';
 import TestEventAuthorization from './tests/api/caseplan/testeventauthorization';
+import PingTestEnvironment from './tests/api/environment/ping';
 
 
 function findTestsFromCommandLineArguments(): Array<string> {
@@ -33,7 +34,8 @@ function findTestsFromCommandLineArguments(): Array<string> {
 
 function getHardCodedTestDeclarations(): Array<any> {
     return [
-        TestHelloworld
+        PingTestEnvironment
+        , TestHelloworld
         , TestUsersCaseAPI
         , TestDiscretionaryItems
         , TestStatsAPI
@@ -63,8 +65,6 @@ function getTestCaseInstances(testDeclarations: Array<any>) {
 }
 
 async function runTests(testDeclarations: Array<any>) {
-    await pingTestEnvironment();
-
     const tests: Array<TestCase> = getTestCaseInstances(testDeclarations);
     for (let i = 0; i < tests.length; i++) {
         const test = tests[i];
