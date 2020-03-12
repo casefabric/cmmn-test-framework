@@ -50,14 +50,14 @@ export default class TestHelloworld extends TestCase {
         // return;
 
         // Simple test
-        const availableTasks = await taskService.getTasks(sender, { tenant: tenant, taskState: 'Unassigned' });
-        console.log('We have ' + availableTasks.length + ' unassigned tasks in tenant ' + tenant);
+        // const availableTasks = await taskService.getTasks(sender, { tenant: tenant, taskState: 'Unassigned' });
+        // console.log('We have ' + availableTasks.length + ' unassigned tasks in tenant ' + tenant);
 
-        await taskService.getTasks(sender, { tenant: tenant, taskState: 'Unassigned' });
+        // await taskService.getTasks(sender, { tenant: tenant, taskState: 'Unassigned' });
 
         // 
-        const cases = await caseService.getCases(sender, { tenant: tenant, numberOfResults: 10000 });
-        console.log("We have " + cases.length + " cases ...");
+        // const cases = await caseService.getCases(sender, { tenant: tenant, numberOfResults: 10000 });
+        // console.log("We have " + cases.length + " cases ...");
 
         const taskName = 'Receive Greeting and Send response';
         const planItem = caseInstance.planitems.find(p => p.name === taskName);
@@ -144,7 +144,7 @@ async function assertTask(task: Task, action: string, expectedState: string = ''
             throw new Error(`Task ${task.taskName} is not assigned to '${expectedAssignee}' but to user '${task.assignee}'`);
         }
         if (expectedOwner && task.owner !== expectedOwner.id) {
-            throw new Error(`Task ${task.taskName} is not owned by '${expectedAssignee}' but by '${task.assignee}'`);
+            throw new Error(`Task ${task.taskName} is not owned by '${expectedOwner}' but by '${task.owner}'`);
         }
     });
 }
