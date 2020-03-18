@@ -1,0 +1,5 @@
+<caseFileItemDefinition definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" name="incidentdetails">
+    <property name="Title" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    <property name="Description" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    <property name="Type" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+</caseFileItemDefinition>
