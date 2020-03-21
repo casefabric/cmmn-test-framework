@@ -34,7 +34,7 @@ export default class TestHelloworld extends TestCase {
                 From: sender.id
             }
         };
-        const startCase = { tenant, definition, inputs };
+        const startCase = { tenant, definition, inputs, debug: true };
         // const startCase = { tenant, definition, inputs, caseInstanceId: 'Ueè' };
         // const startCase = { tenant, definition, inputs, caseInstanceId: tenant };
         const taskOutput = {
@@ -129,7 +129,7 @@ export default class TestHelloworld extends TestCase {
         if (casePlan?.currentState !== 'Completed') {
             throw new Error('Expecting case to be completed at the end, but it is in state ' + casePlan?.currentState);
         } else {
-            console.log('Case completed!')
+            console.log('Case completed! \n ' + caseInstance.id);
         }
     }
 }

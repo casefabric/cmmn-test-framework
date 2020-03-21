@@ -17,12 +17,14 @@ export default class CaseService {
         console.log("Creating Case[" + command.definition + "] in tenant " + command.tenant);
         const url = '/cases';
         const caseInstanceId = command.caseInstanceId ? command.caseInstanceId : undefined;
+        const debug = command.debug ? command.debug : undefined;
         const request = {
             inputs: command.inputs,
             caseTeam: command.caseTeam,
             definition: command.definition,
             tenant: command.tenant,
-            caseInstanceId
+            caseInstanceId,
+            debug
         }
         const json = await cafienneService.post(url, user, request).then(checkJSONResponse);
         // Hack: copy "StartCaseResponse.caseInstanceId" to "Case.id" in the json prior to instantiating Case.
