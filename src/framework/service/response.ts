@@ -1,13 +1,12 @@
-import { Response } from 'node-fetch';
 import { DOMParser } from 'xmldom';
 
 export default class CafienneResponse {
     private json_prop?: any;
-    private text_prop?: string;
+    private text_prop: string = '';
     private hasText: boolean = false;
 
     /**
-     * Simple wrapper around node-fetch response.
+     * Simple wrapper around isomorphic-fetch response.
      * But this one you can invoke .text() and .json() multiple times and also both can be invoked on same response (unlike in node-fetch)
      * @param response 
      */

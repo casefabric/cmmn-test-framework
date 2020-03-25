@@ -1,5 +1,4 @@
-import { Response, Headers } from 'node-fetch';
-import fetch from 'node-fetch';
+import fetch from 'isomorphic-fetch';
 import Config from '../../config';
 import User from '../user';
 import QueryFilter, { extendURL } from './queryfilter';
