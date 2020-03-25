@@ -1,0 +1,8 @@
+<caseFileItemDefinition name="Traveller" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified">
+    <property name="Name" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    <property name="Email" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    <property name="Nationality" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    <property name="PassNo" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    <property name="isVisaDocumentsAvailable" type="http://www.omg.org/spec/CMMN/PropertyType/boolean"/>
+    <property name="isESTAApplicationSubmitted" type="http://www.omg.org/spec/CMMN/PropertyType/boolean"/>
+</caseFileItemDefinition>

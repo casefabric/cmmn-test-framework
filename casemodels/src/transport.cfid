@@ -1,0 +1,5 @@
+<caseFileItemDefinition name="Transport" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified">
+    <property name="ModeOfTransport" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    <property name="POMVMake" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    <property name="POMVLicense" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+</caseFileItemDefinition>

@@ -1,0 +1,7 @@
+<caseFileItemDefinition name="Meeting" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified">
+    <property name="StartDate" type="http://www.omg.org/spec/CMMN/PropertyType/date"/>
+    <property name="StartTime" type="http://www.omg.org/spec/CMMN/PropertyType/time"/>
+    <property name="EndDate" type="http://www.omg.org/spec/CMMN/PropertyType/date"/>
+    <property name="EndTime" type="http://www.omg.org/spec/CMMN/PropertyType/time"/>
+    <property name="DurationIncLeave" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
+</caseFileItemDefinition>

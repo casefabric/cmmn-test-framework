@@ -1,0 +1,970 @@
+<case id="travelrequest.case" name="travelrequest" description="Travel Request">
+    <caseFileModel>
+        <caseFileItem id="cfi_csKsD_0" name="TravelRequest" multiplicity="ExactlyOne" definitionRef="travelrequest.cfid">
+            <children>
+                <caseFileItem id="cfi_csDtI_11" name="TravelDetails" multiplicity="ExactlyOne" definitionRef="traveldetails.cfid">
+                    <children>
+                        <caseFileItem id="cfi_csDtI_12" name="Destination" multiplicity="ZeroOrMore" definitionRef="destination.cfid"/>
+                    </children>
+                </caseFileItem>
+                <caseFileItem id="cfi_cs6RF_10" name="TravellerDetails" multiplicity="ExactlyOne" definitionRef="travellerdetails.cfid">
+                    <children>
+                        <caseFileItem id="cfi_cs6RF_11" name="Traveller" multiplicity="ZeroOrMore" definitionRef="traveller.cfid"/>
+                    </children>
+                </caseFileItem>
+                <caseFileItem id="cfi_csO0y_8" name="TravelOrderDoc" multiplicity="ExactlyOne" definitionRef="travelorderdoc.cfid"/>
+                <caseFileItem id="cfi_cs9Q0_4" name="Meeting" multiplicity="ExactlyOne" definitionRef="meeting.cfid"/>
+                <caseFileItem id="cfi_cs9Q0_3" name="Transport" multiplicity="ExactlyOne" definitionRef="transport.cfid"/>
+                <caseFileItem id="cfi_cs9Q0_5" name="Project" multiplicity="ExactlyOne" definitionRef="project.cfid"/>
+            </children>
+        </caseFileItem>
+        <caseFileItem id="cfi_csgxw_6" name="Approval" multiplicity="ZeroOrOne" definitionRef="approval.cfid"/>
+        <caseFileItem id="cfi_csgxw_7" name="TravelStatus" multiplicity="ZeroOrOne" definitionRef="travelstatus.cfid"/>
+    </caseFileModel>
+    <casePlanModel id="cm_travelrequest.case_travelrequest_0" name="Travel Request" autoComplete="true">
+        <planItem id="cm_cs9Q0_205" name="View Travel request" definitionRef="pid_cm_cs9Q0_205"/>
+        <planItem id="cm_cs9Q0_207" name="Approve and Generate Travel Order" definitionRef="pid_cm_cs9Q0_207"/>
+        <planItem id="cm_csgxw_213" name="Request Submitted" definitionRef="pid_cm_csgxw_213">
+            <entryCriterion id="_4wCNa_0" name="EntryCriterion_0" sentryRef="cm_csGrn_388"/>
+        </planItem>
+        <planItem id="cm_csgxw_219" name="Approved" definitionRef="pid_cm_csgxw_219">
+            <entryCriterion id="_4wCNa_1" name="EntryCriterion_1" sentryRef="cm_csgxw_222"/>
+        </planItem>
+        <planItem id="cm_csgxw_220" name="Disapproved" definitionRef="pid_cm_csgxw_220">
+            <entryCriterion id="_4wCNa_2" name="EntryCriterion_2" sentryRef="cm_csgxw_221"/>
+        </planItem>
+        <planItem id="cm_csgxw_223" name="Travel Arrangements" definitionRef="pid_cm_csgxw_223">
+            <entryCriterion id="_4wCNa_3" name="EntryCriterion_3" sentryRef="cm_csgxw_225"/>
+            <exitCriterion id="_4wCNa_4" name="ExitCriterion_0" sentryRef="cm_cskek_645"/>
+        </planItem>
+        <planItem id="cm_csgxw_228" name="Send approval to requestor" definitionRef="pid_cm_csgxw_228">
+            <entryCriterion id="_4wCNa_5" name="EntryCriterion_4" sentryRef="cm_css9P_478"/>
+            <entryCriterion id="_4wCNa_6" name="EntryCriterion_5" sentryRef="cm_csgxw_230"/>
+        </planItem>
+        <planItem id="cm_csEae_323" name="Cancel Travel request" definitionRef="pid_cm_csEae_323"/>
+        <planItem id="cm_csSAF_389" name="Check prerequisites" definitionRef="pid_cm_csSAF_389"/>
+        <sentry id="cm_csGrn_388">
+            <planItemOnPart id="ref_id_cm_cs9Q0_205" sourceRef="cm_cs9Q0_205">
+                <standardEvent>start</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <sentry id="cm_csgxw_222">
+            <ifPart contextRef="cfi_csgxw_6">
+                <condition language="spel">
+                    <body>
+                        <![CDATA[Approval.Status == "approved"]]>
+                    </body>
+                </condition>
+            </ifPart>
+            <planItemOnPart id="ref_id_cm_cs9Q0_207" sourceRef="cm_cs9Q0_207">
+                <standardEvent>complete</standardEvent>
+            </planItemOnPart>
+            <planItemOnPart id="ref_id_cm_csSAF_389" sourceRef="cm_csSAF_389">
+                <standardEvent>complete</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <sentry id="cm_csgxw_221">
+            <ifPart contextRef="cfi_csgxw_6">
+                <condition language="spel">
+                    <body>
+                        <![CDATA[Approval.Status == "disapproved"]]>
+                    </body>
+                </condition>
+            </ifPart>
+            <planItemOnPart id="ref_id_cm_cs9Q0_207" sourceRef="cm_cs9Q0_207">
+                <standardEvent>complete</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <sentry id="cm_csgxw_225">
+            <planItemOnPart id="ref_id_cm_csgxw_219" sourceRef="cm_csgxw_219">
+                <standardEvent>occur</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <sentry id="cm_cskek_645">
+            <planItemOnPart id="ref_id_cm_csjTZ_642" sourceRef="cm_csjTZ_642">
+                <standardEvent>complete</standardEvent>
+            </planItemOnPart>
+            <planItemOnPart id="ref_id_cm_csgxw_226" sourceRef="cm_csgxw_226">
+                <standardEvent>complete</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <sentry id="cm_css9P_478">
+            <planItemOnPart id="ref_id_cm_csgxw_219" sourceRef="cm_csgxw_219">
+                <standardEvent>occur</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <sentry id="cm_csgxw_230">
+            <planItemOnPart id="ref_id_cm_csgxw_220" sourceRef="cm_csgxw_220">
+                <standardEvent>occur</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <sentry id="cm_csEae_324">
+            <planItemOnPart id="ref_id_cm_csEae_323" sourceRef="cm_csEae_323">
+                <standardEvent>occur</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <planningTable id="pt_cm_undefined_3">
+            <discretionaryItem id="cm_csgxw_215" name="Select approver manually" definitionRef="pid_cm_csgxw_215" authorizedRoleRefs="role_csKsD_1"/>
+        </planningTable>
+        <exitCriterion id="_4wCNa_13" name="ExitCriterion_1" sentryRef="cm_csEae_324"/>
+        <humanTask id="pid_cm_cs9Q0_205" name="View Travel request" isBlocking="true" performerRef="role_csKsD_1">
+            <inputs id="inTP_cm_cs9Q0_205_0" name="TravelRequest" bindingRef="cfi_csKsD_0"/>
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="managetravelrequest.humantask">
+                    <duedate id="_4wCNa_45" contextRef="cfi_csKsD_0">
+                        <condition id="_4wCNa_46" language="spel">
+                            <body>
+                                <![CDATA[(T(java.time.LocalDate).parse(TravelRequest.TravelDetails.DepartureDate).atStartOfDay().toInstant(T(java.time.ZoneOffset).UTC)).toString()]]>
+                            </body>
+                        </condition>
+                    </duedate>
+                    <assignment id="_4wCNa_43" contextRef="cfi_csKsD_0">
+                        <condition id="_4wCNa_44" language="spel">
+                            <body>
+                                <![CDATA[TravelRequest.TravellerDetails.Requestor.toLowerCase()]]>
+                            </body>
+                        </condition>
+                    </assignment>
+                    <parameterMapping id="inPM_cm_csMh4_6_0" sourceRef="inTP_cm_cs9Q0_205_0" targetRef="TravelRequest"/>
+                </cafienne:implementation>
+            </extensionElements>
+        </humanTask>
+        <humanTask id="pid_cm_csgxw_208" name="Approve Travel request" isBlocking="true" performerRef="role_csKsD_0">
+            <inputs id="inTP_cm_csgxw_208_0" name="TravelRequest" bindingRef="cfi_csKsD_0"/>
+            <outputs id="outTP_cm_csgxw_208_0" name="Approval" bindingRef="cfi_csgxw_6"/>
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="approvetravelrequest.humantask">
+                    <duedate id="_4wCNa_50" contextRef="cfi_csKsD_0">
+                        <condition id="_4wCNa_51" language="spel">
+                            <body>
+                                <![CDATA[(T(java.time.LocalDate).parse(TravelRequest.TravelDetails.DepartureDate).atStartOfDay().toInstant(T(java.time.ZoneOffset).UTC).minus(1, T(java.time.temporal.ChronoUnit).DAYS)).toString()]]>
+                            </body>
+                        </condition>
+                    </duedate>
+                    <assignment id="_4wCNa_48" contextRef="cfi_csKsD_0">
+                        <condition id="_4wCNa_49" language="spel">
+                            <body>
+                                <![CDATA[caseInstance.getCaseTeam().getMemberWithRole("Approver")]]>
+                            </body>
+                        </condition>
+                    </assignment>
+                    <parameterMapping id="inPM_cm_cslsq_10_0" sourceRef="inTP_cm_csgxw_208_0" targetRef="TravelRequest_2"/>
+                    <parameterMapping id="outPM_cm_csFY2_10_0" sourceRef="Approval_2" targetRef="outTP_cm_csgxw_208_0"/>
+                </cafienne:implementation>
+            </extensionElements>
+        </humanTask>
+        <humanTask id="pid_cm_csgxw_210" name="Create Travel Order" isBlocking="true" performerRef="role_csKsD_2">
+            <inputs id="inTP_cm_csgxw_210_0" name="TravelRequest" bindingRef="cfi_csKsD_0"/>
+            <outputs id="outTP_cm_csgxw_210_0" name="Project" bindingRef="cfi_cs9Q0_5"/>
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="createtravelpurchaseorder.humantask">
+                    <parameterMapping id="inPM_cm_csMHr_12_0" sourceRef="inTP_cm_csgxw_210_0" targetRef="TravelRequest_3"/>
+                    <parameterMapping id="inPM_cm_csMHr_12_1" sourceRef="inTP_cm_csgxw_210_0" targetRef="DueDate_3">
+                        <transformation language="spel">
+                            <body>
+                                <![CDATA[(T(java.time.LocalDate).parse(TravelRequest.TravelDetails.DepartureDate).atStartOfDay().toInstant(T(java.time.ZoneOffset).UTC)).toString()]]>
+                            </body>
+                        </transformation>
+                    </parameterMapping>
+                    <parameterMapping id="outPM_cm_csMHr_12_0" sourceRef="Project_3" targetRef="outTP_cm_csgxw_210_0"/>
+                </cafienne:implementation>
+            </extensionElements>
+        </humanTask>
+        <humanTask id="pid_cm_cs3yg_484" name="Arrange Visa and ESTA" isBlocking="true" performerRef="role_csKsD_1">
+            <inputs id="inTP_cm_csZvZ_679_0" name="TravelRequest" bindingRef="cfi_csKsD_0"/>
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="arrangevisa.humantask">
+                    <duedate id="_4wCNa_53" contextRef="cfi_csKsD_0">
+                        <condition id="_4wCNa_54" language="spel">
+                            <body>
+                                <![CDATA[(T(java.time.LocalDate).parse(TravelRequest.TravelDetails.DepartureDate).atStartOfDay().toInstant(T(java.time.ZoneOffset).UTC)).toString()]]>
+                            </body>
+                        </condition>
+                    </duedate>
+                    <assignment id="_4wCNa_47" contextRef="cfi_csKsD_0">
+                        <condition id="_4wCNa_52" language="spel">
+                            <body>
+                                <![CDATA[TravelRequest.TravellerDetails.Requestor.toLowerCase()
+                                ]]>
+                            </body>
+                        </condition>
+                    </assignment>
+                    <parameterMapping id="inPM_cm_csEQz_36_1" sourceRef="inTP_cm_csZvZ_679_0" targetRef="TravelRequest"/>
+                </cafienne:implementation>
+            </extensionElements>
+        </humanTask>
+        <humanTask id="pid_cm_csgxw_215" name="Select approver manually" isBlocking="true" performerRef="role_csKsD_2">
+            <inputs id="inTP_cm_csgxw_215_0" name="TravelRequest" bindingRef="cfi_csKsD_0"/>
+            <outputs id="outTP_cm_cs24h_12_0" name="Project" bindingRef="cfi_cs9Q0_5"/>
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="manuallysetapprover.humantask">
+                    <parameterMapping id="inPM_cm_csd2I_4_0" sourceRef="inTP_cm_csgxw_215_0" targetRef="TravelRequest_1"/>
+                    <parameterMapping id="inPM_cm_csd2I_4_1" sourceRef="inTP_cm_csgxw_215_0" targetRef="DueDate_1">
+                        <transformation language="spel">
+                            <body>
+                                <![CDATA[(T(java.time.LocalDate).parse(TravelRequest.TravelDetails.DepartureDate).atStartOfDay().toInstant(T(java.time.ZoneOffset).UTC).minus(1, T(java.time.temporal.ChronoUnit).DAYS)).toString()]]>
+                            </body>
+                        </transformation>
+                    </parameterMapping>
+                    <parameterMapping id="outPM_cm_csd2I_4_0" sourceRef="Project_1" targetRef="outTP_cm_cs24h_12_0"/>
+                </cafienne:implementation>
+            </extensionElements>
+        </humanTask>
+        <processTask id="pid_cm_cs3yg_479" name="Budget allocation" isBlocking="true" processRef="allocatefunds.process">
+            <inputs id="inTP_cm_cs3Mp_857_0" name="travelrequest" bindingRef="cfi_csKsD_0"/>
+            <inputs id="inTP_cm_cs3Mp_857_1" name="approval" bindingRef="cfi_csgxw_6"/>
+            <parameterMapping id="inPM_cm_cs3Mp_857_0" sourceRef="inTP_cm_cs3Mp_857_0" targetRef="travelrequest"/>
+            <parameterMapping id="inPM_cm_cs3Mp_857_1" sourceRef="inTP_cm_cs3Mp_857_1" targetRef="approval"/>
+        </processTask>
+        <processTask id="pid_cm_cs3yg_487" name="Send Notification to Approver" isBlocking="true" processRef="notifyapprovelemail.process">
+            <inputs id="inTP_cm_csjTZ_604_0" name="travelrequest" bindingRef="cfi_csKsD_0"/>
+            <parameterMapping id="inPM_cm_csjTZ_604_2" sourceRef="inTP_cm_csjTZ_604_0" targetRef="travellerName">
+                <transformation language="spel">
+                    <body>
+                        <![CDATA[travelrequest.TravellerDetails.Traveller[0].Name]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+            <parameterMapping id="inPM_cm_csjTZ_604_3" sourceRef="inTP_cm_csjTZ_604_0" targetRef="destinationCountry">
+                <transformation language="spel">
+                    <body>
+                        <![CDATA[travelrequest.TravelDetails.Destination[0].Country]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+            <parameterMapping id="inPM_cm_csjTZ_604_4" sourceRef="inTP_cm_csjTZ_604_0" targetRef="destinationCity">
+                <transformation language="spel">
+                    <body>
+                        <![CDATA[travelrequest.TravelDetails.Destination[0].City]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+            <parameterMapping id="inPM_cm_csjTZ_604_5" sourceRef="inTP_cm_csjTZ_604_0" targetRef="departureDate">
+                <transformation language="spel">
+                    <body>
+                        <![CDATA[travelrequest.TravelDetails.DepartureDate]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+            <parameterMapping id="inPM_cm_csjTZ_604_6" sourceRef="inTP_cm_csjTZ_604_0" targetRef="returnDate">
+                <transformation language="spel">
+                    <body>
+                        <![CDATA[travelrequest.TravelDetails.ReturnDate]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+            <parameterMapping id="inPM_cm_csjTZ_604_7" sourceRef="inTP_cm_csjTZ_604_0" targetRef="toName">
+                <transformation language="spel">
+                    <body>
+                        <![CDATA[caseInstance.getCaseTeam().getMemberWithRole("Approver")]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+            <parameterMapping id="inPM_cm_csjTZ_604_8" sourceRef="inTP_cm_csjTZ_604_0" targetRef="toAddress">
+                <transformation language="spel">
+                    <body>
+                        <![CDATA[caseInstance.getCaseTeam().getMemberWithRole("Approver") + "@email.com"]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+            <parameterMapping id="inPM_cm_csVHC_16_7" sourceRef="inTP_cm_csjTZ_604_0" targetRef="taskId">
+                <transformation language="spel">
+                    <body>
+                        <![CDATA[caseInstance.getPlanItemByName("Approve Travel request").getId()]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+            <parameterMapping id="inPM_cm_csVHC_16_8" sourceRef="inTP_cm_csjTZ_604_0" targetRef="caseId">
+                <transformation language="spel">
+                    <body>
+                        <![CDATA[caseInstance.getId()]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+        </processTask>
+        <processTask id="pid_cm_csgxw_226" name="Email travel office" isBlocking="true" processRef="emailtravelofffice.process">
+            <inputs id="inTP_cm_csTEb_966_4" name="travelrequest" bindingRef="cfi_csKsD_0"/>
+            <parameterMapping id="inPM_cm_csTEb_966_5" sourceRef="inTP_cm_csTEb_966_4" targetRef="destinationCountry">
+                <transformation language="spel">
+                    <body>
+                        <![CDATA[travelrequest.TravelDetails.Destination[0].Country]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+            <parameterMapping id="inPM_cm_csTEb_966_6" sourceRef="inTP_cm_csTEb_966_4" targetRef="destinationCity">
+                <transformation language="spel">
+                    <body>
+                        <![CDATA[travelrequest.TravelDetails.Destination[0].City]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+            <parameterMapping id="inPM_cm_csTEb_966_7" sourceRef="inTP_cm_csTEb_966_4" targetRef="departureDate">
+                <transformation language="spel">
+                    <body>
+                        <![CDATA[travelrequest.TravelDetails.DepartureDate]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+            <parameterMapping id="inPM_cm_csTEb_966_8" sourceRef="inTP_cm_csTEb_966_4" targetRef="returnDate">
+                <transformation language="spel">
+                    <body>
+                        <![CDATA[travelrequest.TravelDetails.ReturnDate]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+            <parameterMapping id="inPM_cm_csTEb_966_9" sourceRef="inTP_cm_csTEb_966_4" targetRef="departurePoint">
+                <transformation language="spel">
+                    <body>
+                        <![CDATA[travelrequest.TravelDetails.DeparturePoint]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+            <parameterMapping id="inPM_cm_csTEb_966_10" sourceRef="inTP_cm_csTEb_966_4" targetRef="returnPoint">
+                <transformation language="spel">
+                    <body>
+                        <![CDATA[travelrequest.TravelDetails.ReturnPoint]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+            <parameterMapping id="inPM_cm_csTEb_966_11" sourceRef="inTP_cm_csTEb_966_4" targetRef="transportMode">
+                <transformation language="spel">
+                    <body>
+                        <![CDATA[travelrequest.Transport.ModeOfTransport]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+            <parameterMapping id="inPM_cm_csTEb_966_12" sourceRef="inTP_cm_csTEb_966_4" targetRef="fromName">
+                <transformation language="spel">
+                    <body>
+                        <![CDATA[travelrequest.TravellerDetails.Traveller[0].Name]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+            <parameterMapping id="inPM_cm_csTEb_966_13" sourceRef="inTP_cm_csTEb_966_4" targetRef="fromAddress">
+                <transformation language="spel">
+                    <body>
+                        <![CDATA[travelrequest.TravellerDetails.Traveller[0].Email]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+        </processTask>
+        <processTask id="pid_cm_csjTZ_640" name="Generate Travel Order" isBlocking="true" processRef="generatepurchaseorder.process">
+            <inputs id="inTP_cm_csScW_1018_2" name="travelrequest" bindingRef="cfi_csKsD_0"/>
+            <inputs id="inTP_cm_csScW_1018_3" name="approval" bindingRef="cfi_csgxw_6"/>
+            <outputs id="outTP_cm_csScW_1018_1" name="travelorder" bindingRef="cfi_csO0y_8"/>
+            <parameterMapping id="inPM_cm_csScW_1018_3" sourceRef="inTP_cm_csScW_1018_3" targetRef="approval"/>
+            <parameterMapping id="inPM_cm_cs5fo_847_2" sourceRef="inTP_cm_csScW_1018_2" targetRef="travelrequest">
+                <transformation language="spel">
+                    <body>
+                        <![CDATA["{""Approval"":"+caseInstance.getCaseFile().getItem("Approval").getValue().toString()+", ""travelrequest"": "+caseInstance.getCaseFile().getItem("TravelRequest").getValue().toString()+"}"]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+            <parameterMapping id="outPM_cm_csO0y_733_0" sourceRef="travelorder" targetRef="outTP_cm_csScW_1018_1"/>
+        </processTask>
+        <processTask id="pid_cm_csjTZ_642" name="Email Travel Order" isBlocking="true" processRef="emailpurchaseorder.process">
+            <inputs id="inTP_cm_csBJk_720_1" name="travelorder" bindingRef="cfi_csO0y_8"/>
+            <inputs id="inTP_cm_csO0y_735_2" name="filename"/>
+            <inputs id="inTP_cm_csRSq_791_2" name="travelrequest" bindingRef="cfi_csKsD_0"/>
+            <parameterMapping id="inPM_cm_csRSq_791_0" sourceRef="inTP_cm_csO0y_735_2" targetRef="filename">
+                <transformation language="spel">
+                    <body>
+                        <![CDATA["TravelOrder.pdf"]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+            <parameterMapping id="inPM_cm_csRSq_791_1" sourceRef="inTP_cm_csBJk_720_1" targetRef="travelorder"/>
+            <parameterMapping id="inPM_cm_csRSq_791_2" sourceRef="inTP_cm_csRSq_791_2" targetRef="destinationCity">
+                <transformation language="spel">
+                    <body>
+                        <![CDATA[travelrequest.TravelDetails.Destination[0].City]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+            <parameterMapping id="inPM_cm_csRSq_791_3" sourceRef="inTP_cm_csRSq_791_2" targetRef="destinationCountry">
+                <transformation language="spel">
+                    <body>
+                        <![CDATA[travelrequest.TravelDetails.Destination[0].Country]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+            <parameterMapping id="inPM_cm_csRSq_791_4" sourceRef="inTP_cm_csRSq_791_2" targetRef="departureDate">
+                <transformation language="spel">
+                    <body>
+                        <![CDATA[travelrequest.TravelDetails.DepartureDate]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+            <parameterMapping id="inPM_cm_csRSq_791_5" sourceRef="inTP_cm_csRSq_791_2" targetRef="fromName">
+                <transformation language="spel">
+                    <body>
+                        <![CDATA[caseInstance.getCaseTeam().getMemberWithRole("PersonalAssistant")]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+            <parameterMapping id="inPM_cm_csRSq_791_6" sourceRef="inTP_cm_csRSq_791_2" targetRef="toName">
+                <transformation language="spel">
+                    <body>
+                        <![CDATA[travelrequest.TravellerDetails.Traveller[0].Name]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+            <parameterMapping id="inPM_cm_csRSq_791_7" sourceRef="inTP_cm_csRSq_791_2" targetRef="toAddress">
+                <transformation language="spel">
+                    <body>
+                        <![CDATA[travelrequest.TravellerDetails.Traveller[0].Email]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+        </processTask>
+        <processTask id="pid_cm_csgxw_228" name="Send approval to requestor" isBlocking="true" processRef="emailrequestor.process">
+            <inputs id="inTP_cm_csjTZ_617_2" name="travelrequest" bindingRef="cfi_csKsD_0"/>
+            <inputs id="inTP_cm_csjTZ_617_3" name="approval" bindingRef="cfi_csgxw_6"/>
+            <parameterMapping id="inPM_cm_csjTZ_617_4" sourceRef="inTP_cm_csjTZ_617_3" targetRef="approvalStatus">
+                <transformation language="spel">
+                    <body>
+                        <![CDATA[approval.Status]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+            <parameterMapping id="inPM_cm_csjTZ_617_5" sourceRef="inTP_cm_csjTZ_617_2" targetRef="destinationCountry">
+                <transformation language="spel">
+                    <body>
+                        <![CDATA[travelrequest.TravelDetails.Destination[0].Country]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+            <parameterMapping id="inPM_cm_csjTZ_617_6" sourceRef="inTP_cm_csjTZ_617_2" targetRef="destinationCity">
+                <transformation language="spel">
+                    <body>
+                        <![CDATA[travelrequest.TravelDetails.Destination[0].City]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+            <parameterMapping id="inPM_cm_csjTZ_617_7" sourceRef="inTP_cm_csjTZ_617_2" targetRef="departureDate">
+                <transformation language="spel">
+                    <body>
+                        <![CDATA[travelrequest.TravelDetails.DepartureDate]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+            <parameterMapping id="inPM_cm_csjTZ_617_8" sourceRef="inTP_cm_csjTZ_617_3" targetRef="fromName">
+                <transformation language="spel">
+                    <body>
+                        <![CDATA[approval.ApprovedBy]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+            <parameterMapping id="inPM_cm_csjTZ_617_9" sourceRef="inTP_cm_csjTZ_617_3" targetRef="fromAddress">
+                <transformation language="spel">
+                    <body>
+                        <![CDATA[approval.ApprovedBy + "@email.com"]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+            <parameterMapping id="inPM_cm_csjTZ_617_10" sourceRef="inTP_cm_csjTZ_617_2" targetRef="toName">
+                <transformation language="spel">
+                    <body>
+                        <![CDATA[travelrequest.TravellerDetails.Requestor]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+            <parameterMapping id="inPM_cm_csjTZ_617_11" sourceRef="inTP_cm_csjTZ_617_2" targetRef="toAddress">
+                <transformation language="spel">
+                    <body>
+                        <![CDATA[travelrequest.TravellerDetails.Requestor + "@email.com"]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+        </processTask>
+        <processTask id="pid_cm_csSAF_392" name="Check travel requirements" isBlocking="true" processRef="checktravelrequirements.process">
+            <inputs id="inTP_cm_cs6RF_34_2" name="travellers" bindingRef="cfi_cs6RF_11"/>
+        </processTask>
+        <milestone id="pid_cm_csgxw_213" name="Request Submitted"/>
+        <milestone id="pid_cm_csgxw_219" name="Approved"/>
+        <milestone id="pid_cm_csgxw_220" name="Disapproved"/>
+        <userEvent id="pid_cm_csEae_323" name="Cancel Travel request" authorizedRoleRefs="role_csKsD_1 role_csKsD_0"/>
+        <stage id="pid_cm_cs9Q0_207" name="Approve and Generate Travel Order" autoComplete="true">
+            <planItem id="cm_csgxw_208" name="Approve Travel request" definitionRef="pid_cm_csgxw_208"/>
+            <planItem id="cm_csgxw_210" name="Create Travel Order" definitionRef="pid_cm_csgxw_210">
+                <entryCriterion id="_4wCNa_7" name="EntryCriterion_6" sentryRef="cm_csgxw_212"/>
+            </planItem>
+            <planItem id="cm_cs3yg_479" name="Budget allocation" definitionRef="pid_cm_cs3yg_479">
+                <entryCriterion id="_4wCNa_8" name="EntryCriterion_7" sentryRef="cm_cs3yg_481"/>
+            </planItem>
+            <planItem id="cm_cs3yg_487" name="Send Notification to Approver" definitionRef="pid_cm_cs3yg_487">
+                <entryCriterion id="_4wCNa_9" name="EntryCriterion_8" sentryRef="cm_cs3yg_489"/>
+            </planItem>
+            <sentry id="cm_csgxw_212">
+                <ifPart contextRef="cfi_csgxw_6">
+                    <condition language="spel">
+                        <body>
+                            <![CDATA[Approval.Status == "approved"]]>
+                        </body>
+                    </condition>
+                </ifPart>
+                <planItemOnPart id="ref_id_cm_csgxw_208" sourceRef="cm_csgxw_208">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <sentry id="cm_cs3yg_481">
+                <ifPart contextRef="cfi_csKsD_0">
+                    <condition language="spel">
+                        <body>
+                            <![CDATA[1 == 0]]>
+                        </body>
+                    </condition>
+                </ifPart>
+                <planItemOnPart id="ref_id_cm_csgxw_210" sourceRef="cm_csgxw_210">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <sentry id="cm_cs3yg_489">
+                <planItemOnPart id="ref_id_cm_csgxw_208" sourceRef="cm_csgxw_208">
+                    <standardEvent>start</standardEvent>
+                </planItemOnPart>
+            </sentry>
+        </stage>
+        <stage id="pid_cm_csgxw_223" name="Travel Arrangements" autoComplete="false">
+            <planItem id="cm_csgxw_226" name="Email travel office" definitionRef="pid_cm_csgxw_226"/>
+            <planItem id="cm_csjTZ_640" name="Generate Travel Order" definitionRef="pid_cm_csjTZ_640"/>
+            <planItem id="cm_csjTZ_642" name="Email Travel Order" definitionRef="pid_cm_csjTZ_642">
+                <entryCriterion id="_4wCNa_10" name="EntryCriterion_9" sentryRef="cm_csjTZ_644"/>
+            </planItem>
+            <sentry id="cm_csjTZ_644">
+                <planItemOnPart id="ref_id_cm_csjTZ_640" sourceRef="cm_csjTZ_640">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+            </sentry>
+        </stage>
+        <stage id="pid_cm_csSAF_389" name="Check prerequisites" autoComplete="true">
+            <planItem id="cm_csSAF_392" name="Check travel requirements" definitionRef="pid_cm_csSAF_392">
+                <entryCriterion id="_4wCNa_11" name="EntryCriterion_10" sentryRef="cm_cs3yg_483"/>
+            </planItem>
+            <planItem id="cm_cs3yg_484" name="Arrange Visa and ESTA" definitionRef="pid_cm_cs3yg_484">
+                <entryCriterion id="_4wCNa_12" name="EntryCriterion_11" sentryRef="cm_cs3yg_486"/>
+            </planItem>
+            <sentry id="cm_cs3yg_483">
+                <ifPart contextRef="cfi_csKsD_0">
+                    <condition language="spel">
+                        <body>
+                            <![CDATA[TravelRequest.TravelDetails.Destination[0].Country != "US" or TravelRequest.TravellerDetails.Traveller[0].Nationality == "US"]]>
+                        </body>
+                    </condition>
+                </ifPart>
+            </sentry>
+            <sentry id="cm_cs3yg_486">
+                <ifPart contextRef="cfi_csKsD_0">
+                    <condition language="spel">
+                        <body>
+                            <![CDATA[TravelRequest.TravellerDetails.Traveller[0].Nationality != "US" and TravelRequest.TravelDetails.Destination[0].Country == "US"]]>
+                        </body>
+                    </condition>
+                </ifPart>
+            </sentry>
+        </stage>
+    </casePlanModel>
+    <caseRoles id="role_csKsD_0" name="Approver" description="Approver of the Travel Request"/>
+    <caseRoles id="role_csKsD_2" name="PersonalAssistant" description="Personal Assistant"/>
+    <caseRoles id="role_csKsD_1" name="Requestor" description="Requestor of the Travel Request"/>
+    <input id="cs9Q0_inCPs_0" name="TravelRequest" bindingRef="cfi_csKsD_0"/>
+    <extensionElements mustUnderstand="false">
+        <cafienne:start-case-model xmlns:cafienne="org.cafienne">{
+                "schema": {
+                "type": "object",
+                "properties": {"TravelRequest": {"$ref": "#/definitions/TravelRequest"}},
+                "definitions": {
+                "TravelRequest": {
+                "type": "object",
+                "properties": {
+                "TravellerDetails": {"$ref": "#/definitions/TravellerDetails"},
+                "TravelDetails": {"$ref": "#/definitions/TravelDetails"},
+                "Meeting": {"$ref": "#/definitions/Meeting"},
+                "Transport": {"$ref": "#/definitions/Transport"},
+                "Project": {"$ref": "#/definitions/Project"}
+                }
+                },
+                "TravellerDetails":{
+                "title": "Requestor / Traveller Details",
+                "type": "object",
+                "required": ["Requestor",  "Traveller"],
+                "properties": {
+                "RequestDate": {
+                "title": "Request date",
+                "type": "string",
+                "format": "date",
+                "defaultValue": "$today"
+                },
+                "Requestor": {
+                "title": "Requestor",
+                "type": "string",
+                "default": "$CURRENT_USER"
+                },
+                "PointOfContact": {
+                "title": "Point of contact",
+                "type": "string"
+                },
+                "Traveller": {
+                "type": "array",
+                "minItems": 1,
+                "items": {"$ref": "#/definitions/Traveller"},
+                "default": [{"Nationality": "NL"}]
+                }
+                }
+                },
+                "TravelDetails":{
+                "title": "Destination and Dates",
+                "type": "object",
+                "required": [],
+                "properties": {
+                "Destination": {
+                "type": "array",
+                "minItems": 1,
+                "items": {"$ref": "#/definitions/Destination"},
+                "default": [{"Country" : "NL"}]
+                },
+                "DepartureDate": {
+                "title": "Departure date",
+                "type": "string",
+                "format": "date"
+                },
+                "ReturnDate": {
+                "title": "Return date",
+                "type": "string",
+                "format": "date"
+                },
+                "DeparturePoint": {
+                "title": "Departure point",
+                "type": "string"
+                },
+                "ReturnPoint": {
+                "title": "Return point",
+                "type": "string"
+                },
+                "AdvanceRequired": {
+                "title": "Advance required",
+                "type": "boolean"
+                },
+                "Purpose": {
+                "title": "Purpose",
+                "type": "string"
+                },
+                "Justification": {
+                "title": "Justification",
+                "type": "string"
+                },
+                "Comments": {
+                "title": "Comments",
+                "type": "string"
+                }
+                }
+                },
+                "Traveller": {
+                "title": "Traveller",
+                "type": "object",
+                "required": ["Name", "Email", "Nationality", "PassNo"],
+                "properties": {
+                "Name": {
+                "title": "Name",
+                "type": "string",
+                "default": "Joop"
+                },
+                "Email": {
+                "title": "Email",
+                "type": "string"
+                },
+                "Nationality": {
+                "title": "Nationality",
+                "type": "string",
+                "enumNames": [
+                "Albania",
+                "Belgium",
+                "Bulgaria",
+                "Canada",
+                "Croatia",
+                "Czech Rep",
+                "Denmark",
+                "Estonia",
+                "France",
+                "Germany",
+                "Greece",
+                "Hungary",
+                "Iceland",
+                "Italy",
+                "Latvia",
+                "Lithuania",
+                "Luxembourg",
+                "Netherlands",
+                "Norway",
+                "Poland",
+                "Portugal",
+                "Romania",
+                "Slovakia",
+                "Slovenia",
+                "Spain",
+                "Turkey",
+                "United Kingdom",
+                "USA"
+                ],
+                "enum": [
+                "AL",
+                "BE",
+                "BU",
+                "CA",
+                "HR",
+                "CZ",
+                "DA",
+                "EN",
+                "FR",
+                "GE",
+                "GR",
+                "HU",
+                "IC",
+                "IT",
+                "LG",
+                "LH",
+                "LU",
+                "NL",
+                "NO",
+                "PL",
+                "PO",
+                "RO",
+                "LO",
+                "SI",
+                "ES",
+                "TU",
+                "UK",
+                "US"
+                ]
+                },
+                "PassNo": {
+                "title": "Pass number",
+                "type": "string"
+                }
+                }
+                },
+                "Destination": {
+                "title": "Destination",
+                "type": "object",
+                "required": [
+                "City",
+                "Country"
+                ],
+                "properties": {
+                "Country": {
+                "title": "Country",
+                "type": "string",
+                "enumNames": [
+                "Albania",
+                "Belgium",
+                "Bulgaria",
+                "Canada",
+                "Croatia",
+                "Czech Rep",
+                "Denmark",
+                "Estonia",
+                "France",
+                "Germany",
+                "Greece",
+                "Hungary",
+                "Iceland",
+                "Italy",
+                "Latvia",
+                "Lithuania",
+                "Luxembourg",
+                "Netherlands",
+                "Norway",
+                "Poland",
+                "Portugal",
+                "Romania",
+                "Slovakia",
+                "Slovenia",
+                "Spain",
+                "Turkey",
+                "United Kingdom",
+                "USA"
+                ],
+                "enum": [
+                "AL",
+                "BE",
+                "BU",
+                "CA",
+                "HR",
+                "CZ",
+                "DA",
+                "EN",
+                "FR",
+                "GE",
+                "GR",
+                "HU",
+                "IC",
+                "IT",
+                "LG",
+                "LH",
+                "LU",
+                "NL",
+                "NO",
+                "PL",
+                "PO",
+                "RO",
+                "LO",
+                "SI",
+                "ES",
+                "TU",
+                "UK",
+                "US"
+                ]
+                },
+                "City": {
+                "title": "City",
+                "type": "string"
+                }
+                }
+                },
+                "Meeting": {
+                "title": "Meeting Details",
+                "type": "object",
+                "properties": {
+                "StartDate": {
+                "title": "Start date",
+                "type": "string",
+                "format": "date"
+                },
+                "StartTime": {
+                "title": "Start time",
+                "type": "string",
+                "format": "time"
+                },
+                "EndDate": {
+                "title": "End date",
+                "type": "string",
+                "format": "date"
+                },
+                "EndTime": {
+                "title": "End time",
+                "type": "string",
+                "format": "time"
+                },
+                "DurationIncLeave": {
+                "title": "Duration incl. leave",
+                "type": "integer"
+                }
+                }
+                },
+                "Transport": {
+                "title": "Transport Details",
+                "type": "object",
+                "required": ["ModeOfTransport"],
+                "properties": {
+                "ModeOfTransport": {
+                "title": "Mode of transport",
+                "type": "string",
+                "enum": [
+                "Shuttle",
+                "Staff car",
+                "Hire car",
+                "Train",
+                "Air",
+                "POMV"
+                ]
+                },
+                "POMVMake": {
+                "title": "POMV make",
+                "type": "string"
+                },
+                "POMVLicense": {
+                "title": "POMV license",
+                "type": "string"
+                }
+                }
+                },
+                "Project": {
+                "title": "Project Details",
+                "type": "object",
+                "required": [ ],
+                "properties": {
+                "IMIS-code": {
+                "title": "IMIS-code",
+                "type": "string"
+                },
+                "IMIS-activity-code": {
+                "title": "IMIS-activity-code",
+                "type": "string"
+                },
+                "Manager": {
+                "title": "Project manager",
+                "type": "string",
+                "default": "CgRsYW5hEgVsb2NhbA"
+                },
+                "ChiefServiceLine": {
+                "title": "Chief service line",
+                "type": "string"
+                },
+                "Assistant": {
+                "title": "Project assistant",
+                "type": "string",
+                "default": "CgRsYW5hEgVsb2NhbA"
+                }
+                }
+                }
+                }
+                },
+                "uiSchema": {
+                "TravelRequest": {
+                "ui:widget": "stepper",
+                "TravelDetails" : {
+                "Destination": {
+                "ui:help": "Destinations of travel. Click on the '+' to add more",
+                "items":{
+                "ui:order":["Country", "City"]
+                }
+                },
+                "Purpose": {
+                "ui:widget": "textarea",
+                "ui:help": "Short brief on the primary purpose for the travel"
+                },
+                "Justification": {
+                "ui:widget": "textarea",
+                "ui:help": "Any additional points you would like to add to the purpose"
+                },
+                "Comments": {
+                "ui:widget": "textarea",
+                "ui:help": "Any message or comment you would like to provide to the Approver"
+                }
+                },
+                "Transport" : {
+                "POMVMake": {"ui:help": "Manufacturer and make of your personal vehicle"},
+                "POMVLicense": {"ui:help": "License/ Registration number of your vehicle"}
+                },
+                "TravellerDetails" : {
+                "Requestor": {"ui:widget": "user-selector", "multiSelect" : false, "role" : "Requestor"},
+                "PointOfContact": {
+                "ui:widget": "user-selector",
+                "ui:help": "Person other than you who can be contacted for any queries on this travel",
+                "multiSelect" : false
+                },
+                "Traveller":{
+                "ui:help": "Details of person(s) travelling. Click on the '+' to add more",
+                "items":{
+                "PassNo":{
+                "ui:help": "Pass Number"
+                }
+                }
+                }
+                },
+                "Project" : {
+                "IMIS-code": {
+                "ui:help": "Project Code"
+                },
+                "IMIS-activity-code": {
+                "ui:help": "Project Activity Code"
+                },
+                "Manager": {"ui:widget": "user-selector", "multiSelect" : false, "role" : "Approver"},
+                "Assistant": {"ui:widget": "user-selector", "multiSelect" : false, "role" : "PersonalAssistant"}
+                }
+                }
+                }
+                }
+            </cafienne:start-case-model>
+    </extensionElements>
+</case>

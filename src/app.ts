@@ -14,6 +14,7 @@ import TestCaseFileAPI from './tests/api/casefile/testcasefileapi';
 import TestCasePlanAPI from './tests/api/caseplan/testcaseplanapi';
 import TestEventAuthorization from './tests/api/caseplan/testeventauthorization';
 import PingTestEnvironment from './tests/api/environment/ping';
+import TestTravelRequest from './tests/travelrequest/testtravelrequest';
 
 
 function findTestsFromCommandLineArguments(): Array<string> {
@@ -36,6 +37,7 @@ function getHardCodedTestDeclarations(): Array<any> {
     return [
         PingTestEnvironment
         , TestHelloworld
+        , TestTravelRequest
         , TestUsersCaseAPI
         , TestDiscretionaryItems
         , TestStatsAPI

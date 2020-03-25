@@ -1,0 +1,6 @@
+<caseFileItemDefinition name="Approval" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified">
+    <property name="Status" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    <property name="ApprovedBy" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    <property name="ApprovalTimestamp" type="http://www.omg.org/spec/CMMN/PropertyType/dateTime"/>
+    <property name="Motivation" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+</caseFileItemDefinition>

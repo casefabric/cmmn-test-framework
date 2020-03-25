@@ -1,0 +1,7 @@
+<caseFileItemDefinition name="Project" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified">
+    <property name="IMIS-code" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    <property name="IMIS-activity-code" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    <property name="Manager" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    <property name="ChiefServiceLine" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    <property name="Assistant" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+</caseFileItemDefinition>

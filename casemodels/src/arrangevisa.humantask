@@ -1,0 +1,83 @@
+<humantask>
+    <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" name="ArrangeVisa" description="Arrange Visa">
+        <input id="TravelRequest" name="TravelRequest"/>
+        <task-model>
+                            {
+                            "schema": {
+                            "type": "object",
+                            "properties": {
+                            "TravelRequest": {
+                            "$ref": "#/definitions/TravelRequest"
+                            }
+                            },
+                            "definitions": {
+                            "TravelRequest": {
+                            "type": "object",
+                            "properties": {
+                            "TravellerDetails": {"$ref": "#/definitions/TravellerDetails"}
+                            }
+                            },
+                            "TravellerDetails":{
+                            "title": "Requestor / Traveller Details",
+                            "type": "object",
+                            "properties": {
+                            "Requestor": {
+                            "title": "Requestor",
+                            "type": "string"
+                            },
+                            "Traveller": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {"$ref": "#/definitions/Traveller"},
+                            "defaultValue": []
+                            }
+                            }
+                            },
+                            "Traveller": {
+                            "title": "Traveller",
+                            "type": "object",
+                            "required": ["isESTAApplicationSubmitted","isVisaDocumentsAvailable"],
+                            "properties": {
+                            "Name": {
+                            "title": "Name",
+                            "type": "string"
+                            },
+                            "Email": {
+                            "title": "Email",
+                            "type": "string"
+                            },
+                            "PassNo": {
+                            "title": "PassNo",
+                            "type": "string"
+                            },
+                            "isESTAApplicationSubmitted": {
+                            "title": "ESTA application submitted",
+                            "type": "boolean"
+                            },
+                            "isVisaDocumentsAvailable": {
+                            "title": "Visa documents available",
+                            "type": "boolean"
+                            }
+                            }
+                            }
+                            }
+                            },
+                            "uiSchema": {
+                            "TravelRequest": {
+                            "TravellerDetails" : {
+                            "Traveller" :{
+                            "items":{
+                            "ui:order": ["Name", "Email", "PassNo", "isESTAApplicationSubmitted",  "isVisaDocumentsAvailable"],
+                            "Name": {"ui:readonly": true},
+                            "Email": {"ui:readonly": true},
+                            "PassNo": {"ui:readonly": true}
+                            }
+                            }
+                            }
+
+                            }
+                            }
+                            }
+                        </task-model>
+    </cafienne:implementation>
+</humantask>

@@ -1,0 +1,5 @@
+<caseFileItemDefinition name="TravellerDetails" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified">
+    <property name="RequestDate" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    <property name="Requestor" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    <property name="PointOfContact" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+</caseFileItemDefinition>

@@ -1,0 +1,10 @@
+<caseFileItemDefinition name="TravelDetails" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified">
+    <property name="DepartureDate" type="http://www.omg.org/spec/CMMN/PropertyType/date"/>
+    <property name="ReturnDate" type="http://www.omg.org/spec/CMMN/PropertyType/date"/>
+    <property name="DeparturePoint" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    <property name="ReturnPoint" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    <property name="AdvanceRequired" type="http://www.omg.org/spec/CMMN/PropertyType/boolean"/>
+    <property name="Purpose" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    <property name="Justification" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    <property name="Comments" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+</caseFileItemDefinition>

@@ -1,0 +1,409 @@
+<humantask>
+    <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" name="ApproveTravelRequest" description="Approve Travel Request">
+        <input id="TravelRequest_2" name="TravelRequest"/>
+        <output id="Approval_2" name="Approval"/>
+        <task-model>
+                            {
+                            "schema": {
+                            "type": "object",
+                            "properties": {
+                            "TravelRequest": {"$ref": "#/definitions/TravelRequest"},
+                            "Approval": {"$ref": "#/definitions/Approval"}
+                            },
+                            "definitions": {
+                            "TravelRequest": {
+                            "type": "object",
+                            "properties": {
+                            "TravellerDetails": {"$ref": "#/definitions/TravellerDetails"},
+                            "TravelDetails": {"$ref": "#/definitions/TravelDetails"},
+                            "Meeting": {"$ref": "#/definitions/Meeting"},
+                            "Transport": {"$ref": "#/definitions/Transport"},
+                            "Project": {"$ref": "#/definitions/Project"}
+                            }
+                            },
+                            "TravellerDetails":{
+                            "title": "Requestor / Traveller Details",
+                            "type": "object",
+                            "required": ["Requestor", "RequestDate", "Traveller"],
+                            "properties": {
+                            "RequestDate": {
+                            "title": "Request date",
+                            "type": "string",
+                            "format": "date",
+                            "defaultValue": "$today"
+                            },
+                            "Requestor": {
+                            "title": "Requestor",
+                            "type": "string"
+                            },
+                            "PointOfContact": {
+                            "title": "Point of contact",
+                            "type": "string"
+                            },
+                            "Traveller": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {"$ref": "#/definitions/Traveller"},
+                            "defaultValue": []
+                            }
+                            }
+                            },
+                            "TravelDetails":{
+                            "title": "Destination and Dates",
+                            "type": "object",
+                            "required": ["Destination", "DepartureDate", "ReturnDate"],
+                            "properties": {
+                            "Destination": {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {"$ref": "#/definitions/Destination"}
+                            },
+                            "DepartureDate": {
+                            "title": "Departure date",
+                            "type": "string",
+                            "format": "date"
+                            },
+                            "ReturnDate": {
+                            "title": "Return date",
+                            "type": "string",
+                            "format": "date"
+                            },
+                            "DeparturePoint": {
+                            "title": "Departure point",
+                            "type": "string"
+                            },
+                            "ReturnPoint": {
+                            "title": "Return point",
+                            "type": "string"
+                            },
+                            "AdvanceRequired": {
+                            "title": "Advance required",
+                            "type": "boolean"
+                            },
+                            "Purpose": {
+                            "title": "Purpose",
+                            "type": "string"
+                            },
+                            "Justification": {
+                            "title": "Justification",
+                            "type": "string"
+                            },
+                            "Comments": {
+                            "title": "Comments",
+                            "type": "string"
+                            }
+                            }
+                            },
+                            "Traveller": {
+                            "title": "Traveller",
+                            "type": "object",
+                            "required": ["Name", "Email", "Nationality", "PassNo"],
+                            "properties": {
+                            "Name": {
+                            "title": "Name",
+                            "type": "string"
+                            },
+                            "Email": {
+                            "title": "Email",
+                            "type": "string"
+                            },
+                            "Nationality": {
+                            "title": "Nationality",
+                            "type": "string",
+                            "enumNames": [
+                            "Albania",
+                            "Belgium",
+                            "Bulgaria",
+                            "Canada",
+                            "Croatia",
+                            "Czech Rep",
+                            "Denmark",
+                            "Estonia",
+                            "France",
+                            "Germany",
+                            "Greece",
+                            "Hungary",
+                            "Iceland",
+                            "Italy",
+                            "Latvia",
+                            "Lithuania",
+                            "Luxembourg",
+                            "Netherlands",
+                            "Norway",
+                            "Poland",
+                            "Portugal",
+                            "Romania",
+                            "Slovakia",
+                            "Slovenia",
+                            "Spain",
+                            "Turkey",
+                            "United Kingdom",
+                            "USA"
+                            ],
+                            "enum": [
+                            "AL",
+                            "BE",
+                            "BU",
+                            "CA",
+                            "HR",
+                            "CZ",
+                            "DA",
+                            "EN",
+                            "FR",
+                            "GE",
+                            "GR",
+                            "HU",
+                            "IC",
+                            "IT",
+                            "LG",
+                            "LH",
+                            "LU",
+                            "NL",
+                            "NO",
+                            "PL",
+                            "PO",
+                            "RO",
+                            "LO",
+                            "SI",
+                            "ES",
+                            "TU",
+                            "UK",
+                            "US"
+                            ]
+                            },
+                            "PassNo": {
+                            "title": "Pass number",
+                            "type": "string"
+                            }
+                            }
+                            },
+                            "Destination": {
+                            "title": "Destination",
+                            "type": "object",
+                            "required": [
+                            "City",
+                            "Country"
+                            ],
+                            "properties": {
+                            "City": {
+                            "title": "City",
+                            "type": "string"
+                            },
+                            "Country": {
+                            "title": "Country",
+                            "type": "string",
+                            "enumNames": [
+                            "Albania",
+                            "Belgium",
+                            "Bulgaria",
+                            "Canada",
+                            "Croatia",
+                            "Czech Rep",
+                            "Denmark",
+                            "Estonia",
+                            "France",
+                            "Germany",
+                            "Greece",
+                            "Hungary",
+                            "Iceland",
+                            "Italy",
+                            "Latvia",
+                            "Lithuania",
+                            "Luxembourg",
+                            "Netherlands",
+                            "Norway",
+                            "Poland",
+                            "Portugal",
+                            "Romania",
+                            "Slovakia",
+                            "Slovenia",
+                            "Spain",
+                            "Turkey",
+                            "United Kingdom",
+                            "USA"
+                            ],
+                            "enum": [
+                            "AL",
+                            "BE",
+                            "BU",
+                            "CA",
+                            "HR",
+                            "CZ",
+                            "DA",
+                            "EN",
+                            "FR",
+                            "GE",
+                            "GR",
+                            "HU",
+                            "IC",
+                            "IT",
+                            "LG",
+                            "LH",
+                            "LU",
+                            "NL",
+                            "NO",
+                            "PL",
+                            "PO",
+                            "RO",
+                            "LO",
+                            "SI",
+                            "ES",
+                            "TU",
+                            "UK",
+                            "US"
+                            ]
+                            }
+                            }
+                            },
+                            "Meeting": {
+                            "title": "Meeting Details",
+                            "type": "object",
+                            "properties": {
+                            "StartDate": {
+                            "title": "Start date",
+                            "type": "string",
+                            "format": "date"
+                            },
+                            "StartTime": {
+                            "title": "Start time",
+                            "type": "string",
+                            "format": "time"
+                            },
+                            "EndDate": {
+                            "title": "End date",
+                            "type": "string",
+                            "format": "date"
+                            },
+                            "EndTime": {
+                            "title": "End time",
+                            "type": "string",
+                            "format": "time"
+                            },
+                            "DurationIncLeave": {
+                            "title": "Duration incl. leave",
+                            "type": "integer"
+                            }
+                            }
+                            },
+                            "Transport": {
+                            "title": "Transport Details",
+                            "type": "object",
+                            "required": ["ModeOfTransport"],
+                            "properties": {
+                            "ModeOfTransport": {
+                            "title": "Mode of transport",
+                            "type": "string",
+                            "enum": [
+                            "Shuttle",
+                            "Staff car",
+                            "Hire car",
+                            "Train",
+                            "Air",
+                            "POMV"
+                            ]
+                            },
+                            "POMVMake": {
+                            "title": "POMV make",
+                            "type": "string"
+                            },
+                            "POMVLicense": {
+                            "title": "POMV license",
+                            "type": "string"
+                            }
+                            }
+                            },
+                            "Project": {
+                            "title": "Project Details",
+                            "type": "object",
+                            "required": ["Assistant"],
+                            "properties": {
+                            "IMIS-code": {
+                            "title": "IMIS-code",
+                            "type": "string"
+                            },
+                            "IMIS-activity-code": {
+                            "title": "IMIS-activity-code",
+                            "type": "string"
+                            },
+                            "Manager": {
+                            "title": "Project manager",
+                            "type": "string"
+                            },
+                            "ChiefServiceLine": {
+                            "title": "Chief service line",
+                            "type": "string"
+                            },
+                            "Assistant": {
+                            "title": "Project assistant",
+                            "type": "string"
+                            }
+                            }
+                            },
+                            "Approval": {
+                            "title": "Approval",
+                            "type": "object",
+                            "required": ["Status"],
+                            "properties": {
+                            "Status": {
+                            "title": "Approval status",
+                            "type": "string"
+                            },
+                            "ApprovedBy": {
+                            "title": "Approved by",
+                            "type": "string",
+                            "default": "$CURRENT_USER"
+                            },
+                            "ApprovalTimestamp": {
+                            "title": "Approval time",
+                            "type": "string",
+                            "format": "date-time",
+                            "defaultValue": "$now"
+                            },
+                            "Motivation": {
+                            "title": "Motivation",
+                            "type": "string"
+                            }
+                            }
+                            }
+                            }
+                            },
+                            "uiSchema": {
+                            "TravelRequest": {
+                            "ui:widget": "stepper",
+                            "ui:order": ["TravellerDetails", "TravelDetails", "Meeting", "Transport",  "Project"],
+                            "ui:readonly": true,
+                            "TravelDetails" : {
+                            "Purpose": {"ui:widget": "textarea"},
+                            "Justification": {"ui:widget": "textarea"}
+                            },
+                            "Transport" : {
+                            "POMVMake": {"ui:widget": "textarea"}
+                            },
+                            "TravellerDetails" : {
+                            "Requestor": {"ui:widget": "user-selector", "multiSelect" : false},
+                            "PointOfContact": {"ui:widget": "user-selector", "multiSelect" : false}
+                            },
+                            "Project" : {
+                            "Manager": {"ui:widget": "user-selector", "multiSelect" : false},
+                            "Assistant": {"ui:widget": "user-selector", "multiSelect" : false}
+                            }
+                            },
+                            "Approval" : {
+                            "Status": {
+                            "ui:widget": "radio",
+                            "options": {
+                            "Approved": "approved",
+                            "Rejected": "disapproved"
+                            },
+                            "defaultSelected": "approved"
+                            },
+                            "ApprovedBy": {"ui:widget": "user-selector", "multiSelect" : false},
+                            "ApprovalTimestamp" : {
+                            "ui:readonly": true
+                            }
+                            }
+                            }
+                            }
+                        </task-model>
+    </cafienne:implementation>
+</humantask>

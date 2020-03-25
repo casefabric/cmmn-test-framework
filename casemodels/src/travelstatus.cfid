@@ -1,0 +1,5 @@
+<caseFileItemDefinition name="TravelStatus" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified">
+    <property name="ApproverAvailable" type="http://www.omg.org/spec/CMMN/PropertyType/boolean"/>
+    <property name="POAvailable" type="http://www.omg.org/spec/CMMN/PropertyType/boolean"/>
+    <property name="Approver" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+</caseFileItemDefinition>
