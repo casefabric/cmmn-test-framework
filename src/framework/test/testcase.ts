@@ -33,15 +33,4 @@ export default class TestCase {
     async onCloseTest(): Promise<any> {
 
     }
-
-    /**
-     * Parses a file name into an XML document.
-     * Reads the file from the local system (where this testcase runs)
-     * @param fileName 
-     */
-    loadCMMNDefinition(fileName: string) : Document {
-        const xml = fs.readFileSync(fileName, 'utf8');
-        const parser = new DOMParser();
-        return parser.parseFromString(xml, 'application/xml');
-    }
 }

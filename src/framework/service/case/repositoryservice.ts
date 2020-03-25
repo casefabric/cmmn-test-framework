@@ -59,7 +59,7 @@ export default class RepositoryService {
      */
     async validateCaseDefinition(source: Document|string, user: User, expectNoFailures: boolean = true) {
         const url = `/repository/validate`;
-        const xml = parseXMLDocument(source);
+        const xml = readLocalXMLDocument(source);
         const response = await cafienneService.postXML(url, user, xml);
         if (response.ok) {
             return response;
@@ -79,7 +79,7 @@ export default class RepositoryService {
      * @param tenant Tenant in which the definition is deployed.
      */
     async validateAndDeploy(fileName: string, user: User, tenant: string) {
-        const definition = parseXMLDocument(fileName);
+        const definition = readLocalXMLDocument(fileName);
         const modelName = fileName;
 
         const serverVersion = await this.loadCaseDefinition(modelName, user, tenant);
@@ -95,11 +95,23 @@ export default class RepositoryService {
     }
 }
 
-function parseXMLDocument(content: any): Document {
+/**
+ * Parses a file name into an XML document.
+ * Reads the file from the configured location on the local system (where this testcase runs)
+ * @param fileName 
+ */
+export function readLocalXMLDocument(content: any): Document {
     if (content.constructor.name == 'Document') {
         return content;
     }
-    const xml = FileSystem.readFileSync(content, 'utf8');
+    if (! FileSystem.existsSync(Config.RepositoryService.repository_folder)) {
+        throw new Error(`The configured repository folder '${Config.RepositoryService.repository_folder}' cannot be found`);
+    }
+    const fileName = Config.RepositoryService.repository_folder + '/' + content;
+    if (! FileSystem.existsSync(fileName)) {
+        throw new Error(`File ${fileName} cannot be found on the local file system`);
+    }
+    const xml = FileSystem.readFileSync(fileName, 'utf8');
     const parser = new DOMParser();
     return parser.parseFromString(xml, 'application/xml');
 }

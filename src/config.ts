@@ -32,7 +32,8 @@ const Config = {
     },
     RepositoryService: {
         // Whether or not to show log messages on the console from the repository APIs (e.g., list of case definitions returned from server)
-        log: true
+        log: true,
+        repository_folder: './casemodels/bin'
     },
     TestCase: {
         // Whether or not to show log messages on the console (e.g. wait time messages for server side processing)

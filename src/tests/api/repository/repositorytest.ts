@@ -1,5 +1,5 @@
 import TestCase from "../../../framework/test/testcase";
-import RepositoryService from "../../../framework/service/case/repositoryservice";
+import RepositoryService, { readLocalXMLDocument } from "../../../framework/service/case/repositoryservice";
 import WorldWideTestTenant from "../../worldwidetesttenant";
 import User from "../../../framework/user";
 import TenantService from "../../../framework/service/tenant/tenantservice";
@@ -45,7 +45,7 @@ export default class TestRepositoryAPI extends TestCase {
 
         // Deploying an invalid case definition to a valid file name should result in an error.
         const deployInvalidCaseDefinition = {
-            definition: this.loadCMMNDefinition(invalidCaseDefinition),
+            definition: readLocalXMLDocument(invalidCaseDefinition),
             modelName: invalidCaseDefinition,
             tenant
         };
@@ -65,7 +65,7 @@ export default class TestRepositoryAPI extends TestCase {
 
         // Deploying an valid case definition should work for a tenant owner, but fail for a tenant user
         const deployValidCaseDefinition = {
-            definition: this.loadCMMNDefinition(validCaseDefinition),
+            definition: readLocalXMLDocument(validCaseDefinition),
             modelName: invalidCaseDefinition,
             tenant
         };
