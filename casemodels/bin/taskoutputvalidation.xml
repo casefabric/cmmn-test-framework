@@ -41,7 +41,7 @@
                     </extensionElements>
                 </outputs>
                 <extensionElements mustUnderstand="false">
-                    <cafienne:implementation xmlns:cafienne="org.cafienne" name="humanTaskTest" description="" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="humanTaskTest.humantask" validatorRef="humantaskvalidator.process">
+                    <cafienne:implementation xmlns:cafienne="org.cafienne" name="humanTaskTest" description="" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" validatorRef="humantaskvalidator.process" humanTaskRef="humanTaskTest.humantask">
                         <input id="_DdDX_DueDate" name="DueDate"/>
                         <input id="_jg3q_Assignee" name="Assignee"/>
                         <input id="_ydL3_Owner" name="Owner"/>
