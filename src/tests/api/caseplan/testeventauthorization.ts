@@ -20,7 +20,7 @@ const worldwideTenant = new WorldWideTestTenant();
 const user = worldwideTenant.sender;
 const tenant = worldwideTenant.name;
 
-const employee = new User('employee');
+const employee = new TenantUser('employee', ['Employee']);
 
 const casePlanService = new CasePlanService();
 const tenantService = new TenantService();
@@ -32,7 +32,7 @@ export default class TestEventAuthorization extends TestCase {
         await ServerSideProcessing();
 
         try {
-            await tenantService.addTenantUser(user, worldwideTenant.tenant, new TenantUser(employee.id, ['Employee']));
+            await tenantService.addTenantUser(user, worldwideTenant.tenant, employee);
         } catch (e) {
             if (! e.message.indexOf('already exists')) {
                 console.log(e);

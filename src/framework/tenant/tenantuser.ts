@@ -1,4 +1,6 @@
-export default class TenantUser {
+import User from "../user";
+
+export default class TenantUser extends User {
     /**
      * Simple wrapper for a TenantUser object.
      * It needs a userId, which must match the 'sub' inside the JWT token sent to the case engine.
@@ -9,5 +11,7 @@ export default class TenantUser {
      * @param name Optional name for the user inside the tenant.
      * @param email Optional email for the user inside the tenant.
      */
-    constructor(public userId: string, public roles: Array<string> = [], public name?: string, public email?: string) { }
+    constructor(public userId: string, public roles: Array<string> = [], public name?: string, public email?: string) {
+        super(userId);
+     }
 }

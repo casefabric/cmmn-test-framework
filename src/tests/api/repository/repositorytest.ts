@@ -14,14 +14,14 @@ const tenantService = new TenantService();
 const worldwideTenant = new WorldWideTestTenant('For-repository-testing');
 const tenant = worldwideTenant.name;
 const tenantOwner = worldwideTenant.sender;
-const tenantUser = new User('tenant-user');
+const tenantUser = new TenantUser('tenant-user', []);
 
 export default class TestRepositoryAPI extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
 
         try {
-            await tenantService.addTenantUser(tenantOwner, new Tenant(worldwideTenant.name, []), new TenantUser(tenantUser.id, []));
+            await tenantService.addTenantUser(tenantOwner, worldwideTenant.tenant, tenantUser);
         } catch (e) {
             if (!e.message.indexOf('already exists')) {
                 console.log(e);

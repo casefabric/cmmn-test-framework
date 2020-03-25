@@ -21,12 +21,12 @@ export default class TestTenantRegistration extends TestCase {
         const guid = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
         const tenantName = 'test_tenant' + guid;
 
-        const tenantOwner1 = new User('tenant-owner1');
-        const tenantOwner2 = new User('tenant-owner2');
-        const tenantOwner3 = new User('tenant-owner3');
-        const user4 = new User('tenant-user-4');
+        const tenantOwner1 = new TenantUser('tenant-owner1');
+        const tenantOwner2 = new TenantUser('tenant-owner2');
+        const tenantOwner3 = new TenantUser('tenant-owner3');
         const user4TenantRoles = ['role-x', 'role-y'];
-        const tenant1 = new Tenant(tenantName, [new TenantUser(tenantOwner1.id), new TenantUser(tenantOwner2.id), new TenantUser(tenantOwner3.id)]);
+        const user4 = new TenantUser('tenant-user-4', user4TenantRoles, 'user-4', 'user4@users-and-owners.com');
+        const tenant1 = new Tenant(tenantName, [tenantOwner1, tenantOwner2, tenantOwner3]);
 
         await platformAdmin.login();
 
@@ -56,29 +56,28 @@ export default class TestTenantRegistration extends TestCase {
         // Also not allowed to get a non-existing user
         await tenantService.getTenantUser(tenantOwner1, tenant1, "not a tenant user at all", false);
 
-        const tenantUser4 = new TenantUser(user4.id, user4TenantRoles, 'user-4', 'user4@users-and-owners.com');
         // Add the user as a tenant user
-        await tenantService.addTenantUser(tenantOwner1, tenant1, tenantUser4);
+        await tenantService.addTenantUser(tenantOwner1, tenant1, user4);
 
         // Adding user twice should result in an error
-        await tenantService.addTenantUser(tenantOwner1, tenant1, tenantUser4, false);
+        await tenantService.addTenantUser(tenantOwner1, tenant1, user4, false);
         await ServerSideProcessing('Give the system a second to handle projection of adding user4');
 
         // Also make the user a tenant owner
-        await tenantService.addTenantOwner(tenantOwner1, tenant1, tenantUser4.userId);
+        await tenantService.addTenantOwner(tenantOwner1, tenant1, user4.userId);
         // Adding tenant owner twice should not give any different results.
-        await tenantService.addTenantOwner(tenantOwner1, tenant1, tenantUser4.userId);
+        await tenantService.addTenantOwner(tenantOwner1, tenant1, user4.userId);
 
         // Check the list of tenant owners
         await tenantService.getTenantOwners(tenantOwner1, tenant1).then(owners => {
-            const expectedOwnerIDs = tenant1.owners.concat([tenantUser4]).map(o => o.userId);
+            const expectedOwnerIDs = tenant1.owners.concat([user4]).map(o => o.userId);
             if (!Comparison.sameJSON(owners, expectedOwnerIDs)) {
                 throw new Error('List of tenant owners does not match. Received ' + JSON.stringify(owners));
             }
         });
 
         // Remove the user as tenant owner
-        await tenantService.removeTenantOwner(tenantOwner1, tenant1, tenantUser4.userId);
+        await tenantService.removeTenantOwner(tenantOwner1, tenant1, user4.userId);
 
         // List of tenant owners should be the original one again
         await tenantService.getTenantOwners(tenantOwner1, tenant1).then(owners => {
@@ -98,7 +97,7 @@ export default class TestTenantRegistration extends TestCase {
         await platformService.enableTenant(platformAdmin, tenant1);
 
         // And the platform admin is not allowed to enable/disable a non-existing tenant
-        const nonExistingTenant = new Tenant("not-created", [new TenantUser(tenantOwner1.id)]);
+        const nonExistingTenant = new Tenant("not-created", [tenantOwner1]);
         await platformService.enableTenant(platformAdmin, nonExistingTenant, false);
         await platformService.disableTenant(platformAdmin, nonExistingTenant, false);
 
@@ -131,7 +130,7 @@ export default class TestTenantRegistration extends TestCase {
         // ... well i guess only if they are logged in...
         await tenantService.getTenantUsers(user4, tenant1).then(users => checkUserCount(users, 4));
 
-        await tenantService.getTenantUser(tenantOwner1, tenant1, tenantUser4.userId).then(user => {
+        await tenantService.getTenantUser(tenantOwner1, tenant1, user4.userId).then(user => {
             if (!Comparison.sameArray(user.roles, user4TenantRoles)) {
                 throw new Error('Expected user 4 to have roles ' + user4TenantRoles + ', but found ' + user.roles);
             }
@@ -141,12 +140,12 @@ export default class TestTenantRegistration extends TestCase {
         const roleToRemove = user4TenantRoles[0];
         const expectedNewRoles = user4TenantRoles.slice(1);
 
-        await tenantService.removeTenantUserRole(tenantOwner1, tenant1, tenantUser4.userId, roleToRemove);
+        await tenantService.removeTenantUserRole(tenantOwner1, tenant1, user4.userId, roleToRemove);
 
         // Let the projection process the event as well.
         await ServerSideProcessing();
 
-        await tenantService.getTenantUser(tenantOwner1, tenant1, tenantUser4.userId).then(user => {
+        await tenantService.getTenantUser(tenantOwner1, tenant1, user4.userId).then(user => {
             if (!Comparison.sameArray(user.roles, expectedNewRoles)) {
                 throw new Error('Expected user 4 to have roles ' + expectedNewRoles + ', but found ' + user.roles);
             }
