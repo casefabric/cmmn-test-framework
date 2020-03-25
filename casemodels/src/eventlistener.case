@@ -1,0 +1,51 @@
+<case id="eventlistener.case" name="eventlistener">
+    <caseFileModel>
+        <caseFileItem id="_vdfDP_15" name="Root" multiplicity="ExactlyOne" definitionRef="root.cfid"/>
+    </caseFileModel>
+    <casePlanModel id="cm__vdfDP_0" name="eventlistener" autoComplete="false">
+        <planItem id="pi_ht__vdfDP_0" name="T1" definitionRef="ht__vdfDP_0">
+            <entryCriterion id="_vdfDP_11" name="UserEventOccurred" sentryRef="crit__vdfDP_1"/>
+        </planItem>
+        <planItem id="pi_ue__vdfDP_0" name="PlainUserEvent" definitionRef="ue__vdfDP_0"/>
+        <planItem id="pi_ue__vdfDP_1" name="EmployeeUserEvent" definitionRef="ue__vdfDP_1"/>
+        <planItem id="pi_ms__vdfDP_0" name="M1" definitionRef="ms__vdfDP_0">
+            <entryCriterion id="_vdfDP_4" name="EntryCriterion_0" sentryRef="crit__vdfDP_0"/>
+            <itemControl id="_vdfDP_1">
+                <requiredRule id="_vdfDP_2">
+                    <condition id="_vdfDP_3" language="spel">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </requiredRule>
+            </itemControl>
+        </planItem>
+        <planItem id="pi_ht__vdfDP_1" name="PlainTask" definitionRef="ht__vdfDP_1">
+            <itemControl id="_vdfDP_7">
+                <repetitionRule id="_vdfDP_8">
+                    <condition id="_vdfDP_9" language="spel">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
+        </planItem>
+        <sentry id="crit__vdfDP_1">
+            <planItemOnPart id="_vdfDP_12" sourceRef="pi_ue__vdfDP_0">
+                <standardEvent>occur</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <sentry id="crit__vdfDP_0">
+            <planItemOnPart id="_vdfDP_5" sourceRef="pi_ue__vdfDP_1">
+                <standardEvent>occur</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <humanTask id="ht__vdfDP_0" name="T1" isBlocking="true"/>
+        <userEvent id="ue__vdfDP_0" name="PlainUserEvent"/>
+        <userEvent id="ue__vdfDP_1" name="EmployeeUserEvent" authorizedRoleRefs="_vdfDP_6"/>
+        <milestone id="ms__vdfDP_0" name="M1"/>
+        <humanTask id="ht__vdfDP_1" name="PlainTask" isBlocking="true"/>
+    </casePlanModel>
+    <caseRoles id="_vdfDP_6" name="Employee"/>
+</case>
