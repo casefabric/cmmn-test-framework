@@ -34,7 +34,7 @@ export default class TestRepositoryAPI extends TestCase {
     }
 
     async run() {
-        const invalidCaseDefinition = 'invaliddefinition.xml';
+        const invalidCaseDefinition = 'invalid.xml';
         const validCaseDefinition = 'planning.xml';
 
         // Validating the invalid case model should result in an error
