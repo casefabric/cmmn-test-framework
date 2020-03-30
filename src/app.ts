@@ -37,7 +37,6 @@ function getHardCodedTestDeclarations(): Array<any> {
     return [
         PingTestEnvironment
         , TestHelloworld
-        , TestTravelRequest
         , TestUsersCaseAPI
         , TestDiscretionaryItems
         , TestStatsAPI
@@ -49,6 +48,7 @@ function getHardCodedTestDeclarations(): Array<any> {
         , TestCaseFileAPI
         , TestCasePlanAPI
         , TestEventAuthorization
+        , TestTravelRequest
     ];
 }
 
