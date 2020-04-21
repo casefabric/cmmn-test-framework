@@ -1,0 +1,157 @@
+<case id="stagetest.case" name="stagetest" guid="_ZCK2p">
+    <caseFileModel>
+        <caseFileItem id="_ZCK2p_17" name="Greeting" multiplicity="ExactlyOne" definitionRef="greeting.cfid"/>
+        <caseFileItem id="_ZCK2p_18" name="Response" multiplicity="ExactlyOne" definitionRef="response.cfid"/>
+    </caseFileModel>
+    <casePlanModel id="cm__ZCK2p_0" name="stagetest" autoComplete="true">
+        <planItem id="pi__ZCK2p_0" name="Stage" definitionRef="_ZCK2p_0">
+            <entryCriterion id="_ZCK2p_15" name="EntryCriterion_2" sentryRef="crit__ZCK2p_2"/>
+            <entryCriterion id="_ZCK2p_25" name="EntryCriterion_3" sentryRef="crit__ZCK2p_3"/>
+            <exitCriterion id="_ZCK2p_52" name="ExitCriterion_3" sentryRef="crit__ZCK2p_8"/>
+            <itemControl id="_ZCK2p_1">
+                <repetitionRule id="_ZCK2p_3">
+                    <condition id="_ZCK2p_4" language="spel">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
+        </planItem>
+        <planItem id="pi_ms__ZCK2p_0" name="Left" definitionRef="ms__ZCK2p_0">
+            <entryCriterion id="_ZCK2p_10" name="EntryCriterion_0" sentryRef="crit__ZCK2p_0"/>
+            <itemControl id="_ZCK2p_5">
+                <repetitionRule id="_ZCK2p_41">
+                    <condition id="_ZCK2p_42" language="spel">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
+        </planItem>
+        <planItem id="pi_ms__ZCK2p_1" name="Right" definitionRef="ms__ZCK2p_1">
+            <entryCriterion id="_ZCK2p_13" name="EntryCriterion_1" sentryRef="crit__ZCK2p_1"/>
+            <itemControl id="_ZCK2p_12">
+                <requiredRule id="_ZCK2p_28">
+                    <condition id="_ZCK2p_29" language="spel">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </requiredRule>
+            </itemControl>
+        </planItem>
+        <planItem id="pi__ZCK2p_30" name="Stage (Termination Should Kill One Task)" definitionRef="_ZCK2p_30">
+            <exitCriterion id="_ZCK2p_35" name="ExitCriterion_1" sentryRef="crit__ZCK2p_5"/>
+        </planItem>
+        <planItem id="pi__ZCK2p_39" name="Stage (Termination Should Kill Many Tasks)" definitionRef="_ZCK2p_39">
+            <exitCriterion id="_ZCK2p_50" name="ExitCriterion_2" sentryRef="crit__ZCK2p_7"/>
+        </planItem>
+        <sentry id="crit__ZCK2p_0">
+            <ifPart id="_ZCK2p_19" contextRef="_ZCK2p_18">
+                <condition id="_ZCK2p_20" language="spel">
+                    <body>
+                        <![CDATA[Response.Message == "Left"]]>
+                    </body>
+                </condition>
+            </ifPart>
+            <planItemOnPart id="_ZCK2p_11" sourceRef="pi__ZCK2p_0">
+                <standardEvent>complete</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <sentry id="crit__ZCK2p_1">
+            <ifPart id="_ZCK2p_23" contextRef="_ZCK2p_18">
+                <condition id="_ZCK2p_24" language="spel">
+                    <body>
+                        <![CDATA[Response.Message == "Right"]]>
+                    </body>
+                </condition>
+            </ifPart>
+            <planItemOnPart id="_ZCK2p_14" sourceRef="pi__ZCK2p_0">
+                <standardEvent>complete</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <sentry id="crit__ZCK2p_2">
+            <planItemOnPart id="_ZCK2p_16" sourceRef="pi_ms__ZCK2p_0">
+                <standardEvent>occur</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <sentry id="crit__ZCK2p_3">
+            <caseFileItemOnPart id="_ZCK2p_26" sourceRef="_ZCK2p_17">
+                <standardEvent>create</standardEvent>
+            </caseFileItemOnPart>
+        </sentry>
+        <sentry id="crit__ZCK2p_5">
+            <planItemOnPart id="_ZCK2p_38" sourceRef="pi_ms__ZCK2p_1">
+                <standardEvent>occur</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <sentry id="crit__ZCK2p_7">
+            <planItemOnPart id="_ZCK2p_51" sourceRef="pi_ms__ZCK2p_1">
+                <standardEvent>occur</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <sentry id="crit__ZCK2p_8">
+            <planItemOnPart id="_ZCK2p_53" sourceRef="pi_ht__ZCK2p_0">
+                <standardEvent>complete</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <humanTask id="ht__ZCK2p_0" name="SendResponse" isBlocking="true">
+            <inputs id="_ZCK2p_6" name="Greeting" bindingRef="_ZCK2p_17"/>
+            <outputs id="_ZCK2p_8" name="Response" bindingRef="_ZCK2p_18"/>
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="sendresponse.humantask">
+                    <parameterMapping id="_ZCK2p_7" sourceRef="_ZCK2p_6" targetRef="Greeting"/>
+                    <parameterMapping id="_ZCK2p_9" sourceRef="Response" targetRef="_ZCK2p_8"/>
+                </cafienne:implementation>
+            </extensionElements>
+        </humanTask>
+        <humanTask id="ht__ZCK2p_2" name="Continuously  Terminated  Task" description="Continuously &#10;Terminated &#10;Task" isBlocking="true"/>
+        <humanTask id="ht__ZCK2p_1" name="Continuously Repeated Task" description="Continuously&#10;Repeated&#10;Task" isBlocking="true"/>
+        <milestone id="ms__ZCK2p_0" name="Left"/>
+        <milestone id="ms__ZCK2p_1" name="Right"/>
+        <stage id="_ZCK2p_0" name="Stage" autoComplete="true">
+            <planItem id="pi_ht__ZCK2p_0" name="SendResponse" definitionRef="ht__ZCK2p_0"/>
+        </stage>
+        <stage id="_ZCK2p_30" name="Stage (Termination Should Kill One Task)" autoComplete="true">
+            <planItem id="pi_ht__ZCK2p_2" name="Continuously  Terminated  Task" description="Continuously &#10;Terminated &#10;Task" definitionRef="ht__ZCK2p_2">
+                <exitCriterion id="_ZCK2p_32" name="ExitCriterion_0" sentryRef="crit__ZCK2p_4"/>
+                <itemControl id="_ZCK2p_33">
+                    <repetitionRule id="_ZCK2p_36">
+                        <condition id="_ZCK2p_37" language="spel">
+                            <body>
+                                <![CDATA[true]]>
+                            </body>
+                        </condition>
+                    </repetitionRule>
+                </itemControl>
+            </planItem>
+            <sentry id="crit__ZCK2p_4">
+                <planItemOnPart id="_ZCK2p_34" sourceRef="pi_ht__ZCK2p_0">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+            </sentry>
+        </stage>
+        <stage id="_ZCK2p_39" name="Stage (Termination Should Kill Many Tasks)" autoComplete="true">
+            <planItem id="pi_ht__ZCK2p_1" name="Continuously Repeated Task" description="Continuously&#10;Repeated&#10;Task" definitionRef="ht__ZCK2p_1">
+                <entryCriterion id="_ZCK2p_48" name="EntryCriterion_4" sentryRef="crit__ZCK2p_6"/>
+                <itemControl id="_ZCK2p_45">
+                    <repetitionRule id="_ZCK2p_46">
+                        <condition id="_ZCK2p_47" language="spel">
+                            <body>
+                                <![CDATA[true]]>
+                            </body>
+                        </condition>
+                    </repetitionRule>
+                </itemControl>
+            </planItem>
+            <sentry id="crit__ZCK2p_6">
+                <planItemOnPart id="_ZCK2p_49" sourceRef="pi_ht__ZCK2p_0">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+            </sentry>
+        </stage>
+    </casePlanModel>
+    <input id="_ZCK2p_21" name="Greeting" bindingRef="_ZCK2p_17"/>
+</case>
