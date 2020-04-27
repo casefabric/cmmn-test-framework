@@ -44,6 +44,9 @@ export default class TestTravelRequest extends TestCase {
 
         await repositoryService.validateAndDeploy(definition, sender, tenant);
 
+        await ServerSideProcessing();
+        await ServerSideProcessing("This step fails toooooo often");
+
         await requestor.login();
         await approver.login();
     }
