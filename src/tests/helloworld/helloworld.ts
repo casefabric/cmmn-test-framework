@@ -6,8 +6,6 @@ import TestCase from '../../framework/test/testcase';
 import WorldWideTestTenant from '../worldwidetesttenant';
 import RepositoryService from '../../framework/service/case/repositoryservice';
 import Comparison from '../../framework/test/comparison';
-import { SomeTime } from '../../framework/test/time';
-import Config from '../../config';
 import User from '../../framework/user';
 import Task from '../../framework/cmmn/task';
 

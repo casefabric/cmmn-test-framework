@@ -15,6 +15,7 @@ export default class Task {
     createdBy: string = '';
     input: any = {};
     output: any = {};
+    taskModel: any = {};
 
     constructor(json: any) {
         // Copy and fill our properties from the json.

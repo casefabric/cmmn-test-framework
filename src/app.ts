@@ -6,7 +6,6 @@ import TestDebugMode from './tests/api/debug/testdebugmode';
 import TestHelloworld from './tests/helloworld/helloworld';
 import TestTenantRegistration from './tests/api/tenant/tenantregistration';
 import TestTaskValidationAPI from './tests/api/task/taskvalidation';
-import pingTestEnvironment from './tests/api/environment/ping';
 import Config from './config';
 import TestRepositoryAPI from './tests/api/repository/repositorytest';
 import TestTokenValidation from './tests/api/environment/tokentest';
@@ -15,6 +14,7 @@ import TestCasePlanAPI from './tests/api/caseplan/testcaseplanapi';
 import TestEventAuthorization from './tests/api/caseplan/testeventauthorization';
 import PingTestEnvironment from './tests/api/environment/ping';
 import TestTravelRequest from './tests/travelrequest/testtravelrequest';
+import TestRepeatingStage from './tests/stage/teststage';
 
 
 function findTestsFromCommandLineArguments(): Array<string> {
@@ -37,6 +37,7 @@ function getHardCodedTestDeclarations(): Array<any> {
     return [
         PingTestEnvironment
         , TestHelloworld
+        , TestRepeatingStage
         , TestUsersCaseAPI
         , TestDiscretionaryItems
         , TestStatsAPI
