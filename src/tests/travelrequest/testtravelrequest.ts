@@ -21,8 +21,6 @@ const caseService = new CaseService();
 const taskService = new TaskService();
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
-const sender = worldwideTenant.sender;
-const receiver = worldwideTenant.receiver;
 const requestor = new TenantUser('requestor', ['Requestor'], 'Hank', 'requestor@requestors.com');
 const approver = new TenantUser('approver', ['Approver'], 'Gerald', 'gerald-the-approver@mostly-helpless.com');
 const lana = new TenantUser('lana', ['PersonalAssistant', 'Requestor', 'Approver'], 'lana', 'lana@all-you-need-is-me.com');
@@ -31,10 +29,11 @@ const tenantService = new TenantService();
 export default class TestTravelRequest extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
+        const platformOwner = worldwideTenant.sender;
         try {
-            await tenantService.addTenantUser(sender, worldwideTenant.tenant, requestor);
-            await tenantService.addTenantUser(sender, worldwideTenant.tenant, approver);
-            await tenantService.addTenantUser(sender, worldwideTenant.tenant, lana);            
+            await tenantService.addTenantUser(platformOwner, worldwideTenant.tenant, requestor);
+            await tenantService.addTenantUser(platformOwner, worldwideTenant.tenant, approver);
+            await tenantService.addTenantUser(platformOwner, worldwideTenant.tenant, lana);            
         } catch (e) {
             if (!e.message.indexOf('already exists')) {
                 console.log(e);
@@ -42,7 +41,7 @@ export default class TestTravelRequest extends TestCase {
             }
         }
 
-        await repositoryService.validateAndDeploy(definition, sender, tenant);
+        await repositoryService.validateAndDeploy(definition, platformOwner, tenant);
 
         await ServerSideProcessing();
         await ServerSideProcessing("This step fails toooooo often");
@@ -106,8 +105,8 @@ export default class TestTravelRequest extends TestCase {
         };
         const startCase: StartCase = { tenant, definition, inputs, debug: true, caseTeam };
         const caseInstance = await caseService.startCase(startCase, requestor);
-        await caseService.getCase(caseInstance, sender).then(caseInstance => {
-            console.log("CI: " + caseInstance)
+        await caseService.getCase(caseInstance, approver).then(caseInstance => {
+            // console.log("CI: " + caseInstance)
         });
 
         const tasks = await taskService.getCaseTasks(caseInstance, approver);
