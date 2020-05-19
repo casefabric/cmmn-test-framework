@@ -5,9 +5,12 @@ import TaskService from '../service/task/taskservice';
 import CaseService from '../service/case/caseservice';
 import Case from '../../framework/cmmn/case';
 import TenantUser from '../../framework/tenant/tenantuser';
+import CaseFileService from '../service/case/casefileservice';
+import { pathReader } from '../cmmn/casefile';
 
 const caseService = new CaseService();
 const taskService = new TaskService();
+const caseFileService = new CaseFileService();
 
 
 /**
@@ -60,4 +63,23 @@ export function verifyTaskInput(task: Task, taskInput: any) {
     if (!Comparison.sameJSON(task.input, taskInput)) {
         throw new Error('Task input is not the same as given to the case');
     }
+}
+
+/**
+ * Read the case instance's case file on behalf of the user and verify that the element at the end of the path matches the expectedContent.
+ * Path can be something like /Greeting/
+ * 
+ * @param caseInstance 
+ * @param user 
+ * @param path 
+ * @param expectedContent 
+ */
+export async function assertCaseFileContent(caseInstance: Case, user: User, path: string, expectedContent: any) {
+    await caseFileService.getCaseFile(caseInstance, user).then(casefile => {
+        // console.log("Case File for reading path " + path, casefile.file);
+        const actualCaseFileItem = pathReader(casefile.file, path);
+        if (! Comparison.sameJSON(actualCaseFileItem, expectedContent)) {
+            throw new Error(`Case File [${path}] is expected to match: ${JSON.stringify(expectedContent, undefined, 2)}\nActual: ${JSON.stringify(actualCaseFileItem, undefined, 2)}`);
+        }
+    });
 }
