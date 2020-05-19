@@ -31,7 +31,7 @@ export default class CafienneService {
     async post(url: string, user: User, request?: object, method = 'POST') {
         const headers = Object.create(CafienneService.headers);
         const body = (typeof request === 'string') ? `"${request}"` : request ? JSON.stringify(request, undefined, 2) : undefined;
-        return this.fetch(user, url, method, headers, body).then(this.updateCaseLastModified);
+        return this.fetch(user, url, method, headers, body);
     }
 
     async postXML(url: string, user: User, request: Document, method = 'POST'): Promise<CafienneResponse> {
@@ -80,7 +80,7 @@ export default class CafienneService {
             console.log(body);
         }
 
-        const response = await fetch(url, { method, headers, body }).then(response => new CafienneResponse(response));
+        const response = await fetch(url, { method, headers, body }).then(response => new CafienneResponse(response)).then(this.updateCaseLastModified);
         if (Config.CafienneService.log.response.status) {
             console.log(`\n [${myCallNumber}]==> ${response.status} ${response.statusText}`);
         }
