@@ -4,6 +4,7 @@ import TestUsersCaseAPI from './tests/api/case/usercases';
 import TestDiscretionaryItems from './tests/api/discretionary/testdiscretionaryitems';
 import TestDebugMode from './tests/api/debug/testdebugmode';
 import TestHelloworld from './tests/helloworld/helloworld';
+import TestIncidentManagement from './tests/incidentmanagement/incidentmanagement';
 import TestTenantRegistration from './tests/api/tenant/tenantregistration';
 import TestTaskValidationAPI from './tests/api/task/taskvalidation';
 import Config from './config';
@@ -49,6 +50,7 @@ function getHardCodedTestDeclarations(): Array<any> {
         , TestCaseFileAPI
         , TestCasePlanAPI
         , TestEventAuthorization
+        , TestIncidentManagement
         , TestTravelRequest
     ];
 }

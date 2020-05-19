@@ -83,6 +83,30 @@ export default class TaskValidationMock {
             res.json();
             this.checkPingDoneOrWait(this.callBackAfterPing, true, "Received ping msg");
         });
+        this.express.get('/usermappings/:type', (req, res, next) => {
+            const solver: string = "receiving-user";
+            const raiser: string = "sending-user";
+            const specialism = req.params['type'];
+            let specialist = '';
+            switch(specialism) {
+                case "Quarterly_Statement": specialist = solver; break;
+                case "Facility_Request": specialist = raiser; break;
+            }
+            if (!specialist) {
+                res.writeHead(404, { 'Content-Type': 'text/plain' });
+                res.write("There is no specialist for this type of ["+specialism+"]");
+            } else {
+                res.writeHead(200, { 'Content-Type': 'text/plain' });
+                res.write(specialist);
+            }
+            res.end();
+        });
+        this.express.get('/notifycustomer/:status', (req, res, next) => {
+            const incidentStatus = req.params['status'];
+            res.writeHead(200, { 'Content-Type': 'text/plain' });
+            res.write("Notified Customer");
+            res.end();
+        });
         return promise;
     }
 

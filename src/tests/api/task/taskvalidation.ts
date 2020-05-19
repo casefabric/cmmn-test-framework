@@ -9,6 +9,8 @@ import TaskValidationMock from './task-validation-mock';
 import { ServerSideProcessing } from '../../../framework/test/time';
 import TaskContent from './taskcontent';
 import Comparison from '../../../framework/test/comparison';
+import { assertPlanItemState } from '../../../framework/test/assertions'
+import PlanItem from '../../../framework/cmmn/planitem';
 
 const repositoryService = new RepositoryService();
 const definition = 'taskoutputvalidation.xml';
@@ -50,8 +52,6 @@ export default class TestTaskValidationAPI extends TestCase {
         let caseInstance = await caseService.startCase(startCase, pete);
         caseInstance = await caseService.getCase(caseInstance, pete);
 
-        let planItem = caseInstance.planitems.find(p => p.name === 'AssertMockServiceIsRunning')
-
         await mock.untilPingIsDone(1000);
 
         // Since process completion happens asynchronously in the Cafienne engine, we will still wait 
@@ -60,10 +60,7 @@ export default class TestTaskValidationAPI extends TestCase {
 
         caseInstance = await caseService.getCase(caseInstance, pete);
 
-        planItem = caseInstance.planitems.find(p => p.name === 'AssertMockServiceIsRunning')
-        if (planItem?.currentState !== 'Completed') {
-            throw new Error('The process task "AssertMockServiceIsRunning" is expected to be completed, but it is ' + planItem?.currentState);
-        }
+        await assertPlanItemState(caseInstance, 'AssertMockServiceIsRunning', 0, pete, 'Completed')
 
         const taskId = caseInstance.planitems.find(p => p.name === 'HumanTask')?.id;
         if (!taskId) {

@@ -1,0 +1,3 @@
+<caseFileItemDefinition definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" name="incident_response">
+    <property name="Status" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+</caseFileItemDefinition>

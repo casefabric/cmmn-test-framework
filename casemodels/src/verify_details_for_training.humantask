@@ -1,0 +1,59 @@
+<humantask>
+    <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" description="verify_details_for_training" name="verify_details_for_training">
+        <input id="_sUUJ_Incident" name="Task_Incident"/>
+        <output id="_G1ae_Incident" name="Task_Incident"/>
+        <output id="_gfi7_Incident_Response" name="Incident_Response"/>
+        <task-model>{
+    "schema": {
+        "type": "object",
+        "title": "Inputs for the Incident",
+        "required": [
+            "Incident_Response"
+        ],
+        "properties": {
+            "Task_Incident": {
+                "type": "object",
+                "title": "Incident Details",
+                "properties": {
+                    "Title": {
+                        "type": "string",
+                        "title": "Summary of incident"
+                    },
+                    "Description": {
+                        "type": "string",
+                        "title": "Full details of the incident"
+                    },
+                    "Type": {
+                        "type": "string",
+                        "title": "Incident Type",
+                        "enumNames": [
+                            "Quarterly Statement",
+                            "Facility Request"
+                        ],
+                        "enum": [
+                            "Quarterly_Statement",
+                            "Facility_Request"
+                        ]
+                    }
+                }
+            },
+            "Incident_Response": {
+                "type": "object",
+                "title": "Response for the incident",
+                "properties": {
+                    "Status": {
+                        "type": "string",
+                        "title": "Enter the status",
+                        "enum": [
+                            "Valid",
+                            "Needs_further_analysis",
+                            "Invalid"
+                        ]
+                    }
+                }
+            }
+        }
+    }
+}</task-model>
+    </cafienne:implementation>
+</humantask>

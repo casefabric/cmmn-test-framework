@@ -5,9 +5,8 @@ import TaskService from '../../framework/service/task/taskservice';
 import TestCase from '../../framework/test/testcase';
 import WorldWideTestTenant from '../worldwidetesttenant';
 import RepositoryService from '../../framework/service/case/repositoryservice';
-import Comparison from '../../framework/test/comparison';
+import { assertTask, verifyTaskInput } from '../../framework/test/assertions';
 import User from '../../framework/user';
-import Task from '../../framework/cmmn/task';
 
 const repositoryService = new RepositoryService();
 const definition = 'helloworld.xml';
@@ -69,45 +68,43 @@ export default class TestHelloworld extends TestCase {
             throw new Error('Cannot find task ' + taskName);
         }
 
-        if (!Comparison.sameJSON(receiveGreetingTask.input, inputs)) {
-            throw new Error('Task input is not the same as given to the case');
-        }
+        await verifyTaskInput(receiveGreetingTask, inputs)
 
         await taskService.claimTask(receiveGreetingTask, sender);
-        await assertTask(receiveGreetingTask, 'Claim', 'Assigned', sender, sender);
+        await assertTask(receiveGreetingTask, sender, 'Claim', 'Assigned', sender, sender);
 
         caseInstance = await caseService.getCase(caseInstance, sender);
 
         await taskService.revokeTask(receiveGreetingTask, sender);
-        await assertTask(receiveGreetingTask, 'Revoke', 'Unassigned', User.NONE);
+        await assertTask(receiveGreetingTask, sender, 'Revoke', 'Unassigned', User.NONE);
 
         await taskService.assignTask(receiveGreetingTask, sender, receiver);
-        await assertTask(receiveGreetingTask, 'Assign', 'Assigned', receiver, receiver);
+        await assertTask(receiveGreetingTask, sender, 'Assign', 'Assigned', receiver, receiver);
 
         await taskService.revokeTask(receiveGreetingTask, receiver);
-        await assertTask(receiveGreetingTask, 'Revoke', 'Unassigned', User.NONE);
+        await assertTask(receiveGreetingTask, sender, 'Revoke', 'Unassigned', User.NONE);
 
         await taskService.claimTask(receiveGreetingTask, receiver);
-        await assertTask(receiveGreetingTask, 'Claim', 'Assigned', receiver, receiver);
+        await assertTask(receiveGreetingTask, sender, 'Claim', 'Assigned', receiver, receiver);
 
         await taskService.delegateTask(receiveGreetingTask, receiver, sender);
-        await assertTask(receiveGreetingTask, 'Delegate', 'Delegated', sender, receiver);
+        await assertTask(receiveGreetingTask, sender, 'Delegate', 'Delegated', sender, receiver);
 
         await taskService.revokeTask(receiveGreetingTask, sender);
-        await assertTask(receiveGreetingTask, 'Revoke', 'Assigned', receiver);
+        await assertTask(receiveGreetingTask, sender, 'Revoke', 'Assigned', receiver);
 
         await taskService.revokeTask(receiveGreetingTask, receiver);
-        await assertTask(receiveGreetingTask, 'Revoke', 'Unassigned', User.NONE);
+        await assertTask(receiveGreetingTask, sender, 'Revoke', 'Unassigned', User.NONE);
 
         await taskService.claimTask(receiveGreetingTask, receiver);
-        await assertTask(receiveGreetingTask, 'Claim', 'Assigned', receiver);
+        await assertTask(receiveGreetingTask, sender, 'Claim', 'Assigned', receiver);
 
         // User 'sender' may not complete a task assigned to 'receiver' 
         await taskService.completeTask(receiveGreetingTask, sender, taskOutput, false);
-        await assertTask(receiveGreetingTask, 'Claim', 'Assigned', receiver);
+        await assertTask(receiveGreetingTask, sender, 'Claim', 'Assigned', receiver);
 
         await taskService.completeTask(receiveGreetingTask, receiver, taskOutput);
-        await assertTask(receiveGreetingTask, 'Complete', 'Completed', receiver);
+        await assertTask(receiveGreetingTask, sender, 'Complete', 'Completed', receiver);
 
         caseInstance = await caseService.getCase(caseInstance, sender);
 
@@ -130,19 +127,4 @@ export default class TestHelloworld extends TestCase {
             console.log('Case completed! \n ' + caseInstance.id);
         }
     }
-}
-
-async function assertTask(task: Task, action: string, expectedState: string = '', expectedAssignee?: User, expectedOwner?: User) {
-    await taskService.getTask(task, sender).then(task => {
-        console.log(`Task after ${action}:\tstate = ${task.taskState},\tassignee = '${task.assignee}',\towner = '${task.owner}' `);
-        if (task.taskState !== expectedState) {
-            throw new Error(`Task ${task.taskName} is not in state '${expectedState}' but in state '${task.taskState}'`);
-        }
-        if (expectedAssignee && task.assignee !== expectedAssignee.id) {
-            throw new Error(`Task ${task.taskName} is not assigned to '${expectedAssignee}' but to user '${task.assignee}'`);
-        }
-        if (expectedOwner && task.owner !== expectedOwner.id) {
-            throw new Error(`Task ${task.taskName} is not owned by '${expectedOwner}' but by '${task.owner}'`);
-        }
-    });
 }
