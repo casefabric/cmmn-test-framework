@@ -76,9 +76,18 @@ export function verifyTaskInput(task: Task, taskInput: any) {
  */
 export async function assertCaseFileContent(caseInstance: Case, user: User, path: string, expectedContent: any) {
     await caseFileService.getCaseFile(caseInstance, user).then(casefile => {
-        // console.log("Case File for reading path " + path, casefile.file);
-        const actualCaseFileItem = pathReader(casefile.file, path);
+        // console.log("Case File for reading path " + path, casefile);
+        const readCaseFileItem = (caseFile:any) => {
+            const item = pathReader(caseFile, path);
+            if (! item && caseFile.file) { // Temporary backwards compatibility; casefile.file will be dropped in 1.1.5
+                return pathReader(caseFile.file, path)
+            }
+            return item;
+        } 
+
+        const actualCaseFileItem = readCaseFileItem(casefile);
         if (! Comparison.sameJSON(actualCaseFileItem, expectedContent)) {
+    
             throw new Error(`Case File [${path}] is expected to match: ${JSON.stringify(expectedContent, undefined, 2)}\nActual: ${JSON.stringify(actualCaseFileItem, undefined, 2)}`);
         }
     });
