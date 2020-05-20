@@ -53,8 +53,8 @@ export default class TestHelloworld extends TestCase {
         // await taskService.getTasks(sender, { tenant: tenant, taskState: 'Unassigned' });
 
         // 
-        // const cases = await caseService.getCases(sender, { tenant: tenant, numberOfResults: 10000 });
-        // console.log("We have " + cases.length + " cases ...");
+        const cases = await caseService.getCases(sender, { tenant: tenant, numberOfResults: 10000 });
+        console.log("We have " + cases.length + " cases ...");
 
         const taskName = 'Receive Greeting and Send response';
         const planItem = caseInstance.planitems.find(p => p.name === taskName);
