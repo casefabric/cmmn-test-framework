@@ -4,7 +4,7 @@ import CafienneService from '../cafienneservice';
 import DeployCase from './command/repository/deploycase';
 import Config from '../../../config';
 import User from '../../user';
-import { checkResponse, checkJSONResponse } from '../response';
+import { checkResponse } from '../response';
 import Comparison from '../../test/comparison';
 
 const FileSystem = fs;
@@ -33,7 +33,7 @@ export default class RepositoryService {
      * @param user 
      * @param tenant 
      */
-    async loadCaseDefinition(fileName: string, user: User, tenant: string) {
+    async loadCaseDefinition(fileName: string, user: User, tenant: string, expectNoFailures: boolean = true) {
         const modelName = fileName.endsWith('.xml') ? fileName.substring(0, fileName.length - 4) : fileName;
 
         const xml = await cafienneService.getXml(`/repository/load/${modelName}?tenant=${tenant}`, user);
@@ -45,8 +45,11 @@ export default class RepositoryService {
      * @param tenant 
      * @param user 
      */
-    async listCaseDefinitions(user: User, tenant: string) {
-        const json = await cafienneService.get('/repository/list?tenant=' + tenant, user).then(checkJSONResponse);
+    async listCaseDefinitions(user: User, tenant: string, expectNoFailures: boolean = true) {
+        const response = await cafienneService.get('/repository/list?tenant=' + tenant, user);
+        const msg = `ListCaseDefinitions is not expected to succeed for member ${user.id}`;
+        const json = checkResponse(response, msg, expectNoFailures);
+
         if (Config.RepositoryService.log) {
             console.log('Cases deployed in the server: ' + JSON.stringify(json, undefined, 2))
         }

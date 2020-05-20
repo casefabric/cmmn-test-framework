@@ -82,7 +82,11 @@ export default class CafienneService {
 
         const response = await fetch(url, { method, headers, body }).then(response => new CafienneResponse(response)).then(this.updateCaseLastModified);
         if (Config.CafienneService.log.response.status) {
-            console.log(`\n [${myCallNumber}]==> ${response.status} ${response.statusText}`);
+            if (Config.CafienneService.log.request.headers || (Config.CafienneService.log.request.body && body)) {
+                // Add an extra newline to show the response
+                console.log();
+            }
+            console.log(`RESPONSE[${myCallNumber}]==> ${response.status} ${response.statusText}`);
         }
         if (Config.CafienneService.log.response.headers) {
             printHeaders('Response headers:', response.headers);
