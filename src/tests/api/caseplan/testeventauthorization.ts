@@ -7,10 +7,7 @@ import WorldWideTestTenant from '../../worldwidetesttenant';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
 import CasePlanService from '../../../framework/service/case/caseplanservice';
 import PlanItem from '../../../framework/cmmn/planitem';
-import User from '../../../framework/user';
-import TenantUser from '../../../framework/tenant/tenantuser';
 import TenantService from '../../../framework/service/tenant/tenantservice';
-import { ServerSideProcessing } from '../../../framework/test/time';
 
 const repositoryService = new RepositoryService();
 const definition = 'eventlistener.xml';
@@ -19,8 +16,7 @@ const caseService = new CaseService();
 const worldwideTenant = new WorldWideTestTenant();
 const user = worldwideTenant.sender;
 const tenant = worldwideTenant.name;
-
-const employee = new TenantUser('employee', ['Employee']);
+const employee = worldwideTenant.employee;
 
 const casePlanService = new CasePlanService();
 const tenantService = new TenantService();
@@ -28,22 +24,6 @@ const tenantService = new TenantService();
 export default class TestEventAuthorization extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await ServerSideProcessing();
-        await ServerSideProcessing();
-
-        try {
-            await tenantService.addTenantUser(user, worldwideTenant.tenant, employee);
-        } catch (e) {
-            if (! e.message.indexOf('already exists')) {
-                console.log(e);
-                throw e;
-            }
-        }
-        await ServerSideProcessing();
-        await ServerSideProcessing();
-
-        await employee.login();
-
         await repositoryService.validateAndDeploy(definition, user, tenant);
     }
 
@@ -77,7 +57,7 @@ export default class TestEventAuthorization extends TestCase {
         });
 
         await caseService.getCase(caseInstance, user).then(caze => {
-            console.log('Resulting case: ' + JSON.stringify(caze, undefined, 2));
+            // console.log('Resulting case: ' + JSON.stringify(caze, undefined, 2));
         });
 
         // This should fail

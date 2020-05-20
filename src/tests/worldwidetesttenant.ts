@@ -3,6 +3,7 @@ import TenantUser from "../framework/tenant/tenantuser";
 import Tenant from "../framework/tenant/tenant";
 import { ServerSideProcessing, SomeTime } from "../framework/test/time";
 import PlatformService from "../framework/service/platform/platformservice";
+import TenantService from "../framework/service/tenant/tenantservice";
 
 const platformService = new PlatformService();
 
@@ -12,6 +13,7 @@ const platformService = new PlatformService();
 export default class WorldWideTestTenant {
     sender = new TenantUser('sending-user', ['Sender'], 'sender', 'sender@senders.com');
     receiver = new TenantUser('receiving-user', ['Receiver'], 'receiver', 'receiver@receivers.com')
+    employee = new TenantUser('employee', ['Employee'], 'another employee', 'without any email address');
     tenant: Tenant = new Tenant(this.name, []);
 
     constructor(public readonly name: string = 'World-Wide-Test-Tenant', public platformAdmin: User = new User('admin')) {
@@ -36,5 +38,20 @@ export default class WorldWideTestTenant {
             await this.sender.login();
         }
         await this.receiver.login();
+        try {
+            await new TenantService().addTenantUser(this.sender, this.tenant, this.employee)
+        } catch (e) {
+            if (! e.message.indexOf('already exists')) {
+                console.log(e);
+                throw e;
+            }
+        }
+        await ServerSideProcessing('Giving server time to add employee to tenant');
+        try {
+            await this.employee.login();
+        } catch (e) {
+            await ServerSideProcessing('Giving server even more time to add employee to tenant');        
+            await this.employee.login();
+        }            
     }
 }
