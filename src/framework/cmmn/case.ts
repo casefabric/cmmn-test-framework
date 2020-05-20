@@ -23,7 +23,7 @@ export default interface Case {
     // inputs: object;
     // outputs: object;
 
-    caseTeam: CaseTeam;
+    team: CaseTeam;
     planitems: Array<PlanItem>;
     file: CaseFile;
 }

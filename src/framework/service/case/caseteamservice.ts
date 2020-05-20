@@ -2,15 +2,22 @@ import User from "../../user";
 import Case from "../../cmmn/case";
 import CaseTeam from "../../cmmn/caseteam";
 import CaseTeamMember from "../../cmmn/caseteammember";
+import CafienneService from "../cafienneservice";
+import { checkResponse, checkJSONResponse } from "../response";
+
+const cafienneService = new CafienneService();
 
 export default class CaseTeamService {
     /**
      * Get the CaseTeam of the specified case instance
      * @param Case 
      * @param user 
+     * @returns CaseTeam
      */
-    async getCaseTeam(Case: Case, user: User) {
-        throw new Error('Not yet implemented')
+    async getCaseTeam(Case: Case, user: User, expectNoFailures: boolean = true): Promise<CaseTeam> {
+        const response = await cafienneService.get(`/cases/${Case.id}/caseteam`, user);
+        const msg = `GetCaseTeam is not expected to succeed for user ${user.id} in case ${Case.id}`;
+        return checkJSONResponse(response, msg, expectNoFailures, CaseTeam);
     }
 
     /**
@@ -19,8 +26,10 @@ export default class CaseTeamService {
      * @param user 
      * @param team 
      */
-    async setCaseTeam(Case: Case, user: User, team: CaseTeam) {
-        throw new Error('Not yet implemented')
+    async setCaseTeam(Case: Case, user: User, team: CaseTeam, expectNoFailures: boolean = true) {
+        const response = await cafienneService.post(`/cases/${Case.id}/caseteam`, user, team);
+        const msg = `SetCaseTeam is not expected to succeed for user ${user.id} in case ${Case.id}`;
+        return checkResponse(response, msg, expectNoFailures);
     }
 
     /**
@@ -29,8 +38,10 @@ export default class CaseTeamService {
      * @param user 
      * @param member 
      */
-    async deleteMember(Case: Case, user: User, member: User) {
-        throw new Error('Not yet implemented')
+    async removeMember(Case: Case, user: User, member: User, expectNoFailures: boolean = true) {
+        const response = await cafienneService.delete(`/cases/${Case.id}/caseteam/${member.id}`, user);
+        const msg = `RemoveTeamMember is not expected to succeed for member ${member.id} in case ${Case.id}`;
+        return checkResponse(response, msg, expectNoFailures);
     }
 
     /**
@@ -39,7 +50,9 @@ export default class CaseTeamService {
      * @param user 
      * @param member 
      */
-    async setMember(Case: Case, user: User, member: CaseTeamMember) {
-        throw new Error('Not yet implemented')
+    async setMember(Case: Case, user: User, member: CaseTeamMember, expectNoFailures: boolean = true) {
+        const response = await cafienneService.put(`/cases/${Case.id}/caseteam`, user, member);
+        const msg = `SetTeamMember is not expected to succeed for user ${user.id} in case ${Case.id}`;
+        return checkResponse(response, msg, expectNoFailures);
     }
 }
