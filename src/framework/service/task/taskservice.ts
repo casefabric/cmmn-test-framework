@@ -97,7 +97,7 @@ export default class TaskService {
      */
     async saveTaskOutput(task: Task, user: User, taskOutput = {}, expectNoFailures: boolean = true) {
         const response = await cafienneService.put('tasks/' + task.id, user, taskOutput);
-        await checkResponse(response, 'Task output for ' + task + ' was saved succesfully, but this was not expected', expectNoFailures);
+        return checkResponse(response, 'Task output for ' + task + ' was saved succesfully, but this was not expected', expectNoFailures);
     }
 
     /**
@@ -106,12 +106,14 @@ export default class TaskService {
      * @param task
      * @param user 
      */
-    async getTask(task: Task, user: User) {
+    async getTask(task: Task, user: User, expectNoFailures: boolean = true) {
         if (!task.id) {
             console.log("Oops. First try to succesfully start a case ?!");
             return task;
         }
-        const json = await cafienneService.get('tasks/' + task.id, user).then(checkJSONResponse);
+        const response = await cafienneService.get('tasks/' + task.id, user);
+        const msg = `GetTask is not expected to succeed for user ${user.id} on task ${task.id}`;
+        const json = await checkJSONResponse(response, msg, expectNoFailures);
         return new Task(json);
     }
 
@@ -120,8 +122,11 @@ export default class TaskService {
      * @param caseInstance
      * @param user 
      */
-    async getCaseTasks(caseInstance: Case, user: User) {
-        const json = await cafienneService.get('/tasks/case/' + caseInstance.id, user).then(checkJSONResponse);
+    async getCaseTasks(caseInstance: Case, user: User, expectNoFailures: boolean = true) {
+        const response = await cafienneService.get('/tasks/case/' + caseInstance.id, user);
+        const msg = `GetCaseTasks is not expected to succeed for member ${user.id} in case ${caseInstance.id}`;
+        const json = await checkJSONResponse(response, msg, expectNoFailures);
+
         const jsonArray = <Array<any>>json;
         return jsonArray.map(task => new Task(task))
     }
@@ -131,7 +136,7 @@ export default class TaskService {
      * @param user 
      * @param definition 
      */
-    async getTasksOfCaseType(user: User, definition: string) {
+    async getTasksOfCaseType(user: User, definition: string, expectNoFailures: boolean = true) {
         throw new Error('Not yet implemented');
     }
 
@@ -140,8 +145,11 @@ export default class TaskService {
      * @param user User fetching the task list
      * @param filter Optional filter for the tasks (e.g., to get only Active tasks)
      */
-    async getTasks(user: User, filter?: TaskFilter): Promise<Array<Task>> {
-        const json = await cafienneService.get('/tasks', user, filter).then(checkJSONResponse);
+    async getTasks(user: User, filter?: TaskFilter, expectNoFailures: boolean = true): Promise<Array<Task>> {
+        const response = await cafienneService.get('/tasks', user, filter);
+        const msg = `GetTasks is not expected to succeed for member ${user.id}`;
+        const json = await checkJSONResponse(response, msg, expectNoFailures);
+
         const jsonArray = <Array<any>>json;
         return jsonArray.map(task => new Task(task))
     }
@@ -152,7 +160,7 @@ export default class TaskService {
      * @param user 
      * @param filter 
      */
-    async countTasks(user: User, filter?: TaskFilter): Promise<TaskCount> {
+    async countTasks(user: User, filter?: TaskFilter, expectNoFailures: boolean = true): Promise<TaskCount> {
         throw new Error('Not yet implemented');
     }
 }
