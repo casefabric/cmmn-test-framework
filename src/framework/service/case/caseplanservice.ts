@@ -13,7 +13,7 @@ export default class CasePlanService {
      * @param Case 
      * @param user 
      */
-    async getPlanItems(Case: Case, user: User, expectNoFailures: boolean = true) {
+    async getPlanItems(Case: Case, user: User, expectNoFailures: boolean = true): Promise<Array<PlanItem>> {
         const response = await cafienneService.get(`/cases/${Case.id}/planitems`, user);
         const msg = `GetPlanItems is not expected to succeed for user ${user.id} in case ${Case.id}`;
         return checkJSONResponse(response, msg, expectNoFailures, [PlanItem]);
@@ -25,7 +25,7 @@ export default class CasePlanService {
      * @param user 
      * @param planItemId
      */
-    async getPlanItem(Case: Case, user: User, planItemId: string, expectNoFailures: boolean = true) {
+    async getPlanItem(Case: Case, user: User, planItemId: string, expectNoFailures: boolean = true): Promise<PlanItem> {
         const response = await cafienneService.get(`/cases/${Case.id}/planitems/${planItemId}`, user);
         const msg = `GetPlanItem is not expected to succeed for user ${user.id} in case ${Case.id}`;
         return checkJSONResponse(response, msg, expectNoFailures, PlanItem);
@@ -37,7 +37,7 @@ export default class CasePlanService {
      * @param user 
      * @param planItemId
      */
-    async getPlanItemHistory(Case: Case, user: User, planItemId: string, expectNoFailures: boolean = true) {
+    async getPlanItemHistory(Case: Case, user: User, planItemId: string, expectNoFailures: boolean = true): Promise<Array<PlanItemHistory>> {
         const response = await cafienneService.get(`/cases/${Case.id}/planitems/${planItemId}/history`, user);
         const msg = `GetPlanItemHistory is not expected to succeed for user ${user.id} in case ${Case.id}`;
         return checkJSONResponse(response, msg, expectNoFailures, [PlanItemHistory]);
