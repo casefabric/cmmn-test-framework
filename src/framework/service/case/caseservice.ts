@@ -66,7 +66,7 @@ export default class CaseService {
      * @param filter 
      * @param user 
      */
-    async getCases(user: User, filter?: CaseFilter, expectNoFailures: boolean = true) {
+    async getCases(user: User, filter?: CaseFilter, expectNoFailures: boolean = true): Promise<Array<Case>> {
         const response = await cafienneService.get('/cases', user, filter);
         const msg = `GetCases is not expected to succeed for user ${user.id}`;
         return checkJSONResponse(response, msg, expectNoFailures) as Promise<Array<Case>>;
@@ -76,7 +76,7 @@ export default class CaseService {
      * Retrieves the list of cases for the user (those that the user started or participates in).
      * @param user 
      */
-    async getUserCases(user: User, filter?: CaseFilter, expectNoFailures: boolean = true) {        
+    async getUserCases(user: User, filter?: CaseFilter, expectNoFailures: boolean = true): Promise<Array<Case>> {        
         const response = await cafienneService.get('/cases/user', user, filter);
         const msg = `GetUserCases is not expected to succeed for user ${user.id}`;
         return checkJSONResponse(response, msg, expectNoFailures) as Promise<Array<Case>>;
@@ -87,12 +87,11 @@ export default class CaseService {
      * @param Case 
      * @param user 
      */
-    async getDiscretionaryItems(Case: Case, user: User, expectNoFailures: boolean = true) {
+    async getDiscretionaryItems(Case: Case, user: User, expectNoFailures: boolean = true): Promise<DiscretionaryItemsResponse> {
         checkCaseID(Case);
         const response = await cafienneService.get('/cases/' + Case.id + '/discretionaryitems', user)
         const msg = `GetDiscretionaryItems is not expected to succeed for user ${user.id} in case ${Case.id}`;
-        const json = <DiscretionaryItemsResponse> await checkJSONResponse(response, msg, expectNoFailures);
-        return json.discretionaryItems;
+        return <DiscretionaryItemsResponse> await checkJSONResponse(response, msg, expectNoFailures);
     }
 
     /**
