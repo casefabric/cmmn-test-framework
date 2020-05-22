@@ -36,14 +36,14 @@ export default class TestDiscretionaryItems extends TestCase {
         const discretionaries = await caseService.getDiscretionaryItems(caseInstance, user);
         // console.log('Found discretionary items: ', discretionaries.map(item => {return {name: item.name, type: item.type}}));
 
-        const numItems = discretionaries.length;
+        const numItems = discretionaries.discretionaryItems.length;
 
         if (numItems == 0) {
             console.log('Discretionary items not present?! Canceling further test case');
             return;
         }
 
-        const newItem = discretionaries[0];
+        const newItem = discretionaries.discretionaryItems[0];
         const plannedItem = await caseService.planDiscretionaryItem(caseInstance, user, newItem);
         console.log("Planned item: " + plannedItem)
 
