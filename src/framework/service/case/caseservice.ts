@@ -43,7 +43,7 @@ export default class CaseService {
      * @param Case 
      * @param user 
      */
-    async getCase(Case: Case, user: User, expectNoFailures: boolean = true) {
+    async getCase(Case: Case, user: User, expectNoFailures: boolean = true): Promise<Case> {
         checkCaseID(Case);
         const response = await cafienneService.get('/cases/' + Case.id, user);
         const msg = `GetCase is not expected to succeed for user ${user.id} in case ${Case.id}`;
