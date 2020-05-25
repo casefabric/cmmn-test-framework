@@ -55,4 +55,28 @@ export default class CaseTeamService {
         const msg = `SetTeamMember is not expected to succeed for user ${user.id} in case ${Case.id}`;
         return checkResponse(response, msg, expectNoFailures);
     }
+
+    /**
+     * Add a role to a case team member.
+     * @param Case 
+     * @param user 
+     * @param member 
+     */
+    async addMemberRole(Case: Case, user: User, member: CaseTeamMember, roleName: string, expectNoFailures: boolean = true) {
+        const response = await cafienneService.put(`/cases/${Case.id}/caseteam/${member.user}/role/${roleName}`, user);
+        const msg = `AddTeamMemberRole is not expected to succeed for user ${user.id} in case ${Case.id}`;
+        return checkResponse(response, msg, expectNoFailures);
+    }
+
+    /**
+     * Remove a role from a case team member.
+     * @param Case 
+     * @param user 
+     * @param member 
+     */
+    async removeMemberRole(Case: Case, user: User, member: CaseTeamMember, roleName: string, expectNoFailures: boolean = true) {
+        const response = await cafienneService.delete(`/cases/${Case.id}/caseteam/${member.user}/role/${roleName}`, user);
+        const msg = `RemoveTeamMemberRole is not expected to succeed for user ${user.id} in case ${Case.id}`;
+        return checkResponse(response, msg, expectNoFailures);
+    }
 }
