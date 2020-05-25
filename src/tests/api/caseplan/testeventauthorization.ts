@@ -8,6 +8,8 @@ import RepositoryService from '../../../framework/service/case/repositoryservice
 import CasePlanService from '../../../framework/service/case/caseplanservice';
 import PlanItem from '../../../framework/cmmn/planitem';
 import TenantService from '../../../framework/service/tenant/tenantservice';
+import CaseTeamMember from '../../../framework/cmmn/caseteammember';
+import CaseTeam from '../../../framework/cmmn/caseteam';
 
 const repositoryService = new RepositoryService();
 const definition = 'eventlistener.xml';
@@ -28,7 +30,9 @@ export default class TestEventAuthorization extends TestCase {
     }
 
     async run() {
-        const startCase = { tenant, definition };
+        const caseTeam = new CaseTeam([new CaseTeamMember(user), new CaseTeamMember(employee, ["Employee"])]);
+
+        const startCase = { tenant, definition, caseTeam };
 
         const caseInstance = await caseService.startCase(startCase, user);
         await caseService.getCase(caseInstance, user);
