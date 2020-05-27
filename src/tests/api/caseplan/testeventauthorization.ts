@@ -40,9 +40,15 @@ export default class TestEventAuthorization extends TestCase {
         const planItems = await casePlanService.getPlanItems(caseInstance, user);
         // console.log("PLanItems: " + planItems)
 
-        const plainUserEvent: PlanItem = planItems.find((item: PlanItem) => item.name === 'PlainUserEvent');
-        const employeeUserEvent: PlanItem = planItems.find((item: PlanItem) => item.name === 'EmployeeUserEvent');
-
+        const plainUserEvent = planItems.find((item: PlanItem) => item.name === 'PlainUserEvent');
+        if (! plainUserEvent) {
+            throw new Error('Did not find expected PlainUserEvent');
+        }
+        const employeeUserEvent = planItems.find((item: PlanItem) => item.name === 'EmployeeUserEvent');
+        if (! employeeUserEvent) {
+            throw new Error('Did not find expected EmployeeUserEvent');
+        }
+        
         const planItem = await casePlanService.getPlanItem(caseInstance, user, plainUserEvent.id);
         // console.log("PLanItem: " + planItem)
 

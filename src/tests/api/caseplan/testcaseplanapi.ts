@@ -33,7 +33,7 @@ export default class TestCasePlanAPI extends TestCase {
         const planItems = await casePlanService.getPlanItems(caseInstance, user);
         // console.log("PLanItems: " + planItems)
 
-        const eventItem: PlanItem = planItems.find((item: PlanItem) => item.name === 'PlainUserEvent')
+        const eventItem = planItems.find((item: PlanItem) => item.name === 'PlainUserEvent')
         if (! eventItem) {
             throw new Error('Failed to find event listener plan item with name PlainUserEvent in list ' + JSON.stringify(planItems, undefined, 2));
         }
