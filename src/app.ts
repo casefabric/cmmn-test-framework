@@ -17,6 +17,7 @@ import PingTestEnvironment from './tests/api/environment/ping';
 import TestTravelRequest from './tests/travelrequest/testtravelrequest';
 import TestRepeatingStage from './tests/stage/teststage';
 import TestCaseTeamAPI from './tests/api/caseteam/testcaseteamapi';
+import TestRoleBinding from './tests/api/caseteam/testrolebinding';
 
 
 function findTestsFromCommandLineArguments(): Array<string> {
@@ -51,6 +52,7 @@ function getHardCodedTestDeclarations(): Array<any> {
         , TestCaseFileAPI
         , TestCasePlanAPI
         , TestCaseTeamAPI
+        , TestRoleBinding
         , TestEventAuthorization
         , TestIncidentManagement
         , TestTravelRequest

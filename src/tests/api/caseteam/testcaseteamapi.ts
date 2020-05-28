@@ -9,6 +9,8 @@ import CaseFileService from '../../../framework/service/case/casefileservice';
 import CaseTeamMember from '../../../framework/cmmn/caseteammember';
 import CaseTeam from '../../../framework/cmmn/caseteam';
 import Comparison from '../../../framework/test/comparison';
+import RoleBinding from '../../../framework/cmmn/rolebinding';
+import TenantService from '../../../framework/service/tenant/tenantservice';
 
 const repositoryService = new RepositoryService();
 const definition = 'caseteam.xml';
@@ -16,7 +18,7 @@ const definition = 'caseteam.xml';
 const caseService = new CaseService();
 const caseTeamService = new CaseTeamService();
 const caseFileService = new CaseFileService();
-const worldwideTenant = new WorldWideTestTenant();
+const worldwideTenant = new WorldWideTestTenant('wwtt-2');
 const tenant = worldwideTenant.name;
 const sender = worldwideTenant.sender;
 const receiver = worldwideTenant.receiver;
@@ -32,13 +34,14 @@ export default class TestCaseTeamAPI extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
         await repositoryService.validateAndDeploy(definition, sender, tenant);
+        await new TenantService().addTenantUserRole(sender, worldwideTenant.tenant, sender.id, "Receiver");
     }
 
     async run() {
         const caseTeam = new CaseTeam([
             new CaseTeamMember(sender, [requestorRole]),
             new CaseTeamMember(receiver, [approverRole, paRole])
-        ]);
+        ], [new RoleBinding(requestorRole, ["ADMIN", "Not-Exisitng-TenantRole-Still-Allowed-In-Team"])]);
         const startCase = { tenant, definition, debug: true, caseTeam };
 
         const caseInstance = await caseService.startCase(startCase, sender);
