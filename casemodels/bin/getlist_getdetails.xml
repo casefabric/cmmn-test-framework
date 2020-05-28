@@ -1,0 +1,258 @@
+<definitions>
+    <case id="getlist_getdetails.case" name="getlist_getdetails" description="list-detail-case">
+        <caseFileModel>
+            <caseFileItem id="_LQXO7_5" name="IdentifierList" multiplicity="ExactlyOne" definitionRef="string.cfid">
+                <children>
+                    <caseFileItem id="_LQXO7_7" name="DetailsKey" multiplicity="ZeroOrMore" definitionRef="string.cfid"/>
+                </children>
+            </caseFileItem>
+            <caseFileItem id="_LQXO7_6" name="DetailsContent" multiplicity="ZeroOrMore" definitionRef="details.cfid"/>
+            <caseFileItem id="_Sp9aR_1" name="HTTPConfig" multiplicity="ExactlyOne" definitionRef="http.cfid"/>
+            <caseFileItem id="_Sp9aR_27" name="Exception" multiplicity="ZeroOrMore" definitionRef="exception.cfid"/>
+        </caseFileModel>
+        <casePlanModel id="cm_casefile/getlist_getdetails.case_0" name="getlist_getdetails" autoComplete="true">
+            <planItem id="pi_pt__LQXO7_8" name="GetList" definitionRef="pt__LQXO7_8">
+                <entryCriterion id="_Sp9aR_11" name="EntryCriterion_1" sentryRef="crit__Sp9aR_0"/>
+                <entryCriterion id="_Sp9aR_24" name="EntryCriterion_3" sentryRef="crit__Sp9aR_2"/>
+                <itemControl id="_Sp9aR_0">
+                    <repetitionRule id="_Sp9aR_22">
+                        <condition id="_Sp9aR_23" language="spel">
+                            <body>
+                                <![CDATA[true]]>
+                            </body>
+                        </condition>
+                    </repetitionRule>
+                </itemControl>
+            </planItem>
+            <planItem id="pi_pt__LQXO7_24" name="GetDetails" definitionRef="pt__LQXO7_24">
+                <entryCriterion id="_LQXO7_1" name="EntryCriterion_0" sentryRef="crit__LQXO7_0"/>
+                <itemControl id="_LQXO7_32">
+                    <repetitionRule id="_Sp9aR_3">
+                        <condition id="_Sp9aR_7" language="spel">
+                            <body>
+                                <![CDATA[planItem.index < 3]]>
+                            </body>
+                        </condition>
+                    </repetitionRule>
+                    <requiredRule id="_Sp9aR_13">
+                        <condition id="_Sp9aR_14" language="spel">
+                            <body>
+                                <![CDATA[true]]>
+                            </body>
+                        </condition>
+                    </requiredRule>
+                </itemControl>
+            </planItem>
+            <planItem id="pi__Sp9aR_8" name="Fail handling " definitionRef="_Sp9aR_8">
+                <entryCriterion id="_Sp9aR_18" name="EntryCriterion_2" sentryRef="crit__Sp9aR_1"/>
+                <itemControl id="_Sp9aR_15">
+                    <repetitionRule id="_Sp9aR_20">
+                        <condition id="_Sp9aR_21" language="spel">
+                            <body>
+                                <![CDATA[true]]>
+                            </body>
+                        </condition>
+                    </repetitionRule>
+                </itemControl>
+            </planItem>
+            <sentry id="crit__LQXO7_0">
+                <ifPart id="_LQXO7_8" contextRef="_LQXO7_7">
+                    <condition id="_LQXO7_9" language="spel">
+                        <body>
+                            <![CDATA[!DetailsKey.isEmpty()]]>
+                        </body>
+                    </condition>
+                </ifPart>
+                <caseFileItemOnPart id="_LQXO7_0" sourceRef="_LQXO7_7">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </sentry>
+            <sentry id="crit__Sp9aR_0">
+                <caseFileItemOnPart id="_Sp9aR_12" sourceRef="_Sp9aR_1">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </sentry>
+            <sentry id="crit__Sp9aR_1">
+                <planItemOnPart id="_Sp9aR_19" sourceRef="pi_pt__LQXO7_8">
+                    <standardEvent>fault</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <sentry id="crit__Sp9aR_2">
+                <planItemOnPart id="_Sp9aR_25" sourceRef="pi_tmr__Sp9aR_0">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <processTask id="pt__LQXO7_8" name="GetList" isBlocking="true" processRef="GetListWebService.process">
+                <inputs id="_LQXO7_12" name="testParameter"/>
+                <inputs id="_Sp9aR_5" name="HTTPConfig" bindingRef="_Sp9aR_1"/>
+                <outputs id="_LQXO7_14" name="responseCode"/>
+                <outputs id="_LQXO7_16" name="responseMessage" bindingRef="_Sp9aR_27"/>
+                <outputs id="_LQXO7_18" name="output"/>
+                <outputs id="_LQXO7_20" name="detailsIdentifiers" bindingRef="_LQXO7_7"/>
+                <outputs id="_LQXO7_22" name="headerContentLength"/>
+                <parameterMapping id="_LQXO7_11" sourceRef="_Sp9aR_5" targetRef="httpPort">
+                    <transformation id="_Sp9aR_4" language="spel">
+                        <body>
+                            <![CDATA[HTTPConfig.port]]>
+                        </body>
+                    </transformation>
+                </parameterMapping>
+                <parameterMapping id="_LQXO7_13" sourceRef="_LQXO7_12" targetRef="testParameter"/>
+                <parameterMapping id="_LQXO7_15" sourceRef="responseCode" targetRef="_LQXO7_14"/>
+                <parameterMapping id="_LQXO7_17" sourceRef="responseMessage" targetRef="_LQXO7_16">
+                    <transformation id="_Sp9aR_28" language="spel">
+                        <body>
+                            <![CDATA[responseMessage.cause.message]]>
+                        </body>
+                    </transformation>
+                </parameterMapping>
+                <parameterMapping id="_LQXO7_19" sourceRef="output" targetRef="_LQXO7_18"/>
+                <parameterMapping id="_LQXO7_21" sourceRef="detailsIdentifiers" targetRef="_LQXO7_20"/>
+                <parameterMapping id="_LQXO7_23" sourceRef="headerContentLength" targetRef="_LQXO7_22"/>
+            </processTask>
+            <processTask id="pt__LQXO7_24" name="GetDetails" isBlocking="true" processRef="GetDetailsWebService.process">
+                <inputs id="_LQXO7_28" name="detailsId" bindingRef="_LQXO7_7"/>
+                <inputs id="_Sp9aR_10" name="HTTPConfig" bindingRef="_Sp9aR_1">
+                    <bindingRefinement id="_Sp9aR_9" language="spel">
+                        <body>
+                            <![CDATA[GET]]>
+                        </body>
+                    </bindingRefinement>
+                </inputs>
+                <outputs id="_LQXO7_30" name="details" bindingRef="_LQXO7_6"/>
+                <parameterMapping id="_LQXO7_27" sourceRef="_Sp9aR_10" targetRef="httpPort">
+                    <transformation id="_Sp9aR_6" language="spel">
+                        <body>
+                            <![CDATA[HTTPConfig.port]]>
+                        </body>
+                    </transformation>
+                </parameterMapping>
+                <parameterMapping id="_LQXO7_29" sourceRef="_LQXO7_28" targetRef="detailsId"/>
+                <parameterMapping id="_LQXO7_31" sourceRef="details" targetRef="_LQXO7_30"/>
+            </processTask>
+            <milestone id="ms__Sp9aR_0" name="GetList Failed"/>
+            <timerEvent id="tmr__Sp9aR_0" name="Wait for 2 seconds">
+                <timerExpression id="_Sp9aR_17" language="spel">
+                    <body>
+                        <![CDATA[PT2S]]>
+                    </body>
+                </timerExpression>
+                <planItemStartTrigger id="_Sp9aR_16">
+                    <standardEvent/>
+                </planItemStartTrigger>
+            </timerEvent>
+            <stage id="_Sp9aR_8" name="Fail handling " autoComplete="true">
+                <planItem id="pi_tmr__Sp9aR_0" name="Wait for 2 seconds" definitionRef="tmr__Sp9aR_0"/>
+                <planItem id="pi_ms__Sp9aR_0" name="GetList Failed" definitionRef="ms__Sp9aR_0"/>
+            </stage>
+        </casePlanModel>
+    </case>
+    <process id="GetListWebService.process" name="GetListWebService" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
+        <input id="httpPort" name="httpPort"/>
+        <input id="testParameter" name="testParameter"/>
+        <output id="responseCode" name="responseCode"/>
+        <output id="responseMessage" name="responseMessage"/>
+        <output id="output" name="output"/>
+        <output id="detailsIdentifiers" name="detailsIdentifiers"/>
+        <output id="headerContentLength" name="headerContentLength"/>
+        <extensionElements>
+            <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.http.HTTPCallDefinition">
+                <url>http://localhost:${httpPort}/getListWebService</url>
+                <method>GET</method>
+                <http-headers>
+                    <http-header name="Accept">application/json</http-header>
+                </http-headers>
+                <parameterMapping sourceRef="responsePayload" targetRef="detailsIdentifiers">
+                    <transformation language="json">
+                        <body>$.._2[*].id</body>
+                    </transformation>
+                </parameterMapping>
+                <parameterMapping sourceRef="responseHeaders" targetRef="headerContentLength">
+                    <transformation language="spel">
+                        <body>responseHeaders.get("Content-Type")</body>
+                    </transformation>
+                </parameterMapping>
+                <parameterMapping sourceRef="exception" targetRef="responseMessage"/>
+            </cafienne:implementation>
+        </extensionElements>
+    </process>
+    <process id="GetDetailsWebService.process" name="GetDetailsWebService" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
+        <input id="httpPort" name="httpPort"/>
+        <input id="detailsId" name="detailsId"/>
+        <output id="details" name="details"/>
+        <extensionElements>
+            <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.http.HTTPCallDefinition">
+                <url>http://localhost:${httpPort}/details/${detailsId}</url>
+                <method>GET</method>
+                <http-headers>
+                    <http-header name="Accept">application/json</http-header>
+                </http-headers>
+                <parameterMapping sourceRef="responsePayload" targetRef="details">
+                    <transformation language="json">
+                        <body>$.._2</body>
+                    </transformation>
+                </parameterMapping>
+            </cafienne:implementation>
+        </extensionElements>
+    </process>
+    <caseFileItemDefinition name="string" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="string.cfid"/>
+    <caseFileItemDefinition name="details" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="details.cfid">
+        <property name="description" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="id" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    </caseFileItemDefinition>
+    <caseFileItemDefinition name="http" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="http.cfid">
+        <property name="port" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
+    </caseFileItemDefinition>
+    <caseFileItemDefinition name="exception" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="exception.cfid"/>
+    <CMMNDI>
+        <CMMNDiagram>
+            <CMMNShape cmmnElementRef="cm_casefile/getlist_getdetails.case_0">
+                <Bounds x="10" y="10" width="710" height="560"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_pt__LQXO7_8">
+                <Bounds x="180" y="80" width="130" height="60"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_pt__LQXO7_24">
+                <Bounds x="490" y="110" width="100" height="60"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_LQXO7_1">
+                <Bounds x="584" y="130" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_Sp9aR_11">
+                <Bounds x="174" y="100" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ms__Sp9aR_0">
+                <Bounds x="210" y="320" width="130" height="40"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi__Sp9aR_8">
+                <Bounds x="70" y="270" width="280" height="140"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_tmr__Sp9aR_0">
+                <Bounds x="120" y="310" width="32" height="32"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_Sp9aR_18">
+                <Bounds x="234" y="260" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_Sp9aR_24">
+                <Bounds x="204" y="130" width="12" height="20"/>
+            </CMMNShape>
+            <casefileitem cmmnElementRef="_LQXO7_shape_4" parentId="cm_casefile/getlist_getdetails.case_0" contextRef="_LQXO7_7">
+                <Bounds x="660" y="120" width="25" height="40"/>
+            </casefileitem>
+            <casefileitem cmmnElementRef="_LQXO7_shape_5" parentId="cm_casefile/getlist_getdetails.case_0" contextRef="_LQXO7_7">
+                <Bounds x="280" y="180" width="25" height="40"/>
+            </casefileitem>
+            <casefileitem cmmnElementRef="_Sp9aR_shape_6" parentId="cm_casefile/getlist_getdetails.case_0" contextRef="_Sp9aR_1">
+                <Bounds x="60" y="90" width="25" height="40"/>
+            </casefileitem>
+            <CMMNEdge sourceCMMNElementRef="_LQXO7_shape_4" targetCMMNElementRef="_LQXO7_1"/>
+            <CMMNEdge sourceCMMNElementRef="_LQXO7_shape_5" targetCMMNElementRef="pi_pt__LQXO7_8"/>
+            <CMMNEdge sourceCMMNElementRef="_Sp9aR_shape_6" targetCMMNElementRef="_Sp9aR_11"/>
+            <CMMNEdge sourceCMMNElementRef="pi_pt__LQXO7_8" targetCMMNElementRef="_Sp9aR_18"/>
+            <CMMNEdge sourceCMMNElementRef="pi_tmr__Sp9aR_0" targetCMMNElementRef="_Sp9aR_24">
+                <waypoint x="140" y="230"/>
+                <waypoint x="210" y="230"/>
+            </CMMNEdge>
+        </CMMNDiagram>
+    </CMMNDI>
+</definitions>

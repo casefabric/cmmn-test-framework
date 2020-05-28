@@ -1,0 +1,4 @@
+<caseFileItemDefinition name="details" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified">
+    <property name="description" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    <property name="id" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+</caseFileItemDefinition>
