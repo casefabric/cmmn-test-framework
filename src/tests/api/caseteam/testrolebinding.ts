@@ -14,6 +14,8 @@ import TenantService from '../../../framework/service/tenant/tenantservice';
 import { AssertionError } from 'assert';
 import TaskService from '../../../framework/service/task/taskservice';
 import Task from '../../../framework/cmmn/task';
+import User from '../../../framework/user';
+import { ServerSideProcessing } from '../../../framework/test/time';
 
 const repositoryService = new RepositoryService();
 const definition = 'caseteam.xml';
@@ -41,9 +43,9 @@ export default class TestRoleBinding extends TestCase {
 
     async run() {
         const caseTeam = new CaseTeam([], [
-            new RoleBinding(requestorRole, sender.roles)
-            , new RoleBinding(approverRole, sender.roles)
-            , new RoleBinding(participantRole, receiver.roles)
+            // new RoleBinding(requestorRole, sender.roles)
+            // , new RoleBinding(approverRole, sender.roles)
+            // , new RoleBinding(participantRole, receiver.roles)
         ]);
         const startCase = { tenant, definition, debug: true, caseTeam };
 
@@ -76,28 +78,44 @@ export default class TestRoleBinding extends TestCase {
             throw new Error('Cannot find Arbitrary task');
         }
 
-        // Claim task must be possible for the receiver
-        const response = await taskService.claimTask(approveTask, employee, false);
-        // const response = await caseService.getDiscretionaryItems(receiverCase, employee, false);
-        const failureText = await response.text();
-        {
-            const expectedMessage = "User receiving-user is not part of the case team";
-            console.log("Response: " + response.status)
-            console.log("Response: " + failureText);
-            if (response.status === 401) {
-                if (response.statusText == "Unauthorizied") {
-                    console.log("Unexpected")
-                }
-            }
-        };
-        // Claim task must be possible for the receiver
-        await taskService.claimTask(approveTask, receiver, false);
+        // await new TenantService().removeTenantUserRole(sender, worldwideTenant.tenant, receiver.id, "Sender");
+        // await ServerSideProcessing();
+
+        // Claim task must not be possible for the employee with task not found error
+        await this.claimTask(approveTask, employee, "cannot be found");
+        // Claim task must not be possible for the receiver with task not found error
+        await this.claimTask(approveTask, receiver, "No permission to perform this task");
+
+        await new TenantService().addTenantUserRole(sender, worldwideTenant.tenant, receiver.id, "Sender");
+        await caseTeamService.addRoleBinding(caseInstance, sender, "Receiver", "Approver");
+        await ServerSideProcessing();
+
+        await caseTeamService.setMember(caseInstance, sender, new CaseTeamMember(receiver, ["Approver"]))
+        // Now it should be possible
+        await taskService.claimTask(approveTask, receiver);
 
         // Claim task must be possible for the receiver
-        await taskService.claimTask(approveTask, sender);
+        await taskService.claimTask(approveTask, sender, false);
 
         // Remove role binding for receiver, and see if he can still access the case
 
 
+    }
+
+    async claimTask(task: Task, user: User, expectedMessage: string) {
+        // Claim task must be possible for the receiver
+        const response = await taskService.claimTask(task, user, false);
+        // const response = await caseService.getDiscretionaryItems(receiverCase, employee, false);
+        const failureText = await response.text();
+        console.log("Response: " + response.status)
+        console.log("Response: " + failureText);
+        if (response.status === 401) {
+            if (response.statusText == "Unauthorizied") {
+                console.log("Unexpected")
+            }
+        }
+        if (failureText.indexOf(expectedMessage) < 0) {
+            throw new Error('Expected message to contain "' + expectedMessage + '" but received "' + failureText +'"');
+        }
     }
 }
