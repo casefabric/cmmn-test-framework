@@ -43,10 +43,10 @@ export default class CaseService {
      * @param Case 
      * @param user 
      */
-    async getCase(Case: Case, user: User, expectNoFailures: boolean = true): Promise<Case> {
-        checkCaseID(Case);
-        const response = await cafienneService.get('/cases/' + Case.id, user);
-        const msg = `GetCase is not expected to succeed for user ${user.id} in case ${Case.id}`;
+    async getCase(Case: Case|string, user: User, expectNoFailures: boolean = true): Promise<Case> {
+        Case = checkCaseID(Case);
+        const response = await cafienneService.get('/cases/' + Case, user);
+        const msg = `GetCase is not expected to succeed for user ${user.id} in case ${Case}`;
         return checkJSONResponse(response, msg, expectNoFailures);
     }
 
@@ -141,10 +141,14 @@ export default class CaseService {
  * Throw an error if Case.id is not filled.
  * @param Case 
  */
-function checkCaseID(Case: Case) {
+function checkCaseID(Case: Case|string) {
+    if (typeof(Case) === 'string') {
+        return Case;
+    }
     if (! Case.id) {
         throw new Error('Case id has not been set. First the case has to be started');
     }
+    return Case.id;
 }
 
 /**
