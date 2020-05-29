@@ -4,6 +4,7 @@ import CaseTeam from "../../cmmn/caseteam";
 import CaseTeamMember from "../../cmmn/caseteammember";
 import CafienneService from "../cafienneservice";
 import { checkResponse, checkJSONResponse } from "../response";
+import RoleBinding from "../../cmmn/rolebinding";
 
 const cafienneService = new CafienneService();
 
@@ -29,6 +30,30 @@ export default class CaseTeamService {
     async setCaseTeam(Case: Case, user: User, team: CaseTeam, expectNoFailures: boolean = true) {
         const response = await cafienneService.post(`/cases/${Case.id}/caseteam`, user, team);
         const msg = `SetCaseTeam is not expected to succeed for user ${user.id} in case ${Case.id}`;
+        return checkResponse(response, msg, expectNoFailures);
+    }
+
+    /**
+     * Add or update a case team member.
+     * @param Case 
+     * @param user 
+     * @param member 
+     */
+    async addOwner(Case: Case, user: User, memberId: string, expectNoFailures: boolean = true) {
+        const response = await cafienneService.put(`/cases/${Case.id}/caseteam/${memberId}/owners`, user);
+        const msg = `AddOwner is not expected to succeed for user ${user.id} in case ${Case.id}`;
+        return checkResponse(response, msg, expectNoFailures);
+    }
+
+    /**
+     * Remove the owner from the case team; will not remove the member.
+     * @param Case 
+     * @param user 
+     * @param member 
+     */
+    async removeOwner(Case: Case, user: User, memberId: string, expectNoFailures: boolean = true) {
+        const response = await cafienneService.delete(`/cases/${Case.id}/caseteam/${memberId}/owners`, user);
+        const msg = `RemoveOwner is not expected to succeed for member ${memberId} in case ${Case.id}`;
         return checkResponse(response, msg, expectNoFailures);
     }
 
@@ -79,4 +104,29 @@ export default class CaseTeamService {
         const msg = `RemoveTeamMemberRole is not expected to succeed for user ${user.id} in case ${Case.id}`;
         return checkResponse(response, msg, expectNoFailures);
     }
+
+
+    /**
+     * Add a tenant role to a case team.
+     * @param Case 
+     * @param user 
+     * @param member 
+     */
+    async addRoleBinding(Case: Case, user: User, tenantRole: string, caseRole: string, expectNoFailures: boolean = true) {
+        const response = await cafienneService.put(`/cases/${Case.id}/caseteam/${tenantRole}/binding/${caseRole}`, user);
+        const msg = `AddRoleBinding is not expected to succeed for user ${user.id} in case ${Case.id}`;
+        return checkResponse(response, msg, expectNoFailures);
+    }
+
+    /**
+     * Remove a tenant role from the case team.
+     * @param Case 
+     * @param user 
+     * @param member 
+     */
+    async removeRoleBinding(Case: Case, user: User, tenantRole: string, caseRole: string, expectNoFailures: boolean = true) {
+        const response = await cafienneService.delete(`/cases/${Case.id}/caseteam/${tenantRole}/binding/${caseRole}`, user);
+        const msg = `RemoveRoleBinding is not expected to succeed for user ${user.id} in case ${Case.id}`;
+        return checkResponse(response, msg, expectNoFailures);
+    }    
 }
