@@ -7,7 +7,7 @@ import RoleBinding from "./rolebinding";
  * Each case instance has it's own team.
  */
 export default class CaseTeam {
-    constructor(public members: CaseTeamMember[], public roleBindings: RoleBinding[] = []) {}
+    constructor(public members: CaseTeamMember[]) {}
 
     find(user: User) {
         return this.members.find(member => member.user === user.id);

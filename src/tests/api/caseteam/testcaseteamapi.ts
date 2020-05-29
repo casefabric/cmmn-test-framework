@@ -39,9 +39,10 @@ export default class TestCaseTeamAPI extends TestCase {
 
     async run() {
         const caseTeam = new CaseTeam([
-            new CaseTeamMember(sender, [requestorRole]),
-            new CaseTeamMember(receiver, [approverRole, paRole])
-        ], [new RoleBinding(requestorRole, ["ADMIN", "Not-Exisitng-TenantRole-Still-Allowed-In-Team"])]);
+            new CaseTeamMember(sender, 'user', true, [requestorRole]),
+            new CaseTeamMember(receiver, 'user', true, [approverRole, paRole]),
+            new CaseTeamMember(requestorRole, 'role', false, ["ADMIN", "Not-Exisitng-TenantRole-Still-Allowed-In-Team"])
+        ]);
         const startCase = { tenant, definition, debug: true, caseTeam };
 
         const caseInstance = await caseService.startCase(startCase, sender);
@@ -80,7 +81,7 @@ export default class TestCaseTeamAPI extends TestCase {
         await caseService.getCase(caseInstance, employee);
 
         // Replace entire case team; removes sender and employee and then adds receiver and employee
-        const newTeam = new CaseTeam([new CaseTeamMember(receiver, [requestorRole]), new CaseTeamMember(employee)]);
+        const newTeam = new CaseTeam([new CaseTeamMember(receiver, undefined, undefined, [requestorRole]), new CaseTeamMember(employee)]);
         await caseTeamService.setCaseTeam(caseInstance, sender, newTeam);
 
         // So now sender no longer has access, but the others do.
@@ -99,37 +100,37 @@ export default class TestCaseTeamAPI extends TestCase {
 
         await caseTeamService.getCaseTeam(caseInstance, employee).then(team => {
             console.log('1. Team: ' + JSON.stringify(team, undefined, 2));
-            console.log('1. Employee roles: ' + team.find(employee)?.roles);
-            console.log('1. Receiver roles: ' + team.find(receiver)?.roles);
+            console.log('1. Employee roles: ' + team.find(employee)?.caseRoles);
+            console.log('1. Receiver roles: ' + team.find(receiver)?.caseRoles);
         });
 
 
         // Add a role that is not defined in the case model should not be possible
-        await caseTeamService.setMember(caseInstance, receiver, new CaseTeamMember(receiver, [notExistingRole]), false);
+        await caseTeamService.setMember(caseInstance, receiver, new CaseTeamMember(receiver, undefined, undefined, [notExistingRole]), false);
 
         // Add an empty role should be possible through setting a member
-        await caseTeamService.setMember(caseInstance, receiver, new CaseTeamMember(employee, [emptyRole]));
-        // But not when directly assigning the role
-        await caseTeamService.addMemberRole(caseInstance, receiver, new CaseTeamMember(employee), 'a/b/c', false);
-        await caseTeamService.addMemberRole(caseInstance, receiver, new CaseTeamMember(employee), '', false);
+        await caseTeamService.setMember(caseInstance, receiver, new CaseTeamMember(employee, undefined, undefined, [emptyRole]));
+        // But not when assigning a non existing role
+        await caseTeamService.setMember(caseInstance, receiver, new CaseTeamMember(employee, undefined, undefined, ['a/b/c']), false);
 
         // Now add approver role to the employee and see if that works
-        await caseTeamService.setMember(caseInstance, receiver, new CaseTeamMember(employee, [approverRole]));
+        await caseTeamService.setMember(caseInstance, receiver, new CaseTeamMember(employee, undefined, undefined, [approverRole]));
         // Now add approver role to the receiver and see if that works
-        await caseTeamService.setMember(caseInstance, receiver, new CaseTeamMember(receiver, [requestorRole, approverRole]));
+        await caseTeamService.setMember(caseInstance, receiver, new CaseTeamMember(receiver, undefined, undefined, [requestorRole, approverRole]));
 
         await caseTeamService.getCaseTeam(caseInstance, employee).then(team => {
             console.log('2. Team: ' + JSON.stringify(team, undefined, 2));
-            console.log('2. Employee roles: ' + team.find(employee)?.roles);
-            console.log('2. Receiver roles: ' + team.find(receiver)?.roles);
+            console.log('2. Employee roles: ' + team.find(employee)?.caseRoles);
+            console.log('2. Receiver roles: ' + team.find(receiver)?.caseRoles);
         });
 
         await caseTeamService.removeMemberRole(caseInstance, receiver, new CaseTeamMember(receiver), requestorRole);
-        await caseTeamService.addMemberRole(caseInstance, receiver, new CaseTeamMember(receiver), paRole);
+        // Now add approver role to the receiver and see if that works
+        await caseTeamService.setMember(caseInstance, receiver, new CaseTeamMember(receiver, undefined, undefined, [paRole]));
         await caseTeamService.getCaseTeam(caseInstance, employee).then(team => {
-            console.log('2. Team: ' + JSON.stringify(team, undefined, 2));
-            console.log('2. Employee roles: ' + team.find(employee)?.roles);
-            console.log('2. Receiver roles: ' + team.find(receiver)?.roles);
+            console.log('3. Team: ' + JSON.stringify(team, undefined, 2));
+            console.log('3. Employee roles: ' + team.find(employee)?.caseRoles);
+            console.log('3. Receiver roles: ' + team.find(receiver)?.caseRoles);
         });
 
     }

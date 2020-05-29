@@ -42,10 +42,10 @@ export default class TestRoleBinding extends TestCase {
     }
 
     async run() {
-        const caseTeam = new CaseTeam([], [
-            // new RoleBinding(requestorRole, sender.roles)
-            // , new RoleBinding(approverRole, sender.roles)
-            // , new RoleBinding(participantRole, receiver.roles)
+        const caseTeam = new CaseTeam([
+            new CaseTeamMember(sender, 'user', true, [])
+            , new CaseTeamMember('Sender', 'role', false, [requestorRole, approverRole])
+            , new CaseTeamMember('Receiver', 'role', false, [participantRole])
         ]);
         const startCase = { tenant, definition, debug: true, caseTeam };
 
@@ -60,8 +60,8 @@ export default class TestRoleBinding extends TestCase {
 
         // Print the case team
         await caseTeamService.getCaseTeam(caseInstance, sender).then(team => {
-            if (caseTeam.roleBindings.length != team.roleBindings.length) {
-                throw new Error('Unexpected different number of role bindings');
+            if (caseTeam.members.length != team.members.length) {
+                throw new Error('Unexpected different number of members');
             }
             // assertBindings(caseTeam.roleBindings, team.roleBindings);
             console.log('Team: ' + JSON.stringify(team, undefined, 2));
@@ -70,32 +70,29 @@ export default class TestRoleBinding extends TestCase {
         // Claim a task a receiver should work
         const tasks = await taskService.getCaseTasks(receiverCase, receiver);
         const approveTask = tasks.find(task => task.taskName === 'Approve');
-        if (! approveTask) {
+        if (!approveTask) {
             throw new Error('Cannot find Approve task');
         }
         const arbitraryTask = tasks.find(task => task.taskName === 'Arbitrary Task');
-        if (! arbitraryTask) {
+        if (!arbitraryTask) {
             throw new Error('Cannot find Arbitrary task');
         }
-
-        // await new TenantService().removeTenantUserRole(sender, worldwideTenant.tenant, receiver.id, "Sender");
-        // await ServerSideProcessing();
 
         // Claim task must not be possible for the employee with task not found error
         await this.claimTask(approveTask, employee, "cannot be found");
         // Claim task must not be possible for the receiver with task not found error
         await this.claimTask(approveTask, receiver, "No permission to perform this task");
 
-        await new TenantService().addTenantUserRole(sender, worldwideTenant.tenant, receiver.id, "Sender");
-        await caseTeamService.addRoleBinding(caseInstance, sender, "Receiver", "Approver");
-        await ServerSideProcessing();
+        // await new TenantService().addTenantUserRole(sender, worldwideTenant.tenant, receiver.id, "Sender");
+        // await caseTeamService.addMemberRole(caseInstance, sender, "Receiver", "Approver");
+        // await ServerSideProcessing();
 
-        await caseTeamService.setMember(caseInstance, sender, new CaseTeamMember(receiver, ["Approver"]))
+        await caseTeamService.setMember(caseInstance, sender, new CaseTeamMember(receiver, undefined, undefined, ["Approver"]))
         // Now it should be possible
-        await taskService.claimTask(approveTask, receiver);
+        // await taskService.claimTask(approveTask, receiver);
 
         // Claim task must be possible for the receiver
-        await taskService.claimTask(approveTask, sender, false);
+        await taskService.claimTask(approveTask, sender);
 
         // Remove role binding for receiver, and see if he can still access the case
 
@@ -115,7 +112,7 @@ export default class TestRoleBinding extends TestCase {
             }
         }
         if (failureText.indexOf(expectedMessage) < 0) {
-            throw new Error('Expected message to contain "' + expectedMessage + '" but received "' + failureText +'"');
+            throw new Error('Expected message to contain "' + expectedMessage + '" but received "' + failureText + '"');
         }
     }
 }

@@ -34,30 +34,6 @@ export default class CaseTeamService {
     }
 
     /**
-     * Add or update a case team member.
-     * @param Case 
-     * @param user 
-     * @param member 
-     */
-    async addOwner(Case: Case, user: User, memberId: string, expectNoFailures: boolean = true) {
-        const response = await cafienneService.put(`/cases/${Case.id}/caseteam/${memberId}/owners`, user);
-        const msg = `AddOwner is not expected to succeed for user ${user.id} in case ${Case.id}`;
-        return checkResponse(response, msg, expectNoFailures);
-    }
-
-    /**
-     * Remove the owner from the case team; will not remove the member.
-     * @param Case 
-     * @param user 
-     * @param member 
-     */
-    async removeOwner(Case: Case, user: User, memberId: string, expectNoFailures: boolean = true) {
-        const response = await cafienneService.delete(`/cases/${Case.id}/caseteam/${memberId}/owners`, user);
-        const msg = `RemoveOwner is not expected to succeed for member ${memberId} in case ${Case.id}`;
-        return checkResponse(response, msg, expectNoFailures);
-    }
-
-    /**
      * Delete the specified member from the case team.
      * @param Case 
      * @param user 
@@ -76,20 +52,8 @@ export default class CaseTeamService {
      * @param member 
      */
     async setMember(Case: Case, user: User, member: CaseTeamMember, expectNoFailures: boolean = true) {
-        const response = await cafienneService.put(`/cases/${Case.id}/caseteam`, user, member);
+        const response = await cafienneService.put(`/cases/${Case.id}/caseteam/${member.memberId}`, user, member);
         const msg = `SetTeamMember is not expected to succeed for user ${user.id} in case ${Case.id}`;
-        return checkResponse(response, msg, expectNoFailures);
-    }
-
-    /**
-     * Add a role to a case team member.
-     * @param Case 
-     * @param user 
-     * @param member 
-     */
-    async addMemberRole(Case: Case, user: User, member: CaseTeamMember, roleName: string, expectNoFailures: boolean = true) {
-        const response = await cafienneService.put(`/cases/${Case.id}/caseteam/${member.user}/role/${roleName}`, user);
-        const msg = `AddTeamMemberRole is not expected to succeed for user ${user.id} in case ${Case.id}`;
         return checkResponse(response, msg, expectNoFailures);
     }
 
@@ -100,33 +64,8 @@ export default class CaseTeamService {
      * @param member 
      */
     async removeMemberRole(Case: Case, user: User, member: CaseTeamMember, roleName: string, expectNoFailures: boolean = true) {
-        const response = await cafienneService.delete(`/cases/${Case.id}/caseteam/${member.user}/role/${roleName}`, user);
+        const response = await cafienneService.delete(`/cases/${Case.id}/caseteam/${member.memberId}/role/${roleName}`, user);
         const msg = `RemoveTeamMemberRole is not expected to succeed for user ${user.id} in case ${Case.id}`;
         return checkResponse(response, msg, expectNoFailures);
     }
-
-
-    /**
-     * Add a tenant role to a case team.
-     * @param Case 
-     * @param user 
-     * @param member 
-     */
-    async addRoleBinding(Case: Case, user: User, tenantRole: string, caseRole: string, expectNoFailures: boolean = true) {
-        const response = await cafienneService.put(`/cases/${Case.id}/caseteam/${tenantRole}/binding/${caseRole}`, user);
-        const msg = `AddRoleBinding is not expected to succeed for user ${user.id} in case ${Case.id}`;
-        return checkResponse(response, msg, expectNoFailures);
-    }
-
-    /**
-     * Remove a tenant role from the case team.
-     * @param Case 
-     * @param user 
-     * @param member 
-     */
-    async removeRoleBinding(Case: Case, user: User, tenantRole: string, caseRole: string, expectNoFailures: boolean = true) {
-        const response = await cafienneService.delete(`/cases/${Case.id}/caseteam/${tenantRole}/binding/${caseRole}`, user);
-        const msg = `RemoveRoleBinding is not expected to succeed for user ${user.id} in case ${Case.id}`;
-        return checkResponse(response, msg, expectNoFailures);
-    }    
 }
