@@ -52,7 +52,7 @@ export default class CaseTeamService {
      * @param member 
      */
     async setMember(Case: Case, user: User, member: CaseTeamMember, expectNoFailures: boolean = true) {
-        const response = await cafienneService.put(`/cases/${Case.id}/caseteam/${member.memberId}`, user, member);
+        const response = await cafienneService.put(`/cases/${Case.id}/caseteam/${member.member.id}`, user, member);
         const msg = `SetTeamMember is not expected to succeed for user ${user.id} in case ${Case.id}`;
         return checkResponse(response, msg, expectNoFailures);
     }
@@ -64,7 +64,7 @@ export default class CaseTeamService {
      * @param member 
      */
     async removeMemberRole(Case: Case, user: User, member: CaseTeamMember, roleName: string, expectNoFailures: boolean = true) {
-        const response = await cafienneService.delete(`/cases/${Case.id}/caseteam/${member.memberId}/role/${roleName}`, user);
+        const response = await cafienneService.delete(`/cases/${Case.id}/caseteam/${member.member.id}/role/${roleName}`, user);
         const msg = `RemoveTeamMemberRole is not expected to succeed for user ${user.id} in case ${Case.id}`;
         return checkResponse(response, msg, expectNoFailures);
     }
