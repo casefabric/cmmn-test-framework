@@ -10,6 +10,6 @@ export default class CaseTeam {
     constructor(public members: CaseTeamMember[]) {}
 
     find(user: User) {
-        return this.members.find(member => member.user === user.id);
+        return this.members.find(member => member.memberId === user.id);
     }
 }
