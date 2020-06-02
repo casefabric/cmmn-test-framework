@@ -45,6 +45,9 @@ export default class TestCaseTeamAPI extends TestCase {
         ]);
         const startCase = { tenant, definition, debug: true, caseTeam };
 
+        await caseService.startCase(startCase, sender, false);
+
+        caseTeam.members[2].caseRoles = []; // Change roles of requestor to be empty instead of having wrong roles
         const caseInstance = await caseService.startCase(startCase, sender);
 
         // Getting the case must be allowed for both sender and receiver
@@ -82,6 +85,10 @@ export default class TestCaseTeamAPI extends TestCase {
 
         // Replace entire case team; removes sender and employee and then adds receiver and employee
         const newTeam = new CaseTeam([new CaseTeamMember(receiver, undefined, undefined, [requestorRole]), new CaseTeamMember(employee)]);
+        // This call fails, because the new case team does not have any owners defined
+        await caseTeamService.setCaseTeam(caseInstance, sender, newTeam, false);
+        // Make receiver the owner, and then it should work
+        newTeam.members[0].isOwner = true;
         await caseTeamService.setCaseTeam(caseInstance, sender, newTeam);
 
         // So now sender no longer has access, but the others do.
