@@ -19,6 +19,7 @@ import TestRepeatingStage from './tests/stage/teststage';
 import TestCaseTeamAPI from './tests/api/caseteam/testcaseteamapi';
 import TestRoleBinding from './tests/api/caseteam/testrolebinding';
 import TestTaskAPI from './tests/api/task/testtaskapi';
+import TestCaseTeam1 from './tests/api/caseteam/testcaseteam1';
 
 
 function findTestsFromCommandLineArguments(): Array<string> {
@@ -55,6 +56,7 @@ function getHardCodedTestDeclarations(): Array<any> {
         , TestCasePlanAPI
         , TestCaseTeamAPI
         , TestRoleBinding
+        , TestCaseTeam1
         , TestEventAuthorization
         , TestIncidentManagement
         , TestTravelRequest
