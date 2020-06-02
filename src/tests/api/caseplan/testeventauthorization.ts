@@ -30,7 +30,7 @@ export default class TestEventAuthorization extends TestCase {
     }
 
     async run() {
-        const caseTeam = new CaseTeam([new CaseTeamMember(user), new CaseTeamMember(employee, ["Employee"])]);
+        const caseTeam = new CaseTeam([new CaseTeamMember(user), new CaseTeamMember(employee, "user", false, ["Employee"])]);
 
         const startCase = { tenant, definition, caseTeam };
 

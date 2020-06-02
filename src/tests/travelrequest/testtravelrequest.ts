@@ -98,9 +98,9 @@ export default class TestTravelRequest extends TestCase {
         };
         const caseTeam = {
             members: [
-                { user: approver.id, roles: ['Approver'] },
-                { user: lana.id, roles: ['PersonalAssistant'] },
-                { user: requestor.id, roles: ['Requestor'] }
+                { member : { id: approver.id }, caseRoles: ['Approver'] },
+                { member : { id: lana.id }, caseRoles: ['PersonalAssistant'] },
+                { member : { id: requestor.id }, caseRoles: ['Requestor'] }
             ]
         };
         const startCase: StartCase = { tenant, definition, inputs, debug: true, caseTeam };
