@@ -10,7 +10,7 @@ import { checkJSONResponse, checkResponse } from '../response';
 const cafienneService = new CafienneService();
 
 export default class CaseService {
-    async startCase(command: StartCase, user: User, expectNoFailures: boolean = true): Promise<Case> {
+    async startCase(command: StartCase, user: User, expectNoFailures: boolean = true) {
         if (!user) {
             throw new Error("User must be specified");
         }
@@ -32,10 +32,14 @@ export default class CaseService {
 
         // Hack: copy "StartCaseResponse.caseInstanceId" to "Case.id" in the json prior to instantiating Case.
         // TODO: consider whether it is better to work with a "StartCaseResponse" object instead
-        json.id = json.caseInstanceId;
-        const caseInstance = <Case>json;
-        console.log(`Created case instance with id: \t${caseInstance.id}`);
-        return caseInstance;
+        if (response.ok) {
+            json.id = json.caseInstanceId;
+            const caseInstance = <Case>json;
+            console.log(`Created case instance with id: \t${caseInstance.id}`);
+            return caseInstance;
+        } else {
+            return response;
+        }
     }
 
     /**
