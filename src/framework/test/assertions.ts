@@ -7,10 +7,13 @@ import Case from '../../framework/cmmn/case';
 import TenantUser from '../../framework/tenant/tenantuser';
 import CaseFileService from '../service/case/casefileservice';
 import { pathReader } from '../cmmn/casefile';
+import CaseTeam from '../cmmn/caseteam';
+import CaseTeamService from '../service/case/caseteamservice';
 
 const caseService = new CaseService();
 const taskService = new TaskService();
 const caseFileService = new CaseFileService();
+const caseTeamService = new CaseTeamService();
 
 
 /**
@@ -66,6 +69,33 @@ export function verifyTaskInput(task: Task, taskInput: any) {
 }
 
 /**
+ * Finds and returns a particular task with in list of tasks
+ * and throws an error if it does not exist
+ * @param tasks 
+ * @param taskName 
+ */
+export function findTask(tasks: Task[], taskName: string): Task {
+    const task = tasks.find(task => task.taskName === taskName);
+    if (!task) {
+        throw new Error('Cannot find task ' + taskName);
+    }
+    return task;
+}
+
+/**
+ * Asserts the number of tasks that have specified state with expected count
+ * @param tasks 
+ * @param state 
+ * @param expectedCount 
+ */
+export function assertTaskCount(tasks: Task[], state: string, expectedCount: Number) {
+    const actualCount = tasks.filter(t => t.taskState === state).length
+    if(actualCount != expectedCount ) {
+        throw new Error('Number of ' + state + ' tasks expected to be ' + expectedCount + '; but found ' + actualCount)
+    }
+}
+
+/**
  * Read the case instance's case file on behalf of the user and verify that the element at the end of the path matches the expectedContent.
  * Path can be something like /Greeting/
  * 
@@ -86,9 +116,22 @@ export async function assertCaseFileContent(caseInstance: Case, user: User, path
         } 
 
         const actualCaseFileItem = readCaseFileItem(casefile);
-        if (! Comparison.sameJSON(actualCaseFileItem, expectedContent)) {
-    
+        if (!Comparison.sameJSON(actualCaseFileItem, expectedContent)) {
             throw new Error(`Case File [${path}] is expected to match: ${JSON.stringify(expectedContent, undefined, 2)}\nActual: ${JSON.stringify(actualCaseFileItem, undefined, 2)}`);
         }
     });
+}
+
+/**
+ * Asserts the case team with the given team
+ * and throws error if it doesn't match
+ * @param caseInstance 
+ * @param user 
+ * @param expectedTeam 
+ */
+export async function assertCaseTeam(caseInstance: Case, user: User, expectedTeam: CaseTeam) {
+    const actualCaseTeam: CaseTeam = await caseTeamService.getCaseTeam(caseInstance, user);
+    if(!Comparison.sameJSON(actualCaseTeam, expectedTeam)) {
+        throw new Error('Case team is not the same as given to the case');
+    }
 }
