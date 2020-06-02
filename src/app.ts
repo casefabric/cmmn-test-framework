@@ -20,6 +20,7 @@ import TestCaseTeamAPI from './tests/api/caseteam/testcaseteamapi';
 import TestRoleBinding from './tests/api/caseteam/testrolebinding';
 import TestTaskAPI from './tests/api/task/testtaskapi';
 import TestCaseTeam1 from './tests/api/caseteam/testcaseteam1';
+import TestCaseTeam2 from './tests/api/caseteam/testcaseteam2';
 
 
 function findTestsFromCommandLineArguments(): Array<string> {
@@ -57,6 +58,7 @@ function getHardCodedTestDeclarations(): Array<any> {
         , TestCaseTeamAPI
         , TestRoleBinding
         , TestCaseTeam1
+        , TestCaseTeam2
         , TestEventAuthorization
         , TestIncidentManagement
         , TestTravelRequest
