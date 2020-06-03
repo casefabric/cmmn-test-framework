@@ -154,10 +154,13 @@ export default class TaskService {
      * @param filter 
      */
     async countTasks(user: User, filter?: TaskFilter, expectNoFailures: boolean = true): Promise<TaskCount> {
-        throw new Error('Not yet implemented');
+        const response = await cafienneService.get('/tasks/user/count', user, filter);
+        const msg = `GetTasks is not expected to succeed for member ${user.id}`;
+        return await checkJSONResponse(response, msg, expectNoFailures);
     }
 }
 
-interface TaskCount {
-
+export interface TaskCount {
+    claimed: number;
+    unclaimed: number;
 }
