@@ -35,7 +35,7 @@ export default class TestIncidentManagement extends TestCase {
     async run() {
         const inputs = IncidentContent.inputs;
         const firstTaskInput = IncidentContent.firstTaskInput;
-        const caseTeam = new CaseTeam([new CaseTeamMember(raiser), new CaseTeamMember(solver)]);
+        const caseTeam = new CaseTeam([new CaseTeamMember(raiser, 'user', true), new CaseTeamMember(solver)]);
         const startCase = { tenant, definition, inputs, caseTeam };
         const firstTaskName = 'Verify Details';
 

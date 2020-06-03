@@ -33,7 +33,7 @@ export default class TestHelloworld extends TestCase {
                 From: sender.id
             }
         };
-        const caseTeam = new CaseTeam([new CaseTeamMember(sender), new CaseTeamMember(receiver)]);
+        const caseTeam = new CaseTeam([new CaseTeamMember(sender, 'user', true), new CaseTeamMember(receiver)]);
         
         const startCase = { tenant, definition, inputs, caseTeam, debug: true };
         // const startCase = { tenant, definition, inputs, caseInstanceId: 'Ueè' };
