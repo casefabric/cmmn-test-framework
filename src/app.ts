@@ -23,6 +23,7 @@ import TestCaseTeam1 from './tests/api/caseteam/testcaseteam1';
 import TestCaseTeam2 from './tests/api/caseteam/testcaseteam2';
 import TestCaseTeam3 from './tests/api/caseteam/testcaseteam3';
 import TestInvalidStartCase from './tests/api/case/testinvalidstartcase';
+import TestValidStartCase from './tests/api/case/testvalidstartcase';
 
 
 function findTestsFromCommandLineArguments(): Array<string> {
@@ -66,6 +67,7 @@ function getHardCodedTestDeclarations(): Array<any> {
         , TestIncidentManagement
         , TestTravelRequest
         , TestInvalidStartCase
+        , TestValidStartCase
     ];
 }
 
