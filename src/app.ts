@@ -19,6 +19,7 @@ import TestRepeatingStage from './tests/stage/teststage';
 import TestCaseTeamAPI from './tests/api/caseteam/testcaseteamapi';
 import TestRoleBinding from './tests/api/caseteam/testrolebinding';
 import TestTaskAPI from './tests/api/task/testtaskapi';
+import TestTaskCountAPI from './tests/api/task/testtaskcountapi';
 import TestCaseTeam1 from './tests/api/caseteam/testcaseteam1';
 import TestCaseTeam2 from './tests/api/caseteam/testcaseteam2';
 import TestCaseTeam3 from './tests/api/caseteam/testcaseteam3';
@@ -52,6 +53,7 @@ function getHardCodedTestDeclarations(): Array<any> {
         , TestStatsAPI
         , TestTaskValidationAPI
         , TestTaskAPI
+        , TestTaskCountAPI
         , TestDebugMode
         , TestTenantRegistration
         , TestRepositoryAPI
