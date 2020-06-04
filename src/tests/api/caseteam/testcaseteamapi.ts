@@ -11,6 +11,8 @@ import CaseTeam from '../../../framework/cmmn/caseteam';
 import Comparison from '../../../framework/test/comparison';
 import RoleBinding from '../../../framework/cmmn/rolebinding';
 import TenantService from '../../../framework/service/tenant/tenantservice';
+import Case from '../../../framework/cmmn/case';
+import { assertCaseTeam } from '../../../framework/test/assertions';
 
 const repositoryService = new RepositoryService();
 const definition = 'caseteam.xml';
@@ -48,7 +50,7 @@ export default class TestCaseTeamAPI extends TestCase {
         await caseService.startCase(startCase, sender, false);
 
         caseTeam.members[2].caseRoles = []; // Change roles of requestor to be empty instead of having wrong roles
-        const caseInstance = await caseService.startCase(startCase, sender);
+        const caseInstance = await caseService.startCase(startCase, sender) as Case;
 
         // Getting the case must be allowed for both sender and receiver
         await caseService.getCase(caseInstance, sender);
@@ -92,7 +94,7 @@ export default class TestCaseTeamAPI extends TestCase {
         await caseTeamService.setCaseTeam(caseInstance, sender, newTeam);
 
         // So now sender no longer has access, but the others do.
-        console.log("Added recwiver, now fetchting case on his behalf")
+        console.log("Added receiver, now fetchting case on his behalf")
         await caseService.getCase(caseInstance, receiver);
         console.log("Added employee, now fetchting case on his behalf")
         await caseService.getCase(caseInstance, employee);
@@ -139,6 +141,33 @@ export default class TestCaseTeamAPI extends TestCase {
             console.log('3. Employee roles: ' + team.find(employee)?.caseRoles);
             console.log('3. Receiver roles: ' + team.find(receiver)?.caseRoles);
         });
+        
+        // A test for removing a user's ownership by another owner
+        await this.testOwnership()
+    }
 
+    async testOwnership() {
+        console.log('\nSimple test for removing a user\'s ownership by another owner\n')
+
+        const caseTeam = new CaseTeam([
+            new CaseTeamMember(receiver, 'user', true, []),
+            new CaseTeamMember(sender, 'user', true, [])
+
+        ]);
+        const startCase = { tenant, definition, debug: true, caseTeam };
+
+        // Starting a by sender case would not result in failure
+        const caseInstance = await caseService.startCase(startCase, receiver) as Case;
+
+        // Receiver can perform get case
+        await caseService.getCase(caseInstance, receiver)
+
+        assertCaseTeam(caseInstance, receiver, caseTeam)
+
+        // It should be possible to remove a user's ownership by another owner
+        await caseTeamService.setMember(caseInstance, sender, new CaseTeamMember(receiver, 'user', false, []))
+
+        // Although receiver is not owner, he is part of the team
+        await caseService.getCase(caseInstance, receiver)
     }
 }
