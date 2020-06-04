@@ -12,6 +12,8 @@ import { ServerSideProcessing } from '../../../framework/test/time';
 import Case from '../../../framework/cmmn/case';
 import User from '../../../framework/user';
 import Task from '../../../framework/cmmn/task';
+import StatisticsFilter from '../../../framework/service/case/statisticsfilter';
+import CasePlanService from '../../../framework/service/case/caseplanservice';
 
 const repositoryService = new RepositoryService();
 const definition = 'helloworld.xml';
@@ -22,6 +24,7 @@ const taskService = new TaskService();
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const sender = worldwideTenant.sender;
+const receiver = worldwideTenant.receiver;
 
 export default class TestTaskCountAPI extends TestCase {
     async onPrepareTest() {
@@ -37,6 +40,9 @@ export default class TestTaskCountAPI extends TestCase {
             }
         };
         const caseTeam = new CaseTeam([new CaseTeamMember(sender, undefined, true)]);
+        const caseTeam2 = new CaseTeam([
+            new CaseTeamMember(sender, undefined, true)
+            , new CaseTeamMember(receiver, undefined, true)]);
         
         const startCase = { tenant, definition, inputs, caseTeam, debug: true };
         // const startCase = { tenant, definition, inputs, caseInstanceId: 'Ueè' };
@@ -54,8 +60,32 @@ export default class TestTaskCountAPI extends TestCase {
         // Start 3 cases and claim 1 task. Should lead to 2 unclaimed and 1 claimed task
         await caseService.startCase(startCase, sender);
         await caseService.startCase(startCase, sender);
+        startCase.caseTeam = caseTeam2;
         const caseStarted = await caseService.startCase(startCase, sender) as Case;
         const caseInstance = await caseService.getCase(caseStarted, sender);
+        const pid = caseInstance.planitems.find(item => item.type === 'CasePlan').id;
+        new CasePlanService().makePlanItemTransition(caseStarted, sender, pid, "Terminate");
+        await caseService.getCase(caseStarted, sender).then(caze => {
+            console.log("New case state: " + JSON.stringify(caze.planitems, undefined, 2))
+        })
+        startCase.caseTeam = caseTeam;
+
+        await repositoryService.validateAndDeploy('caseteam.xml', sender, tenant);
+        startCase.definition = "caseteam.xml";
+        delete startCase.inputs;
+        await caseService.startCase(startCase, sender);
+        await caseService.startCase(startCase, sender);
+        startCase.caseTeam = caseTeam2;
+        await caseService.startCase(startCase, sender) as Case;
+
+        const hwFilter = { definition: 'HelloWorld', tenant};
+        await this.getStatistics('Sender has across the board: ', sender, {state:'Terminated'});
+        await this.getStatistics('Sender has hw stats: ', sender, hwFilter);
+        await this.getStatistics('Receiver has across the board: ', receiver, {state:'Failed'});
+        await this.getStatistics('Receiver has hw stats: ', receiver, hwFilter);
+        return;
+
+
 
         const tasks = await taskService.getCaseTasks(caseInstance, sender);
         const receiveGreetingTask = tasks.find(task => task.taskName === 'Receive Greeting and Send response') as Task;
@@ -69,6 +99,13 @@ export default class TestTaskCountAPI extends TestCase {
             }
 
         });
+    }
+
+    async getStatistics(msg: string, user: User, filter?: StatisticsFilter) {
+        await caseService.getCaseStatistics(user, filter).then(stats => {
+            console.log(msg + JSON.stringify(stats, undefined, 2));
+            return stats;
+        })
     }
 
     async getUnassignedTasks(user: User) {
