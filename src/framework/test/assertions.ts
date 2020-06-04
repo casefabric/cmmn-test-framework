@@ -9,6 +9,7 @@ import CaseFileService from '../service/case/casefileservice';
 import { pathReader } from '../cmmn/casefile';
 import CaseTeam from '../cmmn/caseteam';
 import CaseTeamService from '../service/case/caseteamservice';
+import CaseTeamMember from '../cmmn/caseteammember';
 
 const caseService = new CaseService();
 const taskService = new TaskService();
@@ -130,8 +131,46 @@ export async function assertCaseFileContent(caseInstance: Case, user: User, path
  * @param expectedTeam 
  */
 export async function assertCaseTeam(caseInstance: Case, user: User, expectedTeam: CaseTeam) {
-    const actualCaseTeam: CaseTeam = await caseTeamService.getCaseTeam(caseInstance, user);
-    if(!Comparison.sameJSON(actualCaseTeam, expectedTeam)) {
+
+    // Get case team via getCaseTeam
+    const team = await caseTeamService.getCaseTeam(caseInstance, user)
+    const actualCaseTeam = await convertToCaseTeam(team)
+
+    // Get case team via getCase
+    const newCase = await caseService.getCase(caseInstance, user);
+    const newCaseTeam = await convertToCaseTeam(newCase.team)
+
+    const verifyActualCaseTeam = await verifyTeam(actualCaseTeam, expectedTeam)
+    const verifyNewCaseTeam = await verifyTeam(newCaseTeam, expectedTeam)
+
+    if(!verifyActualCaseTeam || !verifyNewCaseTeam) {
         throw new Error('Case team is not the same as given to the case');
     }
+    // if(!Comparison.sameJSON(actualCaseTeam, expectedTeam) || !Comparison.sameJSON(newCaseTeam, expectedTeam)) {
+    //     throw new Error('Case team is not the same as given to the case');
+    // }
+}
+
+/**
+ * A simple converter method which converts JSON caseTeam to object
+ * @param team 
+ */
+async function convertToCaseTeam(team: any) {
+    let actualCaseTeamArray: Array<CaseTeamMember> = []
+    await team.members.forEach(member => {
+        actualCaseTeamArray.push(new CaseTeamMember(member.memberId, member.type, member.isOwner, member.caseRoles))
+    });
+    return new CaseTeam(actualCaseTeamArray)
+}
+
+
+async function verifyTeam(team1: CaseTeam, team2: CaseTeam) {
+    const verifiedLength = team1.members.filter(member1 => {
+        return team2.members.some(member2 => {
+            if(member1.isOwner === member2.isOwner && JSON.stringify(member1.caseRoles) === JSON.stringify(member2.caseRoles) && JSON.stringify(member1.member) === JSON.stringify(member2.member)) {
+                return true;
+            }
+        })
+    }).length
+    return verifiedLength === team2.members.length && verifiedLength === team1.members.length
 }
