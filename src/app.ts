@@ -1,5 +1,5 @@
 import TestCase from './framework/test/testcase';
-import TestStatsAPI from './tests/api/case/stats';
+import TestStatsAPI from './tests/api/case/teststatsapi';
 import TestUsersCaseAPI from './tests/api/case/usercases';
 import TestDiscretionaryItems from './tests/api/discretionary/testdiscretionaryitems';
 import TestDebugMode from './tests/api/debug/testdebugmode';
