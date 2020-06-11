@@ -8,7 +8,7 @@ import RepositoryService from '../../framework/service/case/repositoryservice';
 import { assertTask, verifyTaskInput } from '../../framework/test/assertions';
 import User from '../../framework/user';
 import CaseTeam from '../../framework/cmmn/caseteam';
-import CaseTeamMember from '../../framework/cmmn/caseteammember';
+import CaseTeamMember, { CaseOwner } from '../../framework/cmmn/caseteammember';
 
 const repositoryService = new RepositoryService();
 const definition = 'helloworld.xml';
@@ -33,7 +33,7 @@ export default class TestHelloworld extends TestCase {
                 From: sender.id
             }
         };
-        const caseTeam = new CaseTeam([new CaseTeamMember(sender, 'user', true), new CaseTeamMember(receiver)]);
+        const caseTeam = new CaseTeam([new CaseOwner(sender), new CaseTeamMember(receiver)]);
         
         const startCase = { tenant, definition, inputs, caseTeam, debug: true };
         // const startCase = { tenant, definition, inputs, caseInstanceId: 'Ueè' };

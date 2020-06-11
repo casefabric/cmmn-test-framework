@@ -8,7 +8,7 @@ import RepositoryService from '../../../framework/service/case/repositoryservice
 import CasePlanService from '../../../framework/service/case/caseplanservice';
 import PlanItem from '../../../framework/cmmn/planitem';
 import TenantService from '../../../framework/service/tenant/tenantservice';
-import CaseTeamMember from '../../../framework/cmmn/caseteammember';
+import CaseTeamMember, { CaseOwner } from '../../../framework/cmmn/caseteammember';
 import CaseTeam from '../../../framework/cmmn/caseteam';
 import Case from '../../../framework/cmmn/case';
 
@@ -31,7 +31,7 @@ export default class TestEventAuthorization extends TestCase {
     }
 
     async run() {
-        const caseTeam = new CaseTeam([new CaseTeamMember(user, 'user', true), new CaseTeamMember(employee, "user", false, ["Employee"])]);
+        const caseTeam = new CaseTeam([new CaseOwner(user), new CaseTeamMember(employee, ["Employee"])]);
 
         const startCase = { tenant, definition, caseTeam };
 

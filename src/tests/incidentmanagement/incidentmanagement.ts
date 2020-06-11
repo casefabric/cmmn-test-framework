@@ -10,7 +10,7 @@ import { ServerSideProcessing } from '../../framework/test/time';
 import { assertPlanItemState, assertTask, verifyTaskInput } from '../../framework/test/assertions'
 import IncidentContent from './incidentmanagementcontent';
 import CaseTeam from '../../framework/cmmn/caseteam';
-import CaseTeamMember from '../../framework/cmmn/caseteammember';
+import CaseTeamMember, { CaseOwner } from '../../framework/cmmn/caseteammember';
 
 const repositoryService = new RepositoryService();
 const definition = 'IncidentManagementForTraining.xml';
@@ -35,7 +35,7 @@ export default class TestIncidentManagement extends TestCase {
     async run() {
         const inputs = IncidentContent.inputs;
         const firstTaskInput = IncidentContent.firstTaskInput;
-        const caseTeam = new CaseTeam([new CaseTeamMember(raiser, 'user', true), new CaseTeamMember(solver)]);
+        const caseTeam = new CaseTeam([new CaseOwner(raiser), new CaseTeamMember(solver)]);
         const startCase = { tenant, definition, inputs, caseTeam };
         const firstTaskName = 'Verify Details';
 

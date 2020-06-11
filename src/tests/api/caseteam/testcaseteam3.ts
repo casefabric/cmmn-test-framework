@@ -5,7 +5,7 @@ import TestCase from '../../../framework/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
 import CaseTeamService from '../../../framework/service/case/caseteamservice';
-import CaseTeamMember from '../../../framework/cmmn/caseteammember';
+import CaseTeamMember, { CaseOwner, TenantRoleMember } from '../../../framework/cmmn/caseteammember';
 import CaseTeam from '../../../framework/cmmn/caseteam';
 import TenantService from '../../../framework/service/tenant/tenantservice';
 import TaskService from '../../../framework/service/task/taskservice';
@@ -55,7 +55,7 @@ export default class TestCaseTeam3 extends TestCase {
         await taskService.getCaseTasks(caseInstance, receiver, false);
 
         // Sender can add a role mapping to the case team
-        await caseTeamService.setMember(caseInstance, sender, new CaseTeamMember('Receiver', 'role', false, [requestorRole]))
+        await caseTeamService.setMember(caseInstance, sender, new TenantRoleMember('Receiver', [requestorRole]))
 
         // Now, getting the case, case tasks, and task should be possible for receiver
         await caseService.getCase(caseInstance, receiver);
@@ -66,7 +66,7 @@ export default class TestCaseTeam3 extends TestCase {
         await caseTeamService.removeMember(caseInstance, receiver, sender, false);
 
         // Sender makes receiver a case team owner; but via user mapping
-        await caseTeamService.setMember(caseInstance, sender, new CaseTeamMember(receiver, 'user', true, [requestorRole]))
+        await caseTeamService.setMember(caseInstance, sender, new CaseOwner(receiver, [requestorRole]))
 
         await caseService.getCase(caseInstance, receiver);
         

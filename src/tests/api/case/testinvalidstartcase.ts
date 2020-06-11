@@ -4,7 +4,7 @@ import CaseService from '../../../framework/service/case/caseservice';
 import TestCase from '../../../framework/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
-import CaseTeamMember from '../../../framework/cmmn/caseteammember';
+import CaseTeamMember, { CaseOwner } from '../../../framework/cmmn/caseteammember';
 import CaseTeam from '../../../framework/cmmn/caseteam';
 import TenantService from '../../../framework/service/tenant/tenantservice';
 import StartCase from '../../../framework/service/case/startcase';
@@ -38,14 +38,14 @@ export default class TestInvalidStartCase extends TestCase {
         await this.tryStartCase("Missing owner should fail");
 
         // Case team with invalid roles
-        startCase.caseTeam = new CaseTeam([new CaseTeamMember(sender, undefined, true, ["ADMIN", "Not-Exisitng-TenantRole-Still-Allowed-In-Team"])]);
+        startCase.caseTeam = new CaseTeam([new CaseOwner(sender, ["ADMIN", "Not-Exisitng-TenantRole-Still-Allowed-In-Team"])]);
         await this.tryStartCase("Invalid roles should fail");
         
 
         // TODO: add a check for invalid member type in the backend??
 
         // Case team with invalid member type
-        // startCase.caseTeam = new CaseTeam([new CaseTeamMember(sender, 'wrong-type', true)]);
+        // startCase.caseTeam = new CaseTeam([new CaseOwner(sender, [], 'wrong-type')]);
         // await this.tryStartCase("Wrong member type should fail");
 
 

@@ -4,7 +4,7 @@ import CaseService from '../../../framework/service/case/caseservice';
 import TestCase from '../../../framework/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
-import CaseTeamMember from '../../../framework/cmmn/caseteammember';
+import CaseTeamMember, { CaseOwner } from '../../../framework/cmmn/caseteammember';
 import CaseTeam from '../../../framework/cmmn/caseteam';
 import CaseTeamService from '../../../framework/service/case/caseteamservice';
 import Case from '../../../framework/cmmn/case';
@@ -27,7 +27,7 @@ export default class TestValidStartCase extends TestCase {
 
     async run() {
         const caseTeam = new CaseTeam([
-            new CaseTeamMember(receiver, 'user', true, [])
+            new CaseOwner(receiver)
         ]);
         const startCase1 = { tenant, definition, debug: true, caseTeam };
 

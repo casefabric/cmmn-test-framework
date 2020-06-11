@@ -6,7 +6,7 @@ import WorldWideTestTenant from '../../worldwidetesttenant';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
 import CaseTeamService from '../../../framework/service/case/caseteamservice';
 import CaseFileService from '../../../framework/service/case/casefileservice';
-import CaseTeamMember from '../../../framework/cmmn/caseteammember';
+import CaseTeamMember, { CaseOwner, TenantRoleMember } from '../../../framework/cmmn/caseteammember';
 import CaseTeam from '../../../framework/cmmn/caseteam';
 import Comparison from '../../../framework/test/comparison';
 import RoleBinding from '../../../framework/cmmn/rolebinding';
@@ -43,9 +43,9 @@ export default class TestRoleBinding extends TestCase {
 
     async run() {
         const caseTeam = new CaseTeam([
-            new CaseTeamMember(sender, 'user', true, [])
-            , new CaseTeamMember('Sender', 'role', false, [requestorRole, approverRole])
-            , new CaseTeamMember('Receiver', 'role', false, [participantRole])
+            new CaseOwner(sender)
+            , new TenantRoleMember('Sender', [requestorRole, approverRole])
+            , new TenantRoleMember('Receiver', [participantRole])
         ]);
         const startCase = { tenant, definition, debug: true, caseTeam };
 
@@ -87,7 +87,7 @@ export default class TestRoleBinding extends TestCase {
         // await caseTeamService.addMemberRole(caseInstance, sender, "Receiver", "Approver");
         // await ServerSideProcessing();
 
-        await caseTeamService.setMember(caseInstance, sender, new CaseTeamMember(receiver, undefined, undefined, ["Approver"]))
+        await caseTeamService.setMember(caseInstance, sender, new CaseTeamMember(receiver, ["Approver"]))
         // Now it should be possible
         // await taskService.claimTask(approveTask, receiver);
 

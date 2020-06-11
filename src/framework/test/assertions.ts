@@ -158,19 +158,61 @@ export async function assertCaseTeam(caseInstance: Case, user: User, expectedTea
 async function convertToCaseTeam(team: any) {
     let actualCaseTeamArray: Array<CaseTeamMember> = []
     await team.members.forEach(member => {
-        actualCaseTeamArray.push(new CaseTeamMember(member.memberId, member.type, member.isOwner, member.caseRoles))
+        console.log("Converting member " + JSON.stringify(member, undefined, 2))
+        const newMember = new CaseTeamMember(member.memberId, member.caseRoles, member.memberType, member.isOwner)
+        console.log("Converted member " + JSON.stringify(newMember, undefined, 2))
+        actualCaseTeamArray.push(newMember);
     });
     return new CaseTeam(actualCaseTeamArray)
 }
 
 
 async function verifyTeam(team1: CaseTeam, team2: CaseTeam) {
-    const verifiedLength = team1.members.filter(member1 => {
-        return team2.members.some(member2 => {
-            if(member1.isOwner === member2.isOwner && JSON.stringify(member1.caseRoles) === JSON.stringify(member2.caseRoles) && JSON.stringify(member1.member) === JSON.stringify(member2.member)) {
-                return true;
+    const sameRoles = (roles1: string[], roles2: string[]) => {
+        if (!roles1 && !roles2) return true;
+        if (roles1 && !roles2) return false;
+        if (!roles1 && roles2) return false;
+        if (roles1.length !== roles2.length) {
+            return false;
+        }
+        for (let i = 0; i< roles1.length; i++) {
+            if (!roles2.find(role => role === roles1[i])) {
+                return false;
             }
-        })
-    }).length
-    return verifiedLength === team2.members.length && verifiedLength === team1.members.length
+        }
+        return true;
+    }
+    const compareMember = (member1: CaseTeamMember, member2: CaseTeamMember) => {
+        if (member1.memberId !== member2.memberId) {
+            return false;
+        }
+        if (member1.memberType !== member2.memberType) {
+            return false;
+        }
+        if ((member1.isOwner === true) && (member2.isOwner !== true)) {
+            return false;
+        }
+        if (! sameRoles(member1.caseRoles, member2.caseRoles)) {
+            return false;
+        }
+        return true;
+    }
+    const hasMember = (team: CaseTeam, expectedMember: CaseTeamMember) => {
+        if (! team.members.find(member => compareMember(member, expectedMember))) {
+            return false;
+        }
+        return true;
+    }
+    const compareTeam = (team1: CaseTeam, team2: CaseTeam) => {
+        if (team1.members.length != team2.members.length) return false;
+        for (let i = 0; i< team1.members.length; i++) {
+            const member1 = team1.members[i];
+            if (! hasMember(team2, member1)) {
+                // console.log("Team2 does not have member " + JSON.stringify(member1))
+                return false;
+            }
+        }
+        return true;
+    }
+    return compareTeam(team1, team2);
 }

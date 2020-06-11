@@ -14,7 +14,7 @@ import StartCase from '../../framework/service/case/startcase';
 import TenantUser from '../../framework/tenant/tenantuser';
 import TenantService from '../../framework/service/tenant/tenantservice';
 import CaseTeam from '../../framework/cmmn/caseteam';
-import CaseTeamMember from '../../framework/cmmn/caseteammember';
+import CaseTeamMember, { CaseOwner } from '../../framework/cmmn/caseteammember';
 import Case from '../../framework/cmmn/case';
 
 const repositoryService = new RepositoryService();
@@ -100,9 +100,9 @@ export default class TestTravelRequest extends TestCase {
             }
         };
         const caseTeam = new CaseTeam([
-            new CaseTeamMember(approver, 'user', true, ['Approver'])
-            , new CaseTeamMember(lana, 'user', false, ['PersonalAssistant'])
-            , new CaseTeamMember(requestor, 'user', false, ['Requestor'])
+            new CaseOwner(approver, ['Approver'])
+            , new CaseTeamMember(lana, ['PersonalAssistant'])
+            , new CaseTeamMember(requestor, ['Requestor'])
         ]);
         const startCase: StartCase = { tenant, definition, inputs, debug: true, caseTeam };
         const caseInstance = await caseService.startCase(startCase, requestor) as Case;
