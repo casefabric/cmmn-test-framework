@@ -40,16 +40,20 @@ function findTestsFromCommandLineArguments(): Array<string> {
 }
 
 class TestClasses {
-    testsByName: any = {
+    private testsByName: any = {
     }
+    private static testList: Array<any> = [];
+
     constructor(public list: Array<Function>){
-        list.forEach(f => this.testsByName[f.name] = f)
+        list.forEach(f => {
+            this.testsByName[f.name] = f
+            TestClasses.testList.push({name:f.name.toLowerCase(), test: f})
+        });
     }
 
-    getTestClass(name: string) {
-        return this.testsByName[name];
-        const t = this.list.find(t => t.name === name);
-        return t;
+    static getTestClass(name: string) {
+        const t = TestClasses.testList.find(t => t.name === name.toLowerCase());
+        return t.test;
     }
 }
 
@@ -164,7 +168,7 @@ async function runTests(testDeclarations: Array<any>) {
 }
 
 const commandLineTestNames = findTestsFromCommandLineArguments();
-const commandLineTestClasses = commandLineTestNames.map(testName => AllTestCases.testsByName[testName])
+const commandLineTestClasses = commandLineTestNames.map(TestClasses.getTestClass)
 const testDeclarations = commandLineTestNames.length > 0 ? commandLineTestClasses : AllTestCases.list;
 
 console.log('=========\nCreating test cases\n')
