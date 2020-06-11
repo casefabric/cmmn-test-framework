@@ -39,9 +39,11 @@ export default class CaseTeamService {
      * @param user 
      * @param member 
      */
-    async removeMember(Case: Case, user: User, member: User, expectNoFailures: boolean = true) {
-        const response = await cafienneService.delete(`/cases/${Case.id}/caseteam/${member.id}`, user);
-        const msg = `RemoveTeamMember is not expected to succeed for member ${member.id} in case ${Case.id}`;
+    async removeMember(Case: Case, user: User, member: User|CaseTeamMember, expectNoFailures: boolean = true) {
+        const memberType = member instanceof User ? 'user' : member.memberType;
+        const memberId = member instanceof User ? member.id : member.memberId; 
+        const response = await cafienneService.delete(`/cases/${Case.id}/caseteam/${memberId}?type=${memberType}`, user);
+        const msg = `RemoveTeamMember is not expected to succeed for member ${memberId} of type ${memberType} in case ${Case.id}`;
         return checkResponse(response, msg, expectNoFailures);
     }
 
@@ -52,7 +54,7 @@ export default class CaseTeamService {
      * @param member 
      */
     async setMember(Case: Case, user: User, member: CaseTeamMember, expectNoFailures: boolean = true) {
-        const response = await cafienneService.put(`/cases/${Case.id}/caseteam/${member.member.id}`, user, member);
+        const response = await cafienneService.put(`/cases/${Case.id}/caseteam`, user, member);
         const msg = `SetTeamMember is not expected to succeed for user ${user.id} in case ${Case.id}`;
         return checkResponse(response, msg, expectNoFailures);
     }
@@ -63,8 +65,10 @@ export default class CaseTeamService {
      * @param user 
      * @param member 
      */
-    async removeMemberRole(Case: Case, user: User, member: CaseTeamMember, roleName: string, expectNoFailures: boolean = true) {
-        const response = await cafienneService.delete(`/cases/${Case.id}/caseteam/${member.member.id}/role/${roleName}`, user);
+    async removeMemberRoles(Case: Case, user: User, member: CaseTeamMember, roles: string|string[], expectNoFailures: boolean = true) {
+        const memberWithoutRoles = Object.assign({}, member);
+        memberWithoutRoles.removeRoles = roles instanceof Array ? roles : [roles];
+        const response = await cafienneService.put(`/cases/${Case.id}/caseteam`, user, memberWithoutRoles);
         const msg = `RemoveTeamMemberRole is not expected to succeed for user ${user.id} in case ${Case.id}`;
         return checkResponse(response, msg, expectNoFailures);
     }

@@ -6,7 +6,7 @@ import TestCase from '../../../framework/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
 import CaseTeam from '../../../framework/cmmn/caseteam';
-import CaseTeamMember from '../../../framework/cmmn/caseteammember';
+import CaseTeamMember, { CaseOwner } from '../../../framework/cmmn/caseteammember';
 import CaseTeamService from '../../../framework/service/case/caseteamservice';
 import { ServerSideProcessing } from '../../../framework/test/time';
 import Case from '../../../framework/cmmn/case';
@@ -35,10 +35,10 @@ export default class TestStatsAPI extends TestCase {
     }
 
     async run() {
-        const caseTeam = new CaseTeam([new CaseTeamMember(sender, undefined, true)]);
+        const caseTeam = new CaseTeam([new CaseOwner(sender)]);
         const caseTeamWithBothSenderAndReceiver = new CaseTeam([
-            new CaseTeamMember(sender, undefined, true)
-            , new CaseTeamMember(receiver, undefined, true)]);
+            new CaseOwner(sender)
+            , new CaseOwner(receiver)]);
         
 
         // Start 3 cases helloworld cases; 1 with only sender, next 2 with sender and receiver;

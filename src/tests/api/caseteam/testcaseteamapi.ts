@@ -6,7 +6,7 @@ import WorldWideTestTenant from '../../worldwidetesttenant';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
 import CaseTeamService from '../../../framework/service/case/caseteamservice';
 import CaseFileService from '../../../framework/service/case/casefileservice';
-import CaseTeamMember from '../../../framework/cmmn/caseteammember';
+import CaseTeamMember, { CaseOwner, TenantRoleMember } from '../../../framework/cmmn/caseteammember';
 import CaseTeam from '../../../framework/cmmn/caseteam';
 import Comparison from '../../../framework/test/comparison';
 import RoleBinding from '../../../framework/cmmn/rolebinding';
@@ -42,9 +42,9 @@ export default class TestCaseTeamAPI extends TestCase {
 
     async run() {
         const caseTeam = new CaseTeam([
-            new CaseTeamMember(sender, 'user', true, [requestorRole]),
-            new CaseTeamMember(receiver, 'user', true, [approverRole, paRole]),
-            new CaseTeamMember(requestorRole, 'role', false, ["ADMIN", "Not-Exisitng-TenantRole-Still-Allowed-In-Team"])
+            new CaseOwner(sender, [requestorRole]),
+            new CaseOwner(receiver, [approverRole, paRole]),
+            new TenantRoleMember(requestorRole, ["ADMIN", "Not-Exisitng-TenantRole-Still-Allowed-In-Team"])
         ]);
         const startCase = { tenant, definition, debug: true, caseTeam };
 
@@ -87,7 +87,7 @@ export default class TestCaseTeamAPI extends TestCase {
         await caseService.getCase(caseInstance, employee);
 
         // Replace entire case team; removes sender and employee and then adds receiver and employee
-        const newTeam = new CaseTeam([new CaseTeamMember(receiver, 'user', false, [requestorRole]), new CaseTeamMember(employee)]);
+        const newTeam = new CaseTeam([new CaseTeamMember(receiver, [requestorRole]), new CaseTeamMember(employee)]);
         // This call fails, because the new case team does not have any owners defined
         await caseTeamService.setCaseTeam(caseInstance, sender, newTeam, false);
         // Make receiver the owner, and then it should work
@@ -112,17 +112,17 @@ export default class TestCaseTeamAPI extends TestCase {
 
 
         // Add a role that is not defined in the case model should not be possible
-        await caseTeamService.setMember(caseInstance, receiver, new CaseTeamMember(receiver, undefined, true, [notExistingRole]), false);
+        await caseTeamService.setMember(caseInstance, receiver, new CaseOwner(receiver, [notExistingRole]), false);
 
         // Add an empty role should be possible through setting a member
-        await caseTeamService.setMember(caseInstance, receiver, new CaseTeamMember(employee, undefined, undefined, [emptyRole]));
+        await caseTeamService.setMember(caseInstance, receiver, new CaseTeamMember(employee, [emptyRole]));
         // But not when assigning a non existing role
-        await caseTeamService.setMember(caseInstance, receiver, new CaseTeamMember(employee, undefined, undefined, ['a/b/c']), false);
+        await caseTeamService.setMember(caseInstance, receiver, new CaseTeamMember(employee, ['a/b/c']), false);
 
         // Now add approver role to the employee and see if that works
-        await caseTeamService.setMember(caseInstance, receiver, new CaseTeamMember(employee, undefined, undefined, [approverRole]));
+        await caseTeamService.setMember(caseInstance, receiver, new CaseTeamMember(employee, [approverRole]));
         // Now add approver role to the receiver and see if that works
-        await caseTeamService.setMember(caseInstance, receiver, new CaseTeamMember(receiver, undefined, true, [requestorRole, approverRole]));
+        await caseTeamService.setMember(caseInstance, receiver, new CaseOwner(receiver, [requestorRole, approverRole]));
 
         await caseTeamService.getCaseTeam(caseInstance, employee).then(team => {
             console.log('2. Team: ' + JSON.stringify(team, undefined, 2));
@@ -130,9 +130,9 @@ export default class TestCaseTeamAPI extends TestCase {
             console.log('2. Receiver roles: ' + team.find(receiver)?.caseRoles);
         });
 
-        await caseTeamService.removeMemberRole(caseInstance, receiver, new CaseTeamMember(receiver), requestorRole);
+        await caseTeamService.removeMemberRoles(caseInstance, receiver, new CaseTeamMember(receiver), requestorRole);
         // Now add approver role to the receiver and see if that works
-        await caseTeamService.setMember(caseInstance, receiver, new CaseTeamMember(receiver, undefined, true, [paRole]));
+        await caseTeamService.setMember(caseInstance, receiver, new CaseOwner(receiver, [paRole]));
         await caseTeamService.getCaseTeam(caseInstance, employee).then(team => {
             console.log('3. Team: ' + JSON.stringify(team, undefined, 2));
             console.log('3. Employee roles: ' + team.find(employee)?.caseRoles);
@@ -140,11 +140,11 @@ export default class TestCaseTeamAPI extends TestCase {
         });
 
         const caseTeam1 = new CaseTeam([
-            new CaseTeamMember(receiver, 'user', true, []),
-            new CaseTeamMember(sender, 'user', true, [])
+            new CaseOwner(receiver),
+            new CaseOwner(sender)
         ]);
         const caseTeam2 = new CaseTeam([
-            new CaseTeamMember(receiver, 'user', true, [])
+            new CaseOwner(receiver)
         ]);
 
         console.log('\nA test for removing a user\'s ownership by another owner\n')
@@ -164,18 +164,18 @@ export default class TestCaseTeamAPI extends TestCase {
         const caseInstance = await caseService.startCase(startCase, ownerWhoRemoves) as Case;
 
         // ownerToRemove can perform get case
-        await caseService.getCase(caseInstance, ownerToRemove)
+        await caseService.getCase(caseInstance, ownerToRemove);
 
-        await assertCaseTeam(caseInstance, receiver, caseTeam)
+        await assertCaseTeam(caseInstance, receiver, caseTeam);
 
         // It should be possible to remove a user's ownership by another owner
-        await caseTeamService.setMember(caseInstance, ownerWhoRemoves, new CaseTeamMember(ownerToRemove, 'user', false, []), expectNoFailure)
+        await caseTeamService.setMember(caseInstance, ownerWhoRemoves, new CaseTeamMember(ownerToRemove, [], 'user', false), expectNoFailure);
 
         // Irrespective of ownerToRemove's ownership, he is part of the team
-        await caseService.getCase(caseInstance, ownerToRemove)
+        await caseService.getCase(caseInstance, ownerToRemove);
 
         // ownerToRemove cannot perform ownership tasks
-        await caseTeamService.setMember(caseInstance, ownerToRemove, new CaseTeamMember(ownerToRemove, 'user', true, []), isStillOwner)
-        await caseTeamService.setMember(caseInstance, ownerToRemove, new CaseTeamMember(ownerWhoRemoves, 'user', false, []), false)
+        await caseTeamService.setMember(caseInstance, ownerToRemove, new CaseOwner(ownerToRemove), isStillOwner);
+        await caseTeamService.setMember(caseInstance, ownerToRemove, new CaseTeamMember(ownerWhoRemoves, [], 'user', false), false);
     }
 }

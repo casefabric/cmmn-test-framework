@@ -5,7 +5,7 @@ import TestCase from '../../../framework/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
 import CaseTeamService from '../../../framework/service/case/caseteamservice';
-import CaseTeamMember from '../../../framework/cmmn/caseteammember';
+import CaseTeamMember, { TenantRoleMember } from '../../../framework/cmmn/caseteammember';
 import CaseTeam from '../../../framework/cmmn/caseteam';
 import TenantService from '../../../framework/service/tenant/tenantservice';
 import TaskService from '../../../framework/service/task/taskservice';
@@ -75,7 +75,7 @@ export default class TestCaseTeam1 extends TestCase {
         console.log("Adding receiver role to case team; reciever itself has roles: " + receiver.roles)
 
         // Sender can add a role mapping to the case team
-        await caseTeamService.setMember(caseInstance, sender, new CaseTeamMember('Receiver', 'role', false, [requestorRole]))
+        await caseTeamService.setMember(caseInstance, sender, new TenantRoleMember('Receiver', [requestorRole]))
 
         // Now, getting the case and case tasks should be possible for receiver
         await caseTeamService.getCaseTeam(caseInstance, receiver).then(team => console.log("New team: " + JSON.stringify(team, undefined, 2)))

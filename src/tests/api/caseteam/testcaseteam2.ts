@@ -6,7 +6,7 @@ import WorldWideTestTenant from '../../worldwidetesttenant';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
 import CaseTeamService from '../../../framework/service/case/caseteamservice';
 import CaseFileService from '../../../framework/service/case/casefileservice';
-import CaseTeamMember from '../../../framework/cmmn/caseteammember';
+import CaseTeamMember, { CaseOwner, TenantRoleMember } from '../../../framework/cmmn/caseteammember';
 import CaseTeam from '../../../framework/cmmn/caseteam';
 import Comparison from '../../../framework/test/comparison';
 import TenantService from '../../../framework/service/tenant/tenantservice';
@@ -78,7 +78,7 @@ export default class TestCaseTeam2 extends TestCase {
         await assertTask(taskWithoutRole, sender, 'Claim', 'Assigned', sender, sender)
         
         // Add Approver role to sender
-        await caseTeamService.setMember(caseInstance, sender, new CaseTeamMember(sender, 'user', true, [approverRole]))
+        await caseTeamService.setMember(caseInstance, sender, new CaseOwner(sender, [approverRole]))
 
         // Now, sender can claim 'Approve' task
         await taskService.claimTask(approveTask, sender)
@@ -92,7 +92,7 @@ export default class TestCaseTeam2 extends TestCase {
         tasks = await taskService.getCaseTasks(caseInstance, receiver, false);
 
         // Sender can add a role mapping to the case team
-        await caseTeamService.setMember(caseInstance, sender, new CaseTeamMember('Receiver', 'role', false, [requestorRole]))
+        await caseTeamService.setMember(caseInstance, sender, new TenantRoleMember('Receiver', [requestorRole]))
 
         // Now, receiver can perform getCaseTasks
         tasks = await taskService.getCaseTasks(caseInstance, receiver);

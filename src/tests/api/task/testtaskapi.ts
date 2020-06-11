@@ -6,7 +6,7 @@ import TestCase from '../../../framework/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
 import CaseTeam from '../../../framework/cmmn/caseteam';
-import CaseTeamMember from '../../../framework/cmmn/caseteammember';
+import CaseTeamMember, { CaseOwner } from '../../../framework/cmmn/caseteammember';
 import CaseTeamService from '../../../framework/service/case/caseteamservice';
 import { ServerSideProcessing } from '../../../framework/test/time';
 import Case from '../../../framework/cmmn/case';
@@ -40,7 +40,7 @@ export default class TestTaskAPI extends TestCase {
                 From: sender.id
             }
         };
-        const caseTeam = new CaseTeam([new CaseTeamMember(sender, undefined, true)]);
+        const caseTeam = new CaseTeam([new CaseOwner(sender)]);
         
         const startCase = { tenant, definition, inputs, caseTeam, debug: true };
         // const startCase = { tenant, definition, inputs, caseInstanceId: 'Ueè' };
