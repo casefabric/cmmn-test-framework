@@ -11,6 +11,7 @@ import { assertPlanItemState, assertTask, verifyTaskInput } from '../../framewor
 import IncidentContent from './incidentmanagementcontent';
 import CaseTeam from '../../framework/cmmn/caseteam';
 import CaseTeamMember, { CaseOwner } from '../../framework/cmmn/caseteammember';
+import Case from '../../framework/cmmn/case';
 
 const repositoryService = new RepositoryService();
 const definition = 'IncidentManagementForTraining.xml';
@@ -21,6 +22,7 @@ const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const raiser = worldwideTenant.sender;
 const solver = worldwideTenant.receiver;
+const employee = worldwideTenant.employee;
 
 const mockPort = 17384;
 const mock = new TaskValidationMock(mockPort);
@@ -56,7 +58,7 @@ Starting another case instance of incident management to test Invalid status.
     async testValidStatus(startCase: any, firstTaskName: string, firstTaskInput: any) {
 
         // Starts the case with raiser
-        let caseInstance = await caseService.startCase(startCase, raiser);
+        let caseInstance = await caseService.startCase(startCase, raiser) as Case;
 
         // Get case details
         caseInstance = await caseService.getCase(caseInstance, raiser);
@@ -123,8 +125,8 @@ Starting another case instance of incident management to test Invalid status.
 
         const finalTaskOutput = IncidentContent.finalTaskOutput;
 
-        // raiser may not complete a task assigned to solver
-        await taskService.completeTask(workOnIncidentTask, raiser, finalTaskOutput, false);
+        // employee cannot complete a task assigned to solver
+        await taskService.completeTask(workOnIncidentTask, employee, finalTaskOutput, false);
         await assertTask(workOnIncidentTask, raiser, 'Claim', 'Assigned', solver);
 
         // Complete Work on Incident task by solver
