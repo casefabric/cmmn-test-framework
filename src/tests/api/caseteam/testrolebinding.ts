@@ -16,6 +16,7 @@ import TaskService from '../../../framework/service/task/taskservice';
 import Task from '../../../framework/cmmn/task';
 import User from '../../../framework/user';
 import { ServerSideProcessing } from '../../../framework/test/time';
+import Case from '../../../framework/cmmn/case';
 
 const repositoryService = new RepositoryService();
 const definition = 'caseteam.xml';
@@ -49,7 +50,7 @@ export default class TestRoleBinding extends TestCase {
         ]);
         const startCase = { tenant, definition, debug: true, caseTeam };
 
-        const caseInstance = await caseService.startCase(startCase, sender);
+        const caseInstance = await caseService.startCase(startCase, sender) as Case;
 
         // Getting the case must be allowed for both sender and receiver
         await caseService.getCase(caseInstance, sender);
@@ -79,9 +80,9 @@ export default class TestRoleBinding extends TestCase {
         }
 
         // Claim task must not be possible for the employee with task not found error
-        await this.claimTask(approveTask, employee, "cannot be found");
+        await this.claimTask(approveTask, employee, 'cannot be found');
         // Claim task must not be possible for the receiver with task not found error
-        await this.claimTask(approveTask, receiver, "No permission to perform this task");
+        await this.claimTask(approveTask, receiver, 'You do not have permission to perform this operation');
 
         // await new TenantService().addTenantUserRole(sender, worldwideTenant.tenant, receiver.id, "Sender");
         // await caseTeamService.addMemberRole(caseInstance, sender, "Receiver", "Approver");
