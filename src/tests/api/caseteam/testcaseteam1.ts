@@ -1,43 +1,32 @@
 'use strict';
 
 import CaseService from '../../../framework/service/case/caseservice';
-import TestCase from '../../../framework/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
-import RepositoryService from '../../../framework/service/case/repositoryservice';
 import CaseTeamService from '../../../framework/service/case/caseteamservice';
-import CaseTeamMember, { TenantRoleMember } from '../../../framework/cmmn/caseteammember';
+import { TenantRoleMember } from '../../../framework/cmmn/caseteammember';
 import CaseTeam from '../../../framework/cmmn/caseteam';
-import TenantService from '../../../framework/service/tenant/tenantservice';
 import TaskService from '../../../framework/service/task/taskservice';
 import { assertTask, findTask, assertTaskCount } from '../../../framework/test/assertions';
 import Case from '../../../framework/cmmn/case';
 
-const repositoryService = new RepositoryService();
-const definition = 'caseteam.xml';
-
 const caseService = new CaseService();
 const caseTeamService = new CaseTeamService();
 const taskService = new TaskService();
-const worldwideTenant = new WorldWideTestTenant('wwtt-2');
-const tenant = worldwideTenant.name;
-const sender = worldwideTenant.sender;
-const receiver = worldwideTenant.receiver;
-const employee = worldwideTenant.employee;
 
-const requestorRole = "Requestor";
+const definition = 'caseteam.xml';
+const requestorRole = 'Requestor';
 
-export default class TestCaseTeam1 extends TestCase {
-    async onPrepareTest() {
-        await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(definition, sender, tenant);
-        await new TenantService().addTenantUserRole(sender, worldwideTenant.tenant, sender.id, "Receiver");
-    }
-
-    async run() {
+export default class TestCaseTeam1 {
+    async run(worldwideTenant: WorldWideTestTenant) {
+        const tenant = worldwideTenant.name;
+        const sender = worldwideTenant.sender;
+        const receiver = worldwideTenant.receiver;
+        const employee = worldwideTenant.employee;
+        
         const caseTeam = new CaseTeam([]);
         const startCase = { tenant, definition, debug: true, caseTeam };
 
-        let caseInstance = await caseService.startCase(startCase, sender) as Case;
+        const caseInstance = await caseService.startCase(startCase, sender) as Case;
 
         // Getting the case must be allowed for sender
         await caseService.getCase(caseInstance, sender);
@@ -72,15 +61,14 @@ export default class TestCaseTeam1 extends TestCase {
         await taskService.getTask(approveTask, receiver, false);
         // await taskService.getCaseTasks(caseInstance, receiver, false);
 
-        console.log("Adding receiver role to case team; reciever itself has roles: " + receiver.roles)
+        console.log('Adding receiver role to case team; reciever itself has roles: ' + receiver.roles)
 
         // Sender can add a role mapping to the case team
         await caseTeamService.setMember(caseInstance, sender, new TenantRoleMember('Receiver', [requestorRole]))
 
         // Now, getting the case and case tasks should be possible for receiver
-        await caseTeamService.getCaseTeam(caseInstance, receiver).then(team => console.log("New team: " + JSON.stringify(team, undefined, 2)))
-        caseInstance = await caseService.getCase(caseInstance, receiver)
+        await caseTeamService.getCaseTeam(caseInstance, receiver).then(team => console.log('New team: ' + JSON.stringify(team, undefined, 2)))
         await taskService.getCaseTasks(caseInstance, receiver);
         await taskService.getTask(approveTask, receiver);
-    }    
+    }
 }
