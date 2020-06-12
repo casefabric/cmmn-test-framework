@@ -17,6 +17,7 @@ const caseService = new CaseService();
 const taskService = new TaskService();
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
+const employee = worldwideTenant.employee;
 const sender = worldwideTenant.sender;
 const receiver = worldwideTenant.receiver;
 
@@ -33,7 +34,7 @@ export default class TestHelloworld extends TestCase {
                 From: sender.id
             }
         };
-        const caseTeam = new CaseTeam([new CaseOwner(sender), new CaseTeamMember(receiver)]);
+        const caseTeam = new CaseTeam([new CaseOwner(employee), new CaseTeamMember(sender), new CaseTeamMember(receiver)]);
         
         const startCase = { tenant, definition, inputs, caseTeam, debug: true };
         // const startCase = { tenant, definition, inputs, caseInstanceId: 'Ueè' };
@@ -82,7 +83,7 @@ export default class TestHelloworld extends TestCase {
         await taskService.revokeTask(receiveGreetingTask, sender);
         await assertTask(receiveGreetingTask, sender, 'Revoke', 'Unassigned', User.NONE);
 
-        await taskService.assignTask(receiveGreetingTask, sender, receiver);
+        await taskService.assignTask(receiveGreetingTask, employee, receiver);
         await assertTask(receiveGreetingTask, sender, 'Assign', 'Assigned', receiver, receiver);
 
         await taskService.revokeTask(receiveGreetingTask, receiver);
