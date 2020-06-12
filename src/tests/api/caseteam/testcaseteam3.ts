@@ -1,38 +1,28 @@
 'use strict';
 
 import CaseService from '../../../framework/service/case/caseservice';
-import TestCase from '../../../framework/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
-import RepositoryService from '../../../framework/service/case/repositoryservice';
 import CaseTeamService from '../../../framework/service/case/caseteamservice';
-import CaseTeamMember, { CaseOwner, TenantRoleMember } from '../../../framework/cmmn/caseteammember';
+import { CaseOwner, TenantRoleMember } from '../../../framework/cmmn/caseteammember';
 import CaseTeam from '../../../framework/cmmn/caseteam';
-import TenantService from '../../../framework/service/tenant/tenantservice';
 import TaskService from '../../../framework/service/task/taskservice';
-import { assertTask, findTask, assertTaskCount } from '../../../framework/test/assertions';
+import { findTask } from '../../../framework/test/assertions';
 import Case from '../../../framework/cmmn/case';
-
-const repositoryService = new RepositoryService();
-const definition = 'caseteam.xml';
 
 const caseService = new CaseService();
 const caseTeamService = new CaseTeamService();
 const taskService = new TaskService();
-const worldwideTenant = new WorldWideTestTenant('wwtt-4');
-const tenant = worldwideTenant.name;
-const sender = worldwideTenant.sender;
-const receiver = worldwideTenant.receiver;
-const employee = worldwideTenant.employee;
 
-const requestorRole = "Requestor";
+const definition = 'caseteam.xml';
+const requestorRole = 'Requestor';
 
-export default class TestCaseTeam3 extends TestCase {
-    async onPrepareTest() {
-        await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(definition, sender, tenant);
-    }
+export default class TestCaseTeam3 {
+    async run(worldwideTenant: WorldWideTestTenant) {
+        const tenant = worldwideTenant.name;
+        const sender = worldwideTenant.sender;
+        const receiver = worldwideTenant.receiver;
+        const employee = worldwideTenant.employee;
 
-    async run() {
         const caseTeam = new CaseTeam([]);
         const startCase = { tenant, definition, debug: true, caseTeam };
 
@@ -77,6 +67,5 @@ export default class TestCaseTeam3 extends TestCase {
         await caseService.getCase(caseInstance, sender, false);
         await taskService.getCaseTasks(caseInstance, sender, false);
         await taskService.getTask(approveTask, sender, false);
-
     }    
 }

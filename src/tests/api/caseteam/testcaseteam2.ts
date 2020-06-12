@@ -1,56 +1,34 @@
 'use strict';
 
 import CaseService from '../../../framework/service/case/caseservice';
-import TestCase from '../../../framework/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
-import RepositoryService from '../../../framework/service/case/repositoryservice';
 import CaseTeamService from '../../../framework/service/case/caseteamservice';
-import CaseFileService from '../../../framework/service/case/casefileservice';
-import CaseTeamMember, { CaseOwner, TenantRoleMember } from '../../../framework/cmmn/caseteammember';
+import { CaseOwner, TenantRoleMember } from '../../../framework/cmmn/caseteammember';
 import CaseTeam from '../../../framework/cmmn/caseteam';
-import Comparison from '../../../framework/test/comparison';
-import TenantService from '../../../framework/service/tenant/tenantservice';
 import TaskService from '../../../framework/service/task/taskservice';
-import { assertCaseFileContent, assertTask, findTask, assertPlanItemState, assertTaskCount } from '../../../framework/test/assertions';
-import TaskFilter from '../../../framework/service/task/taskfilter';
-import { ServerSideProcessing } from '../../../framework/test/time';
-import Task from '../../../framework/cmmn/task';
-import User from '../../../framework/user';
+import { assertTask, findTask, assertTaskCount } from '../../../framework/test/assertions';
 import Case from '../../../framework/cmmn/case';
-import TenantUser from '../../../framework/tenant/tenantuser';
-
-const repositoryService = new RepositoryService();
-const definition = 'caseteam.xml';
+import { ServerSideProcessing } from '../../../framework/test/time';
 
 const caseService = new CaseService();
 const caseTeamService = new CaseTeamService();
-const caseFileService = new CaseFileService();
 const taskService = new TaskService();
-const worldwideTenant = new WorldWideTestTenant('wwtt-3');
-const tenant = worldwideTenant.name;
-const sender = worldwideTenant.sender;
-const receiver = worldwideTenant.receiver;
-const employee = worldwideTenant.employee;
 
-const requestorRole = "Requestor";
-const approverRole = "Approver";
-const paRole = "PersonalAssistant";
-const notExistingRole = "ThisRoleIsNotInTheCaseDefinition";
-const emptyRole = "";
-const participantRole = 'CaseParticipant';
+const definition = 'caseteam.xml';
+const requestorRole = 'Requestor';
+const approverRole = 'Approver';
 
-export default class TestCaseTeam2 extends TestCase {
-    async onPrepareTest() {
-        await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(definition, sender, tenant);
-        await new TenantService().addTenantUserRole(sender, worldwideTenant.tenant, sender.id, "Receiver");
-    }
+export default class TestCaseTeam2 {
+    async run(worldwideTenant: WorldWideTestTenant) {
+        const tenant = worldwideTenant.name;
+        const sender = worldwideTenant.sender;
+        const receiver = worldwideTenant.receiver;
+        const employee = worldwideTenant.employee;
 
-    async run() {
         const caseTeam = new CaseTeam([]);
         const startCase = { tenant, definition, debug: true, caseTeam };
 
-        let caseInstance = await caseService.startCase(startCase, sender) as Case;
+        const caseInstance = await caseService.startCase(startCase, sender) as Case;
 
         // Getting the case must be allowed for sender
         await caseService.getCase(caseInstance, sender);
@@ -93,6 +71,8 @@ export default class TestCaseTeam2 extends TestCase {
 
         // Sender can add a role mapping to the case team
         await caseTeamService.setMember(caseInstance, sender, new TenantRoleMember('Receiver', [requestorRole]))
+
+        await ServerSideProcessing();
 
         // Now, receiver can perform getCaseTasks
         tasks = await taskService.getCaseTasks(caseInstance, receiver);

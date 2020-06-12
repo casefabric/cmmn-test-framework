@@ -20,9 +20,7 @@ import TestCaseTeamAPI from './tests/api/caseteam/testcaseteamapi';
 import TestRoleBinding from './tests/api/caseteam/testrolebinding';
 import TestTaskAPI from './tests/api/task/testtaskapi';
 import TestTaskCountAPI from './tests/api/task/testtaskcountapi';
-import TestCaseTeam1 from './tests/api/caseteam/testcaseteam1';
-import TestCaseTeam2 from './tests/api/caseteam/testcaseteam2';
-import TestCaseTeam3 from './tests/api/caseteam/testcaseteam3';
+import TestCaseTeam from './tests/api/caseteam/testcaseteam';
 import TestInvalidStartCase from './tests/api/case/testinvalidstartcase';
 import TestValidStartCase from './tests/api/case/testvalidstartcase';
 
@@ -103,9 +101,7 @@ const AllTestCases = new TestClasses( [
     , TestCasePlanAPI
     , TestCaseTeamAPI
     , TestRoleBinding
-    , TestCaseTeam1
-    , TestCaseTeam2
-    , TestCaseTeam3
+    , TestCaseTeam
     , TestEventAuthorization
     , TestIncidentManagement
     , TestTravelRequest
