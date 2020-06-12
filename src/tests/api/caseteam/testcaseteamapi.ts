@@ -114,8 +114,8 @@ export default class TestCaseTeamAPI extends TestCase {
         // Add a role that is not defined in the case model should not be possible
         await caseTeamService.setMember(caseInstance, receiver, new CaseOwner(receiver, [notExistingRole]), false);
 
-        // Add an empty role should be possible through setting a member
-        await caseTeamService.setMember(caseInstance, receiver, new CaseTeamMember(employee, [emptyRole]));
+        // Add an empty role should not be possible through setting a member
+        await caseTeamService.setMember(caseInstance, receiver, new CaseTeamMember(employee, [emptyRole]), false);
         // But not when assigning a non existing role
         await caseTeamService.setMember(caseInstance, receiver, new CaseTeamMember(employee, ['a/b/c']), false);
 
