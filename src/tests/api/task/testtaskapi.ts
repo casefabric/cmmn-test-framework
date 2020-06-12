@@ -22,6 +22,7 @@ const tenantName = 'temp_task_tenant' + guid;
 
 const caseService = new CaseService();
 const taskService = new TaskService();
+const caseTeamService = new CaseTeamService();
 const worldwideTenant = new WorldWideTestTenant(tenantName);
 const tenant = worldwideTenant.name;
 const sender = worldwideTenant.sender;
@@ -87,7 +88,9 @@ export default class TestTaskAPI extends TestCase {
         });
 
         // Now add receiver to the case team, and show that now he also gets to see the unassigned task
-        await new CaseTeamService().setMember(caseInstance, sender, new CaseTeamMember(receiver));
+        await caseTeamService.setMember(caseInstance, sender, new CaseTeamMember(receiver));
+
+        await caseTeamService.getCaseTeam(caseInstance, sender);
 
         await this.getUnassignedTasks(receiver).then(newCount => {
             if (newCount == receiversTaskCountBeforeStartCase + 1) {
