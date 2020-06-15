@@ -157,7 +157,8 @@ export async function assertCaseTeam(caseInstance: Case, user: User, expectedTea
  */
 async function convertToCaseTeam(team: any) {
     let actualCaseTeamArray: Array<CaseTeamMember> = []
-    await team.members.forEach(member => {
+    const rawMembers = team.members ? team.members : team;
+    await rawMembers.forEach(member => {
         console.log("Converting member " + JSON.stringify(member, undefined, 2))
         const newMember = new CaseTeamMember(member.memberId, member.caseRoles, member.memberType, member.isOwner)
         console.log("Converted member " + JSON.stringify(newMember, undefined, 2))

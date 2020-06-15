@@ -18,7 +18,8 @@ export default class CaseTeamService {
     async getCaseTeam(Case: Case, user: User, expectNoFailures: boolean = true): Promise<CaseTeam> {
         const response = await cafienneService.get(`/cases/${Case.id}/caseteam`, user);
         const msg = `GetCaseTeam is not expected to succeed for user ${user.id} in case ${Case.id}`;
-        return checkJSONResponse(response, msg, expectNoFailures, CaseTeam);
+        const members = await checkJSONResponse(response, msg, expectNoFailures, [CaseTeamMember]);
+        return new CaseTeam(members);
     }
 
     /**
