@@ -17,7 +17,7 @@ export default class CaseService {
         console.log("Creating Case[" + command.definition + "] in tenant " + command.tenant);
         const url = '/cases';
         const caseInstanceId = command.caseInstanceId ? command.caseInstanceId : undefined;
-        const debug = command.debug ? command.debug : undefined;
+        const debug = command.debug !== undefined ? command.debug : undefined;
         const request = {
             inputs: command.inputs,
             caseTeam: command.caseTeam,
