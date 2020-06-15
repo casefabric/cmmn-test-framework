@@ -24,6 +24,7 @@ import TestCaseTeam from './tests/api/caseteam/testcaseteam';
 import TestInvalidStartCase from './tests/api/case/testinvalidstartcase';
 import TestValidStartCase from './tests/api/case/testvalidstartcase';
 import TestCaseOwnerDelegateRevokeTasks from './tests/api/caseteam/testcaseownerdelegaterevoketasks';
+import TestStartCaseEmptyRole from './tests/api/caseteam/teststartcaseemptyrole';
 
 
 function findTestsFromCommandLineArguments(): Array<string> {
@@ -109,6 +110,7 @@ const AllTestCases = new TestClasses( [
     , TestInvalidStartCase
     , TestValidStartCase
     , TestCaseOwnerDelegateRevokeTasks
+    , TestStartCaseEmptyRole
 ]);
 
 
