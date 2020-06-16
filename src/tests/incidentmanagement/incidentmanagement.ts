@@ -85,11 +85,21 @@ Starting another case instance of incident management to test Invalid status.
         //  a second before continuing the test script
         await ServerSideProcessing();
 
+        // Next step fails too often
+        await ServerSideProcessing();
+        await ServerSideProcessing();
+
+
         // Verify completion of Assign Specialist plan item
         await assertPlanItemState(caseInstance, 'Assign Specialist', 0, raiser, 'Completed');
 
         // Verify completion of Assigned plan item
         await assertPlanItemState(caseInstance, 'Assigned', 0, raiser, 'Completed');
+
+
+        // Next step fails too often
+        await ServerSideProcessing();
+        await ServerSideProcessing();
 
         // Verify completion of first Notify Customer plan item
         await assertPlanItemState(caseInstance, 'Notify Customer', 0, raiser, 'Completed');
