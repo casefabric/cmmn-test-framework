@@ -7,6 +7,10 @@ export default interface CaseFilter {
      */
     tenant?: string,
     /**
+     * Only fetch cases matching these business identifiers
+     */
+    identifiers?: string,
+    /**
      * Filter instances that have this definition as their name
      */
     definition?: string,
