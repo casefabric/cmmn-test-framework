@@ -26,6 +26,7 @@ import TestValidStartCase from './tests/api/case/testvalidstartcase';
 import TestCaseOwnerDelegateRevokeTasks from './tests/api/caseteam/testcaseownerdelegaterevoketasks';
 import TestStartCaseEmptyRole from './tests/api/caseteam/teststartcaseemptyrole';
 import TestResponseType from './tests/api/environment/testresponsetype';
+import TestBusinessIdentifiers from './tests/api/businessidentifiers/testbusinessidentifiers';
 
 
 function findTestsFromCommandLineArguments(): Array<string> {
@@ -103,6 +104,7 @@ const AllTestCases = new TestClasses( [
     , TestTokenValidation
     , TestCaseFileAPI
     , TestCasePlanAPI
+    , TestBusinessIdentifiers
     , TestCaseTeamAPI
     , TestRoleBinding
     , TestCaseTeam
