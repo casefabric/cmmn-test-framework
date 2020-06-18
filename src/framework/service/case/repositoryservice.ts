@@ -107,6 +107,19 @@ export function readLocalXMLDocument(content: any): Document {
     if (content.constructor.name == 'Document') {
         return content;
     }
+    const parser = new DOMParser();
+    return parser.parseFromString(readLocalFile(content), 'application/xml');
+}
+
+/**
+ * Parses a file name into an XML document.
+ * Reads the file from the configured location on the local system (where this testcase runs)
+ * @param fileName 
+ */
+export function readLocalFile(content: any): string {
+    if (content.constructor.name == 'Document') {
+        return content;
+    }
     if (! FileSystem.existsSync(Config.RepositoryService.repository_folder)) {
         throw new Error(`The configured repository folder '${Config.RepositoryService.repository_folder}' cannot be found`);
     }
@@ -114,7 +127,5 @@ export function readLocalXMLDocument(content: any): Document {
     if (! FileSystem.existsSync(fileName)) {
         throw new Error(`File ${fileName} cannot be found on the local file system`);
     }
-    const xml = FileSystem.readFileSync(fileName, 'utf8');
-    const parser = new DOMParser();
-    return parser.parseFromString(xml, 'application/xml');
+    return FileSystem.readFileSync(fileName, 'utf8');
 }
