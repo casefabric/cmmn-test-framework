@@ -44,8 +44,6 @@ export default class TestTaskAPI extends TestCase {
         const caseTeam = new CaseTeam([new CaseOwner(sender)]);
         
         const startCase = { tenant, definition, inputs, caseTeam, debug: true };
-        // const startCase = { tenant, definition, inputs, caseInstanceId: 'Ueè' };
-        // const startCase = { tenant, definition, inputs, caseInstanceId: tenant };
         const taskOutput = {
             Response: {
                 Message: 'Toedeledoki',
@@ -89,8 +87,6 @@ export default class TestTaskAPI extends TestCase {
 
         // Now add receiver to the case team, and show that now he also gets to see the unassigned task
         await caseTeamService.setMember(caseInstance, sender, new CaseTeamMember(receiver));
-
-        await caseTeamService.getCaseTeam(caseInstance, sender);
 
         await this.getUnassignedTasks(receiver).then(newCount => {
             if (newCount == receiversTaskCountBeforeStartCase + 1) {

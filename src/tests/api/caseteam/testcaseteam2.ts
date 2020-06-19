@@ -72,8 +72,6 @@ export default class TestCaseTeam2 {
         // Sender can add a role mapping to the case team
         await caseTeamService.setMember(caseInstance, sender, new TenantRoleMember('Receiver', [requestorRole]))
 
-        await ServerSideProcessing();
-
         // Now, receiver can perform getCaseTasks
         tasks = await taskService.getCaseTasks(caseInstance, receiver);
 

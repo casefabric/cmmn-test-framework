@@ -67,7 +67,6 @@ export default class TestCaseTeam1 {
         await caseTeamService.setMember(caseInstance, sender, new TenantRoleMember('Receiver', [requestorRole]))
 
         // Now, getting the case and case tasks should be possible for receiver
-        await caseTeamService.getCaseTeam(caseInstance, receiver).then(team => console.log('New team: ' + JSON.stringify(team, undefined, 2)))
         await taskService.getCaseTasks(caseInstance, receiver);
         await taskService.getTask(approveTask, receiver);
     }
