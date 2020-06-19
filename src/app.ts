@@ -25,6 +25,7 @@ import TestInvalidStartCase from './tests/api/case/testinvalidstartcase';
 import TestValidStartCase from './tests/api/case/testvalidstartcase';
 import TestCaseOwnerDelegateRevokeTasks from './tests/api/caseteam/testcaseownerdelegaterevoketasks';
 import TestStartCaseEmptyRole from './tests/api/caseteam/teststartcaseemptyrole';
+import TestResponseType from './tests/api/environment/testresponsetype';
 
 
 function findTestsFromCommandLineArguments(): Array<string> {
@@ -87,6 +88,7 @@ class TestResults {
 
 const AllTestCases = new TestClasses( [
     PingTestEnvironment
+    , TestResponseType
     , TestHelloworld
     , TestRepeatingStage
     , TestUsersCaseAPI
