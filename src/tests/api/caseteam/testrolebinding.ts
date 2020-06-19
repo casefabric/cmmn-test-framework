@@ -15,7 +15,6 @@ import { AssertionError } from 'assert';
 import TaskService from '../../../framework/service/task/taskservice';
 import Task from '../../../framework/cmmn/task';
 import User from '../../../framework/user';
-import { ServerSideProcessing } from '../../../framework/test/time';
 import Case from '../../../framework/cmmn/case';
 
 const repositoryService = new RepositoryService();
@@ -86,7 +85,6 @@ export default class TestRoleBinding extends TestCase {
 
         // await new TenantService().addTenantUserRole(sender, worldwideTenant.tenant, receiver.id, "Sender");
         // await caseTeamService.addMemberRole(caseInstance, sender, "Receiver", "Approver");
-        // await ServerSideProcessing();
 
         await caseTeamService.setMember(caseInstance, sender, new CaseTeamMember(receiver, ["Approver"]))
         // Now it should be possible
