@@ -1,0 +1,21 @@
+<case id="footballstats.case" name="footballstats" guid="_cYgNJ">
+    <caseFileModel>
+        <caseFileItem id="_cYgNJ_1" name="stats" multiplicity="ExactlyOne" definitionRef="stats.cfid"/>
+    </caseFileModel>
+    <casePlanModel id="cm__cYgNJ_0" name="footballstats" autoComplete="true">
+        <planItem id="pi_ht__cYgNJ_0" name="Player stats" definitionRef="ht__cYgNJ_0">
+            <entryCriterion id="_cYgNJ_2" name="EntryCriterion_0" sentryRef="crit__cYgNJ_0"/>
+        </planItem>
+        <sentry id="crit__cYgNJ_0">
+            <caseFileItemOnPart id="_cYgNJ_3" sourceRef="_cYgNJ_1">
+                <standardEvent>create</standardEvent>
+            </caseFileItemOnPart>
+        </sentry>
+        <humanTask id="ht__cYgNJ_0" name="Player stats" isBlocking="true">
+            <inputs id="_cYgNJ_5" name="stats" bindingRef="_cYgNJ_1"/>
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="football_player_stats.humantask"/>
+            </extensionElements>
+        </humanTask>
+    </casePlanModel>
+</case>
