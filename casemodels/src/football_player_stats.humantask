@@ -1,0 +1,46 @@
+<humantask>
+    <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" name="football_player_stats" description="">
+        <input id="_BiBt_stats" name="stats"/>
+        <task-model>{
+	"schema" : {
+		"title" : "Football player Statistics",
+		"type" : "object",
+		"required" : [
+			"stats"
+		],
+		"properties" : {
+			"stats" : {
+				"title" : "player stats",
+				"type" : "object",
+				"properties" : {
+					"name" : {
+						"type" : "string",
+						"title" : "Name of the player"
+					},
+					"age" : {
+						"type" : "integer",
+						"title" : "Age of the player"
+					},
+					"isRetired" : {
+						"type" : "boolean",
+						"title" : "Retired player"
+					},
+					"country" : {
+						"type" : "string",
+						"title" : "Player's country"
+					},
+					"isRetired" : {
+						"type" : "boolean",
+						"title" : "Retired player"
+					},
+					"foot" : {
+						"type" : "string",
+						"title" : "player's preferred foot"
+					}
+				}
+			}
+		}
+	}
+}</task-model>
+    </cafienne:implementation>
+</humantask>

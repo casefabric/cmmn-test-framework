@@ -1,0 +1,102 @@
+<definitions>
+    <case id="footballstats.case" name="footballstats">
+        <caseFileModel>
+            <caseFileItem id="_cYgNJ_1" name="stats" multiplicity="ExactlyOne" definitionRef="stats.cfid"/>
+        </caseFileModel>
+        <casePlanModel id="cm__cYgNJ_0" name="footballstats" autoComplete="true">
+            <planItem id="pi_ht__cYgNJ_0" name="Player stats" definitionRef="ht__cYgNJ_0">
+                <entryCriterion id="_cYgNJ_2" name="EntryCriterion_0" sentryRef="crit__cYgNJ_0"/>
+            </planItem>
+            <sentry id="crit__cYgNJ_0">
+                <caseFileItemOnPart id="_cYgNJ_3" sourceRef="_cYgNJ_1">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </sentry>
+            <humanTask id="ht__cYgNJ_0" name="Player stats" isBlocking="true">
+                <inputs id="_cYgNJ_5" name="stats" bindingRef="_cYgNJ_1"/>
+                <extensionElements mustUnderstand="false">
+                    <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" name="football_player_stats" description="" humanTaskRef="football_player_stats.humantask">
+                        <input id="_BiBt_stats" name="stats"/>
+                        <task-model>{
+	"schema" : {
+		"title" : "Football player Statistics",
+		"type" : "object",
+		"required" : [
+			"stats"
+		],
+		"properties" : {
+			"stats" : {
+				"title" : "player stats",
+				"type" : "object",
+				"properties" : {
+					"name" : {
+						"type" : "string",
+						"title" : "Name of the player"
+					},
+					"age" : {
+						"type" : "integer",
+						"title" : "Age of the player"
+					},
+					"isRetired" : {
+						"type" : "boolean",
+						"title" : "Retired player"
+					},
+					"country" : {
+						"type" : "string",
+						"title" : "Player's country"
+					},
+					"isRetired" : {
+						"type" : "boolean",
+						"title" : "Retired player"
+					},
+					"foot" : {
+						"type" : "string",
+						"title" : "player's preferred foot"
+					}
+				}
+			}
+		}
+	}
+}</task-model>
+                    </cafienne:implementation>
+                </extensionElements>
+            </humanTask>
+        </casePlanModel>
+    </case>
+    <caseFileItemDefinition name="stats" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="stats.cfid">
+        <property name="name" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="age" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
+        <property name="isRetired" type="http://www.omg.org/spec/CMMN/PropertyType/boolean">
+            <extensionElements>
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+            </extensionElements>
+        </property>
+        <property name="country" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+            <extensionElements>
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+            </extensionElements>
+        </property>
+        <property name="foot" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+            <extensionElements>
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+            </extensionElements>
+        </property>
+    </caseFileItemDefinition>
+    <CMMNDI>
+        <CMMNDiagram>
+            <CMMNShape cmmnElementRef="cm__cYgNJ_0">
+                <Bounds x="20" y="20" width="800" height="500"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__cYgNJ_0">
+                <Bounds x="360" y="150" width="140" height="80"/>
+            </CMMNShape>
+            <casefileitem cmmnElementRef="_cYgNJ_shape_2" parentId="cm__cYgNJ_0" contextRef="_cYgNJ_1">
+                <Bounds x="211" y="163" width="25" height="40"/>
+            </casefileitem>
+            <CMMNShape cmmnElementRef="_cYgNJ_2">
+                <Bounds x="354" y="180" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNEdge sourceCMMNElementRef="_cYgNJ_shape_2" targetCMMNElementRef="_cYgNJ_2"/>
+        </CMMNDiagram>
+    </CMMNDI>
+</definitions>
