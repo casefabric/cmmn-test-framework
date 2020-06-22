@@ -211,13 +211,13 @@ and Send response" isBlocking="true">
     </case>
     <caseFileItemDefinition name="Greeting" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="greeting.cfid">
         <property name="Message" type="http://www.omg.org/spec/CMMN/PropertyType/string">
-            <extensionElements>
-                <cafienne:implementation  xmlns:cafienne="org.cafienne" isBusinessIdentifier="true">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
             </extensionElements>
         </property>
         <property name="To" type="http://www.omg.org/spec/CMMN/PropertyType/string">
-            <extensionElements>
-                <cafienne:implementation  xmlns:cafienne="org.cafienne" isBusinessIdentifier="true">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
             </extensionElements>
         </property>
         <property name="From" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
