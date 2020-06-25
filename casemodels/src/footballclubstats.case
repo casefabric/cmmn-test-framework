@@ -1,6 +1,6 @@
 <case id="footballclubstats.case" name="footballclubstats" guid="_DJ6eA">
     <caseFileModel>
-        <caseFileItem id="_DJ6eA_0" name="info" multiplicity="ExactlyOne" definitionRef="info.cfid"/>
+        <caseFileItem id="_DJ6eA_0" name="player" multiplicity="ExactlyOne" definitionRef="info.cfid"/>
     </caseFileModel>
     <casePlanModel id="cm__DJ6eA_0" name="footballclubstats" autoComplete="true">
         <planItem id="pi_ht__DJ6eA_0" name="Football club info" definitionRef="ht__DJ6eA_0">
@@ -20,4 +20,5 @@
             </extensionElements>
         </humanTask>
     </casePlanModel>
+    <input id="_DJ6eA_6" name="player" bindingRef="_DJ6eA_0"/>
 </case>

@@ -47,18 +47,19 @@ export default class TestFootballBusinessIdentifiers extends TestCase {
 Starting business identifier's filters test for footballstats model.
 ###################################################################
         `);
-        
-        // Case team for testing in FootballStats model
-        const caseTeam1 = new CaseTeam([new CaseOwner(user1)]);
-        const startCase1 = { tenant, definition: footballStatsDefinition, debug: true, caseTeam: caseTeam1 };
 
-        // Populate the case instances with different players
-        for(const data of PlayerData.playerData) {
-            await this.startCase(startCase1, user1, 'stats', data);
+        // Populate the case instances with the different players
+        for (const data of PlayerData.playerData) {
+            // Start cases with only user1 in the case team
+            const inputs = { "player": data };
+            const caseTeam = new CaseTeam([new CaseOwner(user1)]);
+            const definition = footballStatsDefinition;
+            const startCase = { tenant, definition, inputs, caseTeam };
+            await caseService.startCase(startCase, user1);
         }
 
         // tests against all filters in testFootballStatsFilters
-        for(const filter of filtersData.testFootballStatsFilters) {
+        for (const filter of filtersData.testFootballStatsFilters) {
             await this.assertGetCasesAndTasksFilter(user1, filter);
         }
 
@@ -68,17 +69,18 @@ Starting business identifier's multi-user filters test for footballstats model.
 ##############################################################################
         `);
 
-        // Case team for testing in FootballStats model (multi-user)
-        const caseTeam2 = new CaseTeam([new CaseOwner(user1), new CaseTeamMember(user2)]);
-        const startCase2 = { tenant, definition: footballStatsDefinition, debug: true, caseTeam: caseTeam2 };
-
-        // Populate the case instances with different players
-        for(const data of PlayerData.playerDataForMultiUserTest) {
-            await this.startCase(startCase2, user1, 'stats', data);
+        // Create the case instances with different players; but also with a different case team
+        for (const data of PlayerData.playerDataForMultiUserTest) {
+            // Case team for testing in FootballStats model (multi-user)
+            const inputs = { "player": data };
+            const caseTeam = new CaseTeam([new CaseOwner(user1), new CaseTeamMember(user2)]);
+            const definition = footballStatsDefinition;
+            const startCase = { tenant, definition, inputs, caseTeam };
+            await caseService.startCase(startCase, user1);
         }
 
         // tests against all filters in testFootballStatsMultiUserFilters
-        for(const filter of filtersData.testFootballStatsMultiUserFilters) {
+        for (const filter of filtersData.testFootballStatsMultiUserFilters) {
             await this.assertGetCasesAndTasksFilter(user2, filter);
         }
 
@@ -88,39 +90,25 @@ Starting business identifier's filters test for footballstats + footballclubstat
 #########################################################################################
         `);
 
-        // Case team for testing in FootballClubStats model
-        const caseTeam = new CaseTeam([new CaseOwner(user1)]);
-        const startCase = { tenant, definition: footballClubStatsDefinition, debug: true, caseTeam };
-
         // Populate the case instances with different club players
-        for(const data of ClubData.clubData) {
-            await this.startCase(startCase, user1, 'info', data);
+        for (const data of ClubData.clubData) {
+            // Start FootballClub cases with only user1 in the case team
+            const definition = footballClubStatsDefinition;
+            const inputs = { "player": data };
+            const caseTeam = new CaseTeam([new CaseOwner(user1)]);
+            const startCase = { tenant, definition, inputs, caseTeam };
+            await caseService.startCase(startCase, user1);
         }
 
         // tests against all filters in testFootballStatsCombinedFilters
-        for(const filter of filtersData.testFootballStatsCombinedFilters) {
+        for (const filter of filtersData.testFootballStatsCombinedFilters) {
             await this.assertGetCasesAndTasksFilter(user1, filter);
         }
 
         // tests against all filters in testFootballStatsMultiUserCombinedFilters
-        for(const filter of filtersData.testFootballStatsMultiUserCombinedFilters) {
+        for (const filter of filtersData.testFootballStatsMultiUserCombinedFilters) {
             await this.assertGetCasesAndTasksFilter(user2, filter);
         }
-    }
-
-    /**
-     * A simple method which starts a case
-     * @param startCase
-     * @param user
-     * @param path
-     * @param stats
-     */
-    async startCase(startCase: StartCase, user: User, path: string, stats: any) {
-        const caseInstance = await caseService.startCase(startCase, user) as Case;
-        await caseService.getCase(caseInstance, user);
-
-        // Create stats case file item
-        await caseFileService.createCaseFileItem(caseInstance, user, path, stats);
     }
 
     /**
@@ -130,15 +118,15 @@ Starting business identifier's filters test for footballstats + footballclubstat
      */
     async assertGetCasesAndTasksFilter(user: User, input: any) {
         // Asserts test filter against getCases
-        await caseService.getCases(user, input.filter).then(cases =>{
-            if(cases.length != input.expectedValue) {
+        await caseService.getCases(user, input.filter).then(cases => {
+            if (cases.length != input.expectedValue) {
                 throw new Error(input.message + cases.length);
             }
         });
 
         // Asserts test filter against getTasks
-        await taskService.getTasks(user, input.filter).then(tasks =>{
-            if(tasks.length != input.expectedValue) {
+        await taskService.getTasks(user, input.filter).then(tasks => {
+            if (tasks.length != input.expectedValue) {
                 throw new Error(input.message + tasks.length);
             }
         });

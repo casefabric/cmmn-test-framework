@@ -1,7 +1,7 @@
 <definitions>
     <case id="footballclubstats.case" name="footballclubstats">
         <caseFileModel>
-            <caseFileItem id="_DJ6eA_0" name="info" multiplicity="ExactlyOne" definitionRef="info.cfid"/>
+            <caseFileItem id="_DJ6eA_0" name="player" multiplicity="ExactlyOne" definitionRef="info.cfid"/>
         </caseFileModel>
         <casePlanModel id="cm__DJ6eA_0" name="footballclubstats" autoComplete="true">
             <planItem id="pi_ht__DJ6eA_0" name="Football club info" definitionRef="ht__DJ6eA_0">
@@ -55,6 +55,7 @@
                 </extensionElements>
             </humanTask>
         </casePlanModel>
+        <input id="_DJ6eA_6" name="player" bindingRef="_DJ6eA_0"/>
     </case>
     <caseFileItemDefinition name="info" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="info.cfid">
         <property name="clubname" type="http://www.omg.org/spec/CMMN/PropertyType/string">
