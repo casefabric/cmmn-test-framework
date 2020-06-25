@@ -1,0 +1,38 @@
+<humantask>
+    <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" name="football_club_info" description="">
+        <input id="_wv7Z_info" name="info"/>
+        <task-model>{
+	"schema" : {
+		"title" : "Football club information",
+		"type" : "object",
+		"required" : [
+			"info"
+		],
+		"properties" : {
+			"info" : {
+				"title" : "club info",
+				"type" : "object",
+				"properties" : {
+					"name" : {
+						"type" : "string",
+						"title" : "Name of the club"
+					},
+					"age" : {
+						"type" : "integer",
+						"title" : "Age of the club"
+					},
+					"country" : {
+						"type" : "string",
+						"title" : "Player's country"
+					},
+					"playerName" : {
+						"type" : "string",
+						"title" : "player who played for this club"
+					}
+				}
+			}
+		}
+	}
+}</task-model>
+    </cafienne:implementation>
+</humantask>

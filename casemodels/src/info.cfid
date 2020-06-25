@@ -1,0 +1,18 @@
+<caseFileItemDefinition name="info" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified">
+    <property name="clubname" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+        <extensionElements mustUnderstand="false">
+            <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+        </extensionElements>
+    </property>
+    <property name="age" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
+    <property name="country" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+        <extensionElements mustUnderstand="false">
+            <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+        </extensionElements>
+    </property>
+    <property name="name" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+        <extensionElements mustUnderstand="false">
+            <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+        </extensionElements>
+    </property>
+</caseFileItemDefinition>
