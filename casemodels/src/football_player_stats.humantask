@@ -21,10 +21,6 @@
 						"type" : "integer",
 						"title" : "Age of the player"
 					},
-					"isRetired" : {
-						"type" : "boolean",
-						"title" : "Retired player"
-					},
 					"country" : {
 						"type" : "string",
 						"title" : "Player's country"

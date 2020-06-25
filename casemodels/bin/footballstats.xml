@@ -37,10 +37,6 @@
 						"type" : "integer",
 						"title" : "Age of the player"
 					},
-					"isRetired" : {
-						"type" : "boolean",
-						"title" : "Retired player"
-					},
 					"country" : {
 						"type" : "string",
 						"title" : "Player's country"
@@ -64,20 +60,24 @@
         </casePlanModel>
     </case>
     <caseFileItemDefinition name="stats" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="stats.cfid">
-        <property name="name" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="name" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+            </extensionElements>
+        </property>
         <property name="age" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
         <property name="isRetired" type="http://www.omg.org/spec/CMMN/PropertyType/boolean">
-            <extensionElements>
+            <extensionElements mustUnderstand="false">
                 <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
             </extensionElements>
         </property>
         <property name="country" type="http://www.omg.org/spec/CMMN/PropertyType/string">
-            <extensionElements>
+            <extensionElements mustUnderstand="false">
                 <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
             </extensionElements>
         </property>
         <property name="foot" type="http://www.omg.org/spec/CMMN/PropertyType/string">
-            <extensionElements>
+            <extensionElements mustUnderstand="false">
                 <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
             </extensionElements>
         </property>
