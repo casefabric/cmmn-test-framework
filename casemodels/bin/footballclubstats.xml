@@ -1,0 +1,94 @@
+<definitions>
+    <case id="footballclubstats.case" name="footballclubstats">
+        <caseFileModel>
+            <caseFileItem id="_DJ6eA_0" name="info" multiplicity="ExactlyOne" definitionRef="info.cfid"/>
+        </caseFileModel>
+        <casePlanModel id="cm__DJ6eA_0" name="footballclubstats" autoComplete="true">
+            <planItem id="pi_ht__DJ6eA_0" name="Football club info" definitionRef="ht__DJ6eA_0">
+                <entryCriterion id="_DJ6eA_2" name="EntryCriterion_0" sentryRef="crit__DJ6eA_0"/>
+            </planItem>
+            <sentry id="crit__DJ6eA_0">
+                <caseFileItemOnPart id="_DJ6eA_3" sourceRef="_DJ6eA_0">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </sentry>
+            <humanTask id="ht__DJ6eA_0" name="Football club info" isBlocking="true">
+                <inputs id="_DJ6eA_4" name="info" bindingRef="_DJ6eA_0"/>
+                <extensionElements mustUnderstand="false">
+                    <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" name="football_club_info" description="" humanTaskRef="football_club_info.humantask">
+                        <input id="_wv7Z_info" name="info"/>
+                        <task-model>{
+	"schema" : {
+		"title" : "Football club information",
+		"type" : "object",
+		"required" : [
+			"info"
+		],
+		"properties" : {
+			"info" : {
+				"title" : "club info",
+				"type" : "object",
+				"properties" : {
+					"name" : {
+						"type" : "string",
+						"title" : "Name of the club"
+					},
+					"age" : {
+						"type" : "integer",
+						"title" : "Age of the club"
+					},
+					"country" : {
+						"type" : "string",
+						"title" : "Player's country"
+					},
+					"playerName" : {
+						"type" : "string",
+						"title" : "player who played for this club"
+					}
+				}
+			}
+		}
+	}
+}</task-model>
+                        <parameterMapping id="_DJ6eA_5" sourceRef="_DJ6eA_4" targetRef="_wv7Z_info"/>
+                    </cafienne:implementation>
+                </extensionElements>
+            </humanTask>
+        </casePlanModel>
+    </case>
+    <caseFileItemDefinition name="info" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="info.cfid">
+        <property name="clubname" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+            </extensionElements>
+        </property>
+        <property name="age" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
+        <property name="country" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+            </extensionElements>
+        </property>
+        <property name="name" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+            </extensionElements>
+        </property>
+    </caseFileItemDefinition>
+    <CMMNDI>
+        <CMMNDiagram>
+            <CMMNShape cmmnElementRef="cm__DJ6eA_0">
+                <Bounds x="20" y="20" width="800" height="500"/>
+            </CMMNShape>
+            <casefileitem cmmnElementRef="_DJ6eA_shape_1" parentId="cm__DJ6eA_0" contextRef="_DJ6eA_0">
+                <Bounds x="210" y="180" width="25" height="40"/>
+            </casefileitem>
+            <CMMNShape cmmnElementRef="pi_ht__DJ6eA_0">
+                <Bounds x="350" y="160" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_DJ6eA_2">
+                <Bounds x="344" y="190" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNEdge sourceCMMNElementRef="_DJ6eA_shape_1" targetCMMNElementRef="_DJ6eA_2"/>
+        </CMMNDiagram>
+    </CMMNDI>
+</definitions>
