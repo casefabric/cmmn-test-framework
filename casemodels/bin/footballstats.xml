@@ -1,7 +1,7 @@
 <definitions>
     <case id="footballstats.case" name="footballstats">
         <caseFileModel>
-            <caseFileItem id="_cYgNJ_1" name="stats" multiplicity="ExactlyOne" definitionRef="stats.cfid"/>
+            <caseFileItem id="_cYgNJ_1" name="player" multiplicity="ExactlyOne" definitionRef="stats.cfid"/>
         </caseFileModel>
         <casePlanModel id="cm__cYgNJ_0" name="footballstats" autoComplete="true">
             <planItem id="pi_ht__cYgNJ_0" name="Player stats" definitionRef="ht__cYgNJ_0">
@@ -58,6 +58,7 @@
                 </extensionElements>
             </humanTask>
         </casePlanModel>
+        <input id="_cYgNJ_6" name="player" bindingRef="_cYgNJ_1"/>
     </case>
     <caseFileItemDefinition name="stats" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="stats.cfid">
         <property name="name" type="http://www.omg.org/spec/CMMN/PropertyType/string">
