@@ -10,14 +10,14 @@ import { checkJSONResponse, checkResponse } from '../response';
 const cafienneService = new CafienneService();
 
 export default class CaseService {
-    async startCase(command: StartCase, user: User, expectNoFailures: boolean = true): Promise<Case> {
+    async startCase(command: StartCase, user: User, expectNoFailures: boolean = true) {
         if (!user) {
             throw new Error("User must be specified");
         }
         console.log("Creating Case[" + command.definition + "] in tenant " + command.tenant);
         const url = '/cases';
         const caseInstanceId = command.caseInstanceId ? command.caseInstanceId : undefined;
-        const debug = command.debug ? command.debug : undefined;
+        const debug = command.debug !== undefined ? command.debug : undefined;
         const request = {
             inputs: command.inputs,
             caseTeam: command.caseTeam,
@@ -32,10 +32,14 @@ export default class CaseService {
 
         // Hack: copy "StartCaseResponse.caseInstanceId" to "Case.id" in the json prior to instantiating Case.
         // TODO: consider whether it is better to work with a "StartCaseResponse" object instead
-        json.id = json.caseInstanceId;
-        const caseInstance = <Case>json;
-        console.log(`Created case instance with id: \t${caseInstance.id}`);
-        return caseInstance;
+        if (response.ok) {
+            json.id = json.caseInstanceId;
+            const caseInstance = <Case>json;
+            console.log(`Created case instance with id: \t${caseInstance.id}`);
+            return caseInstance;
+        } else {
+            return response;
+        }
     }
 
     /**
@@ -43,10 +47,10 @@ export default class CaseService {
      * @param Case 
      * @param user 
      */
-    async getCase(Case: Case, user: User, expectNoFailures: boolean = true): Promise<Case> {
-        checkCaseID(Case);
-        const response = await cafienneService.get('/cases/' + Case.id, user);
-        const msg = `GetCase is not expected to succeed for user ${user.id} in case ${Case.id}`;
+    async getCase(Case: Case | string, user: User, expectNoFailures: boolean = true): Promise<Case> {
+        Case = checkCaseID(Case);
+        const response = await cafienneService.get('/cases/' + Case, user);
+        const msg = `GetCase is not expected to succeed for user ${user.id} in case ${Case}`;
         return checkJSONResponse(response, msg, expectNoFailures);
     }
 
@@ -76,7 +80,7 @@ export default class CaseService {
      * Retrieves the list of cases for the user (those that the user started or participates in).
      * @param user 
      */
-    async getUserCases(user: User, filter?: CaseFilter, expectNoFailures: boolean = true): Promise<Array<Case>> {        
+    async getUserCases(user: User, filter?: CaseFilter, expectNoFailures: boolean = true): Promise<Array<Case>> {
         const response = await cafienneService.get('/cases/user', user, filter);
         const msg = `GetUserCases is not expected to succeed for user ${user.id}`;
         return checkJSONResponse(response, msg, expectNoFailures) as Promise<Array<Case>>;
@@ -91,7 +95,7 @@ export default class CaseService {
         checkCaseID(Case);
         const response = await cafienneService.get('/cases/' + Case.id + '/discretionaryitems', user)
         const msg = `GetDiscretionaryItems is not expected to succeed for user ${user.id} in case ${Case.id}`;
-        return <DiscretionaryItemsResponse> await checkJSONResponse(response, msg, expectNoFailures);
+        return <DiscretionaryItemsResponse>await checkJSONResponse(response, msg, expectNoFailures);
     }
 
     /**
@@ -104,7 +108,7 @@ export default class CaseService {
      */
     async planDiscretionaryItem(Case: Case, user: User, item: DiscretionaryItem, planItemId?: string, expectNoFailures: boolean = true): Promise<string> {
         checkCaseID(Case);
-        const itemToPlan = { name : item.name, parentId: item.parentId, definitionId: item.definitionId, planItemId}
+        const itemToPlan = { name: item.name, parentId: item.parentId, definitionId: item.definitionId, planItemId }
 
         const response = await cafienneService.post('cases/' + Case.id + '/discretionaryitems/plan', user, itemToPlan);
         const msg = `PlanDiscretionaryItem is not expected to succeed for user ${user.id} in case ${Case.id}`;
@@ -117,10 +121,10 @@ export default class CaseService {
      * @param user 
      * @param filter 
      */
-    async getCaseStatistics(user: User, filter?: StatisticsFilter, expectNoFailures: boolean = true) {
+    async getCaseStatistics(user: User, filter?: StatisticsFilter, expectNoFailures: boolean = true): Promise<Array<CaseStatistics>> {
         const response = await cafienneService.get('/cases/stats', user, filter);
         const msg = `GetCaseStatistics is not expected to succeed for user ${user.id}`;
-        return checkJSONResponse(response, msg, expectNoFailures) as Promise<Array<Case>>;
+        return checkJSONResponse(response, msg, expectNoFailures, [CaseStatistics]);
     }
 
     /**
@@ -141,17 +145,38 @@ export default class CaseService {
  * Throw an error if Case.id is not filled.
  * @param Case 
  */
-function checkCaseID(Case: Case) {
-    if (! Case.id) {
+function checkCaseID(Case: Case | string) {
+    if (typeof (Case) === 'string') {
+        return Case;
+    }
+    if (!Case.id) {
         throw new Error('Case id has not been set. First the case has to be started');
     }
+    return Case.id;
 }
 
 /**
  * Simple JSON interface wrapper
  */
-interface DiscretionaryItemsResponse {
+export interface DiscretionaryItemsResponse {
     caseInstanceId: string;
     name: string,
     discretionaryItems: Array<DiscretionaryItem>;
+}
+
+export class CaseStatistics {
+    constructor(
+        public definition: string,
+        public totalInstances: number,
+        public numActive: number,
+        public numCompleted: number,
+        public numTerminated: number,
+        public numSuspended: number,
+        public numFailed: number,
+        public numClosed: number,
+        public numWithFailures: number){}
+
+    toString() {
+        return `definition[${this.definition}]: total = ${this.totalInstances} active = ${this.numActive} closed = ${this.numClosed} completed = ${this.numCompleted} failed = ${this.numFailed} suspended = ${this.numSuspended} terminated = ${this.numTerminated} withFailures = ${this.numWithFailures}`;
+    }
 }

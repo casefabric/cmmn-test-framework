@@ -1,4 +1,6 @@
 import CaseTeamMember from "./caseteammember";
+import User from "../user";
+import RoleBinding from "./rolebinding";
 
 /**
  * Simple CaseTeam wrapper class.
@@ -6,4 +8,8 @@ import CaseTeamMember from "./caseteammember";
  */
 export default class CaseTeam {
     constructor(public members: CaseTeamMember[]) {}
+
+    find(user: User) {
+        return this.members.find(member => member.memberId === user.id);
+    }
 }

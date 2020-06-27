@@ -94,8 +94,19 @@ export default class TenantService {
      * @param expectNoFailures 
      */
     async addTenantUser(user: User, tenant: Tenant, newTenantUser: TenantUser, expectNoFailures = true) {
-        const response = await this.cafienneService.post(`/tenant/${tenant.name}/users`, user, newTenantUser);
-        const msg = `AddTenantUser is not expected to succeed for user ${user.id} in tenant ${tenant.name}`;
+        return this.updateTenantUser(user, tenant, newTenantUser, expectNoFailures);
+    }
+
+    /**
+     * Update a tenant user 
+     * @param user Must be a tenant owner
+     * @param tenant 
+     * @param newTenantUser 
+     * @param expectNoFailures 
+     */
+    async updateTenantUser(user: User, tenant: Tenant, newTenantUser: TenantUser, expectNoFailures = true) {
+        const response = await this.cafienneService.put(`/tenant/${tenant.name}/users`, user, newTenantUser);
+        const msg = `UpdateTenantUser is not expected to succeed for user ${user.id} in tenant ${tenant.name}`;
         return checkResponse(response, msg, expectNoFailures);
     }
 

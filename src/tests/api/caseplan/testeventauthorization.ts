@@ -8,8 +8,9 @@ import RepositoryService from '../../../framework/service/case/repositoryservice
 import CasePlanService from '../../../framework/service/case/caseplanservice';
 import PlanItem from '../../../framework/cmmn/planitem';
 import TenantService from '../../../framework/service/tenant/tenantservice';
-import CaseTeamMember from '../../../framework/cmmn/caseteammember';
+import CaseTeamMember, { CaseOwner } from '../../../framework/cmmn/caseteammember';
 import CaseTeam from '../../../framework/cmmn/caseteam';
+import Case from '../../../framework/cmmn/case';
 
 const repositoryService = new RepositoryService();
 const definition = 'eventlistener.xml';
@@ -30,19 +31,25 @@ export default class TestEventAuthorization extends TestCase {
     }
 
     async run() {
-        const caseTeam = new CaseTeam([new CaseTeamMember(user), new CaseTeamMember(employee, ["Employee"])]);
+        const caseTeam = new CaseTeam([new CaseOwner(user), new CaseTeamMember(employee, ["Employee"])]);
 
         const startCase = { tenant, definition, caseTeam };
 
-        const caseInstance = await caseService.startCase(startCase, user);
+        const caseInstance = await caseService.startCase(startCase, user) as Case;
         await caseService.getCase(caseInstance, user);
         
         const planItems = await casePlanService.getPlanItems(caseInstance, user);
         // console.log("PLanItems: " + planItems)
 
-        const plainUserEvent: PlanItem = planItems.find((item: PlanItem) => item.name === 'PlainUserEvent');
-        const employeeUserEvent: PlanItem = planItems.find((item: PlanItem) => item.name === 'EmployeeUserEvent');
-
+        const plainUserEvent = planItems.find((item: PlanItem) => item.name === 'PlainUserEvent');
+        if (! plainUserEvent) {
+            throw new Error('Did not find expected PlainUserEvent');
+        }
+        const employeeUserEvent = planItems.find((item: PlanItem) => item.name === 'EmployeeUserEvent');
+        if (! employeeUserEvent) {
+            throw new Error('Did not find expected EmployeeUserEvent');
+        }
+        
         const planItem = await casePlanService.getPlanItem(caseInstance, user, plainUserEvent.id);
         // console.log("PLanItem: " + planItem)
 

@@ -1,0 +1,48 @@
+<definitions>
+    <case id="caseteam.case" name="caseteam">
+        <caseFileModel>
+            <caseFileItem id="_jAVt1_3" name="Root" multiplicity="ExactlyOne" definitionRef="root.cfid"/>
+        </caseFileModel>
+        <casePlanModel id="cm__jAVt1_0" name="caseteam" autoComplete="true">
+            <planItem id="pi_ht__jAVt1_0" name="Approve" definitionRef="ht__jAVt1_0"/>
+            <planItem id="pi_ht__jAVt1_1" name="Request" definitionRef="ht__jAVt1_1"/>
+            <planItem id="pi_ht__jAVt1_2" name="Assist" definitionRef="ht__jAVt1_2"/>
+            <planItem id="pi_ht__Crena_0" name="Arbitrary Task" definitionRef="ht__Crena_0"/>
+            <planItem id="pi_ht__Crena_1" name="Task Without Role" definitionRef="ht__Crena_1"/>
+            <humanTask id="ht__jAVt1_0" name="Approve" isBlocking="true" performerRef="_jAVt1_1"/>
+            <humanTask id="ht__jAVt1_1" name="Request" isBlocking="true" performerRef="_jAVt1_0"/>
+            <humanTask id="ht__jAVt1_2" name="Assist" isBlocking="true" performerRef="_jAVt1_2"/>
+            <humanTask id="ht__Crena_0" name="Arbitrary Task" isBlocking="true" performerRef="_Crena_3"/>
+            <humanTask id="ht__Crena_1" name="Task Without Role" isBlocking="true"/>
+        </casePlanModel>
+        <caseRoles id="_jAVt1_0" name="Requestor"/>
+        <caseRoles id="_jAVt1_1" name="Approver"/>
+        <caseRoles id="_jAVt1_2" name="PersonalAssistant" description="Personal Assistant"/>
+        <caseRoles id="_Crena_3" name="CaseParticipant" description="Arbitrary role that is not a tenant role"/>
+    </case>
+    <caseFileItemDefinition name="root" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="root.cfid">
+        <property name="Outcome" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
+    </caseFileItemDefinition>
+    <CMMNDI>
+        <CMMNDiagram>
+            <CMMNShape cmmnElementRef="cm__jAVt1_0">
+                <Bounds x="20" y="20" width="610" height="500"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__jAVt1_0">
+                <Bounds x="150" y="220" width="120" height="70"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__jAVt1_1">
+                <Bounds x="150" y="110" width="120" height="70"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__jAVt1_2">
+                <Bounds x="150" y="322" width="120" height="70"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__Crena_0">
+                <Bounds x="350" y="110" width="120" height="70"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__Crena_1">
+                <Bounds x="350" y="220" width="120" height="70"/>
+            </CMMNShape>
+        </CMMNDiagram>
+    </CMMNDI>
+</definitions>

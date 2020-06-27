@@ -97,7 +97,7 @@ export default class CafienneResponse {
  * @param errorMsg 
  * @param expectNoFailures 
  */
-export async function checkResponse(response: CafienneResponse, errorMsg: string, expectNoFailures: boolean): Promise<any> {
+export async function checkResponse(response: CafienneResponse, errorMsg: string, expectNoFailures: boolean): Promise<CafienneResponse> {
     if (response.ok) {
         if (!expectNoFailures) throw new Error(errorMsg);
     } else {

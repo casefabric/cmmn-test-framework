@@ -106,15 +106,14 @@ export default class TaskService {
      * @param task
      * @param user 
      */
-    async getTask(task: Task, user: User, expectNoFailures: boolean = true) {
+    async getTask(task: Task, user: User, expectNoFailures: boolean = true): Promise<Task> {
         if (!task.id) {
             console.log("Oops. First try to succesfully start a case ?!");
             return task;
         }
         const response = await cafienneService.get('tasks/' + task.id, user);
         const msg = `GetTask is not expected to succeed for user ${user.id} on task ${task.id}`;
-        const json = await checkJSONResponse(response, msg, expectNoFailures);
-        return new Task(json);
+        return await checkJSONResponse(response, msg, expectNoFailures);
     }
 
     /**
@@ -122,13 +121,10 @@ export default class TaskService {
      * @param caseInstance
      * @param user 
      */
-    async getCaseTasks(caseInstance: Case, user: User, expectNoFailures: boolean = true) {
+    async getCaseTasks(caseInstance: Case, user: User, expectNoFailures: boolean = true): Promise<Array<Task>> {
         const response = await cafienneService.get('/tasks/case/' + caseInstance.id, user);
         const msg = `GetCaseTasks is not expected to succeed for member ${user.id} in case ${caseInstance.id}`;
-        const json = await checkJSONResponse(response, msg, expectNoFailures);
-
-        const jsonArray = <Array<any>>json;
-        return jsonArray.map(task => new Task(task))
+        return await checkJSONResponse(response, msg, expectNoFailures);
     }
 
     /**
@@ -136,7 +132,7 @@ export default class TaskService {
      * @param user 
      * @param definition 
      */
-    async getTasksOfCaseType(user: User, definition: string, expectNoFailures: boolean = true) {
+    async getTasksOfCaseType(user: User, definition: string, expectNoFailures: boolean = true): Promise<Array<Task>> {
         throw new Error('Not yet implemented');
     }
 
@@ -148,10 +144,7 @@ export default class TaskService {
     async getTasks(user: User, filter?: TaskFilter, expectNoFailures: boolean = true): Promise<Array<Task>> {
         const response = await cafienneService.get('/tasks', user, filter);
         const msg = `GetTasks is not expected to succeed for member ${user.id}`;
-        const json = await checkJSONResponse(response, msg, expectNoFailures);
-
-        const jsonArray = <Array<any>>json;
-        return jsonArray.map(task => new Task(task))
+        return await checkJSONResponse(response, msg, expectNoFailures);
     }
 
     /**
@@ -161,10 +154,13 @@ export default class TaskService {
      * @param filter 
      */
     async countTasks(user: User, filter?: TaskFilter, expectNoFailures: boolean = true): Promise<TaskCount> {
-        throw new Error('Not yet implemented');
+        const response = await cafienneService.get('/tasks/user/count', user, filter);
+        const msg = `GetTasks is not expected to succeed for member ${user.id}`;
+        return await checkJSONResponse(response, msg, expectNoFailures);
     }
 }
 
-interface TaskCount {
-
+export interface TaskCount {
+    claimed: number;
+    unclaimed: number;
 }

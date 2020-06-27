@@ -13,6 +13,9 @@ import Task from '../../framework/cmmn/task';
 import StartCase from '../../framework/service/case/startcase';
 import TenantUser from '../../framework/tenant/tenantuser';
 import TenantService from '../../framework/service/tenant/tenantservice';
+import CaseTeam from '../../framework/cmmn/caseteam';
+import CaseTeamMember, { CaseOwner } from '../../framework/cmmn/caseteammember';
+import Case from '../../framework/cmmn/case';
 
 const repositoryService = new RepositoryService();
 const definition = 'travelrequest.xml';
@@ -96,15 +99,13 @@ export default class TestTravelRequest extends TestCase {
                 }
             }
         };
-        const caseTeam = {
-            members: [
-                { user: approver.id, roles: ['Approver'] },
-                { user: lana.id, roles: ['PersonalAssistant'] },
-                { user: requestor.id, roles: ['Requestor'] }
-            ]
-        };
+        const caseTeam = new CaseTeam([
+            new CaseOwner(approver, ['Approver'])
+            , new CaseTeamMember(lana, ['PersonalAssistant'])
+            , new CaseTeamMember(requestor, ['Requestor'])
+        ]);
         const startCase: StartCase = { tenant, definition, inputs, debug: true, caseTeam };
-        const caseInstance = await caseService.startCase(startCase, requestor);
+        const caseInstance = await caseService.startCase(startCase, requestor) as Case;
         await caseService.getCase(caseInstance, approver).then(caseInstance => {
             // console.log("CI: " + caseInstance)
         });
