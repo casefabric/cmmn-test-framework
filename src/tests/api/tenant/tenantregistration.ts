@@ -56,11 +56,11 @@ export default class TestTenantRegistration extends TestCase {
         // Also not allowed to get a non-existing user
         await tenantService.getTenantUser(tenantOwner1, tenant1, "not a tenant user at all", false);
 
-        // Add the user as a tenant user
         await tenantService.addTenantUser(tenantOwner1, tenant1, user4);
 
-        // Adding user twice should result in an error
-        await tenantService.addTenantUser(tenantOwner1, tenant1, user4, false);
+        // Adding tenant user again should not give any problems any longer (as it does an upsert)
+        await tenantService.addTenantUser(tenantOwner1, tenant1, user4);
+
         await ServerSideProcessing('Give the system a second to handle projection of adding user4');
 
         // Also make the user a tenant owner
@@ -150,6 +150,23 @@ export default class TestTenantRegistration extends TestCase {
                 throw new Error('Expected user 4 to have roles ' + expectedNewRoles + ', but found ' + user.roles);
             }
             // console.log('User 4 has roles ' + user.roles);
+        });
+
+
+        const newName = "User4 is now called User-ABC"
+        const user4WithNewName = Object.assign({
+            ...user4,
+            name: newName
+        })
+        await tenantService.updateTenantUser(tenantOwner1, tenant1, user4WithNewName);
+
+        // Let the projection process the event as well.
+        await ServerSideProcessing();
+
+        await tenantService.getTenantUser(tenantOwner1, tenant1, user4.userId).then(user => {
+            if (user.name !== newName) {
+                throw new Error('Expected user 4 to have new name ' + newName + ', but found ' + user.name);
+            }
         });
 
         const nextOwnerId = 'next-owner';
