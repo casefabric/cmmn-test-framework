@@ -1,5 +1,5 @@
 import User from "../framework/user";
-import TenantUser from "../framework/tenant/tenantuser";
+import TenantUser, { TenantOwner } from "../framework/tenant/tenantuser";
 import Tenant from "../framework/tenant/tenant";
 import { ServerSideProcessing, SomeTime } from "../framework/test/time";
 import PlatformService from "../framework/service/platform/platformservice";
@@ -11,10 +11,10 @@ const platformService = new PlatformService();
  * Simple test tenant to avoid duplicate code
  */
 export default class WorldWideTestTenant {
-    sender = new TenantUser('sending-user', ['Sender'], 'sender', 'sender@senders.com');
-    receiver = new TenantUser('receiving-user', ['Receiver'], 'receiver', 'receiver@receivers.com')
+    sender = new TenantOwner('sending-user', ['Sender'], 'sender', 'sender@senders.com');
+    receiver = new TenantOwner('receiving-user', ['Receiver'], 'receiver', 'receiver@receivers.com')
     employee = new TenantUser('employee', ['Employee'], 'another employee', 'without any email address');
-    tenant: Tenant = new Tenant(this.name, []);
+    tenant: Tenant = new Tenant(this.name, [this.sender, this.receiver, this.employee]);
 
     constructor(public readonly name: string = 'World-Wide-Test-Tenant', public platformAdmin: User = new User('admin')) {
 
@@ -24,7 +24,6 @@ export default class WorldWideTestTenant {
      * Creates the tenant, and logs in for sender user and receiver user.
      */
     async create() {
-        this.tenant.owners = [this.sender, this.receiver];
         await this.platformAdmin.login();
         const response = await platformService.createTenant(this.platformAdmin, this.tenant);
         if (response.status === 204) {
@@ -38,20 +37,6 @@ export default class WorldWideTestTenant {
             await this.sender.login();
         }
         await this.receiver.login();
-        try {
-            await new TenantService().addTenantUser(this.sender, this.tenant, this.employee)
-        } catch (e) {
-            if (! e.message.indexOf('already exists')) {
-                console.log(e);
-                throw e;
-            }
-        }
-        await ServerSideProcessing('Giving server time to add employee to tenant');
-        try {
-            await this.employee.login();
-        } catch (e) {
-            await ServerSideProcessing('Giving server even more time to add employee to tenant');        
-            await this.employee.login();
-        }            
+        await this.employee.login();
     }
 }

@@ -10,8 +10,15 @@ export default class TenantUser extends User {
      * @param roles Set of strings containing the names of the roles the user has within the tenant.
      * @param name Optional name for the user inside the tenant.
      * @param email Optional email for the user inside the tenant.
+     * @param isOwner Optional flag to indicate that this user is a tenant owner
      */
-    constructor(public userId: string, public roles: Array<string> = [], public name?: string, public email?: string) {
+    constructor(public userId: string, public roles: Array<string> = [], public name?: string, public email?: string, public isOwner: boolean = false) {
         super(userId);
      }
+}
+
+export class TenantOwner extends TenantUser {
+    constructor(public userId: string, public roles: Array<string> = [], public name?: string, public email?: string) {
+        super(userId, roles, name, email, true);
+    }
 }
