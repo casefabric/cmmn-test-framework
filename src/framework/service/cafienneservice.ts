@@ -103,7 +103,7 @@ export default class CafienneService {
     }
 }
 
-function printHeaders(msg: string, headers: Headers) {
+export function printHeaders(msg: string, headers: Headers) {
     console.log(msg)
     const rawHeaders = headers.raw();
     for (const key in rawHeaders) {
