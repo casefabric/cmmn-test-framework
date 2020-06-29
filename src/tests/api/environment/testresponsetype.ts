@@ -8,8 +8,7 @@ import { CaseOwner } from '../../../framework/cmmn/caseteammember';
 import CaseTeam from '../../../framework/cmmn/caseteam';
 import Case from '../../../framework/cmmn/case';
 import Config from '../../../config';
-import CafienneResponse from '../../../framework/service/response';
-import { ServerSideProcessing } from '../../../framework/test/time';
+import CafienneService, { printHeaders } from '../../../framework/service/cafienneservice';
 
 const repositoryService = new RepositoryService();
 const caseService = new CaseService();
@@ -37,31 +36,28 @@ export default class TestResponseType extends TestCase {
 
     async getCase(caseId: string) {
         // create headers
-        let headers= new Headers({
-            'Content-Type': 'application/json',
-        });
+        const headers= CafienneService.headers;
+        headers.delete('Authorization');
         headers.set('Authorization', 'Bearer ' + user.token);
 
         // create request parameters
         const url = Config.CafienneService.url + 'cases/' + caseId;
         const method = 'GET';
-        console.log('URL: '+url);
-
-        // attaching case-last-modified to headers can eliminate this
-        await ServerSideProcessing();
+        console.log('\nURL: ' + url);
+        printHeaders('\nRequest headers:', headers);
 
         // Fetch response
-        const fetchResponse = await fetch(url, { method, headers })
-        await fetchResponse.trailer;
-        const response = new CafienneResponse(fetchResponse);
-        console.log(`All headers: ${JSON.stringify(response.headers)}`)
-        console.log(`Content Type: ${JSON.stringify(response.headers.get('content-type'))}`)
+        const response = await fetch(url, { method, headers });
+        printHeaders('\nResponse headers:', response.headers);
+        await response.text().then(
+            body => console.log('\nResponse Body: \n' + body)
+        );
 
         // assert the content-type in response
         const expectedType = 'application/json';
         const actualType = response.headers.get('Content-Type');
         if(actualType != expectedType) {
-            throw new Error('Mismatch in content types. Expected: ' + expectedType + '; Received: ' + actualType);
+            throw new Error('Mismatch in response\'s content-type. Expected: ' + expectedType + '; Received: ' + actualType);
         }
     }
 }
