@@ -107,7 +107,7 @@ const AllTestCases = new TestClasses( [
     , TestRoleBinding
     , TestCaseTeam
     , TestEventAuthorization
-    , TestIncidentManagement
+    // , TestIncidentManagement
     , TestTravelRequest
     , TestInvalidStartCase
     , TestValidStartCase
