@@ -88,19 +88,31 @@ export default class TestTaskAPI extends TestCase {
         // Now add receiver to the case team, and show that now he also gets to see the unassigned task
         await caseTeamService.setMember(caseInstance, sender, new CaseTeamMember(receiver));
 
-        await this.getUnassignedTasks(receiver).then(newCount => {
-            if (newCount == receiversTaskCountBeforeStartCase + 1) {
-                // That is fine
-                console.log('New count for receiver is as expected');
-            } else {
-                throw new Error(`Expected to find ${receiversTaskCountBeforeStartCase + 1} tasks, but found ${newCount} instead for receiver`);
-            }
-        });
+        await this.getReceiverUnassignedTasks(receiversTaskCountBeforeStartCase + 1);
 
         // Getting the case task now should also not fail any more
         await taskService.getCaseTasks(caseInstance, receiver).then(tasks => {
             console.log('Receiver has ' + tasks.length + ' case tasks')
         });
+    }
+
+    async getReceiverUnassignedTasks(expectedCount: number) {
+        const newCount = await this.getUnassignedTasks(receiver);
+        if (newCount == expectedCount) {
+            // That is fine
+            console.log('New count for receiver is as expected');
+            return;
+        }
+
+        await ServerSideProcessing(`This step fails too often; we're adding some wait time and then try again`);
+
+        const nextCount = await this.getUnassignedTasks(receiver);
+        if (nextCount == expectedCount) {
+            // That is fine
+            console.log('First count for receiver fails, but second count is as expected');
+            return;
+        }
+        throw new Error(`Expected to find ${expectedCount} tasks for receiver, but tried twice and first found ${newCount} and then ${nextCount} instead`);
     }
 
     async getUnassignedTasks(user: User) {
