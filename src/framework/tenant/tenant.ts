@@ -4,7 +4,14 @@ export default class Tenant {
     /**
      * Simple wrapper class for Tenant.
      * @param name Name (and id) of the tenant.
-     * @param owners List of Tenant Users that are owner of the tenant.
+     * @param users List of Tenant Users in the tenant.
      */
-    constructor(public name: string, public owners: TenantUser[]) { }
+    constructor(public name: string, public users: TenantUser[]) { }
+
+    /**
+     * Returns the tenant users that are owner.
+     */
+    getOwners() {
+        return this.users.filter(user => user.isOwner);
+    }
 }
