@@ -8,7 +8,6 @@ import CaseTeam from '../../../framework/cmmn/caseteam';
 import TaskService from '../../../framework/service/task/taskservice';
 import { assertTask, findTask, assertTaskCount } from '../../../framework/test/assertions';
 import Case from '../../../framework/cmmn/case';
-import { ServerSideProcessing } from '../../../framework/test/time';
 
 const caseService = new CaseService();
 const caseTeamService = new CaseTeamService();

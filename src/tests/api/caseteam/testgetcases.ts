@@ -6,11 +6,11 @@ import TestCase from '../../../framework/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
 import CaseTeam from '../../../framework/cmmn/caseteam';
-import CaseTeamMember from '../../../framework/cmmn/caseteammember';
+import CaseTeamMember, { CaseOwner } from '../../../framework/cmmn/caseteammember';
 import CaseFilter from '../../../framework/service/case/casefilter';
 import User from '../../../framework/user';
 import CaseTeamService from '../../../framework/service/case/caseteamservice';
-import { ServerSideProcessing } from '../../../framework/test/time';
+import Case from '../../../framework/cmmn/case';
 
 const repositoryService = new RepositoryService();
 const definition = 'helloworld.xml';
@@ -36,13 +36,13 @@ export default class TestGetCases extends TestCase {
                 From: sender.id
             }
         };
-        const caseTeam = new CaseTeam([new CaseTeamMember(sender, undefined, true), new CaseTeamMember(receiver)]);
+        const caseTeam = new CaseTeam([new CaseOwner(sender), new CaseTeamMember(receiver)]);
         
         const startCase = { tenant, definition, inputs, caseTeam, debug: true };
 
         await this.getCaseList({tenant, numberOfResults: 10000}, "Initial list has cases");
 
-        const newCase = await caseService.startCase(startCase, sender);
+        const newCase = await caseService.startCase(startCase, sender) as Case;
 
         await this.getCaseList({tenant, numberOfResults: 10000}, "After startcase");
         await this.getCaseList({tenant, state:"Failed"}, "Failed within tenant");
@@ -53,9 +53,6 @@ export default class TestGetCases extends TestCase {
         await this.getCaseList({}, "Across tenant", employee);
 
         await new CaseTeamService().setMember(newCase, sender, new CaseTeamMember(employee));
-
-        await ServerSideProcessing();
-        await ServerSideProcessing();
         
         await this.getCaseList({}, "After added to team", employee);
     }

@@ -8,7 +8,6 @@ import RepositoryService from '../../../framework/service/case/repositoryservice
 import CaseTeam from '../../../framework/cmmn/caseteam';
 import CaseTeamMember, { CaseOwner } from '../../../framework/cmmn/caseteammember';
 import CaseTeamService from '../../../framework/service/case/caseteamservice';
-import { ServerSideProcessing } from '../../../framework/test/time';
 import Case from '../../../framework/cmmn/case';
 import User from '../../../framework/user';
 
@@ -104,14 +103,6 @@ export default class TestTaskAPI extends TestCase {
             return;
         }
 
-        await ServerSideProcessing(`This step fails too often; we're adding some wait time and then try again`);
-
-        const nextCount = await this.getUnassignedTasks(receiver);
-        if (nextCount == expectedCount) {
-            // That is fine
-            console.log('First count for receiver fails, but second count is as expected');
-            return;
-        }
         throw new Error(`Expected to find ${expectedCount} tasks for receiver, but tried twice and first found ${newCount} and then ${nextCount} instead`);
     }
 

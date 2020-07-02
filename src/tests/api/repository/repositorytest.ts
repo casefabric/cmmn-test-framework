@@ -1,11 +1,8 @@
 import TestCase from "../../../framework/test/testcase";
 import RepositoryService, { readLocalXMLDocument } from "../../../framework/service/case/repositoryservice";
 import WorldWideTestTenant from "../../worldwidetesttenant";
-import User from "../../../framework/user";
 import TenantService from "../../../framework/service/tenant/tenantservice";
-import Tenant from "../../../framework/tenant/tenant";
 import TenantUser from "../../../framework/tenant/tenantuser";
-import { ServerSideProcessing } from "../../../framework/test/time";
 
 
 const repositoryService = new RepositoryService();
@@ -28,9 +25,6 @@ export default class TestRepositoryAPI extends TestCase {
                 throw e;
             }
         }
-
-        // give it some good time.
-        await ServerSideProcessing();
     }
 
     async run() {
@@ -54,9 +48,6 @@ export default class TestRepositoryAPI extends TestCase {
         // Listing case definitions should succeed as tenant owner
         await repositoryService.listCaseDefinitions(tenantOwner, tenant);
 
-        // By now, tenant processing should have made it such that the tenant user can login.
-        // But still we will give it some extra waiting time
-        await ServerSideProcessing();
         // Login as tenant user, and then try to deploy a case. That should not be possible.
         await tenantUser.login();
 

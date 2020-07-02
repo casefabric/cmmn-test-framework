@@ -3,10 +3,8 @@ import TenantService from "../../../framework/service/tenant/tenantservice";
 import Tenant from "../../../framework/tenant/tenant";
 import TenantUser, { TenantOwner } from "../../../framework/tenant/tenantuser";
 import TestCase from "../../../framework/test/testcase";
-import { ServerSideProcessing } from "../../../framework/test/time";
 import Comparison from "../../../framework/test/comparison";
 import PlatformService from "../../../framework/service/platform/platformservice";
-import { json } from "express";
 
 const platformAdmin = new User('admin');
 
@@ -41,16 +39,11 @@ export default class TestTenantRegistration extends TestCase {
         // Creating tenant as platformOwner should succeed.
         await platformService.createTenant(platformAdmin, tenant1);
 
-        await ServerSideProcessing();
-        await ServerSideProcessing();
-
         // Creating tenant again should fail
         // await platformService.createTenant(platformAdmin, tenant1, false)
 
         // Getting tenant owners as platformOwner should fail.
-        // await tenantService.getTenantOwners(platformAdmin, tenant1, false);
-
-        await ServerSideProcessing('Give the system a second to handle the addition of the tenant owners');
+        await tenantService.getTenantOwners(platformAdmin, tenant1, false);
 
         await tenantOwner1.login();
 
@@ -74,8 +67,6 @@ export default class TestTenantRegistration extends TestCase {
 
         // Adding tenant user again should not give any problems any longer (as it does an upsert)
         await tenantService.addTenantUser(tenantOwner1, tenant1, user4);
-
-        await ServerSideProcessing('Give the system a second to handle projection of adding user4');
 
         // Also make the user a tenant owner
         await tenantService.addTenantOwner(tenantOwner1, tenant1, user4.userId);
@@ -123,7 +114,6 @@ export default class TestTenantRegistration extends TestCase {
 
         // Now disable and enable a tenant user.
         await tenantService.disableTenantUser(tenantOwner1, tenant1, tenantOwner2.id)
-        await ServerSideProcessing();
         // There should be one less tenant user
         await tenantService.getTenantUsers(tenantOwner1, tenant1).then(users => checkUserCount(users, 6));
         // There should be 1 disabled user account
@@ -132,7 +122,6 @@ export default class TestTenantRegistration extends TestCase {
         await tenantService.getTenantUser(tenantOwner1, tenant1, tenantOwner2.id, false);
         // Enable the user account again and validate that the user can be retrieved again.
         await tenantService.enableTenantUser(tenantOwner1, tenant1, tenantOwner2.id)
-        await ServerSideProcessing();
         await tenantService.getTenantUsers(tenantOwner1, tenant1).then(users => checkUserCount(users, 7));
         await tenantService.getTenantUser(tenantOwner1, tenant1, tenantOwner2.id);
 
@@ -156,9 +145,6 @@ export default class TestTenantRegistration extends TestCase {
 
         await tenantService.removeTenantUserRole(tenantOwner1, tenant1, user4.userId, roleToRemove);
 
-        // Let the projection process the event as well.
-        await ServerSideProcessing();
-
         await tenantService.getTenantUser(tenantOwner1, tenant1, user4.userId).then(user => {
             if (!Comparison.sameArray(user.roles, expectedNewRoles)) {
                 throw new Error('Expected user 4 to have roles ' + expectedNewRoles + ', but found ' + user.roles);
@@ -173,9 +159,6 @@ export default class TestTenantRegistration extends TestCase {
             name: newName
         })
         await tenantService.updateTenantUser(tenantOwner1, tenant1, user4WithNewName);
-
-        // Let the projection process the event as well.
-        await ServerSideProcessing();
 
         await tenantService.getTenantUser(tenantOwner1, tenant1, user4.userId).then(user => {
             if (user.name !== newName) {
@@ -194,8 +177,6 @@ export default class TestTenantRegistration extends TestCase {
 
         // Adding the user as an owner now should succeed.
         await tenantService.addTenantOwner(tenantOwner1, tenant1, nextOwnerId);
-
-        await ServerSideProcessing();
 
         await tenantService.getTenantUsers(tenantOwner1, tenant1).then(users => checkUserCount(users, 8));
     }

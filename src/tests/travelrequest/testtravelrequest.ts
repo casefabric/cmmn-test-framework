@@ -5,11 +5,6 @@ import TaskService from '../../framework/service/task/taskservice';
 import TestCase from '../../framework/test/testcase';
 import WorldWideTestTenant from '../worldwidetesttenant';
 import RepositoryService from '../../framework/service/case/repositoryservice';
-import Comparison from '../../framework/test/comparison';
-import { SomeTime, ServerSideProcessing } from '../../framework/test/time';
-import Config from '../../config';
-import User from '../../framework/user';
-import Task from '../../framework/cmmn/task';
 import StartCase from '../../framework/service/case/startcase';
 import TenantUser from '../../framework/tenant/tenantuser';
 import TenantService from '../../framework/service/tenant/tenantservice';
@@ -45,9 +40,6 @@ export default class TestTravelRequest extends TestCase {
         }
 
         await repositoryService.validateAndDeploy(definition, platformOwner, tenant);
-
-        await ServerSideProcessing();
-        await ServerSideProcessing("This step fails toooooo often");
 
         await requestor.login();
         await approver.login();
