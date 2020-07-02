@@ -9,6 +9,10 @@ export default interface TaskFilter extends QueryFilter {
      */
     tenant?: string,
     /**
+     * Only fetch tasks matching these business identifiers
+     */
+    identifiers?: string,
+    /**
      * Filter tasks that have a case definition with this name
      */
     definition?: string,

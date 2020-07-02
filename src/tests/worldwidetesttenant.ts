@@ -1,9 +1,7 @@
 import User from "../framework/user";
 import TenantUser, { TenantOwner } from "../framework/tenant/tenantuser";
 import Tenant from "../framework/tenant/tenant";
-import { ServerSideProcessing, SomeTime } from "../framework/test/time";
 import PlatformService from "../framework/service/platform/platformservice";
-import TenantService from "../framework/service/tenant/tenantservice";
 
 const platformService = new PlatformService();
 
@@ -25,17 +23,8 @@ export default class WorldWideTestTenant {
      */
     async create() {
         await this.platformAdmin.login();
-        const response = await platformService.createTenant(this.platformAdmin, this.tenant);
-        if (response.status === 204) {
-            await ServerSideProcessing('Giving server time to handle tenant creation');
-        } else {
-        }
-        try {
-            await this.sender.login();
-        } catch (error) {
-            await ServerSideProcessing('Giving server even more time to handle the tenant creation');
-            await this.sender.login();
-        }
+        await platformService.createTenant(this.platformAdmin, this.tenant);
+        await this.sender.login();
         await this.receiver.login();
         await this.employee.login();
     }

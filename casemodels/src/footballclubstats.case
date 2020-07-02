@@ -1,0 +1,24 @@
+<case id="footballclubstats.case" name="footballclubstats" guid="_DJ6eA">
+    <caseFileModel>
+        <caseFileItem id="_DJ6eA_0" name="player" multiplicity="ExactlyOne" definitionRef="info.cfid"/>
+    </caseFileModel>
+    <casePlanModel id="cm__DJ6eA_0" name="footballclubstats" autoComplete="true">
+        <planItem id="pi_ht__DJ6eA_0" name="Football club info" definitionRef="ht__DJ6eA_0">
+            <entryCriterion id="_DJ6eA_2" name="EntryCriterion_0" sentryRef="crit__DJ6eA_0"/>
+        </planItem>
+        <sentry id="crit__DJ6eA_0">
+            <caseFileItemOnPart id="_DJ6eA_3" sourceRef="_DJ6eA_0">
+                <standardEvent>create</standardEvent>
+            </caseFileItemOnPart>
+        </sentry>
+        <humanTask id="ht__DJ6eA_0" name="Football club info" isBlocking="true">
+            <inputs id="_DJ6eA_4" name="info" bindingRef="_DJ6eA_0"/>
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="football_club_info.humantask">
+                    <parameterMapping id="_DJ6eA_5" sourceRef="_DJ6eA_4" targetRef="_wv7Z_info"/>
+                </cafienne:implementation>
+            </extensionElements>
+        </humanTask>
+    </casePlanModel>
+    <input id="_DJ6eA_6" name="player" bindingRef="_DJ6eA_0"/>
+</case>
