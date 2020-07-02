@@ -16,14 +16,18 @@ export default class CafienneService {
     async updateCaseLastModified(response: CafienneResponse) {
         // TODO: this currently is not a Singleton, but it should be...
         if (response.ok) {
-            const caseLastModified = 'Case-Last-Modified';
-            const clm = response.headers.get(caseLastModified);
-            if (clm) {
-                if (Config.CafienneService.log.response.headers) {
-                    console.log("Updating case last modified to " + clm);
+            const readAndUpdateHeader = (headerName: string) => {
+                const headerValue = response.headers.get(headerName);
+                if (headerValue) {
+                    if (Config.CafienneService.log.response.headers) {
+                        console.log(`Updating ${headerName} to ${headerValue}`);
+                    }
+                    CafienneService.headers.set(headerName, headerValue);
                 }
-                CafienneService.headers.set(caseLastModified, clm);
             }
+
+            readAndUpdateHeader('Case-Last-Modified');
+            readAndUpdateHeader('Tenant-Last-Modified');
         }
         return response;
     }
@@ -71,7 +75,7 @@ export default class CafienneService {
 
         const myCallNumber = callNumber++;
         if (Config.CafienneService.log.url) {
-            console.log(`\n\nHTTP:${method}[${myCallNumber}] from [${user? user.id: ''}] to ${url}`);
+            console.log(`\n\nHTTP:${method}[${myCallNumber}] from [${user ? user.id : ''}] to ${url}`);
         }
         if (Config.CafienneService.log.request.headers) {
             printHeaders('Request headers:', headers);
