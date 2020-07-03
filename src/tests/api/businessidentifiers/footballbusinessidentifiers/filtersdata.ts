@@ -16,8 +16,8 @@ export default class FiltersData {
                 tenant: this.tenantName,
                 identifiers: 'country!=Netherlands'
             },
-            expectedValue: 10,
-            message: 'There should be 10 non-Netherlands players; but found '
+            expectedValue: 7,
+            message: 'There should be 7 non-Netherlands players; but found '
         },
         {
             filter: {
@@ -158,8 +158,8 @@ export default class FiltersData {
                 tenant: this.tenantName,
                 identifiers: 'country=Germany'
             },
-            expectedValue: 12,
-            message: 'There should be 12 instances of Germany; but found '
+            expectedValue: 7,
+            message: 'There should be 7 instances of Germany; but found '
         },
         {
             filter: {

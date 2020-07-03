@@ -6,9 +6,6 @@ import TestCase from "../../../../framework/test/testcase";
 import User from "../../../../framework/user";
 import TaskService from "../../../../framework/service/task/taskservice";
 import RepositoryService from "../../../../framework/service/case/repositoryservice";
-import CaseFileService from "../../../../framework/service/case/casefileservice";
-import StartCase from "../../../../framework/service/case/startcase";
-import Case from "../../../../framework/cmmn/case";
 import CaseTeamMember, { CaseOwner } from "../../../../framework/cmmn/caseteammember";
 import CaseTeam from "../../../../framework/cmmn/caseteam";
 import PlayerData from "./playerdata";
@@ -17,7 +14,6 @@ import FiltersData from "./filtersdata";
 
 const caseService = new CaseService();
 const taskService = new TaskService();
-const caseFileService = new CaseFileService();
 const repositoryService = new RepositoryService();
 const tenantName = 'football' + Math.random().toString(36).substring(2, 15);
 const worldwideTenant = new WorldWideTestTenant(tenantName);
