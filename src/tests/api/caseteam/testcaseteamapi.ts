@@ -48,6 +48,7 @@ export default class TestCaseTeamAPI extends TestCase {
         ]);
         const startCase = { tenant, definition, debug: true, caseTeam };
 
+        // It should not be possible to start a case with invalid role names
         await caseService.startCase(startCase, sender, false);
 
         caseTeam.members[2].caseRoles = []; // Change roles of requestor to be empty instead of having wrong roles
@@ -108,8 +109,9 @@ export default class TestCaseTeamAPI extends TestCase {
             console.log('1. Team: ' + JSON.stringify(team, undefined, 2));
             console.log('1. Employee roles: ' + team.find(employee)?.caseRoles);
             console.log('1. Receiver roles: ' + team.find(receiver)?.caseRoles);
+            console.log('1. Roles as defined: ' + team.caseRoles);
+            console.log('1. Unassigned: ' + team.unassignedRoles);
         });
-
 
         // Add a role that is not defined in the case model should not be possible
         await caseTeamService.setMember(caseInstance, receiver, new CaseOwner(receiver, [notExistingRole]), false);
