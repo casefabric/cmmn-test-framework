@@ -29,25 +29,11 @@ export default class PlayerData {
             foot: 'Left'
         },
         {
-            name: 'Ronaldo',
-            age: 35,
-            isRetired: false,
-            country: 'Portugal',
-            foot: 'Right'
-        },
-        {
             name: 'Robin van Persie',
             age: 36,
             isRetired: true,
             country: 'Netherlands',
             foot: 'Left'
-        },
-        {
-            name: 'Franck Ribery',
-            age: 37,
-            isRetired: false,
-            country: 'France',
-            foot: 'Right'
         },
         {
             name: 'Manuel Neuer',
@@ -61,13 +47,6 @@ export default class PlayerData {
             age: 22,
             isRetired: false,
             country: 'England',
-            foot: 'Right'
-        },
-        {
-            name: 'Iniesta',
-            age: 36,
-            isRetired: false,
-            country: 'Spain',
             foot: 'Right'
         },
         {
@@ -100,13 +79,6 @@ export default class PlayerData {
             isRetired: true,
             country: 'Argentina',
             foot: 'Left'
-        },
-        {
-            name: 'Modric',
-            age: 34,
-            isRetired: false,
-            country: 'Croatia',
-            foot: 'Right'
         },
         {
             name: 'Davies',
