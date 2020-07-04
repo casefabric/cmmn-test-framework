@@ -19,7 +19,7 @@ export default class TaskService {
      */
     async claimTask(task: Task, user: User, expectNoFailures: boolean = true) {
         const response = await cafienneService.put('tasks/' + task.id + '/claim', user);
-        return checkResponse(response, 'Task ' + task + ' was claimed succesfully, but this was not expected', expectNoFailures);
+        return checkResponse(response, `Task '${task.taskName}' with id ${task.id} was claimed succesfully, but this was not expected`, expectNoFailures);
     }
 
     /**
@@ -30,7 +30,7 @@ export default class TaskService {
      */
     async revokeTask(task: Task, user: User, expectNoFailures: boolean = true) {
         const response = await cafienneService.put('tasks/' + task.id + '/revoke', user);
-        return checkResponse(response, 'Task ' + task + ' was revoked succesfully, but this was not expected', expectNoFailures);
+        return checkResponse(response, `Task '${task.taskName}' with id ${task.id} was revoked succesfully, but this was not expected`, expectNoFailures);
     }
 
     /**
@@ -42,7 +42,7 @@ export default class TaskService {
      */
     async assignTask(task: Task, user: User, assignee: User, expectNoFailures: boolean = true) {
         const response = await cafienneService.put('tasks/' + task.id + '/assign', user, { assignee: assignee.id });
-        return checkResponse(response, 'Task ' + task + ' was assigned succesfully, but this was not expected', expectNoFailures);
+        return checkResponse(response, `Task '${task.taskName}' with id ${task.id} was assigned succesfully, but this was not expected`, expectNoFailures);
     }
 
     /**
@@ -54,7 +54,7 @@ export default class TaskService {
      */
     async delegateTask(task: Task, user: User, assignee: User, expectNoFailures: boolean = true) {
         const response = await cafienneService.put('tasks/' + task.id + '/delegate', user, { assignee: assignee.id });
-        return checkResponse(response, 'Task ' + task + ' was delegated succesfully, but this was not expected', expectNoFailures);
+        return checkResponse(response, `Task '${task.taskName}' with id ${task.id} was delegated succesfully, but this was not expected`, expectNoFailures);
     }
 
     /**
@@ -66,7 +66,7 @@ export default class TaskService {
      */
     async completeTask(task: Task, user: User, taskOutput = {}, expectNoFailures: boolean = true) {
         const response = await cafienneService.post('tasks/' + task.id + '/complete', user, taskOutput);
-        return checkResponse(response, 'Task ' + task + ' was completed succesfully, but this was not expected', expectNoFailures);
+        return checkResponse(response, `Task '${task.taskName}' with id ${task.id} was completed succesfully, but this was not expected`, expectNoFailures);
     }
 
     /**
@@ -78,7 +78,7 @@ export default class TaskService {
      */
     async validateTaskOutput(task: Task, user: User, taskOutput = {}, expectNoFailures: boolean = true) {
         const response = await cafienneService.post('tasks/' + task.id, user, taskOutput);
-        const res = await checkResponse(response, 'Task output for ' + task + ' was validated succesfully, but this was not expected', expectNoFailures);
+        const res = await checkResponse(response, `Task output for '${task.taskName}' with id ${task.id} was validated succesfully, but this was not expected`, expectNoFailures);
         if (expectNoFailures) {
             const json = await response.json();
             return json;
@@ -97,7 +97,7 @@ export default class TaskService {
      */
     async saveTaskOutput(task: Task, user: User, taskOutput = {}, expectNoFailures: boolean = true) {
         const response = await cafienneService.put('tasks/' + task.id, user, taskOutput);
-        return checkResponse(response, 'Task output for ' + task + ' was saved succesfully, but this was not expected', expectNoFailures);
+        return checkResponse(response, `Task output for '${task.taskName}' with id ${task.id} was saved succesfully, but this was not expected`, expectNoFailures);
     }
 
     /**

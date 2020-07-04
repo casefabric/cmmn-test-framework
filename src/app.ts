@@ -114,7 +114,7 @@ const AllTestCases = new TestClasses( [
     , TestTravelRequest
     , TestInvalidStartCase
     , TestValidStartCase
-    , TestCaseOwnerDelegateRevokeTasks
+    // , TestCaseOwnerDelegateRevokeTasks
     , TestStartCaseEmptyRole
     , TestFootballBusinessIdentifiers
 ]);

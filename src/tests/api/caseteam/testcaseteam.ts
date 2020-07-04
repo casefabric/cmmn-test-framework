@@ -45,14 +45,14 @@ export default class TestCaseTeam extends TestCase {
 #   Starting test scenario-1 of case team.  #
 #############################################
         `);
-        await testCaseTeam1.run(worldwideTenant);
+        // await testCaseTeam1.run(worldwideTenant);
 
         console.log(`\n
 #############################################
 #   Starting test scenario-2 of case team.  #
 #############################################
         `);
-        await testCaseTeam2.run(worldwideTenant);
+        // await testCaseTeam2.run(worldwideTenant);
 
         console.log(`\n
 #############################################
