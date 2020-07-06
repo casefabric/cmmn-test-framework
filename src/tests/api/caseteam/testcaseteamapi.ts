@@ -54,6 +54,14 @@ export default class TestCaseTeamAPI extends TestCase {
         caseTeam.members[2].caseRoles = []; // Change roles of requestor to be empty instead of having wrong roles
         const caseInstance = await caseService.startCase(startCase, sender) as Case;
 
+
+        // Try to set a team with invalid users
+        const t2 = new CaseTeam([new CaseTeamMember("Piet", [requestorRole]), new CaseTeamMember("Joop"), new CaseTeamMember(receiver)]);
+        // This call fails, because the new case team does not have existing users
+        await caseTeamService.setCaseTeam(caseInstance, sender, t2, false);
+        // This call fails, because the new member is not an existing user
+        await caseTeamService.setMember(caseInstance, sender, new CaseTeamMember("PietjePrecies"), false);
+
         // Getting the case must be allowed for both sender and receiver
         await caseService.getCase(caseInstance, sender);
         await caseService.getCase(caseInstance, receiver);
