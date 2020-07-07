@@ -6,7 +6,7 @@ import TestDebugMode from './tests/api/debug/testdebugmode';
 import TestHelloworld from './tests/helloworld/helloworld';
 import TestIncidentManagement from './tests/incidentmanagement/incidentmanagement';
 import TestTenantRegistration from './tests/api/tenant/testtenantregistration';
-import TestTaskValidationAPI from './tests/api/task/taskvalidation';
+import TestTaskValidationAPI from './tests/api/task/testtaskvalidationapi';
 import Config from './config';
 import TestRepositoryAPI from './tests/api/repository/repositorytest';
 import TestTokenValidation from './tests/api/environment/tokentest';
