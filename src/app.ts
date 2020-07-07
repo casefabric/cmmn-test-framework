@@ -23,11 +23,11 @@ import TestTaskCountAPI from './tests/api/task/testtaskcountapi';
 import TestCaseTeam from './tests/api/caseteam/testcaseteam';
 import TestInvalidStartCase from './tests/api/case/testinvalidstartcase';
 import TestValidStartCase from './tests/api/case/testvalidstartcase';
-import TestCaseOwnerDelegateRevokeTasks from './tests/api/caseteam/testcaseownerdelegaterevoketasks';
 import TestStartCaseEmptyRole from './tests/api/caseteam/teststartcaseemptyrole';
 import TestResponseType from './tests/api/environment/testresponsetype';
 import TestBusinessIdentifiers from './tests/api/businessidentifiers/testbusinessidentifiers';
 import TestFootballBusinessIdentifiers from './tests/api/businessidentifiers/footballbusinessidentifiers/testfootballbusinessidentifiers';
+import TestCaseTeamTaskAuthorizations from './tests/api/caseteam/testcaseteamtaskauthorizations';
 
 
 function findTestsFromCommandLineArguments(): Array<string> {
@@ -114,7 +114,7 @@ const AllTestCases = new TestClasses( [
     , TestTravelRequest
     , TestInvalidStartCase
     , TestValidStartCase
-    // , TestCaseOwnerDelegateRevokeTasks
+    , TestCaseTeamTaskAuthorizations
     , TestStartCaseEmptyRole
     , TestFootballBusinessIdentifiers
 ]);
