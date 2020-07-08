@@ -159,30 +159,15 @@ async function convertToCaseTeam(team: any) {
     let actualCaseTeamArray: Array<CaseTeamMember> = []
     const rawMembers = team.members ? team.members : team;
     await rawMembers.forEach(member => {
-        console.log("Converting member " + JSON.stringify(member, undefined, 2))
+        // console.log("Converting member " + JSON.stringify(member, undefined, 2))
         const newMember = new CaseTeamMember(member.memberId, member.caseRoles, member.memberType, member.isOwner)
-        console.log("Converted member " + JSON.stringify(newMember, undefined, 2))
+        // console.log("Converted member " + JSON.stringify(newMember, undefined, 2))
         actualCaseTeamArray.push(newMember);
     });
     return new CaseTeam(actualCaseTeamArray)
 }
 
-
-async function verifyTeam(team1: CaseTeam, team2: CaseTeam) {
-    const sameRoles = (roles1: string[], roles2: string[]) => {
-        if (!roles1 && !roles2) return true;
-        if (roles1 && !roles2) return false;
-        if (!roles1 && roles2) return false;
-        if (roles1.length !== roles2.length) {
-            return false;
-        }
-        for (let i = 0; i< roles1.length; i++) {
-            if (!roles2.find(role => role === roles1[i])) {
-                return false;
-            }
-        }
-        return true;
-    }
+const hasMember = (team: CaseTeam, expectedMember: CaseTeamMember) => {
     const compareMember = (member1: CaseTeamMember, member2: CaseTeamMember) => {
         if (member1.memberId !== member2.memberId) {
             return false;
@@ -198,12 +183,28 @@ async function verifyTeam(team1: CaseTeam, team2: CaseTeam) {
         }
         return true;
     }
-    const hasMember = (team: CaseTeam, expectedMember: CaseTeamMember) => {
-        if (! team.members.find(member => compareMember(member, expectedMember))) {
+
+    const sameRoles = (roles1: string[], roles2: string[]) => {
+        if (!roles1 && !roles2) return true;
+        if (roles1 && !roles2) return false;
+        if (!roles1 && roles2) return false;
+        if (roles1.length !== roles2.length) {
             return false;
+        }
+        for (let i = 0; i< roles1.length; i++) {
+            if (!roles2.find(role => role === roles1[i])) {
+                return false;
+            }
         }
         return true;
     }
+    if (! team.members.find(member => compareMember(member, expectedMember))) {
+        return false;
+    }
+    return true;
+}
+
+async function verifyTeam(team1: CaseTeam, team2: CaseTeam) {
     const compareTeam = (team1: CaseTeam, team2: CaseTeam) => {
         if (team1.members.length != team2.members.length) return false;
         for (let i = 0; i< team1.members.length; i++) {
@@ -216,4 +217,20 @@ async function verifyTeam(team1: CaseTeam, team2: CaseTeam) {
         return true;
     }
     return compareTeam(team1, team2);
+}
+
+export async function assertCaseTeamMember(member: CaseTeamMember, caseInstance: Case, user: User, expectNoFailures: boolean = true) {
+    // Get case team via getCaseTeam
+    const team = await caseTeamService.getCaseTeam(caseInstance, user);
+    const actualCaseTeam = await convertToCaseTeam(team);
+
+    if (!hasMember(actualCaseTeam, member)) {
+        if (expectNoFailures) {
+            throw new Error('Member ' + member.memberId + ' is not present in the given team');
+        }
+    } else {
+        if (!expectNoFailures) {
+            throw new Error('Member ' + member.memberId + ' is present in the given team');
+        }
+    }
 }

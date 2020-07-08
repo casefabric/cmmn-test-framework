@@ -42,7 +42,7 @@ export default class TaskService {
      */
     async assignTask(task: Task, user: User, assignee: User, expectNoFailures: boolean = true) {
         const response = await cafienneService.put('tasks/' + task.id + '/assign', user, { assignee: assignee.id });
-        return checkResponse(response, `Task '${task.taskName}' with id ${task.id} was assigned succesfully, but this was not expected`, expectNoFailures);
+        return checkResponse(response, `Task '${task.taskName}' with id ${task.id} was assigned successfully, but this was not expected`, expectNoFailures);
     }
 
     /**
