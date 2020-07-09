@@ -1,4 +1,4 @@
-<case id="travelrequest.case" name="travelrequest" description="Travel Request">
+<case id="travelrequest.case" name="travelrequest" description="Travel Request" guid="_4wCNa">
     <caseFileModel>
         <caseFileItem id="cfi_csKsD_0" name="TravelRequest" multiplicity="ExactlyOne" definitionRef="travelrequest.cfid">
             <children>
@@ -111,6 +111,14 @@
             <inputs id="inTP_cm_cs9Q0_205_0" name="TravelRequest" bindingRef="cfi_csKsD_0"/>
             <extensionElements mustUnderstand="false">
                 <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="managetravelrequest.humantask">
+                    <parameterMapping id="inPM_cm_csMh4_6_0" sourceRef="inTP_cm_cs9Q0_205_0" targetRef="TravelRequest"/>
+                    <assignment id="_4wCNa_43" contextRef="cfi_csKsD_0">
+                        <condition id="_4wCNa_44" language="spel">
+                            <body>
+                                <![CDATA[TravelRequest.TravellerDetails.Requestor]]>
+                            </body>
+                        </condition>
+                    </assignment>
                     <duedate id="_4wCNa_45" contextRef="cfi_csKsD_0">
                         <condition id="_4wCNa_46" language="spel">
                             <body>
@@ -118,14 +126,6 @@
                             </body>
                         </condition>
                     </duedate>
-                    <assignment id="_4wCNa_43" contextRef="cfi_csKsD_0">
-                        <condition id="_4wCNa_44" language="spel">
-                            <body>
-                                <![CDATA[TravelRequest.TravellerDetails.Requestor.toLowerCase()]]>
-                            </body>
-                        </condition>
-                    </assignment>
-                    <parameterMapping id="inPM_cm_csMh4_6_0" sourceRef="inTP_cm_cs9Q0_205_0" targetRef="TravelRequest"/>
                 </cafienne:implementation>
             </extensionElements>
         </humanTask>
@@ -134,6 +134,15 @@
             <outputs id="outTP_cm_csgxw_208_0" name="Approval" bindingRef="cfi_csgxw_6"/>
             <extensionElements mustUnderstand="false">
                 <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="approvetravelrequest.humantask">
+                    <parameterMapping id="inPM_cm_cslsq_10_0" sourceRef="inTP_cm_csgxw_208_0" targetRef="TravelRequest_2"/>
+                    <parameterMapping id="outPM_cm_csFY2_10_0" sourceRef="Approval_2" targetRef="outTP_cm_csgxw_208_0"/>
+                    <assignment id="_4wCNa_48" contextRef="cfi_cs9Q0_5">
+                        <condition id="_4wCNa_49" language="spel">
+                            <body>
+                                <![CDATA[Project.Manager]]>
+                            </body>
+                        </condition>
+                    </assignment>
                     <duedate id="_4wCNa_50" contextRef="cfi_csKsD_0">
                         <condition id="_4wCNa_51" language="spel">
                             <body>
@@ -141,15 +150,6 @@
                             </body>
                         </condition>
                     </duedate>
-                    <assignment id="_4wCNa_48" contextRef="cfi_csKsD_0">
-                        <condition id="_4wCNa_49" language="spel">
-                            <body>
-                                <![CDATA[caseInstance.getCaseTeam().getMemberWithRole("Approver")]]>
-                            </body>
-                        </condition>
-                    </assignment>
-                    <parameterMapping id="inPM_cm_cslsq_10_0" sourceRef="inTP_cm_csgxw_208_0" targetRef="TravelRequest_2"/>
-                    <parameterMapping id="outPM_cm_csFY2_10_0" sourceRef="Approval_2" targetRef="outTP_cm_csgxw_208_0"/>
                 </cafienne:implementation>
             </extensionElements>
         </humanTask>
@@ -174,6 +174,14 @@
             <inputs id="inTP_cm_csZvZ_679_0" name="TravelRequest" bindingRef="cfi_csKsD_0"/>
             <extensionElements mustUnderstand="false">
                 <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="arrangevisa.humantask">
+                    <parameterMapping id="inPM_cm_csEQz_36_1" sourceRef="inTP_cm_csZvZ_679_0" targetRef="TravelRequest"/>
+                    <assignment id="_4wCNa_47" contextRef="cfi_csKsD_0">
+                        <condition id="_4wCNa_52" language="spel">
+                            <body>
+                                <![CDATA[TravelRequest.TravellerDetails.Requestor]]>
+                            </body>
+                        </condition>
+                    </assignment>
                     <duedate id="_4wCNa_53" contextRef="cfi_csKsD_0">
                         <condition id="_4wCNa_54" language="spel">
                             <body>
@@ -181,15 +189,6 @@
                             </body>
                         </condition>
                     </duedate>
-                    <assignment id="_4wCNa_47" contextRef="cfi_csKsD_0">
-                        <condition id="_4wCNa_52" language="spel">
-                            <body>
-                                <![CDATA[TravelRequest.TravellerDetails.Requestor.toLowerCase()
-                                ]]>
-                            </body>
-                        </condition>
-                    </assignment>
-                    <parameterMapping id="inPM_cm_csEQz_36_1" sourceRef="inTP_cm_csZvZ_679_0" targetRef="TravelRequest"/>
                 </cafienne:implementation>
             </extensionElements>
         </humanTask>
@@ -356,7 +355,9 @@
             <parameterMapping id="inPM_cm_cs5fo_847_2" sourceRef="inTP_cm_csScW_1018_2" targetRef="travelrequest">
                 <transformation language="spel">
                     <body>
-                        <![CDATA["{""Approval"":"+caseInstance.getCaseFile().getItem("Approval").getValue().toString()+", ""travelrequest"": "+caseInstance.getCaseFile().getItem("TravelRequest").getValue().toString()+"}"]]>
+                        <![CDATA[
+                            "{""Approval"":"+caseInstance.getCaseFile().getItem("Approval").getValue().toString()+", ""travelrequest"": "+caseInstance.getCaseFile().getItem("TravelRequest").getValue().toString()+"}"
+                        ]]>
                     </body>
                 </transformation>
             </parameterMapping>
@@ -423,42 +424,54 @@
             <parameterMapping id="inPM_cm_csjTZ_617_4" sourceRef="inTP_cm_csjTZ_617_3" targetRef="approvalStatus">
                 <transformation language="spel">
                     <body>
-                        <![CDATA[approval.Status]]>
+                        <![CDATA[
+                            approval.Status
+                        ]]>
                     </body>
                 </transformation>
             </parameterMapping>
             <parameterMapping id="inPM_cm_csjTZ_617_5" sourceRef="inTP_cm_csjTZ_617_2" targetRef="destinationCountry">
                 <transformation language="spel">
                     <body>
-                        <![CDATA[travelrequest.TravelDetails.Destination[0].Country]]>
+                        <![CDATA[
+                            travelrequest.TravelDetails.Destination[0].Country
+                        ]]>
                     </body>
                 </transformation>
             </parameterMapping>
             <parameterMapping id="inPM_cm_csjTZ_617_6" sourceRef="inTP_cm_csjTZ_617_2" targetRef="destinationCity">
                 <transformation language="spel">
                     <body>
-                        <![CDATA[travelrequest.TravelDetails.Destination[0].City]]>
+                        <![CDATA[
+                            travelrequest.TravelDetails.Destination[0].City
+                        ]]>
                     </body>
                 </transformation>
             </parameterMapping>
             <parameterMapping id="inPM_cm_csjTZ_617_7" sourceRef="inTP_cm_csjTZ_617_2" targetRef="departureDate">
                 <transformation language="spel">
                     <body>
-                        <![CDATA[travelrequest.TravelDetails.DepartureDate]]>
+                        <![CDATA[
+                            travelrequest.TravelDetails.DepartureDate
+                        ]]>
                     </body>
                 </transformation>
             </parameterMapping>
             <parameterMapping id="inPM_cm_csjTZ_617_8" sourceRef="inTP_cm_csjTZ_617_3" targetRef="fromName">
                 <transformation language="spel">
                     <body>
-                        <![CDATA[approval.ApprovedBy]]>
+                        <![CDATA[
+                            approval.ApprovedBy
+                        ]]>
                     </body>
                 </transformation>
             </parameterMapping>
             <parameterMapping id="inPM_cm_csjTZ_617_9" sourceRef="inTP_cm_csjTZ_617_3" targetRef="fromAddress">
                 <transformation language="spel">
                     <body>
-                        <![CDATA[approval.ApprovedBy + "@email.com"]]>
+                        <![CDATA[
+                            approval.ApprovedBy + "@email.com"
+                        ]]>
                     </body>
                 </transformation>
             </parameterMapping>
@@ -548,7 +561,9 @@
                 <ifPart contextRef="cfi_csKsD_0">
                     <condition language="spel">
                         <body>
-                            <![CDATA[TravelRequest.TravelDetails.Destination[0].Country != "US" or TravelRequest.TravellerDetails.Traveller[0].Nationality == "US"]]>
+                            <![CDATA[
+                                TravelRequest.TravelDetails.Destination[0].Country != "US" or TravelRequest.TravellerDetails.Traveller[0].Nationality == "US"
+                            ]]>
                         </body>
                     </condition>
                 </ifPart>
@@ -557,7 +572,8 @@
                 <ifPart contextRef="cfi_csKsD_0">
                     <condition language="spel">
                         <body>
-                            <![CDATA[TravelRequest.TravellerDetails.Traveller[0].Nationality != "US" and TravelRequest.TravelDetails.Destination[0].Country == "US"]]>
+                            <![CDATA[TravelRequest.TravellerDetails.Traveller[0].Nationality != "US" and
+TravelRequest.TravelDetails.Destination[0].Country == "US"]]>
                         </body>
                     </condition>
                 </ifPart>
@@ -570,401 +586,398 @@
     <input id="cs9Q0_inCPs_0" name="TravelRequest" bindingRef="cfi_csKsD_0"/>
     <extensionElements mustUnderstand="false">
         <cafienne:start-case-model xmlns:cafienne="org.cafienne">{
-                "schema": {
-                "type": "object",
-                "properties": {"TravelRequest": {"$ref": "#/definitions/TravelRequest"}},
-                "definitions": {
-                "TravelRequest": {
-                "type": "object",
-                "properties": {
-                "TravellerDetails": {"$ref": "#/definitions/TravellerDetails"},
-                "TravelDetails": {"$ref": "#/definitions/TravelDetails"},
-                "Meeting": {"$ref": "#/definitions/Meeting"},
-                "Transport": {"$ref": "#/definitions/Transport"},
-                "Project": {"$ref": "#/definitions/Project"}
-                }
-                },
-                "TravellerDetails":{
-                "title": "Requestor / Traveller Details",
-                "type": "object",
-                "required": ["Requestor",  "Traveller"],
-                "properties": {
-                "RequestDate": {
-                "title": "Request date",
-                "type": "string",
-                "format": "date",
-                "defaultValue": "$today"
-                },
-                "Requestor": {
-                "title": "Requestor",
-                "type": "string",
-                "default": "$CURRENT_USER"
-                },
-                "PointOfContact": {
-                "title": "Point of contact",
-                "type": "string"
-                },
-                "Traveller": {
-                "type": "array",
-                "minItems": 1,
-                "items": {"$ref": "#/definitions/Traveller"},
-                "default": [{"Nationality": "NL"}]
-                }
-                }
-                },
-                "TravelDetails":{
-                "title": "Destination and Dates",
-                "type": "object",
-                "required": [],
-                "properties": {
-                "Destination": {
+  "schema": {
+      "type": "object",
+      "properties": {"TravelRequest": {"$ref": "#/definitions/TravelRequest"}},
+      "definitions": {
+          "TravelRequest": {
+              "type": "object",
+              "properties": {
+                  "TravellerDetails": {"$ref": "#/definitions/TravellerDetails"},
+                  "TravelDetails": {"$ref": "#/definitions/TravelDetails"},
+                  "Meeting": {"$ref": "#/definitions/Meeting"},
+                  "Transport": {"$ref": "#/definitions/Transport"},
+                  "Project": {"$ref": "#/definitions/Project"}
+              }
+          },
+          "TravellerDetails":{
+            "title": "Requestor / Traveller Details",
+            "type": "object",
+            "required": ["Requestor", "RequestDate", "Traveller"],
+            "properties": {
+              "RequestDate": {
+                  "title": "Request date",
+                  "type": "string",
+                  "format": "date",
+                  "defaultValue": "$today"
+              },
+              "Requestor": {
+                  "title": "Requestor",
+                  "type": "string",
+                  "default": "$CURRENT_USER"
+              },
+              "PointOfContact": {
+                  "title": "Point of contact",
+                  "type": "string"
+              },
+              "Traveller": {
+                  "type": "array",
+                  "minItems": 1,
+                  "items": {"$ref": "#/definitions/Traveller"},
+                  "default": [{"Nationality": "NL"}]
+              }
+            }
+          },
+          "TravelDetails":{
+            "title": "Destination and Dates",
+            "type": "object",
+            "required": ["Destination", "DepartureDate", "Purpose", "ReturnDate", "DeparturePoint", "ReturnPoint"],
+            "properties": {
+              "Destination": {
                 "type": "array",
                 "minItems": 1,
                 "items": {"$ref": "#/definitions/Destination"},
                 "default": [{"Country" : "NL"}]
-                },
-                "DepartureDate": {
+              },
+              "DepartureDate": {
                 "title": "Departure date",
                 "type": "string",
                 "format": "date"
-                },
-                "ReturnDate": {
+              },
+              "ReturnDate": {
                 "title": "Return date",
                 "type": "string",
                 "format": "date"
-                },
-                "DeparturePoint": {
+              },
+              "DeparturePoint": {
                 "title": "Departure point",
                 "type": "string"
-                },
-                "ReturnPoint": {
+              },
+              "ReturnPoint": {
                 "title": "Return point",
                 "type": "string"
-                },
-                "AdvanceRequired": {
+              },
+              "AdvanceRequired": {
                 "title": "Advance required",
                 "type": "boolean"
-                },
-                "Purpose": {
+              },
+              "Purpose": {
                 "title": "Purpose",
                 "type": "string"
-                },
-                "Justification": {
+              },
+              "Justification": {
                 "title": "Justification",
                 "type": "string"
-                },
-                "Comments": {
+              },
+              "Comments": {
                 "title": "Comments",
                 "type": "string"
-                }
-                }
-                },
-                "Traveller": {
-                "title": "Traveller",
-                "type": "object",
-                "required": ["Name", "Email", "Nationality", "PassNo"],
-                "properties": {
+              }
+            }
+          },
+          "Traveller": {
+              "title": "Traveller",
+              "type": "object",
+              "required": ["Name", "Email", "Nationality", "PassNo"],
+              "properties": {
                 "Name": {
-                "title": "Name",
-                "type": "string",
-                "default": "Joop"
+                  "title": "Name",
+                  "type": "string"
                 },
                 "Email": {
-                "title": "Email",
-                "type": "string"
+                  "title": "Email",
+                  "type": "string"
                 },
                 "Nationality": {
-                "title": "Nationality",
-                "type": "string",
-                "enumNames": [
-                "Albania",
-                "Belgium",
-                "Bulgaria",
-                "Canada",
-                "Croatia",
-                "Czech Rep",
-                "Denmark",
-                "Estonia",
-                "France",
-                "Germany",
-                "Greece",
-                "Hungary",
-                "Iceland",
-                "Italy",
-                "Latvia",
-                "Lithuania",
-                "Luxembourg",
-                "Netherlands",
-                "Norway",
-                "Poland",
-                "Portugal",
-                "Romania",
-                "Slovakia",
-                "Slovenia",
-                "Spain",
-                "Turkey",
-                "United Kingdom",
-                "USA"
-                ],
-                "enum": [
-                "AL",
-                "BE",
-                "BU",
-                "CA",
-                "HR",
-                "CZ",
-                "DA",
-                "EN",
-                "FR",
-                "GE",
-                "GR",
-                "HU",
-                "IC",
-                "IT",
-                "LG",
-                "LH",
-                "LU",
-                "NL",
-                "NO",
-                "PL",
-                "PO",
-                "RO",
-                "LO",
-                "SI",
-                "ES",
-                "TU",
-                "UK",
-                "US"
-                ]
+                  "title": "Nationality",
+                  "type": "string",
+                  "enumNames": [
+                    "Albania",
+                    "Belgium",
+                    "Bulgaria",
+                    "Canada",
+                    "Croatia",
+                    "Czech Rep",
+                    "Denmark",
+                    "Estonia",
+                    "France",
+                    "Germany",
+                    "Greece",
+                    "Hungary",
+                    "Iceland",
+                    "Italy",
+                    "Latvia",
+                    "Lithuania",
+                    "Luxembourg",
+                    "Netherlands",
+                    "Norway",
+                    "Poland",
+                    "Portugal",
+                    "Romania",
+                    "Slovakia",
+                    "Slovenia",
+                    "Spain",
+                    "Turkey",
+                    "United Kingdom",
+                    "USA"
+                  ],
+                  "enum": [
+                    "AL",
+                    "BE",
+                    "BU",
+                    "CA",
+                    "HR",
+                    "CZ",
+                    "DA",
+                    "EN",
+                    "FR",
+                    "GE",
+                    "GR",
+                    "HU",
+                    "IC",
+                    "IT",
+                    "LG",
+                    "LH",
+                    "LU",
+                    "NL",
+                    "NO",
+                    "PL",
+                    "PO",
+                    "RO",
+                    "LO",
+                    "SI",
+                    "ES",
+                    "TU",
+                    "UK",
+                    "US"
+                  ]
                 },
                 "PassNo": {
-                "title": "Pass number",
-                "type": "string"
+                    "title": "Pass number",
+                    "type": "string"
                 }
-                }
-                },
-                "Destination": {
-                "title": "Destination",
-                "type": "object",
-                "required": [
-                "City",
-                "Country"
-                ],
-                "properties": {
-                "Country": {
-                "title": "Country",
-                "type": "string",
-                "enumNames": [
-                "Albania",
-                "Belgium",
-                "Bulgaria",
-                "Canada",
-                "Croatia",
-                "Czech Rep",
-                "Denmark",
-                "Estonia",
-                "France",
-                "Germany",
-                "Greece",
-                "Hungary",
-                "Iceland",
-                "Italy",
-                "Latvia",
-                "Lithuania",
-                "Luxembourg",
-                "Netherlands",
-                "Norway",
-                "Poland",
-                "Portugal",
-                "Romania",
-                "Slovakia",
-                "Slovenia",
-                "Spain",
-                "Turkey",
-                "United Kingdom",
-                "USA"
-                ],
-                "enum": [
-                "AL",
-                "BE",
-                "BU",
-                "CA",
-                "HR",
-                "CZ",
-                "DA",
-                "EN",
-                "FR",
-                "GE",
-                "GR",
-                "HU",
-                "IC",
-                "IT",
-                "LG",
-                "LH",
-                "LU",
-                "NL",
-                "NO",
-                "PL",
-                "PO",
-                "RO",
-                "LO",
-                "SI",
-                "ES",
-                "TU",
-                "UK",
-                "US"
-                ]
-                },
-                "City": {
-                "title": "City",
-                "type": "string"
-                }
-                }
-                },
-                "Meeting": {
-                "title": "Meeting Details",
-                "type": "object",
-                "properties": {
-                "StartDate": {
-                "title": "Start date",
-                "type": "string",
-                "format": "date"
-                },
-                "StartTime": {
-                "title": "Start time",
-                "type": "string",
-                "format": "time"
-                },
-                "EndDate": {
-                "title": "End date",
-                "type": "string",
-                "format": "date"
-                },
-                "EndTime": {
-                "title": "End time",
-                "type": "string",
-                "format": "time"
-                },
-                "DurationIncLeave": {
-                "title": "Duration incl. leave",
-                "type": "integer"
-                }
-                }
-                },
-                "Transport": {
-                "title": "Transport Details",
-                "type": "object",
-                "required": ["ModeOfTransport"],
-                "properties": {
-                "ModeOfTransport": {
-                "title": "Mode of transport",
-                "type": "string",
-                "enum": [
-                "Shuttle",
-                "Staff car",
-                "Hire car",
-                "Train",
-                "Air",
-                "POMV"
-                ]
-                },
-                "POMVMake": {
-                "title": "POMV make",
-                "type": "string"
-                },
-                "POMVLicense": {
-                "title": "POMV license",
-                "type": "string"
-                }
-                }
-                },
-                "Project": {
-                "title": "Project Details",
-                "type": "object",
-                "required": [ ],
-                "properties": {
-                "IMIS-code": {
-                "title": "IMIS-code",
-                "type": "string"
-                },
-                "IMIS-activity-code": {
-                "title": "IMIS-activity-code",
-                "type": "string"
-                },
-                "Manager": {
-                "title": "Project manager",
-                "type": "string",
-                "default": "CgRsYW5hEgVsb2NhbA"
-                },
-                "ChiefServiceLine": {
-                "title": "Chief service line",
-                "type": "string"
-                },
-                "Assistant": {
-                "title": "Project assistant",
-                "type": "string",
-                "default": "CgRsYW5hEgVsb2NhbA"
-                }
-                }
-                }
-                }
-                },
-                "uiSchema": {
-                "TravelRequest": {
-                "ui:widget": "stepper",
-                "TravelDetails" : {
-                "Destination": {
-                "ui:help": "Destinations of travel. Click on the '+' to add more",
-                "items":{
-                "ui:order":["Country", "City"]
-                }
-                },
-                "Purpose": {
-                "ui:widget": "textarea",
-                "ui:help": "Short brief on the primary purpose for the travel"
-                },
-                "Justification": {
-                "ui:widget": "textarea",
-                "ui:help": "Any additional points you would like to add to the purpose"
-                },
-                "Comments": {
-                "ui:widget": "textarea",
-                "ui:help": "Any message or comment you would like to provide to the Approver"
-                }
-                },
-                "Transport" : {
-                "POMVMake": {"ui:help": "Manufacturer and make of your personal vehicle"},
-                "POMVLicense": {"ui:help": "License/ Registration number of your vehicle"}
-                },
-                "TravellerDetails" : {
-                "Requestor": {"ui:widget": "user-selector", "multiSelect" : false, "role" : "Requestor"},
-                "PointOfContact": {
-                "ui:widget": "user-selector",
-                "ui:help": "Person other than you who can be contacted for any queries on this travel",
-                "multiSelect" : false
-                },
-                "Traveller":{
-                "ui:help": "Details of person(s) travelling. Click on the '+' to add more",
-                "items":{
-                "PassNo":{
-                "ui:help": "Pass Number"
-                }
-                }
-                }
-                },
-                "Project" : {
-                "IMIS-code": {
-                "ui:help": "Project Code"
-                },
-                "IMIS-activity-code": {
-                "ui:help": "Project Activity Code"
-                },
-                "Manager": {"ui:widget": "user-selector", "multiSelect" : false, "role" : "Approver"},
-                "Assistant": {"ui:widget": "user-selector", "multiSelect" : false, "role" : "PersonalAssistant"}
-                }
-                }
-                }
-                }
+              }
+          },
+          "Destination": {
+              "title": "Destination",
+              "type": "object",
+              "required": [
+                  "City",
+                  "Country"
+              ],
+              "properties": {
+                  "Country": {
+                      "title": "Country",
+                      "type": "string",
+                      "enumNames": [
+                        "Albania",
+                        "Belgium",
+                        "Bulgaria",
+                        "Canada",
+                        "Croatia",
+                        "Czech Rep",
+                        "Denmark",
+                        "Estonia",
+                        "France",
+                        "Germany",
+                        "Greece",
+                        "Hungary",
+                        "Iceland",
+                        "Italy",
+                        "Latvia",
+                        "Lithuania",
+                        "Luxembourg",
+                        "Netherlands",
+                        "Norway",
+                        "Poland",
+                        "Portugal",
+                        "Romania",
+                        "Slovakia",
+                        "Slovenia",
+                        "Spain",
+                        "Turkey",
+                        "United Kingdom",
+                        "USA"
+                      ],
+                      "enum": [
+                        "AL",
+                        "BE",
+                        "BU",
+                        "CA",
+                        "HR",
+                        "CZ",
+                        "DA",
+                        "EN",
+                        "FR",
+                        "GE",
+                        "GR",
+                        "HU",
+                        "IC",
+                        "IT",
+                        "LG",
+                        "LH",
+                        "LU",
+                        "NL",
+                        "NO",
+                        "PL",
+                        "PO",
+                        "RO",
+                        "LO",
+                        "SI",
+                        "ES",
+                        "TU",
+                        "UK",
+                        "US"
+                      ]
+                  },
+                  "City": {
+                      "title": "City",
+                      "type": "string"
+                  }
+              }
+          },
+          "Meeting": {
+              "title": "Meeting Details",
+              "type": "object",
+              "properties": {
+                  "StartDate": {
+                      "title": "Start date",
+                      "type": "string",
+                      "format": "date"
+                  },
+                  "StartTime": {
+                      "title": "Start time",
+                      "type": "string",
+                      "format": "time"
+                  },
+                  "EndDate": {
+                      "title": "End date",
+                      "type": "string",
+                      "format": "date"
+                  },
+                  "EndTime": {
+                      "title": "End time",
+                      "type": "string",
+                      "format": "time"
+                  },
+                  "DurationIncLeave": {
+                      "title": "Duration incl. leave",
+                      "type": "integer"
+                  }
+              }
+          },
+          "Transport": {
+              "title": "Transport Details",
+              "type": "object",
+              "required": ["ModeOfTransport"],
+              "properties": {
+                  "ModeOfTransport": {
+                      "title": "Mode of transport",
+                      "type": "string",
+                      "enum": [
+                          "Shuttle",
+                          "Staff car",
+                          "Hire car",
+                          "Train",
+                          "Air",
+                          "POMV"
+                      ]
+                  },
+                  "POMVMake": {
+                      "title": "POMV make",
+                      "type": "string"
+                  },
+                  "POMVLicense": {
+                      "title": "POMV license",
+                      "type": "string"
+                  }
+              }
+          },
+          "Project": {
+              "title": "Project Details",
+              "type": "object",
+              "required": [ "Manager", "Assistant"],
+              "properties": {
+                  "IMIS-code": {
+                      "title": "IMIS-code",
+                      "type": "string"
+                  },
+                  "IMIS-activity-code": {
+                      "title": "IMIS-activity-code",
+                      "type": "string"
+                  },
+                  "Manager": {
+                      "title": "Project manager",
+                      "type": "string"
+                  },
+                  "ChiefServiceLine": {
+                      "title": "Chief service line",
+                      "type": "string"
+                  },
+                  "Assistant": {
+                      "title": "Project assistant",
+                      "type": "string"
+                  }
+              }
+          }
+      }
+  },
+  "uiSchema": {
+    "TravelRequest": {
+      "ui:widget": "stepper",
+      "TravelDetails" : {
+        "Destination": {
+          "ui:help": "Destinations of travel. Click on the '+' to add more",
+          "items":{
+            "ui:order":["Country", "City"]
+          }
+        },
+        "Purpose": {
+          "ui:widget": "textarea",
+          "ui:help": "Short brief on the primary purpose for the travel"
+        },
+        "Justification": {
+          "ui:widget": "textarea",
+          "ui:help": "Any additional points you would like to add to the purpose"
+        },
+        "Comments": {
+          "ui:widget": "textarea",
+          "ui:help": "Any message or comment you would like to provide to the Approver"
+        }
+      },
+      "Transport" : {
+        "POMVMake": {"ui:help": "Manufacturer and make of your personal vehicle"},
+        "POMVLicense": {"ui:help": "License/ Registration number of your vehicle"}
+      },
+      "TravellerDetails" : {
+        "Requestor": {"ui:widget": "user-selector", "multiSelect" : false, "role" : "Requestor"},
+        "PointOfContact": {
+          "ui:widget": "user-selector",
+          "ui:help": "Person other than you who can be contacted for any queries on this travel",
+          "multiSelect" : false
+        },
+        "Traveller":{
+          "ui:help": "Details of person(s) travelling. Click on the '+' to add more",
+          "items":{
+            "PassNo":{
+              "ui:help": "Pass Number"
+            }
+          }
+        }
+      },
+      "Project" : {
+        "IMIS-code": {
+          "ui:help": "Project Code"
+        },
+        "IMIS-activity-code": {
+          "ui:help": "Project Activity Code"
+        },
+        "Manager": {"ui:widget": "user-selector", "multiSelect" : false, "role" : "Approver"},
+        "Assistant": {"ui:widget": "user-selector", "multiSelect" : false, "role" : "PersonalAssistant"}
+      }
+    }
+  }
+}
             </cafienne:start-case-model>
     </extensionElements>
 </case>
