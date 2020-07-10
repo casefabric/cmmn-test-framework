@@ -85,7 +85,7 @@ export default class TestCaseTeamAPI extends TestCase {
         await caseTeamService.getCaseTeam(caseInstance, sender);
         
         // Getting the case file is allowed for sender, as he is part of the team
-        await caseFileService.getCaseFile(caseInstance, sender, true);
+        await caseFileService.getCaseFile(caseInstance, sender);
         // Getting the case file is not allowed for receiver, as he is no longer part of the team
         await caseFileService.getCaseFile(caseInstance, receiver, false);
 
@@ -185,8 +185,5 @@ export default class TestCaseTeamAPI extends TestCase {
         // ownerToRemove cannot perform ownership tasks
         await caseTeamService.setMember(caseInstance, ownerToRemove, new CaseOwner(ownerToRemove), isStillOwner);
         await caseTeamService.setMember(caseInstance, ownerToRemove, new CaseTeamMember(ownerWhoRemoves, [], 'user', false), false);
-
-        // OwnerWhoRemoves is always owner in the case team
-        await assertCaseTeamMember(new CaseOwner(ownerWhoRemoves), caseInstance, ownerWhoRemoves);
     }
 }
