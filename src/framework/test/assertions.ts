@@ -124,6 +124,81 @@ export async function assertCaseFileContent(caseInstance: Case, user: User, path
 }
 
 /**
+ * A simple converter method which converts JSON caseTeam to object
+ * @param team 
+ */
+async function convertToCaseTeam(team: any) {
+    let actualCaseTeamArray: Array<CaseTeamMember> = []
+    const rawMembers = team.members ? team.members : team;
+    await rawMembers.forEach(member => {
+        // console.log("Converting member " + JSON.stringify(member, undefined, 2))
+        const newMember = new CaseTeamMember(member.memberId, member.caseRoles, member.memberType, member.isOwner)
+        // console.log("Converted member " + JSON.stringify(newMember, undefined, 2))
+        actualCaseTeamArray.push(newMember);
+    });
+    return new CaseTeam(actualCaseTeamArray)
+}
+
+const hasMember = (team: CaseTeam, expectedMember: CaseTeamMember): [boolean, string] => {
+    let msg = '';
+    const compareMember = (member1: CaseTeamMember, member2: CaseTeamMember) => {
+        if (member1.memberId !== member2.memberId) {
+            msg = `ID of the ${member2.memberId} doesn't match`;
+            return false;
+        }
+        if (member1.memberType !== member2.memberType) {
+            msg = `Type of the ${member2.memberId} doesn\'t match`;
+            return false;
+        }
+        if ((member1.isOwner === true) && (member2.isOwner !== true)) {
+            msg = `Ownership of the ${member2.memberId} doesn\'t match`;
+            return false;
+        }
+        if (! sameRoles(member1.caseRoles, member2.caseRoles)) {
+            msg = `Roles of the ${member2.memberId} doesn\'t match`;
+            return false;
+        }
+        msg = `Member ${member2.memberId} is present in the team`;
+        return true;
+    }
+
+    const sameRoles = (roles1: string[], roles2: string[]) => {
+        if (!roles1 && !roles2) return true;
+        if (roles1 && !roles2) return false;
+        if (!roles1 && roles2) return false;
+        if (roles1.length !== roles2.length) {
+            return false;
+        }
+        for (let i = 0; i< roles1.length; i++) {
+            if (!roles2.find(role => role === roles1[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
+    if (! team.members.find(member => compareMember(member, expectedMember))) {
+        return [false, msg];
+    }
+    return [true, msg];
+}
+
+async function verifyTeam(team1: CaseTeam, team2: CaseTeam) {
+    const compareTeam = (team1: CaseTeam, team2: CaseTeam) => {
+        if (team1.members.length != team2.members.length) return false;
+        for (let i = 0; i< team1.members.length; i++) {
+            const member1 = team1.members[i];
+            const [status, msg] = hasMember(team2, member1);
+            if (! status) {
+                // console.log("Team2 does not have member " + JSON.stringify(member1))
+                return false;
+            }
+        }
+        return true;
+    }
+    return compareTeam(team1, team2);
+}
+
+/**
  * Asserts the case team with the given team
  * and throws error if it doesn't match
  * @param caseInstance 
@@ -131,7 +206,6 @@ export async function assertCaseFileContent(caseInstance: Case, user: User, path
  * @param expectedTeam 
  */
 export async function assertCaseTeam(caseInstance: Case, user: User, expectedTeam: CaseTeam) {
-
     // Get case team via getCaseTeam
     const team = await caseTeamService.getCaseTeam(caseInstance, user)
     const actualCaseTeam = await convertToCaseTeam(team)
@@ -152,81 +226,22 @@ export async function assertCaseTeam(caseInstance: Case, user: User, expectedTea
 }
 
 /**
- * A simple converter method which converts JSON caseTeam to object
- * @param team 
+ * Asserts a member's presence in the case team
+ * @param member 
+ * @param caseInstance 
+ * @param user 
+ * @param expectNoFailures 
  */
-async function convertToCaseTeam(team: any) {
-    let actualCaseTeamArray: Array<CaseTeamMember> = []
-    const rawMembers = team.members ? team.members : team;
-    await rawMembers.forEach(member => {
-        // console.log("Converting member " + JSON.stringify(member, undefined, 2))
-        const newMember = new CaseTeamMember(member.memberId, member.caseRoles, member.memberType, member.isOwner)
-        // console.log("Converted member " + JSON.stringify(newMember, undefined, 2))
-        actualCaseTeamArray.push(newMember);
-    });
-    return new CaseTeam(actualCaseTeamArray)
-}
-
-const hasMember = (team: CaseTeam, expectedMember: CaseTeamMember) => {
-    const compareMember = (member1: CaseTeamMember, member2: CaseTeamMember) => {
-        if (member1.memberId !== member2.memberId) {
-            return false;
-        }
-        if (member1.memberType !== member2.memberType) {
-            return false;
-        }
-        if ((member1.isOwner === true) && (member2.isOwner !== true)) {
-            return false;
-        }
-        if (! sameRoles(member1.caseRoles, member2.caseRoles)) {
-            return false;
-        }
-        return true;
-    }
-
-    const sameRoles = (roles1: string[], roles2: string[]) => {
-        if (!roles1 && !roles2) return true;
-        if (roles1 && !roles2) return false;
-        if (!roles1 && roles2) return false;
-        if (roles1.length !== roles2.length) {
-            return false;
-        }
-        for (let i = 0; i< roles1.length; i++) {
-            if (!roles2.find(role => role === roles1[i])) {
-                return false;
-            }
-        }
-        return true;
-    }
-    if (! team.members.find(member => compareMember(member, expectedMember))) {
-        return false;
-    }
-    return true;
-}
-
-async function verifyTeam(team1: CaseTeam, team2: CaseTeam) {
-    const compareTeam = (team1: CaseTeam, team2: CaseTeam) => {
-        if (team1.members.length != team2.members.length) return false;
-        for (let i = 0; i< team1.members.length; i++) {
-            const member1 = team1.members[i];
-            if (! hasMember(team2, member1)) {
-                // console.log("Team2 does not have member " + JSON.stringify(member1))
-                return false;
-            }
-        }
-        return true;
-    }
-    return compareTeam(team1, team2);
-}
-
 export async function assertCaseTeamMember(member: CaseTeamMember, caseInstance: Case, user: User, expectNoFailures: boolean = true) {
     // Get case team via getCaseTeam
     const team = await caseTeamService.getCaseTeam(caseInstance, user);
     const actualCaseTeam = await convertToCaseTeam(team);
 
-    if (!hasMember(actualCaseTeam, member)) {
+    const [status, msg] = hasMember(actualCaseTeam, member)
+
+    if (!status) {
         if (expectNoFailures) {
-            throw new Error('Member ' + member.memberId + ' is not present in the given team');
+            throw new Error('Member ' + member.memberId + ' is not present in the given team.\nReason: ' + msg);
         }
     } else {
         if (!expectNoFailures) {
