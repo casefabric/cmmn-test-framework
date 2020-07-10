@@ -150,7 +150,10 @@ const hasMember = (team: CaseTeam, expectedMember: CaseTeamMember): [boolean, st
             msg = `Type of the ${member2.memberId} doesn\'t match`;
             return false;
         }
-        if ((member1.isOwner === true) && (member2.isOwner !== true)) {
+        if (member1.isOwner !== member2.isOwner) {
+            if (member1.isOwner == undefined || member2.isOwner == undefined) {
+                return true;
+            }
             msg = `Ownership of the ${member2.memberId} doesn\'t match`;
             return false;
         }
