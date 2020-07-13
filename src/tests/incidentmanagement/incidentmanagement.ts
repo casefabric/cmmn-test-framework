@@ -7,7 +7,7 @@ import WorldWideTestTenant from '../worldwidetesttenant';
 import TaskValidationMock from '../api/task/task-validation-mock';
 import RepositoryService from '../../framework/service/case/repositoryservice';
 import { ServerSideProcessing } from '../../framework/test/time';
-import { assertPlanItemState, assertTask, verifyTaskInput } from '../../framework/test/assertions'
+import { assertPlanItemState, assertTask, verifyTaskInput, findTask } from '../../framework/test/assertions'
 import IncidentContent from './incidentmanagementcontent';
 import CaseTeam from '../../framework/cmmn/caseteam';
 import CaseTeamMember, { CaseOwner } from '../../framework/cmmn/caseteammember';
@@ -58,19 +58,13 @@ Starting another case instance of incident management to test Invalid status.
     async testValidStatus(startCase: any, firstTaskName: string, firstTaskInput: any) {
 
         // Starts the case with raiser
-        let caseInstance = await caseService.startCase(startCase, raiser) as Case;
-
-        // Get case details
-        caseInstance = await caseService.getCase(caseInstance, raiser);
+        const caseInstance = await caseService.startCase(startCase, raiser) as Case;
 
         // Get case tasks
         const tasks = await taskService.getCaseTasks(caseInstance, raiser);
 
         // Get Verify Details task
-        const verifyDetailsTask = tasks.find(task => task.taskName === firstTaskName);
-        if (!verifyDetailsTask) {
-            throw new Error('Cannot find task ' + firstTaskName);
-        }
+        const verifyDetailsTask = findTask(tasks, firstTaskName);
         await verifyTaskInput(verifyDetailsTask, firstTaskInput);
 
         // Claim Verify Details task by raiser
@@ -87,11 +81,6 @@ Starting another case instance of incident management to test Invalid status.
         //  a second before continuing the test script
         await ServerSideProcessing();
 
-        // Next step fails too often
-        await ServerSideProcessing();
-        await ServerSideProcessing();
-
-
         // Verify completion of Assign Specialist plan item
         await assertPlanItemState(caseInstance, 'Assign Specialist', 0, raiser, 'Completed');
 
@@ -100,7 +89,6 @@ Starting another case instance of incident management to test Invalid status.
 
 
         // Next step fails too often
-        await ServerSideProcessing();
         await ServerSideProcessing();
 
         // Verify completion of first Notify Customer plan item
@@ -112,15 +100,11 @@ Starting another case instance of incident management to test Invalid status.
         const nextTasks = await taskService.getCaseTasks(caseInstance, raiser);
 
         // Get Work on Incident task
-        const secondTaskName = 'Work on Incident';
-        const workOnIncidentTask = nextTasks.find(task => task.taskName === secondTaskName);
-        if (!workOnIncidentTask) {
-            throw new Error('Cannot find task ' + secondTaskName);
-        }
+        const workOnIncidentTask = findTask(nextTasks, 'Work on Incident');
         await verifyTaskInput(workOnIncidentTask, secondTaskInput);
 
         // Can't claim Work on Incident task by solver as he is assigned to it
-        // await taskService.claimTask(workOnIncidentTask, solver);
+        await taskService.claimTask(workOnIncidentTask, solver, false);
         await assertTask(workOnIncidentTask, raiser, 'Claim', 'Assigned', solver, solver);
 
         const finalTaskOutput = IncidentContent.finalTaskOutput;
@@ -136,6 +120,8 @@ Starting another case instance of incident management to test Invalid status.
         // Verify completion of Complete plan item
         await assertPlanItemState(caseInstance, 'Complete', 0, raiser, 'Completed');
 
+        await ServerSideProcessing();
+
         // Verify completion of second Notify Customer plan item
         await assertPlanItemState(caseInstance, 'Notify Customer', 1, raiser, 'Completed');
     }
@@ -143,19 +129,13 @@ Starting another case instance of incident management to test Invalid status.
     async testInvalidStatus(startCase: any, firstTaskName: string, firstTaskInput: any) {
 
         // Starts the invalid case with raiser
-        let caseInstance = await caseService.startCase(startCase, raiser);
-
-        // Get case details
-        caseInstance = await caseService.getCase(caseInstance, raiser);
+        const caseInstance = await caseService.startCase(startCase, raiser) as Case;
 
         // Get case tasks
         const tasks = await taskService.getCaseTasks(caseInstance, raiser);
 
         // Get Verify Details task
-        const verifyDetailsTask = tasks.find(task => task.taskName === firstTaskName);
-        if (!verifyDetailsTask) {
-            throw new Error('Cannot find task ' + firstTaskName);
-        }
+        const verifyDetailsTask = findTask(tasks, firstTaskName);
         await verifyTaskInput(verifyDetailsTask, firstTaskInput);
 
         // Claim Verify Details task by raiser
@@ -174,6 +154,8 @@ Starting another case instance of incident management to test Invalid status.
 
         // Verify completion of Invalid Status plan item
         await assertPlanItemState(caseInstance, 'Invalid Status', 0, raiser, 'Completed');
+
+        await ServerSideProcessing();
 
         // Verify completion of first Notify Customer plan item
         await assertPlanItemState(caseInstance, 'Notify Customer', 0, raiser, 'Completed');
