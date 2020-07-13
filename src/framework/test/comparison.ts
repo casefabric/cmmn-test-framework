@@ -40,10 +40,8 @@ export default class Comparison {
             return false;
         }
 
-        for (let i = 0; i<a1.length; i++) {
-            const v1 = a1[i];
-            const v2 = a2[i];
-            if (v1 != v2) {
+        for (let i = 0; i < a1.length; i++) {
+            if (!a2.includes(a1[i])) {
                 return false;
             }
         }
