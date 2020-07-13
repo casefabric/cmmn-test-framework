@@ -3,7 +3,6 @@
 import CaseService from "../../../../framework/service/case/caseservice";
 import WorldWideTestTenant from "../../../worldwidetesttenant";
 import TestCase from "../../../../framework/test/testcase";
-import User from "../../../../framework/user";
 import TaskService from "../../../../framework/service/task/taskservice";
 import RepositoryService from "../../../../framework/service/case/repositoryservice";
 import CaseTeamMember, { CaseOwner } from "../../../../framework/cmmn/caseteammember";
@@ -11,6 +10,7 @@ import CaseTeam from "../../../../framework/cmmn/caseteam";
 import PlayerData from "./playerdata";
 import ClubData from "./clubdata";
 import FiltersData from "./filtersdata";
+import { assertGetCasesAndTasksFilter } from "../../../../framework/test/assertions";
 
 const caseService = new CaseService();
 const taskService = new TaskService();
@@ -56,7 +56,7 @@ Starting business identifier's filters test for footballstats model.
 
         // tests against all filters in testFootballStatsFilters
         for (const filter of filtersData.testFootballStatsFilters) {
-            await this.assertGetCasesAndTasksFilter(user1, filter);
+            await assertGetCasesAndTasksFilter(user1, filter);
         }
 
         console.log(`\n
@@ -77,7 +77,7 @@ Starting business identifier's multi-user filters test for footballstats model.
 
         // tests against all filters in testFootballStatsMultiUserFilters
         for (const filter of filtersData.testFootballStatsMultiUserFilters) {
-            await this.assertGetCasesAndTasksFilter(user2, filter);
+            await assertGetCasesAndTasksFilter(user2, filter);
         }
 
         console.log(`\n
@@ -98,33 +98,12 @@ Starting business identifier's filters test for footballstats + footballclubstat
 
         // tests against all filters in testFootballStatsCombinedFilters
         for (const filter of filtersData.testFootballStatsCombinedFilters) {
-            await this.assertGetCasesAndTasksFilter(user1, filter);
+            await assertGetCasesAndTasksFilter(user1, filter);
         }
 
         // tests against all filters in testFootballStatsMultiUserCombinedFilters
         for (const filter of filtersData.testFootballStatsMultiUserCombinedFilters) {
-            await this.assertGetCasesAndTasksFilter(user2, filter);
+            await assertGetCasesAndTasksFilter(user2, filter);
         }
-    }
-
-    /**
-     * A simple assertion method against getCases, and getTasks
-     * @param user
-     * @param input
-     */
-    async assertGetCasesAndTasksFilter(user: User, input: any) {
-        // Asserts test filter against getCases
-        await caseService.getCases(user, input.filter).then(cases => {
-            if (cases.length != input.expectedValue) {
-                throw new Error(input.message + cases.length);
-            }
-        });
-
-        // Asserts test filter against getTasks
-        await taskService.getTasks(user, input.filter).then(tasks => {
-            if (tasks.length != input.expectedValue) {
-                throw new Error(input.message + tasks.length);
-            }
-        });
     }
 }
