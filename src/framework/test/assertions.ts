@@ -252,3 +252,24 @@ export async function assertCaseTeamMember(member: CaseTeamMember, caseInstance:
         }
     }
 }
+
+/**
+ * A simple assertion method for filters against getCases, and getTasks
+ * @param user
+ * @param input should contain filter, expectedValue, and message fields
+ */
+export async function assertGetCasesAndTasksFilter(user: User, input: any) {
+    // Asserts test filter against getCases
+    await caseService.getCases(user, input.filter).then(cases => {
+        if (cases.length != input.expectedValue) {
+            throw new Error(input.message + cases.length);
+        }
+    });
+
+    // Asserts test filter against getTasks
+    await taskService.getTasks(user, input.filter).then(tasks => {
+        if (tasks.length != input.expectedValue) {
+            throw new Error(input.message + tasks.length);
+        }
+    });
+}
