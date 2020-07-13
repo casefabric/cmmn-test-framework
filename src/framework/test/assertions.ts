@@ -54,7 +54,7 @@ export async function assertPlanItemState(caseInstance: Case, planItemName: stri
     const freshCase = await caseService.getCase(caseInstance, user);
     const planitem = freshCase.planitems.find(p => p.name === planItemName && p.index === index);
     if (planitem?.currentState !== state) {
-        throw new Error('The plan item "' + planItemName + '" is expected to be '+ state + ', but it is ' + planitem?.currentState);
+        throw new Error(`The plan item "${planItemName}" (index: ${index}) is expected to be ${state}, but it is ${planitem?.currentState}`);
     }
 }
 
@@ -78,7 +78,7 @@ export function verifyTaskInput(task: Task, taskInput: any) {
 export function findTask(tasks: Task[], taskName: string): Task {
     const task = tasks.find(task => task.taskName === taskName);
     if (!task) {
-        throw new Error('Cannot find task ' + taskName);
+        throw new Error(`Cannot find task ${taskName}`);
     }
     return task;
 }
