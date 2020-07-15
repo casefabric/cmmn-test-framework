@@ -102,8 +102,8 @@ export default class TestCaseTeamTaskAuthorizations extends TestCase {
         await taskService.delegateTask(approveTask, employee, sender);
         await assertTask(approveTask, sender, 'Delegate', 'Delegated', sender, employee);
 
-        // Now, sender gets the Approver role
-        await assertCaseTeamMember(new CaseOwner(sender, [approverRole]), caseInstance, sender);
+        // Now, sender should not get the Approver role (as Sender is owner)
+        await assertCaseTeamMember(new CaseOwner(sender, []), caseInstance, sender);
 
         // Sender cannot claim the Approve task as sender is delegated to it
         await taskService.claimTask(approveTask, sender, false);
@@ -207,14 +207,11 @@ export default class TestCaseTeamTaskAuthorizations extends TestCase {
         // Still employee should have one role, i.e., Request role
         await assertCaseTeamMember(new CaseTeamMember(employee, [requestorRole]), caseInstance, sender);
 
-        // Sender have the Request role
-        await assertCaseTeamMember(new CaseOwner(sender, [approverRole, requestorRole]), caseInstance, sender);
+        // Sender should not have the Request role
+        await assertCaseTeamMember(new CaseOwner(sender, []), caseInstance, sender);
 
-        // Sender can remove Request role from sender itself
-        await caseTeamService.removeMemberRoles(caseInstance, sender, new CaseTeamMember(sender), requestorRole);
-
-        // Sender don't have the Request role
-        await assertCaseTeamMember(new CaseOwner(sender, [approverRole]), caseInstance, sender);
+        // // Sender cannot remove Request role from sender itself (as there is no Request role)
+        // await caseTeamService.removeMemberRoles(caseInstance, sender, new CaseTeamMember(sender), requestorRole, false);
 
         // Sender assigns the Request task to receiver
         await taskService.assignTask(requestTask, sender, receiver);
@@ -255,8 +252,8 @@ export default class TestCaseTeamTaskAuthorizations extends TestCase {
         await taskService.claimTask(assistTask, sender);
         await assertTask(assistTask, sender, 'Claim', 'Assigned', sender, sender);
 
-        // // Now, sender should get PA role
-        // await assertCaseTeamMember(new CaseOwner(sender, [approverRole, paRole]), caseInstance, sender);
+        // Sender should not get PA role
+        await assertCaseTeamMember(new CaseOwner(sender, []), caseInstance, sender);
 
         // Neither employee nor receiver can complete the task which is assigned to sender
         await taskService.completeTask(assistTask, employee, {}, false);
