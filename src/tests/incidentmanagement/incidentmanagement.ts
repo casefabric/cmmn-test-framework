@@ -4,7 +4,6 @@ import CaseService from '../../framework/service/case/caseservice';
 import TaskService from '../../framework/service/task/taskservice';
 import TestCase from '../../framework/test/testcase';
 import WorldWideTestTenant from '../worldwidetesttenant';
-import TaskValidationMock from '../api/task/task-validation-mock';
 import RepositoryService from '../../framework/service/case/repositoryservice';
 import { ServerSideProcessing } from '../../framework/test/time';
 import { assertPlanItemState, assertTask, verifyTaskInput, findTask } from '../../framework/test/assertions'
@@ -12,6 +11,8 @@ import IncidentContent from './incidentmanagementcontent';
 import CaseTeam from '../../framework/cmmn/caseteam';
 import CaseTeamMember, { CaseOwner } from '../../framework/cmmn/caseteammember';
 import Case from '../../framework/cmmn/case';
+import MockServer from '../../framework/mock/mockserver';
+import GetMock from '../../framework/mock/getmock';
 
 const repositoryService = new RepositoryService();
 const definition = 'IncidentManagementForTraining.xml';
@@ -25,11 +26,39 @@ const solver = worldwideTenant.receiver;
 const employee = worldwideTenant.employee;
 
 const mockPort = 17384;
-const mock = new TaskValidationMock(mockPort);
+const mockServer = new MockServer(mockPort);
+
+const userMappings = new GetMock(mockServer, '/usermappings/:type', call => {
+    const solver: string = "receiving-user";
+    const raiser: string = "sending-user";
+    const specialism = call.req.params['type'];
+    let specialist = '';
+    switch(specialism) {
+        case "Quarterly_Statement": specialist = solver; break;
+        case "Facility_Request": specialist = raiser; break;
+    }
+    if (!specialist) {
+        call.writeHead(404, { 'Content-Type': 'text/plain' });
+        call.write("There is no specialist for this type of ["+specialism+"]");
+    } else {
+        call.writeHead(200, { 'Content-Type': 'text/plain' });
+        call.write(specialist);
+    }
+    call.end();
+    call.setSyncMessage(`Someone asked for specialism ${specialism} and we found specialist ${specialist}`);
+});
+
+const notifyCustomer = new GetMock(mockServer, '/notifycustomer/:status', call => {
+    const incidentStatus = call.req.params['status'];
+    call.writeHead(200, { 'Content-Type': 'text/plain' });
+    call.write("Notified Customer");
+    call.end();
+    call.setSyncMessage(`Notified customer on incident status ${incidentStatus}`);
+})
 
 export default class TestIncidentManagement extends TestCase {
     async onPrepareTest() {
-        await mock.start();
+        await mockServer.start();
         await worldwideTenant.create();
         await repositoryService.validateAndDeploy(definition, raiser, tenant);
     }
@@ -51,7 +80,7 @@ Starting another case instance of incident management to test Invalid status.
 
         await this.testInvalidStatus(startCase, firstTaskName, firstTaskInput);
         // In the end, stop the mock service, such that the test completes.
-        await mock.stop();
+        await mockServer.stop();
 
     }
 
