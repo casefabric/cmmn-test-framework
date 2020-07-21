@@ -5,12 +5,14 @@ import RepositoryService from '../../../framework/service/case/repositoryservice
 import TaskService from '../../../framework/service/task/taskservice';
 import TestCase from '../../../framework/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
-import TaskValidationMock from './task-validation-mock';
 import { ServerSideProcessing } from '../../../framework/test/time';
 import TaskContent from './taskcontent';
 import Comparison from '../../../framework/test/comparison';
 import { assertPlanItemState } from '../../../framework/test/assertions'
 import Case from '../../../framework/cmmn/case';
+import MockServer from '../../../framework/mock/mockserver';
+import GetMock from '../../../framework/mock/getmock';
+import PostMock from '../../../framework/mock/postmock';
 
 const repositoryService = new RepositoryService();
 const definition = 'taskoutputvalidation.xml';
@@ -23,13 +25,45 @@ const pete = worldwideTenant.sender;
 const gimy = worldwideTenant.receiver;
 
 const mockPort = 27382;
-const mock = new TaskValidationMock(mockPort);
+const mock = new MockServer(mockPort);
+const pingMock = new GetMock(mock, '/ping', call => {
+    // Return immediately a code 200
+    call.json();
+    const waitSome = Math.random() * 300;
+    setTimeout(() => {
+        call.setSyncMessage('Received ping msg - waited ' + waitSome +' before giving it to you :)');
+    }, waitSome)
+});
+
+const validateMock = new PostMock(mock, '/validate', call => {
+    // TODO: There must be something more handy to parse the post contents, but could not find it quickly enough...
+    let body = ''
+    call.req.on('data', data => body += data);
+    call.req.on('end', () => {
+        const post = JSON.parse(body);
+
+        const taskContent = post['task-output'];
+
+        const isInvalidDecision = Comparison.sameJSON(taskContent, TaskContent.TaskOutputInvalidDecision);
+        const isKillSwitch = Comparison.sameJSON(taskContent, TaskContent.TaskOutputThatFailsValidation);
+        const isValidDecision = Comparison.sameJSON(taskContent, TaskContent.TaskOutputDecisionApproved) || Comparison.sameJSON(post, TaskContent.TaskOutputDecisionCanceled);
+        if (isKillSwitch) {
+            call.fail(500, 'Something went really wrong in here');
+        } else {
+            const response = isInvalidDecision ? TaskContent.InvalidDecisionResponse : {};
+            const json = JSON.stringify(response, undefined, 2);
+            call.json(response);
+        }
+    });
+});
+
 
 export default class TestTaskValidationAPI extends TestCase {
+    // private 
     async onPrepareTest() {
-        // console.log("Starting mock servive in test preparation");
+        console.log("Starting mock servive in test preparation");
         await mock.start();
-        // console.log("\n\n============Started mock server. Now creating tenant\n\n");
+        console.log("\n\n============Started mock server. Now creating tenant\n\n");
         await worldwideTenant.create();
         // Deploy the case model
         await repositoryService.validateAndDeploy(definition, pete, tenant);
@@ -48,11 +82,12 @@ export default class TestTaskValidationAPI extends TestCase {
                 port: mockPort
             }
         }
+
         const startCase = { tenant, definition, inputs };
         let caseInstance = await caseService.startCase(startCase, pete) as Case;
         caseInstance = await caseService.getCase(caseInstance, pete);
 
-        await mock.untilPingIsDone(1000);
+        await pingMock.untilCallInvoked(3000);
 
         // Since process completion happens asynchronously in the Cafienne engine, we will still wait 
         //  a second before continuing the test script
