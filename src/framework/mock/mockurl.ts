@@ -7,7 +7,7 @@ import { timingSafeEqual } from 'crypto';
 export default class MockURL {
     private calls = new CallHistory();
 
-    constructor(public mockServer: MockServer, public url: string, private callback: (call: MockInvocation) => void, public timeout: number = 1000) {
+    constructor(public mockServer: MockServer, public url: string, private callback: (call: MockInvocation) => void, public timeout: number = 5000) {
         this.mockServer.mocks.push(this);
     }
 
@@ -50,7 +50,7 @@ export default class MockURL {
 }
 
 
-class MockInvocation {
+export class MockInvocation {
     private __syncMessage: any = undefined;
 
     constructor(public req: Request, public res: Response, public next: Function, public mock: MockURL) {
