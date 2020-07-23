@@ -8,6 +8,7 @@ import CaseTeam from '../../framework/cmmn/caseteam';
 import CaseTeamMember, { CaseOwner } from '../../framework/cmmn/caseteammember';
 import Case from '../../framework/cmmn/case';
 import CaseFileService from '../../framework/service/case/casefileservice';
+import { SomeTime } from '../../framework/test/time';
 
 const repositoryService = new RepositoryService();
 const definition = 'entrycriteriaoncaseinputparameters.xml';
@@ -28,9 +29,12 @@ export default class TestEntryCriteriaOnCaseInputParameters extends TestCase {
 
     async run() {
         const case1 = await this.testWithTwoChildrenInStartCase();
+        // const case1 = await this.testAddingTwoChildren_in_one_shot();   
         const case2 = await this.testAddingTwoChildren_in_one_shot();   
         const case3 = await this.testAddingTwoChildren_one_at_a_time();   
-
+        // const case2 = case1;
+        // const case3 = case1;
+        
         console.log('Resulting cases: ');
         printCaseSummary(case1);
         printCaseSummary(case2);
@@ -39,13 +43,22 @@ export default class TestEntryCriteriaOnCaseInputParameters extends TestCase {
         console.log("\n\n")
         printCaseSummary(case1);
 
-        if (case1.planitems.length != case2.planitems.length) {
+        const numPlanItemsCase1 = case1.planitems.length;
+        if (numPlanItemsCase1 != case2.planitems.length) {
             throw new Error('Expecting to have same amount of plan items in first 2 cases, but it differs');
         }
-        if (case1.planitems.length != case3.planitems.length) {
+        if (numPlanItemsCase1 != case3.planitems.length) {
             throw new Error('Expecting to have same amount of plan items in first and third case, but it differs');
         }
-        console.log(`\nPositive test result:\nFound ${case1.planitems.length} plan items in all three cases`);
+        console.log(`\nPositive test result: found ${case1.planitems.length} plan items in all three cases`);
+        
+        await caseFileService.createCaseFileItem(case1, sender, 'Greeting/Child', {name:'child3'});
+        const changedCase1 = await caseService.getCase(case1, sender);
+        if (case1.planitems.length + 2 != changedCase1.planitems.length) {
+            throw new Error('Creating another case file item in first case should lead to new Stage and Task, but apparently that is not working anymore');
+        }
+
+        console.log(`\nPositive test result: switching internal CaseFile TransitionPublisher did not make a difference in case ${case1.id}`);
     }
 
     async testWithTwoChildrenInStartCase() {
