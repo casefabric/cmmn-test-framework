@@ -4,15 +4,15 @@ const Config = {
         url: 'http://localhost:2027/',
         log: {
             // Whether or not to log HTTP call information (user, url, method type, headers)
-            url: false, // URL includes call number, method type and user id
+            url: true, // URL includes call number, method type and user id
             request: {
-                headers: false, // Shows request headers
-                body: false, // Shows request body
+                headers: true, // Shows request headers
+                body: true, // Shows request body
             },
             response: {
-                status: false, // Shows response statusCode and statusMessage, including call number 
-                headers: false, // Shows response headers
-                body: false // Shows response body
+                status: true, // Shows response statusCode and statusMessage, including call number 
+                headers: true, // Shows response headers
+                body: true // Shows response body
             }
         },
         // CQRS Wait Time is the time the engine needs to process events from commands (e.g. StartCase, CompleteTask, CreateTenant) into the server side query database
@@ -24,7 +24,7 @@ const Config = {
         // Issuer can be configured. The issuer must equal what is configure inside the Cafienne Engine
         issuer: 'Cafienne Test Framework',
         // Whether or not to show the tokens requested and updated in the user
-        log: false
+        log: true
     },
     MockService: {
         // Whether or not to show log messages on the console from the mock service
@@ -34,16 +34,16 @@ const Config = {
     },
     PlatformService: {
         // Whether or not to show log messages on the console from the platform APIs (e.g., whether tenant already exists or not)
-        log: false
+        log: true
     },
     RepositoryService: {
         // Whether or not to show log messages on the console from the repository APIs (e.g., list of case definitions returned from server)
-        log: false,
+        log: true,
         repository_folder: './casemodels/bin'
     },
     TestCase: {
         // Whether or not to show log messages on the console (e.g. wait time messages for server side processing)
-        log: false
+        log: true
     }
 }
 

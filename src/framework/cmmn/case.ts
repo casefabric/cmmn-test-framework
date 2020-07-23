@@ -1,6 +1,7 @@
 import PlanItem from './planitem';
 import CaseTeam from './caseteam';
 import CaseFile from './casefile';
+import CaseTeamMember from './caseteammember';
 
 /**
  * Wrapper for json response of Cafienne Service for a single case instance.
@@ -8,8 +9,7 @@ import CaseFile from './casefile';
 export default interface Case {
     id: string;
     tenant: string;
-    definition: string;
-    name: string;
+    caseName: string;
     state: string;
     failures: number;
     parentCaseId: string;
@@ -23,7 +23,7 @@ export default interface Case {
     // inputs: object;
     // outputs: object;
 
-    team: CaseTeam;
+    team: Array<CaseTeamMember>;
     planitems: Array<PlanItem>;
     file: CaseFile;
 }
