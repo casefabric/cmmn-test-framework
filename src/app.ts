@@ -15,6 +15,7 @@ import TestCasePlanAPI from './tests/api/caseplan/testcaseplanapi';
 import TestEventAuthorization from './tests/api/caseplan/testeventauthorization';
 import PingTestEnvironment from './tests/api/environment/ping';
 import TestTravelRequest from './tests/travelrequest/testtravelrequest';
+import TestEntryCriteriaOnCaseInputParameters from './tests/stage/testentrycriteriaoncaseinputparameters';
 import TestRepeatingStage from './tests/stage/teststage';
 import TestCaseTeamAPI from './tests/api/caseteam/testcaseteamapi';
 import TestRoleBinding from './tests/api/caseteam/testrolebinding';
@@ -92,6 +93,7 @@ const AllTestCases = new TestClasses( [
     PingTestEnvironment
     , TestResponseType
     , TestHelloworld
+    , TestEntryCriteriaOnCaseInputParameters
     , TestRepeatingStage
     , TestUsersCaseAPI
     , TestDiscretionaryItems
