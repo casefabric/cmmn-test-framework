@@ -1,3 +1,1 @@
-<caseFileItemDefinition name="http" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified">
-    <property name="port" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
-</caseFileItemDefinition>
+<caseFileItemDefinition name="http" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified"/>
