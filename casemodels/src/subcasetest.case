@@ -1,0 +1,19 @@
+<case id="subcasetest.case" name="subcasetest" guid="_FKa3D">
+    <caseFileModel>
+        <caseFileItem id="_FKa3D_1" name="Greet" multiplicity="ExactlyOne" definitionRef="greeting.cfid"/>
+    </caseFileModel>
+    <casePlanModel id="cm__FKa3D_0" name="subcasetest" autoComplete="true">
+        <planItem id="pi_ct__FKa3D_0" name="call helloworld" definitionRef="ct__FKa3D_0">
+            <entryCriterion id="_FKa3D_2" name="EntryCriterion_0" sentryRef="crit__FKa3D_0"/>
+        </planItem>
+        <sentry id="crit__FKa3D_0">
+            <caseFileItemOnPart id="_FKa3D_3" sourceRef="_FKa3D_1">
+                <standardEvent>create</standardEvent>
+            </caseFileItemOnPart>
+        </sentry>
+        <caseTask id="ct__FKa3D_0" name="call helloworld" isBlocking="true" caseRef="helloworld.case">
+            <inputs id="_FKa3D_4" name="Greeting" bindingRef="_FKa3D_1"/>
+            <parameterMapping id="_FKa3D_5" sourceRef="_FKa3D_4" targetRef="csVQy_inCPs_0"/>
+        </caseTask>
+    </casePlanModel>
+</case>
