@@ -29,6 +29,7 @@ import TestResponseType from './tests/api/environment/testresponsetype';
 import TestBusinessIdentifiers from './tests/api/businessidentifiers/testbusinessidentifiers';
 import TestFootballBusinessIdentifiers from './tests/api/businessidentifiers/footballbusinessidentifiers/testfootballbusinessidentifiers';
 import TestCaseTeamTaskAuthorizations from './tests/api/caseteam/testcaseteamtaskauthorizations';
+import TestSubCase from './tests/api/case/testsubcase';
 
 
 function findTestsFromCommandLineArguments(): Array<string> {
@@ -119,6 +120,7 @@ const AllTestCases = new TestClasses( [
     , TestCaseTeamTaskAuthorizations
     , TestStartCaseEmptyRole
     , TestFootballBusinessIdentifiers
+    , TestSubCase
 ]);
 
 

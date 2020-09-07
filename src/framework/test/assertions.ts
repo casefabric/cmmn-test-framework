@@ -59,6 +59,20 @@ export async function assertPlanItemState(caseInstance: Case, planItemName: stri
 }
 
 /**
+ * Asserts the state of the case plan
+ * @param caseInstance 
+ * @param user 
+ * @param state 
+ */
+export async function assertCasePlanState(caseInstance: Case, user: TenantUser, state: string) {
+    // Get case details
+    const freshCase = await caseService.getCase(caseInstance, user);
+    if (freshCase.state !== state) {
+        throw new Error(`The case plan with id: "${freshCase.id}" is expected to be ${state}, but it is ${freshCase.state}`);
+    }
+}
+
+/**
  * Verifies whether task's input is same as that of expected input
  * @param task 
  * @param taskInput expected input
