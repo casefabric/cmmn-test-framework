@@ -73,7 +73,7 @@ export default class TestHelloworld extends TestCase {
             throw new Error('Expecting task to be assigned to sending user');
         }
         await taskService.completeTask(readResponseTask, sender);
-        await assertTask(readResponseTask, sender, 'Complete', 'Completed', sender);
+        await assertTask(readResponseTask, sender, 'Complete', 'Completed', sender, sender, sender);
 
         assertPlanItemState(caseInstance, 'CasePlan', 0, sender, 'Completed');
     }
