@@ -7,6 +7,7 @@ import WorldWideTestTenant from '../../worldwidetesttenant';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
 import CasePlanService from '../../../framework/service/case/caseplanservice';
 import PlanItem from '../../../framework/cmmn/planitem';
+import Case from '../../../framework/cmmn/case';
 
 const repositoryService = new RepositoryService();
 const definition = 'eventlistener.xml';
@@ -27,11 +28,18 @@ export default class TestCasePlanAPI extends TestCase {
     async run() {
         const startCase = { tenant, definition };
 
-        const caseInstance = await caseService.startCase(startCase, user);
+        const caseInstance = await caseService.startCase(startCase, user) as Case;
         await caseService.getCase(caseInstance, user);
         
         const planItems = await casePlanService.getPlanItems(caseInstance, user);
-        // console.log("PLanItems: " + planItems)
+
+        // Print all plan items - id, type and name.
+        console.log(planItems.length +" plan items:\n" + planItems.map(p => `${p.id} - ${p.type} - ${p.name}`).join("\n"))
+        // Check that no duplicate plan items are returned. 
+        const findDuplicates = planItems.filter((planItem, index) => planItems.findIndex(p => p.id === planItem.id) != index)
+        if (findDuplicates.length > 0) {
+            throw new Error(`Did not expect to find any duplicate plan items, but found ${findDuplicates.length} duplicate plan items`)
+        }
 
         const eventItem = planItems.find((item: PlanItem) => item.name === 'PlainUserEvent')
         if (! eventItem) {
@@ -58,6 +66,5 @@ export default class TestCasePlanAPI extends TestCase {
         await caseService.getCase(caseInstance, user).then(caze => {
             console.log('Resulting case: ' + JSON.stringify(caze, undefined, 2));
         });
-
     }
 }
