@@ -5,7 +5,7 @@ import TaskService from '../../framework/service/task/taskservice';
 import TestCase from '../../framework/test/testcase';
 import WorldWideTestTenant from '../worldwidetesttenant';
 import RepositoryService from '../../framework/service/case/repositoryservice';
-import { assertTask, verifyTaskInput, assertPlanItemState, findTask } from '../../framework/test/assertions';
+import { assertTask, verifyTaskInput, assertCasePlanState, findTask } from '../../framework/test/assertions';
 import CaseTeam from '../../framework/cmmn/caseteam';
 import CaseTeamMember, { CaseOwner } from '../../framework/cmmn/caseteammember';
 import Case from '../../framework/cmmn/case';
@@ -75,6 +75,6 @@ export default class TestHelloworld extends TestCase {
         await taskService.completeTask(readResponseTask, sender);
         await assertTask(readResponseTask, sender, 'Complete', 'Completed', sender);
 
-        assertPlanItemState(caseInstance, 'CasePlan', 0, sender, 'Completed');
+        await assertCasePlanState(caseInstance, sender, 'Completed');
     }
 }
