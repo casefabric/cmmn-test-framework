@@ -62,7 +62,12 @@ export default class CafienneService {
     }
 
     async getXml(url: string, user: User): Promise<Document> {
-        return (await this.get(url, user, undefined, new Headers({ 'Content-Type': 'text/xml' }))).xml();
+        const headers = new Headers({ 'Content-Type': 'text/xml' })
+        const clm = CafienneService.headers.get('Case-Last-Modified');
+        if (clm) {
+            headers.set('Case-Last-Modified', clm);
+        }
+        return (await this.get(url, user, undefined, headers)).xml();
     }
 
     async fetch(user: User | undefined, url: string, method: string, headers: Headers, body?: string): Promise<CafienneResponse> {
