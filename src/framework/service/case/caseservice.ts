@@ -60,9 +60,8 @@ export default class CaseService {
      * @param user 
      */
     async getDefinition(Case: Case, user: User, expectNoFailures: boolean = true) {
-        throw new Error('This functionality is not yet implemented');
         checkCaseID(Case);
-        const xml = await cafienneService.getXml('/cases/definition/' + Case.id, user);
+        return cafienneService.getXml(`/cases/${Case.id}/definition`, user);
     }
 
     /**

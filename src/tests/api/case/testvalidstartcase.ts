@@ -3,12 +3,13 @@
 import CaseService from '../../../framework/service/case/caseservice';
 import TestCase from '../../../framework/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
-import RepositoryService from '../../../framework/service/case/repositoryservice';
+import RepositoryService, { readLocalFile, readLocalXMLDocument, parseXMLDocument } from '../../../framework/service/case/repositoryservice';
 import CaseTeamMember, { CaseOwner } from '../../../framework/cmmn/caseteammember';
 import CaseTeam from '../../../framework/cmmn/caseteam';
 import CaseTeamService from '../../../framework/service/case/caseteamservice';
 import Case from '../../../framework/cmmn/case';
 import { assertCaseTeam } from '../../../framework/test/assertions';
+import Comparison from '../../../framework/test/comparison';
 
 const repositoryService = new RepositoryService();
 const definition = 'caseteam.xml';
@@ -41,5 +42,22 @@ export default class TestValidStartCase extends TestCase {
         await caseService.getCase(caseInstance, sender, false)
 
         await assertCaseTeam(caseInstance, receiver, caseTeam)
+
+        const serverDefinition = await caseService.getDefinition(caseInstance, receiver);
+
+        const definitionContents = readLocalXMLDocument(definition);
+
+        if (! Comparison.sameXML(definitionContents, serverDefinition)) {
+            throw new Error('Expecting to find exactly the same definition as we sent to the engine, but it differs ...');
+        }
+        // const dcString = definitionContents.toString();
+        // const sdString = serverDefinition.toString();
+
+        // const client = parseXMLDocument(definitionContents)
+
+        // console.log("DC, SD lengths: " + dcString.length + ", " + sdString.length)
+        // console.log("XML: " + serverDefinition)
+        // console.log("\n\nOURS: " + client)
+
     }
 }
