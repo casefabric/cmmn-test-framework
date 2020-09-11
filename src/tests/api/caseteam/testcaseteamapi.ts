@@ -102,6 +102,8 @@ export default class TestCaseTeamAPI extends TestCase {
         await caseTeamService.setCaseTeam(caseInstance, sender, newTeam, false);
         // Make receiver the owner, and then it should work
         newTeam.members[0].isOwner = true;
+        // This call fails, because employee is not an owner
+        await caseTeamService.setCaseTeam(caseInstance, employee, newTeam, false);
         await caseTeamService.setCaseTeam(caseInstance, sender, newTeam);
 
         // Verify whether receiver is owner or not
