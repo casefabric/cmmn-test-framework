@@ -11,6 +11,7 @@ import CaseFileService from "../../../framework/service/case/casefileservice";
 import User from "../../../framework/user";
 import CaseTeamMember, { CaseOwner } from "../../../framework/cmmn/caseteammember";
 import PlanItem from "../../../framework/cmmn/planitem";
+import { ServerSideProcessing } from "../../../framework/test/time";
 
 const repositoryService = new RepositoryService();
 const caseService = new CaseService();
@@ -88,6 +89,11 @@ export default class TestSubCase extends TestCase {
 
         // Both subcase and parent case plans should be completed
         await assertCasePlanState(childCaseInstance, sender, 'Completed');
+
+        // Give the server some time to respond back from subcase to parent case
+        await ServerSideProcessing();
+
+        // And now check parent case.
         await assertCasePlanState(parentCaseInstance, sender, 'Completed');
 
         // Still, receiver should not be part of the parent case team
