@@ -28,13 +28,16 @@ export default class TestEntryCriteriaOnCaseInputParameters extends TestCase {
     }
 
     async run() {
+//*
         const case1 = await this.testWithTwoChildrenInStartCase();
-        // const case1 = await this.testAddingTwoChildren_in_one_shot();   
         const case2 = await this.testAddingTwoChildren_in_one_shot();   
         const case3 = await this.testAddingTwoChildren_one_at_a_time();   
-        // const case2 = case1;
-        // const case3 = case1;
-        
+/*/
+        const case1 = await this.testAddingTwoChildren_in_one_shot();   
+        const case2 = case1;
+        const case3 = case1;
+//*/
+
         console.log('Resulting cases: ');
         printCaseSummary(case1);
         printCaseSummary(case2);
@@ -45,10 +48,10 @@ export default class TestEntryCriteriaOnCaseInputParameters extends TestCase {
 
         const numPlanItemsCase1 = case1.planitems.length;
         if (numPlanItemsCase1 != case2.planitems.length) {
-            throw new Error('Expecting to have same amount of plan items in first 2 cases, but it differs');
+            throw new Error(`Case 1 ${numPlanItemsCase1} plan items, and case 2 has ${case2.planitems.length}. Expecting to have same amount of plan items in first 2 cases, but it differs`);
         }
         if (numPlanItemsCase1 != case3.planitems.length) {
-            throw new Error('Expecting to have same amount of plan items in first and third case, but it differs');
+            throw new Error(`Case 1 ${numPlanItemsCase1} plan items, and case 3 has ${case3.planitems.length}. Expecting to have same amount of plan items in first and third case, but it differs`);
         }
         console.log(`\nPositive test result: found ${case1.planitems.length} plan items in all three cases`);
         
