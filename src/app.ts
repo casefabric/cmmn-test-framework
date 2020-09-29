@@ -30,6 +30,7 @@ import TestBusinessIdentifiers from './tests/api/businessidentifiers/testbusines
 import TestFootballBusinessIdentifiers from './tests/api/businessidentifiers/footballbusinessidentifiers/testfootballbusinessidentifiers';
 import TestCaseTeamTaskAuthorizations from './tests/api/caseteam/testcaseteamtaskauthorizations';
 import TestSubCase from './tests/api/case/testsubcase';
+import TestTaskCompletion from './tests/api/casefile/testtaskcompletion';
 
 
 function findTestsFromCommandLineArguments(): Array<string> {
@@ -94,6 +95,7 @@ const AllTestCases = new TestClasses( [
     PingTestEnvironment
     , TestResponseType
     , TestHelloworld
+    , TestTaskCompletion
     , TestEntryCriteriaOnCaseInputParameters
     , TestRepeatingStage
     , TestUsersCaseAPI
