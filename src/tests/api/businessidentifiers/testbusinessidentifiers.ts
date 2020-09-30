@@ -10,6 +10,8 @@ import CaseFileService from '../../../framework/service/case/casefileservice';
 import Case from '../../../framework/cmmn/case';
 import User from '../../../framework/user';
 import { assertGetCasesAndTasksFilter } from '../../../framework/test/assertions';
+import TaskService from '../../../framework/service/task/taskservice';
+import { send } from 'process';
 
 const repositoryService = new RepositoryService();
 const caseService = new CaseService();
@@ -29,21 +31,11 @@ export default class TestBusinessIdentifiers extends TestCase {
     }
 
     async run() {
-        const helloFilter = {
-            filter: {
-                identifiers: 'Message=hello'
-            }
-        };
-        const toFilter = {
-            filter: {
-                identifiers: `To=${sender.id}`
-            }
-        };
-        const combinedFilter = {
-            filter: {
-                identifiers: `Message=hello,To=${sender.id}`
-            }
-        };
+        const messageFilter = new FilterContext(sender, 'Message=');
+        const helloFilter = new FilterContext(sender, 'Message=hello');
+        const toFilter = new FilterContext(sender, `To=${sender.id}`);
+        const combinedFilter = new FilterContext(sender, `Message=hello,To=${sender.id}`);
+
         const inputs = {
             Greeting: {
                 Message: null,
@@ -51,51 +43,83 @@ export default class TestBusinessIdentifiers extends TestCase {
                 From: sender.id
             }
         };
+
+        await messageFilter.fetchInitialValue();
+        await helloFilter.fetchInitialValue();
+        await toFilter.fetchInitialValue();
+        await combinedFilter.fetchInitialValue();
+
         const caseTeam = new CaseTeam([new CaseOwner(employee), new CaseTeamMember(sender), new CaseTeamMember(receiver)]);
         const startCase = { tenant, definition, inputs, caseTeam, debug: true };
         const caseInstance = await caseService.startCase(startCase, sender) as Case;
 
-        // Update case file item
-        await caseFileService.updateCaseFileItem(caseInstance, sender, 'Greeting', {Message:''});
-
-        await caseService.getCases(sender, { identifiers: 'Message=' }).then(cases =>{
-            console.log(`Found ${cases.length} cases for Message filter`);
-        });
-
-        const lengthBeforeUpdate = await caseService.getCases(sender, helloFilter.filter).then(cases => {
-            return cases.length;
-        });
-
-        // Update and assert filters
-        await this.updateAndAssertFilter(sender, helloFilter, lengthBeforeUpdate);
-        await this.updateAndAssertFilter(sender, toFilter, lengthBeforeUpdate+1);
-        await this.updateAndAssertFilter(sender, combinedFilter, lengthBeforeUpdate);
+        // Initial input has no message in it, so there should not be any additional values
+        await messageFilter.assertExtraMatches(0);
 
         // Update case file item
-        await caseFileService.updateCaseFileItem(caseInstance, sender, 'Greeting', {Message:'hello'});
+        await caseFileService.updateCaseFileItem(caseInstance, sender, 'Greeting', { Message: '' });
+
+        // Show that now we find a case for th message filter
+        await messageFilter.assertExtraMatches(1);
 
         // Update and assert filters
-        await this.updateAndAssertFilter(sender, helloFilter, lengthBeforeUpdate+1);
-        await this.updateAndAssertFilter(sender, toFilter, lengthBeforeUpdate+1);
-        await this.updateAndAssertFilter(sender, combinedFilter, lengthBeforeUpdate+1);
+        await helloFilter.assertExtraMatches(0);
+        await toFilter.assertExtraMatches(1);
+        await combinedFilter.assertExtraMatches(0);
+
+        // Update case file item
+        await caseFileService.updateCaseFileItem(caseInstance, sender, 'Greeting', { Message: 'hello' });
+
+        // Update and assert filters
+        await helloFilter.assertExtraMatches(1);
+        await toFilter.assertExtraMatches(1);
+        await combinedFilter.assertExtraMatches(1);
 
         // Deleted the case file item; now business identifiers must be cleared, 
-        // hence less results should come.
+        // hence original results should come.
         await caseFileService.deleteCaseFileItem(caseInstance, sender, 'Greeting');
+        // Check no more extra matches
+        await helloFilter.assertExtraMatches(0);
+        await toFilter.assertExtraMatches(0);
+        await combinedFilter.assertExtraMatches(0);
+    }
+}
 
-        // Update and assert filters
-        await this.updateAndAssertFilter(sender, helloFilter, lengthBeforeUpdate);
-        await this.updateAndAssertFilter(sender, toFilter, lengthBeforeUpdate);
-        await this.updateAndAssertFilter(sender, combinedFilter, lengthBeforeUpdate);
+class FilterContext {
+    initialValue = 0;
+    filter = {
+        identifiers: ''
+    };
 
-        return;
+    constructor(public user: User, public identifiers: string) {
+        this.filter.identifiers = identifiers;
     }
 
-    async updateAndAssertFilter(user: User, filter: any, expectedCount: number) {
-        filter['expectedValue'] = expectedCount;
-        filter['message'] = `Found mismatch in number of instances. Expected: ${expectedCount}, Found: `;
-        
-        // Assert getCases and getTasks against filter
-        await assertGetCasesAndTasksFilter(user, filter);
+    get message() {
+        return `Found mismatch in number of instances for filter ${this}. Expected: ${this.expectedValue}, Found: `
+    }
+
+    toString() {
+        return `[${this.filter.identifiers}]`;
+    }
+
+    async fetchInitialValue() {
+        await caseService.getCases(this.user, this.filter).then(cases => {
+            this.initialValue = cases.length;
+            console.log(`Initial value for filter ${this} is ${this.initialValue}`);
+        })
+    }
+
+    assert(cases: Array<Case>, expectedExtraMatches: number) {
+        const actualValue = cases.length;
+        const expectedValue = this.initialValue + expectedExtraMatches;
+        if (actualValue != expectedValue) {
+            throw new Error(`Found ${actualValue} instead of ${expectedValue} cases for filter ${this}.`);
+        }
+    }
+
+    async assertExtraMatches(expectedExtraMatches: number) {
+        // Assert getCases against filter - it should return the initial value plus the expected extra matches
+        await caseService.getCases(this.user, this.filter).then(cases => this.assert(cases, expectedExtraMatches));
     }
 }
