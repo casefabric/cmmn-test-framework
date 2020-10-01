@@ -1,0 +1,7 @@
+<humantask>
+    <cafienne:implementation name="simple_in_out_task" description="This task is intended to simply stream input/output data" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition">
+        <input id="_dk8c_In" name="In"/>
+        <output id="_46Gh_Out" name="Out"/>
+        <task-model/>
+    </cafienne:implementation>
+</humantask>

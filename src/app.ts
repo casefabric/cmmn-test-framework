@@ -31,6 +31,7 @@ import TestFootballBusinessIdentifiers from './tests/api/businessidentifiers/foo
 import TestCaseTeamTaskAuthorizations from './tests/api/caseteam/testcaseteamtaskauthorizations';
 import TestSubCase from './tests/api/case/testsubcase';
 import TestTaskCompletion from './tests/api/casefile/testtaskcompletion';
+import TestTaskOutputOperations from './tests/api/casefile/testtaskoutputoperations';
 
 
 function findTestsFromCommandLineArguments(): Array<string> {
@@ -96,6 +97,7 @@ const AllTestCases = new TestClasses( [
     , TestResponseType
     , TestHelloworld
     , TestTaskCompletion
+    , TestTaskOutputOperations
     , TestEntryCriteriaOnCaseInputParameters
     , TestRepeatingStage
     , TestUsersCaseAPI
