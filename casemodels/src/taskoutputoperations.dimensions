@@ -1,0 +1,43 @@
+<CMMNDI>
+    <CMMNDiagram>
+        <CMMNShape cmmnElementRef="cm__v624r_0">
+            <Bounds x="30" y="30" width="1020" height="710"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ht__v624r_1">
+            <Bounds x="110" y="130" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ht__v624r_3">
+            <Bounds x="310" y="130" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ht__v624r_4">
+            <Bounds x="500" y="130" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ht__v624r_0">
+            <Bounds x="110" y="250" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ht__v624r_2">
+            <Bounds x="310" y="250" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ht__v624r_5">
+            <Bounds x="500" y="250" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ht__v624r_6">
+            <Bounds x="110" y="370" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ht__v624r_7">
+            <Bounds x="310" y="370" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ht__v624r_8">
+            <Bounds x="500" y="370" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ht__v624r_9">
+            <Bounds x="500" y="500" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ht__v624r_10">
+            <Bounds x="310" y="500" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ht__v624r_11">
+            <Bounds x="110" y="500" width="140" height="80"/>
+        </CMMNShape>
+    </CMMNDiagram>
+</CMMNDI>
