@@ -103,7 +103,7 @@ export default class TestTaskAPI extends TestCase {
             return;
         }
 
-        throw new Error(`Expected to find ${expectedCount} tasks for receiver, but tried twice and first found ${newCount} and then ${nextCount} instead`);
+        throw new Error(`Expected to find ${expectedCount} tasks for receiver, but tried twice and first found ${newCount} and then ${newCount} instead`);
     }
 
     async getUnassignedTasks(user: User) {
