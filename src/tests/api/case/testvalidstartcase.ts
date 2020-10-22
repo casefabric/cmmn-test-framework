@@ -3,10 +3,9 @@
 import CaseService from '../../../framework/service/case/caseservice';
 import TestCase from '../../../framework/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
-import RepositoryService, { readLocalFile, readLocalXMLDocument, parseXMLDocument } from '../../../framework/service/case/repositoryservice';
-import CaseTeamMember, { CaseOwner } from '../../../framework/cmmn/caseteammember';
+import RepositoryService, { readLocalXMLDocument } from '../../../framework/service/case/repositoryservice';
+import { CaseOwner } from '../../../framework/cmmn/caseteammember';
 import CaseTeam from '../../../framework/cmmn/caseteam';
-import CaseTeamService from '../../../framework/service/case/caseteamservice';
 import Case from '../../../framework/cmmn/case';
 import { assertCaseTeam } from '../../../framework/test/assertions';
 import Comparison from '../../../framework/test/comparison';

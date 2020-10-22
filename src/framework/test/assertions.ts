@@ -144,10 +144,10 @@ export async function assertCaseFileContent(caseInstance: Case, user: User, path
  * A simple converter method which converts JSON caseTeam to object
  * @param team 
  */
-async function convertToCaseTeam(team: any) {
+async function convertToCaseTeam(team: CaseTeam | Array<CaseTeamMember>) {
     let actualCaseTeamArray: Array<CaseTeamMember> = []
-    const rawMembers = team.members ? team.members : team;
-    await rawMembers.forEach(member => {
+    const rawMembers = team instanceof CaseTeam ? team.members : team;
+    rawMembers.forEach(member => {
         // console.log("Converting member " + JSON.stringify(member, undefined, 2))
         const newMember = new CaseTeamMember(member.memberId, member.caseRoles, member.memberType, member.isOwner)
         // console.log("Converted member " + JSON.stringify(newMember, undefined, 2))

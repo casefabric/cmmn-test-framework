@@ -32,7 +32,7 @@ export default class TestTaskCountAPI extends TestCase {
     }
 
     async run() {
-        const inputs = {
+        const greeting = {
             Greeting: {
                 Message: 'Hello there',
                 From: sender.id
@@ -41,7 +41,7 @@ export default class TestTaskCountAPI extends TestCase {
         const caseTeam = new CaseTeam([new CaseOwner(sender)]);
         const caseTeam2 = new CaseTeam([new CaseOwner(sender), new CaseOwner(receiver)]);
         
-        const startCase = { tenant, definition, inputs, caseTeam, debug: true };
+        const startCase = { tenant, definition, inputs: greeting, caseTeam, debug: true };
         // const startCase = { tenant, definition, inputs, caseInstanceId: 'Ueè' };
         // const startCase = { tenant, definition, inputs, caseInstanceId: tenant };
         const taskOutput = {
@@ -60,7 +60,7 @@ export default class TestTaskCountAPI extends TestCase {
         startCase.caseTeam = caseTeam2;
         const caseStarted = await caseService.startCase(startCase, sender) as Case;
         const caseInstance = await caseService.getCase(caseStarted, sender);
-        const pid = caseInstance.planitems.find(item => item.type === 'CasePlan').id;
+        const pid = caseInstance.planitems.find(item => item.type === 'CasePlan')?.id || '';
         new CasePlanService().makePlanItemTransition(caseStarted, sender, pid, "Terminate");
         await caseService.getCase(caseStarted, sender).then(caze => {
             console.log("New case state: " + JSON.stringify(caze.planitems, undefined, 2))

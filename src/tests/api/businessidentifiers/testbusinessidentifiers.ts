@@ -87,6 +87,7 @@ export default class TestBusinessIdentifiers extends TestCase {
 
 class FilterContext {
     initialValue = 0;
+    expectedValue?: number;
     filter = {
         identifiers: ''
     };
@@ -112,9 +113,9 @@ class FilterContext {
 
     assert(cases: Array<Case>, expectedExtraMatches: number) {
         const actualValue = cases.length;
-        const expectedValue = this.initialValue + expectedExtraMatches;
-        if (actualValue != expectedValue) {
-            throw new Error(`Found ${actualValue} instead of ${expectedValue} cases for filter ${this}.`);
+        this.expectedValue = this.initialValue + expectedExtraMatches;
+        if (actualValue != this.expectedValue) {
+            throw new Error(`Found ${actualValue} instead of ${this.expectedValue} cases for filter ${this}.`);
         }
     }
 

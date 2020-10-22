@@ -99,7 +99,7 @@ class CallHistory {
     }
 
     private getCall(mock: MockURL, booleanField: string): Call {
-        const existingCall = this.urlList.find(call => !call[booleanField]);
+        const existingCall = this.urlList.find(call => call.isPendingOn(booleanField));
         if (existingCall) {
             return existingCall;
         } else {
@@ -124,6 +124,12 @@ class Call {
         if (Config.MockService.log) {
             console.log(`Creating Call Matcher on URL ${mock.url}`);
         }
+    }
+
+    isPendingOn(flag: string) {
+        if (flag === 'waiterAvailable') return !this.waiterAvailable;
+        if (flag === 'responseAvailable') return !this.responseAvailable;
+        throw new Error(`Unknown flag ${flag}`);
     }
 
     awaitResponse(timeout: number) {
