@@ -28,37 +28,9 @@ export default class TestCaseFileAPI extends TestCase {
     }
 
     async run() {
-
-        // await this.createEmptyRootCaseFileItem();
-        // await this.createEmptyRootCaseFileArray();
+        await this.createEmptyRootCaseFileItem();
+        await this.createEmptyRootCaseFileArray();
         await this.createFullCaseFile();
-
-        return;
-
-        await caseFileService.updateCaseFileItem(caseInstance, user, 'Greeting', greeting1);
-        await assertCaseFileContent(caseInstance, user, 'Greeting', greeting1);
-
-        const greeting2 = {
-            Message: 'new message',
-            From: 'someone else'
-        };
-
-        await caseFileService.updateCaseFileItem(caseInstance, user, 'Greeting', greeting2);
-        await assertCaseFileContent(caseInstance, user, '/Greeting', greeting2);
-        await assertCaseFileContent(caseInstance, user, '/Greeting/From', 'someone else');
-
-        const greeting3 = {
-            Message: 'new message',
-            From: 'new from'
-        };
-        await caseFileService.updateCaseFileItem(caseInstance, user, 'Greeting', greeting3);
-
-        await assertCaseFileContent(caseInstance, user, '/Greeting', greeting3);
-        await assertCaseFileContent(caseInstance, user, 'Greeting//From', greeting3.From);
-
-
-        // Apparently the CasesRoute does not allow to go this deep, since Message is a property, and not a case file item.
-        // await caseFileService.updateCaseFileItem(caseInstance, user, 'Greeting/Message', 'abc new', false);
     }
 
     async createEmptyCase(): Promise<Case> {
