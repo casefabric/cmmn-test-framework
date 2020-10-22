@@ -17,7 +17,7 @@ export default class TaskService {
      * @param user User claiming the task
      * @param expectNoFailures defaults to true; if false is specified, then a failure is expected in the invocation.
      */
-    async claimTask(task: Task, user: User, expectNoFailures: boolean = true) {
+    async claimTask(task: Task, user: User, expectNoFailures: boolean | number = true) {
         const response = await cafienneService.put('tasks/' + task.id + '/claim', user);
         return checkResponse(response, `Task '${task.taskName}' with id ${task.id} was claimed succesfully, but this was not expected`, expectNoFailures);
     }
@@ -28,7 +28,7 @@ export default class TaskService {
      * @param user User revoking the task
      * @param expectNoFailures defaults to true; if false is specified, then a failure is expected in the invocation.
      */
-    async revokeTask(task: Task, user: User, expectNoFailures: boolean = true) {
+    async revokeTask(task: Task, user: User, expectNoFailures: boolean | number = true) {
         const response = await cafienneService.put('tasks/' + task.id + '/revoke', user);
         return checkResponse(response, `Task '${task.taskName}' with id ${task.id} was revoked succesfully, but this was not expected`, expectNoFailures);
     }
@@ -40,7 +40,7 @@ export default class TaskService {
      * @param assignee User to which the task is assigned
      * @param expectNoFailures defaults to true; if false is specified, then a failure is expected in the invocation.
      */
-    async assignTask(task: Task, user: User, assignee: User, expectNoFailures: boolean = true) {
+    async assignTask(task: Task, user: User, assignee: User, expectNoFailures: boolean | number = true) {
         const response = await cafienneService.put('tasks/' + task.id + '/assign', user, { assignee: assignee.id });
         return checkResponse(response, `Task '${task.taskName}' with id ${task.id} was assigned successfully, but this was not expected`, expectNoFailures);
     }
@@ -52,7 +52,7 @@ export default class TaskService {
      * @param assignee User to which the task is delegated
      * @param expectNoFailures defaults to true; if false is specified, then a failure is expected in the invocation.
      */
-    async delegateTask(task: Task, user: User, assignee: User, expectNoFailures: boolean = true) {
+    async delegateTask(task: Task, user: User, assignee: User, expectNoFailures: boolean | number = true) {
         const response = await cafienneService.put('tasks/' + task.id + '/delegate', user, { assignee: assignee.id });
         return checkResponse(response, `Task '${task.taskName}' with id ${task.id} was delegated succesfully, but this was not expected`, expectNoFailures);
     }
@@ -64,7 +64,7 @@ export default class TaskService {
      * @param taskOutput 
      * @param expectNoFailures defaults to true; if false is specified, then a failure is expected in the invocation.
      */
-    async completeTask(task: Task, user: User, taskOutput = {}, expectNoFailures: boolean = true) {
+    async completeTask(task: Task, user: User, taskOutput = {}, expectNoFailures: boolean | number = true) {
         const response = await cafienneService.post('tasks/' + task.id + '/complete', user, taskOutput);
         return checkResponse(response, `Task '${task.taskName}' with id ${task.id} was completed succesfully, but this was not expected`, expectNoFailures);
     }
@@ -76,7 +76,7 @@ export default class TaskService {
      * @param taskOutput Task output to validate
      * @param expectNoFailures defaults to true; if false is specified, then a failure is expected in the invocation.
      */
-    async validateTaskOutput(task: Task, user: User, taskOutput = {}, expectNoFailures: boolean = true) {
+    async validateTaskOutput(task: Task, user: User, taskOutput = {}, expectNoFailures: boolean | number = true) {
         const response = await cafienneService.post('tasks/' + task.id, user, taskOutput);
         const res = await checkResponse(response, `Task output for '${task.taskName}' with id ${task.id} was validated succesfully, but this was not expected`, expectNoFailures);
         if (expectNoFailures) {
@@ -95,7 +95,7 @@ export default class TaskService {
      * @param taskOutput Task output to save
      * @param expectNoFailures defaults to true; if false is specified, then a failure is expected in the invocation.
      */
-    async saveTaskOutput(task: Task, user: User, taskOutput = {}, expectNoFailures: boolean = true) {
+    async saveTaskOutput(task: Task, user: User, taskOutput = {}, expectNoFailures: boolean | number = true) {
         const response = await cafienneService.put('tasks/' + task.id, user, taskOutput);
         return checkResponse(response, `Task output for '${task.taskName}' with id ${task.id} was saved succesfully, but this was not expected`, expectNoFailures);
     }
@@ -106,7 +106,7 @@ export default class TaskService {
      * @param task
      * @param user 
      */
-    async getTask(task: Task, user: User, expectNoFailures: boolean = true): Promise<Task> {
+    async getTask(task: Task, user: User, expectNoFailures: boolean | number = true): Promise<Task> {
         if (!task.id) {
             console.log("Oops. First try to succesfully start a case ?!");
             return task;
@@ -121,7 +121,7 @@ export default class TaskService {
      * @param caseInstance
      * @param user 
      */
-    async getCaseTasks(caseInstance: Case, user: User, expectNoFailures: boolean = true): Promise<Array<Task>> {
+    async getCaseTasks(caseInstance: Case, user: User, expectNoFailures: boolean | number = true): Promise<Array<Task>> {
         const response = await cafienneService.get('/tasks/case/' + caseInstance.id, user);
         const msg = `GetCaseTasks is not expected to succeed for member ${user.id} in case ${caseInstance.id}`;
         return await checkJSONResponse(response, msg, expectNoFailures);
@@ -132,7 +132,7 @@ export default class TaskService {
      * @param user 
      * @param definition 
      */
-    async getTasksOfCaseType(user: User, definition: string, expectNoFailures: boolean = true): Promise<Array<Task>> {
+    async getTasksOfCaseType(user: User, definition: string, expectNoFailures: boolean | number = true): Promise<Array<Task>> {
         throw new Error('Not yet implemented');
     }
 
@@ -141,7 +141,7 @@ export default class TaskService {
      * @param user User fetching the task list
      * @param filter Optional filter for the tasks (e.g., to get only Active tasks)
      */
-    async getTasks(user: User, filter?: TaskFilter, expectNoFailures: boolean = true): Promise<Array<Task>> {
+    async getTasks(user: User, filter?: TaskFilter, expectNoFailures: boolean | number = true): Promise<Array<Task>> {
         const response = await cafienneService.get('/tasks', user, filter);
         const msg = `GetTasks is not expected to succeed for member ${user.id}`;
         return await checkJSONResponse(response, msg, expectNoFailures);
@@ -153,7 +153,7 @@ export default class TaskService {
      * @param user 
      * @param filter 
      */
-    async countTasks(user: User, filter?: TaskFilter, expectNoFailures: boolean = true): Promise<TaskCount> {
+    async countTasks(user: User, filter?: TaskFilter, expectNoFailures: boolean | number = true): Promise<TaskCount> {
         const response = await cafienneService.get('/tasks/user/count', user, filter);
         const msg = `GetTasks is not expected to succeed for member ${user.id}`;
         return await checkJSONResponse(response, msg, expectNoFailures);

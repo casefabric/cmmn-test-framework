@@ -16,7 +16,7 @@ export default class RepositoryService {
      * @param command 
      * @param user 
      */
-    async deployCase(command: DeployCase, user: User, expectNoFailures: boolean = true) {
+    async deployCase(command: DeployCase, user: User, expectNoFailures: boolean | number = true) {
         if (!user) {
             throw new Error('User must be specified');
         }
@@ -33,7 +33,7 @@ export default class RepositoryService {
      * @param user 
      * @param tenant 
      */
-    async loadCaseDefinition(fileName: string, user: User, tenant: string, expectNoFailures: boolean = true) {
+    async loadCaseDefinition(fileName: string, user: User, tenant: string, expectNoFailures: boolean | number = true) {
         const modelName = fileName.endsWith('.xml') ? fileName.substring(0, fileName.length - 4) : fileName;
 
         const xml = await cafienneService.getXml(`/repository/load/${modelName}?tenant=${tenant}`, user);
@@ -45,7 +45,7 @@ export default class RepositoryService {
      * @param tenant 
      * @param user 
      */
-    async listCaseDefinitions(user: User, tenant: string, expectNoFailures: boolean = true) {
+    async listCaseDefinitions(user: User, tenant: string, expectNoFailures: boolean | number = true) {
         const response = await cafienneService.get('/repository/list?tenant=' + tenant, user);
         const msg = `ListCaseDefinitions is not expected to succeed for member ${user.id}`;
         const json = checkResponse(response, msg, expectNoFailures);
@@ -60,7 +60,7 @@ export default class RepositoryService {
      * Invokes the validation API
      * @param source 
      */
-    async validateCaseDefinition(source: Document|string, user: User, expectNoFailures: boolean = true) {
+    async validateCaseDefinition(source: Document|string, user: User, expectNoFailures: boolean | number = true) {
         const url = `/repository/validate`;
         const xml = readLocalXMLDocument(source);
         const response = await cafienneService.postXML(url, user, xml);

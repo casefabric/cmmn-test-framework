@@ -17,11 +17,11 @@ export default class CafienneResponse {
      * Creates a json object structure with response status code, status text and response message
      */
     async asJSON() {
-        const tryParseJSON = async (text: string|undefined) => {
+        const tryParseJSON = async (text: string | undefined) => {
             try {
                 return JSON.parse(text || '');
             } catch (e) {
-                console.log("Could not parse json: " , e)
+                console.log("Could not parse json: ", e)
                 return text;
             }
         }
@@ -31,7 +31,7 @@ export default class CafienneResponse {
             statusMessage: this.statusText,
             body
         }
-    }    
+    }
 
     get ok() {
         return this.response.ok;
@@ -97,15 +97,21 @@ export default class CafienneResponse {
  * @param errorMsg 
  * @param expectNoFailures 
  */
-export async function checkResponse(response: CafienneResponse, errorMsg: string, expectNoFailures: boolean): Promise<CafienneResponse> {
-    if (response.ok) {
-        if (!expectNoFailures) throw new Error(errorMsg);
-    } else {
-        if (expectNoFailures) {
+export async function checkResponse(response: CafienneResponse, errorMsg: string, expectNoFailures: boolean | number): Promise<CafienneResponse> {
+    const status = response.status;
+    if (expectNoFailures === true) {
+        if (status < 200 && status >= 300) {
+            throw new Error(errorMsg)
+        }
+    } else if (expectNoFailures === false) {
+        if (status >= 200 && status < 300) {
             const responseText = await response.text();
-            const errorMsg = response.status + ' ' + response.statusText + ': ' + responseText;
-            // console.log(response.status + ' ' + response.statusText + ': ' + responseText);
-            throw new Error(errorMsg);
+            throw new Error(`${status} ${response.statusText}: ${responseText}`);
+        }
+    } else {
+        if (status !== expectNoFailures) {
+            const responseText = await response.text();
+            throw new Error(`Expected status ${expectNoFailures} instead of ${status} ${response.statusText}: ${responseText}`);
         }
     }
     return response;
@@ -118,7 +124,7 @@ export async function checkResponse(response: CafienneResponse, errorMsg: string
  * @param errorMsg 
  * @param expectNoFailures 
  */
-export async function checkJSONResponse(response: CafienneResponse, errorMsg: string = '', expectNoFailures: boolean = true, returnType?: Function | Array<Function>): Promise<any> {
+export async function checkJSONResponse(response: CafienneResponse, errorMsg: string = '', expectNoFailures: boolean | number = true, returnType?: Function | Array<Function>): Promise<any> {
     await checkResponse(response, errorMsg, expectNoFailures);
     if (response.ok) {
         const json = await response.json();
@@ -132,7 +138,7 @@ export async function checkJSONResponse(response: CafienneResponse, errorMsg: st
                 const constructorCall = returnType[0];
                 if (json instanceof Array) {
                     const array = <Array<object>>json;
-                    return array.map(tenantUser => Object.assign(new constructorCall, tenantUser));    
+                    return array.map(tenantUser => Object.assign(new constructorCall, tenantUser));
                 } else {
                     throw new Error(`Expected a json array with objects of type ${constructorCall.name}, but the response was not an array: ${JSON.stringify(json, undefined, 2)}`);
                 }

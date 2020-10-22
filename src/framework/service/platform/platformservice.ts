@@ -18,7 +18,7 @@ export default class PlatformService {
      * @param tenant 
      * @param expectNoFailures 
      */
-    async createTenant(user: User, tenant: Tenant, expectNoFailures = true) {
+    async createTenant(user: User, tenant: Tenant, expectNoFailures: boolean | number = true) {
         if (Config.PlatformService.log) console.log(`Creating Tenant ${tenant.name}`);
         const response = await this.cafienneService.post('/platform', user, tenant);
         if (response.status === 400) {
@@ -35,7 +35,7 @@ export default class PlatformService {
      * @param tenant 
      * @param expectNoFailures 
      */
-    async disableTenant(user: User, tenant: Tenant, expectNoFailures = true) {
+    async disableTenant(user: User, tenant: Tenant, expectNoFailures: boolean | number = true) {
         const response = await this.cafienneService.put(`/platform/${tenant.name}/disable`, user);
         return checkResponse(response, 'Disabling the tenant ' + tenant.name + ' was not expected to succeed', expectNoFailures);
     }
@@ -46,12 +46,12 @@ export default class PlatformService {
      * @param tenant 
      * @param expectNoFailures 
      */
-    async enableTenant(user: User, tenant: Tenant, expectNoFailures = true) {
+    async enableTenant(user: User, tenant: Tenant, expectNoFailures: boolean | number = true) {
         const response = await this.cafienneService.put(`/platform/${tenant.name}/enable`, user);
         return checkResponse(response, 'Enabling the tenant ' + tenant.name + ' succeeded unexpectedly', expectNoFailures);
     }
 
-    async getDisabledTenants(user: User, expectNoFailures = true) {
+    async getDisabledTenants(user: User, expectNoFailures: boolean | number = true) {
         throw new Error('Not yet implemented in the server side')
     }
 

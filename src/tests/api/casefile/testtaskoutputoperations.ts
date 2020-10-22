@@ -91,7 +91,7 @@ export default class TestTaskOutputOperations extends TestCase {
         this.caseInstance = await caseService.getCase(this.case(), user);
     }
 
-    async runTask(taskName: string, output: any, expectNoFailures: boolean = true) {
+    async runTask(taskName: string, output: any, expectNoFailures: boolean | number = true) {
         const tasks = await taskService.getCaseTasks(this.case(), user);
         const task = tasks.find(task => {
             if (task.taskName === taskName) console.log("Found task '" + taskName +"' in state " + task.taskState)
