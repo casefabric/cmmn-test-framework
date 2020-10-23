@@ -100,13 +100,13 @@ export default class CafienneResponse {
 export async function checkResponse(response: CafienneResponse, errorMsg: string, expectNoFailures: boolean | number): Promise<CafienneResponse> {
     const status = response.status;
     if (expectNoFailures === true) {
-        if (status < 200 && status >= 300) {
-            throw new Error(errorMsg)
+        if (status < 200 || status >= 300) {
+            const responseText = await response.text();
+            throw new Error(`${status} ${response.statusText}: ${responseText}`);
         }
     } else if (expectNoFailures === false) {
         if (status >= 200 && status < 300) {
-            const responseText = await response.text();
-            throw new Error(`${status} ${response.statusText}: ${responseText}`);
+            throw new Error(errorMsg)
         }
     } else {
         if (status !== expectNoFailures) {
