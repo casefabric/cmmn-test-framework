@@ -40,7 +40,7 @@ export default class TestCaseFileAPI extends TestCase {
     }
 
     createRootItem(prop1 = "string", prop2 = true) {
-        return { RootProperty1: prop1, RootProperty2: prop2}
+        return { RootProperty1: prop1, RootProperty2: prop2 }
     }
 
     createChildItem(name = "name", age = 20) {
@@ -92,7 +92,10 @@ export default class TestCaseFileAPI extends TestCase {
         await caseFileService.createCaseFileItem(caseInstance, user, 'RootCaseFileItem', caseFileItem);
         await assertCaseFileContent(caseInstance, user, 'RootCaseFileItem', caseFileItem);
 
-        caseFileItem.RootProperty2 = false;        
+        // Creating same case file item again should not be allowed
+        await caseFileService.createCaseFileItem(caseInstance, user, 'RootCaseFileItem', caseFileItem, 400);
+
+        caseFileItem.RootProperty2 = false;
         await caseFileService.updateCaseFileItem(caseInstance, user, 'RootCaseFileItem', caseFileItem);
         await assertCaseFileContent(caseInstance, user, 'RootCaseFileItem/RootProperty2', false);
 
@@ -103,22 +106,25 @@ export default class TestCaseFileAPI extends TestCase {
         await caseFileService.replaceCaseFileItem(caseInstance, user, 'RootCaseFileItem/ChildArray', caseFileItem.ChildArray);
         await assertCaseFileContent(caseInstance, user, 'RootCaseFileItem', caseFileItem);
 
-        // It should not be possible to set an invalid type of property
-        const invalidPropertyValue = {RootProperty2 : 'string instead of boolean'};
-        await caseFileService.updateCaseFileItem(caseInstance, user, 'RootCaseFileItem', invalidPropertyValue, false);
+        // It should not be possible to set an invalid type of property, both for update and replace
+        const invalidPropertyValue = { RootProperty2: 'string instead of boolean' };
+        await caseFileService.updateCaseFileItem(caseInstance, user, 'RootCaseFileItem', invalidPropertyValue, 400);
+        await caseFileService.replaceCaseFileItem(caseInstance, user, 'RootCaseFileItem', invalidPropertyValue, 400);
 
-        // Also a deeper nested type of property must have the valid type
+        // Also a deeper nested type of property must have the valid type, both for update and replace
         const invalidNestedPropertyValue = Util.clone(caseFileItem);
         invalidNestedPropertyValue.ChildItem.ChildAge = true;
-        await caseFileService.updateCaseFileItem(caseInstance, user, 'RootCaseFileItem', invalidNestedPropertyValue, false);
+        await caseFileService.updateCaseFileItem(caseInstance, user, 'RootCaseFileItem', invalidNestedPropertyValue, 400);
+        await caseFileService.replaceCaseFileItem(caseInstance, user, 'RootCaseFileItem', invalidNestedPropertyValue, 400);
 
-        // Also a deeper nested type of property must be defined
+        // Also a deeper nested type of property must be defined, both for update and replace
         const undefinedNestedPropertyValue = Util.clone(caseFileItem);
         undefinedNestedPropertyValue.ChildItem.ChildBirthDate = '2001-10-26';
-        await caseFileService.updateCaseFileItem(caseInstance, user, 'RootCaseFileItem', undefinedNestedPropertyValue, false);
+        await caseFileService.updateCaseFileItem(caseInstance, user, 'RootCaseFileItem', undefinedNestedPropertyValue, 400);
+        await caseFileService.replaceCaseFileItem(caseInstance, user, 'RootCaseFileItem', undefinedNestedPropertyValue, 400);
 
         // Update the case file item with only a new value for "RootProperty1" should only change that field.
-        const shallowCopy = {RootProperty1 : "second string"};
+        const shallowCopy = { RootProperty1: "second string" };
         caseFileItem.RootProperty1 = shallowCopy.RootProperty1; // Update the field locally for the assertion to work
         await caseFileService.updateCaseFileItem(caseInstance, user, 'RootCaseFileItem', shallowCopy);
         await assertCaseFileContent(caseInstance, user, 'RootCaseFileItem', caseFileItem);
@@ -151,6 +157,17 @@ export default class TestCaseFileAPI extends TestCase {
 
         await assertCaseFileContent(caseInstance, user, 'RootCaseFileItem/ChildItem/ChildAge', 26);
         await assertCaseFileContent(caseInstance, user, 'RootCaseFileItem/ChildItem/GrandChildArray', secondGrandChildArrayUpdate);
+
+        await caseFileService.deleteCaseFileItem(caseInstance, user, 'RootCaseFileItem/ChildItem');
+        await caseFileService.deleteCaseFileItem(caseInstance, user, 'RootCaseFileItem/ChildItem', 400);
+
+        // Child item now must be undefined
+        await assertCaseFileContent(caseInstance, user, 'RootCaseFileItem/ChildItem', undefined);
+
+        // Delete entire case file
+        await caseFileService.deleteCaseFileItem(caseInstance, user, 'RootCaseFileItem');
+        // Top level must be empty object
+        await assertCaseFileContent(caseInstance, user, '', {});
 
         return caseInstance;
     }
