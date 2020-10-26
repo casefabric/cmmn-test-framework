@@ -5,6 +5,7 @@ import TaskService from '../../../framework/service/task/taskservice';
 import TestCase from '../../../framework/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
+import Case from '../../../framework/cmmn/case';
 
 const caseService = new CaseService();
 const taskService = new TaskService();
@@ -24,7 +25,7 @@ export default class TestDiscretionaryItems extends TestCase {
     async run() {
         const startCase = { tenant, definition };
 
-        let caseInstance = await caseService.startCase(startCase, user);
+        let caseInstance = await caseService.startCase(startCase, user) as Case;
         caseInstance = await caseService.getCase(caseInstance, user);
 
         // console.log("Plan items first is: ", caseInstance.planitems)

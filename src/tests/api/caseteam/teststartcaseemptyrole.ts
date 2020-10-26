@@ -41,7 +41,7 @@ export default class TestStartCaseEmptyRole extends TestCase {
         startCase.caseTeam = caseTeam1;
 
         // A case with empty role should not start
-        await caseService.startCase(startCase, sender, false);
+        await caseService.startCase(startCase, sender, 400);
 
         delete startCase.caseTeam;
 
@@ -57,12 +57,12 @@ export default class TestStartCaseEmptyRole extends TestCase {
         assertCaseTeam(caseInstance, receiver, caseTeam2);
 
         // receiver cannot add sender with empty role
-        await caseTeamService.setMember(caseInstance, receiver, new CaseTeamMember(sender, [emptyRole], 'user', false), false);
+        await caseTeamService.setMember(caseInstance, receiver, new CaseTeamMember(sender, [emptyRole], 'user', false), 400);
 
         // receiver can add sender without roles
         await caseTeamService.setMember(caseInstance, receiver, new CaseTeamMember(sender, [], 'user', false));
 
         // receiver cannot remove empty role from sender
-        await caseTeamService.removeMemberRoles(caseInstance, receiver, new CaseTeamMember(sender), [emptyRole], false);
+        await caseTeamService.removeMemberRoles(caseInstance, receiver, new CaseTeamMember(sender), [emptyRole], 400);
    }
 }

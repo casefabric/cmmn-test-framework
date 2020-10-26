@@ -6,6 +6,7 @@ import TestCase from '../../../framework/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
 import DebugService from '../../../framework/service/case/debugservice';
+import Case from '../../../framework/cmmn/case';
 
 const repositoryService = new RepositoryService();
 const definition = 'helloworld.xml';
@@ -30,7 +31,7 @@ export default class TestDebugMode extends TestCase {
         const startCaseInDebugMode = { tenant, definition, inputs: startCaseInput, debug: true};
 
         // This should include a "DebugEnabled" event
-        let debugCase = await caseService.startCase(startCaseInDebugMode, user);
+        let debugCase = await caseService.startCase(startCaseInDebugMode, user) as Case;
         debugCase = await caseService.getCase(debugCase, user);
 
         // This should result in "DebugDisabled" event

@@ -61,8 +61,8 @@ export default class PlatformService {
      */
     async getUserInformation(user: User): Promise<UserInformation> {
         const url = '/platform/user';
-        const json = await this.cafienneService.get(url, user).then(checkJSONResponse);
-        return <UserInformation>json;
+        const response = await this.cafienneService.get(url, user);
+        return checkJSONResponse(response, 'Expected valid user information', 200) as Promise<UserInformation>;
     }
 
     /**
@@ -70,9 +70,8 @@ export default class PlatformService {
      */
     async getHealth() {
         const url = '/health';
-        const json = await this.cafienneService.get(url, undefined).then(response => response.asJSON());
-        console.log("JSON: " + json)
-        return json;
+        const response = await this.cafienneService.get(url, undefined);
+        return checkJSONResponse(response, 'Expected proper health information', 200)
     }
 
     /**
@@ -80,7 +79,7 @@ export default class PlatformService {
      */
     async getVersion() {
         const url = '/version';
-        const json = await this.cafienneService.get(url, undefined).then(checkJSONResponse);
-        return json;
+        const response = await this.cafienneService.get(url, undefined);
+        return checkJSONResponse(response, 'Expected proper version information', 200)
     }
 }

@@ -95,24 +95,12 @@ export default class CafienneResponse {
  * 
  * @param response 
  * @param errorMsg 
- * @param expectNoFailures 
+ * @param expectedStatusCode 
  */
-export async function checkResponse(response: CafienneResponse, errorMsg: string, expectNoFailures: boolean | number): Promise<CafienneResponse> {
-    const status = response.status;
-    if (expectNoFailures === true) {
-        if (status < 200 || status >= 300) {
-            const responseText = await response.text();
-            throw new Error(`${status} ${response.statusText}: ${responseText}`);
-        }
-    } else if (expectNoFailures === false) {
-        if (status >= 200 && status < 300) {
-            throw new Error(errorMsg)
-        }
-    } else {
-        if (status !== expectNoFailures) {
-            const responseText = await response.text();
-            throw new Error(`Expected status ${expectNoFailures} instead of ${status} ${response.statusText}: ${responseText}`);
-        }
+export async function checkResponse(response: CafienneResponse, errorMsg: string, expectedStatusCode: number): Promise<CafienneResponse> {
+    if (response.status !== expectedStatusCode) {
+        const responseText = await response.text();
+        throw new Error(`Expected status ${expectedStatusCode} instead of ${response.status} ${response.statusText}: ${responseText}`);
     }
     return response;
 }
@@ -122,10 +110,10 @@ export async function checkResponse(response: CafienneResponse, errorMsg: string
  * If that validation succeeds, the json of the response is returned.
  * @param response 
  * @param errorMsg 
- * @param expectNoFailures 
+ * @param expectedStatusCode 
  */
-export async function checkJSONResponse(response: CafienneResponse, errorMsg: string = '', expectNoFailures: boolean | number = true, returnType?: Function | Array<Function>): Promise<any> {
-    await checkResponse(response, errorMsg, expectNoFailures);
+export async function checkJSONResponse(response: CafienneResponse, errorMsg: string = '', expectedStatusCode: number, returnType?: Function | Array<Function>): Promise<any> {
+    await checkResponse(response, errorMsg, expectedStatusCode);
     if (response.ok) {
         const json = await response.json();
         if (returnType) {

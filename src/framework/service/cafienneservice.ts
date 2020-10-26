@@ -100,7 +100,7 @@ export default class CafienneService {
         if (Config.CafienneService.log.response.headers) {
             printHeaders('Response headers:', response.headers);
         }
-        if (Config.CafienneService.log.response.body) {
+        if (Config.CafienneService.log.response.body || (Config.CafienneService.log.response.error && !response.ok)) {
             await response.text().then(text => console.log(text));
         }
 

@@ -102,6 +102,7 @@ export default class TestTenantRegistration extends TestCase {
         // And the platform admin is not allowed to enable/disable a non-existing tenant
         const nonExistingTenant = new Tenant("not-created", [tenantOwner1]);
         await platformService.enableTenant(platformAdmin, nonExistingTenant, 400);
+        return;
         await platformService.disableTenant(platformAdmin, nonExistingTenant, 400);
 
         // Lets get the list of tenant users. There should be 4. But platform admin is not allowed to get them.
