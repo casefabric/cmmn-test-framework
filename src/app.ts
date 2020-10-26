@@ -175,7 +175,7 @@ async function runTests(testDeclarations: Array<any>) {
             results.addTest(result);
         } catch (error) {
             const resultString = results.list.length == 0 ? '' : `  Succesful tests:\n${results.toString()}\n`;
-            throw new TestError(error, `\n\nTest ${i+1} "${test.name}" failed.\n${resultString}${error.constructor.name}: ${error.message}\n`);
+            throw new TestError(error, `\n\nTest ${i+1} "${test.name}" failed.\n${resultString}\nTest ${i+1} "${test.name}" failed.\n${error.constructor.name}: ${error.message}\n`);
         }
     }
     return results;
