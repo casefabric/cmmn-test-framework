@@ -122,7 +122,7 @@ export function assertTaskCount(tasks: Task[], state: string, expectedCount: Num
  * @param path 
  * @param expectedContent 
  */
-export async function assertCaseFileContent(caseInstance: Case, user: User, path: string, expectedContent: any) {
+export async function assertCaseFileContent(caseInstance: Case, user: User, path: string, expectedContent: any, log: boolean = false) {
     await caseFileService.getCaseFile(caseInstance, user).then(casefile => {
         // console.log("Case File for reading path " + path, casefile);
         const readCaseFileItem = (caseFile:any) => {
@@ -134,9 +134,10 @@ export async function assertCaseFileContent(caseInstance: Case, user: User, path
         } 
 
         const actualCaseFileItem = readCaseFileItem(casefile);
-        if (!Comparison.sameJSON(actualCaseFileItem, expectedContent)) {
+        if (!Comparison.sameJSON(actualCaseFileItem, expectedContent, log)) {
             throw new Error(`Case File [${path}] is expected to match: ${JSON.stringify(expectedContent, undefined, 2)}\nActual: ${JSON.stringify(actualCaseFileItem, undefined, 2)}`);
         }
+        return actualCaseFileItem;
     });
 }
 
