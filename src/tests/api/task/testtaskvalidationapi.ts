@@ -109,7 +109,7 @@ export default class TestTaskValidationAPI extends TestCase {
         }
 
         // It should not be possible to validate task output if the task has not yet been claimed.
-        // await taskService.validateTaskOutput(decisionTask, pete, TaskContent.TaskOutputDecisionCanceled, false);
+        // await taskService.validateTaskOutput(decisionTask, pete, TaskContent.TaskOutputDecisionCanceled, 400);
 
         // Claim the task - should not fail
         await taskService.claimTask(decisionTask, pete);
@@ -118,10 +118,10 @@ export default class TestTaskValidationAPI extends TestCase {
         await taskService.validateTaskOutput(decisionTask, pete, TaskContent.TaskOutputDecisionCanceled);
 
         // But gimy should not be able to do it
-        await taskService.validateTaskOutput(decisionTask, gimy, TaskContent.TaskOutputDecisionCanceled, false);
+        await taskService.validateTaskOutput(decisionTask, gimy, TaskContent.TaskOutputDecisionCanceled, 404);
 
         // Sending the "KILL-SWITCH" should result in an error
-        await taskService.validateTaskOutput(decisionTask, pete, TaskContent.TaskOutputThatFailsValidation, false);
+        await taskService.validateTaskOutput(decisionTask, pete, TaskContent.TaskOutputThatFailsValidation, 400);
 
         // Sending an invalid task output should not result in an error, be it should return non-empty json matching InvalidDecisionResponse
         await taskService.validateTaskOutput(decisionTask, pete, TaskContent.TaskOutputInvalidDecision).then(validationResult => {
@@ -145,7 +145,7 @@ export default class TestTaskValidationAPI extends TestCase {
         await taskService.saveTaskOutput(decisionTask, pete, TaskContent.TaskOutputInvalidDecision);
 
         // It should NOT be possible to complete the task with invalid output
-        await taskService.completeTask(decisionTask, pete, TaskContent.TaskOutputInvalidDecision, false);
+        await taskService.completeTask(decisionTask, pete, TaskContent.TaskOutputInvalidDecision, 400);
 
         // It should be possible to complete the task with decision approved
         await taskService.completeTask(decisionTask, pete, TaskContent.TaskOutputDecisionApproved);

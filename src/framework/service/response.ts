@@ -17,11 +17,11 @@ export default class CafienneResponse {
      * Creates a json object structure with response status code, status text and response message
      */
     async asJSON() {
-        const tryParseJSON = async (text: string|undefined) => {
+        const tryParseJSON = async (text: string | undefined) => {
             try {
                 return JSON.parse(text || '');
             } catch (e) {
-                console.log("Could not parse json: " , e)
+                console.log("Could not parse json: ", e)
                 return text;
             }
         }
@@ -31,7 +31,7 @@ export default class CafienneResponse {
             statusMessage: this.statusText,
             body
         }
-    }    
+    }
 
     get ok() {
         return this.response.ok;
@@ -95,18 +95,12 @@ export default class CafienneResponse {
  * 
  * @param response 
  * @param errorMsg 
- * @param expectNoFailures 
+ * @param expectedStatusCode 
  */
-export async function checkResponse(response: CafienneResponse, errorMsg: string, expectNoFailures: boolean): Promise<CafienneResponse> {
-    if (response.ok) {
-        if (!expectNoFailures) throw new Error(errorMsg);
-    } else {
-        if (expectNoFailures) {
-            const responseText = await response.text();
-            const errorMsg = response.status + ' ' + response.statusText + ': ' + responseText;
-            // console.log(response.status + ' ' + response.statusText + ': ' + responseText);
-            throw new Error(errorMsg);
-        }
+export async function checkResponse(response: CafienneResponse, errorMsg: string, expectedStatusCode: number): Promise<CafienneResponse> {
+    if (response.status !== expectedStatusCode) {
+        const responseText = await response.text();
+        throw new Error(`Expected status ${expectedStatusCode} instead of ${response.status} ${response.statusText}: ${responseText}`);
     }
     return response;
 }
@@ -116,10 +110,10 @@ export async function checkResponse(response: CafienneResponse, errorMsg: string
  * If that validation succeeds, the json of the response is returned.
  * @param response 
  * @param errorMsg 
- * @param expectNoFailures 
+ * @param expectedStatusCode 
  */
-export async function checkJSONResponse(response: CafienneResponse, errorMsg: string = '', expectNoFailures: boolean = true, returnType?: Function | Array<Function>): Promise<any> {
-    await checkResponse(response, errorMsg, expectNoFailures);
+export async function checkJSONResponse(response: CafienneResponse, errorMsg: string = '', expectedStatusCode: number, returnType?: Function | Array<Function>): Promise<any> {
+    await checkResponse(response, errorMsg, expectedStatusCode);
     if (response.ok) {
         const json = await response.json();
         if (returnType) {
@@ -132,7 +126,7 @@ export async function checkJSONResponse(response: CafienneResponse, errorMsg: st
                 const constructorCall = returnType[0];
                 if (json instanceof Array) {
                     const array = <Array<object>>json;
-                    return array.map(tenantUser => Object.assign(new constructorCall, tenantUser));    
+                    return array.map(tenantUser => Object.assign(new constructorCall, tenantUser));
                 } else {
                     throw new Error(`Expected a json array with objects of type ${constructorCall.name}, but the response was not an array: ${JSON.stringify(json, undefined, 2)}`);
                 }

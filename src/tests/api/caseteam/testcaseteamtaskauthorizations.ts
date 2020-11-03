@@ -73,7 +73,7 @@ export default class TestCaseTeamTaskAuthorizations extends TestCase {
         await assertCaseTeamMember(new CaseTeamMember(employee, [approverRole]), caseInstance, sender);
 
         // Employee cannot claim the Approve task; because Approve task is delegated
-        await taskService.claimTask(approveTask, employee, false);
+        await taskService.claimTask(approveTask, employee, 400);
         await assertTask(approveTask, sender, 'Claim', 'Delegated', employee, receiver);
 
         // Sender can revoke the Approve task (employee perspective)
@@ -106,7 +106,7 @@ export default class TestCaseTeamTaskAuthorizations extends TestCase {
         await assertCaseTeamMember(new CaseOwner(sender, []), caseInstance, sender);
 
         // Sender cannot claim the Approve task as sender is delegated to it
-        await taskService.claimTask(approveTask, sender, false);
+        await taskService.claimTask(approveTask, sender, 400);
         await assertTask(approveTask, sender, 'Claim', 'Delegated', sender, employee);
         
         // Sender revokes the Approve task
@@ -114,7 +114,7 @@ export default class TestCaseTeamTaskAuthorizations extends TestCase {
         await assertTask(approveTask, sender, 'Revoke', 'Assigned', employee, employee);
 
         // Receiver cannot delegate Approve task to sender
-        await taskService.delegateTask(approveTask, receiver, sender, false);
+        await taskService.delegateTask(approveTask, receiver, sender, 401);
         await assertTask(approveTask, sender, 'Assign', 'Assigned', employee, employee);
 
         // Sender delegates the Approve task to receiver (employee perspective)
@@ -122,7 +122,7 @@ export default class TestCaseTeamTaskAuthorizations extends TestCase {
         await assertTask(approveTask, sender, 'Delegate', 'Delegated', receiver, employee);
 
         // Receiver cannot claim the Approve task, as Approve task is delegated to receiver itself
-        await taskService.claimTask(approveTask, receiver, false);
+        await taskService.claimTask(approveTask, receiver, 400);
         await assertTask(approveTask, sender, 'Claim', 'Delegated', receiver, employee);
 
         // Receiver can revoke the Approve task
@@ -134,7 +134,7 @@ export default class TestCaseTeamTaskAuthorizations extends TestCase {
         await assertTask(approveTask, sender, 'Delegate', 'Delegated', sender, employee);
 
         // Although employee is the owner of the Approve task, cannot revoke it
-        await taskService.revokeTask(approveTask, employee, false);
+        await taskService.revokeTask(approveTask, employee, 401);
         await assertTask(approveTask, sender, 'Revoke', 'Delegated', sender, employee);
 
         // Sender can revoke the Approve task
@@ -164,14 +164,14 @@ export default class TestCaseTeamTaskAuthorizations extends TestCase {
         await assertTask(approveTask, sender, 'Complete', 'Completed', receiver, employee);
 
         // Sender cannot delegate Request task to false-user who is not in the team and tenant
-        await taskService.delegateTask(requestTask, sender, new TenantUser('I\'m not in the tenant'), false);
+        await taskService.delegateTask(requestTask, sender, new TenantUser('I\'m not in the tenant'), 404);
         await assertTask(requestTask, sender, 'Delegate', 'Unassigned', User.NONE, User.NONE);
 
         // As the task is not delegated false-user cannot be part of the case team
         await assertCaseTeamMember(new CaseTeamMember('I\'m not in the tenant'), caseInstance, sender, false);
 
         // Sender cannot assign Request task to false-user who is not in the team and tenant
-        await taskService.assignTask(requestTask, sender, new TenantUser('I\'m not in the tenant'), false);
+        await taskService.assignTask(requestTask, sender, new TenantUser('I\'m not in the tenant'), 404);
         await assertTask(requestTask, sender, 'Delegate', 'Unassigned', User.NONE, User.NONE);
 
         // As the task is not assigned false-user cannot be part of the case team
@@ -189,7 +189,7 @@ export default class TestCaseTeamTaskAuthorizations extends TestCase {
         await assertCaseTeamMember(new CaseTeamMember(employee, [requestorRole]), caseInstance, sender);
 
         // Receiver cannot assign to itself the Request task (although receiver has appropriate role)
-        await taskService.assignTask(requestTask, receiver, receiver, false);
+        await taskService.assignTask(requestTask, receiver, receiver, 401);
         await assertTask(requestTask, sender, 'Assign', 'Assigned', employee, employee);
 
         // But, sender can assign to itself the Request task (as senderis owner)
@@ -236,7 +236,7 @@ export default class TestCaseTeamTaskAuthorizations extends TestCase {
         await assertCaseTeamMember(new CaseTeamMember(employee, [paRole]), caseInstance, sender);
 
         // Receiver cannot complete the Assist task which is assigned to employee
-        await taskService.completeTask(assistTask, receiver, {}, false);
+        await taskService.completeTask(assistTask, receiver, {}, 401);
         await assertTask(assistTask, sender, 'Complete', 'Assigned', employee, employee);
 
         // Employee revokes the assist task
@@ -244,8 +244,8 @@ export default class TestCaseTeamTaskAuthorizations extends TestCase {
         await assertTask(assistTask, sender, 'Revoke', 'Unassigned', User.NONE, User.NONE);
 
         // Neither employee nor receiver can complete the task
-        await taskService.completeTask(assistTask, employee, {}, false);
-        await taskService.completeTask(assistTask, receiver, {}, false);
+        await taskService.completeTask(assistTask, employee, {}, 401);
+        await taskService.completeTask(assistTask, receiver, {}, 401);
         await assertTask(assistTask, sender, 'Complete', 'Unassigned', User.NONE, User.NONE);
 
         // Sender claims the Assist task
@@ -256,8 +256,8 @@ export default class TestCaseTeamTaskAuthorizations extends TestCase {
         await assertCaseTeamMember(new CaseOwner(sender, []), caseInstance, sender);
 
         // Neither employee nor receiver can complete the task which is assigned to sender
-        await taskService.completeTask(assistTask, employee, {}, false);
-        await taskService.completeTask(assistTask, receiver, {}, false);
+        await taskService.completeTask(assistTask, employee, {}, 401);
+        await taskService.completeTask(assistTask, receiver, {}, 401);
         await assertTask(assistTask, sender, 'Complete', 'Assigned', sender, sender);
         
         // Sender delegates the task to employee

@@ -16,7 +16,7 @@ export default class RepositoryService {
      * @param command 
      * @param user 
      */
-    async deployCase(command: DeployCase, user: User, expectNoFailures: boolean = true) {
+    async deployCase(command: DeployCase, user: User, expectedStatusCode: number = 204) {
         if (!user) {
             throw new Error('User must be specified');
         }
@@ -24,7 +24,7 @@ export default class RepositoryService {
         // Hmmm... Duplicate '/repository/repository/' is needed currently...
         const url = `/repository/deploy/${command.modelName}?${tenantQueryParameter}`;
         const response = await cafienneService.postXML(url, user, command.definition);
-        return checkResponse(response, 'Deployment of case ' + command.modelName + ' failed', expectNoFailures);
+        return checkResponse(response, 'Deployment of case ' + command.modelName + ' failed', expectedStatusCode);
     }
 
     /**
@@ -33,7 +33,7 @@ export default class RepositoryService {
      * @param user 
      * @param tenant 
      */
-    async loadCaseDefinition(fileName: string, user: User, tenant: string, expectNoFailures: boolean = true) {
+    async loadCaseDefinition(fileName: string, user: User, tenant: string, expectedStatusCode: number = 200) {
         const modelName = fileName.endsWith('.xml') ? fileName.substring(0, fileName.length - 4) : fileName;
 
         const xml = await cafienneService.getXml(`/repository/load/${modelName}?tenant=${tenant}`, user);
@@ -45,10 +45,11 @@ export default class RepositoryService {
      * @param tenant 
      * @param user 
      */
-    async listCaseDefinitions(user: User, tenant: string, expectNoFailures: boolean = true) {
-        const response = await cafienneService.get('/repository/list?tenant=' + tenant, user);
+    async listCaseDefinitions(user: User, tenant?: string, expectedStatusCode: number = 200) {
+        const tenantQueryParameter = tenant ? '?tenant=' + tenant : '';
+        const response = await cafienneService.get(`/repository/list${tenantQueryParameter}`, user);
         const msg = `ListCaseDefinitions is not expected to succeed for member ${user.id}`;
-        const json = checkResponse(response, msg, expectNoFailures);
+        const json = checkResponse(response, msg, expectedStatusCode);
 
         if (Config.RepositoryService.log) {
             console.log('Cases deployed in the server: ' + JSON.stringify(json, undefined, 2))
@@ -60,18 +61,26 @@ export default class RepositoryService {
      * Invokes the validation API
      * @param source 
      */
-    async validateCaseDefinition(source: Document|string, user: User, expectNoFailures: boolean = true) {
+    async validateCaseDefinition(source: Document | string, user: User, expectedStatusCode: number = 200) {
         const url = `/repository/validate`;
         const xml = readLocalXMLDocument(source);
         const response = await cafienneService.postXML(url, user, xml);
-        if (response.ok) {
-            return response;
-        } else {
-            const messages = <Array<string>>await response.json();
-            if (expectNoFailures) {
+        const status = response.status;
+        if (status !== expectedStatusCode) {
+            if (response.ok) {
+                const responseText = await response.text();
+                throw new Error(`Expected status ${expectedStatusCode} instead of ${status} ${response.statusText}: ${responseText}`);
+            } else {
+                const messages = <Array<string>>await response.json();
                 throw new Error(`Validation failed: ${response.statusText}\n${messages.join('\n')}`);
             }
-            return messages;
+        } else {
+            if (response.ok) {
+                return response;
+            } else {
+                const messages = <Array<string>>await response.json();
+                return messages;
+            }
         }
     }
 
@@ -120,11 +129,11 @@ export function readLocalFile(content: any): string {
     if (content.constructor.name == 'Document') {
         return content;
     }
-    if (! FileSystem.existsSync(Config.RepositoryService.repository_folder)) {
+    if (!FileSystem.existsSync(Config.RepositoryService.repository_folder)) {
         throw new Error(`The configured repository folder '${Config.RepositoryService.repository_folder}' cannot be found`);
     }
     const fileName = Config.RepositoryService.repository_folder + '/' + content;
-    if (! FileSystem.existsSync(fileName)) {
+    if (!FileSystem.existsSync(fileName)) {
         throw new Error(`File ${fileName} cannot be found on the local file system`);
     }
     return FileSystem.readFileSync(fileName, 'utf8');

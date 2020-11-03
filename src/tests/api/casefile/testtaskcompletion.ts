@@ -51,7 +51,7 @@ export default class TestTaskCompletion extends TestCase {
             }
         };
 
-        await taskService.completeTask(receiveGreetingTask, user, invalidTaskOutput, false);
+        await taskService.completeTask(receiveGreetingTask, user, invalidTaskOutput, 400);
 
         const validTaskOutput = {
             Response: {

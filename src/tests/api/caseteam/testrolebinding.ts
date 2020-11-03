@@ -56,7 +56,7 @@ export default class TestRoleBinding extends TestCase {
         const receiverCase = await caseService.getCase(caseInstance, receiver);
 
         // Employee's role is not part of case team
-        await caseService.getCase(caseInstance, employee, false);
+        await caseService.getCase(caseInstance, employee, 404);
 
         // Print the case team
         await caseTeamService.getCaseTeam(caseInstance, sender).then(team => {
@@ -79,9 +79,9 @@ export default class TestRoleBinding extends TestCase {
         }
 
         // Claim task must not be possible for the employee with task not found error
-        await this.claimTask(approveTask, employee, 'cannot be found');
+        await this.claimTaskShouldFail(approveTask, employee, 'cannot be found', 404);
         // Claim task must not be possible for the receiver with task not found error
-        await this.claimTask(approveTask, receiver, 'You do not have permission to perform this operation');
+        await this.claimTaskShouldFail(approveTask, receiver, 'You do not have permission to perform this operation', 401);
 
         // await new TenantService().addTenantUserRole(sender, worldwideTenant.tenant, receiver.id, "Sender");
         // await caseTeamService.addMemberRole(caseInstance, sender, "Receiver", "Approver");
@@ -98,9 +98,9 @@ export default class TestRoleBinding extends TestCase {
 
     }
 
-    async claimTask(task: Task, user: User, expectedMessage: string) {
+    async claimTaskShouldFail(task: Task, user: User, expectedMessage: string, expectedStatusCode: number) {
         // Claim task must be possible for the receiver
-        const response = await taskService.claimTask(task, user, false);
+        const response = await taskService.claimTask(task, user, expectedStatusCode);
         // const response = await caseService.getDiscretionaryItems(receiverCase, employee, false);
         const failureText = await response.text();
         console.log("Response: " + response.status)

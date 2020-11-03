@@ -56,13 +56,13 @@ export default class TestTaskAPI extends TestCase {
         const caseStarted = await caseService.startCase(startCase, sender) as Case;
         const caseInstance = await caseService.getCase(caseStarted, sender);
 
-        await caseService.getCase(caseInstance, receiver, false);
+        await caseService.getCase(caseInstance, receiver, 404);
 
         await taskService.getCaseTasks(caseInstance, sender).then(tasks => {
             console.log('Sender has ' + tasks.length + ' case tasks')
         });
 
-        await taskService.getCaseTasks(caseInstance, receiver, false).then(response => {
+        await taskService.getCaseTasks(caseInstance, receiver, 404).then(response => {
             console.log('Receiver cannot access the tasks of our case')
         });
 

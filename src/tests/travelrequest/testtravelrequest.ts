@@ -33,7 +33,7 @@ export default class TestTravelRequest extends TestCase {
             await tenantService.addTenantUser(platformOwner, worldwideTenant.tenant, approver);
             await tenantService.addTenantUser(platformOwner, worldwideTenant.tenant, lana);            
         } catch (e) {
-            if (!e.message.indexOf('already exists')) {
+            if (e.message.indexOf('already exists') < 0) {
                 console.log(e);
                 throw e;
             }

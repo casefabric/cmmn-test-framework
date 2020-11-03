@@ -12,7 +12,8 @@ const Config = {
             response: {
                 status: true, // Shows response statusCode and statusMessage, including call number 
                 headers: true, // Shows response headers
-                body: true // Shows response body
+                body: true, // Show all response bodies
+                error: true // Show response body when status not OK             
             }
         },
         // CQRS Wait Time is the time the engine needs to process events from commands (e.g. StartCase, CompleteTask, CreateTenant) into the server side query database

@@ -72,7 +72,7 @@ export default class TestEventAuthorization extends TestCase {
         });
 
         // This should fail
-        await casePlanService.makePlanItemTransition(caseInstance, user, employeeUserEvent.id, 'Occur', false);
+        await casePlanService.makePlanItemTransition(caseInstance, user, employeeUserEvent.id, 'Occur', 401);
 
         // This should succeed
         await casePlanService.makePlanItemTransition(caseInstance, employee, employeeUserEvent.id, 'Occur');

@@ -34,17 +34,15 @@ export default class TestTenantRegistration extends TestCase {
         await platformAdmin.login();
 
         // Creating tenant as tenantOwner should fail.
-        // await platformService.createTenant(tenantOwner1, tenant1, false);
+        await platformService.createTenant(tenantOwner1, tenant1, 401);
 
         // Creating tenant as platformOwner should succeed.
         await platformService.createTenant(platformAdmin, tenant1);
 
         // Creating tenant again should fail
-        // await platformService.createTenant(platformAdmin, tenant1, false)
-
+        await platformService.createTenant(platformAdmin, tenant1, 400);
         // Getting tenant owners as platformOwner should fail.
-        await tenantService.getTenantOwners(platformAdmin, tenant1, false);
-
+        await tenantService.getTenantOwners(platformAdmin, tenant1, 401);
         await tenantOwner1.login();
 
         await tenantService.getTenantOwners(tenantOwner1, tenant1).then(owners => {
@@ -55,13 +53,13 @@ export default class TestTenantRegistration extends TestCase {
         });
 
         await tenantService.getTenantUsers(tenantOwner1, tenant1).then(users => {
-            console.log("Found " + users.length +" users")
+            console.log("Found " + users.length + " users")
         })
 
         // return;
 
         // Also not allowed to get a non-existing user
-        await tenantService.getTenantUser(tenantOwner1, tenant1, "not a tenant user at all", false);
+        await tenantService.getTenantUser(tenantOwner1, tenant1, "not a tenant user at all", 404);
 
         await tenantService.addTenantUser(tenantOwner1, tenant1, user4);
 
@@ -93,7 +91,7 @@ export default class TestTenantRegistration extends TestCase {
         });
 
         // Tenant owner 1 may not disable the tenant
-        await platformService.disableTenant(tenantOwner1, tenant1, false);
+        await platformService.disableTenant(tenantOwner1, tenant1, 401);
 
         // But the platform admin is allowed to
         await platformService.disableTenant(platformAdmin, tenant1);
@@ -103,11 +101,12 @@ export default class TestTenantRegistration extends TestCase {
 
         // And the platform admin is not allowed to enable/disable a non-existing tenant
         const nonExistingTenant = new Tenant("not-created", [tenantOwner1]);
-        await platformService.enableTenant(platformAdmin, nonExistingTenant, false);
-        await platformService.disableTenant(platformAdmin, nonExistingTenant, false);
+        await platformService.enableTenant(platformAdmin, nonExistingTenant, 400);
+        return;
+        await platformService.disableTenant(platformAdmin, nonExistingTenant, 400);
 
         // Lets get the list of tenant users. There should be 4. But platform admin is not allowed to get them.
-        await tenantService.getTenantUsers(platformAdmin, tenant1, false);
+        await tenantService.getTenantUsers(platformAdmin, tenant1, 401);
 
         // Lets get the list of tenant users. There should be 4. Tenant owners should be able to do so
         await tenantService.getTenantUsers(tenantOwner1, tenant1).then(users => checkUserCount(users, 7));
@@ -119,16 +118,14 @@ export default class TestTenantRegistration extends TestCase {
         // There should be 1 disabled user account
         await tenantService.getDisabledUserAccounts(tenantOwner1, tenant1).then(users => checkUserCount(users, 1));
         // Not allowed to get a disabled user account
-        await tenantService.getTenantUser(tenantOwner1, tenant1, tenantOwner2.id, false);
+        await tenantService.getTenantUser(tenantOwner1, tenant1, tenantOwner2.id, 404);
         // Enable the user account again and validate that the user can be retrieved again.
         await tenantService.enableTenantUser(tenantOwner1, tenant1, tenantOwner2.id)
         await tenantService.getTenantUsers(tenantOwner1, tenant1).then(users => checkUserCount(users, 7));
         await tenantService.getTenantUser(tenantOwner1, tenant1, tenantOwner2.id);
 
-
-
         // But also normal users are allowed to fetch the user list of a tenant... Are they?
-        await tenantService.getTenantUsers(user4, tenant1, false);
+        await tenantService.getTenantUsers(user4, tenant1, 401);
         await user4.login();
         // ... well i guess only if they are logged in...
         await tenantService.getTenantUsers(user4, tenant1).then(users => checkUserCount(users, 7));
@@ -170,7 +167,7 @@ export default class TestTenantRegistration extends TestCase {
         const nextTenantUser = new TenantUser(nextOwnerId, []);
 
         // Adding the owner without registering first as a user should fail.
-        await tenantService.addTenantOwner(tenantOwner1, tenant1, nextOwnerId, false);
+        await tenantService.addTenantOwner(tenantOwner1, tenant1, nextOwnerId, 400);
 
         // Register the tenant user
         await tenantService.addTenantUser(tenantOwner1, tenant1, nextTenantUser);

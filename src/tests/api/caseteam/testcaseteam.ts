@@ -42,8 +42,8 @@ export default class TestCaseTeam extends TestCase {
         await caseService.getCase(caseInstance, sender);
 
         // Getting the case is not allowed for the receiver and employee, as they are not part of the case team
-        await caseService.getCase(caseInstance, receiver, false);
-        await caseService.getCase(caseInstance, employee, false);
+        await caseService.getCase(caseInstance, receiver, 404);
+        await caseService.getCase(caseInstance, employee, 404);
 
         // Get case tasks should be possible for sender and there should be 5 Unassigned tasks
         let tasks = await taskService.getCaseTasks(caseInstance, sender);
@@ -74,8 +74,8 @@ export default class TestCaseTeam extends TestCase {
         assertTaskCount(tasks, 'Unassigned', 3);
 
         // As receiver is not part of the team, getting tasks for receiver should fail
-        await taskService.getTask(approveTask, receiver, false);
-        await taskService.getCaseTasks(caseInstance, receiver, false);
+        await taskService.getTask(approveTask, receiver, 404);
+        await taskService.getCaseTasks(caseInstance, receiver, 404);
 
         // Sender can add a role mapping to the case team
         await caseTeamService.setMember(caseInstance, sender, new TenantRoleMember('Receiver', [requestorRole]));
@@ -94,7 +94,7 @@ export default class TestCaseTeam extends TestCase {
         assertTaskCount(tasks, 'Unassigned', 2);
 
         // As receiver is not a caseteam owner, he cannot remove sender (who is owner)
-        await caseTeamService.removeMember(caseInstance, receiver, sender, false);
+        await caseTeamService.removeMember(caseInstance, receiver, sender, 401);
 
         // Sender makes receiver a case team owner; but via user mapping
         await caseTeamService.setMember(caseInstance, sender, new CaseOwner(receiver, [requestorRole]));
@@ -106,9 +106,9 @@ export default class TestCaseTeam extends TestCase {
         await caseTeamService.removeMember(caseInstance, receiver, sender);
         await assertCaseTeamMember(new CaseOwner(sender, [approverRole]), caseInstance, receiver, false);
 
-        // Finally, sender cannot perform get case, case tasks, and task
-        await caseService.getCase(caseInstance, sender, false);
-        await taskService.getCaseTasks(caseInstance, sender, false);
-        await taskService.getTask(approveTask, sender, false);
+        // Finally, sender cannot perform find case, case tasks, and task
+        await caseService.getCase(caseInstance, sender, 404);
+        await taskService.getCaseTasks(caseInstance, sender, 404);
+        await taskService.getTask(approveTask, sender, 404);
     }
 }

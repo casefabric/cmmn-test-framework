@@ -8,7 +8,7 @@ import TestIncidentManagement from './tests/incidentmanagement/incidentmanagemen
 import TestTenantRegistration from './tests/api/tenant/testtenantregistration';
 import TestTaskValidationAPI from './tests/api/task/testtaskvalidationapi';
 import Config from './config';
-import TestRepositoryAPI from './tests/api/repository/repositorytest';
+import TestRepositoryAPI from './tests/api/repository/testrepositoryapi';
 import TestTokenValidation from './tests/api/environment/tokentest';
 import TestCaseFileAPI from './tests/api/casefile/testcasefileapi';
 import TestCasePlanAPI from './tests/api/caseplan/testcaseplanapi';
@@ -175,7 +175,7 @@ async function runTests(testDeclarations: Array<any>) {
             results.addTest(result);
         } catch (error) {
             const resultString = results.list.length == 0 ? '' : `  Succesful tests:\n${results.toString()}\n`;
-            throw new TestError(error, `\n\nTest ${i+1} "${test.name}" failed.\n${resultString}${error.constructor.name}: ${error.message}\n`);
+            throw new TestError(error, `\n\nTest ${i+1} "${test.name}" failed.\n${resultString}\nTest ${i+1} "${test.name}" failed.\n${error.constructor.name}: ${error.message}\n`);
         }
     }
     return results;

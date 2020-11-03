@@ -133,13 +133,13 @@ Starting another case instance of incident management to test Invalid status.
         await verifyTaskInput(workOnIncidentTask, secondTaskInput);
 
         // Can't claim Work on Incident task by solver as he is assigned to it
-        await taskService.claimTask(workOnIncidentTask, solver, false);
+        await taskService.claimTask(workOnIncidentTask, solver, 400);
         await assertTask(workOnIncidentTask, raiser, 'Claim', 'Assigned', solver, solver);
 
         const finalTaskOutput = IncidentContent.finalTaskOutput;
 
         // employee cannot complete a task assigned to solver
-        await taskService.completeTask(workOnIncidentTask, employee, finalTaskOutput, false);
+        await taskService.completeTask(workOnIncidentTask, employee, finalTaskOutput, 404);
         await assertTask(workOnIncidentTask, raiser, 'Claim', 'Assigned', solver);
 
         // Complete Work on Incident task by solver
