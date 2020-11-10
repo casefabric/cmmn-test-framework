@@ -1,14 +1,14 @@
 'use strict';
 
-import CaseService from '../../framework/service/case/caseservice';
-import TaskService from '../../framework/service/task/taskservice';
-import TestCase from '../../framework/test/testcase';
-import WorldWideTestTenant from '../worldwidetesttenant';
-import RepositoryService from '../../framework/service/case/repositoryservice';
-import Comparison from '../../framework/test/comparison';
-import User from '../../framework/user';
-import Task from '../../framework/cmmn/task';
-import Case from '../../framework/cmmn/case';
+import CaseService from '../../../../framework/service/case/caseservice';
+import TaskService from '../../../../framework/service/task/taskservice';
+import TestCase from '../../../../framework/test/testcase';
+import WorldWideTestTenant from '../../../worldwidetesttenant';
+import RepositoryService from '../../../../framework/service/case/repositoryservice';
+import Comparison from '../../../../framework/test/comparison';
+import User from '../../../../framework/user';
+import Task from '../../../../framework/cmmn/task';
+import Case from '../../../../framework/cmmn/case';
 
 const repositoryService = new RepositoryService();
 const definition = 'stagetest.xml';

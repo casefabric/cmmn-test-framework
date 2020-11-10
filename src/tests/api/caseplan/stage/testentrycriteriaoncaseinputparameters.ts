@@ -1,14 +1,14 @@
 'use strict';
 
-import CaseService from '../../framework/service/case/caseservice';
-import TestCase from '../../framework/test/testcase';
-import WorldWideTestTenant from '../worldwidetesttenant';
-import RepositoryService from '../../framework/service/case/repositoryservice';
-import CaseTeam from '../../framework/cmmn/caseteam';
-import CaseTeamMember, { CaseOwner } from '../../framework/cmmn/caseteammember';
-import Case from '../../framework/cmmn/case';
-import CaseFileService from '../../framework/service/case/casefileservice';
-import { SomeTime } from '../../framework/test/time';
+import CaseService from '../../../../framework/service/case/caseservice';
+import TestCase from '../../../../framework/test/testcase';
+import WorldWideTestTenant from '../../../worldwidetesttenant';
+import RepositoryService from '../../../../framework/service/case/repositoryservice';
+import CaseTeam from '../../../../framework/cmmn/caseteam';
+import CaseTeamMember, { CaseOwner } from '../../../../framework/cmmn/caseteammember';
+import Case from '../../../../framework/cmmn/case';
+import CaseFileService from '../../../../framework/service/case/casefileservice';
+import { SomeTime } from '../../../../framework/test/time';
 
 const repositoryService = new RepositoryService();
 const definition = 'entrycriteriaoncaseinputparameters.xml';
