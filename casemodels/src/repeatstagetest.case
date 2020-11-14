@@ -1,0 +1,123 @@
+<case id="repeatstagetest.case" name="repeatstagetest" description="Timer based repeating stage test" guid="_6Clld">
+    <caseFileModel>
+        <caseFileItem id="_6Clld_25" name="HTTPPort" multiplicity="ExactlyOne" definitionRef="http.cfid"/>
+        <caseFileItem id="_6Clld_26" name="TimeStamp" multiplicity="ExactlyOne" definitionRef="timestamp.cfid"/>
+    </caseFileModel>
+    <casePlanModel id="cm__6Clld_0" name="repeatstagetest" autoComplete="true">
+        <planItem id="pi__6Clld_0" name="Status" definitionRef="_6Clld_0">
+            <entryCriterion id="_6Clld_31" name="EntryCriterion_3" sentryRef="crit__6Clld_6"/>
+            <entryCriterion id="_6Clld_15" name="EntryCriterion_1" sentryRef="crit__6Clld_1"/>
+            <exitCriterion id="_6Clld_19" name="ExitCriterion_0" sentryRef="crit__6Clld_3"/>
+            <itemControl id="_6Clld_1">
+                <repetitionRule id="_6Clld_9">
+                    <condition id="_6Clld_10" language="spel">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
+        </planItem>
+        <planItem id="pi__6Clld_5" name="Retry" definitionRef="_6Clld_5">
+            <entryCriterion id="_6Clld_13" name="EntryCriterion_0" sentryRef="crit__6Clld_0"/>
+            <exitCriterion id="_6Clld_23" name="ExitCriterion_2" sentryRef="crit__6Clld_5"/>
+            <itemControl id="_6Clld_6">
+                <repetitionRule id="_6Clld_11">
+                    <condition id="_6Clld_12" language="spel">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
+        </planItem>
+        <planItem id="pi_ue__6Clld_0" name="Kill" definitionRef="ue__6Clld_0"/>
+        <planItem id="pi_ms__6Clld_0" name="Milestone" definitionRef="ms__6Clld_0">
+            <entryCriterion id="_6Clld_36" name="EntryCriterion_4" sentryRef="crit__6Clld_7"/>
+            <itemControl id="_6Clld_34">
+                <repetitionRule id="_6Clld_38">
+                    <condition id="_6Clld_39" language="spel">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
+        </planItem>
+        <sentry id="crit__6Clld_0">
+            <planItemOnPart id="_6Clld_14" sourceRef="pi_ms__6Clld_0">
+                <standardEvent>occur</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <sentry id="crit__6Clld_3">
+            <planItemOnPart id="_6Clld_20" sourceRef="pi_ue__6Clld_0">
+                <standardEvent>occur</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <sentry id="crit__6Clld_6">
+            <caseFileItemOnPart id="_6Clld_32" sourceRef="_6Clld_25">
+                <standardEvent>create</standardEvent>
+            </caseFileItemOnPart>
+        </sentry>
+        <sentry id="crit__6Clld_4">
+            <planItemOnPart id="_6Clld_22" sourceRef="pi_ue__6Clld_0">
+                <standardEvent>occur</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <sentry id="crit__6Clld_5">
+            <planItemOnPart id="_6Clld_24" sourceRef="pi_ue__6Clld_0">
+                <standardEvent>occur</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <sentry id="crit__6Clld_1">
+            <planItemOnPart id="_6Clld_16" sourceRef="pi_tmr__6Clld_1">
+                <standardEvent>occur</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <sentry id="crit__6Clld_7">
+            <planItemOnPart id="_6Clld_37" sourceRef="pi__6Clld_0">
+                <standardEvent>complete</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <exitCriterion id="_6Clld_21" name="ExitCriterion_1" sentryRef="crit__6Clld_4"/>
+        <processTask id="pt__6Clld_0" name="Get Next WaitTime" isBlocking="true" processRef="getRetryTime.process">
+            <inputs id="_6Clld_45" name="HTTPPort" bindingRef="_6Clld_25"/>
+            <inputs id="_6Clld_3" name="count"/>
+            <outputs id="_6Clld_42" name="response" bindingRef="_6Clld_26"/>
+            <parameterMapping id="_6Clld_41" sourceRef="_6Clld_45" targetRef="_HMzY_httpPort">
+                <transformation id="_6Clld_40" language="spel">
+                    <body>
+                        <![CDATA[HTTPPort.port]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+            <parameterMapping id="_6Clld_43" sourceRef="_6E7g_response" targetRef="_6Clld_42"/>
+            <parameterMapping id="_6Clld_4" sourceRef="_6Clld_3" targetRef="_pnjz_count">
+                <transformation id="_6Clld_18" language="spel">
+                    <body>
+                        <![CDATA[task.stage.index]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+        </processTask>
+        <milestone id="ms__6Clld_0" name="Milestone"/>
+        <userEvent id="ue__6Clld_0" name="Kill"/>
+        <timerEvent id="tmr__6Clld_1" name="Variable Time">
+            <timerExpression id="_6Clld_8" language="spel">
+                <body>
+                    <![CDATA[getCaseInstance().caseFile.TimeStamp.TimeRetry]]>
+                </body>
+            </timerExpression>
+            <planItemStartTrigger id="_6Clld_7">
+                <standardEvent></standardEvent>
+            </planItemStartTrigger>
+        </timerEvent>
+        <stage id="_6Clld_0" name="Status" autoComplete="true">
+            <planItem id="pi_pt__6Clld_0" name="Get Next WaitTime" definitionRef="pt__6Clld_0"/>
+        </stage>
+        <stage id="_6Clld_5" name="Retry" autoComplete="true">
+            <planItem id="pi_tmr__6Clld_1" name="Variable Time" definitionRef="tmr__6Clld_1"/>
+        </stage>
+    </casePlanModel>
+    <input id="_6Clld_33" name="HTTPPort" bindingRef="_6Clld_25"/>
+</case>
