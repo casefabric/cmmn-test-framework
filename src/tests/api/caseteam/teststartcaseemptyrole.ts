@@ -26,7 +26,7 @@ const emptyRole = "";
 export default class TestStartCaseEmptyRole extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(definition, sender, tenant);
+        await repositoryService.validateAndDeploy(sender, definition, tenant);
     }
 
     startCase: StartCase = { tenant, definition, debug: true };

@@ -28,7 +28,7 @@ const receiver = worldwideTenant.receiver;
 export default class TestTaskCountAPI extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(definition, sender, tenant);
+        await repositoryService.validateAndDeploy(sender, definition, tenant);
     }
 
     async run() {
@@ -67,7 +67,7 @@ export default class TestTaskCountAPI extends TestCase {
         })
         startCase.caseTeam = caseTeam;
 
-        await repositoryService.validateAndDeploy('caseteam.xml', sender, tenant);
+        await repositoryService.validateAndDeploy(sender, 'caseteam.xml', tenant);
         startCase.definition = "caseteam.xml";
         delete startCase.inputs;
         await caseService.startCase(sender, startCase);

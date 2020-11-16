@@ -29,10 +29,10 @@ export default class TestFootballBusinessIdentifiers extends TestCase {
         await worldwideTenant.create();
 
         // Validate and deploy footballstats model
-        await repositoryService.validateAndDeploy(footballStatsDefinition, user1, tenant);
+        await repositoryService.validateAndDeploy(user1, footballStatsDefinition, tenant);
 
         // Validate and deploy footballclubstats model
-        await repositoryService.validateAndDeploy(footballClubStatsDefinition, user1, tenant);
+        await repositoryService.validateAndDeploy(user1, footballClubStatsDefinition, tenant);
     }
 
     async run() {

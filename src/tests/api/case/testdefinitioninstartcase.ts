@@ -19,7 +19,7 @@ const receiver = worldwideTenant.receiver;
 export default class TestDefinitionInStartCase extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        // await repositoryService.validateAndDeploy(definition, sender, tenant);
+        // await repositoryService.validateAndDeploy(sender, definition, tenant);
     }
 
     async run() {

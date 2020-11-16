@@ -39,7 +39,7 @@ export default class TestTravelRequest extends TestCase {
             }
         }
 
-        await repositoryService.validateAndDeploy(definition, platformOwner, tenant);
+        await repositoryService.validateAndDeploy(platformOwner, definition, tenant);
 
         await requestor.login();
         await approver.login();

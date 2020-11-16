@@ -66,7 +66,7 @@ export default class TestTaskValidationAPI extends TestCase {
         console.log("\n\n============Started mock server. Now creating tenant\n\n");
         await worldwideTenant.create();
         // Deploy the case model
-        await repositoryService.validateAndDeploy(definition, pete, tenant);
+        await repositoryService.validateAndDeploy(pete, definition, tenant);
     }
 
     async run() {

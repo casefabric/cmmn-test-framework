@@ -19,7 +19,7 @@ const definition = 'planning.xml';
 export default class TestDiscretionaryItems extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(definition, user, tenant);
+        await repositoryService.validateAndDeploy(user, definition, tenant);
     }
 
     async run() {

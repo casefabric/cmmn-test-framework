@@ -29,7 +29,7 @@ export default class TestTaskOutputOperations extends TestCase {
     private caseInstance?: Case;
     async onPrepareTest() {
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(definition, user, tenant);
+        await repositoryService.validateAndDeploy(user, definition, tenant);
     }
 
     async run() {

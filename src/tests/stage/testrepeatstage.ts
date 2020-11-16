@@ -58,7 +58,7 @@ export default class TestRepeatStage extends TestCase {
         console.log("\n\n============Started mock server. Now creating tenant\n\n");
         await worldwideTenant.create();
         // Deploy the case model
-        await repositoryService.validateAndDeploy(definition, user, tenant);
+        await repositoryService.validateAndDeploy(user, definition, tenant);
     }
 
     async run() {

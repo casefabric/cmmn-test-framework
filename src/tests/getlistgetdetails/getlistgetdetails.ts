@@ -46,7 +46,7 @@ export default class TestGetListGetDetails extends TestCase {
     async onPrepareTest() {
         // await mock.start();
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(definition, user, tenant);
+        await repositoryService.validateAndDeploy(user, definition, tenant);
     }
 
     async run() {

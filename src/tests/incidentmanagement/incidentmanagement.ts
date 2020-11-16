@@ -60,7 +60,7 @@ export default class TestIncidentManagement extends TestCase {
     async onPrepareTest() {
         await mockServer.start();
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(definition, raiser, tenant);
+        await repositoryService.validateAndDeploy(raiser, definition, tenant);
     }
 
     async run() {

@@ -27,7 +27,7 @@ const tenantService = new TenantService();
 export default class TestEventAuthorization extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(definition, user, tenant);
+        await repositoryService.validateAndDeploy(user, definition, tenant);
     }
 
     async run() {

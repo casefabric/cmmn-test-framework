@@ -24,7 +24,7 @@ const employee = worldwideTenant.employee;
 export default class TestInvalidStartCase extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(definition, sender, tenant);
+        await repositoryService.validateAndDeploy(sender, definition, tenant);
         await new TenantService().addTenantUserRole(sender, worldwideTenant.tenant, sender.id, "Receiver");
     }
 
