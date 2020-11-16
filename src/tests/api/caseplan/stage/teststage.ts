@@ -22,7 +22,7 @@ const sender = worldwideTenant.sender;
 export default class TestRepeatingStage extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(definition, sender, tenant);
+        await repositoryService.validateAndDeploy(sender, definition, tenant);
     }
 
     async run() {
@@ -44,8 +44,8 @@ export default class TestRepeatingStage extends TestCase {
             }
         };
 
-        let caseInstance = await caseService.startCase(startCase, sender) as Case;
-        caseInstance = await caseService.getCase(caseInstance, sender);
+        let caseInstance = await caseService.startCase(sender, startCase) as Case;
+        caseInstance = await caseService.getCase(sender, caseInstance);
         // return;
  
         const taskName = 'SendResponse';
@@ -54,7 +54,7 @@ export default class TestRepeatingStage extends TestCase {
             throw new Error('Cannot find plan item ' + taskName);
         }
 
-        const tasks = await taskService.getCaseTasks(caseInstance, sender);
+        const tasks = await taskService.getCaseTasks(sender, caseInstance);
         const sendResponseTask = tasks.find(task => task.taskName === taskName);
         if (!sendResponseTask) {
             throw new Error('Cannot find task ' + taskName);
@@ -74,20 +74,20 @@ export default class TestRepeatingStage extends TestCase {
 
 async function getTasksThenClaimAndCompleteNextTask(caseInstance: Case, taskOutput: object) {
     const taskName = 'SendResponse';
-    const nextTasks = await taskService.getCaseTasks(caseInstance, sender);
+    const nextTasks = await taskService.getCaseTasks(sender, caseInstance);
     nextTasks.forEach(t => delete t.taskModel);
     console.log(JSON.stringify(nextTasks, undefined, 2))
     const nextTask = nextTasks.find(task => task.taskName === taskName && task.taskState === 'Unassigned');
     if (! nextTask) {
         throw new Error('Expecting a new task in unassigned state');
     }
-    await taskService.claimTask(nextTask, sender);
-    await taskService.completeTask(nextTask, sender, taskOutput);
+    await taskService.claimTask(sender, nextTask);
+    await taskService.completeTask(sender, nextTask, taskOutput);
 
 }
 
 async function assertTask(task: Task, action: string, expectedState: string = '', expectedAssignee?: User, expectedOwner?: User) {
-    await taskService.getTask(task, sender).then(task => {
+    await taskService.getTask(sender, task).then(task => {
         console.log(`Task after ${action}:\tstate = ${task.taskState},\tassignee = '${task.assignee}',\towner = '${task.owner}' `);
         if (task.taskState !== expectedState) {
             throw new Error(`Task ${task.taskName} is not in state '${expectedState}' but in state '${task.taskState}'`);

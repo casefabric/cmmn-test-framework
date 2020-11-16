@@ -3,8 +3,6 @@ import RepositoryService, { readLocalXMLDocument } from "../../../framework/serv
 import WorldWideTestTenant from "../../worldwidetesttenant";
 import TenantService from "../../../framework/service/tenant/tenantservice";
 import TenantUser from "../../../framework/tenant/tenantuser";
-import Tenant from "../../../framework/tenant/tenant";
-
 
 const repositoryService = new RepositoryService();
 const tenantService = new TenantService();
@@ -12,7 +10,6 @@ const tenantService = new TenantService();
 const repositoryTenant = new WorldWideTestTenant('For-repository-testing');
 const repositoryTenant2 = new WorldWideTestTenant('For-repository-testing-2');
 const tenant = repositoryTenant.name;
-const tenant2 = repositoryTenant2.name;
 const tenantOwner = repositoryTenant.sender;
 const tenantUser = new TenantUser('tenant-user', []);
 const tenantUserInBothTenants = new TenantUser('tenant-user-2', []);
@@ -42,10 +39,10 @@ export default class TestRepositoryAPI extends TestCase {
         const validCaseDefinition = 'planning.xml';
 
         // Validating the invalid case model should result in an error
-        await repositoryService.validateCaseDefinition(invalidCaseDefinition, tenantOwner, 400);
+        await repositoryService.validateCaseDefinition(tenantOwner, invalidCaseDefinition, 400);
 
         // Validating the valid case model should not result in an error
-        await repositoryService.validateCaseDefinition(validCaseDefinition, tenantOwner);
+        await repositoryService.validateCaseDefinition(tenantOwner, validCaseDefinition);
 
         // Deploying an invalid case definition to a valid file name should result in an error.
         const deployInvalidCaseDefinition = {
@@ -53,7 +50,7 @@ export default class TestRepositoryAPI extends TestCase {
             modelName: invalidCaseDefinition,
             tenant
         };
-        await repositoryService.deployCase(deployInvalidCaseDefinition, tenantOwner, 400);
+        await repositoryService.deployCase(tenantOwner, deployInvalidCaseDefinition, 400);
 
         // Listing case definitions should succeed as tenant owner
         await repositoryService.listCaseDefinitions(tenantOwner, tenant);
@@ -78,10 +75,10 @@ export default class TestRepositoryAPI extends TestCase {
         };
 
         // Should give "unauthorized"
-        await repositoryService.deployCase(deployValidCaseDefinition, tenantUser, 401);
+        await repositoryService.deployCase(tenantUser, deployValidCaseDefinition, 401);
 
         // As tenant owner it should succeed
-        await repositoryService.deployCase(deployValidCaseDefinition, tenantOwner);
+        await repositoryService.deployCase(tenantOwner, deployValidCaseDefinition);
 
         // Try test on empty tenant for a user with multiple tenants should fail
         await tenantUserInBothTenants.login();

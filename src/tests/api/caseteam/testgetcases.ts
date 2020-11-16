@@ -16,7 +16,6 @@ const repositoryService = new RepositoryService();
 const definition = 'helloworld.xml';
 
 const caseService = new CaseService();
-const taskService = new TaskService();
 const worldwideTenant = new WorldWideTestTenant("abc");
 const tenant = worldwideTenant.name;
 const sender = worldwideTenant.sender;
@@ -26,7 +25,7 @@ const employee = worldwideTenant.employee;
 export default class TestGetCases extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(definition, sender, tenant);
+        await repositoryService.validateAndDeploy(sender, definition, tenant);
     }
 
     async run() {
@@ -42,7 +41,7 @@ export default class TestGetCases extends TestCase {
 
         await this.getCaseList({tenant, numberOfResults: 10000}, "Initial list has cases");
 
-        const newCase = await caseService.startCase(startCase, sender) as Case;
+        const newCase = await caseService.startCase(sender, startCase) as Case;
 
         await this.getCaseList({tenant, numberOfResults: 10000}, "After startcase");
         await this.getCaseList({tenant, state:"Failed"}, "Failed within tenant");

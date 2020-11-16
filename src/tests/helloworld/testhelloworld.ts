@@ -24,7 +24,7 @@ const receiver = worldwideTenant.receiver;
 export default class TestHelloworld extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(definition, sender, tenant);
+        await repositoryService.validateAndDeploy(sender, definition, tenant);
     }
 
     async run() {
@@ -44,37 +44,37 @@ export default class TestHelloworld extends TestCase {
             }
         };
 
-        const caseInstance = await caseService.startCase(startCase, sender) as Case;
+        const caseInstance = await caseService.startCase(sender, startCase) as Case;
 
         const cases = await caseService.getCases(sender, { tenant: tenant, numberOfResults: 10000 });
         console.log("We have " + cases.length + " cases ...");
 
         const taskName = 'Receive Greeting and Send response';
-        const freshCaseInstance = await caseService.getCase(caseInstance, sender);
+        const freshCaseInstance = await caseService.getCase(sender, caseInstance);
         const planItem = freshCaseInstance.planitems.find(p => p.name === taskName);
         if (!planItem) {
             throw new Error('Cannot find plan item ' + taskName);
         }
 
-        const tasks = await taskService.getCaseTasks(caseInstance, sender);
+        const tasks = await taskService.getCaseTasks(sender, caseInstance);
         const receiveGreetingTask = findTask(tasks, taskName);
         await verifyTaskInput(receiveGreetingTask, inputs)
 
-        await taskService.claimTask(receiveGreetingTask, receiver);
-        await assertTask(receiveGreetingTask, sender, 'Claim', 'Assigned', receiver);
+        await taskService.claimTask(receiver, receiveGreetingTask);
+        await assertTask(sender, receiveGreetingTask, 'Claim', 'Assigned', receiver);
 
-        await taskService.completeTask(receiveGreetingTask, receiver, taskOutput);
-        await assertTask(receiveGreetingTask, sender, 'Complete', 'Completed', receiver);
+        await taskService.completeTask(receiver, receiveGreetingTask, taskOutput);
+        await assertTask(sender, receiveGreetingTask, 'Complete', 'Completed', receiver);
 
         const responseTaskName = 'Read response';
-        const nextTasks = await taskService.getCaseTasks(caseInstance, sender);
+        const nextTasks = await taskService.getCaseTasks(sender, caseInstance);
         const readResponseTask = findTask(nextTasks, responseTaskName);
         if (readResponseTask.assignee !== sender.id) {
             throw new Error('Expecting task to be assigned to sending user');
         }
-        await taskService.completeTask(readResponseTask, sender);
-        await assertTask(readResponseTask, sender, 'Complete', 'Completed', sender, sender, sender);
+        await taskService.completeTask(sender, readResponseTask);
+        await assertTask(sender, readResponseTask, 'Complete', 'Completed', sender, sender, sender);
 
-        await assertCasePlanState(caseInstance, sender, 'Completed');
+        await assertCasePlanState(sender, caseInstance, 'Completed');
     }
 }

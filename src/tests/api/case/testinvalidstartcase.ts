@@ -17,14 +17,12 @@ const caseService = new CaseService();
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const sender = worldwideTenant.sender;
-const receiver = worldwideTenant.receiver;
-const employee = worldwideTenant.employee;
 
 
 export default class TestInvalidStartCase extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(definition, sender, tenant);
+        await repositoryService.validateAndDeploy(sender, definition, tenant);
         await new TenantService().addTenantUserRole(sender, worldwideTenant.tenant, sender.id, "Receiver");
     }
 
@@ -91,7 +89,7 @@ export default class TestInvalidStartCase extends TestCase {
 
     async tryStartCase(msg: string, expectedResponseCode: number = 400) {
         console.log('\n============\n'+msg);
-        const response = await caseService.startCase(this.startCase, sender, expectedResponseCode)
+        const response = await caseService.startCase(sender, this.startCase, expectedResponseCode)
         if (response instanceof CafienneResponse) {
             await response.text().then(response => console.log("Response text: " + response));
         }

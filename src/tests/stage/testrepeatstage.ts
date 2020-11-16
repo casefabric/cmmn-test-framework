@@ -7,11 +7,9 @@ import MockServer from "../../framework/mock/mockserver";
 import GetMock from "../../framework/mock/getmock";
 import TestCase from "../../framework/test/testcase";
 import Case from "../../framework/cmmn/case";
-import { assertPlanItemState, assertCaseFileContent } from "../../framework/test/assertions";
+import { assertPlanItemState } from "../../framework/test/assertions";
 import CasePlanService from "../../framework/service/case/caseplanservice";
 import { ServerSideProcessing, SomeTime } from "../../framework/test/time";
-import CaseFileService from "../../framework/service/case/casefileservice";
-import { TenantOwner } from "../../framework/tenant/tenantuser";
 
 const repositoryService = new RepositoryService();
 const caseService = new CaseService();
@@ -58,7 +56,7 @@ export default class TestRepeatStage extends TestCase {
         console.log("\n\n============Started mock server. Now creating tenant\n\n");
         await worldwideTenant.create();
         // Deploy the case model
-        await repositoryService.validateAndDeploy(definition, user, tenant);
+        await repositoryService.validateAndDeploy(user, definition, tenant);
     }
 
     async run() {
@@ -69,7 +67,7 @@ export default class TestRepeatStage extends TestCase {
         }
 
         const startCase = { tenant, definition, inputs };
-        const caseInstance = await caseService.startCase(startCase, user) as Case;
+        const caseInstance = await caseService.startCase(user, startCase) as Case;
 
 
         // Let the Status stage repeat for 3 times
@@ -82,7 +80,7 @@ export default class TestRepeatStage extends TestCase {
             await ServerSideProcessing();
             await SomeTime(1000);
 
-            await caseService.getCase(caseInstance, user).then(caze => {
+            await caseService.getCase(user, caseInstance).then(caze => {
                 console.log("Case now has " + caze.planitems.length +"  plan items");
                 caze.planitems.filter(p => p.name === 'Status').forEach(s => {
                     console.log(`Status[${s.index}] is in state ${s.currentState}\thaving id: ${s.id}`)
@@ -95,7 +93,7 @@ export default class TestRepeatStage extends TestCase {
         }
 
         // Make transistion on Kill user event
-        await casePlanService.makePlanItemTransition(caseInstance, user, 'Kill', 'Occur');
+        await casePlanService.makePlanItemTransition(user, caseInstance, 'Kill', 'Occur');
 
         console.log("Case ID:\t" + caseInstance.id);
     }

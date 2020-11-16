@@ -13,7 +13,6 @@ import FiltersData from "./filtersdata";
 import { assertGetCasesAndTasksFilter } from "../../../../framework/test/assertions";
 
 const caseService = new CaseService();
-const taskService = new TaskService();
 const repositoryService = new RepositoryService();
 const tenantName = 'football' + Math.random().toString(36).substring(2, 15);
 const worldwideTenant = new WorldWideTestTenant(tenantName);
@@ -29,10 +28,10 @@ export default class TestFootballBusinessIdentifiers extends TestCase {
         await worldwideTenant.create();
 
         // Validate and deploy footballstats model
-        await repositoryService.validateAndDeploy(footballStatsDefinition, user1, tenant);
+        await repositoryService.validateAndDeploy(user1, footballStatsDefinition, tenant);
 
         // Validate and deploy footballclubstats model
-        await repositoryService.validateAndDeploy(footballClubStatsDefinition, user1, tenant);
+        await repositoryService.validateAndDeploy(user1, footballClubStatsDefinition, tenant);
     }
 
     async run() {
@@ -51,7 +50,7 @@ Starting business identifier's filters test for footballstats model.
             const caseTeam = new CaseTeam([new CaseOwner(user1)]);
             const definition = footballStatsDefinition;
             const startCase = { tenant, definition, inputs, caseTeam };
-            await caseService.startCase(startCase, user1);
+            await caseService.startCase(user1, startCase);
         }
 
         // tests against all filters in testFootballStatsFilters
@@ -72,7 +71,7 @@ Starting business identifier's multi-user filters test for footballstats model.
             const caseTeam = new CaseTeam([new CaseOwner(user1), new CaseTeamMember(user2)]);
             const definition = footballStatsDefinition;
             const startCase = { tenant, definition, inputs, caseTeam };
-            await caseService.startCase(startCase, user1);
+            await caseService.startCase(user1, startCase);
         }
 
         // tests against all filters in testFootballStatsMultiUserFilters
@@ -93,7 +92,7 @@ Starting business identifier's filters test for footballstats + footballclubstat
             const inputs = { "player": data };
             const caseTeam = new CaseTeam([new CaseOwner(user1)]);
             const startCase = { tenant, definition, inputs, caseTeam };
-            await caseService.startCase(startCase, user1);
+            await caseService.startCase(user1, startCase);
         }
 
         // tests against all filters in testFootballStatsCombinedFilters

@@ -7,7 +7,6 @@ import WorldWideTestTenant from '../../worldwidetesttenant';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
 import CasePlanService from '../../../framework/service/case/caseplanservice';
 import PlanItem from '../../../framework/cmmn/planitem';
-import TenantService from '../../../framework/service/tenant/tenantservice';
 import CaseTeamMember, { CaseOwner } from '../../../framework/cmmn/caseteammember';
 import CaseTeam from '../../../framework/cmmn/caseteam';
 import Case from '../../../framework/cmmn/case';
@@ -22,12 +21,11 @@ const tenant = worldwideTenant.name;
 const employee = worldwideTenant.employee;
 
 const casePlanService = new CasePlanService();
-const tenantService = new TenantService();
 
 export default class TestEventAuthorization extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(definition, user, tenant);
+        await repositoryService.validateAndDeploy(user, definition, tenant);
     }
 
     async run() {
@@ -35,10 +33,10 @@ export default class TestEventAuthorization extends TestCase {
 
         const startCase = { tenant, definition, caseTeam };
 
-        const caseInstance = await caseService.startCase(startCase, user) as Case;
-        await caseService.getCase(caseInstance, user);
+        const caseInstance = await caseService.startCase(user, startCase) as Case;
+        await caseService.getCase(user, caseInstance);
         
-        const planItems = await casePlanService.getPlanItems(caseInstance, user);
+        const planItems = await casePlanService.getPlanItems(user, caseInstance);
         // console.log("PLanItems: " + planItems)
 
         const plainUserEvent = planItems.find((item: PlanItem) => item.name === 'PlainUserEvent');
@@ -50,31 +48,31 @@ export default class TestEventAuthorization extends TestCase {
             throw new Error('Did not find expected EmployeeUserEvent');
         }
         
-        const planItem = await casePlanService.getPlanItem(caseInstance, user, plainUserEvent.id);
+        const planItem = await casePlanService.getPlanItem(user, caseInstance, plainUserEvent.id);
         // console.log("PLanItem: " + planItem)
 
-        const history = await casePlanService.getPlanItemHistory(caseInstance, user, planItem.id);
+        const history = await casePlanService.getPlanItemHistory(user, caseInstance, planItem.id);
         // console.log("History: " + history)
         if (history.length !== 2) {
             throw new Error(`Expected 2 history items for the UserEvent ${planItem.name} but found ${history.length}`);
         }
 
-        await casePlanService.makePlanItemTransition(caseInstance, user, planItem.id, 'Occur');
+        await casePlanService.makePlanItemTransition(user, caseInstance, planItem.id, 'Occur');
 
-        await casePlanService.getPlanItems(caseInstance, user).then(items => {
+        await casePlanService.getPlanItems(user, caseInstance).then(items => {
             if (! items.find((item: PlanItem) => item.name === 'T1')) {
                 throw new Error(`Expected a plan item with name 'T1' but it was not found`)
             }
         });
 
-        await caseService.getCase(caseInstance, user).then(caze => {
+        await caseService.getCase(user, caseInstance).then(caze => {
             // console.log('Resulting case: ' + JSON.stringify(caze, undefined, 2));
         });
 
         // This should fail
-        await casePlanService.makePlanItemTransition(caseInstance, user, employeeUserEvent.id, 'Occur', 401);
+        await casePlanService.makePlanItemTransition(user, caseInstance, employeeUserEvent.id, 'Occur', 401);
 
         // This should succeed
-        await casePlanService.makePlanItemTransition(caseInstance, employee, employeeUserEvent.id, 'Occur');
+        await casePlanService.makePlanItemTransition(employee, caseInstance, employeeUserEvent.id, 'Occur');
     }
 }

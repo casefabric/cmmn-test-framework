@@ -6,8 +6,7 @@ import TestCase from '../../../framework/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
 import CaseTeam from '../../../framework/cmmn/caseteam';
-import CaseTeamMember, { CaseOwner } from '../../../framework/cmmn/caseteammember';
-import CaseTeamService from '../../../framework/service/case/caseteamservice';
+import { CaseOwner } from '../../../framework/cmmn/caseteammember';
 import Case from '../../../framework/cmmn/case';
 import User from '../../../framework/user';
 import Task from '../../../framework/cmmn/task';
@@ -16,7 +15,6 @@ import CasePlanService from '../../../framework/service/case/caseplanservice';
 
 const repositoryService = new RepositoryService();
 const definition = 'helloworld.xml';
-
 
 const caseService = new CaseService();
 const taskService = new TaskService();
@@ -28,7 +26,7 @@ const receiver = worldwideTenant.receiver;
 export default class TestTaskCountAPI extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(definition, sender, tenant);
+        await repositoryService.validateAndDeploy(sender, definition, tenant);
     }
 
     async run() {
@@ -55,25 +53,25 @@ export default class TestTaskCountAPI extends TestCase {
         console.log("Task Count for sender: " + JSON.stringify(taskCountBefore))
 
         // Start 3 cases and claim 1 task. Should lead to 2 unclaimed and 1 claimed task
-        await caseService.startCase(startCase, sender);
-        await caseService.startCase(startCase, sender);
+        await caseService.startCase(sender, startCase);
+        await caseService.startCase(sender, startCase);
         startCase.caseTeam = caseTeam2;
-        const caseStarted = await caseService.startCase(startCase, sender) as Case;
-        const caseInstance = await caseService.getCase(caseStarted, sender);
+        const caseStarted = await caseService.startCase(sender, startCase) as Case;
+        const caseInstance = await caseService.getCase(sender, caseStarted);
         const pid = caseInstance.planitems.find(item => item.type === 'CasePlan')?.id || '';
-        new CasePlanService().makePlanItemTransition(caseStarted, sender, pid, "Terminate");
-        await caseService.getCase(caseStarted, sender).then(caze => {
+        new CasePlanService().makePlanItemTransition(sender, caseStarted, pid, "Terminate");
+        await caseService.getCase(sender, caseStarted).then(caze => {
             console.log("New case state: " + JSON.stringify(caze.planitems, undefined, 2))
         })
         startCase.caseTeam = caseTeam;
 
-        await repositoryService.validateAndDeploy('caseteam.xml', sender, tenant);
+        await repositoryService.validateAndDeploy(sender, 'caseteam.xml', tenant);
         startCase.definition = "caseteam.xml";
         delete startCase.inputs;
-        await caseService.startCase(startCase, sender);
-        await caseService.startCase(startCase, sender);
+        await caseService.startCase(sender, startCase);
+        await caseService.startCase(sender, startCase);
         startCase.caseTeam = caseTeam2;
-        await caseService.startCase(startCase, sender) as Case;
+        await caseService.startCase(sender, startCase) as Case;
 
         const hwFilter = { definition: 'HelloWorld', tenant};
         await this.getStatistics('Sender has across the board: ', sender, {state:'Terminated'});
@@ -84,10 +82,10 @@ export default class TestTaskCountAPI extends TestCase {
 
 
 
-        const tasks = await taskService.getCaseTasks(caseInstance, sender);
+        const tasks = await taskService.getCaseTasks(sender, caseInstance);
         const receiveGreetingTask = tasks.find(task => task.taskName === 'Receive Greeting and Send response') as Task;
 
-        await taskService.claimTask(receiveGreetingTask, sender);
+        await taskService.claimTask(sender, receiveGreetingTask);
 
         await taskService.countTasks(sender).then((taskCountAfter: TaskCount) => {
             console.log("Task Count after creating 3 cases and claiming 1 task: " + JSON.stringify(taskCountAfter));

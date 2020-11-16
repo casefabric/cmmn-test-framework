@@ -14,10 +14,8 @@ import User from '../../../framework/user';
 const repositoryService = new RepositoryService();
 const definition = 'helloworld.xml';
 
-
 const guid = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 const tenantName = 'temp_task_tenant' + guid;
-
 
 const caseService = new CaseService();
 const taskService = new TaskService();
@@ -30,7 +28,7 @@ const receiver = worldwideTenant.receiver;
 export default class TestTaskAPI extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(definition, sender, tenant);
+        await repositoryService.validateAndDeploy(sender, definition, tenant);
     }
 
     async run() {
@@ -53,16 +51,16 @@ export default class TestTaskAPI extends TestCase {
         const sendersTaskCountBeforeStartCase = await this.getUnassignedTasks(sender);
         const receiversTaskCountBeforeStartCase = await this.getUnassignedTasks(receiver);
 
-        const caseStarted = await caseService.startCase(startCase, sender) as Case;
-        const caseInstance = await caseService.getCase(caseStarted, sender);
+        const caseStarted = await caseService.startCase(sender, startCase) as Case;
+        const caseInstance = await caseService.getCase(sender, caseStarted);
 
-        await caseService.getCase(caseInstance, receiver, 404);
+        await caseService.getCase(receiver, caseInstance, 404);
 
-        await taskService.getCaseTasks(caseInstance, sender).then(tasks => {
+        await taskService.getCaseTasks(sender, caseInstance).then(tasks => {
             console.log('Sender has ' + tasks.length + ' case tasks')
         });
 
-        await taskService.getCaseTasks(caseInstance, receiver, 404).then(response => {
+        await taskService.getCaseTasks(receiver, caseInstance, 404).then(response => {
             console.log('Receiver cannot access the tasks of our case')
         });
 
@@ -85,12 +83,12 @@ export default class TestTaskAPI extends TestCase {
         });
 
         // Now add receiver to the case team, and show that now he also gets to see the unassigned task
-        await caseTeamService.setMember(caseInstance, sender, new CaseTeamMember(receiver));
+        await caseTeamService.setMember(sender, caseInstance, new CaseTeamMember(receiver));
 
         await this.getReceiverUnassignedTasks(receiversTaskCountBeforeStartCase + 1);
 
         // Getting the case task now should also not fail any more
-        await taskService.getCaseTasks(caseInstance, receiver).then(tasks => {
+        await taskService.getCaseTasks(receiver, caseInstance).then(tasks => {
             console.log('Receiver has ' + tasks.length + ' case tasks')
         });
     }

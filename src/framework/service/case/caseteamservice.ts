@@ -15,7 +15,7 @@ export default class CaseTeamService {
      * @param user 
      * @returns CaseTeam
      */
-    async getCaseTeam(Case: Case, user: User, expectedStatusCode: number = 200): Promise<CaseTeam> {
+    async getCaseTeam(user: User, Case: Case, expectedStatusCode: number = 200): Promise<CaseTeam> {
         const response = await cafienneService.get(`/cases/${Case.id}/caseteam`, user);
         const msg = `GetCaseTeam is not expected to succeed for user ${user.id} in case ${Case.id}`;
         const caseTeam = await checkJSONResponse(response, msg, expectedStatusCode, CaseTeam);
@@ -28,7 +28,7 @@ export default class CaseTeamService {
      * @param user 
      * @param team 
      */
-    async setCaseTeam(Case: Case, user: User, team: CaseTeam, expectedStatusCode: number = 200) {
+    async setCaseTeam(user: User, Case: Case, team: CaseTeam, expectedStatusCode: number = 200) {
         const response = await cafienneService.post(`/cases/${Case.id}/caseteam`, user, team);
         const msg = `SetCaseTeam is not expected to succeed for user ${user.id} in case ${Case.id}`;
         return checkResponse(response, msg, expectedStatusCode);
@@ -40,7 +40,7 @@ export default class CaseTeamService {
      * @param user 
      * @param member 
      */
-    async removeMember(Case: Case, user: User, member: User|CaseTeamMember, expectedStatusCode: number = 200) {
+    async removeMember(user: User, Case: Case, member: User|CaseTeamMember, expectedStatusCode: number = 200) {
         const memberType = member instanceof User ? 'user' : member.memberType;
         const memberId = member instanceof User ? member.id : member.memberId; 
         const response = await cafienneService.delete(`/cases/${Case.id}/caseteam/${memberId}?type=${memberType}`, user);
@@ -54,7 +54,7 @@ export default class CaseTeamService {
      * @param user 
      * @param member 
      */
-    async setMember(Case: Case, user: User, member: CaseTeamMember, expectedStatusCode: number = 200) {
+    async setMember(user: User, Case: Case, member: CaseTeamMember, expectedStatusCode: number = 200) {
         const response = await cafienneService.put(`/cases/${Case.id}/caseteam`, user, member);
         const msg = `SetTeamMember is not expected to succeed for user ${user.id} in case ${Case.id}`;
         return checkResponse(response, msg, expectedStatusCode);
@@ -66,7 +66,7 @@ export default class CaseTeamService {
      * @param user 
      * @param member 
      */
-    async removeMemberRoles(Case: Case, user: User, member: CaseTeamMember, roles: string|string[], expectedStatusCode: number = 200) {
+    async removeMemberRoles(user: User, Case: Case, member: CaseTeamMember, roles: string|string[], expectedStatusCode: number = 200) {
         const memberWithoutRoles = Object.assign({}, member);
         memberWithoutRoles.removeRoles = roles instanceof Array ? roles : [roles];
         const response = await cafienneService.put(`/cases/${Case.id}/caseteam`, user, memberWithoutRoles);

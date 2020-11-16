@@ -18,7 +18,7 @@ const tenant = worldwideTenant.name;
 export default class TestDebugMode extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(definition, user, tenant);
+        await repositoryService.validateAndDeploy(user, definition, tenant);
     }
 
     async run() {
@@ -31,20 +31,20 @@ export default class TestDebugMode extends TestCase {
         const startCaseInDebugMode = { tenant, definition, inputs: startCaseInput, debug: true};
 
         // This should include a "DebugEnabled" event
-        let debugCase = await caseService.startCase(startCaseInDebugMode, user) as Case;
-        debugCase = await caseService.getCase(debugCase, user);
+        let caseInstance = await caseService.startCase(user, startCaseInDebugMode) as Case;
+        caseInstance = await caseService.getCase(user, caseInstance);
 
         // This should result in "DebugDisabled" event
-        await caseService.changeDebugMode(debugCase, user, false);
-        debugCase = await caseService.getCase(debugCase, user);
+        await caseService.changeDebugMode(user, caseInstance, false);
+        caseInstance = await caseService.getCase(user, caseInstance);
 
         // This should result in one more "DebugEnabled" event
-        await caseService.changeDebugMode(debugCase, user, true);
-        debugCase = await caseService.getCase(debugCase, user);
+        await caseService.changeDebugMode(user, caseInstance, true);
+        caseInstance = await caseService.getCase(user, caseInstance);
 
         // TODO: we can also query the events to see if they are indeed present.
         const debugService = new DebugService();
-        await debugService.getEvents(debugCase.id).then(response => {
+        await debugService.getEvents(caseInstance.id).then(response => {
             if (response.status === 401 || response.status === 200) {
                 // This is the right status messages
             } else {

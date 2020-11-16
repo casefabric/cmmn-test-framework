@@ -16,7 +16,7 @@ export default class RepositoryService {
      * @param command 
      * @param user 
      */
-    async deployCase(command: DeployCase, user: User, expectedStatusCode: number = 204) {
+    async deployCase(user: User, command: DeployCase, expectedStatusCode: number = 204) {
         if (!user) {
             throw new Error('User must be specified');
         }
@@ -33,7 +33,7 @@ export default class RepositoryService {
      * @param user 
      * @param tenant 
      */
-    async loadCaseDefinition(fileName: string, user: User, tenant: string, expectedStatusCode: number = 200) {
+    async loadCaseDefinition(user: User, fileName: string, tenant: string, expectedStatusCode: number = 200) {
         const modelName = fileName.endsWith('.xml') ? fileName.substring(0, fileName.length - 4) : fileName;
 
         const xml = await cafienneService.getXml(`/repository/load/${modelName}?tenant=${tenant}`, user);
@@ -61,7 +61,7 @@ export default class RepositoryService {
      * Invokes the validation API
      * @param source 
      */
-    async validateCaseDefinition(source: Document | string, user: User, expectedStatusCode: number = 200) {
+    async validateCaseDefinition(user: User, source: Document | string, expectedStatusCode: number = 200) {
         const url = `/repository/validate`;
         const xml = readLocalXMLDocument(source);
         const response = await cafienneService.postXML(url, user, xml);
@@ -90,11 +90,11 @@ export default class RepositoryService {
      * @param user User that deploys the case definition.
      * @param tenant Tenant in which the definition is deployed.
      */
-    async validateAndDeploy(fileName: string, user: User, tenant: string) {
+    async validateAndDeploy(user: User, fileName: string, tenant: string) {
         const definition = readLocalXMLDocument(fileName);
         const modelName = fileName;
 
-        const serverVersion = await this.loadCaseDefinition(modelName, user, tenant);
+        const serverVersion = await this.loadCaseDefinition(user, modelName, tenant);
         if (Comparison.sameXML(definition, serverVersion)) {
             if (Config.RepositoryService.log) {
                 console.log(`Skipping deployment of ${fileName}, as server already has it`);
@@ -102,8 +102,8 @@ export default class RepositoryService {
             return;
         }
 
-        await this.validateCaseDefinition(definition, user);
-        await this.deployCase({ definition, modelName, tenant }, user)
+        await this.validateCaseDefinition(user, definition);
+        await this.deployCase(user, { definition, modelName, tenant })
     }
 }
 

@@ -3,7 +3,7 @@ import TestStatsAPI from './tests/api/case/teststatsapi';
 import TestUsersCaseAPI from './tests/api/case/usercases';
 import TestDiscretionaryItems from './tests/api/discretionary/testdiscretionaryitems';
 import TestDebugMode from './tests/api/debug/testdebugmode';
-import TestHelloworld from './tests/helloworld/helloworld';
+import TestHelloworld from './tests/helloworld/testhelloworld';
 import TestIncidentManagement from './tests/incidentmanagement/incidentmanagement';
 import TestTenantRegistration from './tests/api/tenant/testtenantregistration';
 import TestTaskValidationAPI from './tests/api/task/testtaskvalidationapi';
@@ -41,11 +41,10 @@ function findTestsFromCommandLineArguments(): Array<string> {
     if (time && !isNaN(Number(time))) {
         console.log('Setting CQRS wait time to '+time)
         Config.CafienneService.cqrsWaitTime = Number(time);
+        return process.argv.slice(3);
+    } else {
+        return process.argv.slice(2);
     }
-
-    // TODO: it will be nice if we can implement running test cases given from command line,
-    //  but as of now (because TypeScript transpiling the class names?) they cannot be found in runtime based on string
-    return process.argv.slice(3);
 }
 
 class TestClasses {

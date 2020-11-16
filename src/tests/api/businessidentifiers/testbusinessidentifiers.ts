@@ -9,9 +9,6 @@ import CaseTeamMember, { CaseOwner } from '../../../framework/cmmn/caseteammembe
 import CaseFileService from '../../../framework/service/case/casefileservice';
 import Case from '../../../framework/cmmn/case';
 import User from '../../../framework/user';
-import { assertGetCasesAndTasksFilter } from '../../../framework/test/assertions';
-import TaskService from '../../../framework/service/task/taskservice';
-import { send } from 'process';
 
 const repositoryService = new RepositoryService();
 const caseService = new CaseService();
@@ -27,7 +24,7 @@ const receiver = worldwideTenant.receiver;
 export default class TestBusinessIdentifiers extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(definition, sender, tenant);
+        await repositoryService.validateAndDeploy(sender, definition, tenant);
     }
 
     async run() {
@@ -51,13 +48,13 @@ export default class TestBusinessIdentifiers extends TestCase {
 
         const caseTeam = new CaseTeam([new CaseOwner(employee), new CaseTeamMember(sender), new CaseTeamMember(receiver)]);
         const startCase = { tenant, definition, inputs, caseTeam, debug: true };
-        const caseInstance = await caseService.startCase(startCase, sender) as Case;
+        const caseInstance = await caseService.startCase(sender, startCase) as Case;
 
         // Initial input has no message in it, so there should not be any additional values
         await messageFilter.assertExtraMatches(0);
 
         // Update case file item
-        await caseFileService.updateCaseFileItem(caseInstance, sender, 'Greeting', { Message: '' });
+        await caseFileService.updateCaseFileItem(sender, caseInstance, 'Greeting', { Message: '' });
 
         // Show that now we find a case for th message filter
         await messageFilter.assertExtraMatches(1);
@@ -68,7 +65,7 @@ export default class TestBusinessIdentifiers extends TestCase {
         await combinedFilter.assertExtraMatches(0);
 
         // Update case file item
-        await caseFileService.updateCaseFileItem(caseInstance, sender, 'Greeting', { Message: 'hello' });
+        await caseFileService.updateCaseFileItem(sender, caseInstance, 'Greeting', { Message: 'hello' });
 
         // Update and assert filters
         await helloFilter.assertExtraMatches(1);
@@ -77,7 +74,7 @@ export default class TestBusinessIdentifiers extends TestCase {
 
         // Deleted the case file item; now business identifiers must be cleared, 
         // hence original results should come.
-        await caseFileService.deleteCaseFileItem(caseInstance, sender, 'Greeting');
+        await caseFileService.deleteCaseFileItem(sender, caseInstance, 'Greeting');
         // Check no more extra matches
         await helloFilter.assertExtraMatches(0);
         await toFilter.assertExtraMatches(0);
