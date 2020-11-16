@@ -84,7 +84,7 @@ export default class TestGetListGetDetails extends TestCase {
         await assertPlanItemState(user, caseInstance, 'GetList Failed', 0, 'Completed');
 
         // Trigger the 'Try Again' event
-        casePlanService.makePlanItemTransition(caseInstance, user, 'Try Again', 'Occur');
+        casePlanService.makePlanItemTransition(user, caseInstance, 'Try Again', 'Occur');
 
         // Give the 'GetList.1' process task up to 5 seconds to fail (because Mock is still not started) and activate Stage 'Fail handling.1'
         await assertPlanItemState(user, caseInstance, 'Fail handling', 1, 'Active', 10);
@@ -99,7 +99,7 @@ export default class TestGetListGetDetails extends TestCase {
         mock.start();
 
         // Trigger the 'Try Again' event
-        casePlanService.makePlanItemTransition(caseInstance, user, 'Try Again', 'Occur');
+        casePlanService.makePlanItemTransition(user, caseInstance, 'Try Again', 'Occur');
 
         // Give the 'GetList.1' process task up to 5 seconds to fail (because Mock is still not started) and activate Stage 'Fail handling.1'
         await assertPlanItemState(user, caseInstance, 'GetList', 2, 'Completed', 10);

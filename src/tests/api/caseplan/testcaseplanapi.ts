@@ -31,7 +31,7 @@ export default class TestCasePlanAPI extends TestCase {
         const caseInstance = await caseService.startCase(user, startCase) as Case;
         await caseService.getCase(user, caseInstance);
         
-        const planItems = await casePlanService.getPlanItems(caseInstance, user);
+        const planItems = await casePlanService.getPlanItems(user, caseInstance);
 
         // Print all plan items - id, type and name.
         console.log(planItems.length +" plan items:\n" + planItems.map(p => `${p.id} - ${p.type} - ${p.name}`).join("\n"))
@@ -46,18 +46,18 @@ export default class TestCasePlanAPI extends TestCase {
             throw new Error('Failed to find event listener plan item with name PlainUserEvent in list ' + JSON.stringify(planItems, undefined, 2));
         }
 
-        const planItem = await casePlanService.getPlanItem(caseInstance, user, eventItem.id);
+        const planItem = await casePlanService.getPlanItem(user, caseInstance, eventItem.id);
         // console.log("PLanItem: " + planItem)
 
-        const history = await casePlanService.getPlanItemHistory(caseInstance, user, planItem.id);
+        const history = await casePlanService.getPlanItemHistory(user, caseInstance, planItem.id);
         // console.log("History: " + history)
         if (history.length !== 2) {
             throw new Error(`Expected 2 history items for the UserEvent ${planItem.name} but found ${history.length}`);
         }
 
-        await casePlanService.makePlanItemTransition(caseInstance, user, planItem.id, 'Occur');
+        await casePlanService.makePlanItemTransition(user, caseInstance, planItem.id, 'Occur');
 
-        await casePlanService.getPlanItems(caseInstance, user).then(items => {
+        await casePlanService.getPlanItems(user, caseInstance).then(items => {
             if (! items.find((item: PlanItem) => item.name === 'T1')) {
                 throw new Error(`Expected a plan item with name 'T1' but it was not found`)
             }

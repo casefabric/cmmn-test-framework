@@ -61,7 +61,7 @@ export default class TestTaskCountAPI extends TestCase {
         const caseStarted = await caseService.startCase(sender, startCase) as Case;
         const caseInstance = await caseService.getCase(sender, caseStarted);
         const pid = caseInstance.planitems.find(item => item.type === 'CasePlan')?.id || '';
-        new CasePlanService().makePlanItemTransition(caseStarted, sender, pid, "Terminate");
+        new CasePlanService().makePlanItemTransition(sender, caseStarted, pid, "Terminate");
         await caseService.getCase(sender, caseStarted).then(caze => {
             console.log("New case state: " + JSON.stringify(caze.planitems, undefined, 2))
         })

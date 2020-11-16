@@ -95,7 +95,7 @@ export default class TestRepeatStage extends TestCase {
         }
 
         // Make transistion on Kill user event
-        await casePlanService.makePlanItemTransition(caseInstance, user, 'Kill', 'Occur');
+        await casePlanService.makePlanItemTransition(user, caseInstance, 'Kill', 'Occur');
 
         console.log("Case ID:\t" + caseInstance.id);
     }

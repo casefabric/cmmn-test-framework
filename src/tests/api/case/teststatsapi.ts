@@ -51,7 +51,7 @@ export default class TestStatsAPI extends TestCase {
         if (!pid) {
             throw new Error('Cannot find case plan?!');
         }
-        new CasePlanService().makePlanItemTransition(caseStarted, sender, pid, "Terminate");
+        new CasePlanService().makePlanItemTransition(sender, caseStarted, pid, "Terminate");
  
         // Start 3 cases 'caseteam.xml', and one of them with both sender and receiver
         const startCaseTeamCase = { tenant, definition: caseTeamDefinition, caseTeam, debug: true };
