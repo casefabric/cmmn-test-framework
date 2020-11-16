@@ -4,7 +4,6 @@ import Comparison from './comparison';
 import TaskService from '../service/task/taskservice';
 import CaseService from '../service/case/caseservice';
 import Case from '../../framework/cmmn/case';
-import TenantUser from '../../framework/tenant/tenantuser';
 import CaseFileService from '../service/case/casefileservice';
 import { pathReader } from '../cmmn/casefile';
 import CaseTeam from '../cmmn/caseteam';
@@ -28,7 +27,7 @@ const caseTeamService = new CaseTeamService();
  * @param expectedAssignee 
  * @param expectedOwner 
  */
-export async function assertTask(task: Task, user: User, action: string, expectedState: string = '', expectedAssignee?: User, expectedOwner?: User, expectedLastModifiedBy?: User) {
+export async function assertTask(user: User, task: Task, action: string, expectedState: string = '', expectedAssignee?: User, expectedOwner?: User, expectedLastModifiedBy?: User) {
     await taskService.getTask(user, task).then(task => {
         console.log(`Task after ${action}: state=${task.taskState}, assignee='${task.assignee}', owner='${task.owner}', modifiedBy='${task.modifiedBy}' `);
         if (task.taskState !== expectedState) {
@@ -86,7 +85,7 @@ export async function assertPlanItemState(user: User, caseInstance: Case, planIt
  * @param user 
  * @param state 
  */
-export async function assertCasePlanState(caseInstance: Case, user: User, state: string) {
+export async function assertCasePlanState(user: User, caseInstance: Case, state: string) {
     // Get case details
     const freshCase = await caseService.getCase(user, caseInstance);
     if (freshCase.state !== state) {
@@ -141,7 +140,7 @@ export function assertTaskCount(tasks: Task[], state: string, expectedCount: Num
  * @param path 
  * @param expectedContent 
  */
-export async function assertCaseFileContent(caseInstance: Case, user: User, path: string, expectedContent: any, log: boolean = false) {
+export async function assertCaseFileContent(user: User, caseInstance: Case, path: string, expectedContent: any, log: boolean = false) {
     await caseFileService.getCaseFile(user, caseInstance).then(casefile => {
         // console.log("Case File for reading path " + path, casefile);
         const readCaseFileItem = (caseFile: any) => {
@@ -245,7 +244,7 @@ async function verifyTeam(team1: CaseTeam, team2: CaseTeam) {
  * @param user 
  * @param expectedTeam 
  */
-export async function assertCaseTeam(caseInstance: Case, user: User, expectedTeam: CaseTeam) {
+export async function assertCaseTeam(user: User, caseInstance: Case, expectedTeam: CaseTeam) {
     // Get case team via getCaseTeam
     const team = await caseTeamService.getCaseTeam(user, caseInstance)
     const actualCaseTeam = await convertToCaseTeam(team)
@@ -272,7 +271,7 @@ export async function assertCaseTeam(caseInstance: Case, user: User, expectedTea
  * @param user 
  * @param expectNoFailures 
  */
-export async function assertCaseTeamMember(member: CaseTeamMember, caseInstance: Case, user: User, expectNoFailures: boolean = true) {
+export async function assertCaseTeamMember(user: User, caseInstance: Case, member: CaseTeamMember, expectNoFailures: boolean = true) {
     // Get case team via getCaseTeam
     const team = await caseTeamService.getCaseTeam(user, caseInstance);
     const actualCaseTeam = await convertToCaseTeam(team);

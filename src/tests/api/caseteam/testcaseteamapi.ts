@@ -75,7 +75,7 @@ export default class TestCaseTeamAPI extends TestCase {
         await caseTeamService.removeMember(sender, caseInstance, receiver);
 
         // Receiver is no longer part of the team
-        await assertCaseTeamMember(new CaseOwner(receiver, [approverRole, paRole]), caseInstance, sender, false);
+        await assertCaseTeamMember(sender, caseInstance, new CaseOwner(receiver, [approverRole, paRole]), false);
 
         // Getting the case is no longer allowed for receiver
         // Getting the case is still allowed for sender
@@ -96,7 +96,7 @@ export default class TestCaseTeamAPI extends TestCase {
 
         // Add employee to the team, and show that he now has access to the case
         await caseTeamService.setMember(sender, caseInstance, new CaseTeamMember(employee));
-        await assertCaseTeamMember(new CaseTeamMember(employee), caseInstance, sender);
+        await assertCaseTeamMember(sender, caseInstance, new CaseTeamMember(employee));
 
         // Now employee should be able to get the case
         await caseService.getCase(employee, caseInstance);
@@ -112,11 +112,11 @@ export default class TestCaseTeamAPI extends TestCase {
         await caseTeamService.setCaseTeam(sender, caseInstance, newTeam);
 
         // Verify whether receiver is owner or not
-        await assertCaseTeamMember(new CaseOwner(receiver, [requestorRole]), caseInstance, receiver);
+        await assertCaseTeamMember(receiver, caseInstance, new CaseOwner(receiver, [requestorRole]));
         // Verify employee's presence in the case team
-        await assertCaseTeamMember(new CaseTeamMember(employee), caseInstance, receiver);
+        await assertCaseTeamMember(receiver, caseInstance, new CaseTeamMember(employee));
         // Sender is not part of the team
-        await assertCaseTeamMember(new CaseOwner(sender, [requestorRole]), caseInstance, receiver, false);
+        await assertCaseTeamMember(receiver, caseInstance, new CaseOwner(sender, [requestorRole]), false);
 
         // So now sender no longer has access, but the others do.
         await caseService.getCase(sender, caseInstance, 404);
@@ -124,7 +124,7 @@ export default class TestCaseTeamAPI extends TestCase {
         await caseService.getCase(employee, caseInstance);
 
         // Compare the case team with both what the GET case API thinks it is and what the GET case team API thinks it is
-        await assertCaseTeam(caseInstance, employee, newTeam);
+        await assertCaseTeam(employee, caseInstance, newTeam);
 
         // Add a role that is not defined in the case model should not be possible
         await caseTeamService.setMember(receiver, caseInstance, new CaseOwner(receiver, [notExistingRole]), 400);
@@ -140,16 +140,16 @@ export default class TestCaseTeamAPI extends TestCase {
         await caseTeamService.setMember(receiver, caseInstance, new CaseOwner(receiver, [approverRole]));
 
         // Verify employee's, and receiver's membership in the team
-        await assertCaseTeamMember(new CaseOwner(receiver, [requestorRole, approverRole]), caseInstance, receiver);
-        await assertCaseTeamMember(new CaseTeamMember(employee, [approverRole]), caseInstance, receiver);
+        await assertCaseTeamMember(receiver, caseInstance, new CaseOwner(receiver, [requestorRole, approverRole]));
+        await assertCaseTeamMember(receiver, caseInstance, new CaseTeamMember(employee, [approverRole]));
 
         // Remove requestorRole from receiver
         await caseTeamService.removeMemberRoles(receiver, caseInstance, new CaseOwner(receiver), requestorRole);
-        await assertCaseTeamMember(new CaseOwner(receiver, [approverRole]), caseInstance, receiver);
+        await assertCaseTeamMember(receiver, caseInstance, new CaseOwner(receiver, [approverRole]));
 
         // Now add PA role to the receiver and see if that works
         await caseTeamService.setMember(receiver, caseInstance, new CaseOwner(receiver, [paRole]));
-        await assertCaseTeamMember(new CaseOwner(receiver, [approverRole, paRole]), caseInstance, receiver);
+        await assertCaseTeamMember(receiver, caseInstance, new CaseOwner(receiver, [approverRole, paRole]));
 
     }
 
@@ -174,7 +174,7 @@ export default class TestCaseTeamAPI extends TestCase {
 
         // ownerToRemove can perform get case and get team
         await caseService.getCase(ownerToRemove, caseInstance);
-        await assertCaseTeam(caseInstance, ownerToRemove, caseTeam);
+        await assertCaseTeam(ownerToRemove, caseInstance, caseTeam);
 
         // It should be possible to remove a user's ownership by another owner
         const expectedRemovalStatusCode = removingOwnershipShouldSucceed ? 200 : 400;

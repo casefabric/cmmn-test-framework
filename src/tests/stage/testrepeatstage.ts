@@ -7,11 +7,9 @@ import MockServer from "../../framework/mock/mockserver";
 import GetMock from "../../framework/mock/getmock";
 import TestCase from "../../framework/test/testcase";
 import Case from "../../framework/cmmn/case";
-import { assertPlanItemState, assertCaseFileContent } from "../../framework/test/assertions";
+import { assertPlanItemState } from "../../framework/test/assertions";
 import CasePlanService from "../../framework/service/case/caseplanservice";
 import { ServerSideProcessing, SomeTime } from "../../framework/test/time";
-import CaseFileService from "../../framework/service/case/casefileservice";
-import { TenantOwner } from "../../framework/tenant/tenantuser";
 
 const repositoryService = new RepositoryService();
 const caseService = new CaseService();

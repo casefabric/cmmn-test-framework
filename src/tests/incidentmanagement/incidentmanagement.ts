@@ -98,13 +98,13 @@ Starting another case instance of incident management to test Invalid status.
 
         // Claim Verify Details task by raiser
         await taskService.claimTask(raiser, verifyDetailsTask);
-        await assertTask(verifyDetailsTask, raiser, 'Claim', 'Assigned', raiser, raiser);
+        await assertTask(raiser, verifyDetailsTask, 'Claim', 'Assigned', raiser, raiser);
 
         const verifyDetailsInputs = IncidentContent.verifyDetailsInputs;
 
         // Complete Verify Details task by raiser
         await taskService.completeTask(raiser, verifyDetailsTask, verifyDetailsInputs);
-        await assertTask(verifyDetailsTask, raiser, 'Complete', 'Completed', raiser);
+        await assertTask(raiser, verifyDetailsTask, 'Complete', 'Completed', raiser);
 
         // Since process completion happens asynchronously in the Cafienne engine, we will still wait 
         //  a second before continuing the test script
@@ -134,17 +134,17 @@ Starting another case instance of incident management to test Invalid status.
 
         // Can't claim Work on Incident task by solver as he is assigned to it
         await taskService.claimTask(solver, workOnIncidentTask, 400);
-        await assertTask(workOnIncidentTask, raiser, 'Claim', 'Assigned', solver, solver);
+        await assertTask(raiser, workOnIncidentTask, 'Claim', 'Assigned', solver, solver);
 
         const finalTaskOutput = IncidentContent.finalTaskOutput;
 
         // employee cannot complete a task assigned to solver
         await taskService.completeTask(employee, workOnIncidentTask, finalTaskOutput, 404);
-        await assertTask(workOnIncidentTask, raiser, 'Claim', 'Assigned', solver);
+        await assertTask(raiser, workOnIncidentTask, 'Claim', 'Assigned', solver);
 
         // Complete Work on Incident task by solver
         await taskService.completeTask(solver, workOnIncidentTask, finalTaskOutput);
-        await assertTask(workOnIncidentTask, raiser, 'Complete', 'Completed', solver);
+        await assertTask(raiser, workOnIncidentTask, 'Complete', 'Completed', solver);
 
         // Verify completion of Complete plan item
         await assertPlanItemState(raiser, caseInstance, 'Complete', 0, 'Completed');
@@ -169,13 +169,13 @@ Starting another case instance of incident management to test Invalid status.
 
         // Claim Verify Details task by raiser
         await taskService.claimTask(raiser, verifyDetailsTask);
-        await assertTask(verifyDetailsTask, raiser, 'Claim', 'Assigned', raiser, raiser);
+        await assertTask(raiser, verifyDetailsTask, 'Claim', 'Assigned', raiser, raiser);
 
         const verifyDetailsInputs = IncidentContent.verifyDetailsInputsInvalidCase;
 
         // Complete Verify Details task by raiser
         await taskService.completeTask(raiser, verifyDetailsTask, verifyDetailsInputs);
-        await assertTask(verifyDetailsTask, raiser, 'Complete', 'Completed', raiser);
+        await assertTask(raiser, verifyDetailsTask, 'Complete', 'Completed', raiser);
 
         // Since process completion happens asynchronously in the Cafienne engine, we will still wait 
         //  a second before continuing the test script

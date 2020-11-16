@@ -54,15 +54,15 @@ export default class TestSubCase extends TestCase {
         const subCase = parentCaseInstance.planitems.find(item => item.name === 'call helloworld') as PlanItem;
         
         // Sender is the owner of the parent case and receiver doesn't exist in the parent case
-        await assertCaseTeamMember(new CaseOwner(sender, []), caseInstance, sender);
-        await assertCaseTeamMember(new CaseTeamMember(receiver, []), caseInstance, sender, false);
+        await assertCaseTeamMember(sender, caseInstance, new CaseOwner(sender, []));
+        await assertCaseTeamMember(sender, caseInstance, new CaseTeamMember(receiver, []), false);
 
         // Get subcase is possible by sender
         const childCaseInstance = await caseService.getCase(sender, subCase.id);
 
         // Sender is the owner of the subcase and receiver doesn't exist in the subcase yet
-        await assertCaseTeamMember(new CaseOwner(sender, []), childCaseInstance, sender);
-        await assertCaseTeamMember(new CaseTeamMember(receiver, []), childCaseInstance, sender, false);
+        await assertCaseTeamMember(sender, childCaseInstance, new CaseOwner(sender, []));
+        await assertCaseTeamMember(sender, childCaseInstance, new CaseTeamMember(receiver, []), false);
 
         // Get Receive Greeting task
         const receiveTaskName = 'Receive Greeting and Send response';
@@ -81,21 +81,21 @@ export default class TestSubCase extends TestCase {
         await taskService.assignTask(sender, readResponseTask, receiver);
 
         // Now, receiver is part of the subcase team and completes the Read Response task
-        await assertCaseTeamMember(new CaseTeamMember(receiver, []), childCaseInstance, sender);
+        await assertCaseTeamMember(sender, childCaseInstance, new CaseTeamMember(receiver, []));
 
         // Receiver completes the Read Response task
         await taskService.completeTask(receiver, readResponseTask);
 
         // Both subcase and parent case plans should be completed
-        await assertCasePlanState(childCaseInstance, sender, 'Completed');
+        await assertCasePlanState(sender, childCaseInstance, 'Completed');
 
         // Give the server some time to respond back from subcase to parent case
         await ServerSideProcessing();
 
         // And now check parent case.
-        await assertCasePlanState(parentCaseInstance, sender, 'Completed');
+        await assertCasePlanState(sender, parentCaseInstance, 'Completed');
 
         // Still, receiver should not be part of the parent case team
-        await assertCaseTeamMember(new CaseTeamMember(receiver, []), parentCaseInstance, sender, false);
+        await assertCaseTeamMember(sender, parentCaseInstance, new CaseTeamMember(receiver, []), false);
     }
 }

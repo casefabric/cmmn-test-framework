@@ -54,7 +54,7 @@ export default class TestStartCaseEmptyRole extends TestCase {
         // A case with valid role should start
         const caseInstance = await caseService.startCase(sender, startCase) as Case;
 
-        assertCaseTeam(caseInstance, receiver, caseTeam2);
+        assertCaseTeam(receiver, caseInstance, caseTeam2);
 
         // receiver cannot add sender with empty role
         await caseTeamService.setMember(receiver, caseInstance, new CaseTeamMember(sender, [emptyRole], 'user', false), 400);

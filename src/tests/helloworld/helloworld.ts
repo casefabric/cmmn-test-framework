@@ -61,10 +61,10 @@ export default class TestHelloworld extends TestCase {
         await verifyTaskInput(receiveGreetingTask, inputs)
 
         await taskService.claimTask(receiver, receiveGreetingTask);
-        await assertTask(receiveGreetingTask, sender, 'Claim', 'Assigned', receiver);
+        await assertTask(sender, receiveGreetingTask, 'Claim', 'Assigned', receiver);
 
         await taskService.completeTask(receiver, receiveGreetingTask, taskOutput);
-        await assertTask(receiveGreetingTask, sender, 'Complete', 'Completed', receiver);
+        await assertTask(sender, receiveGreetingTask, 'Complete', 'Completed', receiver);
 
         const responseTaskName = 'Read response';
         const nextTasks = await taskService.getCaseTasks(sender, caseInstance);
@@ -73,8 +73,8 @@ export default class TestHelloworld extends TestCase {
             throw new Error('Expecting task to be assigned to sending user');
         }
         await taskService.completeTask(sender, readResponseTask);
-        await assertTask(readResponseTask, sender, 'Complete', 'Completed', sender, sender, sender);
+        await assertTask(sender, readResponseTask, 'Complete', 'Completed', sender, sender, sender);
 
-        await assertCasePlanState(caseInstance, sender, 'Completed');
+        await assertCasePlanState(sender, caseInstance, 'Completed');
     }
 }

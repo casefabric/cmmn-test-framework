@@ -8,7 +8,7 @@ import RepositoryService from '../../../framework/service/case/repositoryservice
 import CaseTeam from '../../../framework/cmmn/caseteam';
 import { CaseOwner } from '../../../framework/cmmn/caseteammember';
 import Case from '../../../framework/cmmn/case';
-import { assertTask, findTask } from '../../../framework/test/assertions';
+import { findTask } from '../../../framework/test/assertions';
 
 const repositoryService = new RepositoryService();
 const definition = 'helloworld.xml';

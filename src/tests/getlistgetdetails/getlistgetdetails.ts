@@ -1,20 +1,14 @@
 'use strict';
 
 import CaseService from '../../framework/service/case/caseservice';
-import TaskService from '../../framework/service/task/taskservice';
 import TestCase from '../../framework/test/testcase';
 import WorldWideTestTenant from '../worldwidetesttenant';
-import TaskValidationMock from '../api/task/task-validation-mock';
 import RepositoryService from '../../framework/service/case/repositoryservice';
-import { ServerSideProcessing, SomeTime } from '../../framework/test/time';
-import { assertPlanItemState, assertTask, verifyTaskInput, assertCaseFileContent, assertPlanItemState } from '../../framework/test/assertions'
-import CaseTeam from '../../framework/cmmn/caseteam';
-import CaseTeamMember from '../../framework/cmmn/caseteammember';
+import { ServerSideProcessing } from '../../framework/test/time';
+import { assertPlanItemState } from '../../framework/test/assertions'
 import CasePlanService from '../../framework/service/case/caseplanservice';
-import PlanItem from '../../framework/cmmn/planitem';
 import CaseFileService from '../../framework/service/case/casefileservice';
 import Case from '../../framework/cmmn/case';
-import User from '../../framework/user';
 import MockServer from '../../framework/mock/mockserver';
 import GetMock from '../../framework/mock/getmock';
 

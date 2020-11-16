@@ -8,10 +8,8 @@ import RepositoryService from '../../../framework/service/case/repositoryservice
 import CaseTeam from '../../../framework/cmmn/caseteam';
 import { CaseOwner } from '../../../framework/cmmn/caseteammember';
 import Case from '../../../framework/cmmn/case';
-import { assertTask, findTask } from '../../../framework/test/assertions';
 import CasePlanService from '../../../framework/service/case/caseplanservice';
 import PlanItem from '../../../framework/cmmn/planitem';
-import Util from '../../../framework/test/util';
 
 const repositoryService = new RepositoryService();
 const definition = 'taskoutputoperations.xml';
