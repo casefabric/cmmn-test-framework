@@ -111,17 +111,17 @@ Starting another case instance of incident management to test Invalid status.
         await ServerSideProcessing();
 
         // Verify completion of Assign Specialist plan item
-        await assertPlanItemState(caseInstance, 'Assign Specialist', 0, raiser, 'Completed');
+        await assertPlanItemState(raiser, caseInstance, 'Assign Specialist', 0, 'Completed');
 
         // Verify completion of Assigned plan item
-        await assertPlanItemState(caseInstance, 'Assigned', 0, raiser, 'Completed');
+        await assertPlanItemState(raiser, caseInstance, 'Assigned', 0, 'Completed');
 
 
         // Next step fails too often
         await ServerSideProcessing();
 
         // Verify completion of first Notify Customer plan item
-        await assertPlanItemState(caseInstance, 'Notify Customer', 0, raiser, 'Completed');
+        await assertPlanItemState(raiser, caseInstance, 'Notify Customer', 0, 'Completed');
 
         const secondTaskInput = IncidentContent.secondTaskInput;
 
@@ -147,12 +147,12 @@ Starting another case instance of incident management to test Invalid status.
         await assertTask(workOnIncidentTask, raiser, 'Complete', 'Completed', solver);
 
         // Verify completion of Complete plan item
-        await assertPlanItemState(caseInstance, 'Complete', 0, raiser, 'Completed');
+        await assertPlanItemState(raiser, caseInstance, 'Complete', 0, 'Completed');
 
         await ServerSideProcessing();
 
         // Verify completion of second Notify Customer plan item
-        await assertPlanItemState(caseInstance, 'Notify Customer', 1, raiser, 'Completed');
+        await assertPlanItemState(raiser, caseInstance, 'Notify Customer', 1, 'Completed');
     }
 
     async testInvalidStatus(startCase: any, firstTaskName: string, firstTaskInput: any) {
@@ -182,15 +182,15 @@ Starting another case instance of incident management to test Invalid status.
         await ServerSideProcessing();
 
         // Verify completion of Invalid Status plan item
-        await assertPlanItemState(caseInstance, 'Invalid Status', 0, raiser, 'Completed');
+        await assertPlanItemState(raiser, caseInstance, 'Invalid Status', 0, 'Completed');
 
         await ServerSideProcessing();
 
         // Verify completion of first Notify Customer plan item
-        await assertPlanItemState(caseInstance, 'Notify Customer', 0, raiser, 'Completed');
+        await assertPlanItemState(raiser, caseInstance, 'Notify Customer', 0, 'Completed');
 
         // Verify completion of Complete plan item
-        await assertPlanItemState(caseInstance, 'Complete', 0, raiser, 'Available');
+        await assertPlanItemState(raiser, caseInstance, 'Complete', 0, 'Available');
     }
 }
 

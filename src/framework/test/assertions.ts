@@ -10,6 +10,8 @@ import { pathReader } from '../cmmn/casefile';
 import CaseTeam from '../cmmn/caseteam';
 import CaseTeamService from '../service/case/caseteamservice';
 import CaseTeamMember from '../cmmn/caseteammember';
+import { SomeTime } from './time';
+import PlanItem from '../cmmn/planitem';
 
 const caseService = new CaseService();
 const taskService = new TaskService();
@@ -45,20 +47,37 @@ export async function assertTask(task: Task, user: User, action: string, expecte
 }
 
 /**
- * Asserts state of a plan item with the given state
+ * Retrieves the plan items of the case and asserts that the plan item has the expected state.
+ * Optionally runs repeated loops to await the plan item to reach the expected state.
+ * Handy to use for ProcessTask and CaseTasks and their potential follow-ups, as these tasks run asynchronously in the backend.
  * @param caseInstance 
- * @param planItemName 
- * @param index 
  * @param user 
- * @param state 
+ * @param planItemName 
+ * @param planItemIndex 
+ * @param expectedState 
+ * @param maxAttempts 
+ * @param waitTimeBetweenAttempts 
+ * @returns {Promise<PlanItem>} the plan item if it is found
+ * @throws {Error} if the plan item is not found after so many attempts
  */
-export async function assertPlanItemState(caseInstance: Case, planItemName: string, index: number, user: TenantUser, state: string) {
-    // Get case details
-    const freshCase = await caseService.getCase(caseInstance, user);
-    const planitem = freshCase.planitems.find(p => p.name === planItemName && p.index === index);
-    if (planitem?.currentState !== state) {
-        throw new Error(`The plan item "${planItemName}" (index: ${index}) is expected to be ${state}, but it is ${planitem?.currentState}`);
+export async function assertPlanItemState(user: User, caseInstance: Case, planItemName: string, planItemIndex: number, expectedState: string, maxAttempts: number = 1, waitTimeBetweenAttempts = 1000): Promise<PlanItem> {
+    let currentAttempt = 1;
+    while (true) {
+        console.log(`Running attempt ${currentAttempt} of ${maxAttempts} to find ${planItemName}.${planItemIndex} in state ${expectedState}`);
+        const freshCase = await caseService.getCase(caseInstance, user);
+        // console.log("Current Plan Items\n" + (freshCase.planitems.map(item => "- '" + item.name + "." + item.index + "' ==> '" + item.currentState + "'")).join('\n'));
+        const planItem = freshCase.planitems.find(p => p.name === planItemName && p.index === planItemIndex);
+        if (planItem?.currentState === expectedState) {
+            return planItem;
+        }
+        if (currentAttempt >= maxAttempts) {
+            break;
+        }
+        const currentMsg = !planItem ? 'not (yet) found in the case plan' : `in state ${planItem.currentState}`;
+        await SomeTime(waitTimeBetweenAttempts, `Waiting ${waitTimeBetweenAttempts} millis before refreshing info on ${planItemName}.${planItemIndex} to be in state ${expectedState}. The item is currently ${currentMsg}`);
+        currentAttempt++;
     }
+    throw new Error(`Did not find the plan item ${planItemName}.${planItemIndex} in state ${expectedState} after ${maxAttempts} attempts`);
 }
 
 /**
@@ -67,7 +86,7 @@ export async function assertPlanItemState(caseInstance: Case, planItemName: stri
  * @param user 
  * @param state 
  */
-export async function assertCasePlanState(caseInstance: Case, user: TenantUser, state: string) {
+export async function assertCasePlanState(caseInstance: Case, user: User, state: string) {
     // Get case details
     const freshCase = await caseService.getCase(caseInstance, user);
     if (freshCase.state !== state) {
@@ -108,7 +127,7 @@ export function findTask(tasks: Task[], taskName: string): Task {
  */
 export function assertTaskCount(tasks: Task[], state: string, expectedCount: Number) {
     const actualCount = tasks.filter(t => t.taskState === state).length
-    if(actualCount != expectedCount ) {
+    if (actualCount != expectedCount) {
         throw new Error('Number of ' + state + ' tasks expected to be ' + expectedCount + '; but found ' + actualCount)
     }
 }
@@ -125,13 +144,13 @@ export function assertTaskCount(tasks: Task[], state: string, expectedCount: Num
 export async function assertCaseFileContent(caseInstance: Case, user: User, path: string, expectedContent: any, log: boolean = false) {
     await caseFileService.getCaseFile(caseInstance, user).then(casefile => {
         // console.log("Case File for reading path " + path, casefile);
-        const readCaseFileItem = (caseFile:any) => {
+        const readCaseFileItem = (caseFile: any) => {
             const item = pathReader(caseFile, path);
-            if (! item && caseFile.file) { // Temporary backwards compatibility; casefile.file will be dropped in 1.1.5
+            if (!item && caseFile.file) { // Temporary backwards compatibility; casefile.file will be dropped in 1.1.5
                 return pathReader(caseFile.file, path)
             }
             return item;
-        } 
+        }
 
         const actualCaseFileItem = readCaseFileItem(casefile);
         if (!Comparison.sameJSON(actualCaseFileItem, expectedContent, log)) {
@@ -175,7 +194,7 @@ const hasMember = (team: CaseTeam, expectedMember: CaseTeamMember): [boolean, st
             msg = `Ownership of the ${member2.memberId} doesn\'t match`;
             return false;
         }
-        if (! sameRoles(member1.caseRoles, member2.caseRoles)) {
+        if (!sameRoles(member1.caseRoles, member2.caseRoles)) {
             msg = `Roles of the ${member2.memberId} doesn\'t match`;
             return false;
         }
@@ -190,14 +209,14 @@ const hasMember = (team: CaseTeam, expectedMember: CaseTeamMember): [boolean, st
         if (roles1.length !== roles2.length) {
             return false;
         }
-        for (let i = 0; i< roles1.length; i++) {
+        for (let i = 0; i < roles1.length; i++) {
             if (!roles2.find(role => role === roles1[i])) {
                 return false;
             }
         }
         return true;
     }
-    if (! team.members.find(member => compareMember(member, expectedMember))) {
+    if (!team.members.find(member => compareMember(member, expectedMember))) {
         return [false, msg];
     }
     return [true, msg];
@@ -206,10 +225,10 @@ const hasMember = (team: CaseTeam, expectedMember: CaseTeamMember): [boolean, st
 async function verifyTeam(team1: CaseTeam, team2: CaseTeam) {
     const compareTeam = (team1: CaseTeam, team2: CaseTeam) => {
         if (team1.members.length != team2.members.length) return false;
-        for (let i = 0; i< team1.members.length; i++) {
+        for (let i = 0; i < team1.members.length; i++) {
             const member1 = team1.members[i];
             const [status, msg] = hasMember(team2, member1);
-            if (! status) {
+            if (!status) {
                 // console.log("Team2 does not have member " + JSON.stringify(member1))
                 return false;
             }
@@ -238,7 +257,7 @@ export async function assertCaseTeam(caseInstance: Case, user: User, expectedTea
     const verifyActualCaseTeam = await verifyTeam(actualCaseTeam, expectedTeam)
     const verifyNewCaseTeam = await verifyTeam(newCaseTeam, expectedTeam)
 
-    if(!verifyActualCaseTeam || !verifyNewCaseTeam) {
+    if (!verifyActualCaseTeam || !verifyNewCaseTeam) {
         throw new Error('Case team is not the same as given to the case');
     }
     // if(!Comparison.sameJSON(actualCaseTeam, expectedTeam) || !Comparison.sameJSON(newCaseTeam, expectedTeam)) {

@@ -42,7 +42,7 @@
                 </requiredRule>
             </itemControl>
         </planItem>
-        <planItem id="pi__Sp9aR_8" name="Fail handling " definitionRef="_Sp9aR_8">
+        <planItem id="pi__Sp9aR_8" name="Fail handling" definitionRef="_Sp9aR_8">
             <entryCriterion id="_Sp9aR_18" name="EntryCriterion_2" sentryRef="crit__Sp9aR_1"/>
             <itemControl id="_Sp9aR_15">
                 <repetitionRule id="_Sp9aR_20">
@@ -77,12 +77,11 @@
             </planItemOnPart>
         </sentry>
         <sentry id="crit__Sp9aR_2">
-            <planItemOnPart id="_Sp9aR_25" sourceRef="pi_tmr__Sp9aR_0">
+            <planItemOnPart id="_Sp9aR_16" sourceRef="pi_ue__Sp9aR_0">
                 <standardEvent>occur</standardEvent>
             </planItemOnPart>
         </sentry>
         <processTask id="pt__LQXO7_8" name="GetList" isBlocking="true" processRef="GetListWebService.process">
-            <inputs id="_LQXO7_12" name="testParameter"/>
             <inputs id="_Sp9aR_5" name="HTTPConfig" bindingRef="_Sp9aR_1"/>
             <outputs id="_LQXO7_14" name="responseCode"/>
             <outputs id="_LQXO7_16" name="responseMessage" bindingRef="_Sp9aR_27"/>
@@ -96,12 +95,11 @@
                     </body>
                 </transformation>
             </parameterMapping>
-            <parameterMapping id="_LQXO7_13" sourceRef="_LQXO7_12" targetRef="testParameter"/>
             <parameterMapping id="_LQXO7_15" sourceRef="responseCode" targetRef="_LQXO7_14"/>
-            <parameterMapping id="_LQXO7_17" sourceRef="responseMessage" targetRef="_LQXO7_16">
+            <parameterMapping id="_LQXO7_17" sourceRef="_dTMD_exception" targetRef="_LQXO7_16">
                 <transformation id="_Sp9aR_28" language="spel">
                     <body>
-                        <![CDATA[responseMessage.cause.message]]>
+                        <![CDATA[exception.message]]>
                     </body>
                 </transformation>
             </parameterMapping>
@@ -130,19 +128,13 @@
             <parameterMapping id="_LQXO7_31" sourceRef="details" targetRef="_LQXO7_30"/>
         </processTask>
         <milestone id="ms__Sp9aR_0" name="GetList Failed"/>
-        <timerEvent id="tmr__Sp9aR_0" name="Wait for 2 seconds">
-            <timerExpression id="_Sp9aR_17" language="spel">
-                <body>
-                    <![CDATA[PT2S]]>
-                </body>
-            </timerExpression>
-            <planItemStartTrigger id="_Sp9aR_16">
-                <standardEvent></standardEvent>
-            </planItemStartTrigger>
-        </timerEvent>
-        <stage id="_Sp9aR_8" name="Fail handling " autoComplete="true">
-            <planItem id="pi_tmr__Sp9aR_0" name="Wait for 2 seconds" definitionRef="tmr__Sp9aR_0"/>
+        <userEvent id="ue__Sp9aR_0" name="Try Again"/>
+        <stage id="_Sp9aR_8" name="Fail handling" autoComplete="true">
+            <planItem id="pi__Sp9aR_30" name="Mini Stage" definitionRef="_Sp9aR_30"/>
             <planItem id="pi_ms__Sp9aR_0" name="GetList Failed" definitionRef="ms__Sp9aR_0"/>
+        </stage>
+        <stage id="_Sp9aR_30" name="Mini Stage" autoComplete="true">
+            <planItem id="pi_ue__Sp9aR_0" name="Try Again" definitionRef="ue__Sp9aR_0"/>
         </stage>
     </casePlanModel>
 </case>

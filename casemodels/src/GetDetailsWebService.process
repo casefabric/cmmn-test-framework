@@ -9,11 +9,7 @@
             <http-headers>
                 <http-header name="Accept">application/json</http-header>
             </http-headers>
-            <parameterMapping sourceRef="responsePayload" targetRef="details">
-                <transformation language="json">
-                    <body>$.._2</body>
-                </transformation>
-            </parameterMapping>
+            <parameterMapping sourceRef="responsePayload" targetRef="details"></parameterMapping>
         </cafienne:implementation>
     </extensionElements>
 </process>
