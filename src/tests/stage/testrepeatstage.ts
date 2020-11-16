@@ -91,7 +91,7 @@ export default class TestRepeatStage extends TestCase {
             })
 
             // Status stage of index i must be completed
-            await assertPlanItemState(caseInstance, 'Status', i, user, 'Completed');
+            await assertPlanItemState(user, caseInstance, 'Status', i, 'Completed');
         }
 
         // Make transistion on Kill user event

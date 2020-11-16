@@ -95,7 +95,7 @@ export default class TestTaskValidationAPI extends TestCase {
 
         caseInstance = await caseService.getCase(caseInstance, pete);
 
-        await assertPlanItemState(caseInstance, 'AssertMockServiceIsRunning', 0, pete, 'Completed')
+        await assertPlanItemState(pete, caseInstance, 'AssertMockServiceIsRunning', 0, 'Completed')
 
         const taskId = caseInstance.planitems.find(p => p.name === 'HumanTask')?.id;
         if (!taskId) {
