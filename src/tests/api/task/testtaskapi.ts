@@ -85,7 +85,7 @@ export default class TestTaskAPI extends TestCase {
         });
 
         // Now add receiver to the case team, and show that now he also gets to see the unassigned task
-        await caseTeamService.setMember(caseInstance, sender, new CaseTeamMember(receiver));
+        await caseTeamService.setMember(sender, caseInstance, new CaseTeamMember(receiver));
 
         await this.getReceiverUnassignedTasks(receiversTaskCountBeforeStartCase + 1);
 

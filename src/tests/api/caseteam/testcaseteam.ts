@@ -62,7 +62,7 @@ export default class TestCaseTeam extends TestCase {
         assertTaskCount(tasks, 'Unassigned', 4);
 
         // Add Approver role to sender
-        await caseTeamService.setMember(caseInstance, sender, new CaseOwner(sender, [approverRole]));
+        await caseTeamService.setMember(sender, caseInstance, new CaseOwner(sender, [approverRole]));
         await assertCaseTeamMember(new CaseOwner(sender, [approverRole]), caseInstance, sender);
 
         // Now, sender can claim 'Approve' task
@@ -78,7 +78,7 @@ export default class TestCaseTeam extends TestCase {
         await taskService.getCaseTasks(caseInstance, receiver, 404);
 
         // Sender can add a role mapping to the case team
-        await caseTeamService.setMember(caseInstance, sender, new TenantRoleMember('Receiver', [requestorRole]));
+        await caseTeamService.setMember(sender, caseInstance, new TenantRoleMember('Receiver', [requestorRole]));
         await assertCaseTeamMember( new TenantRoleMember('Receiver', [requestorRole]), caseInstance, sender);
 
         // Now, getting the case and case tasks should be possible for receiver
@@ -94,16 +94,16 @@ export default class TestCaseTeam extends TestCase {
         assertTaskCount(tasks, 'Unassigned', 2);
 
         // As receiver is not a caseteam owner, he cannot remove sender (who is owner)
-        await caseTeamService.removeMember(caseInstance, receiver, sender, 401);
+        await caseTeamService.removeMember(receiver, caseInstance, sender, 401);
 
         // Sender makes receiver a case team owner; but via user mapping
-        await caseTeamService.setMember(caseInstance, sender, new CaseOwner(receiver, [requestorRole]));
+        await caseTeamService.setMember(sender, caseInstance, new CaseOwner(receiver, [requestorRole]));
         await assertCaseTeamMember(new CaseOwner(receiver, [requestorRole]), caseInstance, sender);
 
         await caseService.getCase(receiver, caseInstance);
         
         // Now, receiver can remove sender
-        await caseTeamService.removeMember(caseInstance, receiver, sender);
+        await caseTeamService.removeMember(receiver, caseInstance, sender);
         await assertCaseTeamMember(new CaseOwner(sender, [approverRole]), caseInstance, receiver, false);
 
         // Finally, sender cannot perform find case, case tasks, and task

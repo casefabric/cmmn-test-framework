@@ -74,7 +74,7 @@ export default class TestBusinessIdentifiers extends TestCase {
 
         // Deleted the case file item; now business identifiers must be cleared, 
         // hence original results should come.
-        await caseFileService.deleteCaseFileItem(caseInstance, sender, 'Greeting');
+        await caseFileService.deleteCaseFileItem(sender, caseInstance, 'Greeting');
         // Check no more extra matches
         await helloFilter.assertExtraMatches(0);
         await toFilter.assertExtraMatches(0);

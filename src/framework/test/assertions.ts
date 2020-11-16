@@ -247,7 +247,7 @@ async function verifyTeam(team1: CaseTeam, team2: CaseTeam) {
  */
 export async function assertCaseTeam(caseInstance: Case, user: User, expectedTeam: CaseTeam) {
     // Get case team via getCaseTeam
-    const team = await caseTeamService.getCaseTeam(caseInstance, user)
+    const team = await caseTeamService.getCaseTeam(user, caseInstance)
     const actualCaseTeam = await convertToCaseTeam(team)
 
     // Get case team via getCase
@@ -274,7 +274,7 @@ export async function assertCaseTeam(caseInstance: Case, user: User, expectedTea
  */
 export async function assertCaseTeamMember(member: CaseTeamMember, caseInstance: Case, user: User, expectNoFailures: boolean = true) {
     // Get case team via getCaseTeam
-    const team = await caseTeamService.getCaseTeam(caseInstance, user);
+    const team = await caseTeamService.getCaseTeam(user, caseInstance);
     const actualCaseTeam = await convertToCaseTeam(team);
 
     const [status, msg] = hasMember(actualCaseTeam, member)

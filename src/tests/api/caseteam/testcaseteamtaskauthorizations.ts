@@ -85,7 +85,7 @@ export default class TestCaseTeamTaskAuthorizations extends TestCase {
         await assertTask(approveTask, sender, 'Revoke', 'Unassigned', User.NONE, User.NONE);
 
         // Sender can remove Approve role from employee
-        await caseTeamService.removeMemberRoles(caseInstance, sender, new CaseTeamMember(employee), approverRole);
+        await caseTeamService.removeMemberRoles(sender, caseInstance, new CaseTeamMember(employee), approverRole);
         await assertCaseTeamMember(new CaseTeamMember(employee), caseInstance, sender);
 
         // Approve task can be assigned to employee by sender (although he don't have appropriate roles)
@@ -178,7 +178,7 @@ export default class TestCaseTeamTaskAuthorizations extends TestCase {
         await assertCaseTeamMember(new CaseTeamMember('I\'m not in the tenant'), caseInstance, sender, false);
 
         // Sender can remove employee from case team
-        await caseTeamService.removeMember(caseInstance, sender, employee);
+        await caseTeamService.removeMember(sender, caseInstance, employee);
         await assertCaseTeamMember(new CaseTeamMember(employee, [approverRole]), caseInstance, sender, false);
 
         // Sender can assign Request task to employee (who is not part of the team)
@@ -211,7 +211,7 @@ export default class TestCaseTeamTaskAuthorizations extends TestCase {
         await assertCaseTeamMember(new CaseOwner(sender, []), caseInstance, sender);
 
         // // Sender cannot remove Request role from sender itself (as there is no Request role)
-        // await caseTeamService.removeMemberRoles(caseInstance, sender, new CaseTeamMember(sender), requestorRole, false);
+        // await caseTeamService.removeMemberRoles(sender, caseInstance, new CaseTeamMember(sender), requestorRole, false);
 
         // Sender assigns the Request task to receiver
         await taskService.assignTask(requestTask, sender, receiver);
@@ -225,7 +225,7 @@ export default class TestCaseTeamTaskAuthorizations extends TestCase {
         await assertTask(requestTask, sender, 'Complete', 'Completed', receiver, receiver);
 
         // Again, sender removes the employee from the team
-        await caseTeamService.removeMember(caseInstance, sender, employee);
+        await caseTeamService.removeMember(sender, caseInstance, employee);
         await assertCaseTeamMember(new CaseTeamMember(employee, [requestorRole]), caseInstance, sender, false);
 
         // Sender can assign Assist task to employee (who is not part of the team)

@@ -59,7 +59,7 @@ export default class TestRoleBinding extends TestCase {
         await caseService.getCase(employee, caseInstance, 404);
 
         // Print the case team
-        await caseTeamService.getCaseTeam(caseInstance, sender).then(team => {
+        await caseTeamService.getCaseTeam(sender, caseInstance).then(team => {
             if (caseTeam.members.length != team.members.length) {
                 throw new Error('Unexpected different number of members');
             }
@@ -86,7 +86,7 @@ export default class TestRoleBinding extends TestCase {
         // await new TenantService().addTenantUserRole(sender, worldwideTenant.tenant, receiver.id, "Sender");
         // await caseTeamService.addMemberRole(caseInstance, sender, "Receiver", "Approver");
 
-        await caseTeamService.setMember(caseInstance, sender, new CaseTeamMember(receiver, ["Approver"]))
+        await caseTeamService.setMember(sender, caseInstance, new CaseTeamMember(receiver, ["Approver"]))
         // Now it should be possible
         // await taskService.claimTask(approveTask, receiver);
 
