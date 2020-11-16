@@ -90,20 +90,20 @@ Starting another case instance of incident management to test Invalid status.
         const caseInstance = await caseService.startCase(raiser, startCase) as Case;
 
         // Get case tasks
-        const tasks = await taskService.getCaseTasks(caseInstance, raiser);
+        const tasks = await taskService.getCaseTasks(raiser, caseInstance);
 
         // Get Verify Details task
         const verifyDetailsTask = findTask(tasks, firstTaskName);
         await verifyTaskInput(verifyDetailsTask, firstTaskInput);
 
         // Claim Verify Details task by raiser
-        await taskService.claimTask(verifyDetailsTask, raiser);
+        await taskService.claimTask(raiser, verifyDetailsTask);
         await assertTask(verifyDetailsTask, raiser, 'Claim', 'Assigned', raiser, raiser);
 
         const verifyDetailsInputs = IncidentContent.verifyDetailsInputs;
 
         // Complete Verify Details task by raiser
-        await taskService.completeTask(verifyDetailsTask, raiser, verifyDetailsInputs);
+        await taskService.completeTask(raiser, verifyDetailsTask, verifyDetailsInputs);
         await assertTask(verifyDetailsTask, raiser, 'Complete', 'Completed', raiser);
 
         // Since process completion happens asynchronously in the Cafienne engine, we will still wait 
@@ -126,24 +126,24 @@ Starting another case instance of incident management to test Invalid status.
         const secondTaskInput = IncidentContent.secondTaskInput;
 
         // Get case tasks
-        const nextTasks = await taskService.getCaseTasks(caseInstance, raiser);
+        const nextTasks = await taskService.getCaseTasks(raiser, caseInstance);
 
         // Get Work on Incident task
         const workOnIncidentTask = findTask(nextTasks, 'Work on Incident');
         await verifyTaskInput(workOnIncidentTask, secondTaskInput);
 
         // Can't claim Work on Incident task by solver as he is assigned to it
-        await taskService.claimTask(workOnIncidentTask, solver, 400);
+        await taskService.claimTask(solver, workOnIncidentTask, 400);
         await assertTask(workOnIncidentTask, raiser, 'Claim', 'Assigned', solver, solver);
 
         const finalTaskOutput = IncidentContent.finalTaskOutput;
 
         // employee cannot complete a task assigned to solver
-        await taskService.completeTask(workOnIncidentTask, employee, finalTaskOutput, 404);
+        await taskService.completeTask(employee, workOnIncidentTask, finalTaskOutput, 404);
         await assertTask(workOnIncidentTask, raiser, 'Claim', 'Assigned', solver);
 
         // Complete Work on Incident task by solver
-        await taskService.completeTask(workOnIncidentTask, solver, finalTaskOutput);
+        await taskService.completeTask(solver, workOnIncidentTask, finalTaskOutput);
         await assertTask(workOnIncidentTask, raiser, 'Complete', 'Completed', solver);
 
         // Verify completion of Complete plan item
@@ -161,20 +161,20 @@ Starting another case instance of incident management to test Invalid status.
         const caseInstance = await caseService.startCase(raiser, startCase) as Case;
 
         // Get case tasks
-        const tasks = await taskService.getCaseTasks(caseInstance, raiser);
+        const tasks = await taskService.getCaseTasks(raiser, caseInstance);
 
         // Get Verify Details task
         const verifyDetailsTask = findTask(tasks, firstTaskName);
         await verifyTaskInput(verifyDetailsTask, firstTaskInput);
 
         // Claim Verify Details task by raiser
-        await taskService.claimTask(verifyDetailsTask, raiser);
+        await taskService.claimTask(raiser, verifyDetailsTask);
         await assertTask(verifyDetailsTask, raiser, 'Claim', 'Assigned', raiser, raiser);
 
         const verifyDetailsInputs = IncidentContent.verifyDetailsInputsInvalidCase;
 
         // Complete Verify Details task by raiser
-        await taskService.completeTask(verifyDetailsTask, raiser, verifyDetailsInputs);
+        await taskService.completeTask(raiser, verifyDetailsTask, verifyDetailsInputs);
         await assertTask(verifyDetailsTask, raiser, 'Complete', 'Completed', raiser);
 
         // Since process completion happens asynchronously in the Cafienne engine, we will still wait 

@@ -66,25 +66,25 @@ export default class TestSubCase extends TestCase {
 
         // Get Receive Greeting task
         const receiveTaskName = 'Receive Greeting and Send response';
-        const tasks = await taskService.getCaseTasks(childCaseInstance, sender);
+        const tasks = await taskService.getCaseTasks(sender, childCaseInstance);
         const receiveGreetingTask = findTask(tasks, receiveTaskName);
 
         // Complete Receive Greeting task by sender
-        await taskService.completeTask(receiveGreetingTask, sender, taskOutput);
+        await taskService.completeTask(sender, receiveGreetingTask, taskOutput);
 
         // Get Read Response task
         const responseTaskName = 'Read response';
-        const nextTasks = await taskService.getCaseTasks(childCaseInstance, sender);
+        const nextTasks = await taskService.getCaseTasks(sender, childCaseInstance);
         const readResponseTask = findTask(nextTasks, responseTaskName);
 
         // Sender assigns the Read Response task to receiver
-        await taskService.assignTask(readResponseTask, sender, receiver);
+        await taskService.assignTask(sender, readResponseTask, receiver);
 
         // Now, receiver is part of the subcase team and completes the Read Response task
         await assertCaseTeamMember(new CaseTeamMember(receiver, []), childCaseInstance, sender);
 
         // Receiver completes the Read Response task
-        await taskService.completeTask(readResponseTask, receiver);
+        await taskService.completeTask(receiver, readResponseTask);
 
         // Both subcase and parent case plans should be completed
         await assertCasePlanState(childCaseInstance, sender, 'Completed');

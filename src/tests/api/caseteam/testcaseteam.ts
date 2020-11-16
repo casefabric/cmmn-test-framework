@@ -46,7 +46,7 @@ export default class TestCaseTeam extends TestCase {
         await caseService.getCase(employee, caseInstance, 404);
 
         // Get case tasks should be possible for sender and there should be 5 Unassigned tasks
-        let tasks = await taskService.getCaseTasks(caseInstance, sender);
+        let tasks = await taskService.getCaseTasks(sender, caseInstance);
         assertTaskCount(tasks, 'Unassigned', 5);
 
         const approveTask = findTask(tasks, 'Approve');
@@ -54,11 +54,11 @@ export default class TestCaseTeam extends TestCase {
         const requestTask = findTask(tasks, 'Request');
         
         // Sender can claim task 'Task Without Role'
-        await taskService.claimTask(taskWithoutRole, sender);
+        await taskService.claimTask(sender, taskWithoutRole);
         await assertTask(taskWithoutRole, sender, 'Claim', 'Assigned', sender, sender);
         
         // There should be 4 Unassigned tasks
-        tasks = await taskService.getCaseTasks(caseInstance, sender);
+        tasks = await taskService.getCaseTasks(sender, caseInstance);
         assertTaskCount(tasks, 'Unassigned', 4);
 
         // Add Approver role to sender
@@ -66,31 +66,31 @@ export default class TestCaseTeam extends TestCase {
         await assertCaseTeamMember(new CaseOwner(sender, [approverRole]), caseInstance, sender);
 
         // Now, sender can claim 'Approve' task
-        await taskService.claimTask(approveTask, sender)
+        await taskService.claimTask(sender, approveTask)
         await assertTask(approveTask, sender, 'Claim', 'Assigned', sender, sender);
 
         // There should be 3 Unassigned tasks
-        tasks = await taskService.getCaseTasks(caseInstance, sender);
+        tasks = await taskService.getCaseTasks(sender, caseInstance);
         assertTaskCount(tasks, 'Unassigned', 3);
 
         // As receiver is not part of the team, getting tasks for receiver should fail
-        await taskService.getTask(approveTask, receiver, 404);
-        await taskService.getCaseTasks(caseInstance, receiver, 404);
+        await taskService.getTask(receiver, approveTask, 404);
+        await taskService.getCaseTasks(receiver, caseInstance, 404);
 
         // Sender can add a role mapping to the case team
         await caseTeamService.setMember(sender, caseInstance, new TenantRoleMember('Receiver', [requestorRole]));
         await assertCaseTeamMember( new TenantRoleMember('Receiver', [requestorRole]), caseInstance, sender);
 
         // Now, getting the case and case tasks should be possible for receiver
-        await taskService.getCaseTasks(caseInstance, receiver);
-        await taskService.getTask(approveTask, receiver);
+        await taskService.getCaseTasks(receiver, caseInstance);
+        await taskService.getTask(receiver, approveTask);
 
         // Receiver can claim 'Request' task
-        await taskService.claimTask(requestTask, receiver);
+        await taskService.claimTask(receiver, requestTask);
         await assertTask(requestTask, receiver, 'Claim', 'Assigned', receiver, receiver);
 
         // There should be 2 Unassigned tasks
-        tasks = await taskService.getCaseTasks(caseInstance, sender);
+        tasks = await taskService.getCaseTasks(sender, caseInstance);
         assertTaskCount(tasks, 'Unassigned', 2);
 
         // As receiver is not a caseteam owner, he cannot remove sender (who is owner)
@@ -108,7 +108,7 @@ export default class TestCaseTeam extends TestCase {
 
         // Finally, sender cannot perform find case, case tasks, and task
         await caseService.getCase(sender, caseInstance, 404);
-        await taskService.getCaseTasks(caseInstance, sender, 404);
-        await taskService.getTask(approveTask, sender, 404);
+        await taskService.getCaseTasks(sender, caseInstance, 404);
+        await taskService.getTask(sender, approveTask, 404);
     }
 }

@@ -102,7 +102,7 @@ export default class TestTravelRequest extends TestCase {
             // console.log("CI: " + caseInstance)
         });
 
-        const tasks = await taskService.getCaseTasks(caseInstance, approver);
+        const tasks = await taskService.getCaseTasks(approver, caseInstance);
         console.log("Approver tasks: ", tasks);
         const approvalTask = tasks.find(task => task.taskName === approvalTaskName);
         if (! approvalTask) {
@@ -117,26 +117,26 @@ export default class TestTravelRequest extends TestCase {
             }
         };
 
-        await taskService.completeTask(approvalTask, approver, approveTaskOutput);
+        await taskService.completeTask(approver, approvalTask, approveTaskOutput);
 
         await lana.login();
-        const lanasCaseTasks = await taskService.getCaseTasks(caseInstance, lana);
+        const lanasCaseTasks = await taskService.getCaseTasks(lana, caseInstance);
         const createTravelOrderTask = lanasCaseTasks.find(task => task.taskName === createTravelOrderTaskName);
         if (! createTravelOrderTask) {
             throw new Error('Did not receive expected task with name ' + createTravelOrderTaskName);
         }
 
-        await taskService.claimTask(createTravelOrderTask, lana);
-        await taskService.completeTask(createTravelOrderTask, lana);
+        await taskService.claimTask(lana, createTravelOrderTask);
+        await taskService.completeTask(lana, createTravelOrderTask);
 
         if (Destination === destinationUS) {
             console.log("We also need to arrange Visa and Esta");
-            const requestorTasks = await taskService.getCaseTasks(caseInstance, requestor);
+            const requestorTasks = await taskService.getCaseTasks(requestor,caseInstance);
             const arrangeVisaTask = requestorTasks.find(task => task.taskName === arrangeVisaTaskName)
             if (! arrangeVisaTask) {
                 throw new Error('Did not receive expected task with name ' + arrangeVisaTaskName);
             }
-                await taskService.completeTask(arrangeVisaTask, requestor);
+                await taskService.completeTask(requestor, arrangeVisaTask);
         }
 
         console.log("Completed test case travel request for case with id " + caseInstance.id);

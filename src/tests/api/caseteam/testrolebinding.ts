@@ -68,7 +68,7 @@ export default class TestRoleBinding extends TestCase {
         });
 
         // Claim a task a receiver should work
-        const tasks = await taskService.getCaseTasks(receiverCase, receiver);
+        const tasks = await taskService.getCaseTasks(receiver, receiverCase);
         const approveTask = tasks.find(task => task.taskName === 'Approve');
         if (!approveTask) {
             throw new Error('Cannot find Approve task');
@@ -79,28 +79,28 @@ export default class TestRoleBinding extends TestCase {
         }
 
         // Claim task must not be possible for the employee with task not found error
-        await this.claimTaskShouldFail(approveTask, employee, 'cannot be found', 404);
+        await this.claimTaskShouldFail(employee, approveTask, 'cannot be found', 404);
         // Claim task must not be possible for the receiver with task not found error
-        await this.claimTaskShouldFail(approveTask, receiver, 'You do not have permission to perform this operation', 401);
+        await this.claimTaskShouldFail(receiver, approveTask, 'You do not have permission to perform this operation', 401);
 
         // await new TenantService().addTenantUserRole(sender, worldwideTenant.tenant, receiver.id, "Sender");
         // await caseTeamService.addMemberRole(caseInstance, sender, "Receiver", "Approver");
 
         await caseTeamService.setMember(sender, caseInstance, new CaseTeamMember(receiver, ["Approver"]))
         // Now it should be possible
-        // await taskService.claimTask(approveTask, receiver);
+        // await taskService.claimTask(receiver, approveTask);
 
         // Claim task must be possible for the receiver
-        await taskService.claimTask(approveTask, sender);
+        await taskService.claimTask(sender, approveTask);
 
         // Remove role binding for receiver, and see if he can still access the case
 
 
     }
 
-    async claimTaskShouldFail(task: Task, user: User, expectedMessage: string, expectedStatusCode: number) {
+    async claimTaskShouldFail(user: User, task: Task, expectedMessage: string, expectedStatusCode: number) {
         // Claim task must be possible for the receiver
-        const response = await taskService.claimTask(task, user, expectedStatusCode);
+        const response = await taskService.claimTask(user, task, expectedStatusCode);
         // const response = await caseService.getDiscretionaryItems(employee, receiverCase, false);
         const failureText = await response.text();
         console.log("Response: " + response.status)

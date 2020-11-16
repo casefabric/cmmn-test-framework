@@ -92,7 +92,7 @@ export default class TestTaskOutputOperations extends TestCase {
     }
 
     async runTask(taskName: string, output: any) {
-        const tasks = await taskService.getCaseTasks(this.case(), user);
+        const tasks = await taskService.getCaseTasks(user, this.case());
         const task = tasks.find(task => {
             if (task.taskName === taskName) console.log("Found task '" + taskName +"' in state " + task.taskState)
             return task.taskName === taskName && task.taskState !== 'Completed'
@@ -101,7 +101,7 @@ export default class TestTaskOutputOperations extends TestCase {
             throw new Error('There is no Active instance of task ' + taskName);
         }
         console.log(`Invoking ${taskName} with ${JSON.stringify(output)}`)
-        await taskService.completeTask(task, user, {Out: output});
+        await taskService.completeTask(user, task, {Out: output});
     }
 
     case(msg = 'Cannot get the case if it is not yet started') {

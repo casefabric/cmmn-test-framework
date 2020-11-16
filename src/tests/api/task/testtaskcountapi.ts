@@ -84,10 +84,10 @@ export default class TestTaskCountAPI extends TestCase {
 
 
 
-        const tasks = await taskService.getCaseTasks(caseInstance, sender);
+        const tasks = await taskService.getCaseTasks(sender, caseInstance);
         const receiveGreetingTask = tasks.find(task => task.taskName === 'Receive Greeting and Send response') as Task;
 
-        await taskService.claimTask(receiveGreetingTask, sender);
+        await taskService.claimTask(sender, receiveGreetingTask);
 
         await taskService.countTasks(sender).then((taskCountAfter: TaskCount) => {
             console.log("Task Count after creating 3 cases and claiming 1 task: " + JSON.stringify(taskCountAfter));

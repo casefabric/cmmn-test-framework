@@ -30,7 +30,7 @@ export default class TestDiscretionaryItems extends TestCase {
 
         // console.log("Plan items first is: ", caseInstance.planitems)
 
-        const tasks = await taskService.getCaseTasks(caseInstance, user);
+        const tasks = await taskService.getCaseTasks(user, caseInstance);
         const numTasksBeforePlanning = tasks.length;
 
 
@@ -51,7 +51,7 @@ export default class TestDiscretionaryItems extends TestCase {
         caseInstance = await caseService.getCase(user, caseInstance);
         // console.log("Plan items now is: ", caseInstance.planitems)
 
-        const newSetOfTasks = await taskService.getCaseTasks(caseInstance, user);
+        const newSetOfTasks = await taskService.getCaseTasks(user, caseInstance);
         console.log("Old number of tasks: " + numTasksBeforePlanning + ", new number after planning: " + newSetOfTasks.length)
     }
 }

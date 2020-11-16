@@ -58,11 +58,11 @@ export default class TestTaskAPI extends TestCase {
 
         await caseService.getCase(receiver, caseInstance, 404);
 
-        await taskService.getCaseTasks(caseInstance, sender).then(tasks => {
+        await taskService.getCaseTasks(sender, caseInstance).then(tasks => {
             console.log('Sender has ' + tasks.length + ' case tasks')
         });
 
-        await taskService.getCaseTasks(caseInstance, receiver, 404).then(response => {
+        await taskService.getCaseTasks(receiver, caseInstance, 404).then(response => {
             console.log('Receiver cannot access the tasks of our case')
         });
 
@@ -90,7 +90,7 @@ export default class TestTaskAPI extends TestCase {
         await this.getReceiverUnassignedTasks(receiversTaskCountBeforeStartCase + 1);
 
         // Getting the case task now should also not fail any more
-        await taskService.getCaseTasks(caseInstance, receiver).then(tasks => {
+        await taskService.getCaseTasks(receiver, caseInstance).then(tasks => {
             console.log('Receiver has ' + tasks.length + ' case tasks')
         });
     }

@@ -29,7 +29,7 @@ const caseTeamService = new CaseTeamService();
  * @param expectedOwner 
  */
 export async function assertTask(task: Task, user: User, action: string, expectedState: string = '', expectedAssignee?: User, expectedOwner?: User, expectedLastModifiedBy?: User) {
-    await taskService.getTask(task, user).then(task => {
+    await taskService.getTask(user, task).then(task => {
         console.log(`Task after ${action}: state=${task.taskState}, assignee='${task.assignee}', owner='${task.owner}', modifiedBy='${task.modifiedBy}' `);
         if (task.taskState !== expectedState) {
             throw new Error(`Task ${task.taskName} is not in state '${expectedState}' but in state '${task.taskState}'`);

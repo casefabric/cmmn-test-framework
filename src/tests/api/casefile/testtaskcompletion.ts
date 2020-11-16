@@ -41,7 +41,7 @@ export default class TestTaskCompletion extends TestCase {
         const caseInstance = await caseService.startCase(user, startCase) as Case;
 
         const taskName = 'Receive Greeting and Send response';
-        const tasks = await taskService.getCaseTasks(caseInstance, user);
+        const tasks = await taskService.getCaseTasks(user, caseInstance);
         const receiveGreetingTask = findTask(tasks, taskName);
 
         const invalidTaskOutput = {
@@ -51,7 +51,7 @@ export default class TestTaskCompletion extends TestCase {
             }
         };
 
-        await taskService.completeTask(receiveGreetingTask, user, invalidTaskOutput, 400);
+        await taskService.completeTask(user, receiveGreetingTask, invalidTaskOutput, 400);
 
         const validTaskOutput = {
             Response: {
@@ -61,6 +61,6 @@ export default class TestTaskCompletion extends TestCase {
             }
         };
 
-        await taskService.completeTask(receiveGreetingTask, user, validTaskOutput);
+        await taskService.completeTask(user, receiveGreetingTask, validTaskOutput);
     }
 }

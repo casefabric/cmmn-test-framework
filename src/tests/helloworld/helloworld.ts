@@ -56,23 +56,23 @@ export default class TestHelloworld extends TestCase {
             throw new Error('Cannot find plan item ' + taskName);
         }
 
-        const tasks = await taskService.getCaseTasks(caseInstance, sender);
+        const tasks = await taskService.getCaseTasks(sender, caseInstance);
         const receiveGreetingTask = findTask(tasks, taskName);
         await verifyTaskInput(receiveGreetingTask, inputs)
 
-        await taskService.claimTask(receiveGreetingTask, receiver);
+        await taskService.claimTask(receiver, receiveGreetingTask);
         await assertTask(receiveGreetingTask, sender, 'Claim', 'Assigned', receiver);
 
-        await taskService.completeTask(receiveGreetingTask, receiver, taskOutput);
+        await taskService.completeTask(receiver, receiveGreetingTask, taskOutput);
         await assertTask(receiveGreetingTask, sender, 'Complete', 'Completed', receiver);
 
         const responseTaskName = 'Read response';
-        const nextTasks = await taskService.getCaseTasks(caseInstance, sender);
+        const nextTasks = await taskService.getCaseTasks(sender, caseInstance);
         const readResponseTask = findTask(nextTasks, responseTaskName);
         if (readResponseTask.assignee !== sender.id) {
             throw new Error('Expecting task to be assigned to sending user');
         }
-        await taskService.completeTask(readResponseTask, sender);
+        await taskService.completeTask(sender, readResponseTask);
         await assertTask(readResponseTask, sender, 'Complete', 'Completed', sender, sender, sender);
 
         await assertCasePlanState(caseInstance, sender, 'Completed');
