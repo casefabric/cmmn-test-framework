@@ -37,7 +37,7 @@ export default class TestTaskOutputOperations extends TestCase {
         const caseTeam = new CaseTeam([new CaseOwner(user)]);
 
         const startCase = { tenant, definition, inputs, caseTeam, debug: true };
-        this.caseInstance = await caseService.startCase(startCase, user) as Case
+        this.caseInstance = await caseService.startCase(user, startCase) as Case
 
         await this.freshCase();
         this.printPlan();
@@ -88,7 +88,7 @@ export default class TestTaskOutputOperations extends TestCase {
     }
 
     async freshCase() {
-        this.caseInstance = await caseService.getCase(this.case(), user);
+        this.caseInstance = await caseService.getCase(user, this.case());
     }
 
     async runTask(taskName: string, output: any) {

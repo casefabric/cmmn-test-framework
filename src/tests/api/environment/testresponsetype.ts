@@ -29,12 +29,12 @@ export default class TestResponseType extends TestCase {
         const startCase = { tenant, definition, debug: true, caseTeam };
 
         // starts the case instance
-        const caseInstance = await caseService.startCase(startCase, user) as Case;
+        const caseInstance = await caseService.startCase(user, startCase) as Case;
 
-        await this.getCase(caseInstance.id);
+        await this.tryFetchCase(caseInstance.id);
     }
 
-    async getCase(caseId: string) {
+    async tryFetchCase(caseId: string) {
         // create headers
         const headers= CafienneService.headers;
         headers.delete('Authorization');

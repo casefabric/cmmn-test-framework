@@ -35,8 +35,8 @@ export default class TestEventAuthorization extends TestCase {
 
         const startCase = { tenant, definition, caseTeam };
 
-        const caseInstance = await caseService.startCase(startCase, user) as Case;
-        await caseService.getCase(caseInstance, user);
+        const caseInstance = await caseService.startCase(user, startCase) as Case;
+        await caseService.getCase(user, caseInstance);
         
         const planItems = await casePlanService.getPlanItems(caseInstance, user);
         // console.log("PLanItems: " + planItems)
@@ -67,7 +67,7 @@ export default class TestEventAuthorization extends TestCase {
             }
         });
 
-        await caseService.getCase(caseInstance, user).then(caze => {
+        await caseService.getCase(user, caseInstance).then(caze => {
             // console.log('Resulting case: ' + JSON.stringify(caze, undefined, 2));
         });
 

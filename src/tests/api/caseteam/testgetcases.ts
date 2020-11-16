@@ -42,7 +42,7 @@ export default class TestGetCases extends TestCase {
 
         await this.getCaseList({tenant, numberOfResults: 10000}, "Initial list has cases");
 
-        const newCase = await caseService.startCase(startCase, sender) as Case;
+        const newCase = await caseService.startCase(sender, startCase) as Case;
 
         await this.getCaseList({tenant, numberOfResults: 10000}, "After startcase");
         await this.getCaseList({tenant, state:"Failed"}, "Failed within tenant");

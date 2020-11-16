@@ -36,14 +36,14 @@ export default class TestCaseTeam extends TestCase {
         const caseTeam = new CaseTeam([]);
         const startCase = { tenant, definition, debug: true, caseTeam };
 
-        const caseInstance = await caseService.startCase(startCase, sender) as Case;
+        const caseInstance = await caseService.startCase(sender, startCase) as Case;
 
         // Getting the case must be allowed for sender
-        await caseService.getCase(caseInstance, sender);
+        await caseService.getCase(sender, caseInstance);
 
         // Getting the case is not allowed for the receiver and employee, as they are not part of the case team
-        await caseService.getCase(caseInstance, receiver, 404);
-        await caseService.getCase(caseInstance, employee, 404);
+        await caseService.getCase(receiver, caseInstance, 404);
+        await caseService.getCase(employee, caseInstance, 404);
 
         // Get case tasks should be possible for sender and there should be 5 Unassigned tasks
         let tasks = await taskService.getCaseTasks(caseInstance, sender);
@@ -100,14 +100,14 @@ export default class TestCaseTeam extends TestCase {
         await caseTeamService.setMember(caseInstance, sender, new CaseOwner(receiver, [requestorRole]));
         await assertCaseTeamMember(new CaseOwner(receiver, [requestorRole]), caseInstance, sender);
 
-        await caseService.getCase(caseInstance, receiver);
+        await caseService.getCase(receiver, caseInstance);
         
         // Now, receiver can remove sender
         await caseTeamService.removeMember(caseInstance, receiver, sender);
         await assertCaseTeamMember(new CaseOwner(sender, [approverRole]), caseInstance, receiver, false);
 
         // Finally, sender cannot perform find case, case tasks, and task
-        await caseService.getCase(caseInstance, sender, 404);
+        await caseService.getCase(sender, caseInstance, 404);
         await taskService.getCaseTasks(caseInstance, sender, 404);
         await taskService.getTask(approveTask, sender, 404);
     }

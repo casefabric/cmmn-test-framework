@@ -42,11 +42,11 @@ export default class TestStatsAPI extends TestCase {
         //  Make one case go to Terminated state
         const inputs = { Greeting: { Message: 'Hello there', From: sender.id } };
         const startHelloWorldCase = { tenant, definition: helloworldDefinition, inputs, caseTeam, debug: true };
-        await caseService.startCase(startHelloWorldCase, sender);
+        await caseService.startCase(sender, startHelloWorldCase);
         startHelloWorldCase.caseTeam = caseTeamWithBothSenderAndReceiver;
-        await caseService.startCase(startHelloWorldCase, sender);
-        const caseStarted = await caseService.startCase(startHelloWorldCase, sender) as Case;
-        const caseInstance = await caseService.getCase(caseStarted, sender);
+        await caseService.startCase(sender, startHelloWorldCase);
+        const caseStarted = await caseService.startCase(sender, startHelloWorldCase) as Case;
+        const caseInstance = await caseService.getCase(sender, caseStarted);
         const pid = caseInstance.planitems.find(item => item.type === 'CasePlan')?.id;
         if (!pid) {
             throw new Error('Cannot find case plan?!');
@@ -55,10 +55,10 @@ export default class TestStatsAPI extends TestCase {
  
         // Start 3 cases 'caseteam.xml', and one of them with both sender and receiver
         const startCaseTeamCase = { tenant, definition: caseTeamDefinition, caseTeam, debug: true };
-        await caseService.startCase(startCaseTeamCase, sender);
-        await caseService.startCase(startCaseTeamCase, sender);
+        await caseService.startCase(sender, startCaseTeamCase);
+        await caseService.startCase(sender, startCaseTeamCase);
         startHelloWorldCase.caseTeam = caseTeamWithBothSenderAndReceiver;
-        await caseService.startCase(startCaseTeamCase, sender) as Case;
+        await caseService.startCase(sender, startCaseTeamCase) as Case;
 
         const hwFilter = { definition: 'HelloWorld', tenant};
         await this.getStatistics('overall', sender);

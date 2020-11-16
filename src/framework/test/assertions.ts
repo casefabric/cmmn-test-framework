@@ -64,7 +64,7 @@ export async function assertPlanItemState(user: User, caseInstance: Case, planIt
     let currentAttempt = 1;
     while (true) {
         console.log(`Running attempt ${currentAttempt} of ${maxAttempts} to find ${planItemName}.${planItemIndex} in state ${expectedState}`);
-        const freshCase = await caseService.getCase(caseInstance, user);
+        const freshCase = await caseService.getCase(user, caseInstance);
         // console.log("Current Plan Items\n" + (freshCase.planitems.map(item => "- '" + item.name + "." + item.index + "' ==> '" + item.currentState + "'")).join('\n'));
         const planItem = freshCase.planitems.find(p => p.name === planItemName && p.index === planItemIndex);
         if (planItem?.currentState === expectedState) {
@@ -88,7 +88,7 @@ export async function assertPlanItemState(user: User, caseInstance: Case, planIt
  */
 export async function assertCasePlanState(caseInstance: Case, user: User, state: string) {
     // Get case details
-    const freshCase = await caseService.getCase(caseInstance, user);
+    const freshCase = await caseService.getCase(user, caseInstance);
     if (freshCase.state !== state) {
         throw new Error(`The case plan with id: "${freshCase.id}" is expected to be ${state}, but it is ${freshCase.state}`);
     }
@@ -251,7 +251,7 @@ export async function assertCaseTeam(caseInstance: Case, user: User, expectedTea
     const actualCaseTeam = await convertToCaseTeam(team)
 
     // Get case team via getCase
-    const newCase = await caseService.getCase(caseInstance, user);
+    const newCase = await caseService.getCase(user, caseInstance);
     const newCaseTeam = await convertToCaseTeam(newCase.team)
 
     const verifyActualCaseTeam = await verifyTeam(actualCaseTeam, expectedTeam)

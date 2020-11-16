@@ -57,12 +57,12 @@ export default class TestGetListGetDetails extends TestCase {
         const startCase = { tenant, definition };
 
         // Starts the case with user
-        let caseInstance = await caseService.startCase(startCase, user) as Case;
+        let caseInstance = await caseService.startCase(user, startCase) as Case;
 
         await ServerSideProcessing();
 
         // Get case details
-        caseInstance = await caseService.getCase(caseInstance, user);
+        caseInstance = await caseService.getCase(user, caseInstance);
 
         // When the case starts, GetCasesList & GetFirstCase tasks will be in available state
         await assertPlanItemState(user, caseInstance, 'GetList', 0, 'Available');

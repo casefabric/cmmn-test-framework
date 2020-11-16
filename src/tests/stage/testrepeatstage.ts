@@ -69,7 +69,7 @@ export default class TestRepeatStage extends TestCase {
         }
 
         const startCase = { tenant, definition, inputs };
-        const caseInstance = await caseService.startCase(startCase, user) as Case;
+        const caseInstance = await caseService.startCase(user, startCase) as Case;
 
 
         // Let the Status stage repeat for 3 times
@@ -82,7 +82,7 @@ export default class TestRepeatStage extends TestCase {
             await ServerSideProcessing();
             await SomeTime(1000);
 
-            await caseService.getCase(caseInstance, user).then(caze => {
+            await caseService.getCase(user, caseInstance).then(caze => {
                 console.log("Case now has " + caze.planitems.length +"  plan items");
                 caze.planitems.filter(p => p.name === 'Status').forEach(s => {
                     console.log(`Status[${s.index}] is in state ${s.currentState}\thaving id: ${s.id}`)

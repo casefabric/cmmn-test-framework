@@ -84,8 +84,8 @@ export default class TestTaskValidationAPI extends TestCase {
         }
 
         const startCase = { tenant, definition, inputs };
-        let caseInstance = await caseService.startCase(startCase, pete) as Case;
-        caseInstance = await caseService.getCase(caseInstance, pete);
+        let caseInstance = await caseService.startCase(pete, startCase) as Case;
+        caseInstance = await caseService.getCase(pete, caseInstance);
 
         await pingMock.untilCallInvoked(3000);
 
@@ -93,7 +93,7 @@ export default class TestTaskValidationAPI extends TestCase {
         //  a second before continuing the test script
         await ServerSideProcessing();
 
-        caseInstance = await caseService.getCase(caseInstance, pete);
+        caseInstance = await caseService.getCase(pete, caseInstance);
 
         await assertPlanItemState(pete, caseInstance, 'AssertMockServiceIsRunning', 0, 'Completed')
 

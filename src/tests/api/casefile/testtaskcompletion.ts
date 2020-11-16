@@ -38,7 +38,7 @@ export default class TestTaskCompletion extends TestCase {
         const caseTeam = new CaseTeam([new CaseOwner(user)]);
         
         const startCase = { tenant, definition, inputs, caseTeam, debug: true };
-        const caseInstance = await caseService.startCase(startCase, user) as Case;
+        const caseInstance = await caseService.startCase(user, startCase) as Case;
 
         const taskName = 'Receive Greeting and Send response';
         const tasks = await taskService.getCaseTasks(caseInstance, user);

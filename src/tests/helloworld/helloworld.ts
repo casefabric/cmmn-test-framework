@@ -44,13 +44,13 @@ export default class TestHelloworld extends TestCase {
             }
         };
 
-        const caseInstance = await caseService.startCase(startCase, sender) as Case;
+        const caseInstance = await caseService.startCase(sender, startCase) as Case;
 
         const cases = await caseService.getCases(sender, { tenant: tenant, numberOfResults: 10000 });
         console.log("We have " + cases.length + " cases ...");
 
         const taskName = 'Receive Greeting and Send response';
-        const freshCaseInstance = await caseService.getCase(caseInstance, sender);
+        const freshCaseInstance = await caseService.getCase(sender, caseInstance);
         const planItem = freshCaseInstance.planitems.find(p => p.name === taskName);
         if (!planItem) {
             throw new Error('Cannot find plan item ' + taskName);

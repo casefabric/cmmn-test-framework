@@ -55,14 +55,14 @@ export default class TestTaskCountAPI extends TestCase {
         console.log("Task Count for sender: " + JSON.stringify(taskCountBefore))
 
         // Start 3 cases and claim 1 task. Should lead to 2 unclaimed and 1 claimed task
-        await caseService.startCase(startCase, sender);
-        await caseService.startCase(startCase, sender);
+        await caseService.startCase(sender, startCase);
+        await caseService.startCase(sender, startCase);
         startCase.caseTeam = caseTeam2;
-        const caseStarted = await caseService.startCase(startCase, sender) as Case;
-        const caseInstance = await caseService.getCase(caseStarted, sender);
+        const caseStarted = await caseService.startCase(sender, startCase) as Case;
+        const caseInstance = await caseService.getCase(sender, caseStarted);
         const pid = caseInstance.planitems.find(item => item.type === 'CasePlan')?.id || '';
         new CasePlanService().makePlanItemTransition(caseStarted, sender, pid, "Terminate");
-        await caseService.getCase(caseStarted, sender).then(caze => {
+        await caseService.getCase(sender, caseStarted).then(caze => {
             console.log("New case state: " + JSON.stringify(caze.planitems, undefined, 2))
         })
         startCase.caseTeam = caseTeam;
@@ -70,10 +70,10 @@ export default class TestTaskCountAPI extends TestCase {
         await repositoryService.validateAndDeploy('caseteam.xml', sender, tenant);
         startCase.definition = "caseteam.xml";
         delete startCase.inputs;
-        await caseService.startCase(startCase, sender);
-        await caseService.startCase(startCase, sender);
+        await caseService.startCase(sender, startCase);
+        await caseService.startCase(sender, startCase);
         startCase.caseTeam = caseTeam2;
-        await caseService.startCase(startCase, sender) as Case;
+        await caseService.startCase(sender, startCase) as Case;
 
         const hwFilter = { definition: 'HelloWorld', tenant};
         await this.getStatistics('Sender has across the board: ', sender, {state:'Terminated'});

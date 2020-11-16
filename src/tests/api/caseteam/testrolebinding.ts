@@ -49,14 +49,14 @@ export default class TestRoleBinding extends TestCase {
         ]);
         const startCase = { tenant, definition, debug: true, caseTeam };
 
-        const caseInstance = await caseService.startCase(startCase, sender) as Case;
+        const caseInstance = await caseService.startCase(sender, startCase) as Case;
 
         // Getting the case must be allowed for both sender and receiver
-        await caseService.getCase(caseInstance, sender);
-        const receiverCase = await caseService.getCase(caseInstance, receiver);
+        await caseService.getCase(sender, caseInstance);
+        const receiverCase = await caseService.getCase(receiver, caseInstance);
 
         // Employee's role is not part of case team
-        await caseService.getCase(caseInstance, employee, 404);
+        await caseService.getCase(employee, caseInstance, 404);
 
         // Print the case team
         await caseTeamService.getCaseTeam(caseInstance, sender).then(team => {
@@ -101,7 +101,7 @@ export default class TestRoleBinding extends TestCase {
     async claimTaskShouldFail(task: Task, user: User, expectedMessage: string, expectedStatusCode: number) {
         // Claim task must be possible for the receiver
         const response = await taskService.claimTask(task, user, expectedStatusCode);
-        // const response = await caseService.getDiscretionaryItems(receiverCase, employee, false);
+        // const response = await caseService.getDiscretionaryItems(employee, receiverCase, false);
         const failureText = await response.text();
         console.log("Response: " + response.status)
         console.log("Response: " + failureText);

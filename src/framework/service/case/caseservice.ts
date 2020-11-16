@@ -10,7 +10,7 @@ import { checkJSONResponse, checkResponse } from '../response';
 const cafienneService = new CafienneService();
 
 export default class CaseService {
-    async startCase(command: StartCase, user: User, expectedStatusCode: number = 200) {
+    async startCase(user: User, command: StartCase, expectedStatusCode: number = 200) {
         if (!user) {
             throw new Error("User must be specified");
         }
@@ -47,7 +47,7 @@ export default class CaseService {
      * @param Case 
      * @param user 
      */
-    async getCase(Case: Case | string, user: User, expectedStatusCode: number = 200): Promise<Case> {
+    async getCase(user: User, Case: Case | string, expectedStatusCode: number = 200): Promise<Case> {
         Case = checkCaseID(Case);
         const response = await cafienneService.get('/cases/' + Case, user);
         const msg = `GetCase is not expected to succeed for user ${user.id} in case ${Case}`;
@@ -59,7 +59,7 @@ export default class CaseService {
      * @param Case 
      * @param user 
      */
-    async getDefinition(Case: Case, user: User, expectedStatusCode: number = 200) {
+    async getDefinition(user: User, Case: Case, expectedStatusCode: number = 200) {
         checkCaseID(Case);
         return cafienneService.getXml(`/cases/${Case.id}/definition`, user);
     }
@@ -90,7 +90,7 @@ export default class CaseService {
      * @param Case 
      * @param user 
      */
-    async getDiscretionaryItems(Case: Case, user: User, expectedStatusCode: number = 200): Promise<DiscretionaryItemsResponse> {
+    async getDiscretionaryItems(user: User, Case: Case, expectedStatusCode: number = 200): Promise<DiscretionaryItemsResponse> {
         checkCaseID(Case);
         const response = await cafienneService.get('/cases/' + Case.id + '/discretionaryitems', user)
         const msg = `GetDiscretionaryItems is not expected to succeed for user ${user.id} in case ${Case.id}`;
@@ -105,7 +105,7 @@ export default class CaseService {
      * @param planItemId Optional id for the plan item resulting of the planning. If not specified, server will generate one.
      * @returns The id of the newly planned item
      */
-    async planDiscretionaryItem(Case: Case, user: User, item: DiscretionaryItem, planItemId?: string, expectedStatusCode: number = 200): Promise<string> {
+    async planDiscretionaryItem(user: User, Case: Case, item: DiscretionaryItem, planItemId?: string, expectedStatusCode: number = 200): Promise<string> {
         checkCaseID(Case);
         const itemToPlan = { name: item.name, parentId: item.parentId, definitionId: item.definitionId, planItemId }
 
@@ -132,7 +132,7 @@ export default class CaseService {
      * @param user 
      * @param debugEnabled 
      */
-    async changeDebugMode(Case: Case, user: User, debugEnabled: boolean, expectedStatusCode: number = 200) {
+    async changeDebugMode(user: User, Case: Case, debugEnabled: boolean, expectedStatusCode: number = 200) {
         checkCaseID(Case);
         const response = await cafienneService.put('cases/' + Case.id + '/debug/' + debugEnabled, user);
         const msg = `ChangeDebugMode is not expected to succeed for user ${user.id} in case ${Case.id}`;

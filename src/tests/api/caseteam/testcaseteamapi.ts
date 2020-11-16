@@ -52,10 +52,10 @@ export default class TestCaseTeamAPI extends TestCase {
         const startCase = { tenant, definition, debug: true, caseTeam };
 
         // It should not be possible to start a case with invalid role names
-        await caseService.startCase(startCase, sender, 400);
+        await caseService.startCase(sender, startCase, 400);
 
         caseTeam.members[2].caseRoles = []; // Change roles of requestor to be empty instead of having wrong roles
-        const caseInstance = await caseService.startCase(startCase, sender) as Case;
+        const caseInstance = await caseService.startCase(sender, startCase) as Case;
 
 
         // Try to set a team with invalid users
@@ -66,10 +66,10 @@ export default class TestCaseTeamAPI extends TestCase {
         await caseTeamService.setMember(caseInstance, sender, new CaseTeamMember('PietjePrecies'), 404);
 
         // Getting the case must be allowed for both sender and receiver
-        await caseService.getCase(caseInstance, sender);
-        await caseService.getCase(caseInstance, receiver);
+        await caseService.getCase(sender, caseInstance);
+        await caseService.getCase(receiver, caseInstance);
         // Getting the case is not allow for the employee, as he is not part of the case team
-        await caseService.getCase(caseInstance, employee, 404);
+        await caseService.getCase(employee, caseInstance, 404);
 
         // After removing receiver, he should not longer have access.
         await caseTeamService.removeMember(caseInstance, sender, receiver);
@@ -79,8 +79,8 @@ export default class TestCaseTeamAPI extends TestCase {
 
         // Getting the case is no longer allowed for receiver
         // Getting the case is still allowed for sender
-        await caseService.getCase(caseInstance, receiver, 404);
-        await caseService.getCase(caseInstance, sender);
+        await caseService.getCase(receiver, caseInstance, 404);
+        await caseService.getCase(sender, caseInstance);
 
         // Removing someone that is not part of the team should fail
         await caseTeamService.removeMember(caseInstance, sender, employee, 400);
@@ -99,7 +99,7 @@ export default class TestCaseTeamAPI extends TestCase {
         await assertCaseTeamMember(new CaseTeamMember(employee), caseInstance, sender);
 
         // Now employee should be able to get the case
-        await caseService.getCase(caseInstance, employee);
+        await caseService.getCase(employee, caseInstance);
 
         // Replace entire case team; removes sender and employee and then adds receiver and employee
         const newTeam = new CaseTeam([new CaseTeamMember(receiver, [requestorRole]), new CaseTeamMember(employee)]);
@@ -119,9 +119,9 @@ export default class TestCaseTeamAPI extends TestCase {
         await assertCaseTeamMember(new CaseOwner(sender, [requestorRole]), caseInstance, receiver, false);
 
         // So now sender no longer has access, but the others do.
-        await caseService.getCase(caseInstance, sender, 404);
-        await caseService.getCase(caseInstance, receiver);
-        await caseService.getCase(caseInstance, employee);
+        await caseService.getCase(sender, caseInstance, 404);
+        await caseService.getCase(receiver, caseInstance);
+        await caseService.getCase(employee, caseInstance);
 
         // Compare the case team with both what the GET case API thinks it is and what the GET case team API thinks it is
         await assertCaseTeam(caseInstance, employee, newTeam);
@@ -170,10 +170,10 @@ export default class TestCaseTeamAPI extends TestCase {
     async testOwnership(caseTeam: CaseTeam, ownerWhoRemoves: User, ownerToRemove: User, removingOwnershipShouldSucceed: boolean = true) {
         // Starting a by ownerWhoRemoves should not result in failure
         const startCase = { tenant, definition, debug: true, caseTeam };
-        const caseInstance = await caseService.startCase(startCase, ownerWhoRemoves) as Case;
+        const caseInstance = await caseService.startCase(ownerWhoRemoves, startCase) as Case;
 
         // ownerToRemove can perform get case and get team
-        await caseService.getCase(caseInstance, ownerToRemove);
+        await caseService.getCase(ownerToRemove, caseInstance);
         await assertCaseTeam(caseInstance, ownerToRemove, caseTeam);
 
         // It should be possible to remove a user's ownership by another owner
@@ -189,7 +189,7 @@ export default class TestCaseTeamAPI extends TestCase {
         })
 
         // Irrespective of ownerToRemove's ownership, he is part of the team
-        await caseService.getCase(caseInstance, ownerToRemove);
+        await caseService.getCase(ownerToRemove, caseInstance);
 
         // ownerToRemove cannot perform ownership tasks
         const expectedStatusCodeForCaseTeamActions = removingOwnershipShouldSucceed ? 401 : 200;

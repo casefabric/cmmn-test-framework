@@ -25,8 +25,8 @@ export default class TestDiscretionaryItems extends TestCase {
     async run() {
         const startCase = { tenant, definition };
 
-        let caseInstance = await caseService.startCase(startCase, user) as Case;
-        caseInstance = await caseService.getCase(caseInstance, user);
+        let caseInstance = await caseService.startCase(user, startCase) as Case;
+        caseInstance = await caseService.getCase(user, caseInstance);
 
         // console.log("Plan items first is: ", caseInstance.planitems)
 
@@ -34,7 +34,7 @@ export default class TestDiscretionaryItems extends TestCase {
         const numTasksBeforePlanning = tasks.length;
 
 
-        const discretionaries = await caseService.getDiscretionaryItems(caseInstance, user);
+        const discretionaries = await caseService.getDiscretionaryItems(user, caseInstance);
         // console.log('Found discretionary items: ', discretionaries.map(item => {return {name: item.name, type: item.type}}));
 
         const numItems = discretionaries.discretionaryItems.length;
@@ -45,10 +45,10 @@ export default class TestDiscretionaryItems extends TestCase {
         }
 
         const newItem = discretionaries.discretionaryItems[0];
-        const plannedItem = await caseService.planDiscretionaryItem(caseInstance, user, newItem);
+        const plannedItem = await caseService.planDiscretionaryItem(user, caseInstance, newItem);
         console.log("Planned item: " + plannedItem)
 
-        caseInstance = await caseService.getCase(caseInstance, user);
+        caseInstance = await caseService.getCase(user, caseInstance);
         // console.log("Plan items now is: ", caseInstance.planitems)
 
         const newSetOfTasks = await taskService.getCaseTasks(caseInstance, user);

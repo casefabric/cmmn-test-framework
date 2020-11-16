@@ -44,8 +44,8 @@ export default class TestRepeatingStage extends TestCase {
             }
         };
 
-        let caseInstance = await caseService.startCase(startCase, sender) as Case;
-        caseInstance = await caseService.getCase(caseInstance, sender);
+        let caseInstance = await caseService.startCase(sender, startCase) as Case;
+        caseInstance = await caseService.getCase(sender, caseInstance);
         // return;
  
         const taskName = 'SendResponse';

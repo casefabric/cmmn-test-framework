@@ -87,7 +87,7 @@ Starting another case instance of incident management to test Invalid status.
     async testValidStatus(startCase: any, firstTaskName: string, firstTaskInput: any) {
 
         // Starts the case with raiser
-        const caseInstance = await caseService.startCase(startCase, raiser) as Case;
+        const caseInstance = await caseService.startCase(raiser, startCase) as Case;
 
         // Get case tasks
         const tasks = await taskService.getCaseTasks(caseInstance, raiser);
@@ -158,7 +158,7 @@ Starting another case instance of incident management to test Invalid status.
     async testInvalidStatus(startCase: any, firstTaskName: string, firstTaskInput: any) {
 
         // Starts the invalid case with raiser
-        const caseInstance = await caseService.startCase(startCase, raiser) as Case;
+        const caseInstance = await caseService.startCase(raiser, startCase) as Case;
 
         // Get case tasks
         const tasks = await taskService.getCaseTasks(caseInstance, raiser);

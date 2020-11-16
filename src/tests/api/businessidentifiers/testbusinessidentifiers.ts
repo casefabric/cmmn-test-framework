@@ -9,9 +9,6 @@ import CaseTeamMember, { CaseOwner } from '../../../framework/cmmn/caseteammembe
 import CaseFileService from '../../../framework/service/case/casefileservice';
 import Case from '../../../framework/cmmn/case';
 import User from '../../../framework/user';
-import { assertGetCasesAndTasksFilter } from '../../../framework/test/assertions';
-import TaskService from '../../../framework/service/task/taskservice';
-import { send } from 'process';
 
 const repositoryService = new RepositoryService();
 const caseService = new CaseService();
@@ -51,7 +48,7 @@ export default class TestBusinessIdentifiers extends TestCase {
 
         const caseTeam = new CaseTeam([new CaseOwner(employee), new CaseTeamMember(sender), new CaseTeamMember(receiver)]);
         const startCase = { tenant, definition, inputs, caseTeam, debug: true };
-        const caseInstance = await caseService.startCase(startCase, sender) as Case;
+        const caseInstance = await caseService.startCase(sender, startCase) as Case;
 
         // Initial input has no message in it, so there should not be any additional values
         await messageFilter.assertExtraMatches(0);

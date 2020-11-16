@@ -51,7 +51,7 @@ Starting business identifier's filters test for footballstats model.
             const caseTeam = new CaseTeam([new CaseOwner(user1)]);
             const definition = footballStatsDefinition;
             const startCase = { tenant, definition, inputs, caseTeam };
-            await caseService.startCase(startCase, user1);
+            await caseService.startCase(user1, startCase);
         }
 
         // tests against all filters in testFootballStatsFilters
@@ -72,7 +72,7 @@ Starting business identifier's multi-user filters test for footballstats model.
             const caseTeam = new CaseTeam([new CaseOwner(user1), new CaseTeamMember(user2)]);
             const definition = footballStatsDefinition;
             const startCase = { tenant, definition, inputs, caseTeam };
-            await caseService.startCase(startCase, user1);
+            await caseService.startCase(user1, startCase);
         }
 
         // tests against all filters in testFootballStatsMultiUserFilters
@@ -93,7 +93,7 @@ Starting business identifier's filters test for footballstats + footballclubstat
             const inputs = { "player": data };
             const caseTeam = new CaseTeam([new CaseOwner(user1)]);
             const startCase = { tenant, definition, inputs, caseTeam };
-            await caseService.startCase(startCase, user1);
+            await caseService.startCase(user1, startCase);
         }
 
         // tests against all filters in testFootballStatsCombinedFilters

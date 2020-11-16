@@ -29,20 +29,20 @@ export default class TestValidStartCase extends TestCase {
         const caseTeam = new CaseTeam([
             new CaseOwner(receiver)
         ]);
-        const startCase1 = { tenant, definition, debug: true, caseTeam };
+        const startCase = { tenant, definition, debug: true, caseTeam };
 
         // Starting a by sender case would not result in failure
-        const caseInstance = await caseService.startCase(startCase1, sender) as Case;
+        const caseInstance = await caseService.startCase(sender, startCase) as Case;
 
         // Receiver can perform get case
-        await caseService.getCase(caseInstance, receiver)
+        await caseService.getCase(receiver, caseInstance);
 
         // Sender cannot perform get case
-        await caseService.getCase(caseInstance, sender, 404)
+        await caseService.getCase(sender, caseInstance, 404)
 
-        await assertCaseTeam(caseInstance, receiver, caseTeam)
+        await assertCaseTeam(caseInstance, receiver, caseTeam);
 
-        const serverDefinition = await caseService.getDefinition(caseInstance, receiver);
+        const serverDefinition = await caseService.getDefinition(receiver, caseInstance);
 
         const definitionContents = readLocalXMLDocument(definition);
 

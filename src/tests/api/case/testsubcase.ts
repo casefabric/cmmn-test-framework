@@ -5,10 +5,9 @@ import CaseService from "../../../framework/service/case/caseservice";
 import TaskService from "../../../framework/service/task/taskservice";
 import WorldWideTestTenant from "../../worldwidetesttenant";
 import TestCase from "../../../framework/test/testcase";
-import { findTask, assertTask, assertCaseTeamMember, assertCasePlanState } from "../../../framework/test/assertions";
+import { findTask, assertCaseTeamMember, assertCasePlanState } from "../../../framework/test/assertions";
 import Case from "../../../framework/cmmn/case";
 import CaseFileService from "../../../framework/service/case/casefileservice";
-import User from "../../../framework/user";
 import CaseTeamMember, { CaseOwner } from "../../../framework/cmmn/caseteammember";
 import PlanItem from "../../../framework/cmmn/planitem";
 import { ServerSideProcessing } from "../../../framework/test/time";
@@ -45,13 +44,13 @@ export default class TestSubCase extends TestCase {
         };
 
         // Sender starts the parent case
-        const caseInstance = await caseService.startCase(startCase, sender) as Case;
+        const caseInstance = await caseService.startCase(sender, startCase) as Case;
 
         // Sender creates Greet case file item
         await caseFileService.createCaseFileItem(caseInstance, sender, 'Greet', inputs.Greet);
 
         // Retrieve subcase 
-        const parentCaseInstance = await caseService.getCase(caseInstance, sender);
+        const parentCaseInstance = await caseService.getCase(sender, caseInstance);
         const subCase = parentCaseInstance.planitems.find(item => item.name === 'call helloworld') as PlanItem;
         
         // Sender is the owner of the parent case and receiver doesn't exist in the parent case
@@ -59,7 +58,7 @@ export default class TestSubCase extends TestCase {
         await assertCaseTeamMember(new CaseTeamMember(receiver, []), caseInstance, sender, false);
 
         // Get subcase is possible by sender
-        const childCaseInstance = await caseService.getCase({id: subCase.id} as Case, sender);
+        const childCaseInstance = await caseService.getCase(sender, subCase.id);
 
         // Sender is the owner of the subcase and receiver doesn't exist in the subcase yet
         await assertCaseTeamMember(new CaseOwner(sender, []), childCaseInstance, sender);
