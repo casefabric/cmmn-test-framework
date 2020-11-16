@@ -3,7 +3,7 @@ import TestStatsAPI from './tests/api/case/teststatsapi';
 import TestUsersCaseAPI from './tests/api/case/usercases';
 import TestDiscretionaryItems from './tests/api/discretionary/testdiscretionaryitems';
 import TestDebugMode from './tests/api/debug/testdebugmode';
-import TestHelloworld from './tests/helloworld/helloworld';
+import TestHelloworld from './tests/helloworld/testhelloworld';
 import TestIncidentManagement from './tests/incidentmanagement/incidentmanagement';
 import TestTenantRegistration from './tests/api/tenant/testtenantregistration';
 import TestTaskValidationAPI from './tests/api/task/testtaskvalidationapi';

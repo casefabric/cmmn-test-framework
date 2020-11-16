@@ -13,7 +13,6 @@ import FiltersData from "./filtersdata";
 import { assertGetCasesAndTasksFilter } from "../../../../framework/test/assertions";
 
 const caseService = new CaseService();
-const taskService = new TaskService();
 const repositoryService = new RepositoryService();
 const tenantName = 'football' + Math.random().toString(36).substring(2, 15);
 const worldwideTenant = new WorldWideTestTenant(tenantName);

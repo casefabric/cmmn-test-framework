@@ -17,8 +17,6 @@ const caseService = new CaseService();
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const sender = worldwideTenant.sender;
-const receiver = worldwideTenant.receiver;
-const employee = worldwideTenant.employee;
 
 
 export default class TestInvalidStartCase extends TestCase {

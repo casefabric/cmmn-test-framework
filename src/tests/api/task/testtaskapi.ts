@@ -14,10 +14,8 @@ import User from '../../../framework/user';
 const repositoryService = new RepositoryService();
 const definition = 'helloworld.xml';
 
-
 const guid = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 const tenantName = 'temp_task_tenant' + guid;
-
 
 const caseService = new CaseService();
 const taskService = new TaskService();

@@ -51,7 +51,6 @@ const validateMock = new PostMock(mock, '/validate', call => {
             call.fail(500, 'Something went really wrong in here');
         } else {
             const response = isInvalidDecision ? TaskContent.InvalidDecisionResponse : {};
-            const json = JSON.stringify(response, undefined, 2);
             call.json(response);
         }
     });

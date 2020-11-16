@@ -6,8 +6,7 @@ import TestCase from '../../../framework/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
 import CaseTeam from '../../../framework/cmmn/caseteam';
-import CaseTeamMember, { CaseOwner } from '../../../framework/cmmn/caseteammember';
-import CaseTeamService from '../../../framework/service/case/caseteamservice';
+import { CaseOwner } from '../../../framework/cmmn/caseteammember';
 import Case from '../../../framework/cmmn/case';
 import User from '../../../framework/user';
 import Task from '../../../framework/cmmn/task';
@@ -16,7 +15,6 @@ import CasePlanService from '../../../framework/service/case/caseplanservice';
 
 const repositoryService = new RepositoryService();
 const definition = 'helloworld.xml';
-
 
 const caseService = new CaseService();
 const taskService = new TaskService();

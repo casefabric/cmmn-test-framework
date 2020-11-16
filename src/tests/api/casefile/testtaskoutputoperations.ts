@@ -8,16 +8,12 @@ import RepositoryService from '../../../framework/service/case/repositoryservice
 import CaseTeam from '../../../framework/cmmn/caseteam';
 import { CaseOwner } from '../../../framework/cmmn/caseteammember';
 import Case from '../../../framework/cmmn/case';
-import CasePlanService from '../../../framework/service/case/caseplanservice';
 import PlanItem from '../../../framework/cmmn/planitem';
 
 const repositoryService = new RepositoryService();
 const definition = 'taskoutputoperations.xml';
 
-
-
 const caseService = new CaseService();
-const casePlanService = new CasePlanService();
 const taskService = new TaskService();
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;

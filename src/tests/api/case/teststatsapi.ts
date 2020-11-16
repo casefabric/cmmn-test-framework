@@ -1,7 +1,6 @@
 'use strict';
 
 import CaseService from '../../../framework/service/case/caseservice';
-import TaskService, { TaskCount } from '../../../framework/service/task/taskservice';
 import TestCase from '../../../framework/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
@@ -18,7 +17,6 @@ const caseTeamDefinition = 'caseteam.xml';
 
 
 const caseService = new CaseService();
-const taskService = new TaskService();
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const sender = worldwideTenant.sender;

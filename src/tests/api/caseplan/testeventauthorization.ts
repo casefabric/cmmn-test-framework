@@ -7,7 +7,6 @@ import WorldWideTestTenant from '../../worldwidetesttenant';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
 import CasePlanService from '../../../framework/service/case/caseplanservice';
 import PlanItem from '../../../framework/cmmn/planitem';
-import TenantService from '../../../framework/service/tenant/tenantservice';
 import CaseTeamMember, { CaseOwner } from '../../../framework/cmmn/caseteammember';
 import CaseTeam from '../../../framework/cmmn/caseteam';
 import Case from '../../../framework/cmmn/case';
@@ -22,7 +21,6 @@ const tenant = worldwideTenant.name;
 const employee = worldwideTenant.employee;
 
 const casePlanService = new CasePlanService();
-const tenantService = new TenantService();
 
 export default class TestEventAuthorization extends TestCase {
     async onPrepareTest() {

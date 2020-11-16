@@ -13,8 +13,6 @@ import { findTask } from '../../../framework/test/assertions';
 const repositoryService = new RepositoryService();
 const definition = 'helloworld.xml';
 
-
-
 const caseService = new CaseService();
 const taskService = new TaskService();
 const worldwideTenant = new WorldWideTestTenant();

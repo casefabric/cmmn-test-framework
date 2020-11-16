@@ -3,8 +3,6 @@ import RepositoryService, { readLocalXMLDocument } from "../../../framework/serv
 import WorldWideTestTenant from "../../worldwidetesttenant";
 import TenantService from "../../../framework/service/tenant/tenantservice";
 import TenantUser from "../../../framework/tenant/tenantuser";
-import Tenant from "../../../framework/tenant/tenant";
-
 
 const repositoryService = new RepositoryService();
 const tenantService = new TenantService();
@@ -12,7 +10,6 @@ const tenantService = new TenantService();
 const repositoryTenant = new WorldWideTestTenant('For-repository-testing');
 const repositoryTenant2 = new WorldWideTestTenant('For-repository-testing-2');
 const tenant = repositoryTenant.name;
-const tenant2 = repositoryTenant2.name;
 const tenantOwner = repositoryTenant.sender;
 const tenantUser = new TenantUser('tenant-user', []);
 const tenantUserInBothTenants = new TenantUser('tenant-user-2', []);
