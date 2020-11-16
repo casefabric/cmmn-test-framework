@@ -109,12 +109,15 @@ export default class TestGetListGetDetails extends TestCase {
         // Verify exception case file content with the handler
         const exceptionContentChecker = (index: number, msg:any) => {
             console.log("Checking exception content " + index +" to match " + msg)
-            if (exceptionCaseFile.Exception[index] != msg) {
-                throw new Error(`The content for exception[${index}] in the case file is not as expected, found ${exceptionCaseFile.Exception[index]} instead of ${msg}`);
+            if (msg === null && exceptionCaseFile.Exception[index] !== null) {
+                throw new Error(`The content for exception[${index}] in the case file is not as expected, found '${exceptionCaseFile.Exception[index]}' instead of null`);
+            }
+            if (msg !== null && exceptionCaseFile.Exception[index].indexOf(msg) < 0) {
+                throw new Error(`The content for exception[${index}] in the case file is not as expected, found '${exceptionCaseFile.Exception[index]}' instead of '${msg}'`);
             }
         }
-        exceptionContentChecker(0, 'Connection refused: connect');
-        exceptionContentChecker(1, 'Connection refused: connect');
+        exceptionContentChecker(0, 'Connection refused');
+        exceptionContentChecker(1, 'Connection refused');
         exceptionContentChecker(2, null);
 
         // In the end, stop the mock service, such that the test completes.
