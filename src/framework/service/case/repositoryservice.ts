@@ -132,14 +132,23 @@ export function readLocalFile(content: any): string {
     if (content.constructor.name == 'Document') {
         return content;
     }
+    return FileSystem.readFileSync(resolveFileName(content), 'utf8');
+}
+
+/**
+ * Determines whether the file name refers to an existing file on disk, where the file name
+ * is relative to the configured repository folder.
+ * @param relativeFileName 
+ */
+export function resolveFileName(relativeFileName: string): string {
     if (!FileSystem.existsSync(Config.RepositoryService.repository_folder)) {
         throw new Error(`The configured repository folder '${Config.RepositoryService.repository_folder}' cannot be found`);
     }
-    const fileName = Config.RepositoryService.repository_folder + '/' + content;
+    const fileName = Config.RepositoryService.repository_folder + '/' + relativeFileName;
     if (!FileSystem.existsSync(fileName)) {
         throw new Error(`File ${fileName} cannot be found on the local file system`);
     }
-    return FileSystem.readFileSync(fileName, 'utf8');
+    return fileName;
 }
 
 function getTenantName(tenant: Tenant | string) {

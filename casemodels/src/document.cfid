@@ -1,0 +1,6 @@
+<caseFileItemDefinition name="document" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/CMISDocument">
+    <property name="URL" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    <property name="Name" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    <property name="Extension" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    <property name="Description" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+</caseFileItemDefinition>

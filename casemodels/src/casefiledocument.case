@@ -1,0 +1,50 @@
+<case id="casefiledocument.case" name="casefiledocument" guid="_8Q3oq">
+    <caseFileModel>
+        <caseFileItem id="_8Q3oq_0" name="Greeting" multiplicity="ExactlyOne" definitionRef="greeting.cfid">
+            <children>
+                <caseFileItem id="_8Q3oq_12" name="Pictures" multiplicity="ZeroOrMore" definitionRef="document.cfid"/>
+            </children>
+        </caseFileItem>
+        <caseFileItem id="_8Q3oq_1" name="Response" multiplicity="ExactlyOne" definitionRef="response.cfid">
+            <children>
+                <caseFileItem id="_8Q3oq_13" name="Pictures" multiplicity="ZeroOrMore" definitionRef="document.cfid"/>
+            </children>
+        </caseFileItem>
+        <caseFileItem id="_8Q3oq_2" name="Pictures" multiplicity="ZeroOrMore" definitionRef="document.cfid"/>
+        <caseFileItem id="_8Q3oq_19" name="Project" multiplicity="ExactlyOne" definitionRef="project.cfid"/>
+    </caseFileModel>
+    <casePlanModel id="cm__8Q3oq_0" name="casefiledocument" autoComplete="true">
+        <planItem id="pi_ht__8Q3oq_0" name="Send Greeting" definitionRef="ht__8Q3oq_0"/>
+        <planItem id="pi_ht__8Q3oq_1" name="Review Pictures" definitionRef="ht__8Q3oq_1">
+            <entryCriterion id="_8Q3oq_10" name="EntryCriterion_1" sentryRef="crit__8Q3oq_1"/>
+        </planItem>
+        <planItem id="pi_ht__8Q3oq_2" name="Er is een  neiuwe attachment" description="Er is een &#10;neiuwe attachment" definitionRef="ht__8Q3oq_2">
+            <entryCriterion id="_8Q3oq_15" name="EntryCriterion_2" sentryRef="crit__8Q3oq_2"/>
+            <itemControl id="_8Q3oq_14">
+                <repetitionRule id="_8Q3oq_17">
+                    <condition id="_8Q3oq_18" language="spel">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
+        </planItem>
+        <sentry id="crit__8Q3oq_1">
+            <caseFileItemOnPart id="_8Q3oq_11" sourceRef="_8Q3oq_0">
+                <standardEvent>create</standardEvent>
+            </caseFileItemOnPart>
+            <caseFileItemOnPart id="_8Q3oq_20" sourceRef="_8Q3oq_12">
+                <standardEvent>create</standardEvent>
+            </caseFileItemOnPart>
+        </sentry>
+        <sentry id="crit__8Q3oq_2">
+            <caseFileItemOnPart id="_8Q3oq_16" sourceRef="_8Q3oq_2">
+                <standardEvent>create</standardEvent>
+            </caseFileItemOnPart>
+        </sentry>
+        <humanTask id="ht__8Q3oq_0" name="Send Greeting" isBlocking="true"/>
+        <humanTask id="ht__8Q3oq_1" name="Review Pictures" isBlocking="true"/>
+        <humanTask id="ht__8Q3oq_2" name="Er is een  neiuwe attachment" description="Er is een &#10;neiuwe attachment" isBlocking="true"/>
+    </casePlanModel>
+</case>

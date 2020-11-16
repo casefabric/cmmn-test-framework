@@ -4,6 +4,11 @@ import CafienneService from "../cafienneservice";
 import { checkJSONResponse, checkResponse } from "../response";
 import CaseFileItemDocumentation from "../../cmmn/casefileitemdocumentation";
 import { checkCaseID } from "./caseservice";
+import Config from '../../../config';
+
+import FormData from 'form-data';
+import { createReadStream } from 'fs';
+import { resolveFileName } from "./repositoryservice";
 
 const cafienneService = new CafienneService();
 
@@ -85,6 +90,79 @@ export default class CaseFileService {
         const caseId = checkCaseID(Case);
         const response = await cafienneService.delete(`/cases/${caseId}/casefile/delete/${encodeURI(path)}`, user);
         const msg = `DeleteCaseFileItem is not expected to succeed for user ${user.id} in case ${caseId}`;
+        return checkResponse(response, msg, expectedStatusCode);
+    }
+
+    /**
+     * Upload a document into the case file item
+     * @param user 
+     * @param Case 
+     * @param path 
+     * @param fileName 
+     * @param metadata 
+     * @param expectedStatusCode 
+     */
+    async uploadCaseFileDocument(user: User, Case: Case, path: string, metadata: any = {}, fileNames: Array<string>, expectedStatusCode: number = 200) {
+        // Create a form object and stream all files into it
+        const form = new FormData();
+        fileNames.forEach(fileName => {
+            const readStream = createReadStream(resolveFileName(fileName));
+            form.append('file', readStream);    
+        });
+        form.append('content', JSON.stringify(metadata));
+
+        const response = await cafienneService.postDocument(user, `/cases/${Case.id}/casefile/upload/${encodeURI(path)}`, form);
+        const msg = `UploadCaseFileDocument is not expected to succeed for user ${user.id} in case ${Case.id}`;
+        return checkResponse(response, msg, expectedStatusCode);
+    }
+
+    /**
+     * Retrieve upload information for the case (i.e., which type of documents can be uploaded into which case file items)
+     * @param user 
+     * @param Case 
+     * @param expectedStatusCode 
+     */
+    async getUploadInformation(user: User, Case: Case, expectedStatusCode: number = 200) {
+        const response = await cafienneService.get(`/cases/${Case.id}/casefile/upload-information`, user);
+        const msg = `UploadInformation is not expected to succeed for user ${user.id} in case ${Case.id}`;
+        return checkJSONResponse(response, msg, expectedStatusCode);
+    }
+
+    /**
+     * Retrieves a list of URLs that can be downloaded for the case instance
+     * @param user 
+     * @param Case 
+     * @param expectedStatusCode 
+     */
+    async getDownloadInformation(user: User, Case: Case, expectedStatusCode: number = 200) {
+        const response = await cafienneService.get(`/cases/${Case.id}/casefile/download-information`, user);
+        const msg = `DownloadInformation is not expected to succeed for user ${user.id} in case ${Case.id}`;
+        return checkJSONResponse(response, msg, expectedStatusCode, Array);
+    }
+
+    /**
+     * Download a document from the case file item
+     * @param user
+     * @param Case 
+     * @param path 
+     * @param expectedStatusCode 
+     */
+    async downloadCaseFileDocument(user: User, Case: Case, path: string, expectedStatusCode: number = 200) {
+        const response = await cafienneService.get(`/cases/${Case.id}/casefile/download/${encodeURI(path)}`, user);
+        const msg = `DownloadCaseFileDocument is not expected to succeed for user ${user.id} in case ${Case.id}`;
+        return checkResponse(response, msg, expectedStatusCode);
+    }
+
+    /**
+     * Download a document from the URL as given by the return value from getDownloadInformation
+     * (no need to specify case instance)
+     * @param user 
+     * @param url 
+     * @param expectedStatusCode 
+     */
+    async downloadURL(user: User, url: string, expectedStatusCode: number = 200) {
+        const response = await cafienneService.get(`${encodeURI(url)}`, user);
+        const msg = `DownloadURL(${url}) is not expected to succeed for user ${user.id}`;
         return checkResponse(response, msg, expectedStatusCode);
     }
 

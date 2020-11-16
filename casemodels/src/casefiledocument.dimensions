@@ -1,0 +1,33 @@
+<CMMNDI>
+    <CMMNDiagram>
+        <CMMNShape cmmnElementRef="cm__vvzDD_0">
+            <Bounds x="20" y="20" width="800" height="500"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="cm__8Q3oq_0">
+            <Bounds x="40" y="40" width="650" height="400"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ht__8Q3oq_0">
+            <Bounds x="140" y="110" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ht__8Q3oq_1">
+            <Bounds x="380" y="100" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_8Q3oq_10">
+            <Bounds x="514" y="120" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ht__8Q3oq_2">
+            <Bounds x="500" y="310" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_8Q3oq_15">
+            <Bounds x="494" y="350" width="12" height="20"/>
+        </CMMNShape>
+        <casefileitem cmmnElementRef="_8Q3oq_shape_6" parentId="cm__8Q3oq_0" contextRef="_8Q3oq_12">
+            <Bounds x="600" y="120" width="25" height="40"/>
+        </casefileitem>
+        <casefileitem cmmnElementRef="_8Q3oq_shape_9" parentId="cm__8Q3oq_0" contextRef="_8Q3oq_2">
+            <Bounds x="360" y="340" width="25" height="40"/>
+        </casefileitem>
+        <CMMNEdge sourceCMMNElementRef="_8Q3oq_shape_6" targetCMMNElementRef="_8Q3oq_10"/>
+        <CMMNEdge label="create" sourceCMMNElementRef="_8Q3oq_shape_9" targetCMMNElementRef="_8Q3oq_15"/>
+    </CMMNDiagram>
+</CMMNDI>

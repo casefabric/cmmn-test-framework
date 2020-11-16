@@ -1,0 +1,119 @@
+<definitions>
+    <case id="casefiledocument.case" name="casefiledocument">
+        <caseFileModel>
+            <caseFileItem id="_8Q3oq_0" name="Greeting" multiplicity="ExactlyOne" definitionRef="greeting.cfid">
+                <children>
+                    <caseFileItem id="_8Q3oq_12" name="Pictures" multiplicity="ZeroOrMore" definitionRef="document.cfid"/>
+                </children>
+            </caseFileItem>
+            <caseFileItem id="_8Q3oq_1" name="Response" multiplicity="ExactlyOne" definitionRef="response.cfid">
+                <children>
+                    <caseFileItem id="_8Q3oq_13" name="Pictures" multiplicity="ZeroOrMore" definitionRef="document.cfid"/>
+                </children>
+            </caseFileItem>
+            <caseFileItem id="_8Q3oq_2" name="Pictures" multiplicity="ZeroOrMore" definitionRef="document.cfid"/>
+            <caseFileItem id="_8Q3oq_19" name="Project" multiplicity="ExactlyOne" definitionRef="project.cfid"/>
+        </caseFileModel>
+        <casePlanModel id="cm__8Q3oq_0" name="casefiledocument" autoComplete="true">
+            <planItem id="pi_ht__8Q3oq_0" name="Send Greeting" definitionRef="ht__8Q3oq_0"/>
+            <planItem id="pi_ht__8Q3oq_1" name="Review Pictures" definitionRef="ht__8Q3oq_1">
+                <entryCriterion id="_8Q3oq_10" name="EntryCriterion_1" sentryRef="crit__8Q3oq_1"/>
+            </planItem>
+            <planItem id="pi_ht__8Q3oq_2" name="Er is een  neiuwe attachment" description="Er is een 
+neiuwe attachment" definitionRef="ht__8Q3oq_2">
+                <entryCriterion id="_8Q3oq_15" name="EntryCriterion_2" sentryRef="crit__8Q3oq_2"/>
+                <itemControl id="_8Q3oq_14">
+                    <repetitionRule id="_8Q3oq_17">
+                        <condition id="_8Q3oq_18" language="spel">
+                            <body>
+                                <![CDATA[true]]>
+                            </body>
+                        </condition>
+                    </repetitionRule>
+                </itemControl>
+            </planItem>
+            <sentry id="crit__8Q3oq_1">
+                <caseFileItemOnPart id="_8Q3oq_11" sourceRef="_8Q3oq_0">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+                <caseFileItemOnPart id="_8Q3oq_20" sourceRef="_8Q3oq_12">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </sentry>
+            <sentry id="crit__8Q3oq_2">
+                <caseFileItemOnPart id="_8Q3oq_16" sourceRef="_8Q3oq_2">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </sentry>
+            <humanTask id="ht__8Q3oq_0" name="Send Greeting" isBlocking="true"/>
+            <humanTask id="ht__8Q3oq_1" name="Review Pictures" isBlocking="true"/>
+            <humanTask id="ht__8Q3oq_2" name="Er is een  neiuwe attachment" description="Er is een 
+neiuwe attachment" isBlocking="true"/>
+        </casePlanModel>
+    </case>
+    <caseFileItemDefinition name="Greeting" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="greeting.cfid">
+        <property name="Message" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+            </extensionElements>
+        </property>
+        <property name="To" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+            </extensionElements>
+        </property>
+        <property name="From" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    </caseFileItemDefinition>
+    <caseFileItemDefinition name="document" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/CMISDocument" id="document.cfid">
+        <property name="URL" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="Name" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="Extension" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="Description" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    </caseFileItemDefinition>
+    <caseFileItemDefinition name="Response" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/CMISDocument" id="response.cfid">
+        <property name="Message" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="Date" type="http://www.omg.org/spec/CMMN/PropertyType/date"/>
+        <property name="Time" type="http://www.omg.org/spec/CMMN/PropertyType/time"/>
+        <property name="SomeBoolean" type="http://www.omg.org/spec/CMMN/PropertyType/boolean"/>
+    </caseFileItemDefinition>
+    <caseFileItemDefinition name="Project" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="project.cfid">
+        <property name="IMIS-code" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="IMIS-activity-code" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="Manager" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="ChiefServiceLine" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="Assistant" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    </caseFileItemDefinition>
+    <CMMNDI>
+        <CMMNDiagram>
+            <CMMNShape cmmnElementRef="cm__vvzDD_0">
+                <Bounds x="20" y="20" width="800" height="500"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="cm__8Q3oq_0">
+                <Bounds x="40" y="40" width="650" height="400"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__8Q3oq_0">
+                <Bounds x="140" y="110" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__8Q3oq_1">
+                <Bounds x="380" y="100" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_8Q3oq_10">
+                <Bounds x="514" y="120" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__8Q3oq_2">
+                <Bounds x="500" y="310" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_8Q3oq_15">
+                <Bounds x="494" y="350" width="12" height="20"/>
+            </CMMNShape>
+            <casefileitem cmmnElementRef="_8Q3oq_shape_6" parentId="cm__8Q3oq_0" contextRef="_8Q3oq_12">
+                <Bounds x="600" y="120" width="25" height="40"/>
+            </casefileitem>
+            <casefileitem cmmnElementRef="_8Q3oq_shape_9" parentId="cm__8Q3oq_0" contextRef="_8Q3oq_2">
+                <Bounds x="360" y="340" width="25" height="40"/>
+            </casefileitem>
+            <CMMNEdge sourceCMMNElementRef="_8Q3oq_shape_6" targetCMMNElementRef="_8Q3oq_10"/>
+            <CMMNEdge label="create" sourceCMMNElementRef="_8Q3oq_shape_9" targetCMMNElementRef="_8Q3oq_15"/>
+        </CMMNDiagram>
+    </CMMNDI>
+</definitions>

@@ -1,4 +1,5 @@
 import fetch from 'isomorphic-fetch';
+import FormData from 'form-data';
 import Config from '../../config';
 import logger from '../logger';
 import User from '../user';
@@ -54,6 +55,32 @@ export default class CafienneService {
     async post(url: string, user: User, request?: object, method = 'POST') {
         const body = (typeof request === 'string') ? `"${request}"` : request ? JSON.stringify(request, undefined, 2) : undefined;
         return this.fetch(user, url, method, getHeaders(user), body);    
+    }
+
+    async postDocument(user: User, url: string, form: FormData): Promise<CafienneResponse> {
+        // Each time make sure we take the latest Authorization header from the user, or send no Authorization along
+        const method = 'POST';
+        const headers = getHeaders(user, form.getHeaders());
+
+        url = this.baseURL + (url.startsWith('/') ? url.substring(1) : url);
+
+        const myCallNumber = callNumber++;
+        logger.info(`\n\nHTTP:${method}[${myCallNumber}] from [${user ? user.id : ''}] to ${url}`);
+        printHeaders('Request headers:', headers);
+
+        const response = await fetch(url, { method, headers, body: form }).then(response => new CafienneResponse(response)).then(this.updateCaseLastModified);
+        // Add an extra newline to show the response
+        logger.debug();
+        logger.info(`RESPONSE[${myCallNumber}]==> ${response.status} ${response.statusText}`);
+        printHeaders('Response headers:', response.headers);
+         // For response ok, print to debug log only; for response not-ok print info logging
+         if (response.ok) {
+            await response.text().then(text => logger.debug(text));
+        } else {
+            await response.text().then(text => logger.info(text));            
+        }
+
+        return response;
     }
 
     async postXML(url: string, user: User, request: Document, method = 'POST'): Promise<CafienneResponse> {
