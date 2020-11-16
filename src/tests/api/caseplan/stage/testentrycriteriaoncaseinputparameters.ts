@@ -55,7 +55,7 @@ export default class TestEntryCriteriaOnCaseInputParameters extends TestCase {
         }
         console.log(`\nPositive test result: found ${case1.planitems.length} plan items in all three cases`);
         
-        await caseFileService.createCaseFileItem(case1, sender, 'Greeting/Child', {name:'child3'});
+        await caseFileService.createCaseFileItem(sender, case1, 'Greeting/Child', {name:'child3'});
         const changedCase1 = await caseService.getCase(sender, case1);
         if (case1.planitems.length + 2 != changedCase1.planitems.length) {
             throw new Error('Creating another case file item in first case should lead to new Stage and Task, but apparently that is not working anymore');
@@ -104,7 +104,7 @@ export default class TestEntryCriteriaOnCaseInputParameters extends TestCase {
 
         await caseService.getCase(sender, caseInstance).then(printCaseSummary);
 
-        await caseFileService.updateCaseFileItem(caseInstance, sender, 'Greeting', {Child:[{name:'child1'}, {name:'child2'}]});
+        await caseFileService.updateCaseFileItem(sender, caseInstance, 'Greeting', {Child:[{name:'child1'}, {name:'child2'}]});
         
         return await caseService.getCase(sender, caseInstance);
 
@@ -126,10 +126,10 @@ export default class TestEntryCriteriaOnCaseInputParameters extends TestCase {
 
         await caseService.getCase(sender, caseInstance).then(printCaseSummary);
 
-        await caseFileService.createCaseFileItem(caseInstance, sender, 'Greeting/Child', {name:'child1'});
+        await caseFileService.createCaseFileItem(sender, caseInstance, 'Greeting/Child', {name:'child1'});
         await caseService.getCase(sender, caseInstance).then(printCaseSummary);
 
-        await caseFileService.createCaseFileItem(caseInstance, sender, 'Greeting/Child', {name:'child2'});
+        await caseFileService.createCaseFileItem(sender, caseInstance, 'Greeting/Child', {name:'child2'});
         
         return await caseService.getCase(sender, caseInstance).then(printCaseSummary);
     }

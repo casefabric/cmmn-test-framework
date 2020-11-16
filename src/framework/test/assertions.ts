@@ -142,7 +142,7 @@ export function assertTaskCount(tasks: Task[], state: string, expectedCount: Num
  * @param expectedContent 
  */
 export async function assertCaseFileContent(caseInstance: Case, user: User, path: string, expectedContent: any, log: boolean = false) {
-    await caseFileService.getCaseFile(caseInstance, user).then(casefile => {
+    await caseFileService.getCaseFile(user, caseInstance).then(casefile => {
         // console.log("Case File for reading path " + path, casefile);
         const readCaseFileItem = (caseFile: any) => {
             const item = pathReader(caseFile, path);

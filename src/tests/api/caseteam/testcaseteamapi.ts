@@ -90,9 +90,9 @@ export default class TestCaseTeamAPI extends TestCase {
         await caseTeamService.getCaseTeam(caseInstance, sender);
         
         // Getting the case file is allowed for sender, as he is part of the team
-        await caseFileService.getCaseFile(caseInstance, sender);
+        await caseFileService.getCaseFile(sender, caseInstance);
         // Getting the case file is not allowed for receiver, as he is no longer part of the team
-        await caseFileService.getCaseFile(caseInstance, receiver, 404);
+        await caseFileService.getCaseFile(receiver, caseInstance, 404);
 
         // Add employee to the team, and show that he now has access to the case
         await caseTeamService.setMember(caseInstance, sender, new CaseTeamMember(employee));

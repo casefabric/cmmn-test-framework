@@ -69,7 +69,7 @@ export default class TestGetListGetDetails extends TestCase {
         await assertPlanItemState(user, caseInstance, 'GetDetails', 0, 'Available');
 
         // Create the CaseFileItem Request only with port
-        await caseFileService.createCaseFileItem(caseInstance, user, "HTTPConfig", inputs);
+        await caseFileService.createCaseFileItem(user, caseInstance, "HTTPConfig", inputs);
 
         // Give the 'GetList.0' process task up to 5 seconds to fail and activate Stage 'Fail handling.0'
         await assertPlanItemState(user, caseInstance, 'Fail handling', 0, 'Active', 10);
@@ -109,7 +109,7 @@ export default class TestGetListGetDetails extends TestCase {
             await assertPlanItemState(user, caseInstance, 'GetDetails', i, 'Completed', 10);
         }
 
-        const exceptionCaseFile = await caseFileService.getCaseFile(caseInstance, user);
+        const exceptionCaseFile = await caseFileService.getCaseFile(user, caseInstance);
 
 
         // Verify exception case file content with the handler

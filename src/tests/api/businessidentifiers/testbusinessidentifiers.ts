@@ -54,7 +54,7 @@ export default class TestBusinessIdentifiers extends TestCase {
         await messageFilter.assertExtraMatches(0);
 
         // Update case file item
-        await caseFileService.updateCaseFileItem(caseInstance, sender, 'Greeting', { Message: '' });
+        await caseFileService.updateCaseFileItem(sender, caseInstance, 'Greeting', { Message: '' });
 
         // Show that now we find a case for th message filter
         await messageFilter.assertExtraMatches(1);
@@ -65,7 +65,7 @@ export default class TestBusinessIdentifiers extends TestCase {
         await combinedFilter.assertExtraMatches(0);
 
         // Update case file item
-        await caseFileService.updateCaseFileItem(caseInstance, sender, 'Greeting', { Message: 'hello' });
+        await caseFileService.updateCaseFileItem(sender, caseInstance, 'Greeting', { Message: 'hello' });
 
         // Update and assert filters
         await helloFilter.assertExtraMatches(1);
