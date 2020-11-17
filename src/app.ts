@@ -76,6 +76,9 @@ class TestClasses {
 
     static getTestClass(name: string) {
         const t = TestClasses.testList.find(t => t.name === name.toLowerCase());
+        if (!t) {
+            throw new Error(`Cannot find a test '${name}'`);
+        }
         return t.test;
     }
 }
@@ -216,22 +219,32 @@ async function runTests(testDeclarations: Array<any>, onlyDefaults: boolean) {
     return results;
 }
 
-const commandLineTestNames = findTestsFromCommandLineArguments();
-const commandLineTestClasses = commandLineTestNames.map(TestClasses.getTestClass)
-const runDefaultTests = commandLineTestClasses.length > 0 ? false : true;
-const testDeclarations = runDefaultTests ? AllTestCases.list : commandLineTestClasses;
+function main() {
 
-const startTime = new Date();
-console.log(`=========\n\nStarting ${testDeclarations.length} test cases at ${startTime}\n`);
+    const commandLineTestNames = findTestsFromCommandLineArguments();
+    const commandLineTestClasses = commandLineTestNames.map(TestClasses.getTestClass)
+    const runDefaultTests = commandLineTestClasses.length > 0 ? false : true;
+    const testDeclarations = runDefaultTests ? AllTestCases.list : commandLineTestClasses;
 
-runTests(testDeclarations, runDefaultTests).then(results => {
-    const endTime = new Date();
-    console.log(`\n=========\n\nTesting completed in ${endTime.getTime() - startTime.getTime()} milliseconds at ${endTime}\nResults:\n${results.toString()}`);
-    process.exit(0)
-}).catch(e => {
-    console.error(e);
+    const startTime = new Date();
+    console.log(`=========\n\nStarting ${testDeclarations.length} test cases at ${startTime}\n`);
+
+    runTests(testDeclarations, runDefaultTests).then(results => {
+        const endTime = new Date();
+        console.log(`\n=========\n\nTesting completed in ${endTime.getTime() - startTime.getTime()} milliseconds at ${endTime}\nResults:\n${results.toString()}`);
+        process.exit(0)
+    }).catch(e => {
+        console.error(e);
+        process.exit(-1);
+    });
+}
+
+try {
+    main();
+} catch (error) {
+    console.log(error.message);
     process.exit(-1);
-});
+}
 
 class TestError extends Error {
     constructor(public error: Error, message: string) {
