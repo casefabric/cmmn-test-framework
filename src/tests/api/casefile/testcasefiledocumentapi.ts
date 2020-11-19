@@ -11,6 +11,7 @@ import Case from '../../../framework/cmmn/case';
 import Util from '../../../framework/test/util';
 import CaseTeam from '../../../framework/cmmn/caseteam';
 import CaseTeamMember, { CaseOwner } from '../../../framework/cmmn/caseteammember';
+import { SomeTime } from '../../../framework/test/time';
 
 const repositoryService = new RepositoryService();
 const definition = 'casefiledocument.xml';
@@ -49,6 +50,14 @@ export default class TestCaseFileDocumentAPI extends TestCase {
             URL: 'Should this be overwritten by the engine? Or is it just a plain property????'
         }
         const documents = [definition, gitIgnoreFile];
+
+        // Uploading into wrong path should fail (and should also delete the top level case-instance directory in the file based document storage)
+        await caseFileService.uploadCaseFileDocument(sender, caseInstance, 'abcPictures', metadata, documents, 400);
+
+        // Uncomment this to see that the case directory has been removed from the file based document storage
+        // await SomeTime(10000, "WAITING FOR YOU TO DELETE THE DIRECTORY :)")
+
+        // Now upload into a valid path
         await caseFileService.uploadCaseFileDocument(sender, caseInstance, 'Pictures', metadata, documents);
 
         // Changing metadata should also result in a CaseFileItemUpdated event
@@ -63,6 +72,9 @@ export default class TestCaseFileDocumentAPI extends TestCase {
         // But it should work for the receiver
         await caseFileService.uploadCaseFileDocument(receiver, caseInstance, 'Greeting/Pictures', metadata, documents);
 
+        // But only if the path is valid!
+        await caseFileService.uploadCaseFileDocument(receiver, caseInstance, 'xxdsadf/Pictures', metadata, documents, 400);
+
         const downloadInfo = await caseFileService.getDownloadInformation(sender, caseInstance);
         console.log('Download info:' + JSON.stringify(downloadInfo, undefined, 2));
         if (downloadInfo.length !== 5) {
@@ -70,7 +82,7 @@ export default class TestCaseFileDocumentAPI extends TestCase {
         }
 
         const configTSDownloadResult = await caseFileService.downloadURL(sender, downloadInfo[4].url);
-        await (configTSDownloadResult.text().then(txt => console.log(`Content of config.ts:\n\n${txt.substring(0, 100)} ...`) ));
+        await (configTSDownloadResult.text().then(txt => console.log(`Content of config.ts:\n\n${txt.substring(0, 100)} ...`) ))
 
         // Download should fail for employee, as the employee is not part of the case team
         await caseFileService.downloadURL(employee, downloadInfo[4].url, 404);
