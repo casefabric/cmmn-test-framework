@@ -1,0 +1,24 @@
+<CMMNDI>
+    <CMMNDiagram>
+        <CMMNShape cmmnElementRef="cm__EGOwJ_0">
+            <Bounds x="20" y="20" width="800" height="500"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ht__EGOwJ_0">
+            <Bounds x="270" y="100" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_EGOwJ_5">
+            <Bounds x="264" y="130" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ht__EGOwJ_1">
+            <Bounds x="270" y="230" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_EGOwJ_9">
+            <Bounds x="334" y="220" width="12" height="20"/>
+        </CMMNShape>
+        <casefileitem cmmnElementRef="_EGOwJ_shape_1" parentId="cm__EGOwJ_0" contextRef="_EGOwJ_0">
+            <Bounds x="137" y="117" width="25" height="40"/>
+        </casefileitem>
+        <CMMNEdge sourceCMMNElementRef="_EGOwJ_shape_1" targetCMMNElementRef="_EGOwJ_5"/>
+        <CMMNEdge sourceCMMNElementRef="pi_ht__EGOwJ_0" targetCMMNElementRef="_EGOwJ_9"/>
+    </CMMNDiagram>
+</CMMNDI>
