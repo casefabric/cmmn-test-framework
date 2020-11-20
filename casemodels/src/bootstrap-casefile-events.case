@@ -1,0 +1,38 @@
+<case id="bootstrap-casefile-events.case" name="bootstrap-casefile-events" guid="_EGOwJ">
+    <caseFileModel>
+        <caseFileItem id="_EGOwJ_0" name="Greeting" multiplicity="ExactlyOne" definitionRef="greeting.cfid"/>
+        <caseFileItem id="_EGOwJ_1" name="Response" multiplicity="ExactlyOne" definitionRef="response.cfid"/>
+    </caseFileModel>
+    <casePlanModel id="cm__EGOwJ_0" name="bootstrap-casefile-events" autoComplete="true">
+        <planItem id="pi_ht__EGOwJ_0" name="SendResponse" definitionRef="ht__EGOwJ_0">
+            <entryCriterion id="_EGOwJ_5" name="EntryCriterion_0" sentryRef="crit__EGOwJ_0"/>
+        </planItem>
+        <planItem id="pi_ht__EGOwJ_1" name="ReadRespose" definitionRef="ht__EGOwJ_1">
+            <entryCriterion id="_EGOwJ_9" name="EntryCriterion_1" sentryRef="crit__EGOwJ_1"/>
+        </planItem>
+        <sentry id="crit__EGOwJ_0">
+            <caseFileItemOnPart id="_EGOwJ_6" sourceRef="_EGOwJ_0">
+                <standardEvent>create</standardEvent>
+            </caseFileItemOnPart>
+        </sentry>
+        <sentry id="crit__EGOwJ_1">
+            <planItemOnPart id="_EGOwJ_10" sourceRef="pi_ht__EGOwJ_0">
+                <standardEvent>start</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <humanTask id="ht__EGOwJ_0" name="SendResponse" isBlocking="true">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="sendresponse.humantask"/>
+            </extensionElements>
+        </humanTask>
+        <humanTask id="ht__EGOwJ_1" name="ReadRespose" isBlocking="true">
+            <inputs id="_EGOwJ_12" name="Response" bindingRef="_EGOwJ_1"/>
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="readresponse.humantask">
+                    <parameterMapping id="_EGOwJ_8" sourceRef="_EGOwJ_12" targetRef="Response"/>
+                </cafienne:implementation>
+            </extensionElements>
+        </humanTask>
+    </casePlanModel>
+    <input id="_EGOwJ_13" name="Greeting" bindingRef="_EGOwJ_0"/>
+</case>

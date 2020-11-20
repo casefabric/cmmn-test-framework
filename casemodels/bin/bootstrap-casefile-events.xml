@@ -1,0 +1,188 @@
+<definitions>
+    <case id="bootstrap-casefile-events.case" name="bootstrap-casefile-events">
+        <caseFileModel>
+            <caseFileItem id="_EGOwJ_0" name="Greeting" multiplicity="ExactlyOne" definitionRef="greeting.cfid"/>
+            <caseFileItem id="_EGOwJ_1" name="Response" multiplicity="ExactlyOne" definitionRef="response.cfid"/>
+        </caseFileModel>
+        <casePlanModel id="cm__EGOwJ_0" name="bootstrap-casefile-events" autoComplete="true">
+            <planItem id="pi_ht__EGOwJ_0" name="SendResponse" definitionRef="ht__EGOwJ_0">
+                <entryCriterion id="_EGOwJ_5" name="EntryCriterion_0" sentryRef="crit__EGOwJ_0"/>
+            </planItem>
+            <planItem id="pi_ht__EGOwJ_1" name="ReadRespose" definitionRef="ht__EGOwJ_1">
+                <entryCriterion id="_EGOwJ_9" name="EntryCriterion_1" sentryRef="crit__EGOwJ_1"/>
+            </planItem>
+            <sentry id="crit__EGOwJ_0">
+                <caseFileItemOnPart id="_EGOwJ_6" sourceRef="_EGOwJ_0">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </sentry>
+            <sentry id="crit__EGOwJ_1">
+                <planItemOnPart id="_EGOwJ_10" sourceRef="pi_ht__EGOwJ_0">
+                    <standardEvent>start</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <humanTask id="ht__EGOwJ_0" name="SendResponse" isBlocking="true">
+                <extensionElements mustUnderstand="false">
+                    <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" name="SendResponse" description="Sends a response back to the initiator of the hello world case" humanTaskRef="sendresponse.humantask">
+                        <input id="Greeting" name="Greeting"/>
+                        <output id="Response" name="Response"/>
+                        <task-model>{
+	"schema" : {
+		"title" : "You have received a greeting",
+		"type" : "object",
+		"required" : [
+			"Response"
+		],
+		"properties" : {
+			"Greeting" : {
+				"title" : " ",
+				"type" : "object",
+				"properties" : {
+					"Message" : {
+						"type" : "string"
+					}
+				}
+			},
+			"Response" : {
+				"title" : "Your response",
+				"type" : "object",
+				"properties" : {
+					"Message" : {
+						"type" : "string",
+						"title" : "Your response message"
+					},
+					"Date" : {
+						"type" : "string",
+						"format" : "date",
+						"title" : "Pick a date"
+					},
+					"Time" : {
+						"type" : "string",
+						"format" : "time",
+						"title" : "Pick a time"
+					},
+					"SomeBoolean" : {
+						"type" : "boolean",
+						"title" : "Check this"
+					}
+				}
+			}
+		}
+	},
+	"uiSchema" : {
+       	"ui:order": [ "Greeting", "Response" ],
+		"Greeting" : {
+			"Message" : {
+				"ui:widget" : "textarea",
+				"ui:readonly" : true
+			},
+			"To" : {
+				"ui:readonly" : true
+			}
+		},
+		"Response" : {
+			"Message" : {
+				"ui:widget" : "textarea"
+			}
+		}
+	}
+}
+</task-model>
+                    </cafienne:implementation>
+                </extensionElements>
+            </humanTask>
+            <humanTask id="ht__EGOwJ_1" name="ReadRespose" isBlocking="true">
+                <inputs id="_EGOwJ_12" name="Response" bindingRef="_EGOwJ_1"/>
+                <extensionElements mustUnderstand="false">
+                    <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" name="ReadRespose" description="Read Response" humanTaskRef="readresponse.humantask">
+                        <input id="Response" name="Response"/>
+                        <task-model>
+			{
+				"schema": {
+					"title": "Read response",
+					"type": "object",
+					"properties": {
+						"Response": {
+							"title": "Your response",
+							"type": "object",
+							"properties": {
+								"Message": {
+									"type": "string",
+									"title": "Your response message"
+								},
+								"Date": {
+									"type": "string",
+									"format": "date",
+									"title": "Pick a date"
+								},
+								"Time": {
+									"type": "string",
+									"format": "time",
+									"title": "Pick a time"
+								},
+								"SomeBoolean": {
+									"type": "boolean",
+									"title": "Check this"
+								}
+							}
+						}
+					}
+				},
+				"uiSchema": {
+					"Message": {
+						"ui:widget": "textarea"
+					}
+				}
+			}
+		</task-model>
+                        <parameterMapping id="_EGOwJ_8" sourceRef="_EGOwJ_12" targetRef="Response"/>
+                    </cafienne:implementation>
+                </extensionElements>
+            </humanTask>
+        </casePlanModel>
+        <input id="_EGOwJ_13" name="Greeting" bindingRef="_EGOwJ_0"/>
+    </case>
+    <caseFileItemDefinition name="Greeting" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="greeting.cfid">
+        <property name="Message" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+            </extensionElements>
+        </property>
+        <property name="To" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+            </extensionElements>
+        </property>
+        <property name="From" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    </caseFileItemDefinition>
+    <caseFileItemDefinition name="Response" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="response.cfid">
+        <property name="Message" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="Date" type="http://www.omg.org/spec/CMMN/PropertyType/date"/>
+        <property name="Time" type="http://www.omg.org/spec/CMMN/PropertyType/time"/>
+        <property name="SomeBoolean" type="http://www.omg.org/spec/CMMN/PropertyType/boolean"/>
+    </caseFileItemDefinition>
+    <CMMNDI>
+        <CMMNDiagram>
+            <CMMNShape cmmnElementRef="cm__EGOwJ_0">
+                <Bounds x="20" y="20" width="800" height="500"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__EGOwJ_0">
+                <Bounds x="270" y="100" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_EGOwJ_5">
+                <Bounds x="264" y="130" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__EGOwJ_1">
+                <Bounds x="270" y="230" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_EGOwJ_9">
+                <Bounds x="334" y="220" width="12" height="20"/>
+            </CMMNShape>
+            <casefileitem cmmnElementRef="_EGOwJ_shape_1" parentId="cm__EGOwJ_0" contextRef="_EGOwJ_0">
+                <Bounds x="137" y="117" width="25" height="40"/>
+            </casefileitem>
+            <CMMNEdge sourceCMMNElementRef="_EGOwJ_shape_1" targetCMMNElementRef="_EGOwJ_5"/>
+            <CMMNEdge sourceCMMNElementRef="pi_ht__EGOwJ_0" targetCMMNElementRef="_EGOwJ_9"/>
+        </CMMNDiagram>
+    </CMMNDI>
+</definitions>
