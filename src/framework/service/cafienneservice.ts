@@ -4,11 +4,29 @@ import logger from '../logger';
 import User from '../user';
 import QueryFilter, { extendURL } from './queryfilter';
 import CafienneResponse from './response';
+import { json } from 'express';
+
+class CafienneHeaders {
+    public values:any = new Object();
+    setHeader(name: string, value: any) {
+        this.values[name] = value;
+    }
+}
+
+const BaseHeaders = new CafienneHeaders();
+BaseHeaders.setHeader('Content-Type', 'application/json');
 
 export default class CafienneService {
-    static headers = new Headers({
-        'Content-Type': 'application/json'
-    });
+    /**
+     * Returns base headers (copying case-last-modified and tenant-last-modified) and 
+     * sets a new bearer token based on the user's token
+     * Optionally copies the additional headers from the "from" object
+     * @param user 
+     * @param from 
+     */
+    static getHeaders(user: User, from: any = {}) {
+        return getHeaders(user, from);
+    }
 
     get baseURL() {
         return Config.CafienneService.url;
@@ -21,9 +39,9 @@ export default class CafienneService {
                 const headerValue = response.headers.get(headerName);
                 if (headerValue) {
                     if (Config.CafienneService.log.response.headers) {
-                        logger.info(`Updating ${headerName} to ${headerValue}`);
+                        logger.debug(`Updating ${headerName} to ${headerValue}`);
                     }
-                    CafienneService.headers.set(headerName, headerValue);
+                    BaseHeaders.setHeader(headerName, headerValue);
                 }
             }
 
@@ -34,13 +52,12 @@ export default class CafienneService {
     }
 
     async post(url: string, user: User, request?: object, method = 'POST') {
-        const headers = Object.create(CafienneService.headers);
         const body = (typeof request === 'string') ? `"${request}"` : request ? JSON.stringify(request, undefined, 2) : undefined;
-        return this.fetch(user, url, method, headers, body);
+        return this.fetch(user, url, method, getHeaders(user), body);    
     }
 
     async postXML(url: string, user: User, request: Document, method = 'POST'): Promise<CafienneResponse> {
-        const headers = new Headers({ 'Content-Type': 'application/xml' });
+        const headers = getHeaders(user, { 'Content-Type': 'application/xml'});
         const body = request.toString();
         return this.fetch(user, url, method, headers, body);
     }
@@ -51,16 +68,15 @@ export default class CafienneService {
     }
 
     async delete(url: string, user: User) {
-        const headers = Object.create(CafienneService.headers);
-        return this.fetch(user, url, 'DELETE', headers);
+        return this.fetch(user, url, 'DELETE');
     }
 
     async patch(user: User, url: string) {
-        const headers = Object.create(CafienneService.headers);
+        const headers = getHeaders(user);
         return this.fetch(user, url, 'PATCH', headers);
     }
 
-    async get(url: string, user: User | undefined, filter?: QueryFilter, headers: Headers = Object.create(CafienneService.headers)) {
+    async get(url: string, user: User | undefined, filter?: QueryFilter, headers?: Headers) {
         if (filter) {
             url = extendURL(url, filter);
         }
@@ -68,20 +84,16 @@ export default class CafienneService {
     }
 
     async getXml(url: string, user: User): Promise<Document> {
-        const headers = new Headers({ 'Content-Type': 'text/xml' })
-        const clm = CafienneService.headers.get('Case-Last-Modified');
-        if (clm) {
-            headers.set('Case-Last-Modified', clm);
-        }
+        const headers = getHeaders(user, {'Content-Type': 'text/xml'});
         return (await this.get(url, user, undefined, headers)).xml();
     }
 
-    async fetch(user: User | undefined, url: string, method: string, headers: Headers, body?: string): Promise<CafienneResponse> {
-        // Each time make sure we take the latest Authorization header from the user, or send no Authorization along
-        headers.delete('Authorization');
-        if (user && user.token) {
-            headers.set('Authorization', 'Bearer ' + user.token);
+    async fetch(user: User | undefined, url: string, method: string, headers?: Headers, body?: string): Promise<CafienneResponse> {
+        if (! headers) {
+            headers = getHeaders(user);
         }
+
+        // Each time make sure we take the latest Authorization header from the user, or send no Authorization along
         url = this.baseURL + (url.startsWith('/') ? url.substring(1) : url);
 
         const myCallNumber = callNumber++;
@@ -143,6 +155,37 @@ export function printHeaders(msg: string, headers: Headers) {
     headers.forEach((value, key) => {
         logger.debug(` ${key}\t: ${value}`)
     })
+}
+
+/**
+ * Returns base headers for the user (optional)
+ * along with new headers to copy "from"
+ * @param user 
+ * @param from 
+ */
+function getHeaders(user: User | undefined, from: any = {}) {
+    const headers = new Headers();
+    // First, copy the base headers (to include Case-Last-Modified and Tenant-Last-Modified)
+    for (const headerName in BaseHeaders.values) {
+        const headerValue = BaseHeaders.values[headerName];
+        headers.set(headerName, headerValue);
+    }
+
+    // Now, remove and potentially renew the authorization header
+    headers.delete('Authorization');
+    if (user && user.token) {
+        headers.set('Authorization', 'Bearer ' + user.token);
+    }
+
+    // Finally, check if there is anything additional to copy from
+    for (const headerName in from) {
+        const headerValue = from[headerName];
+        if (headerValue && ! (headerValue instanceof Function)) {
+            headers.set(headerName, headerValue);
+        }
+    }
+
+    return headers;
 }
 
 let callNumber: number = 0;

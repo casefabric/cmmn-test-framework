@@ -36,9 +36,7 @@ export default class TestResponseType extends TestCase {
 
     async tryFetchCase(caseId: string) {
         // create headers
-        const headers= CafienneService.headers;
-        headers.delete('Authorization');
-        headers.set('Authorization', 'Bearer ' + user.token);
+        const headers = CafienneService.getHeaders(user);
 
         // create request parameters
         const url = Config.CafienneService.url + 'cases/' + caseId;
