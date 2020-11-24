@@ -25,6 +25,9 @@ export default class TestBootstrapCaseFileEvents extends TestCase {
         const inputs = {
             Greeting: {
                 Message: 'Checking whether the case decently starts',
+            }, 
+            OneMoreInput: {
+                Message: 'One more message'
             }
         };
         
