@@ -253,14 +253,22 @@ export default class TestTenantRegistration extends TestCase {
         // Adding the user as an owner now should succeed.
         await tenantService.addTenantOwner(tenantOwner1, tenant1, nextOwnerId);
 
+        // The new user should also have become an owner
+        await tenantService.getTenantOwners(tenantOwner1, tenant1).then(owners => {
+            if (!owners.find((owner: string) => owner === nextOwnerId)) {
+                throw new Error(`Expected user ${nextOwnerId} to have become a tenant owner`);
+            };
+        });
+
+        // And the new user count now is 8
         await tenantService.getTenantUsers(tenantOwner1, tenant1).then(users => checkUserCount(users, 8));
     }
 
     async tryUpdateTenant() {
         const updatedTenantOwner1 = new TenantOwner('tenant-owner1', ['owner-role-1']);
         const updatedTenantOwner2 = new TenantOwner('tenant-owner2', ['owner-role-2']);
-        const updatedTenantOwner3 = new TenantOwner('tenant-owner3', ['role-3']);
-        
+        const updatedTenantOwner3 = new TenantUser('tenant-owner3', ['role-3']);
+
         const updatedTenantUser1 = new TenantUser('tenant-user-1', ['role-1']);
         const updatedTenantUser2 = new TenantUser('tenant-user-2', ['role-2']);
 
@@ -268,17 +276,20 @@ export default class TestTenantRegistration extends TestCase {
 
         await tenantService.updateTenantUsers(tenantOwner1, tenant1, updatedUserList);
 
-        await tenantService.getTenantUsers(tenantOwner1, tenant1).then((users : Array<TenantUser>) => {
+        await tenantService.getTenantUsers(tenantOwner1, tenant1).then((users: Array<TenantUser>) => {
             const userValidator = (user: TenantUser) => {
                 const foundUser = users.find(u => u.userId === user.userId);
                 if (!foundUser) {
                     throw new Error(`Missing user ${user.userId} in updated user list`);
                 };
+                if (foundUser.isOwner !== user.isOwner) {
+                    throw new Error(`Expected user ${user.userId} to have ownership == ${user.isOwner}`);
+                }
                 if (foundUser.roles.length !== user.roles.length) {
                     throw new Error(`Mismatch in roles of user ${user.userId}, found ${foundUser.roles.length} and expected ${user.roles.length}`);
                 };
                 user.roles.forEach(expectedRole => {
-                    if (! foundUser.roles.find(role => role === expectedRole)) {
+                    if (!foundUser.roles.find(role => role === expectedRole)) {
                         throw new Error(`Mismatch in roles of user ${user.userId}, could not find role ${expectedRole} (roles found: ${foundUser.roles}`);
                     }
                 });
@@ -290,6 +301,13 @@ export default class TestTenantRegistration extends TestCase {
             userValidator(updatedTenantUser2);
             // Since not updated, the original tenant user3 should still be the same
             userValidator(tenantUser3);
+        });
+
+        await tenantService.getTenantOwners(tenantOwner1, tenant1).then(owners => {
+            console.log(JSON.stringify(owners));
+            if (owners.find((owner: string) => owner === tenantOwner3.id)) {
+                throw new Error('Owner 3 should have been updated to no longer be an owner, but still is');
+            };
         });
     }
 }
