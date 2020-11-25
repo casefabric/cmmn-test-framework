@@ -112,17 +112,33 @@ export default class TestTenantRegistration extends TestCase {
         await tenantService.getTenantUsers(tenantOwner1, tenant1).then(users => checkUserCount(users, 7));
 
         // Now disable and enable a tenant user.
-        await tenantService.disableTenantUser(tenantOwner1, tenant1, tenantOwner2.id)
+        await tenantService.disableTenantUser(tenantOwner1, tenant1, tenantOwner2.id);
+
+        await tenantService.getTenantOwners(tenantOwner1, tenant1).then(owners => {
+            console.log(JSON.stringify(owners));
+            if (owners.find((owner: string) => owner === tenantOwner2.id)) {
+                throw new Error('The account for owner-2 has been disabled and should not appear in this list');
+            };
+        });
+
         // There should be one less tenant user
         await tenantService.getTenantUsers(tenantOwner1, tenant1).then(users => checkUserCount(users, 6));
         // There should be 1 disabled user account
         await tenantService.getDisabledUserAccounts(tenantOwner1, tenant1).then(users => checkUserCount(users, 1));
         // Not allowed to get a disabled user account
         await tenantService.getTenantUser(tenantOwner1, tenant1, tenantOwner2.id, 404);
+
         // Enable the user account again and validate that the user can be retrieved again.
         await tenantService.enableTenantUser(tenantOwner1, tenant1, tenantOwner2.id)
         await tenantService.getTenantUsers(tenantOwner1, tenant1).then(users => checkUserCount(users, 7));
         await tenantService.getTenantUser(tenantOwner1, tenant1, tenantOwner2.id);
+
+        await tenantService.getTenantOwners(tenantOwner1, tenant1).then(owners => {
+            console.log(JSON.stringify(owners));
+            if (!owners.find((owner: string) => owner === tenantOwner2.id)) {
+                throw new Error('The account for owner-2 is enabled again and should appear in this list');
+            };
+        });
 
         // But also normal users are allowed to fetch the user list of a tenant... Are they?
         await tenantService.getTenantUsers(user4, tenant1, 401);
