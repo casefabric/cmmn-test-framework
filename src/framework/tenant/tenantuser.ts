@@ -11,14 +11,15 @@ export default class TenantUser extends User {
      * @param name Optional name for the user inside the tenant.
      * @param email Optional email for the user inside the tenant.
      * @param isOwner Optional flag to indicate that this user is a tenant owner
+     * @param tenant Optional tenant name; is returned in server responses and can be used in expressions
      */
-    constructor(public userId: string, public roles: Array<string> = [], public name?: string, public email?: string, public isOwner: boolean = false) {
+    constructor(public userId: string, public roles: Array<string> = [], public name?: string, public email?: string, public isOwner: boolean = false, public tenant: string = '') {
         super(userId);
      }
 }
 
 export class TenantOwner extends TenantUser {
-    constructor(public userId: string, public roles: Array<string> = [], public name?: string, public email?: string) {
-        super(userId, roles, name, email, true);
+    constructor(public userId: string, public roles: Array<string> = [], public name?: string, public email?: string, public tenant: string = '') {
+        super(userId, roles, name, email, true, tenant);
     }
 }
