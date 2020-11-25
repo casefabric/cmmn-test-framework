@@ -49,6 +49,8 @@ export default class TestTenantRegistration extends TestCase {
         await this.tryChangeUserEmail();
 
         await this.newTenantOwnerMustBeRegisteredFirst();
+
+        await this.tryUpdateTenant();
     }
 
     async tryCreateTenant() {
@@ -252,6 +254,43 @@ export default class TestTenantRegistration extends TestCase {
         await tenantService.addTenantOwner(tenantOwner1, tenant1, nextOwnerId);
 
         await tenantService.getTenantUsers(tenantOwner1, tenant1).then(users => checkUserCount(users, 8));
+    }
+
+    async tryUpdateTenant() {
+        const updatedTenantOwner1 = new TenantOwner('tenant-owner1', ['owner-role-1']);
+        const updatedTenantOwner2 = new TenantOwner('tenant-owner2', ['owner-role-2']);
+        const updatedTenantOwner3 = new TenantOwner('tenant-owner3', ['role-3']);
+        
+        const updatedTenantUser1 = new TenantUser('tenant-user-1', ['role-1']);
+        const updatedTenantUser2 = new TenantUser('tenant-user-2', ['role-2']);
+
+        const updatedUserList = [updatedTenantOwner1, updatedTenantOwner2, updatedTenantOwner3, updatedTenantUser1, updatedTenantUser2];
+
+        await tenantService.updateTenantUsers(tenantOwner1, tenant1, updatedUserList);
+
+        await tenantService.getTenantUsers(tenantOwner1, tenant1).then((users : Array<TenantUser>) => {
+            const userValidator = (user: TenantUser) => {
+                const foundUser = users.find(u => u.userId === user.userId);
+                if (!foundUser) {
+                    throw new Error(`Missing user ${user.userId} in updated user list`);
+                };
+                if (foundUser.roles.length !== user.roles.length) {
+                    throw new Error(`Mismatch in roles of user ${user.userId}, found ${foundUser.roles.length} and expected ${user.roles.length}`);
+                };
+                user.roles.forEach(expectedRole => {
+                    if (! foundUser.roles.find(role => role === expectedRole)) {
+                        throw new Error(`Mismatch in roles of user ${user.userId}, could not find role ${expectedRole} (roles found: ${foundUser.roles}`);
+                    }
+                });
+            };
+            userValidator(updatedTenantOwner1);
+            userValidator(updatedTenantOwner2);
+            userValidator(updatedTenantOwner3);
+            userValidator(updatedTenantUser1);
+            userValidator(updatedTenantUser2);
+            // Since not updated, the original tenant user3 should still be the same
+            userValidator(tenantUser3);
+        });
     }
 }
 

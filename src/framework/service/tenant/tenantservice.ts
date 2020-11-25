@@ -111,6 +111,19 @@ export default class TenantService {
     }
 
     /**
+     * Updates the list of tenant users (in one API call, bulk update)
+     * @param user
+     * @param tenant 
+     * @param usersToUpdate 
+     * @param expectedStatusCode 
+     */
+    async updateTenantUsers(user: User, tenant: Tenant, usersToUpdate: Array<TenantUser>, expectedStatusCode: number = 204) {
+        const response = await this.cafienneService.put(`/tenant/${tenant.name}`, user, { users: usersToUpdate });
+        const msg = `UpdateTenant is not expected to succeed for user ${user.id} in tenant ${tenant.name}`;
+        return checkResponse(response, msg, expectedStatusCode);
+    }
+
+    /**
      * Disable the tenant user
      * @param user Must be a tenant owner
      * @param tenant 
@@ -121,7 +134,6 @@ export default class TenantService {
         const response = await this.cafienneService.put(`/tenant/${tenant.name}/users/${tenantUserId}/disable`, user);
         const msg = `Disable tenant user is not expected to succeed for user ${user.id} in tenant ${tenant.name}`;
         return checkResponse(response, msg, expectedStatusCode);
-
     }
 
     /**
