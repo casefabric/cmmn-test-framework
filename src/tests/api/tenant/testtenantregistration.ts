@@ -51,6 +51,10 @@ export default class TestTenantRegistration extends TestCase {
         await this.newTenantOwnerMustBeRegisteredFirst();
 
         await this.tryUpdateTenant();
+
+        await this.tryFailingCallsToUpdateTenant();
+
+        await this.tryReplaceTenant();
     }
 
     async tryCreateTenant() {
@@ -59,13 +63,19 @@ export default class TestTenantRegistration extends TestCase {
         // Creating tenant as tenantOwner should fail.
         await platformService.createTenant(tenantOwner1, tenant1, 401);
 
-        // Creating tenant as tenantOwner should fail.
-        await platformService.createTenant(tenantOwner1, tenant1, 401);
+        // Creating tenant as platformOwner should not succeed if there are no active owners
+        tenantOwner1.enabled = false;
+        tenantOwner2.enabled = false;
+        tenantOwner3.enabled = false;
+        await platformService.createTenant(platformAdmin, tenant1, 400);
 
         // Creating tenant as platformOwner should succeed.
+        tenantOwner1.enabled = true;
+        tenantOwner2.enabled = true;
+        tenantOwner3.enabled = true;
         await platformService.createTenant(platformAdmin, tenant1);
 
-        // Creating tenant again should fail
+        // Creating tenant again should fail because tenant already exists
         await platformService.createTenant(platformAdmin, tenant1, 400);
         // Getting tenant owners as platformOwner should fail.
         await tenantService.getTenantOwners(platformAdmin, tenant1, 401);
@@ -244,9 +254,6 @@ export default class TestTenantRegistration extends TestCase {
         const nextOwnerId = 'next-owner';
         const nextTenantUser = new TenantUser(nextOwnerId, []);
 
-        // Adding the owner without registering first as a user should fail.
-        await tenantService.addTenantOwner(tenantOwner1, tenant1, nextOwnerId, 400);
-
         // Register the tenant user
         await tenantService.addTenantUser(tenantOwner1, tenant1, nextTenantUser);
 
@@ -262,6 +269,18 @@ export default class TestTenantRegistration extends TestCase {
 
         // And the new user count now is 8
         await tenantService.getTenantUsers(tenantOwner1, tenant1).then(users => checkUserCount(users, 8));
+
+        // Adding a user directly as owner should also succeed.
+        await tenantService.addTenantOwner(tenantOwner1, tenant1, 'dummy-user-id');
+
+        // And the new user count now is 9
+        await tenantService.getTenantUsers(tenantOwner1, tenant1).then(users => checkUserCount(users, 9));
+
+        // Disable the account again
+        await tenantService.disableTenantUser(tenantOwner1, tenant1, 'dummy-user-id');
+
+        // And the new user count now is 8
+        await tenantService.getTenantUsers(tenantOwner1, tenant1).then(users => checkUserCount(users, 8));
     }
 
     async tryUpdateTenant() {
@@ -271,12 +290,16 @@ export default class TestTenantRegistration extends TestCase {
 
         const updatedTenantUser1 = new TenantUser('tenant-user-1', ['role-1']);
         const updatedTenantUser2 = new TenantUser('tenant-user-2', ['role-2']);
+        // Disable the user2 account
+        updatedTenantUser2.enabled = false;
 
         const updatedUserList = [updatedTenantOwner1, updatedTenantOwner2, updatedTenantOwner3, updatedTenantUser1, updatedTenantUser2];
 
         await tenantService.updateTenantUsers(tenantOwner1, tenant1, updatedUserList);
 
         await tenantService.getTenantUsers(tenantOwner1, tenant1).then((users: Array<TenantUser>) => {
+            // Since user2 account is disabled, there should only be 7 users left
+
             const userValidator = (user: TenantUser) => {
                 const foundUser = users.find(u => u.userId === user.userId);
                 if (!foundUser) {
@@ -298,7 +321,6 @@ export default class TestTenantRegistration extends TestCase {
             userValidator(updatedTenantOwner2);
             userValidator(updatedTenantOwner3);
             userValidator(updatedTenantUser1);
-            userValidator(updatedTenantUser2);
             // Since not updated, the original tenant user3 should still be the same
             userValidator(tenantUser3);
         });
@@ -308,6 +330,112 @@ export default class TestTenantRegistration extends TestCase {
             if (owners.find((owner: string) => owner === tenantOwner3.id)) {
                 throw new Error('Owner 3 should have been updated to no longer be an owner, but still is');
             };
+        });
+    }
+
+    async tryFailingCallsToUpdateTenant() {
+        // Actually, trying with an empty user list should succeed, but without any changes
+        await tenantService.updateTenantUsers(tenantOwner1, tenant1, []);
+
+        // Get all owners and make the plain users -> should not be allowed
+        const initialOwners: Array<TenantUser> = [];
+        await tenantService.getTenantOwners(tenantOwner1, tenant1).then(owners => {
+            owners.forEach((owner:string) => initialOwners.push(new TenantUser(owner)));
+        });
+        await tenantService.updateTenantUsers(tenantOwner1, tenant1, initialOwners, 400);
+
+        // Now make the owners again, but disable their accounts; should also not be allowed
+        initialOwners.forEach(user => {
+            user.isOwner = true;
+            user.enabled = false;
+        });
+        await tenantService.updateTenantUsers(tenantOwner1, tenant1, initialOwners, 400);
+
+        // Now try to individually disable all owner accounts; should fail only for the last one.
+        //  Note: we're doing it with the last owner ;)
+        const lastTenantOwner = initialOwners[initialOwners.length - 1];
+        await lastTenantOwner.login();
+        for (let i = 0; i<initialOwners.length; i++) {
+            const owner = initialOwners[i];
+            if (owner !== lastTenantOwner) {
+                await tenantService.updateTenantUser(lastTenantOwner, tenant1, owner);
+            } else {
+                await tenantService.updateTenantUser(lastTenantOwner, tenant1, owner, 400);
+            }
+        }
+
+        // Now restore the initial owners one by one again.
+        for (let i = 0; i<initialOwners.length - 1; i++) {
+            const user = initialOwners[i];
+            user.enabled = true;
+            await tenantService.updateTenantUser(lastTenantOwner, tenant1, user);
+        }
+
+        await tenantService.getTenantOwners(tenantOwner1, tenant1).then(owners => {
+            console.log(`Expecting to find owners ${initialOwners.map(o => o.userId)} and found: ${owners}`);
+            if (owners.length !== initialOwners.length) {
+                throw new Error(`Expecting to find owners ${initialOwners.map(o => o.userId)} but found: ${owners}`);
+            }
+        });
+    }
+
+    async tryReplaceTenant() {
+        const updatedTenantOwner1 = new TenantOwner('tenant-owner1', ['owner-role-1']);
+        const updatedTenantUser1 = new TenantUser('tenant-user-1', ['role-1']);
+
+        const noList: Array<TenantUser> = [];
+        const noOwnerList = [updatedTenantUser1];
+        const newUserList = [updatedTenantOwner1, updatedTenantUser1];
+
+        // It should not be possible to replace the tenant without giving new owner information
+        await tenantService.replaceTenant(tenantOwner1, new Tenant(tenantName, noList), 400);
+        await tenantService.replaceTenant(tenantOwner1, new Tenant(tenantName, noOwnerList), 400);
+        await tenantService.replaceTenant(tenantOwner1, new Tenant(tenantName, newUserList));
+
+        await tenantService.getTenantUsers(tenantOwner1, tenant1).then((users: Array<TenantUser>) => {
+            // Since user2 account is disabled, there should only be 7 users left
+            if (users.length !== 2) {
+                throw new Error(`Expected to find only 2 users in the tenant, but found ${users.length} instead`);
+            }
+
+            const userValidator = (user: TenantUser) => {
+                const foundUser = users.find(u => u.userId === user.userId);
+                if (!foundUser) {
+                    throw new Error(`Missing user ${user.userId} in updated user list`);
+                };
+                if (foundUser.isOwner !== user.isOwner) {
+                    throw new Error(`Expected user ${user.userId} to have ownership == ${user.isOwner}`);
+                }
+                if (foundUser.roles.length !== user.roles.length) {
+                    throw new Error(`Mismatch in roles of user ${user.userId}, found ${foundUser.roles.length} and expected ${user.roles.length}`);
+                };
+                user.roles.forEach(expectedRole => {
+                    if (!foundUser.roles.find(role => role === expectedRole)) {
+                        throw new Error(`Mismatch in roles of user ${user.userId}, could not find role ${expectedRole} (roles found: ${foundUser.roles}`);
+                    }
+                });
+            };
+            userValidator(updatedTenantOwner1);
+            userValidator(updatedTenantUser1);
+        });
+
+        await tenantService.getTenantOwners(tenantOwner1, tenant1).then(owners => {
+            console.log(JSON.stringify(owners));
+            if (owners.find((owner: string) => owner === tenantOwner3.id)) {
+                throw new Error('Owner 3 should have been updated to no longer be an owner, but still is');
+            };
+        });
+
+        // It should not be possible to remove the last owner
+        await tenantService.disableTenantUser(tenantOwner1, tenant1, tenantOwner1.id, 400);
+
+        // Restore the original tenant in one shot.
+        await tenantService.replaceTenant(tenantOwner1, tenant1);
+        await tenantService.getTenantUsers(tenantOwner1, tenant1).then((users: Array<TenantUser>) => {
+            // We should be back at the original 6 users.
+            if (users.length !== 6) {
+                throw new Error(`Expected to find 6 users in the tenant, but found ${users.length} instead`);
+            }
         });
     }
 }
