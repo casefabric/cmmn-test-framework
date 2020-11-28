@@ -5,7 +5,7 @@ import CaseService from "../../../framework/service/case/caseservice";
 import TaskService from "../../../framework/service/task/taskservice";
 import WorldWideTestTenant from "../../worldwidetesttenant";
 import TestCase from "../../../framework/test/testcase";
-import { findTask, assertCaseTeamMember, assertCasePlanState } from "../../../framework/test/assertions";
+import { findTask, assertCaseTeamMember, assertCasePlanState, assertPlanItemState } from "../../../framework/test/assertions";
 import Case from "../../../framework/cmmn/case";
 import CaseFileService from "../../../framework/service/case/casefileservice";
 import CaseTeamMember, { CaseOwner } from "../../../framework/cmmn/caseteammember";
@@ -57,6 +57,8 @@ export default class TestSubCase extends TestCase {
         await assertCaseTeamMember(sender, caseInstance, new CaseOwner(sender, []));
         await assertCaseTeamMember(sender, caseInstance, new CaseTeamMember(receiver, []), false);
 
+        await assertPlanItemState(sender, caseInstance, subCase.name, subCase.index, 'Active', 10, 2000);
+
         // Get subcase is possible by sender
         const childCaseInstance = await caseService.getCase(sender, subCase.id);
 
@@ -90,7 +92,7 @@ export default class TestSubCase extends TestCase {
         await assertCasePlanState(sender, childCaseInstance, 'Completed');
 
         // Give the server some time to respond back from subcase to parent case
-        await ServerSideProcessing();
+        await assertPlanItemState(sender, caseInstance, subCase.name, subCase.index, 'Completed', 10, 2000);
 
         // And now check parent case.
         await assertCasePlanState(sender, parentCaseInstance, 'Completed');
