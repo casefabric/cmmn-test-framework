@@ -1,7 +1,7 @@
 import User from "../../../framework/user";
 import TenantService from "../../../framework/service/tenant/tenantservice";
 import Tenant from "../../../framework/tenant/tenant";
-import TenantUser, { TenantOwner } from "../../../framework/tenant/tenantuser";
+import TenantUser, { TenantOwner, UpsertableTenantUser } from "../../../framework/tenant/tenantuser";
 import TestCase from "../../../framework/test/testcase";
 import Comparison from "../../../framework/test/comparison";
 import PlatformService from "../../../framework/service/platform/platformservice";
@@ -55,6 +55,8 @@ export default class TestTenantRegistration extends TestCase {
         await this.tryFailingCallsToUpdateTenant();
 
         await this.tryReplaceTenant();
+
+        await this.tryReplaceTenantUser();
     }
 
     async tryCreateTenant() {
@@ -437,6 +439,79 @@ export default class TestTenantRegistration extends TestCase {
                 throw new Error(`Expected to find 6 users in the tenant, but found ${users.length} instead`);
             }
         });
+    }
+
+    async tryReplaceTenantUser() {
+        // Pick an arbitrary user to play with
+        const userId = tenantOwner2.id;
+        const userToPlayWith = await tenantService.getTenantUser(tenantOwner1, tenant1, userId);
+        
+        userToPlayWith.name = 'xyz';
+        await tenantService.replaceTenantUser(tenantOwner1, tenant1, userToPlayWith);
+        await tenantService.getTenantUser(tenantOwner1, tenant1, userId).then(user => {
+            if (user.name !== userToPlayWith.name) {
+                throw new Error(`Expected name of user to be '${userToPlayWith.name}' but found '${user.name}'`);
+            }
+        });
+
+        await tenantService.replaceTenantUser(tenantOwner1, tenant1, new UpsertableTenantUser(userId));
+        await tenantService.getTenantUser(tenantOwner1, tenant1, userId).then(user => {
+            console.log("User: " + JSON.stringify(user, undefined, 2));
+            if (user.name) {
+                throw new Error(`Expected name of user to be empty, but found '${user.name}'`);
+            }
+            if (user.roles.lenght) {
+                throw new Error(`Expected roles of user to be empty, but found '${user.roles}'`);
+            }
+            if (user.email) {
+                throw new Error(`Expected email of user to be empty, but found '${user.email}'`);
+            }
+            if (user.isOwner) {
+                throw new Error(`Expected user not to be an owner, but found '${user.isOwner}'`);
+            }
+            if (!user.enabled) {
+                throw new Error(`Expected user-account to be enabled, but it is '${user.enabled}'`);
+            }
+        });
+
+        // Remove all owners but ourselves, and then try to remove ourselves.
+        const ownerList = await tenantService.getTenantOwners(tenantOwner1, tenant1);
+        for (let i = 0; i<ownerList.length; i++) {
+            const userId = ownerList[i];
+            if (userId !== tenantOwner1.id) {
+
+                const replaceTheOwner = new UpsertableTenantUser(userId);
+                replaceTheOwner.enabled = false;
+                await tenantService.replaceTenantUser(tenantOwner1, tenant1, replaceTheOwner);
+            }
+        }
+
+        // Now let's try to remove ourselves by both replace and update. 
+        //  It should fail, both to remove ownership and to disable the account (and the combination).
+        tenantOwner1.isOwner = false;
+        await tenantService.replaceTenantUser(tenantOwner1, tenant1, tenantOwner1, 400);
+        await tenantService.updateTenantUser(tenantOwner1, tenant1, tenantOwner1, 400);
+
+        tenantOwner1.isOwner = true;
+        tenantOwner1.enabled = false;
+        await tenantService.replaceTenantUser(tenantOwner1, tenant1, tenantOwner1, 400);
+        await tenantService.updateTenantUser(tenantOwner1, tenant1, tenantOwner1, 400);
+
+        tenantOwner1.isOwner = false;
+        tenantOwner1.enabled = false;
+        await tenantService.replaceTenantUser(tenantOwner1, tenant1, tenantOwner1, 400);
+        await tenantService.updateTenantUser(tenantOwner1, tenant1, tenantOwner1, 400);
+
+        // Replacing a non-existing user should fail, whereas "updating" is actually an upsert.
+        const notExistingUser = new UpsertableTenantUser(`I-don't-think-so-i-don't-exist`)
+        await tenantService.replaceTenantUser(tenantOwner1, tenant1, notExistingUser, 400);
+        await tenantService.updateTenantUser(tenantOwner1, tenant1, notExistingUser);
+        await tenantService.getTenantUser(tenantOwner1, tenant1, notExistingUser.id).then(user => {
+            console.log(`Better start thinking then, dear ${user.userId}`);
+        });
+
+        // Restore the original tenant in one shot.
+        await tenantService.replaceTenant(tenantOwner1, tenant1);
     }
 }
 

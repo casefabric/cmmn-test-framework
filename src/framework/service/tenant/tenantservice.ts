@@ -113,6 +113,19 @@ export default class TenantService {
     }
 
     /**
+     * Replace roles, name, email address, ownership and account-enabled of a tenant user 
+     * @param user Must be a tenant owner
+     * @param tenant 
+     * @param newTenantUser 
+     * @param expectedStatusCode 
+     */
+    async replaceTenantUser(user: User, tenant: Tenant, newTenantUser: UpsertableTenantUser, expectedStatusCode: number = 204) {
+        const response = await this.cafienneService.post(`/tenant/${tenant.name}/users`, user, newTenantUser);
+        const msg = `ReplaceTenantUser is not expected to succeed for user ${user.id} in tenant ${tenant.name}`;
+        return checkResponse(response, msg, expectedStatusCode);
+    }
+
+    /**
      * Updates the list of tenant users (in one API call, bulk update)
      * @param user
      * @param tenant 
