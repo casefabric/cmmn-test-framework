@@ -1,0 +1,41 @@
+<CMMNDI>
+    <CMMNDiagram>
+        <CMMNShape cmmnElementRef="cm__jBxoP_0">
+            <Bounds x="13" y="13" width="949" height="403"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ht__jBxoP_0">
+            <Bounds x="234" y="78" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ht__jBxoP_1">
+            <Bounds x="52" y="78" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_jBxoP_6">
+            <Bounds x="585" y="234" width="25" height="40"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_jBxoP_5">
+            <Bounds x="585" y="143" width="25" height="40"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_jBxoP_4">
+            <Bounds x="585" y="65" width="25" height="40"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_jBxoP_2">
+            <Bounds x="455" y="65" width="25" height="40"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_jBxoP_3">
+            <Bounds x="455" y="143" width="25" height="40"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_jBxoP_7">
+            <Bounds x="351" y="221" width="195" height="143"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ht__jBxoP_2">
+            <Bounds x="91" y="208" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_jBxoP_9">
+            <Bounds x="183" y="198" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi__jBxoP_11">
+            <Bounds x="702" y="65" width="208" height="156"/>
+        </CMMNShape>
+        <CMMNEdge sourceCMMNElementRef="pi_ht__jBxoP_0" targetCMMNElementRef="_jBxoP_9"/>
+    </CMMNDiagram>
+</CMMNDI>

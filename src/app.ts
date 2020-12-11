@@ -35,6 +35,7 @@ import TestTaskOutputOperations from './tests/api/casefile/testtaskoutputoperati
 import TestRepeatStage from './tests/stage/testrepeatstage';
 import TestGetListGetDetails from './tests/getlistgetdetails/getlistgetdetails';
 import TestBootstrapCaseFileEvents from './tests/api/case/testbootstrapcasefileevents';
+import TestDocumentationAPI from './tests/api/documentation/testdocumentationapi';
 
 
 function findTestsFromCommandLineArguments(): Array<string> {
@@ -109,6 +110,7 @@ const AllTestCases = new TestClasses( [
     , TestTaskAPI
     , TestTaskCountAPI
     , TestDebugMode
+    , TestDocumentationAPI
     , TestTenantRegistration
     , TestRepositoryAPI
     , TestTokenValidation

@@ -2,6 +2,7 @@ import User from "../../user";
 import Case from "../../cmmn/case";
 import CafienneService from "../cafienneservice";
 import { checkJSONResponse, checkResponse } from "../response";
+import CaseFileItemDocumentation from "../../cmmn/casefileitemdocumentation";
 
 const cafienneService = new CafienneService();
 
@@ -15,6 +16,18 @@ export default class CaseFileService {
         const response = await cafienneService.get(`/cases/${Case.id}/casefile`, user);
         const msg = `GetCaseFile is not expected to succeed for user ${user.id} in case ${Case.id}`;
         return checkJSONResponse(response, msg, expectedStatusCode);
+    }
+
+    /**
+     * Get the plan item's documentation
+     * @param Case 
+     * @param user 
+     * @param planItemId
+     */
+    async getCaseFileDocumentation(user: User, Case: Case, expectedStatusCode: number = 200): Promise<Array<CaseFileItemDocumentation>> {
+        const response = await cafienneService.get(`/cases/${Case.id}/documentation/casefile`, user);
+        const msg = `GetPlanItem is not expected to succeed for user ${user.id} in case ${Case.id}`;
+        return checkJSONResponse(response, msg, expectedStatusCode, [CaseFileItemDocumentation]);
     }
 
     /**
