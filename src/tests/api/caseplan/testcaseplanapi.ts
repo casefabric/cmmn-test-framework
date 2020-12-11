@@ -8,6 +8,7 @@ import RepositoryService from '../../../framework/service/case/repositoryservice
 import CasePlanService from '../../../framework/service/case/caseplanservice';
 import PlanItem from '../../../framework/cmmn/planitem';
 import Case from '../../../framework/cmmn/case';
+import CaseHistoryService from '../../../framework/service/case/casehistoryservice';
 
 const repositoryService = new RepositoryService();
 const definition = 'eventlistener.xml';
@@ -18,6 +19,7 @@ const user = worldwideTenant.sender;
 const tenant = worldwideTenant.name;
 
 const casePlanService = new CasePlanService();
+const caseHistoryService = new CaseHistoryService();
 
 export default class TestCasePlanAPI extends TestCase {
     async onPrepareTest() {
@@ -49,13 +51,21 @@ export default class TestCasePlanAPI extends TestCase {
         const planItem = await casePlanService.getPlanItem(user, caseInstance, eventItem.id);
         // console.log("PLanItem: " + planItem)
 
-        const history = await casePlanService.getPlanItemHistory(user, caseInstance, planItem.id);
-        // console.log("History: " + history)
-        if (history.length !== 2) {
-            throw new Error(`Expected 2 history items for the UserEvent ${planItem.name} but found ${history.length}`);
-        }
+        await caseHistoryService.getPlanItemHistory(user, caseInstance, planItem.id).then(history => {
+            // console.log("History: " + history)
+            if (history.length !== 2) {
+                throw new Error(`Expected 2 history items for the UserEvent ${planItem.name} but found ${history.length}`);
+            }
+        });
 
         await casePlanService.makePlanItemTransition(user, caseInstance, planItem.id, 'Occur');
+
+        await caseHistoryService.getPlanItemHistory(user, caseInstance, planItem.id).then(history => {
+            // console.log("History: " + history)
+            if (history.length !== 3) {
+                throw new Error(`Expected 3 history items for the UserEvent ${planItem.name} but found ${history.length}`);
+            }
+        });
 
         await casePlanService.getPlanItems(user, caseInstance).then(items => {
             if (! items.find((item: PlanItem) => item.name === 'T1')) {

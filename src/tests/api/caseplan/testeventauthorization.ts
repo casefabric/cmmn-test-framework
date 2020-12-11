@@ -10,6 +10,7 @@ import PlanItem from '../../../framework/cmmn/planitem';
 import CaseTeamMember, { CaseOwner } from '../../../framework/cmmn/caseteammember';
 import CaseTeam from '../../../framework/cmmn/caseteam';
 import Case from '../../../framework/cmmn/case';
+import CaseHistoryService from '../../../framework/service/case/casehistoryservice';
 
 const repositoryService = new RepositoryService();
 const definition = 'eventlistener.xml';
@@ -21,6 +22,7 @@ const tenant = worldwideTenant.name;
 const employee = worldwideTenant.employee;
 
 const casePlanService = new CasePlanService();
+const caseHistoryService = new CaseHistoryService();
 
 export default class TestEventAuthorization extends TestCase {
     async onPrepareTest() {
@@ -51,7 +53,7 @@ export default class TestEventAuthorization extends TestCase {
         const planItem = await casePlanService.getPlanItem(user, caseInstance, plainUserEvent.id);
         // console.log("PLanItem: " + planItem)
 
-        const history = await casePlanService.getPlanItemHistory(user, caseInstance, planItem.id);
+        const history = await caseHistoryService.getPlanItemHistory(user, caseInstance, planItem.id);
         // console.log("History: " + history)
         if (history.length !== 2) {
             throw new Error(`Expected 2 history items for the UserEvent ${planItem.name} but found ${history.length}`);
