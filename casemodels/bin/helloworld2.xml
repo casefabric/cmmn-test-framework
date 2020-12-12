@@ -1,0 +1,218 @@
+<definitions>
+    <case id="helloworld2.case" name="helloworld2">
+        <caseFileModel>
+            <caseFileItem id="_biHn7_5" name="Greeting" multiplicity="ExactlyOne" definitionRef="greeting.cfid"/>
+            <caseFileItem id="_biHn7_8" name="Response" multiplicity="ExactlyOne" definitionRef="response.cfid"/>
+        </caseFileModel>
+        <casePlanModel id="cm__biHn7_0" name="helloworld2" autoComplete="true">
+            <planItem id="pi_ht__biHn7_1" name="SendResponse" definitionRef="ht__biHn7_1">
+                <entryCriterion id="_biHn7_6" name="EntryCriterion_0" sentryRef="crit__biHn7_0"/>
+            </planItem>
+            <planItem id="pi_ht__biHn7_0" name="Read response" definitionRef="ht__biHn7_0">
+                <entryCriterion id="_biHn7_9" name="EntryCriterion_1" sentryRef="crit__biHn7_1"/>
+            </planItem>
+            <planItem id="pi_ue__biHn7_0" name="TerminateCase" definitionRef="ue__biHn7_0"/>
+            <planItem id="pi_ht__biHn7_2" name="Task that is always started" definitionRef="ht__biHn7_2"/>
+            <sentry id="crit__biHn7_0">
+                <caseFileItemOnPart id="_biHn7_7" sourceRef="_biHn7_5">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </sentry>
+            <sentry id="crit__biHn7_1">
+                <caseFileItemOnPart id="_biHn7_10" sourceRef="_biHn7_8">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </sentry>
+            <sentry id="crit__biHn7_2">
+                <planItemOnPart id="_biHn7_12" sourceRef="pi_ue__biHn7_0">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <exitCriterion id="_biHn7_11" name="ExitCriterion_0" sentryRef="crit__biHn7_2"/>
+            <humanTask id="ht__biHn7_1" name="SendResponse" isBlocking="true">
+                <inputs id="_biHn7_15" name="Greeting" bindingRef="_biHn7_5"/>
+                <outputs id="_biHn7_16" name="Response" bindingRef="_biHn7_8"/>
+                <extensionElements mustUnderstand="false">
+                    <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" name="SendResponse" description="Sends a response back to the initiator of the hello world case" humanTaskRef="sendresponse.humantask">
+                        <input id="Greeting" name="Greeting"/>
+                        <output id="Response" name="Response"/>
+                        <task-model>{
+	"schema" : {
+		"title" : "You have received a greeting",
+		"type" : "object",
+		"required" : [
+			"Response"
+		],
+		"properties" : {
+			"Greeting" : {
+				"title" : " ",
+				"type" : "object",
+				"properties" : {
+					"Message" : {
+						"type" : "string"
+					}
+				}
+			},
+			"Response" : {
+				"title" : "Your response",
+				"type" : "object",
+				"properties" : {
+					"Message" : {
+						"type" : "string",
+						"title" : "Your response message"
+					},
+					"Date" : {
+						"type" : "string",
+						"format" : "date",
+						"title" : "Pick a date"
+					},
+					"Time" : {
+						"type" : "string",
+						"format" : "time",
+						"title" : "Pick a time"
+					},
+					"SomeBoolean" : {
+						"type" : "boolean",
+						"title" : "Check this"
+					}
+				}
+			}
+		}
+	},
+	"uiSchema" : {
+       	"ui:order": [ "Greeting", "Response" ],
+		"Greeting" : {
+			"Message" : {
+				"ui:widget" : "textarea",
+				"ui:readonly" : true
+			},
+			"To" : {
+				"ui:readonly" : true
+			}
+		},
+		"Response" : {
+			"Message" : {
+				"ui:widget" : "textarea"
+			}
+		}
+	}
+}
+</task-model>
+                        <parameterMapping id="_biHn7_3" sourceRef="_biHn7_15" targetRef="Greeting"/>
+                        <parameterMapping id="_biHn7_4" sourceRef="Response" targetRef="_biHn7_16"/>
+                    </cafienne:implementation>
+                </extensionElements>
+            </humanTask>
+            <humanTask id="ht__biHn7_0" name="Read response" isBlocking="true">
+                <inputs id="_biHn7_18" name="Response" bindingRef="_biHn7_8"/>
+                <extensionElements mustUnderstand="false">
+                    <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" name="ReadRespose" description="Read Response" humanTaskRef="readresponse.humantask">
+                        <input id="Response" name="Response"/>
+                        <task-model>
+			{
+				"schema": {
+					"title": "Read response",
+					"type": "object",
+					"properties": {
+						"Response": {
+							"title": "Your response",
+							"type": "object",
+							"properties": {
+								"Message": {
+									"type": "string",
+									"title": "Your response message"
+								},
+								"Date": {
+									"type": "string",
+									"format": "date",
+									"title": "Pick a date"
+								},
+								"Time": {
+									"type": "string",
+									"format": "time",
+									"title": "Pick a time"
+								},
+								"SomeBoolean": {
+									"type": "boolean",
+									"title": "Check this"
+								}
+							}
+						}
+					}
+				},
+				"uiSchema": {
+					"Message": {
+						"ui:widget": "textarea"
+					}
+				}
+			}
+		</task-model>
+                        <parameterMapping id="_biHn7_2" sourceRef="_biHn7_18" targetRef="Response"/>
+                    </cafienne:implementation>
+                </extensionElements>
+            </humanTask>
+            <userEvent id="ue__biHn7_0" name="TerminateCase"/>
+            <humanTask id="ht__biHn7_2" name="Task that is always started" isBlocking="true"/>
+        </casePlanModel>
+        <input id="_biHn7_13" name="Greeting" bindingRef="_biHn7_5"/>
+    </case>
+    <caseFileItemDefinition name="Greeting" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="greeting.cfid">
+        <property name="Message" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+            </extensionElements>
+        </property>
+        <property name="To" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+            </extensionElements>
+        </property>
+        <property name="From" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    </caseFileItemDefinition>
+    <caseFileItemDefinition name="Response" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="response.cfid">
+        <property name="Message" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="Date" type="http://www.omg.org/spec/CMMN/PropertyType/date"/>
+        <property name="Time" type="http://www.omg.org/spec/CMMN/PropertyType/time"/>
+        <property name="SomeBoolean" type="http://www.omg.org/spec/CMMN/PropertyType/boolean"/>
+    </caseFileItemDefinition>
+    <CMMNDI>
+        <CMMNDiagram>
+            <CMMNShape cmmnElementRef="cm__biHn7_0">
+                <Bounds x="26" y="26" width="767" height="416"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__biHn7_1">
+                <Bounds x="169" y="130" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_biHn7_0">
+                <Bounds x="195" y="312" width="25" height="40"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_biHn7_5">
+                <Bounds x="195" y="273" width="25" height="40"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_biHn7_6">
+                <Bounds x="197" y="200" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_biHn7_8">
+                <Bounds x="481" y="273" width="25" height="40"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__biHn7_0">
+                <Bounds x="455" y="130" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_biHn7_9">
+                <Bounds x="488" y="200" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ue__biHn7_0">
+                <Bounds x="299" y="286" width="32" height="32"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_biHn7_11">
+                <Bounds x="306" y="432" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__biHn7_2">
+                <Bounds x="598" y="312" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNEdge sourceCMMNElementRef="_biHn7_5" targetCMMNElementRef="_biHn7_6"/>
+            <CMMNEdge sourceCMMNElementRef="_biHn7_8" targetCMMNElementRef="_biHn7_9"/>
+            <CMMNEdge sourceCMMNElementRef="pi_ue__biHn7_0" targetCMMNElementRef="_biHn7_11"/>
+        </CMMNDiagram>
+    </CMMNDI>
+</definitions>
