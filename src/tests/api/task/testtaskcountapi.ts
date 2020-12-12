@@ -39,11 +39,15 @@ export default class TestTaskCountAPI extends TestCase {
         const taskCountBefore = await taskService.countTasks(user, {tenant}) as TaskCount;
         console.log(`Task Count before starting new cases and claiming a task: ${JSON.stringify(taskCountBefore, undefined, 2)}`);
 
+        const numSendResponseTasksBefore = (await this.getTasks('SendResponse')).length;
+
         // Start 3 cases and claim 1 task. Should lead to 5 unclaimed tasks (3 times "Task that is always started", and 2 times "SendResponse") and 1 claimed "SendResponse" task
         await caseService.startCase(user, startCase);
         await caseService.startCase(user, startCase);
         const caseStarted = await caseService.startCase(user, startCase) as Case;
         const caseInstance = await caseService.getCase(user, caseStarted);
+
+        await this.getTasks('SendResponse', numSendResponseTasksBefore + 3);
 
         const tasks = await taskService.getCaseTasks(user, caseInstance);
         const sendResponseTask = tasks.find(task => task.taskName === 'SendResponse') as Task;
@@ -65,6 +69,16 @@ export default class TestTaskCountAPI extends TestCase {
         // Now terminate one of the 3 case instances. This should remove the claimed "SendResponse" task, and also remove 1 "Task that is always started" task
         await casePlanService.makePlanItemTransition(user, caseInstance, 'TerminateCase', 'Occur');        
         await this.validateTaskCountChange(taskCountAfter.claimed - 1, taskCountAfter.unclaimed - 1, `Task Count after terminating one case with a claimed and an unclaimed task`);
+        await this.getTasks('SendResponse', numSendResponseTasksBefore + 2);
+    }
+
+    async getTasks(taskName: string, expectedCount: number = -1) {
+        const tasks = (await taskService.getTasks(user, { taskName, tenant})).filter(Task.isActive);
+        console.log(`Found ${tasks.length} tasks with name '${taskName}'`);
+        if (expectedCount >= 0 && tasks.length !== expectedCount) {
+            throw new Error(`Expected to find ${expectedCount} tasks named '${taskName}', but found ${tasks.length}`);
+        }
+        return tasks;
     }
 
     async validateTaskCountChange(expectedNumberOfClaimedTasks: number, expectedNumberOfUnclaimedTasks: number, msg: string) {
