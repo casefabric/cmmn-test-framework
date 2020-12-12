@@ -50,7 +50,21 @@ export default class TestTaskCountAPI extends TestCase {
 
         await taskService.claimTask(user, sendResponseTask);
 
-        await this.validateTaskCountChange(taskCountBefore.claimed + 1, taskCountBefore.unclaimed + 5, `Task Count after creating 3 cases and claiming 1 task`);
+        const taskCountAfter = await this.validateTaskCountChange(taskCountBefore.claimed + 1, taskCountBefore.unclaimed + 5, `Task Count after creating 3 cases and claiming 1 task`);
+
+        const numUnassigned = await this.getUnassignedTasks(taskCountAfter.unclaimed + 10);
+        if (numUnassigned !== taskCountAfter.unclaimed) {
+            throw new Error(`Wrong number of unassigned tasks, expected ${taskCountAfter.unclaimed} found ${numUnassigned}`);
+        }
+
+        const numAssigned = await this.getAssignedTasks(taskCountAfter.claimed + 10);
+        if (numAssigned !== taskCountAfter.claimed) {
+            throw new Error(`Wrong number of assigned tasks, expected ${taskCountAfter.claimed} found ${numAssigned}`);
+        }
+
+        // Now terminate one of the 3 case instances. This should remove the claimed "SendResponse" task, and also remove 1 "Task that is always started" task
+        await casePlanService.makePlanItemTransition(user, caseInstance, 'TerminateCase', 'Occur');        
+        await this.validateTaskCountChange(taskCountAfter.claimed - 1, taskCountAfter.unclaimed - 1, `Task Count after terminating one case with a claimed and an unclaimed task`);
     }
 
     async validateTaskCountChange(expectedNumberOfClaimedTasks: number, expectedNumberOfUnclaimedTasks: number, msg: string) {
@@ -65,5 +79,18 @@ export default class TestTaskCountAPI extends TestCase {
         }
 
         return taskCountAfter;
+    }
+
+    async getUnassignedTasks(numberOfResults: number) {
+        // Simple test
+        const taskList = await taskService.getTasks(user, { taskState: 'Unassigned', numberOfResults, tenant });
+        console.log(`User ${user.id} has ${taskList.length} unassigned tasks`);
+        return taskList.length;
+    }
+
+    async getAssignedTasks(numberOfResults: number) {
+        const numAssigned = (await taskService.getTasks(user, { assignee: user.id, taskState : 'Assigned', numberOfResults, tenant })).length;
+        console.log(`User ${user.id} has ${numAssigned} tasks assigned`);
+        return numAssigned;
     }
 }
