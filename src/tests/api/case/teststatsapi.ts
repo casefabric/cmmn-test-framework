@@ -65,9 +65,6 @@ export default class TestStatsAPI extends TestCase {
         await this.getStatistics('overall', receiver);
         await this.getStatistics('Failed', receiver, {state:'Failed'});
         await this.getStatistics('HelloWorld', receiver, hwFilter);
-        return;
-
-
     }
 
     async getStatistics(msg: string, user: User, filter?: StatisticsFilter) {

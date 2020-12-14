@@ -5,109 +5,106 @@ import TaskService, { TaskCount } from '../../../framework/service/task/taskserv
 import TestCase from '../../../framework/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
-import CaseTeam from '../../../framework/cmmn/caseteam';
-import { CaseOwner } from '../../../framework/cmmn/caseteammember';
 import Case from '../../../framework/cmmn/case';
 import User from '../../../framework/user';
 import Task from '../../../framework/cmmn/task';
-import StatisticsFilter from '../../../framework/service/case/statisticsfilter';
 import CasePlanService from '../../../framework/service/case/caseplanservice';
 
 const repositoryService = new RepositoryService();
-const definition = 'helloworld.xml';
+const definition = 'helloworld2.xml';
 
 const caseService = new CaseService();
+const casePlanService = new CasePlanService();
 const taskService = new TaskService();
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
-const sender = worldwideTenant.sender;
-const receiver = worldwideTenant.receiver;
+const user = worldwideTenant.sender;
 
 export default class TestTaskCountAPI extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(sender, definition, tenant);
+        await repositoryService.validateAndDeploy(user, definition, tenant);
     }
 
     async run() {
-        const greeting = {
+        const inputs = {
             Greeting: {
                 Message: 'Hello there',
-                From: sender.id
-            }
-        };
-        const caseTeam = new CaseTeam([new CaseOwner(sender)]);
-        const caseTeam2 = new CaseTeam([new CaseOwner(sender), new CaseOwner(receiver)]);
-        
-        const startCase = { tenant, definition, inputs: greeting, caseTeam, debug: true };
-        // const startCase = { tenant, definition, inputs, caseInstanceId: 'Ueè' };
-        // const startCase = { tenant, definition, inputs, caseInstanceId: tenant };
-        const taskOutput = {
-            Response: {
-                Message: 'Toedeledoki',
+                From: user.id
             }
         };
 
+        const startCase = { tenant, definition, inputs };
 
-        const taskCountBefore = await taskService.countTasks(sender);
-        console.log("Task Count for sender: " + JSON.stringify(taskCountBefore))
+        const taskCountBefore = await taskService.countTasks(user, {tenant}) as TaskCount;
+        console.log(`Task Count before starting new cases and claiming a task: ${JSON.stringify(taskCountBefore, undefined, 2)}`);
 
-        // Start 3 cases and claim 1 task. Should lead to 2 unclaimed and 1 claimed task
-        await caseService.startCase(sender, startCase);
-        await caseService.startCase(sender, startCase);
-        startCase.caseTeam = caseTeam2;
-        const caseStarted = await caseService.startCase(sender, startCase) as Case;
-        const caseInstance = await caseService.getCase(sender, caseStarted);
-        const pid = caseInstance.planitems.find(item => item.type === 'CasePlan')?.id || '';
-        new CasePlanService().makePlanItemTransition(sender, caseStarted, pid, "Terminate");
-        await caseService.getCase(sender, caseStarted).then(caze => {
-            console.log("New case state: " + JSON.stringify(caze.planitems, undefined, 2))
-        })
-        startCase.caseTeam = caseTeam;
+        const numSendResponseTasksBefore = (await this.getTasks('SendResponse')).length;
 
-        await repositoryService.validateAndDeploy(sender, 'caseteam.xml', tenant);
-        startCase.definition = "caseteam.xml";
-        delete startCase.inputs;
-        await caseService.startCase(sender, startCase);
-        await caseService.startCase(sender, startCase);
-        startCase.caseTeam = caseTeam2;
-        await caseService.startCase(sender, startCase) as Case;
+        // Start 3 cases and claim 1 task. Should lead to 5 unclaimed tasks (3 times "Task that is always started", and 2 times "SendResponse") and 1 claimed "SendResponse" task
+        await caseService.startCase(user, startCase);
+        await caseService.startCase(user, startCase);
+        const caseStarted = await caseService.startCase(user, startCase) as Case;
+        const caseInstance = await caseService.getCase(user, caseStarted);
 
-        const hwFilter = { definition: 'HelloWorld', tenant};
-        await this.getStatistics('Sender has across the board: ', sender, {state:'Terminated'});
-        await this.getStatistics('Sender has hw stats: ', sender, hwFilter);
-        await this.getStatistics('Receiver has across the board: ', receiver, {state:'Failed'});
-        await this.getStatistics('Receiver has hw stats: ', receiver, hwFilter);
-        return;
+        await this.getTasks('SendResponse', numSendResponseTasksBefore + 3);
 
+        const tasks = await taskService.getCaseTasks(user, caseInstance);
+        const sendResponseTask = tasks.find(task => task.taskName === 'SendResponse') as Task;
 
+        await taskService.claimTask(user, sendResponseTask);
 
-        const tasks = await taskService.getCaseTasks(sender, caseInstance);
-        const receiveGreetingTask = tasks.find(task => task.taskName === 'Receive Greeting and Send response') as Task;
+        const taskCountAfter = await this.validateTaskCountChange(taskCountBefore.claimed + 1, taskCountBefore.unclaimed + 5, `Task Count after creating 3 cases and claiming 1 task`);
 
-        await taskService.claimTask(sender, receiveGreetingTask);
+        const numUnassigned = await this.getUnassignedTasks(taskCountAfter.unclaimed + 10);
+        if (numUnassigned !== taskCountAfter.unclaimed) {
+            throw new Error(`Wrong number of unassigned tasks, expected ${taskCountAfter.unclaimed} found ${numUnassigned}`);
+        }
 
-        await taskService.countTasks(sender).then((taskCountAfter: TaskCount) => {
-            console.log("Task Count after creating 3 cases and claiming 1 task: " + JSON.stringify(taskCountAfter));
-            if (taskCountAfter.claimed !== taskCountBefore.claimed + 1) {
-                throw new Error("Wrong number of claimed tasks")
-            }
+        const numAssigned = await this.getAssignedTasks(taskCountAfter.claimed + 10);
+        if (numAssigned !== taskCountAfter.claimed) {
+            throw new Error(`Wrong number of assigned tasks, expected ${taskCountAfter.claimed} found ${numAssigned}`);
+        }
 
-        });
+        // Now terminate one of the 3 case instances. This should remove the claimed "SendResponse" task, and also remove 1 "Task that is always started" task
+        await casePlanService.makePlanItemTransition(user, caseInstance, 'TerminateCase', 'Occur');        
+        await this.validateTaskCountChange(taskCountAfter.claimed - 1, taskCountAfter.unclaimed - 1, `Task Count after terminating one case with a claimed and an unclaimed task`);
+        await this.getTasks('SendResponse', numSendResponseTasksBefore + 2);
     }
 
-    async getStatistics(msg: string, user: User, filter?: StatisticsFilter) {
-        await caseService.getCaseStatistics(user, filter).then(stats => {
-            console.log(msg + JSON.stringify(stats, undefined, 2));
-            return stats;
-        })
+    async getTasks(taskName: string, expectedCount: number = -1) {
+        const tasks = (await taskService.getTasks(user, { taskName, tenant})).filter(Task.isActive);
+        console.log(`Found ${tasks.length} tasks with name '${taskName}'`);
+        if (expectedCount >= 0 && tasks.length !== expectedCount) {
+            throw new Error(`Expected to find ${expectedCount} tasks named '${taskName}', but found ${tasks.length}`);
+        }
+        return tasks;
     }
 
-    async getUnassignedTasks(user: User) {
+    async validateTaskCountChange(expectedNumberOfClaimedTasks: number, expectedNumberOfUnclaimedTasks: number, msg: string) {
+        const taskCountAfter = await taskService.countTasks(user, {tenant}) as TaskCount;
+        console.log(`${msg}: ${JSON.stringify(taskCountAfter, undefined, 2)}`);
+
+        if (taskCountAfter.claimed !== expectedNumberOfClaimedTasks) {
+            throw new Error(`Wrong number of claimed tasks, expected ${expectedNumberOfClaimedTasks} found ${taskCountAfter.claimed}`);
+        }
+        if (taskCountAfter.unclaimed !== expectedNumberOfUnclaimedTasks) {
+            throw new Error(`Wrong number of unclaimed tasks, expected ${expectedNumberOfUnclaimedTasks} found ${taskCountAfter.unclaimed}`);
+        }
+
+        return taskCountAfter;
+    }
+
+    async getUnassignedTasks(numberOfResults: number) {
         // Simple test
-        const taskList = await taskService.getTasks(user, { tenant, taskState: 'Unassigned' });
-        console.log(`User ${user.id} has ${taskList.length} unassigned tasks in tenant ${tenant}`);
+        const taskList = await taskService.getTasks(user, { taskState: 'Unassigned', numberOfResults, tenant });
+        console.log(`User ${user.id} has ${taskList.length} unassigned tasks`);
         return taskList.length;
     }
 
+    async getAssignedTasks(numberOfResults: number) {
+        const numAssigned = (await taskService.getTasks(user, { assignee: user.id, taskState : 'Assigned', numberOfResults, tenant })).length;
+        console.log(`User ${user.id} has ${numAssigned} tasks assigned`);
+        return numAssigned;
+    }
 }

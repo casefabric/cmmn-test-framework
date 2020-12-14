@@ -15,7 +15,11 @@ export default interface TaskFilter extends QueryFilter {
     /**
      * Filter tasks that have a case definition with this name
      */
-    definition?: string,
+    caseName?: string,
+    /**
+     * Filter tasks that have this name
+     */
+    taskName?: string,
     /**
      * Filter tasks for this assignee
      */
