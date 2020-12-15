@@ -1,0 +1,188 @@
+<definitions>
+    <case id="fhirpath_test.case" name="fhirpath_test" expressionLanguage="spel">
+        <caseFileModel>
+            <caseFileItem id="_rS8EX_0" name="Patient" multiplicity="ExactlyOne" definitionRef="fhirresource.cfid"/>
+            <caseFileItem id="_rS8EX_2" name="Observation" multiplicity="ZeroOrMore" definitionRef="fhirresource.cfid"/>
+        </caseFileModel>
+        <casePlanModel id="cm__rS8EX_0" name="fhirpath_test" autoComplete="true">
+            <planItem id="pi_ms__rS8EX_0" name="We have Joe in the Room" definitionRef="ms__rS8EX_0">
+                <entryCriterion id="_rS8EX_9" name="EntryCriterion_1" sentryRef="crit__rS8EX_1"/>
+            </planItem>
+            <planItem id="pi_ms__rS8EX_1" name="It's a no show for Joe" definitionRef="ms__rS8EX_1">
+                <entryCriterion id="_rS8EX_5" name="EntryCriterion_0" sentryRef="crit__rS8EX_0"/>
+            </planItem>
+            <planItem id="pi_ct__rS8EX_0" name="Update Patient Info" definitionRef="ct__rS8EX_0">
+                <entryCriterion id="_rS8EX_29" name="EntryCriterion_3" sentryRef="crit__rS8EX_3"/>
+            </planItem>
+            <planItem id="pi_ms__rS8EX_2" name="Patient Info Updated" definitionRef="ms__rS8EX_2">
+                <entryCriterion id="_rS8EX_24" name="EntryCriterion_2" sentryRef="crit__rS8EX_2"/>
+            </planItem>
+            <sentry id="crit__rS8EX_1">
+                <ifPart id="_rS8EX_11" contextRef="_rS8EX_0">
+                    <condition id="_rS8EX_12" language="fhir">
+                        <body>
+                            <![CDATA[Patient.name.given = 'Joe']]>
+                        </body>
+                    </condition>
+                </ifPart>
+                <caseFileItemOnPart id="_rS8EX_10" sourceRef="_rS8EX_0">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </sentry>
+            <sentry id="crit__rS8EX_0">
+                <ifPart id="_rS8EX_7" contextRef="_rS8EX_0">
+                    <condition id="_rS8EX_8" language="fhir">
+                        <body>
+                            <![CDATA[Patient.name.given != 'Joe']]>
+                        </body>
+                    </condition>
+                </ifPart>
+                <caseFileItemOnPart id="_rS8EX_6" sourceRef="_rS8EX_0">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </sentry>
+            <sentry id="crit__rS8EX_3">
+                <caseFileItemOnPart id="_rS8EX_30" sourceRef="_rS8EX_0">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </sentry>
+            <sentry id="crit__rS8EX_2">
+                <planItemOnPart id="_rS8EX_25" sourceRef="pi_ct__rS8EX_0">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <planningTable id="_rS8EX_16">
+                <discretionaryItem id="pi_ht__rS8EX_1" name="HumanTask_0" definitionRef="ht__rS8EX_1">
+                    <itemControl id="_rS8EX_1">
+                        <repetitionRule id="_rS8EX_19">
+                            <condition id="_rS8EX_20">
+                                <body>
+                                    <![CDATA[true]]>
+                                </body>
+                            </condition>
+                        </repetitionRule>
+                    </itemControl>
+                </discretionaryItem>
+            </planningTable>
+            <humanTask id="ht__rS8EX_1" name="HumanTask_0" isBlocking="true"/>
+            <caseTask id="ct__rS8EX_0" name="Update Patient Info" isBlocking="true" caseRef="fhir_subcase.case">
+                <inputs id="_rS8EX_33" name="Patient" bindingRef="_rS8EX_0"/>
+                <outputs id="_rS8EX_18" name="Patient" bindingRef="_rS8EX_0">
+                    <bindingRefinement id="_rS8EX_26">
+                        <body>
+                            <![CDATA[replace]]>
+                        </body>
+                    </bindingRefinement>
+                </outputs>
+                <parameterMapping id="_rS8EX_28" sourceRef="_rS8EX_33" targetRef="_HwrUW_4">
+                    <transformation id="_rS8EX_36" language="fhir">
+                        <body>
+                            <![CDATA[Patient]]>
+                        </body>
+                    </transformation>
+                </parameterMapping>
+                <parameterMapping id="_rS8EX_22" sourceRef="_rS8EX_33" targetRef="_HwrUW_2">
+                    <transformation id="_rS8EX_34" language="fhir">
+                        <body>
+                            <![CDATA[Patient.name]]>
+                        </body>
+                    </transformation>
+                </parameterMapping>
+                <parameterMapping id="_rS8EX_23" sourceRef="_rS8EX_33" targetRef="_HwrUW_3">
+                    <transformation id="_rS8EX_35" language="fhir">
+                        <body>
+                            <![CDATA[Patient.name.given]]>
+                        </body>
+                    </transformation>
+                </parameterMapping>
+                <parameterMapping id="_rS8EX_3" sourceRef="_rS8EX_33" targetRef="_HwrUW_9">
+                    <transformation id="_rS8EX_13" language="fhir">
+                        <body>
+                            <![CDATA[Patient.name.given.value]]>
+                        </body>
+                    </transformation>
+                </parameterMapping>
+                <parameterMapping id="_rS8EX_17" sourceRef="_HwrUW_10" targetRef="_rS8EX_18"/>
+            </caseTask>
+            <milestone id="ms__rS8EX_0" name="We have Joe in the Room"/>
+            <milestone id="ms__rS8EX_1" name="It's a no show for Joe"/>
+            <milestone id="ms__rS8EX_2" name="Patient Info Updated"/>
+        </casePlanModel>
+    </case>
+    <case id="fhir_subcase.case" name="fhir_subcase" expressionLanguage="spel">
+        <caseFileModel>
+            <caseFileItem id="_HwrUW_5" name="Name" multiplicity="ExactlyOne" definitionRef="fhirresource.cfid"/>
+            <caseFileItem id="_HwrUW_6" name="GivenName" multiplicity="ExactlyOne" definitionRef="fhirresource.cfid"/>
+            <caseFileItem id="_HwrUW_7" name="Patient" multiplicity="ExactlyOne" definitionRef="fhirresource.cfid"/>
+            <caseFileItem id="_HwrUW_8" name="GivenNameValue" multiplicity="ExactlyOne" definitionRef="fhirresource.cfid"/>
+        </caseFileModel>
+        <casePlanModel id="cm__HwrUW_0" name="fhir_subcase" autoComplete="true">
+            <planItem id="pi_ms__HwrUW_0" name="Case Created" definitionRef="ms__HwrUW_0"/>
+            <milestone id="ms__HwrUW_0" name="Case Created"/>
+        </casePlanModel>
+        <input id="_HwrUW_4" name="Patient" bindingRef="_HwrUW_7"/>
+        <input id="_HwrUW_2" name="Name" bindingRef="_HwrUW_5"/>
+        <input id="_HwrUW_3" name="GivenName" bindingRef="_HwrUW_6"/>
+        <input id="_HwrUW_9" name="GivenNameValue" bindingRef="_HwrUW_8"/>
+        <output id="_HwrUW_10" name="Patient" bindingRef="_HwrUW_7"/>
+        <textAnnotation id="_HwrUW_1">
+            <text>
+                <![CDATA[This case is intended to be used for input parameter mappings]]>
+            </text>
+        </textAnnotation>
+    </case>
+    <caseFileItemDefinition name="fhirresource" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="fhirresource.cfid"/>
+    <CMMNDI>
+        <CMMNDiagram>
+            <CMMNShape cmmnElementRef="cm__rS8EX_0">
+                <Bounds x="13" y="13" width="800" height="500"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_rS8EX_0">
+                <Bounds x="312" y="156" width="25" height="40"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ms__rS8EX_0">
+                <Bounds x="130" y="286" width="169" height="52"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_rS8EX_9">
+                <Bounds x="202" y="276" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ms__rS8EX_1">
+                <Bounds x="364" y="286" width="156" height="52"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_rS8EX_5">
+                <Bounds x="410" y="276" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__rS8EX_1">
+                <Bounds x="78" y="78" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_rS8EX_16">
+                <Bounds x="293" y="26" width="24" height="16"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ct__rS8EX_0">
+                <Bounds x="481" y="91" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_rS8EX_29">
+                <Bounds x="475" y="120" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ms__rS8EX_2">
+                <Bounds x="572" y="208" width="195" height="65"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_rS8EX_24">
+                <Bounds x="644" y="198" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNEdge label="create" sourceCMMNElementRef="_rS8EX_0" targetCMMNElementRef="_rS8EX_9"/>
+            <CMMNEdge label="create" sourceCMMNElementRef="_rS8EX_0" targetCMMNElementRef="_rS8EX_5"/>
+            <CMMNEdge label="create" sourceCMMNElementRef="_rS8EX_0" targetCMMNElementRef="_rS8EX_29"/>
+            <CMMNEdge sourceCMMNElementRef="pi_ct__rS8EX_0" targetCMMNElementRef="_rS8EX_24"/>
+            <CMMNShape cmmnElementRef="cm__HwrUW_0">
+                <Bounds x="20" y="20" width="800" height="500"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ms__HwrUW_0">
+                <Bounds x="260" y="143" width="100" height="40"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_HwrUW_1">
+                <Bounds x="416" y="117" width="208" height="91"/>
+            </CMMNShape>
+        </CMMNDiagram>
+    </CMMNDI>
+</definitions>

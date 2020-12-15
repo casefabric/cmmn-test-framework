@@ -1,0 +1,43 @@
+{
+    "resourceType": "Patient",
+    "identifier": [
+          {
+                "type": {
+                      "coding": [
+                            {
+                                  "system": "http://hl7.org/fhir/v2/0203",
+                                  "code": "WorkFlowTest",
+                                  "display": "Philips Test"
+                            }
+                      ]
+                },
+                "system": "http://www.philips.com/fhir/identifier-type/MR",
+                "value": "P123456",
+                "assigner": {
+                      "reference": "Organization/Philips.CIS.ADT"
+                }
+          }
+    ],
+    "name": [
+          {
+                "use": "usual",
+                "family": "WorkFlow",
+                "given": [
+                      "Joe", "Pete", "Charles"
+                ]
+          }
+    ],
+    "gender": "male",
+    "birthDate": "1969-02-13",
+    "maritalStatus": {
+          "coding": [
+                {
+                      "system": "http://www.philips.com/Patient/UnknownCode"
+                }
+          ]
+    },
+    "multipleBirthInteger": 0,
+    "managingOrganization": {
+          "reference": "Organization/d7df268a-8882-41bb-8c68-123456789012"
+    }
+}

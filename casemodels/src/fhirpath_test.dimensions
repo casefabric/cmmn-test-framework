@@ -1,0 +1,44 @@
+<CMMNDI>
+    <CMMNDiagram>
+        <CMMNShape cmmnElementRef="cm__rS8EX_0">
+            <Bounds x="13" y="13" width="800" height="500"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_rS8EX_0">
+            <Bounds x="312" y="156" width="25" height="40"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ms__rS8EX_0">
+            <Bounds x="130" y="286" width="169" height="52"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_rS8EX_9">
+            <Bounds x="202" y="276" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ms__rS8EX_1">
+            <Bounds x="364" y="286" width="156" height="52"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_rS8EX_5">
+            <Bounds x="410" y="276" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ht__rS8EX_1">
+            <Bounds x="78" y="78" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_rS8EX_16">
+            <Bounds x="293" y="26" width="24" height="16"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ct__rS8EX_0">
+            <Bounds x="481" y="91" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_rS8EX_29">
+            <Bounds x="475" y="120" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ms__rS8EX_2">
+            <Bounds x="572" y="208" width="195" height="65"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_rS8EX_24">
+            <Bounds x="644" y="198" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNEdge label="create" sourceCMMNElementRef="_rS8EX_0" targetCMMNElementRef="_rS8EX_9"/>
+        <CMMNEdge label="create" sourceCMMNElementRef="_rS8EX_0" targetCMMNElementRef="_rS8EX_5"/>
+        <CMMNEdge label="create" sourceCMMNElementRef="_rS8EX_0" targetCMMNElementRef="_rS8EX_29"/>
+        <CMMNEdge sourceCMMNElementRef="pi_ct__rS8EX_0" targetCMMNElementRef="_rS8EX_24"/>
+    </CMMNDiagram>
+</CMMNDI>

@@ -1,0 +1,22 @@
+<case id="fhir_subcase.case" name="fhir_subcase" expressionLanguage="spel" guid="_HwrUW">
+    <caseFileModel>
+        <caseFileItem id="_HwrUW_5" name="Name" multiplicity="ExactlyOne" definitionRef="fhirresource.cfid"/>
+        <caseFileItem id="_HwrUW_6" name="GivenName" multiplicity="ExactlyOne" definitionRef="fhirresource.cfid"/>
+        <caseFileItem id="_HwrUW_7" name="Patient" multiplicity="ExactlyOne" definitionRef="fhirresource.cfid"/>
+        <caseFileItem id="_HwrUW_8" name="GivenNameValue" multiplicity="ExactlyOne" definitionRef="fhirresource.cfid"/>
+    </caseFileModel>
+    <casePlanModel id="cm__HwrUW_0" name="fhir_subcase" autoComplete="true">
+        <planItem id="pi_ms__HwrUW_0" name="Case Created" definitionRef="ms__HwrUW_0"/>
+        <milestone id="ms__HwrUW_0" name="Case Created"/>
+    </casePlanModel>
+    <input id="_HwrUW_4" name="Patient" bindingRef="_HwrUW_7"/>
+    <input id="_HwrUW_2" name="Name" bindingRef="_HwrUW_5"/>
+    <input id="_HwrUW_3" name="GivenName" bindingRef="_HwrUW_6"/>
+    <input id="_HwrUW_9" name="GivenNameValue" bindingRef="_HwrUW_8"/>
+    <output id="_HwrUW_10" name="Patient" bindingRef="_HwrUW_7"/>
+    <textAnnotation id="_HwrUW_1">
+        <text>
+            <![CDATA[This case is intended to be used for input parameter mappings]]>
+        </text>
+    </textAnnotation>
+</case>
