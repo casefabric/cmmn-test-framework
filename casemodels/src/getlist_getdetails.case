@@ -1,4 +1,9 @@
-<case id="getlist_getdetails.case" name="getlist_getdetails" description="list-detail-case" guid="_Sp9aR">
+<case id="getlist_getdetails.case" name="getlist_getdetails" expressionLanguage="spel" guid="_Sp9aR">
+    <documentation textFormat="text/plain">
+        <text>
+            <![CDATA[list-detail-case]]>
+        </text>
+    </documentation>
     <caseFileModel>
         <caseFileItem id="_LQXO7_5" name="IdentifierList" multiplicity="ExactlyOne" definitionRef="string.cfid">
             <children>
@@ -15,7 +20,7 @@
             <entryCriterion id="_Sp9aR_24" name="EntryCriterion_3" sentryRef="crit__Sp9aR_2"/>
             <itemControl id="_Sp9aR_0">
                 <repetitionRule id="_Sp9aR_22">
-                    <condition id="_Sp9aR_23" language="spel">
+                    <condition id="_Sp9aR_23">
                         <body>
                             <![CDATA[true]]>
                         </body>
@@ -27,14 +32,14 @@
             <entryCriterion id="_LQXO7_1" name="EntryCriterion_0" sentryRef="crit__LQXO7_0"/>
             <itemControl id="_LQXO7_32">
                 <repetitionRule id="_Sp9aR_3">
-                    <condition id="_Sp9aR_7" language="spel">
+                    <condition id="_Sp9aR_7">
                         <body>
                             <![CDATA[planItem.index < 3]]>
                         </body>
                     </condition>
                 </repetitionRule>
                 <requiredRule id="_Sp9aR_13">
-                    <condition id="_Sp9aR_14" language="spel">
+                    <condition id="_Sp9aR_14">
                         <body>
                             <![CDATA[true]]>
                         </body>
@@ -46,7 +51,7 @@
             <entryCriterion id="_Sp9aR_18" name="EntryCriterion_2" sentryRef="crit__Sp9aR_1"/>
             <itemControl id="_Sp9aR_15">
                 <repetitionRule id="_Sp9aR_20">
-                    <condition id="_Sp9aR_21" language="spel">
+                    <condition id="_Sp9aR_21">
                         <body>
                             <![CDATA[true]]>
                         </body>
@@ -56,7 +61,7 @@
         </planItem>
         <sentry id="crit__LQXO7_0">
             <ifPart id="_LQXO7_8" contextRef="_LQXO7_7">
-                <condition id="_LQXO7_9" language="spel">
+                <condition id="_LQXO7_9">
                     <body>
                         <![CDATA[!DetailsKey.isEmpty()]]>
                     </body>
@@ -89,7 +94,7 @@
             <outputs id="_LQXO7_20" name="detailsIdentifiers" bindingRef="_LQXO7_7"/>
             <outputs id="_LQXO7_22" name="headerContentLength"/>
             <parameterMapping id="_LQXO7_11" sourceRef="_Sp9aR_5" targetRef="httpPort">
-                <transformation id="_Sp9aR_4" language="spel">
+                <transformation id="_Sp9aR_4">
                     <body>
                         <![CDATA[HTTPConfig.port]]>
                     </body>
@@ -97,7 +102,7 @@
             </parameterMapping>
             <parameterMapping id="_LQXO7_15" sourceRef="responseCode" targetRef="_LQXO7_14"/>
             <parameterMapping id="_LQXO7_17" sourceRef="_dTMD_exception" targetRef="_LQXO7_16">
-                <transformation id="_Sp9aR_28" language="spel">
+                <transformation id="_Sp9aR_28">
                     <body>
                         <![CDATA[exception.message]]>
                     </body>
@@ -110,7 +115,7 @@
         <processTask id="pt__LQXO7_24" name="GetDetails" isBlocking="true" processRef="GetDetailsWebService.process">
             <inputs id="_LQXO7_28" name="detailsId" bindingRef="_LQXO7_7"/>
             <inputs id="_Sp9aR_10" name="HTTPConfig" bindingRef="_Sp9aR_1">
-                <bindingRefinement id="_Sp9aR_9" language="spel">
+                <bindingRefinement id="_Sp9aR_9">
                     <body>
                         <![CDATA[GET]]>
                     </body>
@@ -118,7 +123,7 @@
             </inputs>
             <outputs id="_LQXO7_30" name="details" bindingRef="_LQXO7_6"/>
             <parameterMapping id="_LQXO7_27" sourceRef="_Sp9aR_10" targetRef="httpPort">
-                <transformation id="_Sp9aR_6" language="spel">
+                <transformation id="_Sp9aR_6">
                     <body>
                         <![CDATA[HTTPConfig.port]]>
                     </body>
