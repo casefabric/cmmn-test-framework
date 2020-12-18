@@ -15,10 +15,10 @@
         <CMMNShape cmmnElementRef="_EGOwJ_9">
             <Bounds x="334" y="220" width="12" height="20"/>
         </CMMNShape>
-        <casefileitem cmmnElementRef="_EGOwJ_shape_1" parentId="cm__EGOwJ_0" contextRef="_EGOwJ_0">
+        <CMMNShape cmmnElementRef="_EGOwJ_0">
             <Bounds x="137" y="117" width="25" height="40"/>
-        </casefileitem>
-        <CMMNEdge sourceCMMNElementRef="_EGOwJ_shape_1" targetCMMNElementRef="_EGOwJ_5"/>
+        </CMMNShape>
+        <CMMNEdge sourceCMMNElementRef="_EGOwJ_0" targetCMMNElementRef="_EGOwJ_5"/>
         <CMMNEdge sourceCMMNElementRef="pi_ht__EGOwJ_0" targetCMMNElementRef="_EGOwJ_9"/>
     </CMMNDiagram>
 </CMMNDI>

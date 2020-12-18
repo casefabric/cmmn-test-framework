@@ -1,5 +1,5 @@
 <definitions>
-    <case id="bootstrap-casefile-events.case" name="bootstrap-casefile-events">
+    <case id="bootstrap-casefile-events.case" name="bootstrap-casefile-events" expressionLanguage="spel">
         <caseFileModel>
             <caseFileItem id="_EGOwJ_0" name="Greeting" multiplicity="ExactlyOne" definitionRef="greeting.cfid"/>
             <caseFileItem id="_EGOwJ_1" name="Response" multiplicity="ExactlyOne" definitionRef="response.cfid"/>
@@ -24,7 +24,12 @@
             </sentry>
             <humanTask id="ht__EGOwJ_0" name="SendResponse" isBlocking="true">
                 <extensionElements mustUnderstand="false">
-                    <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" name="SendResponse" description="Sends a response back to the initiator of the hello world case" humanTaskRef="sendresponse.humantask">
+                    <cafienne:implementation name="SendResponse" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="sendresponse.humantask">
+                        <documentation textFormat="text/plain">
+                            <text>
+                                <![CDATA[Sends a response back to the initiator of the hello world case]]>
+                            </text>
+                        </documentation>
                         <input id="Greeting" name="Greeting"/>
                         <output id="Response" name="Response"/>
                         <task-model>{
@@ -95,7 +100,12 @@
             <humanTask id="ht__EGOwJ_1" name="ReadRespose" isBlocking="true">
                 <inputs id="_EGOwJ_12" name="Response" bindingRef="_EGOwJ_1"/>
                 <extensionElements mustUnderstand="false">
-                    <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" name="ReadRespose" description="Read Response" humanTaskRef="readresponse.humantask">
+                    <cafienne:implementation name="ReadRespose" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="readresponse.humantask">
+                        <documentation textFormat="text/plain">
+                            <text>
+                                <![CDATA[Read Response]]>
+                            </text>
+                        </documentation>
                         <input id="Response" name="Response"/>
                         <task-model>
 			{
@@ -180,10 +190,10 @@
             <CMMNShape cmmnElementRef="_EGOwJ_9">
                 <Bounds x="334" y="220" width="12" height="20"/>
             </CMMNShape>
-            <casefileitem cmmnElementRef="_EGOwJ_shape_1" parentId="cm__EGOwJ_0" contextRef="_EGOwJ_0">
+            <CMMNShape cmmnElementRef="_EGOwJ_0">
                 <Bounds x="137" y="117" width="25" height="40"/>
-            </casefileitem>
-            <CMMNEdge sourceCMMNElementRef="_EGOwJ_shape_1" targetCMMNElementRef="_EGOwJ_5"/>
+            </CMMNShape>
+            <CMMNEdge sourceCMMNElementRef="_EGOwJ_0" targetCMMNElementRef="_EGOwJ_5"/>
             <CMMNEdge sourceCMMNElementRef="pi_ht__EGOwJ_0" targetCMMNElementRef="_EGOwJ_9"/>
         </CMMNDiagram>
     </CMMNDI>
