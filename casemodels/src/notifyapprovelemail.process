@@ -1,4 +1,9 @@
-<process id="notifyapprovelemail.process" name="notifyapprovelemail.process" description="Notify approver by email" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
+<process id="notifyapprovelemail.process" name="notifyapprovelemail.process" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
+    <documentation textFormat="text/plain">
+        <text>
+            <![CDATA[Notify approver by email]]>
+        </text>
+    </documentation>
     <input id="travelrequest" name="travelrequest"/>
     <input id="approval" name="approval"/>
     <input id="travellerName" name="travellerName"/>

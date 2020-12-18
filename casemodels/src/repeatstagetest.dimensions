@@ -42,13 +42,13 @@
         <CMMNShape cmmnElementRef="_6Clld_36">
             <Bounds x="634" y="280" width="12" height="20"/>
         </CMMNShape>
-        <casefileitem cmmnElementRef="_6Clld_shape_13" parentId="cm__6Clld_0" contextRef="_6Clld_25">
+        <CMMNShape cmmnElementRef="_6Clld_25">
             <Bounds x="100" y="100" width="25" height="40"/>
-        </casefileitem>
+        </CMMNShape>
         <CMMNEdge sourceCMMNElementRef="pi_ue__6Clld_0" targetCMMNElementRef="_6Clld_19">
             <waypoint x="170" y="220"/>
         </CMMNEdge>
-        <CMMNEdge sourceCMMNElementRef="_6Clld_shape_13" targetCMMNElementRef="_6Clld_31"/>
+        <CMMNEdge sourceCMMNElementRef="_6Clld_25" targetCMMNElementRef="_6Clld_31"/>
         <CMMNEdge sourceCMMNElementRef="pi_ue__6Clld_0" targetCMMNElementRef="_6Clld_21"/>
         <CMMNEdge sourceCMMNElementRef="pi_ue__6Clld_0" targetCMMNElementRef="_6Clld_23"/>
         <CMMNEdge sourceCMMNElementRef="pi_tmr__6Clld_1" targetCMMNElementRef="_6Clld_15"/>

@@ -1,4 +1,4 @@
-<case id="subcasetest.case" name="subcasetest" guid="_FKa3D">
+<case id="subcasetest.case" name="subcasetest" expressionLanguage="spel" guid="_FKa3D">
     <caseFileModel>
         <caseFileItem id="_FKa3D_1" name="Greet" multiplicity="ExactlyOne" definitionRef="greeting.cfid"/>
     </caseFileModel>

@@ -1,5 +1,5 @@
 <definitions>
-    <case id="stagetest.case" name="stagetest">
+    <case id="stagetest.case" name="stagetest" expressionLanguage="spel">
         <caseFileModel>
             <caseFileItem id="_ZCK2p_17" name="Greeting" multiplicity="ExactlyOne" definitionRef="greeting.cfid"/>
             <caseFileItem id="_ZCK2p_18" name="Response" multiplicity="ExactlyOne" definitionRef="response.cfid"/>
@@ -11,7 +11,7 @@
                 <exitCriterion id="_ZCK2p_52" name="ExitCriterion_3" sentryRef="crit__ZCK2p_8"/>
                 <itemControl id="_ZCK2p_1">
                     <repetitionRule id="_ZCK2p_3">
-                        <condition id="_ZCK2p_4" language="spel">
+                        <condition id="_ZCK2p_4">
                             <body>
                                 <![CDATA[true]]>
                             </body>
@@ -23,7 +23,7 @@
                 <entryCriterion id="_ZCK2p_10" name="EntryCriterion_0" sentryRef="crit__ZCK2p_0"/>
                 <itemControl id="_ZCK2p_5">
                     <repetitionRule id="_ZCK2p_41">
-                        <condition id="_ZCK2p_42" language="spel">
+                        <condition id="_ZCK2p_42">
                             <body>
                                 <![CDATA[true]]>
                             </body>
@@ -35,7 +35,7 @@
                 <entryCriterion id="_ZCK2p_13" name="EntryCriterion_1" sentryRef="crit__ZCK2p_1"/>
                 <itemControl id="_ZCK2p_12">
                     <requiredRule id="_ZCK2p_28">
-                        <condition id="_ZCK2p_29" language="spel">
+                        <condition id="_ZCK2p_29">
                             <body>
                                 <![CDATA[true]]>
                             </body>
@@ -51,7 +51,7 @@
             </planItem>
             <sentry id="crit__ZCK2p_0">
                 <ifPart id="_ZCK2p_19" contextRef="_ZCK2p_18">
-                    <condition id="_ZCK2p_20" language="spel">
+                    <condition id="_ZCK2p_20">
                         <body>
                             <![CDATA[Response.Message == "Left"]]>
                         </body>
@@ -63,7 +63,7 @@
             </sentry>
             <sentry id="crit__ZCK2p_1">
                 <ifPart id="_ZCK2p_23" contextRef="_ZCK2p_18">
-                    <condition id="_ZCK2p_24" language="spel">
+                    <condition id="_ZCK2p_24">
                         <body>
                             <![CDATA[Response.Message == "Right"]]>
                         </body>
@@ -102,7 +102,12 @@
                 <inputs id="_ZCK2p_6" name="Greeting" bindingRef="_ZCK2p_17"/>
                 <outputs id="_ZCK2p_8" name="Response" bindingRef="_ZCK2p_18"/>
                 <extensionElements mustUnderstand="false">
-                    <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" name="SendResponse" description="Sends a response back to the initiator of the hello world case" humanTaskRef="sendresponse.humantask">
+                    <cafienne:implementation name="SendResponse" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="sendresponse.humantask">
+                        <documentation textFormat="text/plain">
+                            <text>
+                                <![CDATA[Sends a response back to the initiator of the hello world case]]>
+                            </text>
+                        </documentation>
                         <input id="Greeting" name="Greeting"/>
                         <output id="Response" name="Response"/>
                         <task-model>{
@@ -172,25 +177,42 @@
                     </cafienne:implementation>
                 </extensionElements>
             </humanTask>
-            <humanTask id="ht__ZCK2p_2" name="Continuously  Terminated  Task" description="Continuously 
+            <humanTask id="ht__ZCK2p_2" name="Continuously  Terminated  Task" isBlocking="true">
+                <documentation textFormat="text/plain">
+                    <text>
+                        <![CDATA[Continuously 
 Terminated 
-Task" isBlocking="true"/>
-            <humanTask id="ht__ZCK2p_1" name="Continuously Repeated Task" description="Continuously
+Task]]>
+                    </text>
+                </documentation>
+            </humanTask>
+            <humanTask id="ht__ZCK2p_1" name="Continuously Repeated Task" isBlocking="true">
+                <documentation textFormat="text/plain">
+                    <text>
+                        <![CDATA[Continuously
 Repeated
-Task" isBlocking="true"/>
+Task]]>
+                    </text>
+                </documentation>
+            </humanTask>
             <milestone id="ms__ZCK2p_0" name="Left"/>
             <milestone id="ms__ZCK2p_1" name="Right"/>
             <stage id="_ZCK2p_0" name="Stage" autoComplete="true">
                 <planItem id="pi_ht__ZCK2p_0" name="SendResponse" definitionRef="ht__ZCK2p_0"/>
             </stage>
             <stage id="_ZCK2p_30" name="Stage (Termination Should Kill One Task)" autoComplete="true">
-                <planItem id="pi_ht__ZCK2p_2" name="Continuously  Terminated  Task" description="Continuously 
+                <planItem id="pi_ht__ZCK2p_2" name="Continuously  Terminated  Task" definitionRef="ht__ZCK2p_2">
+                    <documentation textFormat="text/plain">
+                        <text>
+                            <![CDATA[Continuously 
 Terminated 
-Task" definitionRef="ht__ZCK2p_2">
+Task]]>
+                        </text>
+                    </documentation>
                     <exitCriterion id="_ZCK2p_32" name="ExitCriterion_0" sentryRef="crit__ZCK2p_4"/>
                     <itemControl id="_ZCK2p_33">
                         <repetitionRule id="_ZCK2p_36">
-                            <condition id="_ZCK2p_37" language="spel">
+                            <condition id="_ZCK2p_37">
                                 <body>
                                     <![CDATA[true]]>
                                 </body>
@@ -205,13 +227,18 @@ Task" definitionRef="ht__ZCK2p_2">
                 </sentry>
             </stage>
             <stage id="_ZCK2p_39" name="Stage (Termination Should Kill Many Tasks)" autoComplete="true">
-                <planItem id="pi_ht__ZCK2p_1" name="Continuously Repeated Task" description="Continuously
+                <planItem id="pi_ht__ZCK2p_1" name="Continuously Repeated Task" definitionRef="ht__ZCK2p_1">
+                    <documentation textFormat="text/plain">
+                        <text>
+                            <![CDATA[Continuously
 Repeated
-Task" definitionRef="ht__ZCK2p_1">
+Task]]>
+                        </text>
+                    </documentation>
                     <entryCriterion id="_ZCK2p_48" name="EntryCriterion_4" sentryRef="crit__ZCK2p_6"/>
                     <itemControl id="_ZCK2p_45">
                         <repetitionRule id="_ZCK2p_46">
-                            <condition id="_ZCK2p_47" language="spel">
+                            <condition id="_ZCK2p_47">
                                 <body>
                                     <![CDATA[true]]>
                                 </body>
@@ -229,8 +256,16 @@ Task" definitionRef="ht__ZCK2p_1">
         <input id="_ZCK2p_21" name="Greeting" bindingRef="_ZCK2p_17"/>
     </case>
     <caseFileItemDefinition name="Greeting" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="greeting.cfid">
-        <property name="Message" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
-        <property name="To" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="Message" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+            </extensionElements>
+        </property>
+        <property name="To" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+            </extensionElements>
+        </property>
         <property name="From" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
     </caseFileItemDefinition>
     <caseFileItemDefinition name="Response" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="response.cfid">
@@ -295,16 +330,16 @@ Task" definitionRef="ht__ZCK2p_1">
             <CMMNShape cmmnElementRef="_ZCK2p_52">
                 <Bounds x="254" y="290" width="12" height="20"/>
             </CMMNShape>
-            <casefileitem cmmnElementRef="_ZCK2p_shape_8" parentId="cm__ZCK2p_0" contextRef="_ZCK2p_17">
+            <CMMNShape cmmnElementRef="_ZCK2p_17">
                 <Bounds x="720" y="110" width="25" height="40"/>
-            </casefileitem>
+            </CMMNShape>
             <CMMNEdge sourceCMMNElementRef="pi__ZCK2p_0" targetCMMNElementRef="_ZCK2p_10"/>
             <CMMNEdge sourceCMMNElementRef="pi__ZCK2p_0" targetCMMNElementRef="_ZCK2p_13"/>
             <CMMNEdge sourceCMMNElementRef="pi_ms__ZCK2p_0" targetCMMNElementRef="_ZCK2p_15">
                 <waypoint x="60" y="360"/>
                 <waypoint x="60" y="230"/>
             </CMMNEdge>
-            <CMMNEdge sourceCMMNElementRef="_ZCK2p_shape_8" targetCMMNElementRef="_ZCK2p_25"/>
+            <CMMNEdge sourceCMMNElementRef="_ZCK2p_17" targetCMMNElementRef="_ZCK2p_25"/>
             <CMMNEdge sourceCMMNElementRef="pi_ht__ZCK2p_0" targetCMMNElementRef="_ZCK2p_32"/>
             <CMMNEdge sourceCMMNElementRef="pi_ms__ZCK2p_1" targetCMMNElementRef="_ZCK2p_35"/>
             <CMMNEdge sourceCMMNElementRef="pi_ht__ZCK2p_0" targetCMMNElementRef="_ZCK2p_48">

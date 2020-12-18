@@ -1,5 +1,10 @@
 <definitions>
-    <case id="repeatstagetest.case" name="repeatstagetest" description="Timer based repeating stage test">
+    <case id="repeatstagetest.case" name="repeatstagetest" expressionLanguage="spel">
+        <documentation textFormat="text/plain">
+            <text>
+                <![CDATA[Timer based repeating stage test]]>
+            </text>
+        </documentation>
         <caseFileModel>
             <caseFileItem id="_6Clld_25" name="HTTPPort" multiplicity="ExactlyOne" definitionRef="http.cfid"/>
             <caseFileItem id="_6Clld_26" name="TimeStamp" multiplicity="ExactlyOne" definitionRef="timestamp.cfid"/>
@@ -11,7 +16,7 @@
                 <exitCriterion id="_6Clld_19" name="ExitCriterion_0" sentryRef="crit__6Clld_3"/>
                 <itemControl id="_6Clld_1">
                     <repetitionRule id="_6Clld_9">
-                        <condition id="_6Clld_10" language="spel">
+                        <condition id="_6Clld_10">
                             <body>
                                 <![CDATA[true]]>
                             </body>
@@ -24,7 +29,7 @@
                 <exitCriterion id="_6Clld_23" name="ExitCriterion_2" sentryRef="crit__6Clld_5"/>
                 <itemControl id="_6Clld_6">
                     <repetitionRule id="_6Clld_11">
-                        <condition id="_6Clld_12" language="spel">
+                        <condition id="_6Clld_12">
                             <body>
                                 <![CDATA[true]]>
                             </body>
@@ -37,7 +42,7 @@
                 <entryCriterion id="_6Clld_36" name="EntryCriterion_4" sentryRef="crit__6Clld_7"/>
                 <itemControl id="_6Clld_34">
                     <repetitionRule id="_6Clld_38">
-                        <condition id="_6Clld_39" language="spel">
+                        <condition id="_6Clld_39">
                             <body>
                                 <![CDATA[true]]>
                             </body>
@@ -81,12 +86,12 @@
                 </planItemOnPart>
             </sentry>
             <exitCriterion id="_6Clld_21" name="ExitCriterion_1" sentryRef="crit__6Clld_4"/>
-            <processTask id="pt__6Clld_0" name="Get new wait time" isBlocking="true" processRef="getRetryTime.process">
+            <processTask id="pt__6Clld_0" name="Get Next WaitTime" isBlocking="true" processRef="getRetryTime.process">
                 <inputs id="_6Clld_45" name="HTTPPort" bindingRef="_6Clld_25"/>
                 <inputs id="_6Clld_3" name="count"/>
                 <outputs id="_6Clld_42" name="response" bindingRef="_6Clld_26"/>
                 <parameterMapping id="_6Clld_41" sourceRef="_6Clld_45" targetRef="_HMzY_httpPort">
-                    <transformation id="_6Clld_40" language="spel">
+                    <transformation id="_6Clld_40">
                         <body>
                             <![CDATA[HTTPPort.port]]>
                         </body>
@@ -94,7 +99,7 @@
                 </parameterMapping>
                 <parameterMapping id="_6Clld_43" sourceRef="_6E7g_response" targetRef="_6Clld_42"/>
                 <parameterMapping id="_6Clld_4" sourceRef="_6Clld_3" targetRef="_pnjz_count">
-                    <transformation id="_6Clld_18" language="spel">
+                    <transformation id="_6Clld_18">
                         <body>
                             <![CDATA[task.stage.index]]>
                         </body>
@@ -104,7 +109,7 @@
             <milestone id="ms__6Clld_0" name="Milestone"/>
             <userEvent id="ue__6Clld_0" name="Kill"/>
             <timerEvent id="tmr__6Clld_1" name="Variable Time">
-                <timerExpression id="_6Clld_8" language="spel">
+                <timerExpression id="_6Clld_8">
                     <body>
                         <![CDATA[getCaseInstance().caseFile.TimeStamp.TimeRetry]]>
                     </body>
@@ -114,7 +119,7 @@
                 </planItemStartTrigger>
             </timerEvent>
             <stage id="_6Clld_0" name="Status" autoComplete="true">
-                <planItem id="pi_pt__6Clld_0" name="Get new wait time" definitionRef="pt__6Clld_0"/>
+                <planItem id="pi_pt__6Clld_0" name="Get Next WaitTime" definitionRef="pt__6Clld_0"/>
             </stage>
             <stage id="_6Clld_5" name="Retry" autoComplete="true">
                 <planItem id="pi_tmr__6Clld_1" name="Variable Time" definitionRef="tmr__6Clld_1"/>
@@ -185,13 +190,13 @@
             <CMMNShape cmmnElementRef="_6Clld_36">
                 <Bounds x="634" y="280" width="12" height="20"/>
             </CMMNShape>
-            <casefileitem cmmnElementRef="_6Clld_shape_13" parentId="cm__6Clld_0" contextRef="_6Clld_25">
+            <CMMNShape cmmnElementRef="_6Clld_25">
                 <Bounds x="100" y="100" width="25" height="40"/>
-            </casefileitem>
+            </CMMNShape>
             <CMMNEdge sourceCMMNElementRef="pi_ue__6Clld_0" targetCMMNElementRef="_6Clld_19">
                 <waypoint x="170" y="220"/>
             </CMMNEdge>
-            <CMMNEdge sourceCMMNElementRef="_6Clld_shape_13" targetCMMNElementRef="_6Clld_31"/>
+            <CMMNEdge sourceCMMNElementRef="_6Clld_25" targetCMMNElementRef="_6Clld_31"/>
             <CMMNEdge sourceCMMNElementRef="pi_ue__6Clld_0" targetCMMNElementRef="_6Clld_21"/>
             <CMMNEdge sourceCMMNElementRef="pi_ue__6Clld_0" targetCMMNElementRef="_6Clld_23"/>
             <CMMNEdge sourceCMMNElementRef="pi_tmr__6Clld_1" targetCMMNElementRef="_6Clld_15"/>

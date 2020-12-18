@@ -1,4 +1,4 @@
-<case id="bootstrap-casefile-events.case" name="bootstrap-casefile-events" guid="_EGOwJ">
+<case id="bootstrap-casefile-events.case" name="bootstrap-casefile-events" expressionLanguage="spel" guid="_EGOwJ">
     <caseFileModel>
         <caseFileItem id="_EGOwJ_0" name="Greeting" multiplicity="ExactlyOne" definitionRef="greeting.cfid"/>
         <caseFileItem id="_EGOwJ_1" name="Response" multiplicity="ExactlyOne" definitionRef="response.cfid"/>

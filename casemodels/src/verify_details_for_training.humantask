@@ -1,5 +1,10 @@
 <humantask>
-    <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" description="verify_details_for_training" name="verify_details_for_training">
+    <cafienne:implementation name="verify_details_for_training" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition">
+        <documentation textFormat="text/plain">
+            <text>
+                <![CDATA[verify_details_for_training]]>
+            </text>
+        </documentation>
         <input id="_sUUJ_Incident" name="Task_Incident"/>
         <output id="_G1ae_Incident" name="Task_Incident"/>
         <output id="_gfi7_Incident_Response" name="Incident_Response"/>

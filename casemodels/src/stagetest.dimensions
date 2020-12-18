@@ -54,16 +54,16 @@
         <CMMNShape cmmnElementRef="_ZCK2p_52">
             <Bounds x="254" y="290" width="12" height="20"/>
         </CMMNShape>
-        <casefileitem cmmnElementRef="_ZCK2p_shape_8" parentId="cm__ZCK2p_0" contextRef="_ZCK2p_17">
+        <CMMNShape cmmnElementRef="_ZCK2p_17">
             <Bounds x="720" y="110" width="25" height="40"/>
-        </casefileitem>
+        </CMMNShape>
         <CMMNEdge sourceCMMNElementRef="pi__ZCK2p_0" targetCMMNElementRef="_ZCK2p_10"/>
         <CMMNEdge sourceCMMNElementRef="pi__ZCK2p_0" targetCMMNElementRef="_ZCK2p_13"/>
         <CMMNEdge sourceCMMNElementRef="pi_ms__ZCK2p_0" targetCMMNElementRef="_ZCK2p_15">
             <waypoint x="60" y="360"/>
             <waypoint x="60" y="230"/>
         </CMMNEdge>
-        <CMMNEdge sourceCMMNElementRef="_ZCK2p_shape_8" targetCMMNElementRef="_ZCK2p_25"/>
+        <CMMNEdge sourceCMMNElementRef="_ZCK2p_17" targetCMMNElementRef="_ZCK2p_25"/>
         <CMMNEdge sourceCMMNElementRef="pi_ht__ZCK2p_0" targetCMMNElementRef="_ZCK2p_32"/>
         <CMMNEdge sourceCMMNElementRef="pi_ms__ZCK2p_1" targetCMMNElementRef="_ZCK2p_35"/>
         <CMMNEdge sourceCMMNElementRef="pi_ht__ZCK2p_0" targetCMMNElementRef="_ZCK2p_48">

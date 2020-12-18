@@ -1,4 +1,4 @@
-<case id="caseteam.case" name="caseteam" guid="_Crena">
+<case id="caseteam.case" name="caseteam" expressionLanguage="spel" guid="_Crena">
     <caseFileModel>
         <caseFileItem id="_jAVt1_3" name="Root" multiplicity="ExactlyOne" definitionRef="root.cfid"/>
     </caseFileModel>
@@ -14,8 +14,22 @@
         <humanTask id="ht__Crena_0" name="Arbitrary Task" isBlocking="true" performerRef="_Crena_3"/>
         <humanTask id="ht__Crena_1" name="Task Without Role" isBlocking="true"/>
     </casePlanModel>
-    <caseRoles id="_jAVt1_0" name="Requestor"/>
-    <caseRoles id="_jAVt1_1" name="Approver"/>
-    <caseRoles id="_jAVt1_2" name="PersonalAssistant" description="Personal Assistant"/>
-    <caseRoles id="_Crena_3" name="CaseParticipant" description="Arbitrary role that is not a tenant role"/>
+    <caseRoles>
+        <role id="_jAVt1_0" name="Requestor"/>
+        <role id="_jAVt1_1" name="Approver"/>
+        <role id="_jAVt1_2" name="PersonalAssistant">
+            <documentation textFormat="text/plain">
+                <text>
+                    <![CDATA[Personal Assistant]]>
+                </text>
+            </documentation>
+        </role>
+        <role id="_Crena_3" name="CaseParticipant">
+            <documentation textFormat="text/plain">
+                <text>
+                    <![CDATA[Arbitrary role that is not a tenant role]]>
+                </text>
+            </documentation>
+        </role>
+    </caseRoles>
 </case>

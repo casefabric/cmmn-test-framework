@@ -24,9 +24,9 @@
         <CMMNShape cmmnElementRef="pi_ht__vdfDP_1">
             <Bounds x="570" y="90" width="110" height="60"/>
         </CMMNShape>
-        <textbox cmmnElementRef="_vdfDP_shape_8" parentId="cm__vdfDP_0" content="Anyone can start this task.&#10;By doing that, the user will&#10;get added to the case team">
+        <CMMNShape cmmnElementRef="_vdfDP_shape_8">
             <Bounds x="550" y="180" width="180" height="60"/>
-        </textbox>
+        </CMMNShape>
         <CMMNEdge sourceCMMNElementRef="pi_ue__vdfDP_0" targetCMMNElementRef="_vdfDP_11"/>
         <CMMNEdge sourceCMMNElementRef="pi_ue__vdfDP_1" targetCMMNElementRef="_vdfDP_4"/>
         <CMMNEdge sourceCMMNElementRef="_vdfDP_shape_8" targetCMMNElementRef="pi_ht__vdfDP_1"/>

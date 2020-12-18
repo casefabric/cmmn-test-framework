@@ -1,4 +1,4 @@
-<case id="helloworld2.case" name="helloworld2" guid="_biHn7">
+<case id="helloworld2.case" name="helloworld2" expressionLanguage="spel" guid="_biHn7">
     <caseFileModel>
         <caseFileItem id="_biHn7_5" name="Greeting" multiplicity="ExactlyOne" definitionRef="greeting.cfid"/>
         <caseFileItem id="_biHn7_8" name="Response" multiplicity="ExactlyOne" definitionRef="response.cfid"/>
@@ -46,8 +46,8 @@
                 </cafienne:implementation>
             </extensionElements>
         </humanTask>
-        <userEvent id="ue__biHn7_0" name="TerminateCase"/>
         <humanTask id="ht__biHn7_2" name="Task that is always started" isBlocking="true"/>
+        <userEvent id="ue__biHn7_0" name="TerminateCase"/>
     </casePlanModel>
     <input id="_biHn7_13" name="Greeting" bindingRef="_biHn7_5"/>
 </case>

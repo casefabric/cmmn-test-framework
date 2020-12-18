@@ -1,5 +1,10 @@
 <humantask>
-    <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" name="ArrangeVisa" description="Arrange Visa">
+    <cafienne:implementation name="ArrangeVisa" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition">
+        <documentation textFormat="text/plain">
+            <text>
+                <![CDATA[Arrange Visa]]>
+            </text>
+        </documentation>
         <input id="TravelRequest" name="TravelRequest"/>
         <task-model>
                             {

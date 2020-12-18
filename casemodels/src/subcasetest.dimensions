@@ -6,12 +6,12 @@
         <CMMNShape cmmnElementRef="pi_ct__FKa3D_0">
             <Bounds x="360" y="130" width="140" height="80"/>
         </CMMNShape>
-        <casefileitem cmmnElementRef="_FKa3D_shape_2" parentId="cm__FKa3D_0" contextRef="_FKa3D_1">
-            <Bounds x="230" y="150" width="25" height="40"/>
-        </casefileitem>
         <CMMNShape cmmnElementRef="_FKa3D_2">
             <Bounds x="354" y="160" width="12" height="20"/>
         </CMMNShape>
-        <CMMNEdge sourceCMMNElementRef="_FKa3D_shape_2" targetCMMNElementRef="_FKa3D_2"/>
+        <CMMNShape cmmnElementRef="_FKa3D_1">
+            <Bounds x="230" y="150" width="25" height="40"/>
+        </CMMNShape>
+        <CMMNEdge sourceCMMNElementRef="_FKa3D_1" targetCMMNElementRef="_FKa3D_2"/>
     </CMMNDiagram>
 </CMMNDI>

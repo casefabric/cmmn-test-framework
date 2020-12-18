@@ -33,15 +33,15 @@
         <CMMNShape cmmnElementRef="pi__Sp9aR_30">
             <Bounds x="90" y="310" width="110" height="100"/>
         </CMMNShape>
-        <casefileitem cmmnElementRef="_LQXO7_shape_5" parentId="cm_casefile/getlist_getdetails.case_0" contextRef="_LQXO7_7">
+        <CMMNShape cmmnElementRef="_LQXO7_7">
             <Bounds x="360" y="140" width="25" height="40"/>
-        </casefileitem>
-        <casefileitem cmmnElementRef="_Sp9aR_shape_6" parentId="cm_casefile/getlist_getdetails.case_0" contextRef="_Sp9aR_1">
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_Sp9aR_1">
             <Bounds x="50" y="100" width="25" height="40"/>
-        </casefileitem>
-        <CMMNEdge sourceCMMNElementRef="_Sp9aR_shape_6" targetCMMNElementRef="_Sp9aR_11"/>
+        </CMMNShape>
+        <CMMNEdge sourceCMMNElementRef="_Sp9aR_1" targetCMMNElementRef="_Sp9aR_11"/>
         <CMMNEdge sourceCMMNElementRef="pi_pt__LQXO7_8" targetCMMNElementRef="_Sp9aR_18"/>
-        <CMMNEdge sourceCMMNElementRef="_LQXO7_1" targetCMMNElementRef="_LQXO7_shape_5"/>
+        <CMMNEdge sourceCMMNElementRef="_LQXO7_1" targetCMMNElementRef="_LQXO7_7"/>
         <CMMNEdge sourceCMMNElementRef="pi_ue__Sp9aR_0" targetCMMNElementRef="_Sp9aR_24"/>
     </CMMNDiagram>
 </CMMNDI>

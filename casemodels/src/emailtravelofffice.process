@@ -1,4 +1,9 @@
-<process id="emailtravelofffice.process" name="emailtravelofffice.process" description="Email travel office" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
+<process id="emailtravelofffice.process" name="emailtravelofffice.process" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
+    <documentation textFormat="text/plain">
+        <text>
+            <![CDATA[Email travel office]]>
+        </text>
+    </documentation>
     <input id="travelrequest" name="travelrequest"/>
     <input id="destinationCountry" name="destinationCountry"/>
     <input id="destinationCity" name="destinationCity"/>
@@ -105,10 +110,6 @@ Hidden text
                             </p>
                                                                             <p style="font-size: 16px; font-weight: 400; line-height: 24px; color: #333333;">
                                 Could you please make arrangements for my travel to ${destinationCity} in ${destinationCountry}
-
-
-
-                                                                                
                                                                                 <br/>
                                                                             </p>
                                                                             <ul>
@@ -116,27 +117,13 @@ Hidden text
                                                                                 <li>Return date: ${returnDate}</li>
                                                                                 <li>Departure point: ${departurePoint}</li>
                                                                                 <li>Return point: ${returnPoint}
-
-
-
-
-                                                                                    
                                                                                     <li>Required transport: ${transportMode}</li>
                                                                                 </ul>
                                                                                 <br/>
                                                                                 <br/>
                             Kind regards,
-
-
-
-                                                                                
                                                                                 <br/>
-                            ${fromName}
-
-
-
-
-                                                                            
+                            ${fromName}                                                                            
                                                                             </td>
                                                                         </tr>
                                                                     </table>

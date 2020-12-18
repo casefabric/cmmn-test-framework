@@ -1,4 +1,4 @@
-<case id="footballclubstats.case" name="footballclubstats" guid="_DJ6eA">
+<case id="footballclubstats.case" name="footballclubstats" expressionLanguage="spel" guid="_DJ6eA">
     <caseFileModel>
         <caseFileItem id="_DJ6eA_0" name="player" multiplicity="ExactlyOne" definitionRef="info.cfid"/>
     </caseFileModel>

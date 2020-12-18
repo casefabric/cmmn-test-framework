@@ -6,12 +6,12 @@
         <CMMNShape cmmnElementRef="pi_ht__cYgNJ_0">
             <Bounds x="360" y="150" width="140" height="80"/>
         </CMMNShape>
-        <casefileitem cmmnElementRef="_cYgNJ_shape_2" parentId="cm__cYgNJ_0" contextRef="_cYgNJ_1">
-            <Bounds x="211" y="163" width="25" height="40"/>
-        </casefileitem>
         <CMMNShape cmmnElementRef="_cYgNJ_2">
             <Bounds x="354" y="180" width="12" height="20"/>
         </CMMNShape>
-        <CMMNEdge sourceCMMNElementRef="_cYgNJ_shape_2" targetCMMNElementRef="_cYgNJ_2"/>
+        <CMMNShape cmmnElementRef="_cYgNJ_1">
+            <Bounds x="211" y="163" width="25" height="40"/>
+        </CMMNShape>
+        <CMMNEdge sourceCMMNElementRef="_cYgNJ_1" targetCMMNElementRef="_cYgNJ_2"/>
     </CMMNDiagram>
 </CMMNDI>

@@ -1,5 +1,5 @@
 <definitions>
-    <case id="helloworld2.case" name="helloworld2">
+    <case id="helloworld2.case" name="helloworld2" expressionLanguage="spel">
         <caseFileModel>
             <caseFileItem id="_biHn7_5" name="Greeting" multiplicity="ExactlyOne" definitionRef="greeting.cfid"/>
             <caseFileItem id="_biHn7_8" name="Response" multiplicity="ExactlyOne" definitionRef="response.cfid"/>
@@ -33,7 +33,12 @@
                 <inputs id="_biHn7_15" name="Greeting" bindingRef="_biHn7_5"/>
                 <outputs id="_biHn7_16" name="Response" bindingRef="_biHn7_8"/>
                 <extensionElements mustUnderstand="false">
-                    <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" name="SendResponse" description="Sends a response back to the initiator of the hello world case" humanTaskRef="sendresponse.humantask">
+                    <cafienne:implementation name="SendResponse" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="sendresponse.humantask">
+                        <documentation textFormat="text/plain">
+                            <text>
+                                <![CDATA[Sends a response back to the initiator of the hello world case]]>
+                            </text>
+                        </documentation>
                         <input id="Greeting" name="Greeting"/>
                         <output id="Response" name="Response"/>
                         <task-model>{
@@ -106,7 +111,12 @@
             <humanTask id="ht__biHn7_0" name="Read response" isBlocking="true">
                 <inputs id="_biHn7_18" name="Response" bindingRef="_biHn7_8"/>
                 <extensionElements mustUnderstand="false">
-                    <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" name="ReadRespose" description="Read Response" humanTaskRef="readresponse.humantask">
+                    <cafienne:implementation name="ReadRespose" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="readresponse.humantask">
+                        <documentation textFormat="text/plain">
+                            <text>
+                                <![CDATA[Read Response]]>
+                            </text>
+                        </documentation>
                         <input id="Response" name="Response"/>
                         <task-model>
 			{
@@ -151,8 +161,8 @@
                     </cafienne:implementation>
                 </extensionElements>
             </humanTask>
-            <userEvent id="ue__biHn7_0" name="TerminateCase"/>
             <humanTask id="ht__biHn7_2" name="Task that is always started" isBlocking="true"/>
+            <userEvent id="ue__biHn7_0" name="TerminateCase"/>
         </casePlanModel>
         <input id="_biHn7_13" name="Greeting" bindingRef="_biHn7_5"/>
     </case>

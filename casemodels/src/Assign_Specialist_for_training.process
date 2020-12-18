@@ -1,4 +1,9 @@
-<process id="Assign_Specialist_for_training.process" name="Assign_Specialist_for_training" description="Assign_Specialist_for_training" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
+<process id="Assign_Specialist_for_training.process" name="Assign_Specialist_for_training" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
+    <documentation textFormat="text/plain">
+        <text>
+            <![CDATA[Assign_Specialist_for_training]]>
+        </text>
+    </documentation>
     <input id="_XjWa_incident_type" name="incident_type"/>
     <output id="_Y9cq_specialist" name="specialist"/>
     <extensionElements>

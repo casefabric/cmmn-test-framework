@@ -1,5 +1,5 @@
 <definitions>
-    <case id="taskoutputoperations.case" name="taskoutputoperations">
+    <case id="taskoutputoperations.case" name="taskoutputoperations" expressionLanguage="spel">
         <caseFileModel>
             <caseFileItem id="_v624r_4" name="TopItem" multiplicity="ExactlyOne" definitionRef="rootcasefileitem.cfid">
                 <children>
@@ -13,7 +13,7 @@
             <planItem id="pi_ht__v624r_1" name="Replace TopItem" definitionRef="ht__v624r_1">
                 <itemControl id="_v624r_9">
                     <repetitionRule id="_v624r_12">
-                        <condition id="_v624r_13" language="spel">
+                        <condition id="_v624r_13">
                             <body>
                                 <![CDATA[true]]>
                             </body>
@@ -24,7 +24,7 @@
             <planItem id="pi_ht__v624r_3" name="Add TopItem" definitionRef="ht__v624r_3">
                 <itemControl id="_v624r_19">
                     <repetitionRule id="_v624r_20">
-                        <condition id="_v624r_21" language="spel">
+                        <condition id="_v624r_21">
                             <body>
                                 <![CDATA[true]]>
                             </body>
@@ -35,7 +35,7 @@
             <planItem id="pi_ht__v624r_4" name="Update TopItem" definitionRef="ht__v624r_4">
                 <itemControl id="_v624r_22">
                     <repetitionRule id="_v624r_28">
-                        <condition id="_v624r_29" language="spel">
+                        <condition id="_v624r_29">
                             <body>
                                 <![CDATA[true]]>
                             </body>
@@ -46,7 +46,7 @@
             <planItem id="pi_ht__v624r_0" name="Replace TopArray" definitionRef="ht__v624r_0">
                 <itemControl id="_v624r_0">
                     <repetitionRule id="_v624r_67">
-                        <condition id="_v624r_68" language="spel">
+                        <condition id="_v624r_68">
                             <body>
                                 <![CDATA[true]]>
                             </body>
@@ -57,7 +57,7 @@
             <planItem id="pi_ht__v624r_2" name="Add TopArray" definitionRef="ht__v624r_2">
                 <itemControl id="_v624r_2">
                     <repetitionRule id="_v624r_65">
-                        <condition id="_v624r_66" language="spel">
+                        <condition id="_v624r_66">
                             <body>
                                 <![CDATA[true]]>
                             </body>
@@ -68,7 +68,7 @@
             <planItem id="pi_ht__v624r_5" name="Update TopArray" definitionRef="ht__v624r_5">
                 <itemControl id="_v624r_3">
                     <repetitionRule id="_v624r_63">
-                        <condition id="_v624r_64" language="spel">
+                        <condition id="_v624r_64">
                             <body>
                                 <![CDATA[true]]>
                             </body>
@@ -79,7 +79,7 @@
             <planItem id="pi_ht__v624r_6" name="Replace ChildArray" definitionRef="ht__v624r_6">
                 <itemControl id="_v624r_45">
                     <repetitionRule id="_v624r_57">
-                        <condition id="_v624r_58" language="spel">
+                        <condition id="_v624r_58">
                             <body>
                                 <![CDATA[true]]>
                             </body>
@@ -90,7 +90,7 @@
             <planItem id="pi_ht__v624r_7" name="Add ChildArray" definitionRef="ht__v624r_7">
                 <itemControl id="_v624r_46">
                     <repetitionRule id="_v624r_59">
-                        <condition id="_v624r_60" language="spel">
+                        <condition id="_v624r_60">
                             <body>
                                 <![CDATA[true]]>
                             </body>
@@ -101,7 +101,7 @@
             <planItem id="pi_ht__v624r_8" name="Update ChildArray" definitionRef="ht__v624r_8">
                 <itemControl id="_v624r_47">
                     <repetitionRule id="_v624r_61">
-                        <condition id="_v624r_62" language="spel">
+                        <condition id="_v624r_62">
                             <body>
                                 <![CDATA[true]]>
                             </body>
@@ -112,7 +112,7 @@
             <planItem id="pi_ht__v624r_9" name="Update ChildItem" definitionRef="ht__v624r_9">
                 <itemControl id="_v624r_48">
                     <repetitionRule id="_v624r_49">
-                        <condition id="_v624r_50" language="spel">
+                        <condition id="_v624r_50">
                             <body>
                                 <![CDATA[true]]>
                             </body>
@@ -123,7 +123,7 @@
             <planItem id="pi_ht__v624r_10" name="Add ChildItem" definitionRef="ht__v624r_10">
                 <itemControl id="_v624r_51">
                     <repetitionRule id="_v624r_52">
-                        <condition id="_v624r_53" language="spel">
+                        <condition id="_v624r_53">
                             <body>
                                 <![CDATA[true]]>
                             </body>
@@ -134,7 +134,7 @@
             <planItem id="pi_ht__v624r_11" name="Replace ChildItem" definitionRef="ht__v624r_11">
                 <itemControl id="_v624r_54">
                     <repetitionRule id="_v624r_55">
-                        <condition id="_v624r_56" language="spel">
+                        <condition id="_v624r_56">
                             <body>
                                 <![CDATA[true]]>
                             </body>
@@ -144,14 +144,19 @@
             </planItem>
             <humanTask id="ht__v624r_1" name="Replace TopItem" isBlocking="true">
                 <outputs id="_v624r_32" name="TopItem" bindingRef="_v624r_4">
-                    <bindingRefinement id="_v624r_33" language="spel">
+                    <bindingRefinement id="_v624r_33">
                         <body>
                             <![CDATA[Replace]]>
                         </body>
                     </bindingRefinement>
                 </outputs>
                 <extensionElements mustUnderstand="false">
-                    <cafienne:implementation name="simple_in_out_task" description="This task is intended to simply stream input/output data" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
+                    <cafienne:implementation name="simple_in_out_task" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
+                        <documentation textFormat="text/plain">
+                            <text>
+                                <![CDATA[This task is intended to simply stream input/output data]]>
+                            </text>
+                        </documentation>
                         <input id="_dk8c_In" name="In"/>
                         <output id="_46Gh_Out" name="Out"/>
                         <task-model/>
@@ -161,14 +166,19 @@
             </humanTask>
             <humanTask id="ht__v624r_3" name="Add TopItem" isBlocking="true">
                 <outputs id="_v624r_35" name="TopItem" bindingRef="_v624r_4">
-                    <bindingRefinement id="_v624r_36" language="spel">
+                    <bindingRefinement id="_v624r_36">
                         <body>
                             <![CDATA[Add]]>
                         </body>
                     </bindingRefinement>
                 </outputs>
                 <extensionElements mustUnderstand="false">
-                    <cafienne:implementation name="simple_in_out_task" description="This task is intended to simply stream input/output data" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
+                    <cafienne:implementation name="simple_in_out_task" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
+                        <documentation textFormat="text/plain">
+                            <text>
+                                <![CDATA[This task is intended to simply stream input/output data]]>
+                            </text>
+                        </documentation>
                         <input id="_dk8c_In" name="In"/>
                         <output id="_46Gh_Out" name="Out"/>
                         <task-model/>
@@ -178,14 +188,19 @@
             </humanTask>
             <humanTask id="ht__v624r_4" name="Update TopItem" isBlocking="true">
                 <outputs id="_v624r_38" name="TopItem" bindingRef="_v624r_4">
-                    <bindingRefinement id="_v624r_39" language="spel">
+                    <bindingRefinement id="_v624r_39">
                         <body>
                             <![CDATA[Update]]>
                         </body>
                     </bindingRefinement>
                 </outputs>
                 <extensionElements mustUnderstand="false">
-                    <cafienne:implementation name="simple_in_out_task" description="This task is intended to simply stream input/output data" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
+                    <cafienne:implementation name="simple_in_out_task" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
+                        <documentation textFormat="text/plain">
+                            <text>
+                                <![CDATA[This task is intended to simply stream input/output data]]>
+                            </text>
+                        </documentation>
                         <input id="_dk8c_In" name="In"/>
                         <output id="_46Gh_Out" name="Out"/>
                         <task-model/>
@@ -195,14 +210,19 @@
             </humanTask>
             <humanTask id="ht__v624r_0" name="Replace TopArray" isBlocking="true">
                 <outputs id="_v624r_31" name="TopArray" bindingRef="_v624r_6">
-                    <bindingRefinement id="_v624r_34" language="spel">
+                    <bindingRefinement id="_v624r_34">
                         <body>
                             <![CDATA[replace]]>
                         </body>
                     </bindingRefinement>
                 </outputs>
                 <extensionElements mustUnderstand="false">
-                    <cafienne:implementation name="simple_in_out_task" description="This task is intended to simply stream input/output data" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
+                    <cafienne:implementation name="simple_in_out_task" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
+                        <documentation textFormat="text/plain">
+                            <text>
+                                <![CDATA[This task is intended to simply stream input/output data]]>
+                            </text>
+                        </documentation>
                         <input id="_dk8c_In" name="In"/>
                         <output id="_46Gh_Out" name="Out"/>
                         <task-model/>
@@ -212,14 +232,19 @@
             </humanTask>
             <humanTask id="ht__v624r_2" name="Add TopArray" isBlocking="true">
                 <outputs id="_v624r_40" name="TopArray" bindingRef="_v624r_6">
-                    <bindingRefinement id="_v624r_41" language="spel">
+                    <bindingRefinement id="_v624r_41">
                         <body>
                             <![CDATA[Add]]>
                         </body>
                     </bindingRefinement>
                 </outputs>
                 <extensionElements mustUnderstand="false">
-                    <cafienne:implementation name="simple_in_out_task" description="This task is intended to simply stream input/output data" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
+                    <cafienne:implementation name="simple_in_out_task" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
+                        <documentation textFormat="text/plain">
+                            <text>
+                                <![CDATA[This task is intended to simply stream input/output data]]>
+                            </text>
+                        </documentation>
                         <input id="_dk8c_In" name="In"/>
                         <output id="_46Gh_Out" name="Out"/>
                         <task-model/>
@@ -229,14 +254,19 @@
             </humanTask>
             <humanTask id="ht__v624r_5" name="Update TopArray" isBlocking="true">
                 <outputs id="_v624r_43" name="TopArray" bindingRef="_v624r_6">
-                    <bindingRefinement id="_v624r_44" language="spel">
+                    <bindingRefinement id="_v624r_44">
                         <body>
                             <![CDATA[Update]]>
                         </body>
                     </bindingRefinement>
                 </outputs>
                 <extensionElements mustUnderstand="false">
-                    <cafienne:implementation name="simple_in_out_task" description="This task is intended to simply stream input/output data" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
+                    <cafienne:implementation name="simple_in_out_task" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
+                        <documentation textFormat="text/plain">
+                            <text>
+                                <![CDATA[This task is intended to simply stream input/output data]]>
+                            </text>
+                        </documentation>
                         <input id="_dk8c_In" name="In"/>
                         <output id="_46Gh_Out" name="Out"/>
                         <task-model/>
@@ -246,14 +276,19 @@
             </humanTask>
             <humanTask id="ht__v624r_6" name="Replace ChildArray" isBlocking="true">
                 <outputs id="_v624r_82" name="ChildArray" bindingRef="_v624r_7">
-                    <bindingRefinement id="_v624r_83" language="spel">
+                    <bindingRefinement id="_v624r_83">
                         <body>
                             <![CDATA[replace]]>
                         </body>
                     </bindingRefinement>
                 </outputs>
                 <extensionElements mustUnderstand="false">
-                    <cafienne:implementation name="simple_in_out_task" description="This task is intended to simply stream input/output data" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
+                    <cafienne:implementation name="simple_in_out_task" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
+                        <documentation textFormat="text/plain">
+                            <text>
+                                <![CDATA[This task is intended to simply stream input/output data]]>
+                            </text>
+                        </documentation>
                         <input id="_dk8c_In" name="In"/>
                         <output id="_46Gh_Out" name="Out"/>
                         <task-model/>
@@ -263,14 +298,19 @@
             </humanTask>
             <humanTask id="ht__v624r_7" name="Add ChildArray" isBlocking="true">
                 <outputs id="_v624r_85" name="ChildArray" bindingRef="_v624r_7">
-                    <bindingRefinement id="_v624r_86" language="spel">
+                    <bindingRefinement id="_v624r_86">
                         <body>
                             <![CDATA[add]]>
                         </body>
                     </bindingRefinement>
                 </outputs>
                 <extensionElements mustUnderstand="false">
-                    <cafienne:implementation name="simple_in_out_task" description="This task is intended to simply stream input/output data" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
+                    <cafienne:implementation name="simple_in_out_task" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
+                        <documentation textFormat="text/plain">
+                            <text>
+                                <![CDATA[This task is intended to simply stream input/output data]]>
+                            </text>
+                        </documentation>
                         <input id="_dk8c_In" name="In"/>
                         <output id="_46Gh_Out" name="Out"/>
                         <task-model/>
@@ -280,14 +320,19 @@
             </humanTask>
             <humanTask id="ht__v624r_8" name="Update ChildArray" isBlocking="true">
                 <outputs id="_v624r_88" name="ChildArray" bindingRef="_v624r_7">
-                    <bindingRefinement id="_v624r_89" language="spel">
+                    <bindingRefinement id="_v624r_89">
                         <body>
                             <![CDATA[update]]>
                         </body>
                     </bindingRefinement>
                 </outputs>
                 <extensionElements mustUnderstand="false">
-                    <cafienne:implementation name="simple_in_out_task" description="This task is intended to simply stream input/output data" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
+                    <cafienne:implementation name="simple_in_out_task" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
+                        <documentation textFormat="text/plain">
+                            <text>
+                                <![CDATA[This task is intended to simply stream input/output data]]>
+                            </text>
+                        </documentation>
                         <input id="_dk8c_In" name="In"/>
                         <output id="_46Gh_Out" name="Out"/>
                         <task-model/>
@@ -297,14 +342,19 @@
             </humanTask>
             <humanTask id="ht__v624r_9" name="Update ChildItem" isBlocking="true">
                 <outputs id="_v624r_81" name="TopItem" bindingRef="_v624r_4">
-                    <bindingRefinement id="_v624r_84" language="spel">
+                    <bindingRefinement id="_v624r_84">
                         <body>
                             <![CDATA[update]]>
                         </body>
                     </bindingRefinement>
                 </outputs>
                 <extensionElements mustUnderstand="false">
-                    <cafienne:implementation name="simple_in_out_task" description="This task is intended to simply stream input/output data" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
+                    <cafienne:implementation name="simple_in_out_task" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
+                        <documentation textFormat="text/plain">
+                            <text>
+                                <![CDATA[This task is intended to simply stream input/output data]]>
+                            </text>
+                        </documentation>
                         <input id="_dk8c_In" name="In"/>
                         <output id="_46Gh_Out" name="Out"/>
                         <task-model/>
@@ -314,14 +364,19 @@
             </humanTask>
             <humanTask id="ht__v624r_10" name="Add ChildItem" isBlocking="true">
                 <outputs id="_v624r_94" name="ChildItem" bindingRef="_v624r_5">
-                    <bindingRefinement id="_v624r_77" language="spel">
+                    <bindingRefinement id="_v624r_77">
                         <body>
                             <![CDATA[add]]>
                         </body>
                     </bindingRefinement>
                 </outputs>
                 <extensionElements mustUnderstand="false">
-                    <cafienne:implementation name="simple_in_out_task" description="This task is intended to simply stream input/output data" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
+                    <cafienne:implementation name="simple_in_out_task" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
+                        <documentation textFormat="text/plain">
+                            <text>
+                                <![CDATA[This task is intended to simply stream input/output data]]>
+                            </text>
+                        </documentation>
                         <input id="_dk8c_In" name="In"/>
                         <output id="_46Gh_Out" name="Out"/>
                         <task-model/>
@@ -331,14 +386,19 @@
             </humanTask>
             <humanTask id="ht__v624r_11" name="Replace ChildItem" isBlocking="true">
                 <outputs id="_v624r_91" name="ChildItem" bindingRef="_v624r_5">
-                    <bindingRefinement id="_v624r_92" language="spel">
+                    <bindingRefinement id="_v624r_92">
                         <body>
                             <![CDATA[replace]]>
                         </body>
                     </bindingRefinement>
                 </outputs>
                 <extensionElements mustUnderstand="false">
-                    <cafienne:implementation name="simple_in_out_task" description="This task is intended to simply stream input/output data" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
+                    <cafienne:implementation name="simple_in_out_task" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
+                        <documentation textFormat="text/plain">
+                            <text>
+                                <![CDATA[This task is intended to simply stream input/output data]]>
+                            </text>
+                        </documentation>
                         <input id="_dk8c_In" name="In"/>
                         <output id="_46Gh_Out" name="Out"/>
                         <task-model/>
