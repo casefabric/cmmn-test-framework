@@ -1,4 +1,9 @@
-<case id="repeatstagetest.case" name="repeatstagetest" description="Timer based repeating stage test" guid="_6Clld">
+<case id="repeatstagetest.case" name="repeatstagetest" expressionLanguage="spel" guid="_6Clld">
+    <documentation textFormat="text/plain">
+        <text>
+            <![CDATA[Timer based repeating stage test]]>
+        </text>
+    </documentation>
     <caseFileModel>
         <caseFileItem id="_6Clld_25" name="HTTPPort" multiplicity="ExactlyOne" definitionRef="http.cfid"/>
         <caseFileItem id="_6Clld_26" name="TimeStamp" multiplicity="ExactlyOne" definitionRef="timestamp.cfid"/>
@@ -10,7 +15,7 @@
             <exitCriterion id="_6Clld_19" name="ExitCriterion_0" sentryRef="crit__6Clld_3"/>
             <itemControl id="_6Clld_1">
                 <repetitionRule id="_6Clld_9">
-                    <condition id="_6Clld_10" language="spel">
+                    <condition id="_6Clld_10">
                         <body>
                             <![CDATA[true]]>
                         </body>
@@ -23,7 +28,7 @@
             <exitCriterion id="_6Clld_23" name="ExitCriterion_2" sentryRef="crit__6Clld_5"/>
             <itemControl id="_6Clld_6">
                 <repetitionRule id="_6Clld_11">
-                    <condition id="_6Clld_12" language="spel">
+                    <condition id="_6Clld_12">
                         <body>
                             <![CDATA[true]]>
                         </body>
@@ -36,7 +41,7 @@
             <entryCriterion id="_6Clld_36" name="EntryCriterion_4" sentryRef="crit__6Clld_7"/>
             <itemControl id="_6Clld_34">
                 <repetitionRule id="_6Clld_38">
-                    <condition id="_6Clld_39" language="spel">
+                    <condition id="_6Clld_39">
                         <body>
                             <![CDATA[true]]>
                         </body>
@@ -85,7 +90,7 @@
             <inputs id="_6Clld_3" name="count"/>
             <outputs id="_6Clld_42" name="response" bindingRef="_6Clld_26"/>
             <parameterMapping id="_6Clld_41" sourceRef="_6Clld_45" targetRef="_HMzY_httpPort">
-                <transformation id="_6Clld_40" language="spel">
+                <transformation id="_6Clld_40">
                     <body>
                         <![CDATA[HTTPPort.port]]>
                     </body>
@@ -93,7 +98,7 @@
             </parameterMapping>
             <parameterMapping id="_6Clld_43" sourceRef="_6E7g_response" targetRef="_6Clld_42"/>
             <parameterMapping id="_6Clld_4" sourceRef="_6Clld_3" targetRef="_pnjz_count">
-                <transformation id="_6Clld_18" language="spel">
+                <transformation id="_6Clld_18">
                     <body>
                         <![CDATA[task.stage.index]]>
                     </body>
@@ -103,7 +108,7 @@
         <milestone id="ms__6Clld_0" name="Milestone"/>
         <userEvent id="ue__6Clld_0" name="Kill"/>
         <timerEvent id="tmr__6Clld_1" name="Variable Time">
-            <timerExpression id="_6Clld_8" language="spel">
+            <timerExpression id="_6Clld_8">
                 <body>
                     <![CDATA[getCaseInstance().caseFile.TimeStamp.TimeRetry]]>
                 </body>
