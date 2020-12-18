@@ -1,4 +1,4 @@
-<case id="footballstats.case" name="footballstats" guid="_cYgNJ">
+<case id="footballstats.case" name="footballstats" expressionLanguage="spel" guid="_cYgNJ">
     <caseFileModel>
         <caseFileItem id="_cYgNJ_1" name="player" multiplicity="ExactlyOne" definitionRef="stats.cfid"/>
     </caseFileModel>
@@ -12,7 +12,6 @@
             </caseFileItemOnPart>
         </sentry>
         <humanTask id="ht__cYgNJ_0" name="Player stats" isBlocking="true">
-            <inputs id="_cYgNJ_5" name="stats" bindingRef="_cYgNJ_1"/>
             <extensionElements mustUnderstand="false">
                 <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="football_player_stats.humantask"/>
             </extensionElements>
