@@ -1,5 +1,10 @@
 <definitions>
-    <case id="IncidentManagementForTraining.case" name="IncidentManagementForTraining" description="Incident Management For Training">
+    <case id="IncidentManagementForTraining.case" name="IncidentManagementForTraining" expressionLanguage="spel">
+        <documentation textFormat="text/plain">
+            <text>
+                <![CDATA[Incident Management For Training]]>
+            </text>
+        </documentation>
         <caseFileModel>
             <caseFileItem id="_10q53_3" name="IncidentDetails" multiplicity="ExactlyOne" definitionRef="incidentdetails.cfid"/>
             <caseFileItem id="_10q53_11" name="Incident_Response" multiplicity="ExactlyOne" definitionRef="incident_response.cfid"/>
@@ -25,7 +30,7 @@
                 <entryCriterion id="_10q53_55" name="EntryCriterion_7" sentryRef="crit__10q53_7"/>
                 <itemControl id="_10q53_36">
                     <repetitionRule id="_10q53_37">
-                        <condition id="_10q53_61" language="spel">
+                        <condition id="_10q53_61">
                             <body>
                                 <![CDATA[true]]>
                             </body>
@@ -35,7 +40,7 @@
             </planItem>
             <sentry id="crit__10q53_1">
                 <ifPart id="_10q53_24" contextRef="_10q53_11">
-                    <condition id="_10q53_28" language="spel">
+                    <condition id="_10q53_28">
                         <body>
                             <![CDATA[Incident_Response.Status == "Invalid"]]>
                         </body>
@@ -52,7 +57,7 @@
             </sentry>
             <sentry id="crit__10q53_0">
                 <ifPart id="_10q53_30" contextRef="_10q53_11">
-                    <condition id="_10q53_49" language="spel">
+                    <condition id="_10q53_49">
                         <body>
                             <![CDATA[Incident_Response.Status != "Invalid"]]>
                         </body>
@@ -87,7 +92,12 @@
                 <outputs id="_10q53_7" name="Case_Incident" bindingRef="_10q53_3"/>
                 <outputs id="_10q53_9" name="Incident_Response" bindingRef="_10q53_11"/>
                 <extensionElements mustUnderstand="false">
-                    <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" description="verify_details_for_training" name="verify_details_for_training" humanTaskRef="verify_details_for_training.humantask">
+                    <cafienne:implementation name="verify_details_for_training" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="verify_details_for_training.humantask">
+                        <documentation textFormat="text/plain">
+                            <text>
+                                <![CDATA[verify_details_for_training]]>
+                            </text>
+                        </documentation>
                         <input id="_sUUJ_Incident" name="Task_Incident"/>
                         <output id="_G1ae_Incident" name="Task_Incident"/>
                         <output id="_gfi7_Incident_Response" name="Incident_Response"/>
@@ -213,7 +223,7 @@
     }
 }</task-model>
                         <assignment id="_10q53_57" contextRef="_10q53_43">
-                            <condition id="_10q53_64" language="spel">
+                            <condition id="_10q53_64">
                                 <body>
                                     <![CDATA[Specialist]]>
                                 </body>
@@ -229,7 +239,7 @@
                 <inputs id="_10q53_46" name="Case_Incident" bindingRef="_10q53_3"/>
                 <outputs id="_10q53_40" name="specialist" bindingRef="_10q53_43"/>
                 <parameterMapping id="_10q53_39" sourceRef="_10q53_46" targetRef="_XjWa_incident_type">
-                    <transformation id="_10q53_42" language="spel">
+                    <transformation id="_10q53_42">
                         <body>
                             <![CDATA[Case_Incident.Type]]>
                         </body>
@@ -240,7 +250,7 @@
             <processTask id="pt__10q53_1" name="Notify Customer" isBlocking="true" processRef="Notify_customer_for_training.process">
                 <inputs id="_10q53_60" name="Incident_Response" bindingRef="_10q53_11"/>
                 <parameterMapping id="_10q53_48" sourceRef="_10q53_60" targetRef="_GYhw_incident_status">
-                    <transformation id="_10q53_58" language="spel">
+                    <transformation id="_10q53_58">
                         <body>
                             <![CDATA[Incident_Response.Status]]>
                         </body>
@@ -257,7 +267,7 @@
                 </planItem>
                 <sentry id="crit__10q53_4">
                     <ifPart id="_10q53_52" contextRef="_10q53_11">
-                        <condition id="_10q53_59" language="spel">
+                        <condition id="_10q53_59">
                             <body>
                                 <![CDATA[Incident_Response.Status != "Invalid"]]>
                             </body>
@@ -301,7 +311,12 @@
 }</cafienne:start-case-model>
         </extensionElements>
     </case>
-    <process id="Assign_Specialist_for_training.process" name="Assign_Specialist_for_training" description="Assign_Specialist_for_training" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
+    <process id="Assign_Specialist_for_training.process" name="Assign_Specialist_for_training" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
+        <documentation textFormat="text/plain">
+            <text>
+                <![CDATA[Assign_Specialist_for_training]]>
+            </text>
+        </documentation>
         <input id="_XjWa_incident_type" name="incident_type"/>
         <output id="_Y9cq_specialist" name="specialist"/>
         <extensionElements>
@@ -315,7 +330,12 @@
             </cafienne:implementation>
         </extensionElements>
     </process>
-    <process id="Notify_customer_for_training.process" name="Notify_customer_for_training" description="Notify_customer_for_training" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
+    <process id="Notify_customer_for_training.process" name="Notify_customer_for_training" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
+        <documentation textFormat="text/plain">
+            <text>
+                <![CDATA[Notify_customer_for_training]]>
+            </text>
+        </documentation>
         <input id="_GYhw_incident_status" name="incident_status"/>
         <extensionElements>
             <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.http.HTTPCallDefinition" async="false">

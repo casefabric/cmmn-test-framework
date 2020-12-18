@@ -1,4 +1,9 @@
-<case id="IncidentManagementForTraining.case" name="IncidentManagementForTraining" description="Incident Management For Training">
+<case id="IncidentManagementForTraining.case" name="IncidentManagementForTraining" expressionLanguage="spel" guid="_R9vTe">
+    <documentation textFormat="text/plain">
+        <text>
+            <![CDATA[Incident Management For Training]]>
+        </text>
+    </documentation>
     <caseFileModel>
         <caseFileItem id="_10q53_3" name="IncidentDetails" multiplicity="ExactlyOne" definitionRef="incidentdetails.cfid"/>
         <caseFileItem id="_10q53_11" name="Incident_Response" multiplicity="ExactlyOne" definitionRef="incident_response.cfid"/>
@@ -24,7 +29,7 @@
             <entryCriterion id="_10q53_55" name="EntryCriterion_7" sentryRef="crit__10q53_7"/>
             <itemControl id="_10q53_36">
                 <repetitionRule id="_10q53_37">
-                    <condition id="_10q53_61" language="spel">
+                    <condition id="_10q53_61">
                         <body>
                             <![CDATA[true]]>
                         </body>
@@ -34,7 +39,7 @@
         </planItem>
         <sentry id="crit__10q53_1">
             <ifPart id="_10q53_24" contextRef="_10q53_11">
-                <condition id="_10q53_28" language="spel">
+                <condition id="_10q53_28">
                     <body>
                         <![CDATA[Incident_Response.Status == "Invalid"]]>
                     </body>
@@ -51,7 +56,7 @@
         </sentry>
         <sentry id="crit__10q53_0">
             <ifPart id="_10q53_30" contextRef="_10q53_11">
-                <condition id="_10q53_49" language="spel">
+                <condition id="_10q53_49">
                     <body>
                         <![CDATA[Incident_Response.Status != "Invalid"]]>
                     </body>
@@ -99,16 +104,16 @@
             <outputs id="_10q53_22" name="Incident_Response" bindingRef="_10q53_11"/>
             <extensionElements mustUnderstand="false">
                 <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="work_on_incident_for_training.humantask">
+                    <parameterMapping id="_10q53_19" sourceRef="_10q53_25" targetRef="_oPCY_Task_Incident2"/>
+                    <parameterMapping id="_10q53_21" sourceRef="_10q53_18" targetRef="_gVmw_Incident_Response2"/>
+                    <parameterMapping id="_10q53_23" sourceRef="_9GNQ_Incident_Response2" targetRef="_10q53_22"/>
                     <assignment id="_10q53_57" contextRef="_10q53_43">
-                        <condition id="_10q53_64" language="spel">
+                        <condition id="_10q53_64">
                             <body>
                                 <![CDATA[Specialist]]>
                             </body>
                         </condition>
                     </assignment>
-                    <parameterMapping id="_10q53_19" sourceRef="_10q53_25" targetRef="_oPCY_Task_Incident2"/>
-                    <parameterMapping id="_10q53_21" sourceRef="_10q53_18" targetRef="_gVmw_Incident_Response2"/>
-                    <parameterMapping id="_10q53_23" sourceRef="_9GNQ_Incident_Response2" targetRef="_10q53_22"/>
                 </cafienne:implementation>
             </extensionElements>
         </humanTask>
@@ -116,7 +121,7 @@
             <inputs id="_10q53_46" name="Case_Incident" bindingRef="_10q53_3"/>
             <outputs id="_10q53_40" name="specialist" bindingRef="_10q53_43"/>
             <parameterMapping id="_10q53_39" sourceRef="_10q53_46" targetRef="_XjWa_incident_type">
-                <transformation id="_10q53_42" language="spel">
+                <transformation id="_10q53_42">
                     <body>
                         <![CDATA[Case_Incident.Type]]>
                     </body>
@@ -127,7 +132,7 @@
         <processTask id="pt__10q53_1" name="Notify Customer" isBlocking="true" processRef="Notify_customer_for_training.process">
             <inputs id="_10q53_60" name="Incident_Response" bindingRef="_10q53_11"/>
             <parameterMapping id="_10q53_48" sourceRef="_10q53_60" targetRef="_GYhw_incident_status">
-                <transformation id="_10q53_58" language="spel">
+                <transformation id="_10q53_58">
                     <body>
                         <![CDATA[Incident_Response.Status]]>
                     </body>
@@ -144,7 +149,7 @@
             </planItem>
             <sentry id="crit__10q53_4">
                 <ifPart id="_10q53_52" contextRef="_10q53_11">
-                    <condition id="_10q53_59" language="spel">
+                    <condition id="_10q53_59">
                         <body>
                             <![CDATA[Incident_Response.Status != "Invalid"]]>
                         </body>
