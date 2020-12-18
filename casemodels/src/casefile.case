@@ -1,4 +1,4 @@
-<case id="casefile.case" name="casefile" guid="_kWyIV">
+<case id="casefile.case" name="casefile" expressionLanguage="spel" guid="_kWyIV">
     <caseFileModel>
         <caseFileItem id="_kWyIV_1" name="RootCaseFileItem" multiplicity="ExactlyOne" definitionRef="rootcasefileitem.cfid">
             <children>
