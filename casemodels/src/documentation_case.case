@@ -1,4 +1,4 @@
-<case id="documentation_case.case" name="documentation_case" guid="_jBxoP">
+<case id="documentation_case.case" name="documentation_case" expressionLanguage="spel" guid="_jBxoP">
     <caseFileModel>
         <caseFileItem id="_jBxoP_2" name="item1" multiplicity="ExactlyOne" definitionRef="unspecified.cfid">
             <documentation textFormat="text/plain">
