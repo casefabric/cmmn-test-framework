@@ -1,4 +1,4 @@
-<case id="taskoutputvalidation.case" name="taskoutputvalidation">
+<case id="taskoutputvalidation.case" name="taskoutputvalidation" expressionLanguage="spel" guid="_z74uc">
     <caseFileModel>
         <caseFileItem id="_qgYaQ_0" name="TaskInput" multiplicity="ExactlyOne" definitionRef="string.cfid">
             <children>
@@ -29,27 +29,23 @@
             </planItemOnPart>
         </sentry>
         <humanTask id="ht__qgYaQ_0" name="HumanTask" isBlocking="true">
-            <inputs id="_qgYaQ_7" name="DueDate" bindingRef="_qgYaQ_0"/>
-            <inputs id="_qgYaQ_9" name="Assignee"/>
-            <inputs id="_qgYaQ_11" name="Owner"/>
-            <inputs id="_qgYaQ_13" name="Content"/>
             <inputs id="_qgYaQ_18" name="TaskInputParameter"/>
             <outputs id="_qgYaQ_15" name="TaskOutputParameter" bindingRef="_qgYaQ_5">
                 <extensionElements mustUnderstand="false">
-                    <cafienne:implementation xmlns:cafienne="org.cafienne" required="true" />
+                    <cafienne:implementation xmlns:cafienne="org.cafienne" required="true"/>
                 </extensionElements>
             </outputs>
             <extensionElements mustUnderstand="false">
                 <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="humanTaskTest.humantask" validatorRef="humantaskvalidator.process">
                     <parameterMapping id="_qgYaQ_8" name="ParameterMapping_0" sourceRef="_qgYaQ_18" targetRef="_DdDX_DueDate">
-                        <transformation id="_qgYaQ_10" name="Expression_0" language="spel">
+                        <transformation id="_qgYaQ_10" name="Expression_0">
                             <body>
                                 <![CDATA["2016-06-10T08:16:34.048792086Z"]]>
                             </body>
                         </transformation>
                     </parameterMapping>
                     <parameterMapping id="_qgYaQ_14" name="ParameterMapping_3" sourceRef="_qgYaQ_18" targetRef="_67M8_Content">
-                        <transformation id="_qgYaQ_12" name="Expression_1" language="spel">
+                        <transformation id="_qgYaQ_12" name="Expression_1">
                             <body>
                                 <![CDATA[TaskInputParameter.Content]]>
                             </body>
@@ -60,7 +56,6 @@
             </extensionElements>
         </humanTask>
         <processTask id="pt__qgYaQ_0" name="AssertMockServiceIsRunning" isBlocking="true" processRef="AssertMockServiceIsRunning.process">
-            <inputs id="_qgYaQ_28" name="httpPort" bindingRef="_qgYaQ_32"/>
             <inputs id="_qgYaQ_34" name="HTTPConfig" bindingRef="_qgYaQ_32"/>
             <outputs id="_qgYaQ_30" name="responseCode" bindingRef="_qgYaQ_37">
                 <extensionElements mustUnderstand="false">
@@ -69,7 +64,7 @@
             </outputs>
             <parameterMapping id="_qgYaQ_31" name="ParameterMapping_6" sourceRef="_Wddw_responseCode" targetRef="_qgYaQ_30"/>
             <parameterMapping id="_qgYaQ_33" name="ParameterMapping_7" sourceRef="_qgYaQ_34" targetRef="_FC9h_httpPort">
-                <transformation id="_qgYaQ_41" name="Expression_3" language="spel">
+                <transformation id="_qgYaQ_41" name="Expression_3">
                     <body>
                         <![CDATA[HTTPConfig.port]]>
                     </body>
