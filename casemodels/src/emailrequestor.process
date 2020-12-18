@@ -1,4 +1,9 @@
-<process id="emailrequestor.process" name="emailrequestor.process" description="Email requestor" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
+<process id="emailrequestor.process" name="emailrequestor.process" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
+    <documentation textFormat="text/plain">
+        <text>
+            <![CDATA[Email requestor]]>
+        </text>
+    </documentation>
     <input id="travelrequest" name="travelrequest"/>
     <input id="approval" name="approval"/>
     <input id="approvalStatus" name="approvalStatus"/>
@@ -105,39 +110,14 @@ Hidden text
                             </p>
                                                                             <p style="font-size: 16px; font-weight: 400; line-height: 24px; color: #333333;">
                                 Your Travel request to ${destinationCity} in ${destinationCountry} on ${departureDate}
-
-
-
-
-
-                                                                            
                                                                                 <br/> has been
-
-
-
-
-
-                                                                            
                                                                                 <b>${approvalStatus}</b>
                                                                             </p>
                                                                             <br/>
                                                                             <br/>
                             Kind regards,
-
-
-
-
-
-                                                                        
                                                                             <br/>
                             ${fromName}
-
-
-
-
-
-
-                                                                    
                                                                         </td>
                                                                     </tr>
                                                                 </table>

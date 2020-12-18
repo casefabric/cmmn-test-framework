@@ -1,5 +1,10 @@
 <definitions>
-    <case id="travelrequest.case" name="travelrequest" description="Travel Request">
+    <case id="travelrequest.case" name="travelrequest" expressionLanguage="spel">
+        <documentation textFormat="text/plain">
+            <text>
+                <![CDATA[Travel Request]]>
+            </text>
+        </documentation>
         <caseFileModel>
             <caseFileItem id="cfi_csKsD_0" name="TravelRequest" multiplicity="ExactlyOne" definitionRef="travelrequest.cfid">
                 <children>
@@ -51,7 +56,7 @@
             </sentry>
             <sentry id="cm_csgxw_222">
                 <ifPart contextRef="cfi_csgxw_6">
-                    <condition language="spel">
+                    <condition>
                         <body>
                             <![CDATA[Approval.Status == "approved"]]>
                         </body>
@@ -66,7 +71,7 @@
             </sentry>
             <sentry id="cm_csgxw_221">
                 <ifPart contextRef="cfi_csgxw_6">
-                    <condition language="spel">
+                    <condition>
                         <body>
                             <![CDATA[Approval.Status == "disapproved"]]>
                         </body>
@@ -111,7 +116,12 @@
             <humanTask id="pid_cm_cs9Q0_205" name="View Travel request" isBlocking="true" performerRef="role_csKsD_1">
                 <inputs id="inTP_cm_cs9Q0_205_0" name="TravelRequest" bindingRef="cfi_csKsD_0"/>
                 <extensionElements mustUnderstand="false">
-                    <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" name="ManageTravelRequest" description="Manage Travel Request" humanTaskRef="managetravelrequest.humantask">
+                    <cafienne:implementation name="ManageTravelRequest" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="managetravelrequest.humantask">
+                        <documentation textFormat="text/plain">
+                            <text>
+                                <![CDATA[Manage Travel Request]]>
+                            </text>
+                        </documentation>
                         <input id="TravelRequest" name="TravelRequest"/>
                         <task-model>
                             {
@@ -473,14 +483,14 @@
                             }
                         </task-model>
                         <duedate id="_4wCNa_45" contextRef="cfi_csKsD_0">
-                            <condition id="_4wCNa_46" language="spel">
+                            <condition id="_4wCNa_46">
                                 <body>
                                     <![CDATA[(T(java.time.LocalDate).parse(TravelRequest.TravelDetails.DepartureDate).atStartOfDay().toInstant(T(java.time.ZoneOffset).UTC)).toString()]]>
                                 </body>
                             </condition>
                         </duedate>
                         <assignment id="_4wCNa_43" contextRef="cfi_csKsD_0">
-                            <condition id="_4wCNa_44" language="spel">
+                            <condition id="_4wCNa_44">
                                 <body>
                                     <![CDATA[TravelRequest.TravellerDetails.Requestor]]>
                                 </body>
@@ -494,7 +504,12 @@
                 <inputs id="inTP_cm_csgxw_208_0" name="TravelRequest" bindingRef="cfi_csKsD_0"/>
                 <outputs id="outTP_cm_csgxw_208_0" name="Approval" bindingRef="cfi_csgxw_6"/>
                 <extensionElements mustUnderstand="false">
-                    <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" name="ApproveTravelRequest" description="Approve Travel Request" humanTaskRef="approvetravelrequest.humantask">
+                    <cafienne:implementation name="ApproveTravelRequest" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="approvetravelrequest.humantask">
+                        <documentation textFormat="text/plain">
+                            <text>
+                                <![CDATA[Approve Travel Request]]>
+                            </text>
+                        </documentation>
                         <input id="TravelRequest_2" name="TravelRequest"/>
                         <output id="Approval_2" name="Approval"/>
                         <task-model>
@@ -901,14 +916,14 @@
                             }
                         </task-model>
                         <duedate id="_4wCNa_50" contextRef="cfi_csKsD_0">
-                            <condition id="_4wCNa_51" language="spel">
+                            <condition id="_4wCNa_51">
                                 <body>
                                     <![CDATA[(T(java.time.LocalDate).parse(TravelRequest.TravelDetails.DepartureDate).atStartOfDay().toInstant(T(java.time.ZoneOffset).UTC).minus(1, T(java.time.temporal.ChronoUnit).DAYS)).toString()]]>
                                 </body>
                             </condition>
                         </duedate>
                         <assignment id="_4wCNa_48" contextRef="cfi_cs9Q0_5">
-                            <condition id="_4wCNa_49" language="spel">
+                            <condition id="_4wCNa_49">
                                 <body>
                                     <![CDATA[Project.Manager]]>
                                 </body>
@@ -923,7 +938,12 @@
                 <inputs id="inTP_cm_csgxw_210_0" name="TravelRequest" bindingRef="cfi_csKsD_0"/>
                 <outputs id="outTP_cm_csgxw_210_0" name="Project" bindingRef="cfi_cs9Q0_5"/>
                 <extensionElements mustUnderstand="false">
-                    <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" name="CreateTravelPO" description="Create Travel Purchase Order" humanTaskRef="createtravelpurchaseorder.humantask">
+                    <cafienne:implementation name="CreateTravelPO" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="createtravelpurchaseorder.humantask">
+                        <documentation textFormat="text/plain">
+                            <text>
+                                <![CDATA[Create Travel Purchase Order]]>
+                            </text>
+                        </documentation>
                         <input id="TravelRequest_3" name="TravelRequest"/>
                         <input id="DueDate_3" name="DueDate"/>
                         <output id="Project_3" name="Project"/>
@@ -1299,7 +1319,7 @@
                         </task-model>
                         <parameterMapping id="inPM_cm_csMHr_12_0" sourceRef="inTP_cm_csgxw_210_0" targetRef="TravelRequest_3"/>
                         <parameterMapping id="inPM_cm_csMHr_12_1" sourceRef="inTP_cm_csgxw_210_0" targetRef="DueDate_3">
-                            <transformation language="spel">
+                            <transformation>
                                 <body>
                                     <![CDATA[(T(java.time.LocalDate).parse(TravelRequest.TravelDetails.DepartureDate).atStartOfDay().toInstant(T(java.time.ZoneOffset).UTC)).toString()]]>
                                 </body>
@@ -1312,7 +1332,12 @@
             <humanTask id="pid_cm_cs3yg_484" name="Arrange Visa and ESTA" isBlocking="true" performerRef="role_csKsD_1">
                 <inputs id="inTP_cm_csZvZ_679_0" name="TravelRequest" bindingRef="cfi_csKsD_0"/>
                 <extensionElements mustUnderstand="false">
-                    <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" name="ArrangeVisa" description="Arrange Visa" humanTaskRef="arrangevisa.humantask">
+                    <cafienne:implementation name="ArrangeVisa" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="arrangevisa.humantask">
+                        <documentation textFormat="text/plain">
+                            <text>
+                                <![CDATA[Arrange Visa]]>
+                            </text>
+                        </documentation>
                         <input id="TravelRequest" name="TravelRequest"/>
                         <task-model>
                             {
@@ -1393,14 +1418,14 @@
                             }
                         </task-model>
                         <duedate id="_4wCNa_53" contextRef="cfi_csKsD_0">
-                            <condition id="_4wCNa_54" language="spel">
+                            <condition id="_4wCNa_54">
                                 <body>
                                     <![CDATA[(T(java.time.LocalDate).parse(TravelRequest.TravelDetails.DepartureDate).atStartOfDay().toInstant(T(java.time.ZoneOffset).UTC)).toString()]]>
                                 </body>
                             </condition>
                         </duedate>
                         <assignment id="_4wCNa_47" contextRef="cfi_csKsD_0">
-                            <condition id="_4wCNa_52" language="spel">
+                            <condition id="_4wCNa_52">
                                 <body>
                                     <![CDATA[TravelRequest.TravellerDetails.Requestor]]>
                                 </body>
@@ -1779,7 +1804,7 @@
                         </task-model>
                         <parameterMapping id="inPM_cm_csd2I_4_0" sourceRef="inTP_cm_csgxw_215_0" targetRef="TravelRequest_1"/>
                         <parameterMapping id="inPM_cm_csd2I_4_1" sourceRef="inTP_cm_csgxw_215_0" targetRef="DueDate_1">
-                            <transformation language="spel">
+                            <transformation>
                                 <body>
                                     <![CDATA[(T(java.time.LocalDate).parse(TravelRequest.TravelDetails.DepartureDate).atStartOfDay().toInstant(T(java.time.ZoneOffset).UTC).minus(1, T(java.time.temporal.ChronoUnit).DAYS)).toString()]]>
                                 </body>
@@ -1798,63 +1823,63 @@
             <processTask id="pid_cm_cs3yg_487" name="Send Notification to Approver" isBlocking="true" processRef="notifyapprovelemail.process">
                 <inputs id="inTP_cm_csjTZ_604_0" name="travelrequest" bindingRef="cfi_csKsD_0"/>
                 <parameterMapping id="inPM_cm_csjTZ_604_2" sourceRef="inTP_cm_csjTZ_604_0" targetRef="travellerName">
-                    <transformation language="spel">
+                    <transformation>
                         <body>
                             <![CDATA[travelrequest.TravellerDetails.Traveller[0].Name]]>
                         </body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csjTZ_604_3" sourceRef="inTP_cm_csjTZ_604_0" targetRef="destinationCountry">
-                    <transformation language="spel">
+                    <transformation>
                         <body>
                             <![CDATA[travelrequest.TravelDetails.Destination[0].Country]]>
                         </body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csjTZ_604_4" sourceRef="inTP_cm_csjTZ_604_0" targetRef="destinationCity">
-                    <transformation language="spel">
+                    <transformation>
                         <body>
                             <![CDATA[travelrequest.TravelDetails.Destination[0].City]]>
                         </body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csjTZ_604_5" sourceRef="inTP_cm_csjTZ_604_0" targetRef="departureDate">
-                    <transformation language="spel">
+                    <transformation>
                         <body>
                             <![CDATA[travelrequest.TravelDetails.DepartureDate]]>
                         </body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csjTZ_604_6" sourceRef="inTP_cm_csjTZ_604_0" targetRef="returnDate">
-                    <transformation language="spel">
+                    <transformation>
                         <body>
                             <![CDATA[travelrequest.TravelDetails.ReturnDate]]>
                         </body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csjTZ_604_7" sourceRef="inTP_cm_csjTZ_604_0" targetRef="toName">
-                    <transformation language="spel">
+                    <transformation>
                         <body>
                             <![CDATA[caseInstance.getCaseTeam().getMemberWithRole("Approver")]]>
                         </body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csjTZ_604_8" sourceRef="inTP_cm_csjTZ_604_0" targetRef="toAddress">
-                    <transformation language="spel">
+                    <transformation>
                         <body>
                             <![CDATA[caseInstance.getCaseTeam().getMemberWithRole("Approver") + "@email.com"]]>
                         </body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csVHC_16_7" sourceRef="inTP_cm_csjTZ_604_0" targetRef="taskId">
-                    <transformation language="spel">
+                    <transformation>
                         <body>
                             <![CDATA[caseInstance.getPlanItemByName("Approve Travel request").getId()]]>
                         </body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csVHC_16_8" sourceRef="inTP_cm_csjTZ_604_0" targetRef="caseId">
-                    <transformation language="spel">
+                    <transformation>
                         <body>
                             <![CDATA[caseInstance.getId()]]>
                         </body>
@@ -1864,63 +1889,63 @@
             <processTask id="pid_cm_csgxw_226" name="Email travel office" isBlocking="true" processRef="emailtravelofffice.process">
                 <inputs id="inTP_cm_csTEb_966_4" name="travelrequest" bindingRef="cfi_csKsD_0"/>
                 <parameterMapping id="inPM_cm_csTEb_966_5" sourceRef="inTP_cm_csTEb_966_4" targetRef="destinationCountry">
-                    <transformation language="spel">
+                    <transformation>
                         <body>
                             <![CDATA[travelrequest.TravelDetails.Destination[0].Country]]>
                         </body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csTEb_966_6" sourceRef="inTP_cm_csTEb_966_4" targetRef="destinationCity">
-                    <transformation language="spel">
+                    <transformation>
                         <body>
                             <![CDATA[travelrequest.TravelDetails.Destination[0].City]]>
                         </body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csTEb_966_7" sourceRef="inTP_cm_csTEb_966_4" targetRef="departureDate">
-                    <transformation language="spel">
+                    <transformation>
                         <body>
                             <![CDATA[travelrequest.TravelDetails.DepartureDate]]>
                         </body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csTEb_966_8" sourceRef="inTP_cm_csTEb_966_4" targetRef="returnDate">
-                    <transformation language="spel">
+                    <transformation>
                         <body>
                             <![CDATA[travelrequest.TravelDetails.ReturnDate]]>
                         </body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csTEb_966_9" sourceRef="inTP_cm_csTEb_966_4" targetRef="departurePoint">
-                    <transformation language="spel">
+                    <transformation>
                         <body>
                             <![CDATA[travelrequest.TravelDetails.DeparturePoint]]>
                         </body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csTEb_966_10" sourceRef="inTP_cm_csTEb_966_4" targetRef="returnPoint">
-                    <transformation language="spel">
+                    <transformation>
                         <body>
                             <![CDATA[travelrequest.TravelDetails.ReturnPoint]]>
                         </body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csTEb_966_11" sourceRef="inTP_cm_csTEb_966_4" targetRef="transportMode">
-                    <transformation language="spel">
+                    <transformation>
                         <body>
                             <![CDATA[travelrequest.Transport.ModeOfTransport]]>
                         </body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csTEb_966_12" sourceRef="inTP_cm_csTEb_966_4" targetRef="fromName">
-                    <transformation language="spel">
+                    <transformation>
                         <body>
                             <![CDATA[travelrequest.TravellerDetails.Traveller[0].Name]]>
                         </body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csTEb_966_13" sourceRef="inTP_cm_csTEb_966_4" targetRef="fromAddress">
-                    <transformation language="spel">
+                    <transformation>
                         <body>
                             <![CDATA[travelrequest.TravellerDetails.Traveller[0].Email]]>
                         </body>
@@ -1933,7 +1958,7 @@
                 <outputs id="outTP_cm_csScW_1018_1" name="travelorder" bindingRef="cfi_csO0y_8"/>
                 <parameterMapping id="inPM_cm_csScW_1018_3" sourceRef="inTP_cm_csScW_1018_3" targetRef="approval"/>
                 <parameterMapping id="inPM_cm_cs5fo_847_2" sourceRef="inTP_cm_csScW_1018_2" targetRef="travelrequest">
-                    <transformation language="spel">
+                    <transformation>
                         <body>
                             <![CDATA[
                             "{""Approval"":"+caseInstance.getCaseFile().getItem("Approval").getValue().toString()+", ""travelrequest"": "+caseInstance.getCaseFile().getItem("TravelRequest").getValue().toString()+"}"
@@ -1948,7 +1973,7 @@
                 <inputs id="inTP_cm_csO0y_735_2" name="filename"/>
                 <inputs id="inTP_cm_csRSq_791_2" name="travelrequest" bindingRef="cfi_csKsD_0"/>
                 <parameterMapping id="inPM_cm_csRSq_791_0" sourceRef="inTP_cm_csO0y_735_2" targetRef="filename">
-                    <transformation language="spel">
+                    <transformation>
                         <body>
                             <![CDATA["TravelOrder.pdf"]]>
                         </body>
@@ -1956,42 +1981,42 @@
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csRSq_791_1" sourceRef="inTP_cm_csBJk_720_1" targetRef="travelorder"/>
                 <parameterMapping id="inPM_cm_csRSq_791_2" sourceRef="inTP_cm_csRSq_791_2" targetRef="destinationCity">
-                    <transformation language="spel">
+                    <transformation>
                         <body>
                             <![CDATA[travelrequest.TravelDetails.Destination[0].City]]>
                         </body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csRSq_791_3" sourceRef="inTP_cm_csRSq_791_2" targetRef="destinationCountry">
-                    <transformation language="spel">
+                    <transformation>
                         <body>
                             <![CDATA[travelrequest.TravelDetails.Destination[0].Country]]>
                         </body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csRSq_791_4" sourceRef="inTP_cm_csRSq_791_2" targetRef="departureDate">
-                    <transformation language="spel">
+                    <transformation>
                         <body>
                             <![CDATA[travelrequest.TravelDetails.DepartureDate]]>
                         </body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csRSq_791_5" sourceRef="inTP_cm_csRSq_791_2" targetRef="fromName">
-                    <transformation language="spel">
+                    <transformation>
                         <body>
                             <![CDATA[caseInstance.getCaseTeam().getMemberWithRole("PersonalAssistant")]]>
                         </body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csRSq_791_6" sourceRef="inTP_cm_csRSq_791_2" targetRef="toName">
-                    <transformation language="spel">
+                    <transformation>
                         <body>
                             <![CDATA[travelrequest.TravellerDetails.Traveller[0].Name]]>
                         </body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csRSq_791_7" sourceRef="inTP_cm_csRSq_791_2" targetRef="toAddress">
-                    <transformation language="spel">
+                    <transformation>
                         <body>
                             <![CDATA[travelrequest.TravellerDetails.Traveller[0].Email]]>
                         </body>
@@ -2002,7 +2027,7 @@
                 <inputs id="inTP_cm_csjTZ_617_2" name="travelrequest" bindingRef="cfi_csKsD_0"/>
                 <inputs id="inTP_cm_csjTZ_617_3" name="approval" bindingRef="cfi_csgxw_6"/>
                 <parameterMapping id="inPM_cm_csjTZ_617_4" sourceRef="inTP_cm_csjTZ_617_3" targetRef="approvalStatus">
-                    <transformation language="spel">
+                    <transformation>
                         <body>
                             <![CDATA[
                             approval.Status
@@ -2011,7 +2036,7 @@
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csjTZ_617_5" sourceRef="inTP_cm_csjTZ_617_2" targetRef="destinationCountry">
-                    <transformation language="spel">
+                    <transformation>
                         <body>
                             <![CDATA[
                             travelrequest.TravelDetails.Destination[0].Country
@@ -2020,7 +2045,7 @@
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csjTZ_617_6" sourceRef="inTP_cm_csjTZ_617_2" targetRef="destinationCity">
-                    <transformation language="spel">
+                    <transformation>
                         <body>
                             <![CDATA[
                             travelrequest.TravelDetails.Destination[0].City
@@ -2029,7 +2054,7 @@
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csjTZ_617_7" sourceRef="inTP_cm_csjTZ_617_2" targetRef="departureDate">
-                    <transformation language="spel">
+                    <transformation>
                         <body>
                             <![CDATA[
                             travelrequest.TravelDetails.DepartureDate
@@ -2038,7 +2063,7 @@
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csjTZ_617_8" sourceRef="inTP_cm_csjTZ_617_3" targetRef="fromName">
-                    <transformation language="spel">
+                    <transformation>
                         <body>
                             <![CDATA[
                             approval.ApprovedBy
@@ -2047,7 +2072,7 @@
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csjTZ_617_9" sourceRef="inTP_cm_csjTZ_617_3" targetRef="fromAddress">
-                    <transformation language="spel">
+                    <transformation>
                         <body>
                             <![CDATA[
                             approval.ApprovedBy + "@email.com"
@@ -2056,23 +2081,21 @@
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csjTZ_617_10" sourceRef="inTP_cm_csjTZ_617_2" targetRef="toName">
-                    <transformation language="spel">
+                    <transformation>
                         <body>
                             <![CDATA[travelrequest.TravellerDetails.Requestor]]>
                         </body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csjTZ_617_11" sourceRef="inTP_cm_csjTZ_617_2" targetRef="toAddress">
-                    <transformation language="spel">
+                    <transformation>
                         <body>
                             <![CDATA[travelrequest.TravellerDetails.Requestor + "@email.com"]]>
                         </body>
                     </transformation>
                 </parameterMapping>
             </processTask>
-            <processTask id="pid_cm_csSAF_392" name="Check travel requirements" isBlocking="true" processRef="checktravelrequirements.process">
-                <inputs id="inTP_cm_cs6RF_34_2" name="travellers" bindingRef="cfi_cs6RF_11"/>
-            </processTask>
+            <processTask id="pid_cm_csSAF_392" name="Check travel requirements" isBlocking="true" processRef="checktravelrequirements.process"/>
             <milestone id="pid_cm_csgxw_213" name="Request Submitted"/>
             <milestone id="pid_cm_csgxw_219" name="Approved"/>
             <milestone id="pid_cm_csgxw_220" name="Disapproved"/>
@@ -2090,7 +2113,7 @@
                 </planItem>
                 <sentry id="cm_csgxw_212">
                     <ifPart contextRef="cfi_csgxw_6">
-                        <condition language="spel">
+                        <condition>
                             <body>
                                 <![CDATA[Approval.Status == "approved"]]>
                             </body>
@@ -2102,7 +2125,7 @@
                 </sentry>
                 <sentry id="cm_cs3yg_481">
                     <ifPart contextRef="cfi_csKsD_0">
-                        <condition language="spel">
+                        <condition>
                             <body>
                                 <![CDATA[1 == 0]]>
                             </body>
@@ -2139,7 +2162,7 @@
                 </planItem>
                 <sentry id="cm_cs3yg_483">
                     <ifPart contextRef="cfi_csKsD_0">
-                        <condition language="spel">
+                        <condition>
                             <body>
                                 <![CDATA[
                                 TravelRequest.TravelDetails.Destination[0].Country != "US" or TravelRequest.TravellerDetails.Traveller[0].Nationality == "US"
@@ -2150,7 +2173,7 @@
                 </sentry>
                 <sentry id="cm_cs3yg_486">
                     <ifPart contextRef="cfi_csKsD_0">
-                        <condition language="spel">
+                        <condition>
                             <body>
                                 <![CDATA[TravelRequest.TravellerDetails.Traveller[0].Nationality != "US" and
 TravelRequest.TravelDetails.Destination[0].Country == "US"]]>
@@ -2160,9 +2183,29 @@ TravelRequest.TravelDetails.Destination[0].Country == "US"]]>
                 </sentry>
             </stage>
         </casePlanModel>
-        <caseRoles id="role_csKsD_0" name="Approver" description="Approver of the Travel Request"/>
-        <caseRoles id="role_csKsD_2" name="PersonalAssistant" description="Personal Assistant"/>
-        <caseRoles id="role_csKsD_1" name="Requestor" description="Requestor of the Travel Request"/>
+        <caseRoles>
+            <role id="role_csKsD_0" name="Approver">
+                <documentation textFormat="text/plain">
+                    <text>
+                        <![CDATA[Approver of the Travel Request]]>
+                    </text>
+                </documentation>
+            </role>
+            <role id="role_csKsD_2" name="PersonalAssistant">
+                <documentation textFormat="text/plain">
+                    <text>
+                        <![CDATA[Personal Assistant]]>
+                    </text>
+                </documentation>
+            </role>
+            <role id="role_csKsD_1" name="Requestor">
+                <documentation textFormat="text/plain">
+                    <text>
+                        <![CDATA[Requestor of the Travel Request]]>
+                    </text>
+                </documentation>
+            </role>
+        </caseRoles>
         <input id="cs9Q0_inCPs_0" name="TravelRequest" bindingRef="cfi_csKsD_0"/>
         <extensionElements mustUnderstand="false">
             <cafienne:start-case-model xmlns:cafienne="org.cafienne">{
@@ -2561,7 +2604,12 @@ TravelRequest.TravelDetails.Destination[0].Country == "US"]]>
             </cafienne:start-case-model>
         </extensionElements>
     </case>
-    <process id="allocatefunds.process" name="allocatefunds.process" description="allocatefunds" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
+    <process id="allocatefunds.process" name="allocatefunds.process" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
+        <documentation textFormat="text/plain">
+            <text>
+                <![CDATA[allocatefunds]]>
+            </text>
+        </documentation>
         <input id="travelrequest" name="travelrequest"/>
         <input id="approval" name="approval"/>
         <output id="purchaseorder" name="purchaseorder"/>
@@ -2577,7 +2625,12 @@ TravelRequest.TravelDetails.Destination[0].Country == "US"]]>
             </cafienne:implementation>
         </extensionElements>
     </process>
-    <process id="notifyapprovelemail.process" name="notifyapprovelemail.process" description="Notify approver by email" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
+    <process id="notifyapprovelemail.process" name="notifyapprovelemail.process" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
+        <documentation textFormat="text/plain">
+            <text>
+                <![CDATA[Notify approver by email]]>
+            </text>
+        </documentation>
         <input id="travelrequest" name="travelrequest"/>
         <input id="approval" name="approval"/>
         <input id="travellerName" name="travellerName"/>
@@ -2758,11 +2811,18 @@ Hidden text
                     </table>
                 </body></html>
 		]]>
-            </mail-body>
+            </mail-body>undefined
+    
+    
         </cafienne:implementation>
-    </extensionElements>
+    </extensionElements>undefinedundefined
 </process>
-<process id="emailtravelofffice.process" name="emailtravelofffice.process" description="Email travel office" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
+<process id="emailtravelofffice.process" name="emailtravelofffice.process" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
+    <documentation textFormat="text/plain">
+        <text>
+            <![CDATA[Email travel office]]>
+        </text>
+    </documentation>
     <input id="travelrequest" name="travelrequest"/>
     <input id="destinationCountry" name="destinationCountry"/>
     <input id="destinationCity" name="destinationCity"/>
@@ -2874,6 +2934,9 @@ Hidden text
 
                                                                                 
                                                                                 
+                                                                        
+                                                                                
+                                                                                
                                                                                 <br/>
                                                                             </p>
                                                                             <ul>
@@ -2887,6 +2950,9 @@ Hidden text
 
                                                                                     
                                                                                     
+                                                                            
+                                                                                    
+                                                                                    
                                                                                     <li>Required transport: ${transportMode}</li>
                                                                                 </ul>
                                                                                 <br/>
@@ -2897,12 +2963,18 @@ Hidden text
 
                                                                                 
                                                                                 
+                                                                        
+                                                                                
+                                                                                
                                                                                 <br/>
                             ${fromName}
 
 
 
 
+                                                                            
+                                                                            
+                                                                    
                                                                             
                                                                             
                                                                             </td>
@@ -2958,7 +3030,12 @@ Hidden text
         </cafienne:implementation>
     </extensionElements>
 </process>
-<process id="generatepurchaseorder.process" name="generatepurchaseorder.process" description="Generate Travel purchase order" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
+<process id="generatepurchaseorder.process" name="generatepurchaseorder.process" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
+    <documentation textFormat="text/plain">
+        <text>
+            <![CDATA[Generate Travel purchase order]]>
+        </text>
+    </documentation>
     <input id="travelrequest" name="travelrequest"/>
     <input id="approval" name="approval"/>
     <output id="travelorder" name="travelorder"/>
@@ -3307,7 +3384,12 @@ Hidden text
         </cafienne:implementation>
     </extensionElements>
 </process>
-<process id="emailpurchaseorder.process" name="emailpurchaseorder.process" description="Email Travel order" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
+<process id="emailpurchaseorder.process" name="emailpurchaseorder.process" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
+    <documentation textFormat="text/plain">
+        <text>
+            <![CDATA[Email Travel order]]>
+        </text>
+    </documentation>
     <input id="travelrequest" name="travelrequest"/>
     <input id="travelorder" name="travelorder"/>
     <input id="destinationCountry" name="destinationCountry"/>
@@ -3419,6 +3501,9 @@ div[style*="margin: 16px 0;"] { margin: 0 !important; }
 
                                                                                 
                                                                                 
+                                                                        
+                                                                                
+                                                                                
                                                                                 <br/>
                                                                             </p>
                                                                             <br/>
@@ -3432,6 +3517,9 @@ div[style*="margin: 16px 0;"] { margin: 0 !important; }
 
                                                                             
                                                                             
+                                                                    
+                                                                            
+                                                                            
                                                                             <br/> ${fromName}
 
 
@@ -3441,6 +3529,9 @@ div[style*="margin: 16px 0;"] { margin: 0 !important; }
 
 
 
+                                                                        
+                                                                        
+                                                                
                                                                         
                                                                         
                                                                         </td>
@@ -3494,9 +3585,16 @@ div[style*="margin: 16px 0;"] { margin: 0 !important; }
         </to>
         <attachments>
             <attachment name="${filename}">${travelorder}</attachment>
-        </attachments>
+        </attachments>undefined
+    
+    
     </cafienne:implementation>
-</extensionElements>undefined</process>undefined<process id="emailrequestor.process" name="emailrequestor.process" description="Email requestor" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
+</extensionElements>undefinedundefinedundefined</process>undefined<process id="emailrequestor.process" name="emailrequestor.process" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
+<documentation textFormat="text/plain">
+    <text>
+        <![CDATA[Email requestor]]>
+    </text>
+</documentation>
 <input id="travelrequest" name="travelrequest"/>
 <input id="approval" name="approval"/>
 <input id="approvalStatus" name="approvalStatus"/>
@@ -3610,6 +3708,9 @@ Hidden text
 
                                                                             
                                                                                 
+                                                                        
+                                                                                
+                                                                                
                                                                             <br/> has been
 
 
@@ -3617,6 +3718,9 @@ Hidden text
 
 
                                                                             
+                                                                                
+                                                                        
+                                                                                
                                                                                 
                                                                             <b>${approvalStatus}</b>
                                                                         </p>
@@ -3630,6 +3734,9 @@ Hidden text
 
                                                                         
                                                                             
+                                                                    
+                                                                            
+                                                                            
                                                                         <br/>
                             ${fromName}
 
@@ -3639,6 +3746,9 @@ Hidden text
 
 
                                                                     
+                                                                        
+                                                                
+                                                                        
                                                                         
                                                                     </td>
                                                                 </tr>
@@ -3688,8 +3798,10 @@ Hidden text
     <reply-to>${fromAddress}</reply-to>
     <to>
         <address name="${toName}">${toAddress}</address>
-    </to>
-</cafienne:implementation>undefined</extensionElements>undefined</process>undefined<process id="checktravelrequirements.process" name="checktravelrequirements.process" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">undefined<input id="destinationCountry" name="destinationCountry"/>undefined<input id="travellers" name="travellers"/>undefined<output id="theaterDestination" name="theaterDestination"/>undefined<output id="travellers_requirements" name="traveller_requirements"/>undefined<extensionElements>
+    </to>undefined
+    
+    
+</cafienne:implementation>undefined</extensionElements>undefinedundefinedundefined</process>undefined<process id="checktravelrequirements.process" name="checktravelrequirements.process" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">undefined<input id="destinationCountry" name="destinationCountry"/>undefined<input id="travellers" name="travellers"/>undefined<output id="theaterDestination" name="theaterDestination"/>undefined<output id="travellers_requirements" name="traveller_requirements"/>undefined<extensionElements>
 <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.http.HTTPCallDefinition">
     <url>http://demo1776471.mockable.io/travelrequirements</url>
     <method>POST</method>

@@ -1,5 +1,10 @@
 <humantask>
-    <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" name="CreateTravelPO" description="Create Travel Purchase Order">
+    <cafienne:implementation name="CreateTravelPO" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition">
+        <documentation textFormat="text/plain">
+            <text>
+                <![CDATA[Create Travel Purchase Order]]>
+            </text>
+        </documentation>
         <input id="TravelRequest_3" name="TravelRequest"/>
         <input id="DueDate_3" name="DueDate"/>
         <output id="Project_3" name="Project"/>
