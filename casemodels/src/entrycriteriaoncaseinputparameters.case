@@ -1,4 +1,4 @@
-<case id="entrycriteriaoncaseinputparameters.case" name="entrycriteriaoncaseinputparameters" guid="_cl3EV">
+<case id="entrycriteriaoncaseinputparameters.case" name="entrycriteriaoncaseinputparameters" expressionLanguage="spel" guid="_cl3EV">
     <caseFileModel>
         <caseFileItem id="_cl3EV_0" name="Greeting" multiplicity="ExactlyOne" definitionRef="greeting.cfid">
             <children>
@@ -11,7 +11,7 @@
             <entryCriterion id="_cl3EV_4" name="EntryCriterion_0" sentryRef="crit__cl3EV_0"/>
             <itemControl id="_cl3EV_3">
                 <repetitionRule id="_cl3EV_6">
-                    <condition id="_cl3EV_7" language="spel">
+                    <condition id="_cl3EV_7">
                         <body>
                             <![CDATA[true]]>
                         </body>
@@ -24,10 +24,10 @@
                 <standardEvent>create</standardEvent>
             </caseFileItemOnPart>
         </sentry>
+        <humanTask id="ht__cl3EV_0" name="Task" isBlocking="true"/>
         <stage id="_cl3EV_2" name="Stage" autoComplete="true">
             <planItem id="pi_ht__cl3EV_0" name="Task" definitionRef="ht__cl3EV_0"/>
         </stage>
-        <humanTask id="ht__cl3EV_0" name="Task" isBlocking="true"/>
     </casePlanModel>
     <input id="_cl3EV_17" name="Greeting" bindingRef="_cl3EV_0"/>
 </case>

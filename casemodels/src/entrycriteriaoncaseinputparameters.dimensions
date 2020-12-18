@@ -3,9 +3,6 @@
         <CMMNShape cmmnElementRef="cm__cl3EV_0">
             <Bounds x="20" y="20" width="800" height="500"/>
         </CMMNShape>
-        <casefileitem cmmnElementRef="_cl3EV_shape_1" parentId="cm__cl3EV_0" contextRef="_cl3EV_1">
-            <Bounds x="120" y="120" width="25" height="40"/>
-        </casefileitem>
         <CMMNShape cmmnElementRef="pi__cl3EV_2">
             <Bounds x="240" y="90" width="470" height="200"/>
         </CMMNShape>
@@ -15,6 +12,9 @@
         <CMMNShape cmmnElementRef="pi_ht__cl3EV_0">
             <Bounds x="320" y="140" width="140" height="80"/>
         </CMMNShape>
-        <CMMNEdge sourceCMMNElementRef="_cl3EV_shape_1" targetCMMNElementRef="_cl3EV_4"/>
+        <CMMNShape cmmnElementRef="_cl3EV_1">
+            <Bounds x="120" y="120" width="25" height="40"/>
+        </CMMNShape>
+        <CMMNEdge sourceCMMNElementRef="_cl3EV_1" targetCMMNElementRef="_cl3EV_4"/>
     </CMMNDiagram>
 </CMMNDI>
