@@ -68,6 +68,18 @@ export class MockInvocation {
         this.res.writeHead(statusCode, headers);
     }
 
+    onContent(callback: Function) {
+        let body = '';
+        this.req.on('data', data => body += data);
+        this.req.on('end', () => {
+            callback(body);
+        });
+    }
+
+    onJSONContent(callback: Function) {
+        this.onContent((body: string) => callback(JSON.parse(body)));
+    }
+
     write(content: any) {
         this.res.write(content);
     }

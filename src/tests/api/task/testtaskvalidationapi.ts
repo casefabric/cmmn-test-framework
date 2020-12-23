@@ -35,15 +35,9 @@ const pingMock = new GetMock(mock, '/ping', call => {
     }, waitSome)
 });
 
-const validateMock = new PostMock(mock, '/validate', call => {
-    // TODO: There must be something more handy to parse the post contents, but could not find it quickly enough...
-    let body = ''
-    call.req.on('data', data => body += data);
-    call.req.on('end', () => {
-        const post = JSON.parse(body);
-
+new PostMock(mock, '/validate', call => {
+    call.onJSONContent((post:any) => {
         const taskContent = post['task-output'];
-
         const isInvalidDecision = Comparison.sameJSON(taskContent, TaskContent.TaskOutputInvalidDecision);
         const isKillSwitch = Comparison.sameJSON(taskContent, TaskContent.TaskOutputThatFailsValidation);
         const isValidDecision = Comparison.sameJSON(taskContent, TaskContent.TaskOutputDecisionApproved) || Comparison.sameJSON(post, TaskContent.TaskOutputDecisionCanceled);

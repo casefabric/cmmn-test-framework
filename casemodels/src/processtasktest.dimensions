@@ -1,0 +1,37 @@
+<CMMNDI>
+    <CMMNDiagram>
+        <CMMNShape cmmnElementRef="cm__czPo6_0">
+            <Bounds x="39" y="39" width="800" height="500"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ue__czPo6_0">
+            <Bounds x="182" y="130" width="32" height="32"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ue__czPo6_1">
+            <Bounds x="182" y="273" width="32" height="32"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_pt__czPo6_0">
+            <Bounds x="364" y="117" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_czPo6_11">
+            <Bounds x="358" y="146" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_pt__czPo6_1">
+            <Bounds x="364" y="260" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_czPo6_20">
+            <Bounds x="358" y="289" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ms__czPo6_0">
+            <Bounds x="169" y="468" width="117" height="39"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ue__czPo6_2">
+            <Bounds x="208" y="377" width="32" height="32"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_czPo6_41">
+            <Bounds x="215" y="458" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNEdge sourceCMMNElementRef="pi_ue__czPo6_0" targetCMMNElementRef="_czPo6_11"/>
+        <CMMNEdge sourceCMMNElementRef="pi_ue__czPo6_1" targetCMMNElementRef="_czPo6_20"/>
+        <CMMNEdge sourceCMMNElementRef="pi_ue__czPo6_2" targetCMMNElementRef="_czPo6_41"/>
+    </CMMNDiagram>
+</CMMNDI>
