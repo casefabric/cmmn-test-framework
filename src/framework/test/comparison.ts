@@ -56,11 +56,16 @@ function sameObject(obj1: any, obj2: any, name: string = ''): boolean {
                 return false;
             }
         }
+        for (const key in obj2) {
+            if (obj1[key] === undefined) {
+                log.groupEnd(`-- missing ${key} in other object`);
+                return false;
+            }
+        }
     } else if (obj1 !== obj2) {
         log.groupEnd("-- not the same: "  + name);
         return false;
     }
-
 
     log.groupEnd();
     return true;
