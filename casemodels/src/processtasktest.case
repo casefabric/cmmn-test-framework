@@ -1,0 +1,119 @@
+<case id="processtasktest.case" name="processtasktest" expressionLanguage="spel" guid="_czPo6">
+    <caseFileModel>
+        <caseFileItem id="_czPo6_0" name="HTTPConfig" multiplicity="ExactlyOne" definitionRef="http.cfid"/>
+        <caseFileItem id="_czPo6_1" name="ServiceInput" multiplicity="ExactlyOne" definitionRef="unspecified.cfid"/>
+        <caseFileItem id="_czPo6_2" name="ErrorOutcome" multiplicity="ExactlyOne" definitionRef="unspecified.cfid"/>
+        <caseFileItem id="_czPo6_3" name="ErrorCode" multiplicity="ExactlyOne" definitionRef="unspecified.cfid"/>
+        <caseFileItem id="_czPo6_31" name="SuccessObject" multiplicity="ExactlyOne" definitionRef="unspecified.cfid"/>
+        <caseFileItem id="_czPo6_33" name="ResponseMessage" multiplicity="ExactlyOne" definitionRef="unspecified.cfid"/>
+    </caseFileModel>
+    <casePlanModel id="cm__czPo6_0" name="processtasktest" autoComplete="true">
+        <planItem id="pi_ue__czPo6_0" name="Get Error" definitionRef="ue__czPo6_0"/>
+        <planItem id="pi_ue__czPo6_1" name="Get OK" definitionRef="ue__czPo6_1"/>
+        <planItem id="pi_pt__czPo6_0" name="Get Error Response" definitionRef="pt__czPo6_0">
+            <entryCriterion id="_czPo6_11" name="EntryCriterion_0" sentryRef="crit__czPo6_0"/>
+        </planItem>
+        <planItem id="pi_pt__czPo6_1" name="Get Object Response" definitionRef="pt__czPo6_1">
+            <entryCriterion id="_czPo6_20" name="EntryCriterion_1" sentryRef="crit__czPo6_1"/>
+        </planItem>
+        <planItem id="pi_ms__czPo6_0" name="Case Closed" definitionRef="ms__czPo6_0">
+            <entryCriterion id="_czPo6_41" name="EntryCriterion_2" sentryRef="crit__czPo6_2"/>
+            <itemControl id="_czPo6_38">
+                <requiredRule id="_czPo6_39">
+                    <condition id="_czPo6_40">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </requiredRule>
+            </itemControl>
+        </planItem>
+        <planItem id="pi_ue__czPo6_2" name="Close Case" definitionRef="ue__czPo6_2"/>
+        <sentry id="crit__czPo6_0">
+            <planItemOnPart id="_czPo6_12" sourceRef="pi_ue__czPo6_0">
+                <standardEvent>occur</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <sentry id="crit__czPo6_1">
+            <planItemOnPart id="_czPo6_21" sourceRef="pi_ue__czPo6_1">
+                <standardEvent>occur</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <sentry id="crit__czPo6_2">
+            <planItemOnPart id="_czPo6_42" sourceRef="pi_ue__czPo6_2">
+                <standardEvent>occur</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <userEvent id="ue__czPo6_0" name="Get Error"/>
+        <userEvent id="ue__czPo6_1" name="Get OK"/>
+        <processTask id="pt__czPo6_0" name="Get Error Response" isBlocking="true" processRef="GetResponse.process">
+            <inputs id="_czPo6_43" name="HTTPConfig" bindingRef="_czPo6_0"/>
+            <inputs id="_czPo6_44" name="ServiceInput" bindingRef="_czPo6_1"/>
+            <outputs id="_czPo6_45" name="SuccessObject" bindingRef="_czPo6_31"/>
+            <outputs id="_czPo6_46" name="ErrorCode" bindingRef="_czPo6_3"/>
+            <outputs id="_czPo6_47" name="ErrorOutcome" bindingRef="_czPo6_2"/>
+            <outputs id="_czPo6_48" name="ResponseMessage" bindingRef="_czPo6_33"/>
+            <parameterMapping id="_czPo6_5" sourceRef="_czPo6_44" targetRef="_FcAX_responsePayload">
+                <transformation id="_czPo6_49">
+                    <body>
+                        <![CDATA[ServiceInput.payload]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+            <parameterMapping id="_czPo6_6" sourceRef="_czPo6_44" targetRef="_7562_getResponseCode">
+                <transformation id="_czPo6_50">
+                    <body>
+                        <![CDATA[ServiceInput.code]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+            <parameterMapping id="_czPo6_7" sourceRef="_APrj_jsonPayload" targetRef="_czPo6_45"/>
+            <parameterMapping id="_czPo6_8" sourceRef="_1Eym_errorCode" targetRef="_czPo6_46"/>
+            <parameterMapping id="_czPo6_9" sourceRef="_urBb_errorMessage" targetRef="_czPo6_47"/>
+            <parameterMapping id="_czPo6_10" sourceRef="_enkJ_responseMessage" targetRef="_czPo6_48"/>
+            <parameterMapping id="_czPo6_35" sourceRef="_czPo6_43" targetRef="_YZEu_port">
+                <transformation id="_czPo6_51">
+                    <body>
+                        <![CDATA[HTTPConfig.port]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+        </processTask>
+        <processTask id="pt__czPo6_1" name="Get Object Response" isBlocking="true" processRef="GetResponse.process">
+            <inputs id="_czPo6_23" name="ServiceInput" bindingRef="_czPo6_1"/>
+            <inputs id="_czPo6_27" name="HTTPConfig" bindingRef="_czPo6_0"/>
+            <outputs id="_czPo6_29" name="SuccessObject" bindingRef="_czPo6_31"/>
+            <outputs id="_czPo6_30" name="ErrorOutcome" bindingRef="_czPo6_2"/>
+            <outputs id="_czPo6_32" name="ErrorCode" bindingRef="_czPo6_3"/>
+            <outputs id="_czPo6_34" name="ResponseMessage" bindingRef="_czPo6_33"/>
+            <parameterMapping id="_czPo6_14" sourceRef="_czPo6_23" targetRef="_FcAX_responsePayload">
+                <transformation id="_czPo6_24">
+                    <body>
+                        <![CDATA[ServiceInput.payload]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+            <parameterMapping id="_czPo6_15" sourceRef="_czPo6_23" targetRef="_7562_getResponseCode">
+                <transformation id="_czPo6_25">
+                    <body>
+                        <![CDATA[ServiceInput.code]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+            <parameterMapping id="_czPo6_16" sourceRef="_APrj_jsonPayload" targetRef="_czPo6_29"/>
+            <parameterMapping id="_czPo6_17" sourceRef="_1Eym_errorCode" targetRef="_czPo6_32"/>
+            <parameterMapping id="_czPo6_18" sourceRef="_urBb_errorMessage" targetRef="_czPo6_30"/>
+            <parameterMapping id="_czPo6_19" sourceRef="_enkJ_responseMessage" targetRef="_czPo6_34"/>
+            <parameterMapping id="_czPo6_26" sourceRef="_czPo6_27" targetRef="_YZEu_port">
+                <transformation id="_czPo6_28">
+                    <body>
+                        <![CDATA[HTTPConfig.port]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+        </processTask>
+        <milestone id="ms__czPo6_0" name="Case Closed"/>
+        <userEvent id="ue__czPo6_2" name="Close Case"/>
+    </casePlanModel>
+    <input id="_czPo6_37" name="HTTPConfig" bindingRef="_czPo6_0"/>
+</case>
