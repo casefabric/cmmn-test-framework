@@ -32,6 +32,7 @@ export default class TestCaseFileAPI extends TestCase {
         await this.createEmptyRootCaseFileArray();
         await this.createFullCaseFileRootItem();
         await this.createFullCaseFile();
+        await this.createCaseFileItemChild();
     }
 
     async createEmptyCase(): Promise<Case> {
@@ -274,7 +275,7 @@ export default class TestCaseFileAPI extends TestCase {
 
         const newCaseFile = {
             RootCaseFileItem: caseFileItem,
-            RootCaseFileArray:  [{
+            RootCaseFileArray: [{
                 RootProperty1: "string",
                 RootProperty2: true
             }]
@@ -287,4 +288,25 @@ export default class TestCaseFileAPI extends TestCase {
         // ... but not twice
         await caseFileService.createCaseFile(user, caseInstance, newCaseFile, 400);
     }
+
+
+    async createCaseFileItemChild() {
+        this.logTestName("createCaseFileItemChild");
+        const caseInstance = await this.createEmptyCase();
+
+        // Setting the parent item to "null" will cause a null value; 
+        // Then create the child item directly.
+        // CaseFileMerger code should replace the parent value from null with a json object.
+        await caseFileService.createCaseFile(user, caseInstance, {
+            RootCaseFileItem: null
+        });
+        await assertCaseFileContent(user, caseInstance, 'RootCaseFileItem', null);
+
+        const childItem = this.createChildItem();
+        await caseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildItem', childItem);
+        await assertCaseFileContent(user, caseInstance, 'RootCaseFileItem/ChildItem', childItem);
+
+        return caseInstance;
+    }
+
 }

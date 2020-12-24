@@ -38,6 +38,7 @@ import TestBootstrapCaseFileEvents from './tests/api/case/testbootstrapcasefilee
 import TestDocumentationAPI from './tests/api/documentation/testdocumentationapi';
 import TestCasePlanHistoryAPI from './tests/api/caseplan/testcaseplanhistoryapi';
 import TestTaskFilterAPI from './tests/api/task/testtaskfilterapi';
+import TestTaskExpressions from './tests/api/expression/testtaskexpressions';
 
 
 function findTestsFromCommandLineArguments(): Array<string> {
@@ -122,6 +123,7 @@ const AllTestCases = new TestClasses( [
     , TestCasePlanAPI
     , TestCasePlanHistoryAPI
     , TestBusinessIdentifiers
+    , TestTaskExpressions
     , TestCaseTeamAPI
     , TestRoleBinding
     , TestCaseTeam

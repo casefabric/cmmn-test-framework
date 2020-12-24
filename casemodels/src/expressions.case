@@ -1,0 +1,30 @@
+<case id="expressions.case" name="expressions" expressionLanguage="spel" guid="_O4sf3">
+    <caseFileModel>
+        <caseFileItem id="_O4sf3_3" name="ChildItem" multiplicity="ExactlyOne" definitionRef="childitem.cfid"/>
+    </caseFileModel>
+    <casePlanModel id="cm__O4sf3_0" name="expressions" autoComplete="true">
+        <planItem id="pi_ht__O4sf3_0" name="Task map output properties" definitionRef="ht__O4sf3_0"/>
+        <humanTask id="ht__O4sf3_0" name="Task map output properties" isBlocking="true">
+            <outputs id="_O4sf3_5" name="ChildItem" bindingRef="_O4sf3_3"/>
+            <outputs id="_O4sf3_7" name="ChildItem.1" bindingRef="_O4sf3_3"/>
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="simple_in_out_task.humantask">
+                    <parameterMapping id="_O4sf3_2" sourceRef="_46Gh_Out" targetRef="_O4sf3_5">
+                        <transformation id="_O4sf3_6">
+                            <body>
+                                <![CDATA[map("ChildName", Out.ChildName)]]>
+                            </body>
+                        </transformation>
+                    </parameterMapping>
+                    <parameterMapping id="_O4sf3_4" sourceRef="_46Gh_Out" targetRef="_O4sf3_7">
+                        <transformation id="_O4sf3_9">
+                            <body>
+                                <![CDATA[map("ChildAge", Out.ChildAge)]]>
+                            </body>
+                        </transformation>
+                    </parameterMapping>
+                </cafienne:implementation>
+            </extensionElements>
+        </humanTask>
+    </casePlanModel>
+</case>

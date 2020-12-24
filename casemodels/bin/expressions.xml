@@ -1,0 +1,54 @@
+<definitions>
+    <case id="expressions.case" name="expressions" expressionLanguage="spel">
+        <caseFileModel>
+            <caseFileItem id="_O4sf3_3" name="ChildItem" multiplicity="ExactlyOne" definitionRef="childitem.cfid"/>
+        </caseFileModel>
+        <casePlanModel id="cm__O4sf3_0" name="expressions" autoComplete="true">
+            <planItem id="pi_ht__O4sf3_0" name="Task map output properties" definitionRef="ht__O4sf3_0"/>
+            <humanTask id="ht__O4sf3_0" name="Task map output properties" isBlocking="true">
+                <outputs id="_O4sf3_5" name="ChildItem" bindingRef="_O4sf3_3"/>
+                <outputs id="_O4sf3_7" name="ChildItem.1" bindingRef="_O4sf3_3"/>
+                <extensionElements mustUnderstand="false">
+                    <cafienne:implementation name="simple_in_out_task" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
+                        <documentation textFormat="text/plain">
+                            <text>
+                                <![CDATA[This task is intended to simply stream input/output data]]>
+                            </text>
+                        </documentation>
+                        <input id="_dk8c_In" name="In"/>
+                        <output id="_46Gh_Out" name="Out"/>
+                        <task-model/>
+                        <parameterMapping id="_O4sf3_2" sourceRef="_46Gh_Out" targetRef="_O4sf3_5">
+                            <transformation id="_O4sf3_6">
+                                <body>
+                                    <![CDATA[map("ChildName", Out.ChildName)]]>
+                                </body>
+                            </transformation>
+                        </parameterMapping>
+                        <parameterMapping id="_O4sf3_4" sourceRef="_46Gh_Out" targetRef="_O4sf3_7">
+                            <transformation id="_O4sf3_9">
+                                <body>
+                                    <![CDATA[map("ChildAge", Out.ChildAge)]]>
+                                </body>
+                            </transformation>
+                        </parameterMapping>
+                    </cafienne:implementation>
+                </extensionElements>
+            </humanTask>
+        </casePlanModel>
+    </case>
+    <caseFileItemDefinition name="childitem" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="childitem.cfid">
+        <property name="ChildName" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="ChildAge" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
+    </caseFileItemDefinition>
+    <CMMNDI>
+        <CMMNDiagram>
+            <CMMNShape cmmnElementRef="cm__O4sf3_0">
+                <Bounds x="20" y="20" width="800" height="500"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__O4sf3_0">
+                <Bounds x="210" y="140" width="140" height="80"/>
+            </CMMNShape>
+        </CMMNDiagram>
+    </CMMNDI>
+</definitions>
