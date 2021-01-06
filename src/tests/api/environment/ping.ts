@@ -11,6 +11,36 @@ export default class PingTestEnvironment extends TestCase {
     }
 }
 
+export class PingTokenService extends TestCase {
+    async run() {
+        await pingTokenService();
+    }
+}
+
+/**
+ * Ping whether the test environment is up & running by logging in as platform admin.
+ * This checks both the TokenGenerator service and the Case Engine to be up & running.
+ * @param platformAdmin User to test with
+ * @param times Number of times to try to ping the environment
+ * @param waitTime Number of milliseconds to wait inbetween various login attempts
+ */
+export async function pingTokenService(platformAdmin: User = new User('admin'), times: number = 5, waitTime: number = 5000) {
+    do {        
+        try {
+            console.log("Login to IDP as platform admin ... ");
+            const token = await platformAdmin.refreshToken();
+            if (token) {
+                console.log("Token Service is running just fine ;)");
+                return;
+            }
+        } catch (error) {
+        }
+        await SomeTime(waitTime, 'Token Service is not yet up & running, waiting some time');
+        times--;
+    } while (times > 0);
+    throw new Error('Token Service is not running; tried many times ;)')
+}
+
 /**
  * Ping whether the test environment is up & running by logging in as platform admin.
  * This checks both the TokenGenerator service and the Case Engine to be up & running.
