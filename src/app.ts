@@ -13,7 +13,7 @@ import TestTokenValidation from './tests/api/environment/tokentest';
 import TestCaseFileAPI from './tests/api/casefile/testcasefileapi';
 import TestCasePlanAPI from './tests/api/caseplan/testcaseplanapi';
 import TestEventAuthorization from './tests/api/caseplan/testeventauthorization';
-import PingTestEnvironment from './tests/api/environment/ping';
+import PingTestEnvironment, { PingTokenService } from './tests/api/environment/ping';
 import TestTravelRequest from './tests/travelrequest/testtravelrequest';
 import TestEntryCriteriaOnCaseInputParameters from './tests/api/caseplan/stage/testentrycriteriaoncaseinputparameters';
 import TestRepeatingStage from './tests/api/caseplan/stage/teststage';
@@ -45,7 +45,7 @@ import TestProcessTask from './tests/api/caseplan/task/testprocesstask';
 function findTestsFromCommandLineArguments(): Array<string> {
     const time = process.argv[2];
     if (time && !isNaN(Number(time))) {
-        console.log('Setting CQRS wait time to '+time)
+        console.log('Setting CQRS wait time to ' + time)
         Config.CafienneService.cqrsWaitTime = Number(time);
         return process.argv.slice(3);
     } else {
@@ -58,10 +58,10 @@ class TestClasses {
     }
     private static testList: Array<any> = [];
 
-    constructor(public list: Array<Function>){
+    constructor(public list: Array<Function>) {
         list.forEach(f => {
             this.testsByName[f.name] = f
-            TestClasses.testList.push({name:f.name.toLowerCase(), test: f})
+            TestClasses.testList.push({ name: f.name.toLowerCase(), test: f })
         });
     }
 
@@ -83,13 +83,13 @@ class TestResult {
     }
 
     toString() {
-        return `${this.name} (${(this.ended.getTime() - this.started.getTime())} ms)`; 
+        return `${this.name} (${(this.ended.getTime() - this.started.getTime())} ms)`;
     }
 }
 
 class TestResults {
-    list:Array<TestResult> = [];
-    constructor() {}
+    list: Array<TestResult> = [];
+    constructor() { }
     addTest(result: TestResult) {
         this.list.push(result);
     }
@@ -99,8 +99,9 @@ class TestResults {
     }
 }
 
-const AllTestCases = new TestClasses( [
-    PingTestEnvironment
+const AllTestCases = new TestClasses([
+    PingTokenService
+    , PingTestEnvironment
     , TestResponseType
     , TestHelloworld
     , TestTaskCompletion
@@ -190,7 +191,7 @@ async function runTests(testDeclarations: Array<any>) {
             results.addTest(result);
         } catch (error) {
             const resultString = results.list.length == 0 ? '' : `  Succesful tests:\n${results.toString()}\n`;
-            throw new TestError(error, `\n\nTest ${i+1} "${test.name}" failed.\n${resultString}\nTest ${i+1} "${test.name}" failed.\n${error.constructor.name}: ${error.message}\n`);
+            throw new TestError(error, `\n\nTest ${i + 1} "${test.name}" failed.\n${resultString}\nTest ${i + 1} "${test.name}" failed.\n${error.constructor.name}: ${error.message}\n`);
         }
     }
     return results;
@@ -215,7 +216,7 @@ runTests(testDeclarations).then(results => {
 });
 
 class TestError extends Error {
-    constructor(public error:Error, message:string) {
+    constructor(public error: Error, message: string) {
         super(message);
     }
 }

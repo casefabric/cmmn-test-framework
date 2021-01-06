@@ -82,6 +82,7 @@ export default class User {
     async refreshToken() {
         const newToken = await tokenService.getToken(this);
         this.token = newToken;
+        return newToken;
     }
 
     /**
