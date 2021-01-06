@@ -51,7 +51,7 @@ export default class TestGetCases extends TestCase {
         await this.getCaseList({}, "Across tenant", receiver);
         await this.getCaseList({}, "Across tenant", employee);
 
-        await new CaseTeamService().setMember(newCase, sender, new CaseTeamMember(employee));
+        await new CaseTeamService().setMember(sender, newCase, new CaseTeamMember(employee));
         
         await this.getCaseList({}, "After added to team", employee);
     }

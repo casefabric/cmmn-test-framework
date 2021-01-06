@@ -110,7 +110,7 @@ export default class CafienneService {
 
 export function printHeaders(msg: string, headers: Headers) {
     console.log(msg)
-    const rawHeaders = headers.raw();
+    const rawHeaders = (headers as any).raw();
     for (const key in rawHeaders) {
         console.log(` ${key}\t: ${rawHeaders[key].join(', ')}`)
     }

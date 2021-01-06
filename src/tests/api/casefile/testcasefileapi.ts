@@ -45,7 +45,7 @@ export default class TestCaseFileAPI extends TestCase {
         return { RootProperty1: prop1, RootProperty2: prop2 }
     }
 
-    createChildItem(name = "name", age = 20) {
+    createChildItem(name = "name", age = 20): any {
         return { ChildName: name, ChildAge: age };
     }
 

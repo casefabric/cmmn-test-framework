@@ -123,7 +123,7 @@ export async function checkJSONResponse(response: CafienneResponse, errorMsg: st
                 if (returnType.length == 0) {
                     throw new Error('Return type must have at least 1 element');
                 }
-                const constructorCall = returnType[0];
+                const constructorCall = returnType[0] as any;
                 if (json instanceof Array) {
                     const array = <Array<object>>json;
                     return array.map(tenantUser => Object.assign(new constructorCall, tenantUser));
@@ -131,7 +131,7 @@ export async function checkJSONResponse(response: CafienneResponse, errorMsg: st
                     throw new Error(`Expected a json array with objects of type ${constructorCall.name}, but the response was not an array: ${JSON.stringify(json, undefined, 2)}`);
                 }
             } else if (returnType !== undefined) {
-                const constructorCall = returnType;
+                const constructorCall = returnType as any;
                 return Object.assign(new constructorCall, json);
             }
         }
