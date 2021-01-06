@@ -1,5 +1,6 @@
 import fetch from 'isomorphic-fetch';
 import Config from '../../config';
+import logger from '../logger';
 import User from '../user';
 import QueryFilter, { extendURL } from './queryfilter';
 import CafienneResponse from './response';
@@ -19,9 +20,7 @@ export default class CafienneService {
             const readAndUpdateHeader = (headerName: string) => {
                 const headerValue = response.headers.get(headerName);
                 if (headerValue) {
-                    if (Config.CafienneService.log.response.headers) {
-                        console.log(`Updating ${headerName} to ${headerValue}`);
-                    }
+                    logger.debug(`Updating ${headerName} to ${headerValue}`);
                     CafienneService.headers.set(headerName, headerValue);
                 }
             }
@@ -79,29 +78,20 @@ export default class CafienneService {
         url = this.baseURL + (url.startsWith('/') ? url.substring(1) : url);
 
         const myCallNumber = callNumber++;
-        if (Config.CafienneService.log.url) {
-            console.log(`\n\nHTTP:${method}[${myCallNumber}] from [${user ? user.id : ''}] to ${url}`);
-        }
-        if (Config.CafienneService.log.request.headers) {
-            printHeaders('Request headers:', headers);
-        }
-        if (Config.CafienneService.log.request.body && body) {
-            console.log(body);
-        }
-
+        logger.info(`\n\nHTTP:${method}[${myCallNumber}] from [${user ? user.id : ''}] to ${url}`);
+        printHeaders('Request headers:', headers);
+        logger.debug(body);
+ 
         const response = await fetch(url, { method, headers, body }).then(response => new CafienneResponse(response)).then(this.updateCaseLastModified);
-        if (Config.CafienneService.log.response.status) {
-            if (Config.CafienneService.log.request.headers || (Config.CafienneService.log.request.body && body)) {
-                // Add an extra newline to show the response
-                console.log();
-            }
-            console.log(`RESPONSE[${myCallNumber}]==> ${response.status} ${response.statusText}`);
-        }
-        if (Config.CafienneService.log.response.headers) {
-            printHeaders('Response headers:', response.headers);
-        }
-        if (Config.CafienneService.log.response.body || (Config.CafienneService.log.response.error && !response.ok)) {
-            await response.text().then(text => console.log(text));
+        // Add an extra newline to show the response
+        logger.debug();
+        logger.info(`RESPONSE[${myCallNumber}]==> ${response.status} ${response.statusText}`);
+        printHeaders('Response headers:', response.headers);
+        // For response ok, print to debug log only; for response not-ok print info logging
+        if (response.ok) {
+            await response.text().then(text => logger.debug(text));
+        } else {
+            await response.text().then(text => logger.info(text));            
         }
 
         return response;
@@ -109,11 +99,10 @@ export default class CafienneService {
 }
 
 export function printHeaders(msg: string, headers: Headers) {
-    console.log(msg)
-    const rawHeaders = (headers as any).raw();
-    for (const key in rawHeaders) {
-        console.log(` ${key}\t: ${rawHeaders[key].join(', ')}`)
-    }
+    logger.debug(msg);
+    headers.forEach((value, key) => {
+        logger.debug(` ${key}\t: ${value}`)
+    })
 }
 
 let callNumber: number = 0;

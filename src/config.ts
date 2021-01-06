@@ -1,21 +1,16 @@
 const Config = {
+    Log: {
+      level: 'DEBUG',
+      color: {
+          debug: '\x1b[0m%s\x1b[0m', // debug logging is white
+          info: '\x1b[32m%s\x1b[0m', // green
+          warn: '\x1b[33m%s\x1b[0m', // orange
+          error: '\x1b[31m%s\x1b[0m' // red
+      }  
+    },
     CafienneService: {
         // URL of backend engine
         url: 'http://localhost:2027/',
-        log: {
-            // Whether or not to log HTTP call information (user, url, method type, headers)
-            url: true, // URL includes call number, method type and user id
-            request: {
-                headers: true, // Shows request headers
-                body: true, // Shows request body
-            },
-            response: {
-                status: true, // Shows response statusCode and statusMessage, including call number 
-                headers: true, // Shows response headers
-                body: true, // Show all response bodies
-                error: true // Show response body when status not OK             
-            }
-        },
         // CQRS Wait Time is the time the engine needs to process events from commands (e.g. StartCase, CompleteTask, CreateTenant) into the server side query database
         cqrsWaitTime: 5000
     },
