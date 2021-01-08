@@ -1,0 +1,83 @@
+<definitions>
+    <case id="repeat_with_mapping.case" name="repeat_with_mapping" expressionLanguage="spel">
+        <caseFileModel>
+            <caseFileItem id="_OgBIe_3" name="Child" multiplicity="ZeroOrMore" definitionRef="childitem.cfid">
+                <children>
+                    <caseFileItem id="_OgBIe_2" name="GrandChild" multiplicity="ExactlyOne" definitionRef="grandchilditem.cfid"/>
+                </children>
+            </caseFileItem>
+        </caseFileModel>
+        <casePlanModel id="cm__OgBIe_0" name="repeat_with_mapping" autoComplete="true">
+            <planItem id="pi_ht__OgBIe_0" name="Create Children" definitionRef="ht__OgBIe_0"/>
+            <planItem id="pi_ht__OgBIe_1" name="Edit GrandChild" definitionRef="ht__OgBIe_1">
+                <entryCriterion id="_OgBIe_11" name="EntryCriterion_0" sentryRef="crit__OgBIe_0"/>
+                <itemControl id="_OgBIe_1">
+                    <repetitionRule id="_OgBIe_9">
+                        <condition id="_OgBIe_10">
+                            <body>
+                                <![CDATA[true]]>
+                            </body>
+                        </condition>
+                    </repetitionRule>
+                </itemControl>
+            </planItem>
+            <sentry id="crit__OgBIe_0">
+                <caseFileItemOnPart id="_OgBIe_12" sourceRef="_OgBIe_3">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </sentry>
+            <humanTask id="ht__OgBIe_0" name="Create Children" isBlocking="true">
+                <outputs id="_OgBIe_18" name="Child" bindingRef="_OgBIe_3"/>
+                <extensionElements mustUnderstand="false">
+                    <cafienne:implementation name="createfamily" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="createfamily.humantask">
+                        <output id="_2Fqq_children" name="children"/>
+                        <parameterMapping id="_OgBIe_8" sourceRef="_2Fqq_children" targetRef="_OgBIe_18"/>
+                    </cafienne:implementation>
+                </extensionElements>
+            </humanTask>
+            <humanTask id="ht__OgBIe_1" name="Edit GrandChild" isBlocking="true">
+                <inputs id="_OgBIe_15" name="Child" bindingRef="_OgBIe_3"/>
+                <extensionElements mustUnderstand="false">
+                    <cafienne:implementation name="editgrandchild" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="editgrandchild.humantask">
+                        <input id="_jF8a_GrandChildItem" name="GrandChild"/>
+                        <parameterMapping id="_OgBIe_13" sourceRef="_OgBIe_15" targetRef="_jF8a_GrandChildItem">
+                            <transformation id="_OgBIe_16">
+                                <body>
+                                    <![CDATA[Child.GrandChild]]>
+                                </body>
+                            </transformation>
+                        </parameterMapping>
+                    </cafienne:implementation>
+                </extensionElements>
+            </humanTask>
+        </casePlanModel>
+    </case>
+    <caseFileItemDefinition name="childitem" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="childitem.cfid">
+        <property name="ChildName" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="ChildAge" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
+    </caseFileItemDefinition>
+    <caseFileItemDefinition name="grandchilditem" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="grandchilditem.cfid">
+        <property name="GrandChildName" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="GrandChildBirthDate" type="http://www.omg.org/spec/CMMN/PropertyType/date"/>
+    </caseFileItemDefinition>
+    <CMMNDI>
+        <CMMNDiagram>
+            <CMMNShape cmmnElementRef="cm__OgBIe_0">
+                <Bounds x="20" y="20" width="800" height="500"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__OgBIe_0">
+                <Bounds x="110" y="140" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__OgBIe_1">
+                <Bounds x="440" y="140" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_OgBIe_3">
+                <Bounds x="320" y="160" width="25" height="40"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_OgBIe_11">
+                <Bounds x="434" y="170" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNEdge sourceCMMNElementRef="_OgBIe_3" targetCMMNElementRef="_OgBIe_11"/>
+        </CMMNDiagram>
+    </CMMNDI>
+</definitions>

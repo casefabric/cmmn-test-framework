@@ -40,6 +40,7 @@ import TestCasePlanHistoryAPI from './tests/api/caseplan/testcaseplanhistoryapi'
 import TestTaskFilterAPI from './tests/api/task/testtaskfilterapi';
 import TestTaskExpressions from './tests/api/expression/testtaskexpressions';
 import TestProcessTask from './tests/api/caseplan/task/testprocesstask';
+import TestRepeatWithMapping from './tests/api/expression/testrepeatwithmapping';
 
 
 function findTestsFromCommandLineArguments(): Array<string> {
@@ -125,6 +126,7 @@ const AllTestCases = new TestClasses([
     , TestCasePlanAPI
     , TestCasePlanHistoryAPI
     , TestBusinessIdentifiers
+    , TestRepeatWithMapping
     , TestTaskExpressions
     , TestProcessTask
     , TestCaseTeamAPI

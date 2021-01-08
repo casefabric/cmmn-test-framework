@@ -1,0 +1,5 @@
+<humantask>
+    <cafienne:implementation name="createfamily" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition">
+        <output id="_2Fqq_children" name="children"/>
+    </cafienne:implementation>
+</humantask>

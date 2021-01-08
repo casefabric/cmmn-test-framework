@@ -106,13 +106,10 @@ export default class TaskService {
      * @param task
      * @param user 
      */
-    async getTask(user: User, task: Task, expectedStatusCode: number = 200): Promise<Task> {
-        if (!task.id) {
-            console.log("Oops. First try to succesfully start a case ?!");
-            return task;
-        }
-        const response = await cafienneService.get('tasks/' + task.id, user);
-        const msg = `GetTask is not expected to succeed for user ${user.id} on task ${task.id}`;
+    async getTask(user: User, task: Task | string, expectedStatusCode: number = 200): Promise<Task> {
+        const taskId = (typeof(task) === 'string') ? task : task.id;
+        const response = await cafienneService.get('tasks/' + taskId, user);
+        const msg = `GetTask is not expected to succeed for user ${user.id} on task ${taskId}`;
         return await checkJSONResponse(response, msg, expectedStatusCode);
     }
 

@@ -1,0 +1,20 @@
+<CMMNDI>
+    <CMMNDiagram>
+        <CMMNShape cmmnElementRef="cm__OgBIe_0">
+            <Bounds x="20" y="20" width="800" height="500"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ht__OgBIe_0">
+            <Bounds x="110" y="140" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ht__OgBIe_1">
+            <Bounds x="440" y="140" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_OgBIe_3">
+            <Bounds x="320" y="160" width="25" height="40"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_OgBIe_11">
+            <Bounds x="434" y="170" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNEdge sourceCMMNElementRef="_OgBIe_3" targetCMMNElementRef="_OgBIe_11"/>
+    </CMMNDiagram>
+</CMMNDI>
