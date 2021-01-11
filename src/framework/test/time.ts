@@ -1,4 +1,5 @@
 import Config from "../../config";
+import logger from "../logger";
 
 /**
 * Simple helper method to wait some time.
@@ -7,9 +8,7 @@ import Config from "../../config";
 */
 export async function SomeTime(millis: number, msg: string = `Waiting ${millis} milliseconds`) {
     await new Promise(resolve => {
-        if (Config.TestCase.log) {
-            console.log(msg);
-        }
+        logger.debug(msg);
         setTimeout(resolve, millis);
     });
 }

@@ -3,6 +3,7 @@ import TenantService from './service/tenant/tenantservice';
 import UserInformation from './tenant/userinformation';
 import PlatformService from './service/platform/platformservice';
 import Config from '../config';
+import logger from './logger';
 
 const tokenService = new TokenService();
 const platformService = new PlatformService();
@@ -44,16 +45,14 @@ export default class User {
     }
 
     set token(newToken: string) {
-        if (Config.TokenService.log) {
-            if (this.token !== newToken) {
-                if (!this.token) {
-                    console.log(`Setting token for user ${this.id} to ${newToken}`);
-                } else {
-                    console.log(`Updating token for user ${this.id} to ${newToken}`);
-                }
+        if (this.token !== newToken) {
+            if (!this.token) {
+                logger.debug(`Setting token for user ${this.id} to ${newToken}`);
             } else {
-                console.log(`New token for user ${this.id} is same as before`);
+                logger.debug(`Updating token for user ${this.id} to ${newToken}`);
             }
+        } else {
+            logger.debug(`New token for user ${this.id} is same as before`);
         }
 
         this.token_property = newToken;
@@ -70,9 +69,7 @@ export default class User {
      * Clear current token of user.
      */
     clearToken() {
-        if (Config.TokenService.log) {
-            console.log(`Clearing token for user ${this.id}`);
-        }
+        logger.debug(`Clearing token for user ${this.id}`);
         this.token_property = '';
     }
 

@@ -1,5 +1,6 @@
 import fetch from 'isomorphic-fetch';
 import Config from '../../../config';
+import logger from '../../logger';
 import User from '../../user';
 
 export default class TokenService {
@@ -31,9 +32,7 @@ export default class TokenService {
             body: JSON.stringify(claims)
         }
 
-        if (Config.TokenService.log) {
-            console.log("Getting token " + JSON.stringify(claims, undefined, 2));
-        }
+        logger.debug("Getting token " + JSON.stringify(claims, undefined, 2));
         const response = await fetch(Config.TokenService.url, object);
         const token = await response.text();
         if (!response.ok) {

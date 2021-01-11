@@ -3,6 +3,7 @@ import Config from '../../config';
 import MockServer from './mockserver';
 import { OutgoingHttpHeaders } from 'http';
 import { timingSafeEqual } from 'crypto';
+import logger from '../logger';
 
 export default class MockURL {
     private calls = new CallHistory();
@@ -25,9 +26,7 @@ export default class MockURL {
     }
 
     register() {
-        if (Config.MockService.registration) {
-            console.log(`Registering mock on ${this.method} ${this.url}`);
-        }
+        logger.info(`Registering mock on ${this.method} ${this.url}`);
         // const expressFunction = this.method.toLowerCase();
         this.addRoute();
     }
@@ -37,11 +36,9 @@ export default class MockURL {
     }
 
     handleRoute(req: Request, res: Response, next: Function) {
-        if (Config.MockService.log) {
-            console.group(`Mock ${this.method} ${this.url}: handling call on url "${req.url}"`)
-        }
+        logger.info(`Mock ${this.method} ${this.url}: handling call on url "${req.url}"`, true);
         this.callback(new MockInvocation(req, res, next, this));
-        console.groupEnd();
+        logger.endGroup();
     }
 
     addRoute() {
@@ -133,9 +130,7 @@ class Call {
     responseAvailable: boolean = false;
 
     constructor(public mock: MockURL) {
-        if (Config.MockService.log) {
-            console.log(`Creating Call Matcher on URL ${mock.url}`);
-        }
+        logger.debug(`Creating Call Matcher on URL ${mock.url}`);
     }
 
     isPendingOn(flag: string) {
@@ -145,18 +140,14 @@ class Call {
     }
 
     awaitResponse(timeout: number) {
-        if (Config.MockService.log) {
-            console.log(`${this.mock.url}: Awaiting response for ${timeout} milliseconds`)
-        }
+        logger.debug(`${this.mock.url}: Awaiting response for ${timeout} milliseconds`)
         const promise = new Promise((resolve, reject) => {
             this.resolver = resolve;
             if (this.responseAvailable) this.resolver(this.response);
             setTimeout(() => {
                 // Only reject if the response has not yet arrived.
                 if (!this.responseAvailable) {
-                    if (Config.MockService.log) {
-                        console.log(`${this.mock.url}: Raising timeout after ${timeout} milliseconds`)
-                    }
+                    logger.debug(`${this.mock.url}: Raising timeout after ${timeout} milliseconds`)
                     reject(new Error(`The url ${this.mock.url} was not invoked within ${timeout} milliseconds`))
                 }
             }, timeout);
@@ -166,12 +157,10 @@ class Call {
     }
 
     registerResponse(response: any) {
-        if (Config.MockService.log) {
-            if (Config.MockService.response) {
-                console.log(`${this.mock.url}: Received response: ` + JSON.stringify(response, undefined, 2));
-            } else {
-                console.log(`${this.mock.url}: Received response`);
-            }
+        if (logger.debugEnabled) {
+            logger.debug(`${this.mock.url}: Received response: ` + JSON.stringify(response, undefined, 2));
+        } else {
+            logger.info(`${this.mock.url}: Received response`);
         }
         this.response = response;
         this.responseAvailable = true;

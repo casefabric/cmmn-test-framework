@@ -6,6 +6,7 @@ import Config from '../../../config';
 import User from '../../user';
 import { checkResponse } from '../response';
 import Comparison from '../../test/comparison';
+import logger from '../../logger';
 
 const FileSystem = fs;
 const cafienneService = new CafienneService();
@@ -51,9 +52,7 @@ export default class RepositoryService {
         const msg = `ListCaseDefinitions is not expected to succeed for member ${user.id}`;
         const json = checkResponse(response, msg, expectedStatusCode);
 
-        if (Config.RepositoryService.log) {
-            console.log('Cases deployed in the server: ' + JSON.stringify(json, undefined, 2))
-        }
+        logger.debug('Cases deployed in the server: ' + JSON.stringify(json, undefined, 2))
         return json;
     }
 
@@ -96,9 +95,7 @@ export default class RepositoryService {
 
         const serverVersion = await this.loadCaseDefinition(user, modelName, tenant);
         if (Comparison.sameXML(definition, serverVersion)) {
-            if (Config.RepositoryService.log) {
-                console.log(`Skipping deployment of ${fileName}, as server already has it`);
-            }
+            logger.debug(`Skipping deployment of ${fileName}, as server already has it`);
             return;
         }
 
