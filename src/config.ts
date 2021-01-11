@@ -1,6 +1,6 @@
 const Config = {
     Log: {
-      level: 'DEBUG',
+      level: 'INFO',
       color: {
           debug: '\x1b[0m%s\x1b[0m', // debug logging is white
           info: '\x1b[32m%s\x1b[0m', // green
@@ -19,28 +19,10 @@ const Config = {
         url: 'http://localhost:2377/token',
         // Issuer can be configured. The issuer must equal what is configure inside the Cafienne Engine
         issuer: 'Cafienne Test Framework',
-        // Whether or not to show the tokens requested and updated in the user
-        log: true
-    },
-    MockService: {
-        // Whether or not to show log messages on the console from the mock service
-        log: true,
-        registration: true, // To show registration of mocks
-        response: true // Better not use this
-    },
-    PlatformService: {
-        // Whether or not to show log messages on the console from the platform APIs (e.g., whether tenant already exists or not)
-        log: true
     },
     RepositoryService: {
-        // Whether or not to show log messages on the console from the repository APIs (e.g., list of case definitions returned from server)
-        log: true,
         repository_folder: './casemodels/bin'
     },
-    TestCase: {
-        // Whether or not to show log messages on the console (e.g. wait time messages for server side processing)
-        log: true
-    }
 }
 
 export default Config;

@@ -4,6 +4,7 @@ import Tenant from '../../tenant/tenant';
 import UserInformation from '../../tenant/userinformation';
 import Config from '../../../config';
 import { checkResponse, checkJSONResponse } from '../response';
+import logger from '../../logger';
 
 
 /**
@@ -19,13 +20,13 @@ export default class PlatformService {
      * @param expectedStatusCode 
      */
     async createTenant(user: User, tenant: Tenant, expectedStatusCode: number = 204) {
-        if (Config.PlatformService.log) console.log(`Creating Tenant ${tenant.name}`);
+        logger.debug(`Creating Tenant ${tenant.name}`);
         const response = await this.cafienneService.post('/platform', user, tenant);
         if (response.status === 400 && expectedStatusCode === 204) {
             const msg = await response.text();
             if (msg === 'Tenant already exists') {
                 // Tenant already exists is ok.
-                if (Config.PlatformService.log) console.log(`Tenant ${tenant.name} already exists.'`)
+                logger.debug(`Tenant ${tenant.name} already exists.'`)
                 return response;
             }
         }

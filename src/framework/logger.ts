@@ -1,14 +1,18 @@
 import Config from "../config";
 
 export default class logger {
+
+    static endGroup() {
+        console.groupEnd();
+    }
+
     static debug(msg: string = '') {
         if (this.debugEnabled) {
             coloredPrinter(Config.Log.color.debug, 'DEBUG', msg);
-        }
-        
+        }        
     }
     
-    static info(msg: string = '') {
+    static info(msg: string = '', startGroup: boolean = false) {
         if (this.infoEnabled) {
             coloredPrinter(Config.Log.color.info, 'INFO', msg);
         }
@@ -43,10 +47,14 @@ export default class logger {
     }
 }
 
-function coloredPrinter(color: string, prefix: string, msg: string) {
+function coloredPrinter(color: string, prefix: string, msg: string, startGroup: boolean = false) {
     while (msg.startsWith('\n')) {
         console.log();
         msg = msg.substring(1);
     }
-    console.log(color, msg);
+    if (startGroup) {
+        console.group(color, msg);
+    } else {
+        console.log(color, msg);
+    }
 }
