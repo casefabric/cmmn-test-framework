@@ -1,0 +1,51 @@
+<case id="repeat_with_mapping.case" name="repeat_with_mapping" expressionLanguage="spel" guid="_OgBIe">
+    <caseFileModel>
+        <caseFileItem id="_OgBIe_3" name="Child" multiplicity="ZeroOrMore" definitionRef="childitem.cfid">
+            <children>
+                <caseFileItem id="_OgBIe_2" name="GrandChild" multiplicity="ExactlyOne" definitionRef="grandchilditem.cfid"/>
+            </children>
+        </caseFileItem>
+    </caseFileModel>
+    <casePlanModel id="cm__OgBIe_0" name="repeat_with_mapping" autoComplete="true">
+        <planItem id="pi_ht__OgBIe_0" name="Create Children" definitionRef="ht__OgBIe_0"/>
+        <planItem id="pi_ht__OgBIe_1" name="Edit GrandChild" definitionRef="ht__OgBIe_1">
+            <entryCriterion id="_OgBIe_11" name="EntryCriterion_0" sentryRef="crit__OgBIe_0"/>
+            <itemControl id="_OgBIe_1">
+                <repetitionRule id="_OgBIe_9">
+                    <condition id="_OgBIe_10">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
+        </planItem>
+        <sentry id="crit__OgBIe_0">
+            <caseFileItemOnPart id="_OgBIe_12" sourceRef="_OgBIe_3">
+                <standardEvent>create</standardEvent>
+            </caseFileItemOnPart>
+        </sentry>
+        <humanTask id="ht__OgBIe_0" name="Create Children" isBlocking="true">
+            <outputs id="_OgBIe_18" name="Child" bindingRef="_OgBIe_3"/>
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="createfamily.humantask">
+                    <parameterMapping id="_OgBIe_8" sourceRef="_2Fqq_children" targetRef="_OgBIe_18"/>
+                </cafienne:implementation>
+            </extensionElements>
+        </humanTask>
+        <humanTask id="ht__OgBIe_1" name="Edit GrandChild" isBlocking="true">
+            <inputs id="_OgBIe_15" name="Child" bindingRef="_OgBIe_3"/>
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="editgrandchild.humantask">
+                    <parameterMapping id="_OgBIe_13" sourceRef="_OgBIe_15" targetRef="_jF8a_GrandChildItem">
+                        <transformation id="_OgBIe_16">
+                            <body>
+                                <![CDATA[Child.GrandChild]]>
+                            </body>
+                        </transformation>
+                    </parameterMapping>
+                </cafienne:implementation>
+            </extensionElements>
+        </humanTask>
+    </casePlanModel>
+</case>

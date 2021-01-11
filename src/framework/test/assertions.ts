@@ -100,7 +100,7 @@ export async function assertCasePlanState(user: User, caseInstance: Case, state:
  */
 export function verifyTaskInput(task: Task, taskInput: any) {
     if (!Comparison.sameJSON(task.input, taskInput)) {
-        throw new Error('Task input is not the same as given to the case');
+        throw new Error(`Input for task ${task.taskName} is not expected;\nFound:    ${JSON.stringify(task.input)}\nExpected: ${JSON.stringify(taskInput)}`);
     }
 }
 
