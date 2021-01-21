@@ -17,6 +17,8 @@ import logger from "../../../framework/logger";
 import CaseTeamService from "../../../framework/service/case/caseteamservice";
 import CaseHistoryService from "../../../framework/service/case/casehistoryservice";
 import PlanItemHistory from "../../../framework/cmmn/planitemhistory";
+import { ServerSideProcessing } from "../../../framework/test/time";
+import CasePlanService from "../../../framework/service/case/caseplanservice";
 
 const platformAdmin = new User('admin');
 
@@ -34,6 +36,10 @@ const tenantUser1 = new TenantUser('user-1-' + guid, tenantRoles);
 const tenantUser2 = new TenantUser('user-2-' + guid, tenantRoles);
 const tenantUser3 = new TenantUser('user-3-' + guid, tenantRoles);
 
+// New IDs
+const newUser1Id = 'user1_' + guid;
+const newUser3Id = 'user3_' + guid;
+
 const tenant1 = new Tenant(tenant1Name, [tenantOwner, tenantUser1, tenantUser2, tenantUser3]);
 const tenant2 = new Tenant(tenant2Name, [tenantOwner, tenantUser1, tenantUser2]);
 
@@ -42,7 +48,7 @@ const definition = 'helloworld.xml';
 
 const caseService = new CaseService();
 const taskService = new TaskService();
-
+const caseHistoryService = new CaseHistoryService();
 
 export default class TestUserIdUpdates extends TestCase {
     /**
@@ -51,10 +57,48 @@ export default class TestUserIdUpdates extends TestCase {
     async run() {
         await this.createTenants();
         await this.createCases();
-        await this.changeUser2();
+        await this.invalidChangeUser();
+        await this.changeUser(tenantUser1, newUser1Id);
+        await this.changeUser(tenantUser3, newUser3Id);
     }
 
-    async changeUser2() {
+    async changeUser(user: TenantUser, newId: string) {
+        const newInfo = [{
+            existingUserId: user.id,
+            newUserId: newId
+        }];
+
+        // Get user stats before updating user-id
+        const beforeStats = await this.getUserStats(user);
+        console.log(JSON.stringify(beforeStats, undefined, 2));
+
+        // const userInfo = await platformService.getUserInformation(tenantUser1);
+        await platformService.updateUserInformation(platformAdmin, newInfo);
+        
+        await ServerSideProcessing();
+        await ServerSideProcessing();
+        await ServerSideProcessing();
+        await ServerSideProcessing();
+        await ServerSideProcessing();
+        await ServerSideProcessing();
+        await ServerSideProcessing();
+        await ServerSideProcessing();
+
+        const newUser = new TenantUser(newId);
+        await newUser.login();
+        // const newUserInfo = await platformService.getUserInformation(newUser);
+        
+        // Get user stats after updating user-id
+        const afterStats = await this.getUserStats(newUser);
+        console.log(JSON.stringify(afterStats, undefined, 2));
+
+        if(!Comparison.sameJSON(beforeStats, afterStats)) {
+            throw new Error(`There is a difference b/w user stats of ${user.id} before and after update`)
+        }
+        await ServerSideProcessing();
+    }
+
+    async invalidChangeUser() {
         const invalidNewInfo = [{
             existingUserId: tenantUser2.id,
             newUserId: tenantUser1.id
@@ -62,19 +106,27 @@ export default class TestUserIdUpdates extends TestCase {
             existingUserId: tenantUser1.id,
             newUserId: tenantUser3.id
         }];
-        const newInfo = [{
-            existingUserId: tenantUser1.id,
-            newUserId: 'user1_' + guid
-        // }, {
-        //     existingUserId: tenantUser2.id,
-        //     newUserId: 'user2_' + guid
-        }, {
-            existingUserId: tenantUser3.id,
-            newUserId: 'user3_' + guid
-        }];
         await platformService.updateUserInformation(platformAdmin, invalidNewInfo, 400);
-        await platformService.updateUserInformation(platformAdmin, newInfo);
     }
+
+    async getUserStats(user: TenantUser) {
+        // first update token
+        await user.login();
+
+        console.log(`Getting stats of user: ${user.userId}`)
+
+        // get the number of tenants that user is part of
+        const tenants = await platformService.getUserInformation(user).then(res => res.tenants.length);
+
+        // get the number of cases that user is part of
+        const cases = await caseService.getCases(user).then(res => res.length);
+        await caseService.getCases(user).then(res => console.log(JSON.stringify(res, undefined, 2)));
+
+        // get the number of tasks that user is part of
+        const tasks = await taskService.getTasks(user).then(res => res.length);
+
+        return {tenants, cases, tasks};
+    };
 
     async createCases() {
         const inputs = {
@@ -94,6 +146,17 @@ export default class TestUserIdUpdates extends TestCase {
         // Also create a case in second tenant.
         startCase.tenant = tenant2.name;
         await this.createCaseAndCompleteTask(tenantUser1, tenantUser2, startCase);
+
+        // Starting a case with actual user-ids tenantUser1, tenantUser3
+        const caseTeam2 = new CaseTeam([new CaseOwner(tenantUser1), new CaseTeamMember(tenantUser3)]);
+        const startCase2 = { tenant: tenant1.name, definition, inputs, caseTeam: caseTeam2 };
+        await caseService.startCase(tenantUser1, startCase2) as Case;
+
+        // Starting a case with actual user-ids tenantUser1, tenantUser2, tenantUser3
+        const caseTeam3 = new CaseTeam([new CaseOwner(tenantUser1), new CaseTeamMember(tenantUser3), new CaseTeamMember(tenantUser2)]);
+        // console.log(JSON.stringify(caseTeam2, undefined, 2))
+        startCase2.caseTeam = caseTeam3;
+        await caseService.startCase(tenantUser1, startCase2) as Case;
 
         // TODO: add test that creates a case with a team with actual userIds instead of role;
         // then create the case (without doing any further tasks), and verify that the case is also found with the new team memers
