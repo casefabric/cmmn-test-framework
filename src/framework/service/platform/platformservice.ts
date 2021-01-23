@@ -81,6 +81,16 @@ export default class PlatformService {
     }
 
     /**
+     * Returns the status of the handling of updates within the platform
+     * @param user 
+     */
+    async getUpdateStatus(user: User, expectedStatusCode: number = 200) {
+        const url = '/platform/update-status';
+        const response = await this.cafienneService.get(url, user);
+        return checkJSONResponse(response, 'Expected updated user information', expectedStatusCode);
+    }
+
+    /**
      * Returns a json with the platform health
      */
     async getHealth() {

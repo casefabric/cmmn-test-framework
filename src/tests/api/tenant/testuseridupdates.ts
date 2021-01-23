@@ -85,7 +85,13 @@ export default class TestUserIdUpdates extends TestCase {
 
         // Updating user-ids via platform admin
         await platformService.updateUserInformation(platformAdmin, newInfo);
-
+        await platformService.getUpdateStatus(platformAdmin).then(json => {
+            console.log("Update status 0: " + JSON.stringify(json, undefined, 2));
+        });
+        await SomeTime(1000);
+        await platformService.getUpdateStatus(platformAdmin).then(json => {
+            console.log("Update status 1: " + JSON.stringify(json, undefined, 2));
+        });
         await SomeTime(5000);
 
         // Getting all the users stats after update
