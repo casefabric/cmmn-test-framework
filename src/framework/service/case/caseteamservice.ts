@@ -11,13 +11,14 @@ const cafienneService = new CafienneService();
 export default class CaseTeamService {
     /**
      * Get the CaseTeam of the specified case instance
-     * @param Case 
+     * @param caseInstance 
      * @param user 
      * @returns CaseTeam
      */
-    async getCaseTeam(user: User, Case: Case, expectedStatusCode: number = 200): Promise<CaseTeam> {
-        const response = await cafienneService.get(`/cases/${Case.id}/caseteam`, user);
-        const msg = `GetCaseTeam is not expected to succeed for user ${user.id} in case ${Case.id}`;
+    async getCaseTeam(user: User, caseInstance: Case | string, expectedStatusCode: number = 200): Promise<CaseTeam> {
+        const caseId = typeof(caseInstance) !== "string" ? caseInstance.id : caseInstance;
+        const response = await cafienneService.get(`/cases/${caseId}/caseteam`, user);
+        const msg = `GetCaseTeam is not expected to succeed for user ${user.id} in case ${caseId}`;
         const caseTeam = await checkJSONResponse(response, msg, expectedStatusCode, CaseTeam);
         return caseTeam;
     }

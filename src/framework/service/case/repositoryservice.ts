@@ -7,6 +7,7 @@ import User from '../../user';
 import { checkResponse } from '../response';
 import Comparison from '../../test/comparison';
 import logger from '../../logger';
+import Tenant from '../../tenant/tenant';
 
 const FileSystem = fs;
 const cafienneService = new CafienneService();
@@ -34,10 +35,10 @@ export default class RepositoryService {
      * @param user 
      * @param tenant 
      */
-    async loadCaseDefinition(user: User, fileName: string, tenant: string, expectedStatusCode: number = 200) {
+    async loadCaseDefinition(user: User, fileName: string, tenant: string | Tenant, expectedStatusCode: number = 200) {
         const modelName = fileName.endsWith('.xml') ? fileName.substring(0, fileName.length - 4) : fileName;
 
-        const xml = await cafienneService.getXml(`/repository/load/${modelName}?tenant=${tenant}`, user);
+        const xml = await cafienneService.getXml(`/repository/load/${modelName}?tenant=${getTenantName(tenant)}`, user);
         return xml;
     }
 
@@ -46,8 +47,8 @@ export default class RepositoryService {
      * @param tenant 
      * @param user 
      */
-    async listCaseDefinitions(user: User, tenant?: string, expectedStatusCode: number = 200) {
-        const tenantQueryParameter = tenant ? '?tenant=' + tenant : '';
+    async listCaseDefinitions(user: User, tenant?: string | Tenant, expectedStatusCode: number = 200) {
+        const tenantQueryParameter = tenant ? '?tenant=' + getTenantName(tenant) : '';
         const response = await cafienneService.get(`/repository/list${tenantQueryParameter}`, user);
         const msg = `ListCaseDefinitions is not expected to succeed for member ${user.id}`;
         const json = checkResponse(response, msg, expectedStatusCode);
@@ -89,18 +90,19 @@ export default class RepositoryService {
      * @param user User that deploys the case definition.
      * @param tenant Tenant in which the definition is deployed.
      */
-    async validateAndDeploy(user: User, fileName: string, tenant: string) {
+    async validateAndDeploy(user: User, fileName: string, tenant: string|Tenant) {
+        const tenantName = tenant instanceof Tenant ? tenant.name : tenant;
         const definition = readLocalXMLDocument(fileName);
         const modelName = fileName;
 
-        const serverVersion = await this.loadCaseDefinition(user, modelName, tenant);
+        const serverVersion = await this.loadCaseDefinition(user, modelName, tenantName);
         if (Comparison.sameXML(definition, serverVersion)) {
             logger.debug(`Skipping deployment of ${fileName}, as server already has it`);
             return;
         }
 
         await this.validateCaseDefinition(user, definition);
-        await this.deployCase(user, { definition, modelName, tenant })
+        await this.deployCase(user, { definition, modelName, tenant: tenantName })
     }
 }
 
@@ -134,4 +136,8 @@ export function readLocalFile(content: any): string {
         throw new Error(`File ${fileName} cannot be found on the local file system`);
     }
     return FileSystem.readFileSync(fileName, 'utf8');
+}
+
+function getTenantName(tenant: Tenant|string) {
+    return tenant instanceof Tenant ? tenant.name : tenant;
 }

@@ -41,6 +41,7 @@ import TestTaskFilterAPI from './tests/api/task/testtaskfilterapi';
 import TestTaskExpressions from './tests/api/expression/testtaskexpressions';
 import TestProcessTask from './tests/api/caseplan/task/testprocesstask';
 import TestRepeatWithMapping from './tests/api/expression/testrepeatwithmapping';
+import TestUserIdUpdates from './tests/api/tenant/testuseridupdates';
 
 
 function findTestsFromCommandLineArguments(): Array<string> {
@@ -119,6 +120,7 @@ const AllTestCases = new TestClasses([
     , TestDebugMode
     , TestDocumentationAPI
     , TestTenantRegistration
+    , TestUserIdUpdates
     , TestRepositoryAPI
     , TestTokenValidation
     , TestCaseFileAPI
