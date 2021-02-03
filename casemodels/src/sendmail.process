@@ -1,0 +1,20 @@
+<process name="sendmail" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
+    <input id="_WgV5_to" name="to"/>
+    <input id="_7a2I_cc" name="cc"/>
+    <input id="_Au7H_bcc" name="bcc"/>
+    <input id="_00Uj_from" name="from"/>
+    <input id="_cNdN_subject" name="subject"/>
+    <input id="_FbvG_body" name="body"/>
+    <input id="_xw21_attachments" name="attachments"/>
+    <input id="_L0Yl_replyTo" name="replyTo"/>
+    <input id="_MqzT_invite" name="invite"/>
+    <extensionElements>
+        <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.mail.MailDefinition">
+            <mail-body type="text/html">
+                <![CDATA[
+<html><h1>THIS IS A BIG HEADLINE</h1><body>${body}</body></html>
+]]>
+            </mail-body>
+        </cafienne:implementation>
+    </extensionElements>
+</process>
