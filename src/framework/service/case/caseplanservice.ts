@@ -4,6 +4,7 @@ import CafienneService from "../cafienneservice";
 import { checkJSONResponse, checkResponse } from "../response";
 import PlanItem from "../../cmmn/planitem";
 import CMMNDocumentation from "../../cmmn/cmmndocumentation";
+import { checkCaseID } from "./caseservice";
 
 const cafienneService = new CafienneService();
 
@@ -13,9 +14,10 @@ export default class CasePlanService {
      * @param Case 
      * @param user 
      */
-    async getPlanItems(user: User, Case: Case, expectedStatusCode: number = 200): Promise<Array<PlanItem>> {
-        const response = await cafienneService.get(`/cases/${Case.id}/planitems`, user);
-        const msg = `GetPlanItems is not expected to succeed for user ${user.id} in case ${Case.id}`;
+    async getPlanItems(user: User, Case: Case | string | string, expectedStatusCode: number = 200): Promise<Array<PlanItem>> {
+        const caseId = checkCaseID(Case);
+        const response = await cafienneService.get(`/cases/${caseId}/planitems`, user);
+        const msg = `GetPlanItems is not expected to succeed for user ${user.id} in case ${caseId}`;
         return checkJSONResponse(response, msg, expectedStatusCode, [PlanItem]);
     }
 
@@ -25,9 +27,10 @@ export default class CasePlanService {
      * @param user 
      * @param planItemId
      */
-    async getPlanItem(user: User, Case: Case, planItemId: string, expectedStatusCode: number = 200): Promise<PlanItem> {
-        const response = await cafienneService.get(`/cases/${Case.id}/planitems/${planItemId}`, user);
-        const msg = `GetPlanItem is not expected to succeed for user ${user.id} in case ${Case.id}`;
+    async getPlanItem(user: User, Case: Case | string, planItemId: string, expectedStatusCode: number = 200): Promise<PlanItem> {
+        const caseId = checkCaseID(Case);
+        const response = await cafienneService.get(`/cases/${caseId}/planitems/${planItemId}`, user);
+        const msg = `GetPlanItem is not expected to succeed for user ${user.id} in case ${caseId}`;
         return checkJSONResponse(response, msg, expectedStatusCode, PlanItem);
     }
 
@@ -37,9 +40,10 @@ export default class CasePlanService {
      * @param user 
      * @param planItemId
      */
-    async getPlanItemDocumentation(user: User, Case: Case, planItemId: string, expectedStatusCode: number = 200): Promise<CMMNDocumentation> {
-        const response = await cafienneService.get(`/cases/${Case.id}/documentation/planitems/${planItemId}`, user);
-        const msg = `GetPlanItem is not expected to succeed for user ${user.id} in case ${Case.id}`;
+    async getPlanItemDocumentation(user: User, Case: Case | string, planItemId: string, expectedStatusCode: number = 200): Promise<CMMNDocumentation> {
+        const caseId = checkCaseID(Case);
+        const response = await cafienneService.get(`/cases/${caseId}/documentation/planitems/${planItemId}`, user);
+        const msg = `GetPlanItem is not expected to succeed for user ${user.id} in case ${caseId}`;
         return checkJSONResponse(response, msg, expectedStatusCode, CMMNDocumentation);
     }
 
@@ -49,9 +53,10 @@ export default class CasePlanService {
      * @param user 
      * @param planItemId
      */
-    async makePlanItemTransition(user: User, Case: Case, planItemId: string, transition: string, expectedStatusCode: number = 200) {
-        const response = await cafienneService.post(`/cases/${Case.id}/planitems/${planItemId}/${transition}`, user);
-        const msg = `MakePlanItemTransition is not expected to succeed for user ${user.id} in case ${Case.id}`;
+    async makePlanItemTransition(user: User, Case: Case | string, planItemId: string, transition: string, expectedStatusCode: number = 200) {
+        const caseId = checkCaseID(Case);
+        const response = await cafienneService.post(`/cases/${caseId}/planitems/${planItemId}/${transition}`, user);
+        const msg = `MakePlanItemTransition is not expected to succeed for user ${user.id} in case ${caseId}`;
         return checkResponse(response, msg, expectedStatusCode);
     }
 }
