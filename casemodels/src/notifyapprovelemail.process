@@ -16,9 +16,7 @@
     <input id="taskId" name="taskId"/>
     <input id="caseId" name="caseId"/>
     <extensionElements>
-        <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.smtp.SMTPCallDefinition">
-            <smtp-server>mailcatcher</smtp-server>
-            <smtp-port>1025</smtp-port>
+        <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.mail.MailDefinition">
             <subject>Travel Approval request</subject>
             <from>travelrequest@email.org</from>
             <reply-to>noreply@email.org</reply-to>
@@ -111,12 +109,8 @@ Hidden text
                                                                 <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px;">
                                                                     <tr>
                                                                         <td align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding-top: 15px;">
-                                                                            <p style="font-size: 18px; font-weight: 800; line-height: 24px; color: #333333;">
-                                Hello ${toName},
-                            </p>
-                                                                            <p style="font-size: 16px; font-weight: 400; line-height: 24px; color: #333333;">
-                                ${travellerName} requests approval for the Travel request:
-                            </p>
+                                                                            <p style="font-size: 18px; font-weight: 800; line-height: 24px; color: #333333;">Hello ${toName},</p>
+                                                                            <p style="font-size: 16px; font-weight: 400; line-height: 24px; color: #333333;">${travellerName} requests approval for the Travel request:</p>
                                                                             <ul>
                                                                                 <li>Destination(s): ${destinationCity} in ${destinationCountry}</li>
                                                                                 <li>Start date: ${departureDate}</li>
@@ -182,8 +176,7 @@ Hidden text
                         </td>
                     </tr>
                 </table>
-            </body></html>
-		]]>
+            </body></html>]]>
         </mail-body>
     </cafienne:implementation>
 </extensionElements></process>

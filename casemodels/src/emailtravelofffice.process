@@ -15,10 +15,13 @@
     <input id="fromName" name="fromName"/>
     <input id="fromAddress" name="fromAddress"/>
     <extensionElements>
-        <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.smtp.SMTPCallDefinition">
-            <smtp-server>mailcatcher</smtp-server>
-            <smtp-port>1025</smtp-port>
+        <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.mail.MailDefinition">
             <subject>Please arrange travel requirements for ${fromName}</subject>
+            <from>${fromAddress}</from>
+            <reply-to>${fromAddress}</reply-to>
+            <to>
+                <address name="Travel Office">info@travel-office.com</address>
+            </to>
             <mail-body type="text/html">
                 <![CDATA[
 				<html><head><title></title><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1"><meta http-equiv="X-UA-Compatible" content="IE=edge" /><style type="text/css">
@@ -105,11 +108,8 @@ Hidden text
                                                                 <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%" style="max-width:600px;">
                                                                     <tr>
                                                                         <td align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding-top: 15px;">
-                                                                            <p style="font-size: 18px; font-weight: 800; line-height: 24px; color: #333333;">
-                                Hello,
-                            </p>
-                                                                            <p style="font-size: 16px; font-weight: 400; line-height: 24px; color: #333333;">
-                                Could you please make arrangements for my travel to ${destinationCity} in ${destinationCountry}
+                                                                            <p style="font-size: 18px; font-weight: 800; line-height: 24px; color: #333333;">Hello,</p>
+                                                                            <p style="font-size: 16px; font-weight: 400; line-height: 24px; color: #333333;">Could you please make arrangements for my travel to ${destinationCity} in ${destinationCountry}
                                                                                 <br/>
                                                                             </p>
                                                                             <ul>
@@ -117,13 +117,11 @@ Hidden text
                                                                                 <li>Return date: ${returnDate}</li>
                                                                                 <li>Departure point: ${departurePoint}</li>
                                                                                 <li>Return point: ${returnPoint}
-                                                                                    <li>Required transport: ${transportMode}</li>
-                                                                                </ul>
-                                                                                <br/>
-                                                                                <br/>
-                            Kind regards,
-                                                                                <br/>
-                            ${fromName}                                                                            
+                                                                                <li>Required transport: ${transportMode}</li>
+                                                                            </ul>
+                                                                            <br/>
+                                                                            <br/>Kind regards,
+                                                                            <br/>${fromName}                                                                            
                                                                             </td>
                                                                         </tr>
                                                                     </table>
@@ -165,15 +163,8 @@ Hidden text
                             </td>
                         </tr>
                     </table>
-                </body></html>
-
-          ]]>
+                </body></html>]]>
             </mail-body>
-            <from>${fromAddress}</from>
-            <reply-to>${fromAddress}</reply-to>
-            <to>
-                <address name="Travel Office">info@travel-office.com</address>
-            </to>
         </cafienne:implementation>
     </extensionElements>
 </process>
