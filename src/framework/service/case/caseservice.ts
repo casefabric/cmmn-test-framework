@@ -12,7 +12,7 @@ const cafienneService = new CafienneService();
 export default class CaseService {
     async startCase(user: User, command: StartCase, expectedStatusCode: number = 200) {
         if (!user) {
-            throw new Error("User must be specified");
+            // throw new Error("User must be specified");
         }
         console.log("Creating Case[" + command.definition + "] in tenant " + command.tenant);
         const url = '/cases';
@@ -27,7 +27,7 @@ export default class CaseService {
             debug
         }
         const response = await cafienneService.post(url, user, request);
-        const msg = `StartCase is not expected to succeed for user ${user.id}`;
+        const msg = `StartCase is not expected to succeed for user ${user ? user.id : 'anonymous'}`;
         const json = await checkJSONResponse(response, msg, expectedStatusCode);
 
         // Hack: copy "StartCaseResponse.caseInstanceId" to "Case.id" in the json prior to instantiating Case.
