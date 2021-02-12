@@ -15,10 +15,10 @@ export default class TestUsersCaseAPI extends TestCase {
     }
 
     async run() {
-        const allMyCases = await caseService.getUserCases(user, { numberOfResults: 10000 });
+        const allMyCases = await caseService.getCases(user, { numberOfResults: 10000 });
 
-        const myCompletedCases = await caseService.getUserCases(user, { state: 'Completed', tenant, numberOfResults: 10000 });
-        const myActiveCases = await caseService.getUserCases(user, { state: 'Active', tenant, numberOfResults: 10000 });
+        const myCompletedCases = await caseService.getCases(user, { state: 'Completed', tenant, numberOfResults: 10000 });
+        const myActiveCases = await caseService.getCases(user, { state: 'Active', tenant, numberOfResults: 10000 });
 
         console.log("All my cases: ", allMyCases.length);
         console.log("My completed cases: ", myCompletedCases.length);

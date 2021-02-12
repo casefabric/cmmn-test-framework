@@ -76,16 +76,6 @@ export default class CaseService {
     }
 
     /**
-     * Retrieves the list of cases for the user (those that the user started or participates in).
-     * @param user 
-     */
-    async getUserCases(user: User, filter?: CaseFilter, expectedStatusCode: number = 200): Promise<Array<Case>> {
-        const response = await cafienneService.get('/cases/user', user, filter);
-        const msg = `GetUserCases is not expected to succeed for user ${user.id}`;
-        return checkJSONResponse(response, msg, expectedStatusCode) as Promise<Array<Case>>;
-    }
-
-    /**
      * Retrieves the list of discretionary items of the case instance
      * @param Case 
      * @param user 
