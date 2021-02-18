@@ -13,6 +13,11 @@ The test framework uses a simple Token Generator to generate JWT tokens that the
 In order to make Cafienne Engine "trust" these tokens, the config settings of the engine have to be changed.
 
 ## Running the Token Generator
+Some of the default engine test cases also need a mailcatcher docker image.
+Inside the [developer-information repository](https://github.com/cafienne/developer-information) you can find a simple setup that includes both images.
+
+If you want to run only with the basic Token Generator, follow the instructions below. 
+
 Inside the `./docker` directory of this test framework is a file called `docker-compose.yml`.
 To run the Token Generator, make sure docker is started, and then run `docker-compose up` in the `./docker` directory.
 ```bash
