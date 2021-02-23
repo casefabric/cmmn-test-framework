@@ -71,26 +71,6 @@ export default class PlatformService {
     }
 
     /**
-     * Update certain user information across the case engine. Must be invoked by a platform owner.
-     * @param user 
-     */
-    async updateUserInformation(user: User, newInfo: Array<any>, expectedStatusCode: number = 202) {
-        const url = '/platform/user';
-        const response = await this.cafienneService.put(url, user, { users: newInfo });
-        return checkResponse(response, 'Expected updated user information', expectedStatusCode);
-    }
-
-    /**
-     * Returns the status of the handling of updates within the platform
-     * @param user 
-     */
-    async getUpdateStatus(user: User, expectedStatusCode: number = 200) {
-        const url = '/platform/update-status';
-        const response = await this.cafienneService.get(url, user);
-        return checkJSONResponse(response, 'Expected updated user information', expectedStatusCode);
-    }
-
-    /**
      * Returns a json with the platform health
      */
     async getHealth() {
