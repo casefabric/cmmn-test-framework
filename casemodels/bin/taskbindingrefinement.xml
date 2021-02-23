@@ -1,0 +1,263 @@
+<definitions>
+    <caseFileItemDefinition name="root" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="root.cfid">
+        <property name="Outcome" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
+    </caseFileItemDefinition>
+    <case id="taskbindingrefinement.case" name="taskbindingrefinement" expressionLanguage="spel">
+        <caseFileModel>
+            <caseFileItem id="_caNNT_43" name="Root" multiplicity="ExactlyOne" definitionRef="root.cfid">
+                <children>
+                    <caseFileItem id="_caNNT_44" name="CaseInput" multiplicity="ZeroOrMore" definitionRef="root.cfid"/>
+                </children>
+            </caseFileItem>
+        </caseFileModel>
+        <casePlanModel id="cm__caNNT_0" name="taskbindingrefinement" autoComplete="true">
+            <planItem id="pi_ht__caNNT_0" name="Use Indexed Input" definitionRef="ht__caNNT_0">
+                <entryCriterion id="_caNNT_20" name="EntryCriterion_0" sentryRef="crit__caNNT_0"/>
+                <itemControl id="_caNNT_0">
+                    <repetitionRule id="_caNNT_6">
+                        <condition id="_caNNT_7">
+                            <body>
+                                <![CDATA[true]]>
+                            </body>
+                        </condition>
+                    </repetitionRule>
+                </itemControl>
+            </planItem>
+            <planItem id="pi_ht__caNNT_1" name="Use Current Input" definitionRef="ht__caNNT_1">
+                <entryCriterion id="_caNNT_22" name="EntryCriterion_1" sentryRef="crit__caNNT_1"/>
+                <itemControl id="_caNNT_8">
+                    <repetitionRule id="_caNNT_18">
+                        <condition id="_caNNT_19">
+                            <body>
+                                <![CDATA[true]]>
+                            </body>
+                        </condition>
+                    </repetitionRule>
+                </itemControl>
+            </planItem>
+            <planItem id="pi_ht__caNNT_2" name="Use List Input" definitionRef="ht__caNNT_2"/>
+            <planItem id="pi_ht__caNNT_3" name="Use Indexed Reference Input" definitionRef="ht__caNNT_3">
+                <entryCriterion id="_caNNT_30" name="EntryCriterion_2" sentryRef="crit__caNNT_2"/>
+                <itemControl id="_caNNT_27">
+                    <repetitionRule id="_caNNT_28">
+                        <condition id="_caNNT_29">
+                            <body>
+                                <![CDATA[true]]>
+                            </body>
+                        </condition>
+                    </repetitionRule>
+                </itemControl>
+            </planItem>
+            <planItem id="pi_ht__caNNT_4" name="Use Reference Input" definitionRef="ht__caNNT_4"/>
+            <planItem id="pi__caNNT_23" name="Repeating Stage" definitionRef="_caNNT_23">
+                <entryCriterion id="_caNNT_39" name="EntryCriterion_3" sentryRef="crit__caNNT_3"/>
+                <itemControl id="_caNNT_24">
+                    <repetitionRule id="_caNNT_32">
+                        <condition id="_caNNT_34">
+                            <body>
+                                <![CDATA[true]]>
+                            </body>
+                        </condition>
+                    </repetitionRule>
+                </itemControl>
+            </planItem>
+            <sentry id="crit__caNNT_0">
+                <caseFileItemOnPart id="_caNNT_21" sourceRef="_caNNT_44">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </sentry>
+            <sentry id="crit__caNNT_1">
+                <caseFileItemOnPart id="_caNNT_31" sourceRef="_caNNT_44">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </sentry>
+            <sentry id="crit__caNNT_2">
+                <caseFileItemOnPart id="_caNNT_35" sourceRef="_caNNT_44">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </sentry>
+            <sentry id="crit__caNNT_3">
+                <caseFileItemOnPart id="_caNNT_40" sourceRef="_caNNT_44">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </sentry>
+            <humanTask id="ht__caNNT_0" name="Use Indexed Input" isBlocking="true">
+                <inputs id="_caNNT_13" name="CaseInput" bindingRef="_caNNT_44">
+                    <bindingRefinement id="_caNNT_14">
+                        <body>
+                            <![CDATA[indexed]]>
+                        </body>
+                    </bindingRefinement>
+                </inputs>
+                <extensionElements mustUnderstand="false">
+                    <cafienne:implementation name="simple_in_out_task" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
+                        <documentation textFormat="text/plain">
+                            <text>
+                                <![CDATA[This task is intended to simply stream input/output data]]>
+                            </text>
+                        </documentation>
+                        <input id="_dk8c_In" name="In"/>
+                        <output id="_46Gh_Out" name="Out"/>
+                        <task-model/>
+                        <parameterMapping id="_caNNT_1" sourceRef="_caNNT_13" targetRef="_dk8c_In"/>
+                    </cafienne:implementation>
+                </extensionElements>
+            </humanTask>
+            <humanTask id="ht__caNNT_1" name="Use Current Input" isBlocking="true">
+                <inputs id="_caNNT_12" name="CaseInput" bindingRef="_caNNT_44"/>
+                <extensionElements mustUnderstand="false">
+                    <cafienne:implementation name="simple_in_out_task" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
+                        <documentation textFormat="text/plain">
+                            <text>
+                                <![CDATA[This task is intended to simply stream input/output data]]>
+                            </text>
+                        </documentation>
+                        <input id="_dk8c_In" name="In"/>
+                        <output id="_46Gh_Out" name="Out"/>
+                        <task-model/>
+                        <parameterMapping id="_caNNT_9" sourceRef="_caNNT_12" targetRef="_dk8c_In"/>
+                    </cafienne:implementation>
+                </extensionElements>
+            </humanTask>
+            <humanTask id="ht__caNNT_2" name="Use List Input" isBlocking="true">
+                <inputs id="_caNNT_25" name="CaseInput" bindingRef="_caNNT_44">
+                    <bindingRefinement id="_caNNT_26">
+                        <body>
+                            <![CDATA[list]]>
+                        </body>
+                    </bindingRefinement>
+                </inputs>
+                <extensionElements mustUnderstand="false">
+                    <cafienne:implementation name="simple_in_out_task" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
+                        <documentation textFormat="text/plain">
+                            <text>
+                                <![CDATA[This task is intended to simply stream input/output data]]>
+                            </text>
+                        </documentation>
+                        <input id="_dk8c_In" name="In"/>
+                        <output id="_46Gh_Out" name="Out"/>
+                        <task-model/>
+                        <parameterMapping id="_caNNT_16" sourceRef="_caNNT_25" targetRef="_dk8c_In"/>
+                    </cafienne:implementation>
+                </extensionElements>
+            </humanTask>
+            <humanTask id="ht__caNNT_3" name="Use Indexed Reference Input" isBlocking="true">
+                <inputs id="_caNNT_41" name="CaseInput" bindingRef="_caNNT_44">
+                    <bindingRefinement id="_caNNT_42">
+                        <body>
+                            <![CDATA[reference-indexed]]>
+                        </body>
+                    </bindingRefinement>
+                </inputs>
+                <extensionElements mustUnderstand="false">
+                    <cafienne:implementation name="simple_in_out_task" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
+                        <documentation textFormat="text/plain">
+                            <text>
+                                <![CDATA[This task is intended to simply stream input/output data]]>
+                            </text>
+                        </documentation>
+                        <input id="_dk8c_In" name="In"/>
+                        <output id="_46Gh_Out" name="Out"/>
+                        <task-model/>
+                        <parameterMapping id="_caNNT_38" sourceRef="_caNNT_41" targetRef="_dk8c_In"/>
+                    </cafienne:implementation>
+                </extensionElements>
+            </humanTask>
+            <humanTask id="ht__caNNT_4" name="Use Reference Input" isBlocking="true">
+                <inputs id="_caNNT_36" name="CaseInput" bindingRef="_caNNT_44">
+                    <bindingRefinement id="_caNNT_37">
+                        <body>
+                            <![CDATA[reference]]>
+                        </body>
+                    </bindingRefinement>
+                </inputs>
+                <extensionElements mustUnderstand="false">
+                    <cafienne:implementation name="simple_in_out_task" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
+                        <documentation textFormat="text/plain">
+                            <text>
+                                <![CDATA[This task is intended to simply stream input/output data]]>
+                            </text>
+                        </documentation>
+                        <input id="_dk8c_In" name="In"/>
+                        <output id="_46Gh_Out" name="Out"/>
+                        <task-model/>
+                        <parameterMapping id="_caNNT_33" sourceRef="_caNNT_36" targetRef="_dk8c_In"/>
+                    </cafienne:implementation>
+                </extensionElements>
+            </humanTask>
+            <stage id="_caNNT_23" name="Repeating Stage" autoComplete="true">
+                <planItem id="pi_ht__caNNT_5" name="Stage Indexed Input" definitionRef="ht__caNNT_5"/>
+            </stage>
+            <humanTask id="ht__caNNT_5" name="Stage Indexed Input" isBlocking="true">
+                <inputs id="_caNNT_49" name="CaseInput" bindingRef="_caNNT_44">
+                    <bindingRefinement id="_caNNT_50">
+                        <body>
+                            <![CDATA[indexed]]>
+                        </body>
+                    </bindingRefinement>
+                </inputs>
+                <extensionElements mustUnderstand="false">
+                    <cafienne:implementation name="simple_in_out_task" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
+                        <documentation textFormat="text/plain">
+                            <text>
+                                <![CDATA[This task is intended to simply stream input/output data]]>
+                            </text>
+                        </documentation>
+                        <input id="_dk8c_In" name="In"/>
+                        <output id="_46Gh_Out" name="Out"/>
+                        <task-model/>
+                        <parameterMapping id="_caNNT_46" sourceRef="_caNNT_49" targetRef="_dk8c_In"/>
+                    </cafienne:implementation>
+                </extensionElements>
+            </humanTask>
+        </casePlanModel>
+        <input id="_caNNT_5" name="CaseInput" bindingRef="_caNNT_44"/>
+    </case>
+    <CMMNDI>
+        <CMMNDiagram>
+            <CMMNShape cmmnElementRef="cm__caNNT_0">
+                <Bounds x="20" y="20" width="960" height="500"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__caNNT_0">
+                <Bounds x="120" y="100" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__caNNT_1">
+                <Bounds x="310" y="100" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__caNNT_2">
+                <Bounds x="500" y="100" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_caNNT_20">
+                <Bounds x="184" y="170" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_caNNT_22">
+                <Bounds x="334" y="170" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__caNNT_3">
+                <Bounds x="120" y="360" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_caNNT_30">
+                <Bounds x="184" y="350" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__caNNT_4">
+                <Bounds x="310" y="360" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_caNNT_44">
+                <Bounds x="180" y="240" width="25" height="40"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi__caNNT_23">
+                <Bounds x="500" y="220" width="270" height="140"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_caNNT_39">
+                <Bounds x="494" y="270" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__caNNT_5">
+                <Bounds x="560" y="250" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNEdge sourceCMMNElementRef="_caNNT_44" targetCMMNElementRef="_caNNT_20"/>
+            <CMMNEdge sourceCMMNElementRef="_caNNT_44" targetCMMNElementRef="_caNNT_30"/>
+            <CMMNEdge sourceCMMNElementRef="_caNNT_44" targetCMMNElementRef="_caNNT_22"/>
+            <CMMNEdge sourceCMMNElementRef="_caNNT_44" targetCMMNElementRef="_caNNT_39"/>
+        </CMMNDiagram>
+    </CMMNDI>
+</definitions>
