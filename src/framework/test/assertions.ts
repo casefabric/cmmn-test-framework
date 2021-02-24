@@ -2,7 +2,7 @@ import User from '../user';
 import Task from '../cmmn/task';
 import Comparison from './comparison';
 import TaskService from '../service/task/taskservice';
-import CaseService from '../service/case/caseservice';
+import CaseService, {checkCaseID} from '../service/case/caseservice';
 import Case from '../../framework/cmmn/case';
 import CaseFileService from '../service/case/casefileservice';
 import { pathReader } from '../cmmn/casefile';
@@ -62,7 +62,7 @@ export async function assertTask(user: User, task: Task, action: string, expecte
 export async function assertPlanItemState(user: User, caseInstance: Case, planItemName: string, planItemIndex: number, expectedState: string, maxAttempts: number = 1, waitTimeBetweenAttempts = 1000): Promise<PlanItem> {
     let currentAttempt = 1;
     while (true) {
-        console.log(`Running attempt ${currentAttempt} of ${maxAttempts} to find ${planItemName}.${planItemIndex} in state ${expectedState}`);
+        console.log(`Running attempt ${currentAttempt} of ${maxAttempts} to find '${planItemName}.${planItemIndex}' in state ${expectedState}`);
         const freshCase = await caseService.getCase(user, caseInstance);
         // console.log("Current Plan Items\n" + (freshCase.planitems.map(item => "- '" + item.name + "." + item.index + "' ==> '" + item.currentState + "'")).join('\n'));
         const planItem = freshCase.planitems.find(p => p.name === planItemName && p.index === planItemIndex);
@@ -73,24 +73,44 @@ export async function assertPlanItemState(user: User, caseInstance: Case, planIt
             break;
         }
         const currentMsg = !planItem ? 'not (yet) found in the case plan' : `in state ${planItem.currentState}`;
-        await SomeTime(waitTimeBetweenAttempts, `Waiting ${waitTimeBetweenAttempts} millis before refreshing info on ${planItemName}.${planItemIndex} to be in state ${expectedState}. The item is currently ${currentMsg}`);
+        await SomeTime(waitTimeBetweenAttempts, `Waiting ${waitTimeBetweenAttempts} millis before refreshing info on '${planItemName}.${planItemIndex}' to be in state ${expectedState}. The item is currently ${currentMsg}`);
         currentAttempt++;
     }
-    throw new Error(`Did not find the plan item ${planItemName}.${planItemIndex} in state ${expectedState} after ${maxAttempts} attempts`);
+    throw new Error(`Did not find the plan item '${planItemName}.${planItemIndex}' in state ${expectedState} after ${maxAttempts} attempts`);
 }
 
 /**
  * Asserts the state of the case plan
  * @param caseInstance 
  * @param user 
- * @param state 
+ * @param expectedState 
  */
-export async function assertCasePlanState(user: User, caseInstance: Case, state: string) {
-    // Get case details
-    const freshCase = await caseService.getCase(user, caseInstance);
-    if (freshCase.state !== state) {
-        throw new Error(`The case plan with id: "${freshCase.id}" is expected to be ${state}, but it is ${freshCase.state}`);
+export async function assertCasePlanState(user: User, caseInstance: Case|string, expectedState: string, maxAttempts: number = 1, waitTimeBetweenAttempts = 1000) {
+    const caseId = checkCaseID(caseInstance);
+    const tryGetCase = async () => {
+        try {
+            // Get case details
+            return await caseService.getCase(user, caseId);
+        } catch (error) {
+            // ignore the error
+        }
     }
+    let currentAttempt = 1;
+    while (true) {
+        console.log(`Running attempt ${currentAttempt} of ${maxAttempts} to find case ${caseId} in state ${expectedState}`);
+        // Get case details
+        const freshCase = await tryGetCase();
+        if (freshCase?.state === expectedState) {
+            return freshCase;
+        }
+        if (currentAttempt >= maxAttempts) {
+            break;
+        }
+        const currentMsg = !freshCase ? 'not (yet) found' : `in state ${freshCase.state}`;
+        await SomeTime(waitTimeBetweenAttempts, `Waiting ${waitTimeBetweenAttempts} millis before refreshing info on case ${caseId} to be in state ${expectedState}. The item is currently ${currentMsg}`);
+        currentAttempt++;
+    }
+    throw new Error(`Did not find the case ${caseId} in state ${expectedState} after ${maxAttempts} attempts`);
 }
 
 /**
