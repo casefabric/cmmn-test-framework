@@ -47,6 +47,7 @@ import TestTaskBindingRefinement from './tests/api/casefile/testtaskbindingrefin
 import TestArraySubCase from './tests/api/task/case/testarraysubcase';
 import TestAnonymousStartCase from './tests/api/anonymous/testanonymousstartcase';
 import TestNoAnonymousStartCase from './tests/api/anonymous/testnoanonymousstartcase';
+import TestCalculation from './tests/api/task/process/testcalculation';
 
 function findTestsFromCommandLineArguments(): Array<string> {
     const time = process.argv[2];
@@ -153,6 +154,7 @@ const AllTestCases = new TestClasses([
     , TestSMTP
     , TestNoAnonymousStartCase
     , TestAnonymousStartCase
+    , TestCalculation
     , TestGetListGetDetails
 ]);
 
