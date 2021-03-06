@@ -47,6 +47,7 @@ export default class TestCaseTeamTaskAuthorizations extends TestCase {
         const approveTask = findTask(tasks, 'Approve');
         const requestTask = findTask(tasks, 'Request');
         const assistTask = findTask(tasks, 'Assist');
+        const taskWithoutRole = findTask(tasks, 'Task Without Role');
 
         // Although sender didn't have appropriate roles;
         // Sender can claim Approve task, as sender is owner
@@ -87,6 +88,10 @@ export default class TestCaseTeamTaskAuthorizations extends TestCase {
         // Sender can remove Approve role from employee
         await caseTeamService.removeMemberRoles(sender, caseInstance, new CaseTeamMember(employee), approverRole);
         await assertCaseTeamMember(sender, caseInstance, new CaseTeamMember(employee));
+
+        // Now, employee cannot perform save the Approve task output as employee lack approriate role
+        await taskService.saveTaskOutput(employee, approveTask, {}, 401);
+        await assertTask(employee, approveTask, 'Save', 'Unassigned', User.NONE, User.NONE);
 
         // Approve task can be assigned to employee by sender (although he don't have appropriate roles)
         await taskService.assignTask(sender, approveTask, employee);
@@ -192,7 +197,7 @@ export default class TestCaseTeamTaskAuthorizations extends TestCase {
         await taskService.assignTask(receiver, requestTask, receiver, 401);
         await assertTask(sender, requestTask, 'Assign', 'Assigned', employee, employee);
 
-        // But, sender can assign to itself the Request task (as senderis owner)
+        // But, sender can assign to itself the Request task (as sender is owner)
         await taskService.assignTask(sender, requestTask, sender);
         await assertTask(sender, requestTask, 'Assign', 'Assigned', sender, sender);
 
@@ -243,10 +248,16 @@ export default class TestCaseTeamTaskAuthorizations extends TestCase {
         await taskService.revokeTask(employee, assistTask);
         await assertTask(sender, assistTask, 'Revoke', 'Unassigned', User.NONE, User.NONE);
 
-        // Neither employee nor receiver can complete the task
-        await taskService.completeTask(employee, assistTask, {}, 401);
+        // Sender removes the paRole from receiver
+        await caseTeamService.removeMemberRoles(sender, caseInstance, new CaseTeamMember(receiver), paRole);
+
+        // Receiver cannot complete the unassigned task because receiver doesn't have appropriate role
         await taskService.completeTask(receiver, assistTask, {}, 401);
         await assertTask(sender, assistTask, 'Complete', 'Unassigned', User.NONE, User.NONE);
+
+        // Employee can save the Assist task output
+        await taskService.saveTaskOutput(employee, assistTask, {});
+        await assertTask(employee, assistTask, 'Save', 'Unassigned', User.NONE, User.NONE);
 
         // Sender claims the Assist task
         await taskService.claimTask(sender, assistTask);
@@ -260,12 +271,16 @@ export default class TestCaseTeamTaskAuthorizations extends TestCase {
         await taskService.completeTask(receiver, assistTask, {}, 401);
         await assertTask(sender, assistTask, 'Complete', 'Assigned', sender, sender);
 
-        // Sender delegates the task to employee
-        await taskService.delegateTask(sender, assistTask, employee);
-        await assertTask(sender, assistTask, 'Delegate', 'Delegated', employee, sender);
+        // Sender revokes the task
+        await taskService.revokeTask(sender, assistTask);
+        await assertTask(sender, assistTask, 'Revoke', 'Unassigned', User.NONE, User.NONE);
 
-        // Finally, employee can complete the Assist task
+        // Finally, employee can complete the Assist task b/e employee has the appropriate role 
         await taskService.completeTask(employee, assistTask);
-        await assertTask(sender, assistTask, 'Complete', 'Completed', employee, sender);
+        await assertTask(sender, assistTask, 'Complete', 'Completed', User.NONE, User.NONE);
+
+        // Receiver can also complete the Task Without Role task eventhough receiver is not case owner
+        await taskService.completeTask(receiver, taskWithoutRole, {});
+        await assertTask(receiver, assistTask, 'Complete', 'Completed', User.NONE, User.NONE);
     }
 }
