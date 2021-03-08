@@ -1,18 +1,18 @@
 'use strict';
 
-import CaseService from '../../../framework/service/case/caseservice';
-import RepositoryService from '../../../framework/service/case/repositoryservice';
-import TaskService from '../../../framework/service/task/taskservice';
-import TestCase from '../../../framework/test/testcase';
-import WorldWideTestTenant from '../../worldwidetesttenant';
-import { ServerSideProcessing } from '../../../framework/test/time';
+import CaseService from '../../../../framework/service/case/caseservice';
+import RepositoryService from '../../../../framework/service/case/repositoryservice';
+import TaskService from '../../../../framework/service/task/taskservice';
+import TestCase from '../../../../framework/test/testcase';
+import WorldWideTestTenant from '../../../worldwidetesttenant';
+import { ServerSideProcessing } from '../../../../framework/test/time';
 import TaskContent from './taskcontent';
-import Comparison from '../../../framework/test/comparison';
-import { assertPlanItemState } from '../../../framework/test/assertions'
-import Case from '../../../framework/cmmn/case';
-import MockServer from '../../../framework/mock/mockserver';
-import GetMock from '../../../framework/mock/getmock';
-import PostMock from '../../../framework/mock/postmock';
+import Comparison from '../../../../framework/test/comparison';
+import { assertPlanItemState } from '../../../../framework/test/assertions'
+import Case from '../../../../framework/cmmn/case';
+import MockServer from '../../../../framework/mock/mockserver';
+import GetMock from '../../../../framework/mock/getmock';
+import PostMock from '../../../../framework/mock/postmock';
 
 const repositoryService = new RepositoryService();
 const definition = 'taskoutputvalidation.xml';

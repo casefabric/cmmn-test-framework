@@ -1,14 +1,12 @@
 'use strict';
 
-import CaseService from '../../../framework/service/case/caseservice';
-import TaskService from '../../../framework/service/task/taskservice';
-import TestCase from '../../../framework/test/testcase';
-import WorldWideTestTenant from '../../worldwidetesttenant';
-import RepositoryService from '../../../framework/service/case/repositoryservice';
-import CaseTeam from '../../../framework/cmmn/caseteam';
-import Case from '../../../framework/cmmn/case';
-import TaskFilter from '../../../framework/service/task/taskfilter';
-import { CaseOwner } from '../../../framework/cmmn/caseteammember';
+import CaseService from '../../../../framework/service/case/caseservice';
+import TaskService from '../../../../framework/service/task/taskservice';
+import TestCase from '../../../../framework/test/testcase';
+import WorldWideTestTenant from '../../../worldwidetesttenant';
+import RepositoryService from '../../../../framework/service/case/repositoryservice';
+import Case from '../../../../framework/cmmn/case';
+import TaskFilter from '../../../../framework/service/task/taskfilter';
 
 const repositoryService = new RepositoryService();
 const definition1 = 'helloworld.xml';

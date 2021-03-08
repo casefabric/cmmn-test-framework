@@ -1,13 +1,13 @@
 'use strict';
 
-import CaseService from '../../../framework/service/case/caseservice';
-import TaskService from '../../../framework/service/task/taskservice';
-import TestCase from '../../../framework/test/testcase';
-import WorldWideTestTenant from '../../worldwidetesttenant';
-import RepositoryService from '../../../framework/service/case/repositoryservice';
-import Case from '../../../framework/cmmn/case';
-import { assertPlanItemState } from '../../../framework/test/assertions';
-import DebugService from '../../../framework/service/case/debugservice';
+import CaseService from '../../../../framework/service/case/caseservice';
+import TaskService from '../../../../framework/service/task/taskservice';
+import TestCase from '../../../../framework/test/testcase';
+import WorldWideTestTenant from '../../../worldwidetesttenant';
+import RepositoryService from '../../../../framework/service/case/repositoryservice';
+import Case from '../../../../framework/cmmn/case';
+import { assertPlanItemState } from '../../../../framework/test/assertions';
+import DebugService from '../../../../framework/service/case/debugservice';
 
 const repositoryService = new RepositoryService();
 const definition = 'smtptest.xml';

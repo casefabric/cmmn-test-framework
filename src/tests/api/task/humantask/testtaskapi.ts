@@ -1,15 +1,15 @@
 'use strict';
 
-import CaseService from '../../../framework/service/case/caseservice';
-import TaskService from '../../../framework/service/task/taskservice';
-import TestCase from '../../../framework/test/testcase';
-import WorldWideTestTenant from '../../worldwidetesttenant';
-import RepositoryService from '../../../framework/service/case/repositoryservice';
-import CaseTeam from '../../../framework/cmmn/caseteam';
-import CaseTeamMember, { CaseOwner } from '../../../framework/cmmn/caseteammember';
-import CaseTeamService from '../../../framework/service/case/caseteamservice';
-import Case from '../../../framework/cmmn/case';
-import User from '../../../framework/user';
+import CaseService from '../../../../framework/service/case/caseservice';
+import TaskService from '../../../../framework/service/task/taskservice';
+import TestCase from '../../../../framework/test/testcase';
+import WorldWideTestTenant from '../../../worldwidetesttenant';
+import RepositoryService from '../../../../framework/service/case/repositoryservice';
+import CaseTeam from '../../../../framework/cmmn/caseteam';
+import CaseTeamMember, { CaseOwner } from '../../../../framework/cmmn/caseteammember';
+import CaseTeamService from '../../../../framework/service/case/caseteamservice';
+import Case from '../../../../framework/cmmn/case';
+import User from '../../../../framework/user';
 
 const repositoryService = new RepositoryService();
 const definition = 'helloworld.xml';
