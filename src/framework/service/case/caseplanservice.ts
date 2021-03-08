@@ -59,4 +59,17 @@ export default class CasePlanService {
         const msg = `MakePlanItemTransition is not expected to succeed for user ${user.id} in case ${caseId}`;
         return checkResponse(response, msg, expectedStatusCode);
     }
+
+    /**
+     * Tell the event to occur
+     * @param Case 
+     * @param user 
+     * @param eventName
+     */
+    async raiseEvent(user: User, Case: Case | string, eventName: string, expectedStatusCode: number = 200) {
+        const caseId = checkCaseID(Case);
+        const response = await cafienneService.post(`/cases/${caseId}/planitems/${eventName}/Occur`, user);
+        const msg = `RaiseEvent is not expected to succeed for user ${user.id} in case ${caseId} on event ${eventName}`;
+        return checkResponse(response, msg, expectedStatusCode);
+    }
 }
