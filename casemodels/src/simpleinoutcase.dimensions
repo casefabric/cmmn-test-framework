@@ -1,0 +1,23 @@
+<CMMNDI>
+    <CMMNDiagram>
+        <CMMNShape cmmnElementRef="cm__8RCIX_0">
+            <Bounds x="20" y="20" width="670" height="370"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ht__8RCIX_0">
+            <Bounds x="100" y="90" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ue__8RCIX_0">
+            <Bounds x="380" y="110" width="32" height="32"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_8RCIX_17">
+            <Bounds x="60" y="230" width="280" height="120"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi__8RCIX_12">
+            <Bounds x="70" y="60" width="420" height="140"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_8RCIX_14">
+            <Bounds x="394" y="190" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNEdge sourceCMMNElementRef="pi_ue__8RCIX_0" targetCMMNElementRef="_8RCIX_14"/>
+    </CMMNDiagram>
+</CMMNDI>

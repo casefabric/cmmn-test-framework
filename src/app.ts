@@ -43,6 +43,7 @@ import TestProcessTask from './tests/api/caseplan/task/testprocesstask';
 import TestRepeatWithMapping from './tests/api/expression/testrepeatwithmapping';
 import TestSMTP from './tests/api/task/process/testsmtp';
 import TestTaskBindingRefinement from './tests/api/casefile/testtaskbindingrefinement';
+import TestArraySubCase from './tests/api/task/case/testarraysubcase';
 
 function findTestsFromCommandLineArguments(): Array<string> {
     const time = process.argv[2];
@@ -143,6 +144,7 @@ const AllTestCases = new TestClasses([
     , TestStartCaseEmptyRole
     , TestFootballBusinessIdentifiers
     , TestSubCase
+    , TestArraySubCase
     , TestRepeatStage
     , TestSMTP
     , TestGetListGetDetails
