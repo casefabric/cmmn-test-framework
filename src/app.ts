@@ -151,7 +151,7 @@ const AllTestCases = new TestClasses([
 ]);
 
 
-function getTestCaseInstances(testDeclarations: Array<any>) {
+function getTestCaseInstances(testDeclarations: Array<any>, onlyDefaults: boolean) {
     // Filter out undefined tests (e.g., because trailing comma is first one)
     return testDeclarations.filter(test => test).map(test => {
         if (test instanceof TestCase) return test;
@@ -159,11 +159,11 @@ function getTestCaseInstances(testDeclarations: Array<any>) {
             return new test();
         }
         throw new Error('Test ' + test + ' of type "' + typeof (test) + '" cannot be converted to a TestCase');
-    });
+    }).filter((test: TestCase) => !onlyDefaults || test.isDefaultTest); // Filter out tests that should not be run by default
 }
 
-async function runTests(testDeclarations: Array<any>) {
-    const tests: Array<TestCase> = getTestCaseInstances(testDeclarations);
+async function runTests(testDeclarations: Array<any>, onlyDefaults: boolean) {
+    const tests: Array<TestCase> = getTestCaseInstances(testDeclarations, onlyDefaults);
     const results = new TestResults();
     for (let i = 0; i < tests.length; i++) {
         const test = tests[i];
@@ -206,14 +206,13 @@ async function runTests(testDeclarations: Array<any>) {
 
 const commandLineTestNames = findTestsFromCommandLineArguments();
 const commandLineTestClasses = commandLineTestNames.map(TestClasses.getTestClass)
-const testDeclarations = commandLineTestNames.length > 0 ? commandLineTestClasses : AllTestCases.list;
-
-console.log('=========\nCreating test cases\n')
+const runDefaultTests = commandLineTestClasses.length > 0 ? false : true;
+const testDeclarations = runDefaultTests ? AllTestCases.list : commandLineTestClasses;
 
 const startTime = new Date();
-console.log('=========\n\nStarting test cases at ' + startTime + '\n');
+console.log(`=========\n\nStarting ${testDeclarations.length} test cases at ${startTime}\n`);
 
-runTests(testDeclarations).then(results => {
+runTests(testDeclarations, runDefaultTests).then(results => {
     const endTime = new Date();
     console.log(`\n=========\n\nTesting completed in ${endTime.getTime() - startTime.getTime()} milliseconds at ${endTime}\nResults:\n${results.toString()}`);
     process.exit(0)
