@@ -1,0 +1,23 @@
+<case id="subcasewitharrayoutput.case" name="subcasewitharrayoutput" expressionLanguage="spel" guid="_fl0cb">
+    <caseFileModel>
+        <caseFileItem id="_fl0cb_3" name="in" multiplicity="ExactlyOne" definitionRef="unspecified.cfid"/>
+        <caseFileItem id="_fl0cb_4" name="out" multiplicity="ZeroOrMore" definitionRef="unspecified.cfid"/>
+    </caseFileModel>
+    <casePlanModel id="cm__fl0cb_0" name="subcasewitharrayoutput" autoComplete="true">
+        <planItem id="pi_ct__fl0cb_0" name="simpleinoutcase" definitionRef="ct__fl0cb_0">
+            <entryCriterion id="_fl0cb_5" name="EntryCriterion_0" sentryRef="crit__fl0cb_0"/>
+        </planItem>
+        <sentry id="crit__fl0cb_0">
+            <caseFileItemOnPart id="_fl0cb_6" sourceRef="_fl0cb_3">
+                <standardEvent>create</standardEvent>
+            </caseFileItemOnPart>
+        </sentry>
+        <caseTask id="ct__fl0cb_0" name="simpleinoutcase" isBlocking="true" caseRef="simpleinoutcase.case">
+            <inputs id="_fl0cb_8" name="in" bindingRef="_fl0cb_3"/>
+            <outputs id="_fl0cb_9" name="out" bindingRef="_fl0cb_4"/>
+            <parameterMapping id="_fl0cb_1" sourceRef="_fl0cb_8" targetRef="_8RCIX_3"/>
+            <parameterMapping id="_fl0cb_2" sourceRef="_8RCIX_4" targetRef="_fl0cb_9"/>
+        </caseTask>
+    </casePlanModel>
+    <input id="_fl0cb_10" name="in" bindingRef="_fl0cb_3"/>
+</case>

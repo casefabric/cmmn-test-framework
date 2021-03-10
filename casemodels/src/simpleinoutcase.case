@@ -1,0 +1,55 @@
+<case id="simpleinoutcase.case" name="simpleinoutcase" expressionLanguage="spel" guid="_8RCIX">
+    <caseFileModel>
+        <caseFileItem id="_8RCIX_5" name="in" multiplicity="ExactlyOne" definitionRef="unspecified.cfid"/>
+        <caseFileItem id="_8RCIX_6" name="out" multiplicity="ZeroOrMore" definitionRef="unspecified.cfid"/>
+    </caseFileModel>
+    <casePlanModel id="cm__8RCIX_0" name="simpleinoutcase" autoComplete="true">
+        <planItem id="pi__8RCIX_12" name="Stage" definitionRef="_8RCIX_12">
+            <exitCriterion id="_8RCIX_14" name="ExitCriterion_0" sentryRef="crit__8RCIX_0"/>
+        </planItem>
+        <sentry id="crit__8RCIX_0">
+            <planItemOnPart id="_8RCIX_15" sourceRef="pi_ue__8RCIX_0">
+                <standardEvent>occur</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <humanTask id="ht__8RCIX_0" name="Task" isBlocking="true">
+            <inputs id="_8RCIX_10" name="in" bindingRef="_8RCIX_5"/>
+            <outputs id="_8RCIX_11" name="out" bindingRef="_8RCIX_6"/>
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="simple_in_out_task.humantask">
+                    <parameterMapping id="_8RCIX_7" sourceRef="_8RCIX_10" targetRef="_dk8c_In"/>
+                    <parameterMapping id="_8RCIX_8" sourceRef="_46Gh_Out" targetRef="_8RCIX_11"/>
+                </cafienne:implementation>
+            </extensionElements>
+        </humanTask>
+        <userEvent id="ue__8RCIX_0" name="Complete Case"/>
+        <stage id="_8RCIX_12" name="Stage" autoComplete="true">
+            <planItem id="pi_ht__8RCIX_0" name="Task" definitionRef="ht__8RCIX_0">
+                <documentation textFormat="text/plain">
+                    <text>
+                        <![CDATA[Repeatable Task]]>
+                    </text>
+                </documentation>
+                <itemControl id="_8RCIX_0">
+                    <repetitionRule id="_8RCIX_1">
+                        <condition id="_8RCIX_2">
+                            <body>
+                                <![CDATA[true]]>
+                            </body>
+                        </condition>
+                    </repetitionRule>
+                </itemControl>
+            </planItem>
+            <planItem id="pi_ue__8RCIX_0" name="Complete Case" definitionRef="ue__8RCIX_0"/>
+        </stage>
+    </casePlanModel>
+    <input id="_8RCIX_3" name="in" bindingRef="_8RCIX_5"/>
+    <output id="_8RCIX_4" name="out" bindingRef="_8RCIX_6"/>
+    <textAnnotation id="_8RCIX_17">
+        <text>
+            <![CDATA[Repeat the task as long as you want.
+Each task output will be added to the case file 'out'
+When invoking Complete Case event, whole array should be given back in the output parameter of the case]]>
+        </text>
+    </textAnnotation>
+</case>

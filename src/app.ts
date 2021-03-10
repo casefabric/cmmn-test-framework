@@ -6,7 +6,7 @@ import TestDebugMode from './tests/api/debug/testdebugmode';
 import TestHelloworld from './tests/helloworld/testhelloworld';
 import TestIncidentManagement from './tests/incidentmanagement/incidentmanagement';
 import TestTenantRegistration from './tests/api/tenant/testtenantregistration';
-import TestTaskValidationAPI from './tests/api/task/testtaskvalidationapi';
+import TestTaskValidationAPI from './tests/api/task/humantask/testtaskvalidationapi';
 import Config from './config';
 import TestRepositoryAPI from './tests/api/repository/testrepositoryapi';
 import TestTokenValidation from './tests/api/environment/tokentest';
@@ -19,8 +19,8 @@ import TestEntryCriteriaOnCaseInputParameters from './tests/api/caseplan/stage/t
 import TestRepeatingStage from './tests/api/caseplan/stage/teststage';
 import TestCaseTeamAPI from './tests/api/caseteam/testcaseteamapi';
 import TestRoleBinding from './tests/api/caseteam/testrolebinding';
-import TestTaskAPI from './tests/api/task/testtaskapi';
-import TestTaskCountAPI from './tests/api/task/testtaskcountapi';
+import TestTaskAPI from './tests/api/task/humantask/testtaskapi';
+import TestTaskCountAPI from './tests/api/task/humantask/testtaskcountapi';
 import TestCaseTeam from './tests/api/caseteam/testcaseteam';
 import TestInvalidStartCase from './tests/api/case/testinvalidstartcase';
 import TestValidStartCase from './tests/api/case/testvalidstartcase';
@@ -29,7 +29,7 @@ import TestResponseType from './tests/api/environment/testresponsetype';
 import TestBusinessIdentifiers from './tests/api/businessidentifiers/testbusinessidentifiers';
 import TestFootballBusinessIdentifiers from './tests/api/businessidentifiers/footballbusinessidentifiers/testfootballbusinessidentifiers';
 import TestCaseTeamTaskAuthorizations from './tests/api/caseteam/testcaseteamtaskauthorizations';
-import TestSubCase from './tests/api/case/testsubcase';
+import TestSubCase from './tests/api/task/case/testsubcase';
 import TestTaskCompletion from './tests/api/casefile/testtaskcompletion';
 import TestTaskOutputOperations from './tests/api/casefile/testtaskoutputoperations';
 import TestRepeatStage from './tests/stage/testrepeatstage';
@@ -37,12 +37,13 @@ import TestGetListGetDetails from './tests/getlistgetdetails/getlistgetdetails';
 import TestBootstrapCaseFileEvents from './tests/api/case/testbootstrapcasefileevents';
 import TestDocumentationAPI from './tests/api/documentation/testdocumentationapi';
 import TestCasePlanHistoryAPI from './tests/api/caseplan/testcaseplanhistoryapi';
-import TestTaskFilterAPI from './tests/api/task/testtaskfilterapi';
+import TestTaskFilterAPI from './tests/api/task/humantask/testtaskfilterapi';
 import TestTaskExpressions from './tests/api/expression/testtaskexpressions';
 import TestProcessTask from './tests/api/caseplan/task/testprocesstask';
 import TestRepeatWithMapping from './tests/api/expression/testrepeatwithmapping';
-import TestSMTP from './tests/api/processtask/testsmtp';
+import TestSMTP from './tests/api/task/process/testsmtp';
 import TestTaskBindingRefinement from './tests/api/casefile/testtaskbindingrefinement';
+import TestArraySubCase from './tests/api/task/case/testarraysubcase';
 
 function findTestsFromCommandLineArguments(): Array<string> {
     const time = process.argv[2];
@@ -143,6 +144,7 @@ const AllTestCases = new TestClasses([
     , TestStartCaseEmptyRole
     , TestFootballBusinessIdentifiers
     , TestSubCase
+    , TestArraySubCase
     , TestRepeatStage
     , TestSMTP
     , TestGetListGetDetails
