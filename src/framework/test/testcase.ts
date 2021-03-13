@@ -6,6 +6,7 @@ import { DOMParser } from 'xmldom';
  */
 export default class TestCase {
     public name: string = this.constructor.name
+    public isDefaultTest = true;
 
     /**
      * Create a new TestCase with the given name.

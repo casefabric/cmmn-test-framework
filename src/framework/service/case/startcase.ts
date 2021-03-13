@@ -1,4 +1,5 @@
 import CaseTeam from "../../cmmn/caseteam";
+import Tenant from "../../tenant/tenant";
 
 /**
  * Wrapper for the StartCase command 
@@ -25,7 +26,7 @@ export default interface StartCase {
      * The tenant in which to start the case.
      * If the Case service has a default tenant, this field need not be set.
      */
-    tenant?: string;
+    tenant?: string | Tenant;
     /**
      * Whether or not to start the case in debug mode.
      */
