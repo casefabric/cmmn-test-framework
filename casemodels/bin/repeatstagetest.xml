@@ -1,4 +1,8 @@
 <definitions>
+    <caseFileItemDefinition name="http" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="http.cfid"/>
+    <caseFileItemDefinition name="timestamp" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="timestamp.cfid">
+        <property name="TimeRetry" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    </caseFileItemDefinition>
     <case id="repeatstagetest.case" name="repeatstagetest" expressionLanguage="spel">
         <documentation textFormat="text/plain">
             <text>
@@ -111,7 +115,7 @@
             <timerEvent id="tmr__6Clld_1" name="Variable Time">
                 <timerExpression id="_6Clld_8">
                     <body>
-                        <![CDATA[getCaseInstance().caseFile.TimeStamp.TimeRetry]]>
+                        <![CDATA[case.file.TimeStamp.TimeRetry]]>
                     </body>
                 </timerExpression>
                 <planItemStartTrigger id="_6Clld_7">
@@ -142,10 +146,6 @@
             </cafienne:implementation>
         </extensionElements>
     </process>
-    <caseFileItemDefinition name="http" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="http.cfid"/>
-    <caseFileItemDefinition name="timestamp" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="timestamp.cfid">
-        <property name="TimeRetry" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
-    </caseFileItemDefinition>
     <CMMNDI>
         <CMMNDiagram>
             <CMMNShape cmmnElementRef="cm__6Clld_0">

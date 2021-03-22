@@ -34,7 +34,7 @@
                 <repetitionRule id="_Sp9aR_3">
                     <condition id="_Sp9aR_7">
                         <body>
-                            <![CDATA[planItem.index < 3]]>
+                            <![CDATA[task.index < 3]]>
                         </body>
                     </condition>
                 </repetitionRule>

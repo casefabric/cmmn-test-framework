@@ -1,4 +1,11 @@
 <definitions>
+    <caseFileItemDefinition name="string" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="string.cfid"/>
+    <caseFileItemDefinition name="details" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="details.cfid">
+        <property name="description" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="id" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    </caseFileItemDefinition>
+    <caseFileItemDefinition name="http" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="http.cfid"/>
+    <caseFileItemDefinition name="exception" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="exception.cfid"/>
     <case id="getlist_getdetails.case" name="getlist_getdetails" expressionLanguage="spel">
         <documentation textFormat="text/plain">
             <text>
@@ -35,7 +42,7 @@
                     <repetitionRule id="_Sp9aR_3">
                         <condition id="_Sp9aR_7">
                             <body>
-                                <![CDATA[planItem.index < 3]]>
+                                <![CDATA[task.index < 3]]>
                             </body>
                         </condition>
                     </repetitionRule>
@@ -189,13 +196,6 @@
             </cafienne:implementation>
         </extensionElements>
     </process>
-    <caseFileItemDefinition name="string" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="string.cfid"/>
-    <caseFileItemDefinition name="details" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="details.cfid">
-        <property name="description" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
-        <property name="id" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
-    </caseFileItemDefinition>
-    <caseFileItemDefinition name="http" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="http.cfid"/>
-    <caseFileItemDefinition name="exception" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="exception.cfid"/>
     <CMMNDI>
         <CMMNDiagram>
             <CMMNShape cmmnElementRef="cm_casefile/getlist_getdetails.case_0">
