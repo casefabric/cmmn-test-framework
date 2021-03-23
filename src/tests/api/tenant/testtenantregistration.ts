@@ -220,6 +220,15 @@ export default class TestTenantRegistration extends TestCase {
             }
             // console.log('User 4 has roles ' + user.roles);
         });
+
+        // Now also check the same for getTenantUsers.
+        await tenantService.getTenantUsers(tenantOwner1, tenant1)
+            .then(users => users.find((user: TenantUser) => user.userId === user4.userId))
+            .then(user => {
+                if (!Comparison.sameArray(user.roles, expectedNewRoles)) {
+                    throw new Error('Expected user 4 to have roles ' + expectedNewRoles + ', but found ' + user.roles);
+                }
+        });
     }
 
     async tryChangeUserName() {
