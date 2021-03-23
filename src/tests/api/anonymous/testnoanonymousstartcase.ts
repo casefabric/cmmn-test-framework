@@ -28,7 +28,6 @@ const anonymousWorldWithoutLana = new AnonymousWorld('anonymous-world-without-la
 const tenant = anonymousWorld.tenant;
 
 export default class TestNoAnonymousStartCase extends TestCase {
-    isDefaultTest = false;
     inputs = {
         Greeting: {
             Message: 'Hello there',
