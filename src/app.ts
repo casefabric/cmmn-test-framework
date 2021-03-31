@@ -39,6 +39,7 @@ import TestDocumentationAPI from './tests/api/documentation/testdocumentationapi
 import TestCasePlanHistoryAPI from './tests/api/caseplan/testcaseplanhistoryapi';
 import TestTaskFilterAPI from './tests/api/task/humantask/testtaskfilterapi';
 import TestTaskExpressions from './tests/api/expression/testtaskexpressions';
+import TestStageTaskExpressions from './tests/api/expression/teststagetaskexpressions';
 import TestProcessTask from './tests/api/caseplan/task/testprocesstask';
 import TestRepeatWithMapping from './tests/api/expression/testrepeatwithmapping';
 import TestSMTP from './tests/api/task/process/testsmtp';
@@ -133,6 +134,7 @@ const AllTestCases = new TestClasses([
     , TestBusinessIdentifiers
     , TestRepeatWithMapping
     , TestTaskExpressions
+    , TestStageTaskExpressions
     , TestProcessTask
     , TestCaseTeamAPI
     , TestRoleBinding

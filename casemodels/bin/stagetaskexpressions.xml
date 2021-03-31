@@ -1,0 +1,256 @@
+<definitions>
+    <caseFileItemDefinition name="root" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="root.cfid">
+        <property name="Outcome" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
+    </caseFileItemDefinition>
+    <caseFileItemDefinition name="child" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="child.cfid">
+        <property name="name" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    </caseFileItemDefinition>
+    <case id="stagetaskexpressions.case" name="stagetaskexpressions" expressionLanguage="spel">
+        <caseFileModel>
+            <caseFileItem id="_Lf3bt_0" name="root" multiplicity="ExactlyOne" definitionRef="root.cfid">
+                <children>
+                    <caseFileItem id="_Lf3bt_1" name="child" multiplicity="ZeroOrMore" definitionRef="child.cfid"/>
+                </children>
+            </caseFileItem>
+        </caseFileModel>
+        <casePlanModel id="cm__Lf3bt_0" name="stagetaskexpressions" autoComplete="true">
+            <planItem id="pi__Lf3bt_2" name="Stage_0" definitionRef="_Lf3bt_2"/>
+            <planItem id="pi__Lf3bt_4" name="Stage_1" definitionRef="_Lf3bt_4">
+                <entryCriterion id="_Lf3bt_12" name="EntryCriterion_0" sentryRef="crit__Lf3bt_0"/>
+                <itemControl id="_Lf3bt_5">
+                    <repetitionRule id="_Lf3bt_6">
+                        <condition id="_Lf3bt_7">
+                            <body>
+                                <![CDATA[true]]>
+                            </body>
+                        </condition>
+                    </repetitionRule>
+                </itemControl>
+            </planItem>
+            <planItem id="pi_ue__Lf3bt_0" name="Terminate Case" definitionRef="ue__Lf3bt_0"/>
+            <sentry id="crit__Lf3bt_0">
+                <caseFileItemOnPart id="_Lf3bt_13" sourceRef="_Lf3bt_1">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </sentry>
+            <sentry id="crit__Lf3bt_1">
+                <planItemOnPart id="_Lf3bt_15" sourceRef="pi_ue__Lf3bt_0">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <exitCriterion id="_Lf3bt_14" name="ExitCriterion_0" sentryRef="crit__Lf3bt_1"/>
+            <humanTask id="ht__Lf3bt_0" name="HumanTask_0" isBlocking="true">
+                <extensionElements mustUnderstand="false">
+                    <cafienne:implementation name="SendResponse" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="sendresponse.humantask">
+                        <documentation textFormat="text/plain">
+                            <text>
+                                <![CDATA[Sends a response back to the initiator of the hello world case]]>
+                            </text>
+                        </documentation>
+                        <input id="Greeting" name="Greeting"/>
+                        <output id="Response" name="Response"/>
+                        <task-model>{
+	"schema" : {
+		"title" : "You have received a greeting",
+		"type" : "object",
+		"required" : [
+			"Response"
+		],
+		"properties" : {
+			"Greeting" : {
+				"title" : " ",
+				"type" : "object",
+				"properties" : {
+					"Message" : {
+						"type" : "string"
+					}
+				}
+			},
+			"Response" : {
+				"title" : "Your response",
+				"type" : "object",
+				"properties" : {
+					"Message" : {
+						"type" : "string",
+						"title" : "Your response message"
+					},
+					"Date" : {
+						"type" : "string",
+						"format" : "date",
+						"title" : "Pick a date"
+					},
+					"Time" : {
+						"type" : "string",
+						"format" : "time",
+						"title" : "Pick a time"
+					},
+					"SomeBoolean" : {
+						"type" : "boolean",
+						"title" : "Check this"
+					}
+				}
+			}
+		}
+	},
+	"uiSchema" : {
+       	"ui:order": [ "Greeting", "Response" ],
+		"Greeting" : {
+			"Message" : {
+				"ui:widget" : "textarea",
+				"ui:readonly" : true
+			},
+			"To" : {
+				"ui:readonly" : true
+			}
+		},
+		"Response" : {
+			"Message" : {
+				"ui:widget" : "textarea"
+			}
+		}
+	}
+}
+</task-model>
+                    </cafienne:implementation>
+                </extensionElements>
+            </humanTask>
+            <humanTask id="ht__Lf3bt_1" name="HumanTask_1" isBlocking="true">
+                <inputs id="_Lf3bt_24" name="child" bindingRef="_Lf3bt_1">
+                    <bindingRefinement id="_Lf3bt_25">
+                        <body>
+                            <![CDATA[list]]>
+                        </body>
+                    </bindingRefinement>
+                </inputs>
+                <extensionElements mustUnderstand="false">
+                    <cafienne:implementation name="SendResponse" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="sendresponse.humantask">
+                        <documentation textFormat="text/plain">
+                            <text>
+                                <![CDATA[Sends a response back to the initiator of the hello world case]]>
+                            </text>
+                        </documentation>
+                        <input id="Greeting" name="Greeting"/>
+                        <output id="Response" name="Response"/>
+                        <task-model>{
+	"schema" : {
+		"title" : "You have received a greeting",
+		"type" : "object",
+		"required" : [
+			"Response"
+		],
+		"properties" : {
+			"Greeting" : {
+				"title" : " ",
+				"type" : "object",
+				"properties" : {
+					"Message" : {
+						"type" : "string"
+					}
+				}
+			},
+			"Response" : {
+				"title" : "Your response",
+				"type" : "object",
+				"properties" : {
+					"Message" : {
+						"type" : "string",
+						"title" : "Your response message"
+					},
+					"Date" : {
+						"type" : "string",
+						"format" : "date",
+						"title" : "Pick a date"
+					},
+					"Time" : {
+						"type" : "string",
+						"format" : "time",
+						"title" : "Pick a time"
+					},
+					"SomeBoolean" : {
+						"type" : "boolean",
+						"title" : "Check this"
+					}
+				}
+			}
+		}
+	},
+	"uiSchema" : {
+       	"ui:order": [ "Greeting", "Response" ],
+		"Greeting" : {
+			"Message" : {
+				"ui:widget" : "textarea",
+				"ui:readonly" : true
+			},
+			"To" : {
+				"ui:readonly" : true
+			}
+		},
+		"Response" : {
+			"Message" : {
+				"ui:widget" : "textarea"
+			}
+		}
+	}
+}
+</task-model>
+                        <assignment id="_Lf3bt_10" contextRef="_Lf3bt_1">
+                            <condition id="_Lf3bt_11">
+                                <body>
+                                    <![CDATA[caseFileItem.current.get(task.stage.index).userId + " (and possibly deviating from current - " + caseFileItem.current.container.current.value.userId +")"]]>
+                                </body>
+                            </condition>
+                        </assignment>
+                        <parameterMapping id="_Lf3bt_19" sourceRef="_Lf3bt_24" targetRef="Greeting">
+                            <transformation id="_Lf3bt_26">
+                                <body>
+                                    <![CDATA[child.get(task.stage.index)]]>
+                                </body>
+                            </transformation>
+                        </parameterMapping>
+                    </cafienne:implementation>
+                </extensionElements>
+            </humanTask>
+            <userEvent id="ue__Lf3bt_0" name="Terminate Case"/>
+            <stage id="_Lf3bt_2" name="Stage_0" autoComplete="true">
+                <planItem id="pi_ht__Lf3bt_0" name="HumanTask_0" definitionRef="ht__Lf3bt_0"/>
+            </stage>
+            <stage id="_Lf3bt_4" name="Stage_1" autoComplete="true">
+                <planItem id="pi_ht__Lf3bt_1" name="HumanTask_1" definitionRef="ht__Lf3bt_1"/>
+            </stage>
+        </casePlanModel>
+        <input id="_Lf3bt_16" name="Root" bindingRef="_Lf3bt_0"/>
+    </case>
+    <CMMNDI>
+        <CMMNDiagram>
+            <CMMNShape cmmnElementRef="cm__Lf3bt_0">
+                <Bounds x="20" y="20" width="670" height="420"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi__Lf3bt_2">
+                <Bounds x="70" y="80" width="420" height="140"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi__Lf3bt_4">
+                <Bounds x="60" y="280" width="420" height="140"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__Lf3bt_0">
+                <Bounds x="120" y="100" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__Lf3bt_1">
+                <Bounds x="110" y="310" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_Lf3bt_1">
+                <Bounds x="570" y="320" width="25" height="40"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_Lf3bt_12">
+                <Bounds x="474" y="330" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ue__Lf3bt_0">
+                <Bounds x="570" y="170" width="32" height="32"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_Lf3bt_14">
+                <Bounds x="684" y="180" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNEdge sourceCMMNElementRef="_Lf3bt_1" targetCMMNElementRef="_Lf3bt_12"/>
+            <CMMNEdge sourceCMMNElementRef="pi_ue__Lf3bt_0" targetCMMNElementRef="_Lf3bt_14"/>
+        </CMMNDiagram>
+    </CMMNDI>
+</definitions>
