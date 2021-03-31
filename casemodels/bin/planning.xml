@@ -1,4 +1,7 @@
 <definitions>
+    <caseFileItemDefinition name="root" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="root.cfid">
+        <property name="Outcome" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
+    </caseFileItemDefinition>
     <case id="planning.case" name="planning" expressionLanguage="spel">
         <caseFileModel>
             <caseFileItem id="cfi_csQA1_0" name="CaseFileItem" multiplicity="ExactlyOne" definitionRef="root.cfid"/>
@@ -41,7 +44,7 @@
                 <applicabilityRule id="rule_csQA1_1" name="isValid">
                     <condition>
                         <body>
-                            <![CDATA[discretionaryItem.name=="Opnieuw T1" || (stage.planItems.?[name=='T2'].size() > 0 && stage.planItems.?[name=='T2'][0].state == T(org.cafienne.cmmn.instance.State).Active)]]>
+                            <![CDATA[discretionaryItem.name=="Opnieuw T1" || (stage.T2 != null && stage.T2.state == T(org.cafienne.cmmn.instance.State).Active)]]>
                         </body>
                     </condition>
                 </applicabilityRule>
@@ -82,9 +85,6 @@
                                         </cafienne:start-case-model>
         </extensionElements>
     </case>
-    <caseFileItemDefinition name="root" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="root.cfid">
-        <property name="Outcome" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
-    </caseFileItemDefinition>
     <CMMNDI>
         <CMMNDiagram>
             <CMMNShape cmmnElementRef="cm_planning.case_planning_0">

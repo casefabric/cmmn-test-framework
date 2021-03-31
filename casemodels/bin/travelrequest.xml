@@ -168,7 +168,7 @@
                     <standardEvent>occur</standardEvent>
                 </planItemOnPart>
             </sentry>
-            <planningTable id="pt_cm__3">
+            <planningTable id="pt_cm_undefined_3">
                 <discretionaryItem id="cm_csgxw_215" name="Select approver manually" definitionRef="pid_cm_csgxw_215" authorizedRoleRefs="role_csKsD_1"/>
             </planningTable>
             <exitCriterion id="_4wCNa_13" name="ExitCriterion_1" sentryRef="cm_csEae_324"/>
@@ -1919,28 +1919,28 @@
                 <parameterMapping id="inPM_cm_csjTZ_604_7" sourceRef="inTP_cm_csjTZ_604_0" targetRef="toName">
                     <transformation>
                         <body>
-                            <![CDATA[caseInstance.getCaseTeam().getMemberWithRole("Approver")]]>
+                            <![CDATA[case.team.role.Approver.member?.id]]>
                         </body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csjTZ_604_8" sourceRef="inTP_cm_csjTZ_604_0" targetRef="toAddress">
                     <transformation>
                         <body>
-                            <![CDATA[caseInstance.getCaseTeam().getMemberWithRole("Approver") + "@email.com"]]>
+                            <![CDATA[case.team.role.Approver.member?.id + "@email.com"]]>
                         </body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csVHC_16_7" sourceRef="inTP_cm_csjTZ_604_0" targetRef="taskId">
                     <transformation>
                         <body>
-                            <![CDATA[caseInstance.getPlanItemByName("Approve Travel request").getId()]]>
+                            <![CDATA[case.plan["Approve and Generate Travel Order"]["Approve Travel request"].id]]>
                         </body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csVHC_16_8" sourceRef="inTP_cm_csjTZ_604_0" targetRef="caseId">
                     <transformation>
                         <body>
-                            <![CDATA[caseInstance.getId()]]>
+                            <![CDATA[case.id]]>
                         </body>
                     </transformation>
                 </parameterMapping>
@@ -2020,7 +2020,7 @@
                     <transformation>
                         <body>
                             <![CDATA[
-                            "{""Approval"":"+caseInstance.getCaseFile().getItem("Approval").getValue().toString()+", ""travelrequest"": "+caseInstance.getCaseFile().getItem("TravelRequest").getValue().toString()+"}"
+                            "{""Approval"":"+case.file.Approval.toString()+", ""travelrequest"": "+case.file.TravelRequest.toString()+"}"
                         ]]>
                         </body>
                     </transformation>
@@ -2063,7 +2063,7 @@
                 <parameterMapping id="inPM_cm_csRSq_791_5" sourceRef="inTP_cm_csRSq_791_2" targetRef="fromName">
                     <transformation>
                         <body>
-                            <![CDATA[caseInstance.getCaseTeam().getMemberWithRole("PersonalAssistant")]]>
+                            <![CDATA[case.team.role.PersonalAssistant.member?.id]]>
                         </body>
                     </transformation>
                 </parameterMapping>
@@ -3560,9 +3560,7 @@ div[style*="margin: 16px 0;"] { margin: 0 !important; }
 			]]>
         </mail-body>
     </cafienne:implementation>
-</extensionElements>
-</process>
-<process id="emailrequestor.process" name="emailrequestor.process" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
+</extensionElements>undefined</process>undefined<process id="emailrequestor.process" name="emailrequestor.process" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
 <documentation textFormat="text/plain">
     <text>
         <![CDATA[Email requestor]]>
@@ -3731,145 +3729,130 @@ Hidden text
                 </tr>
             </table>
         </body></html>]]>
-                </mail-body>
-            </cafienne:implementation>
-        </extensionElements>
-    </process>
-    <process id="checktravelrequirements.process" name="checktravelrequirements.process" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
-        <input id="destinationCountry" name="destinationCountry"/>
-        <input id="travellers" name="travellers"/>
-        <output id="theaterDestination" name="theaterDestination"/>
-        <output id="travellers_requirements" name="traveller_requirements"/>
-        <extensionElements>
-            <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.http.HTTPCallDefinition">
-                <url>http://demo1776471.mockable.io/travelrequirements</url>
-                <method>POST</method>
-                <post-content>{"destinationCountry": "${destinationCountry}", "travellers": "${travellers}"}</post-content>
-                <http-headers>
-                    <http-header name="Content-Type">application/json</http-header>
-                </http-headers>
-            </cafienne:implementation>
-        </extensionElements>
-    </process>
-    <CMMNDI>
-        <CMMNDiagram>
-            <CMMNShape cmmnElementRef="cm_travelrequest.case_travelrequest_0">
-                <Bounds x="20" y="20" width="1296" height="641"/>
-            </CMMNShape>
-            <CMMNShape cmmnElementRef="cm_csgxw_215">
-                <Bounds x="61" y="332" width="167" height="60"/>
-            </CMMNShape>
-            <CMMNShape cmmnElementRef="cm_cs9Q0_205">
-                <Bounds x="61" y="67" width="141" height="60"/>
-            </CMMNShape>
-            <CMMNShape cmmnElementRef="cm_cs9Q0_207">
-                <Bounds x="818" y="57" width="458" height="234"/>
-            </CMMNShape>
-            <CMMNShape cmmnElementRef="cm_csgxw_208">
-                <Bounds x="841" y="96" width="168" height="60"/>
-            </CMMNShape>
-            <CMMNShape cmmnElementRef="cm_csgxw_210">
-                <Bounds x="839" y="193" width="166" height="60"/>
-            </CMMNShape>
-            <CMMNShape cmmnElementRef="cm_cs3yg_479">
-                <Bounds x="1050" y="192" width="144" height="60"/>
-            </CMMNShape>
-            <CMMNShape cmmnElementRef="cm_cs3yg_487">
-                <Bounds x="1057" y="98" width="190" height="60"/>
-            </CMMNShape>
-            <CMMNShape cmmnElementRef="cm_csgxw_213">
-                <Bounds x="69" y="169" width="121" height="40"/>
-            </CMMNShape>
-            <CMMNShape cmmnElementRef="cm_csgxw_219">
-                <Bounds x="838" y="330" width="142" height="40"/>
-            </CMMNShape>
-            <CMMNShape cmmnElementRef="cm_csgxw_220">
-                <Bounds x="1121" y="329" width="100" height="40"/>
-            </CMMNShape>
-            <CMMNShape cmmnElementRef="cm_csgxw_223">
-                <Bounds x="749" y="406" width="350" height="214"/>
-            </CMMNShape>
-            <CMMNShape cmmnElementRef="cm_csgxw_226">
-                <Bounds x="769" y="441" width="158" height="60"/>
-            </CMMNShape>
-            <CMMNShape cmmnElementRef="cm_csjTZ_640">
-                <Bounds x="772" y="523" width="142" height="60"/>
-            </CMMNShape>
-            <CMMNShape cmmnElementRef="cm_csjTZ_642">
-                <Bounds x="945" y="522" width="128" height="60"/>
-            </CMMNShape>
-            <CMMNShape cmmnElementRef="cm_csgxw_228">
-                <Bounds x="1120" y="416" width="148" height="60"/>
-            </CMMNShape>
-            <CMMNShape cmmnElementRef="cm_csEae_323">
-                <Bounds x="103" y="562" width="32" height="32"/>
-            </CMMNShape>
-            <CMMNShape cmmnElementRef="cm_csSAF_389">
-                <Bounds x="235" y="62" width="485" height="233"/>
-            </CMMNShape>
-            <CMMNShape cmmnElementRef="cm_csSAF_392">
-                <Bounds x="276" y="100" width="174" height="60"/>
-            </CMMNShape>
-            <CMMNShape cmmnElementRef="cm_cs3yg_484">
-                <Bounds x="499" y="98" width="172" height="60"/>
-            </CMMNShape>
-            <CMMNShape cmmnElementRef="_4wCNa_7">
-                <Bounds x="918" y="183" width="12" height="20"/>
-            </CMMNShape>
-            <CMMNShape cmmnElementRef="_4wCNa_8">
-                <Bounds x="1044" y="213" width="12" height="20"/>
-            </CMMNShape>
-            <CMMNShape cmmnElementRef="_4wCNa_9">
-                <Bounds x="1051" y="114" width="12" height="20"/>
-            </CMMNShape>
-            <CMMNShape cmmnElementRef="_4wCNa_0">
-                <Bounds x="121" y="159" width="12" height="20"/>
-            </CMMNShape>
-            <CMMNShape cmmnElementRef="_4wCNa_1">
-                <Bounds x="903" y="320" width="12" height="20"/>
-            </CMMNShape>
-            <CMMNShape cmmnElementRef="_4wCNa_2">
-                <Bounds x="1169" y="319" width="12" height="20"/>
-            </CMMNShape>
-            <CMMNShape cmmnElementRef="_4wCNa_3">
-                <Bounds x="910" y="396" width="12" height="20"/>
-            </CMMNShape>
-            <CMMNShape cmmnElementRef="_4wCNa_4">
-                <Bounds x="1093" y="498" width="12" height="20"/>
-            </CMMNShape>
-            <CMMNShape cmmnElementRef="_4wCNa_10">
-                <Bounds x="939" y="545" width="12" height="20"/>
-            </CMMNShape>
-            <CMMNShape cmmnElementRef="_4wCNa_5">
-                <Bounds x="1148" y="406" width="12" height="20"/>
-            </CMMNShape>
-            <CMMNShape cmmnElementRef="_4wCNa_6">
-                <Bounds x="1172" y="406" width="12" height="20"/>
-            </CMMNShape>
-            <CMMNShape cmmnElementRef="_4wCNa_11">
-                <Bounds x="270" y="119" width="12" height="20"/>
-            </CMMNShape>
-            <CMMNShape cmmnElementRef="_4wCNa_12">
-                <Bounds x="493" y="118" width="12" height="20"/>
-            </CMMNShape>
-            <CMMNShape cmmnElementRef="_4wCNa_13">
-                <Bounds x="115" y="651" width="12" height="20"/>
-            </CMMNShape>
-            <CMMNShape cmmnElementRef="pt_cm__3">
-                <Bounds x="300" y="33" width="24" height="16"/>
-            </CMMNShape>
-            <CMMNEdge sourceCMMNElementRef="_4wCNa_1" targetCMMNElementRef="cm_cs9Q0_207"/>
-            <CMMNEdge sourceCMMNElementRef="_4wCNa_2" targetCMMNElementRef="cm_cs9Q0_207"/>
-            <CMMNEdge sourceCMMNElementRef="cm_csgxw_220" targetCMMNElementRef="_4wCNa_6"/>
-            <CMMNEdge sourceCMMNElementRef="cm_csgxw_219" targetCMMNElementRef="_4wCNa_5"/>
-            <CMMNEdge sourceCMMNElementRef="cm_csEae_323" targetCMMNElementRef="_4wCNa_13"/>
-            <CMMNEdge sourceCMMNElementRef="cm_csgxw_219" targetCMMNElementRef="_4wCNa_3"/>
-            <CMMNEdge sourceCMMNElementRef="cm_csgxw_226" targetCMMNElementRef="_4wCNa_4"/>
-            <CMMNEdge sourceCMMNElementRef="cm_csSAF_389" targetCMMNElementRef="_4wCNa_1"/>
-            <CMMNEdge sourceCMMNElementRef="cm_csjTZ_642" targetCMMNElementRef="_4wCNa_4"/>
-            <CMMNEdge sourceCMMNElementRef="cm_csjTZ_640" targetCMMNElementRef="_4wCNa_10"/>
-            <CMMNEdge sourceCMMNElementRef="cm_csgxw_210" targetCMMNElementRef="_4wCNa_8"/>
-            <CMMNEdge sourceCMMNElementRef="cm_csgxw_208" targetCMMNElementRef="_4wCNa_7"/>
-        </CMMNDiagram>
-    </CMMNDI>
-</definitions>
+    </mail-body>
+</cafienne:implementation>undefined</extensionElements>undefined</process>undefined<process id="checktravelrequirements.process" name="checktravelrequirements.process" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">undefined<input id="destinationCountry" name="destinationCountry"/>undefined<input id="travellers" name="travellers"/>undefined<output id="theaterDestination" name="theaterDestination"/>undefined<output id="travellers_requirements" name="traveller_requirements"/>undefined<extensionElements>
+<cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.http.HTTPCallDefinition">
+    <url>http://demo1776471.mockable.io/travelrequirements</url>
+    <method>POST</method>
+    <post-content>{"destinationCountry": "${destinationCountry}", "travellers": "${travellers}"}</post-content>
+    <http-headers>
+        <http-header name="Content-Type">application/json</http-header>
+    </http-headers>
+</cafienne:implementation>undefined</extensionElements>undefined</process>undefined<CMMNDI>undefined<CMMNDiagram>
+<CMMNShape cmmnElementRef="cm_travelrequest.case_travelrequest_0">
+    <Bounds x="20" y="20" width="1296" height="641"/>
+</CMMNShape>
+<CMMNShape cmmnElementRef="cm_csgxw_215">
+    <Bounds x="61" y="332" width="167" height="60"/>
+</CMMNShape>
+<CMMNShape cmmnElementRef="cm_cs9Q0_205">
+    <Bounds x="61" y="67" width="141" height="60"/>
+</CMMNShape>
+<CMMNShape cmmnElementRef="cm_cs9Q0_207">
+    <Bounds x="818" y="57" width="458" height="234"/>
+</CMMNShape>
+<CMMNShape cmmnElementRef="cm_csgxw_208">
+    <Bounds x="841" y="96" width="168" height="60"/>
+</CMMNShape>
+<CMMNShape cmmnElementRef="cm_csgxw_210">
+    <Bounds x="839" y="193" width="166" height="60"/>
+</CMMNShape>
+<CMMNShape cmmnElementRef="cm_cs3yg_479">
+    <Bounds x="1050" y="192" width="144" height="60"/>
+</CMMNShape>
+<CMMNShape cmmnElementRef="cm_cs3yg_487">
+    <Bounds x="1057" y="98" width="190" height="60"/>
+</CMMNShape>
+<CMMNShape cmmnElementRef="cm_csgxw_213">
+    <Bounds x="69" y="169" width="121" height="40"/>
+</CMMNShape>
+<CMMNShape cmmnElementRef="cm_csgxw_219">
+    <Bounds x="838" y="330" width="142" height="40"/>
+</CMMNShape>
+<CMMNShape cmmnElementRef="cm_csgxw_220">
+    <Bounds x="1121" y="329" width="100" height="40"/>
+</CMMNShape>
+<CMMNShape cmmnElementRef="cm_csgxw_223">
+    <Bounds x="749" y="406" width="350" height="214"/>
+</CMMNShape>
+<CMMNShape cmmnElementRef="cm_csgxw_226">
+    <Bounds x="769" y="441" width="158" height="60"/>
+</CMMNShape>
+<CMMNShape cmmnElementRef="cm_csjTZ_640">
+    <Bounds x="772" y="523" width="142" height="60"/>
+</CMMNShape>
+<CMMNShape cmmnElementRef="cm_csjTZ_642">
+    <Bounds x="945" y="522" width="128" height="60"/>
+</CMMNShape>
+<CMMNShape cmmnElementRef="cm_csgxw_228">
+    <Bounds x="1120" y="416" width="148" height="60"/>
+</CMMNShape>
+<CMMNShape cmmnElementRef="cm_csEae_323">
+    <Bounds x="103" y="562" width="32" height="32"/>
+</CMMNShape>
+<CMMNShape cmmnElementRef="cm_csSAF_389">
+    <Bounds x="235" y="62" width="485" height="233"/>
+</CMMNShape>
+<CMMNShape cmmnElementRef="cm_csSAF_392">
+    <Bounds x="276" y="100" width="174" height="60"/>
+</CMMNShape>
+<CMMNShape cmmnElementRef="cm_cs3yg_484">
+    <Bounds x="499" y="98" width="172" height="60"/>
+</CMMNShape>
+<CMMNShape cmmnElementRef="_4wCNa_7">
+    <Bounds x="918" y="183" width="12" height="20"/>
+</CMMNShape>
+<CMMNShape cmmnElementRef="_4wCNa_8">
+    <Bounds x="1044" y="213" width="12" height="20"/>
+</CMMNShape>
+<CMMNShape cmmnElementRef="_4wCNa_9">
+    <Bounds x="1051" y="114" width="12" height="20"/>
+</CMMNShape>
+<CMMNShape cmmnElementRef="_4wCNa_0">
+    <Bounds x="121" y="159" width="12" height="20"/>
+</CMMNShape>
+<CMMNShape cmmnElementRef="_4wCNa_1">
+    <Bounds x="903" y="320" width="12" height="20"/>
+</CMMNShape>
+<CMMNShape cmmnElementRef="_4wCNa_2">
+    <Bounds x="1169" y="319" width="12" height="20"/>
+</CMMNShape>
+<CMMNShape cmmnElementRef="_4wCNa_3">
+    <Bounds x="910" y="396" width="12" height="20"/>
+</CMMNShape>
+<CMMNShape cmmnElementRef="_4wCNa_4">
+    <Bounds x="1093" y="498" width="12" height="20"/>
+</CMMNShape>
+<CMMNShape cmmnElementRef="_4wCNa_10">
+    <Bounds x="939" y="545" width="12" height="20"/>
+</CMMNShape>
+<CMMNShape cmmnElementRef="_4wCNa_5">
+    <Bounds x="1148" y="406" width="12" height="20"/>
+</CMMNShape>
+<CMMNShape cmmnElementRef="_4wCNa_6">
+    <Bounds x="1172" y="406" width="12" height="20"/>
+</CMMNShape>
+<CMMNShape cmmnElementRef="_4wCNa_11">
+    <Bounds x="270" y="119" width="12" height="20"/>
+</CMMNShape>
+<CMMNShape cmmnElementRef="_4wCNa_12">
+    <Bounds x="493" y="118" width="12" height="20"/>
+</CMMNShape>
+<CMMNShape cmmnElementRef="_4wCNa_13">
+    <Bounds x="115" y="651" width="12" height="20"/>
+</CMMNShape>
+<CMMNShape cmmnElementRef="pt_cm_undefined_3">
+    <Bounds x="300" y="33" width="24" height="16"/>
+</CMMNShape>
+<CMMNEdge sourceCMMNElementRef="_4wCNa_1" targetCMMNElementRef="cm_cs9Q0_207"/>
+<CMMNEdge sourceCMMNElementRef="_4wCNa_2" targetCMMNElementRef="cm_cs9Q0_207"/>
+<CMMNEdge sourceCMMNElementRef="cm_csgxw_220" targetCMMNElementRef="_4wCNa_6"/>
+<CMMNEdge sourceCMMNElementRef="cm_csgxw_219" targetCMMNElementRef="_4wCNa_5"/>
+<CMMNEdge sourceCMMNElementRef="cm_csEae_323" targetCMMNElementRef="_4wCNa_13"/>
+<CMMNEdge sourceCMMNElementRef="cm_csgxw_219" targetCMMNElementRef="_4wCNa_3"/>
+<CMMNEdge sourceCMMNElementRef="cm_csgxw_226" targetCMMNElementRef="_4wCNa_4"/>
+<CMMNEdge sourceCMMNElementRef="cm_csSAF_389" targetCMMNElementRef="_4wCNa_1"/>
+<CMMNEdge sourceCMMNElementRef="cm_csjTZ_642" targetCMMNElementRef="_4wCNa_4"/>
+<CMMNEdge sourceCMMNElementRef="cm_csjTZ_640" targetCMMNElementRef="_4wCNa_10"/>
+<CMMNEdge sourceCMMNElementRef="cm_csgxw_210" targetCMMNElementRef="_4wCNa_8"/>
+<CMMNEdge sourceCMMNElementRef="cm_csgxw_208" targetCMMNElementRef="_4wCNa_7"/>undefined</CMMNDiagram>undefined</CMMNDI>undefined</definitions>

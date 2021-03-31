@@ -110,7 +110,7 @@
         <timerEvent id="tmr__6Clld_1" name="Variable Time">
             <timerExpression id="_6Clld_8">
                 <body>
-                    <![CDATA[getCaseInstance().caseFile.TimeStamp.TimeRetry]]>
+                    <![CDATA[case.file.TimeStamp.TimeRetry]]>
                 </body>
             </timerExpression>
             <planItemStartTrigger id="_6Clld_7">
