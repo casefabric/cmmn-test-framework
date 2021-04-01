@@ -1,0 +1,76 @@
+<case id="stagetaskexpressions.case" name="stagetaskexpressions" expressionLanguage="spel" guid="_Lf3bt">
+    <caseFileModel>
+        <caseFileItem id="_Lf3bt_0" name="root" multiplicity="ExactlyOne" definitionRef="root.cfid">
+            <children>
+                <caseFileItem id="_Lf3bt_1" name="child" multiplicity="ZeroOrMore" definitionRef="child.cfid"/>
+            </children>
+        </caseFileItem>
+    </caseFileModel>
+    <casePlanModel id="cm__Lf3bt_0" name="stagetaskexpressions" autoComplete="true">
+        <planItem id="pi__Lf3bt_2" name="Stage_0" definitionRef="_Lf3bt_2"/>
+        <planItem id="pi__Lf3bt_4" name="Stage_1" definitionRef="_Lf3bt_4">
+            <entryCriterion id="_Lf3bt_12" name="EntryCriterion_0" sentryRef="crit__Lf3bt_0"/>
+            <itemControl id="_Lf3bt_5">
+                <repetitionRule id="_Lf3bt_6">
+                    <condition id="_Lf3bt_7">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
+        </planItem>
+        <planItem id="pi_ue__Lf3bt_0" name="Terminate Case" definitionRef="ue__Lf3bt_0"/>
+        <sentry id="crit__Lf3bt_0">
+            <caseFileItemOnPart id="_Lf3bt_13" sourceRef="_Lf3bt_1">
+                <standardEvent>create</standardEvent>
+            </caseFileItemOnPart>
+        </sentry>
+        <sentry id="crit__Lf3bt_1">
+            <planItemOnPart id="_Lf3bt_15" sourceRef="pi_ue__Lf3bt_0">
+                <standardEvent>occur</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <exitCriterion id="_Lf3bt_14" name="ExitCriterion_0" sentryRef="crit__Lf3bt_1"/>
+        <humanTask id="ht__Lf3bt_0" name="HumanTask_0" isBlocking="true">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="sendresponse.humantask"/>
+            </extensionElements>
+        </humanTask>
+        <humanTask id="ht__Lf3bt_1" name="HumanTask_1" isBlocking="true">
+            <inputs id="_Lf3bt_24" name="child" bindingRef="_Lf3bt_1">
+                <bindingRefinement id="_Lf3bt_25">
+                    <body>
+                        <![CDATA[list]]>
+                    </body>
+                </bindingRefinement>
+            </inputs>
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="sendresponse.humantask">
+                    <parameterMapping id="_Lf3bt_19" sourceRef="_Lf3bt_24" targetRef="Greeting">
+                        <transformation id="_Lf3bt_26">
+                            <body>
+                                <![CDATA[child.get(task.stage.index)]]>
+                            </body>
+                        </transformation>
+                    </parameterMapping>
+                    <assignment id="_Lf3bt_10" contextRef="_Lf3bt_1">
+                        <condition id="_Lf3bt_11">
+                            <body>
+                                <![CDATA[caseFileItem.current.get(task.stage.index).userId + " (and possibly deviating from current - " + caseFileItem.current.container.current.value.userId +")"]]>
+                            </body>
+                        </condition>
+                    </assignment>
+                </cafienne:implementation>
+            </extensionElements>
+        </humanTask>
+        <userEvent id="ue__Lf3bt_0" name="Terminate Case"/>
+        <stage id="_Lf3bt_2" name="Stage_0" autoComplete="true">
+            <planItem id="pi_ht__Lf3bt_0" name="HumanTask_0" definitionRef="ht__Lf3bt_0"/>
+        </stage>
+        <stage id="_Lf3bt_4" name="Stage_1" autoComplete="true">
+            <planItem id="pi_ht__Lf3bt_1" name="HumanTask_1" definitionRef="ht__Lf3bt_1"/>
+        </stage>
+    </casePlanModel>
+    <input id="_Lf3bt_16" name="Root" bindingRef="_Lf3bt_0"/>
+</case>
