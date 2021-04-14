@@ -5,9 +5,11 @@ import TestCase from '../../../../framework/test/testcase';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
 import RepositoryService from '../../../../framework/service/case/repositoryservice';
 import Case from '../../../../framework/cmmn/case';
-import { assertPlanItemState } from '../../../../framework/test/assertions';
+import { assertCaseFileContent, assertPlanItemState } from '../../../../framework/test/assertions';
 import DebugService from '../../../../framework/service/case/debugservice';
 import CaseFileService from '../../../../framework/service/case/casefileservice';
+import Comparison from '../../../../framework/test/comparison';
+import { assert } from 'console';
 
 const repositoryService = new RepositoryService();
 const definition = 'calculation.xml';
@@ -67,12 +69,12 @@ export default class TestCalculation extends TestCase {
         }
 
         try {
-            await assertPlanItemState(user, caseInstance, calculationTask, 0, 'Completed', 2);
+            await assertPlanItemState(user, caseInstance, calculationTask, 0, 'Completed');
         } catch (notFoundError) {
             // If the test fails after 10 calls, get the events for the task and see if we can print any logging info
             await debugService.getParsedEvents(caseInstance.id, user).then(events => {
                 // console.log("Found events " + JSON.stringify(events, undefined, 2));
-                console.log(`Found ${events.length} events`);
+                console.log(`Found ${events.length} events, trying to print debug event`);
                 const debugEvent = events.filter((e: any) => e.type === 'DebugEvent');
                 console.log("Debug event " + JSON.stringify(debugEvent[0].content.messages, undefined, 2));
             });
@@ -81,10 +83,22 @@ export default class TestCalculation extends TestCase {
         }
 
         await caseFileService.getCaseFile(user, caseInstance).then(file => {
-            console.log(`Case File: ${JSON.stringify(file, undefined, 2)}`);
-        })
+            const expectedNumOfYElements = 3;
+            if (file.Output1.y.length !== expectedNumOfYElements) {
+                console.log(`Case File: ${JSON.stringify(file, undefined, 2)}`);
+                throw new Error(`Expecting output 1 to have ${expectedNumOfYElements} y elements, but found ${file.Output1.y.length}`)
+            }
+            const expectedOutput4 = nr === 1;
+            if (file.Output4 !== expectedOutput4) {
+                console.log(`Case File: ${JSON.stringify(file, undefined, 2)}`);
+                throw new Error(`Expecting Output4 to be ${expectedOutput4} for nr ${nr}, but found ${file.Output4}`)
+            }
+        });
 
-        console.log(`\nTask ID:\t${taskId}\n\nCase ID:\t${caseInstance.id}`);
+        await assertCaseFileContent(user, caseInstance, "Output4", nr === 1);
+
+
+        console.log(`\nCase ID:\t${caseInstance.id}`);
     }
 }
 
