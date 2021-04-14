@@ -37,10 +37,23 @@ export default class TestCalculation extends TestCase {
                     description: 'This is first input parameter',
                     nr
                 },
-                input2: {
+                input2: [{
                     message: 'i think i exist',
-                    name: 'discard \'r'
-                },
+                    name: 'discard \'r',
+                    filterOut: 1
+                }, {
+                    message: 'i think i exist as well',
+                    name: 'discard \'r',
+                    filterOut: 7
+                }, {
+                    message: 'i think i do not exist',
+                    name: 'discard \'r',
+                    filterOut: 0                    
+                }, {
+                    message: 'i think i do not exist either',
+                    name: 'discard \'r',
+                    filterOut: 0                    
+                }],
             }
         }
         const startCase = { tenant, definition, inputs };
@@ -54,12 +67,16 @@ export default class TestCalculation extends TestCase {
         }
 
         try {
-            await assertPlanItemState(user, caseInstance, calculationTask, 0, 'Completed', 10);
+            await assertPlanItemState(user, caseInstance, calculationTask, 0, 'Completed', 2);
         } catch (notFoundError) {
             // If the test fails after 10 calls, get the events for the task and see if we can print any logging info
-            await debugService.getParsedEvents(taskId, user).then(events => {
-                console.log("Found events " + JSON.stringify(events, undefined, 2));
+            await debugService.getParsedEvents(caseInstance.id, user).then(events => {
+                // console.log("Found events " + JSON.stringify(events, undefined, 2));
+                console.log(`Found ${events.length} events`);
+                const debugEvent = events.filter((e: any) => e.type === 'DebugEvent');
+                console.log("Debug event " + JSON.stringify(debugEvent[0].content.messages, undefined, 2));
             });
+            
             throw notFoundError;
         }
 

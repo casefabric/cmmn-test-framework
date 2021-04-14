@@ -3,7 +3,7 @@
         <caseFileItem id="_ZlziS_0" name="Root" multiplicity="ExactlyOne" definitionRef="unspecified.cfid">
             <children>
                 <caseFileItem id="_ZlziS_1" name="input1" multiplicity="ExactlyOne" definitionRef="unspecified.cfid"/>
-                <caseFileItem id="_ZlziS_2" name="input2" multiplicity="ExactlyOne" definitionRef="unspecified.cfid"/>
+                <caseFileItem id="_ZlziS_2" name="input2" multiplicity="ZeroOrMore" definitionRef="unspecified.cfid"/>
             </children>
         </caseFileItem>
         <caseFileItem id="_ZlziS_3" name="Output1" multiplicity="ExactlyOne" definitionRef="unspecified.cfid"/>
@@ -16,7 +16,13 @@
         <planItem id="pi_pt__ZlziS_0" name="CalculationTask" definitionRef="pt__ZlziS_0"/>
         <processTask id="pt__ZlziS_0" name="CalculationTask" isBlocking="true" processRef="simplecalculation.process">
             <inputs id="_ZlziS_9" name="input1" bindingRef="_ZlziS_1"/>
-            <inputs id="_ZlziS_10" name="input2" bindingRef="_ZlziS_2"/>
+            <inputs id="_ZlziS_10" name="input2" bindingRef="_ZlziS_2">
+                <bindingRefinement id="_ZlziS_25">
+                    <body>
+                        <![CDATA[list]]>
+                    </body>
+                </bindingRefinement>
+            </inputs>
             <outputs id="_ZlziS_11" name="Output" bindingRef="_ZlziS_3"/>
             <outputs id="_ZlziS_17" name="Output2" bindingRef="_ZlziS_13"/>
             <outputs id="_ZlziS_18" name="Output3" bindingRef="_ZlziS_14"/>
