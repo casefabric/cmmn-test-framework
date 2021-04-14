@@ -43,16 +43,16 @@ export default class TestCalculation extends TestCase {
                     filterOut: 1
                 }, {
                     message: 'i think i exist as well',
-                    name: 'discard \'r',
+                    name: 'wishful thought',
                     filterOut: 7
                 }, {
                     message: 'i think i do not exist',
-                    name: 'discard \'r',
-                    filterOut: 0                    
+                    name: 'zom bee',
+                    filterOut: 0
                 }, {
-                    message: 'i think i do not exist either',
-                    name: 'discard \'r',
-                    filterOut: 0                    
+                    thought: 'is a thought a message?',
+                    name: 'philosopher',
+                    filterOut: 0
                 }],
             }
         }
@@ -76,7 +76,7 @@ export default class TestCalculation extends TestCase {
                 const debugEvent = events.filter((e: any) => e.type === 'DebugEvent');
                 console.log("Debug event " + JSON.stringify(debugEvent[0].content.messages, undefined, 2));
             });
-            
+
             throw notFoundError;
         }
 
