@@ -39,7 +39,7 @@ export default class TestCaseTeamAPI extends TestCase {
     }
 
     async run() {
-        // await this.generalAPITest();
+        await this.generalAPITest();
         await this.ownershipTest();
     }
 
