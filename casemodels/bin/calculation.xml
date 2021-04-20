@@ -52,50 +52,50 @@
         <extensionElements>
             <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.calculation.CalculationDefinition">
                 <map output="mappedMessage">
-                    <input>filterOnlyWithMessage</input>
-                    <expression element="in2">in2.filterOut + ": '" + in2.message + "', says " + in2.name</expression>
+                    <input source="filterOnlyWithMessage" as="in2"/>
+                    <expression>in2.filterOut + ": '" + in2.message + "', says " + in2.name</expression>
                 </map>
                 <filter output="filterOnlyWithMessage">
-                    <input>in2</input>
+                    <input source="in2"/>
                     <expression>in2.has('message')</expression>
                 </filter>
                 <step output="out1">
-                    <input>in1</input>
-                    <input>mappedMessage</input>
-                    <expression>map("x", in1, "y", mappedMessage)</expression>
+                    <input source="in1"/>
+                    <input source="mappedMessage" as="mm"/>
+                    <expression>map("x", in1, "y", mm)</expression>
                 </step>
                 <step output="just_a_var">
-                    <input>in1</input>
+                    <input source="in1"/>
                     <expression>in1.nr * 13</expression>
                 </step>
                 <step output="out3">
                     <expression>"I'm a fixed string with not much extra; but perhaps my task id? It is: " + task.id</expression>
                 </step>
                 <step output="out2">
-                    <input>in1</input>
-                    <input>just_a_var</input>
-                    <input>out3</input>
+                    <input source="in1"/>
+                    <input source="just_a_var"/>
+                    <input source="out3"/>
                     <expression>"I'm telling you " + just_a_var +" times: " + out3</expression>
                     <condition>in1.nr == 1</condition>
                 </step>
                 <map output="mappedOut4">
-                    <input>out5</input>
+                    <input source="out5"/>
                     <expression>
                         <![CDATA[out5]]>
                     </expression>
                 </map>
                 <step output="out4">
-                    <input>mappedOut4</input>
+                    <input source="mappedOut4"/>
                     <expression>
                         <![CDATA[mappedOut4]]>
                     </expression>
                 </step>
                 <step output="out5">
-                    <input>c3</input>
+                    <input source="c3"/>
                     <expression>c3</expression>
                 </step>
                 <step output="c3">
-                    <input>in1</input>
+                    <input source="in1"/>
                     <expression>
                         <![CDATA[(11 != 13) && (2 * 2 == 4) && in1.nr == 1]]>
                     </expression>
