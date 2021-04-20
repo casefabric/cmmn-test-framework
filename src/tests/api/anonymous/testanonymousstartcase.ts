@@ -3,12 +3,8 @@
 import CaseService from '../../../framework/service/case/caseservice';
 import TestCase from '../../../framework/test/testcase';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
-import CaseTeamMember, { CaseOwner } from '../../../framework/cmmn/caseteammember';
-import CaseTeam from '../../../framework/cmmn/caseteam';
 import Case from '../../../framework/cmmn/case';
 import TenantUser, { TenantOwner } from '../../../framework/tenant/tenantuser';
-import Tenant from '../../../framework/tenant/tenant';
-import User from '../../../framework/user';
 import RequestService from '../../../framework/service/anonymous/requestservice';
 import AnonymousWorld from './anonymousworld';
 

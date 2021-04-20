@@ -1,0 +1,62 @@
+<process name="SimpleCalculation" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
+    <input id="_L7Tg_in1" name="in1"/>
+    <input id="_0Fl1_in2" name="in2"/>
+    <output id="_spg6_out1" name="out1"/>
+    <output id="_se2Q_out2" name="out2"/>
+    <output id="_isCx_out3" name="out3"/>
+    <output id="_QBe0_out4" name="out4"/>
+    <output id="_p93u_out5" name="out5"/>
+    <extensionElements>
+        <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.calculation.CalculationDefinition">
+            <map output="mappedMessage">
+                <input source="filterOnlyWithMessage" as="in2" />
+                <expression>in2.filterOut + ": '" + in2.message + "', says " + in2.name</expression>
+            </map>
+            <filter output="filterOnlyWithMessage">
+                <input source="in2" />
+                <expression>in2.has('message')</expression>
+            </filter>
+            <step output="out1">
+                <input source="in1" />
+                <input source="mappedMessage" as="mm" />
+                <expression>map("x", in1, "y", mm)</expression>
+            </step>
+            <step output="just_a_var">
+                <input source="in1" />
+                <expression>in1.nr * 13</expression>
+            </step>
+            <step output="out3">
+                <expression>"I'm a fixed string with not much extra; but perhaps my task id? It is: " + task.id</expression>
+            </step>
+            <step output="out2">
+                <input source="in1" />
+                <input source="just_a_var" />
+                <input source="out3" />
+                <expression>"I'm telling you " + just_a_var +" times: " + out3</expression>
+                <condition>in1.nr == 1</condition>
+            </step>
+            <map output="mappedOut4">
+                <input source="out5" />
+                <expression>
+                    <![CDATA[out5]]>
+                </expression>
+            </map>
+            <step output="out4">
+                <input source="mappedOut4" />
+                <expression>
+                    <![CDATA[mappedOut4]]>
+                </expression>
+            </step>
+            <step output="out5">
+                <input source="c3" />
+                <expression>c3</expression>
+            </step>
+            <step output="c3">
+                <input source="in1" />
+                <expression>
+                    <![CDATA[(11 != 13) && (2 * 2 == 4) && in1.nr == 1]]>
+                </expression>
+            </step>
+        </cafienne:implementation>
+    </extensionElements>
+</process>
