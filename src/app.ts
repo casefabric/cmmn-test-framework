@@ -48,6 +48,7 @@ import TestArraySubCase from './tests/api/task/case/testarraysubcase';
 import TestAnonymousStartCase from './tests/api/anonymous/testanonymousstartcase';
 import TestNoAnonymousStartCase from './tests/api/anonymous/testnoanonymousstartcase';
 import TestCalculation from './tests/api/task/process/testcalculation';
+import TestHelloWorldBusinessIdentifiers from './tests/api/businessidentifiers/testhelloworldbusinessidentifiers';
 
 function findTestsFromCommandLineArguments(): Array<string> {
     const time = process.argv[2];
@@ -133,6 +134,8 @@ const AllTestCases = new TestClasses([
     , TestCasePlanAPI
     , TestCasePlanHistoryAPI
     , TestBusinessIdentifiers
+    , TestFootballBusinessIdentifiers
+    , TestHelloWorldBusinessIdentifiers
     , TestRepeatWithMapping
     , TestTaskExpressions
     , TestStageTaskExpressions
@@ -147,7 +150,6 @@ const AllTestCases = new TestClasses([
     , TestValidStartCase
     , TestCaseTeamTaskAuthorizations
     , TestStartCaseEmptyRole
-    , TestFootballBusinessIdentifiers
     , TestSubCase
     , TestArraySubCase
     , TestRepeatStage
@@ -176,30 +178,30 @@ async function runTests(testDeclarations: Array<any>, onlyDefaults: boolean) {
     for (let i = 0; i < tests.length; i++) {
         const test = tests[i];
         const result = new TestResult(test);
-        const calculatedWhitespace = '                               '.substring(test.name.length)
+        const calculatedWhitespace = '                                         '.substring(test.name.length)
         try {
             console.log(`\n
-##########################################################
-#                                                        #
+####################################################################
+#                                                                  #
 #      PREPARING TEST:  "${test.name}"${calculatedWhitespace}#
-#                                                        #
-##########################################################
+#                                                                  #
+####################################################################
                         `);
             const preparationDone = await test.onPrepareTest();
             console.log(`\n
-##########################################################
-#                                                        #
+####################################################################
+#                                                                  #
 #      STARTING TEST:   "${test.name}"${calculatedWhitespace}#
-#                                                        #
-##########################################################
+#                                                                  #
+####################################################################
                         `);
             const testRun = await test.run();
             console.log(`\n
-##########################################################
-#                                                        #
+####################################################################
+#                                                                  #
 #      CLOSING TEST:    "${test.name}"${calculatedWhitespace}#
-#                                                        #
-##########################################################
+#                                                                  #
+####################################################################
                         `);
             const closeDone = await test.onCloseTest();
             result.finished();
