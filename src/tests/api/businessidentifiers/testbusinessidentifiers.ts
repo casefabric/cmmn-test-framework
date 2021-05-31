@@ -4,9 +4,11 @@ import TestCase from '../../../framework/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 import CaseIdentifierService from '../../../framework/service/identifier/caseidentifierservice';
 import IdentifierFilter from '../../../framework/service/identifier/identifierfilter';
+import TestFootballBusinessIdentifiers from './footballbusinessidentifiers/testfootballbusinessidentifiers';
+import logger from '../../../framework/logger';
 
 const identifierService = new CaseIdentifierService();
-const worldwideTenant = new WorldWideTestTenant();
+const worldwideTenant = new WorldWideTestTenant('inactive-tenant-' + Math.random().toString(36).substring(2, 15));
 
 const user = worldwideTenant.sender;
 
@@ -18,25 +20,50 @@ export default class TestBusinessIdentifiers extends TestCase {
     }
 
     async run() {
+        const footballTest = new TestFootballBusinessIdentifiers();
+        await footballTest.onPrepareTest();
+        await footballTest.run();
+        await footballTest.onCloseTest();
+
+        const footballTest2 = new TestFootballBusinessIdentifiers();
+        await footballTest2.onPrepareTest();
+        await footballTest2.run();
+        await footballTest2.onCloseTest();
+
+        console.log("Closed ft, running test")
+
         await this.printList();
         await this.printList({ tenant : worldwideTenant.name});
+        await this.printList({ tenant : footballTest.tenant});
+        await this.printList({ tenant : footballTest2.tenant});
         await this.printList({ name : 'clubname'});
         await this.printList({ offset : 10, numberOfResults: 5});
         await this.printList({ name : 'name'});
 
+        await identifierService.getIdentifierNames(user).then(list => {
+            logger.debug(`List: ${JSON.stringify(list, undefined, 2)}`);
+        });
+
         this.lists.forEach((list, index) => {
             console.log(`List[${index}] has ${list.length} items`);
-        })
+        });
 
-        await identifierService.getIdentifierNames(user).then(list => {
-            console.log(`List: ${JSON.stringify(list, undefined, 2)}`);
+        // These sizes are expected in the first 4 test cases. 
+        //  - Plain printing gives the default numOfResults, which is 100.
+        //  - Second list is with our own inactive tenant -> should not have any identifiers
+        //  - Third and fourth are the 2 football test tenants created in this test, and should each have 62 identifiers.
+        const expectedListSizes = [100, 0, 62, 62];
 
-        })
+        expectedListSizes.forEach((expectedSize, index) => {
+            if (this.lists[index].length !== expectedSize) {
+                throw new Error(`List[${index}] has ${this.lists[index].length} items, but we expected ${expectedSize} items instead`);
+            }
+        });
     }
 
     async printList(filter?: IdentifierFilter) {
         const list = await identifierService.getIdentifiers(user, filter);
         this.lists.push(list);
-        console.log(`List: ${JSON.stringify(list, undefined, 2)}`);
+        logger.debug(`List: ${JSON.stringify(list, undefined, 2)}`);
     }
 }
