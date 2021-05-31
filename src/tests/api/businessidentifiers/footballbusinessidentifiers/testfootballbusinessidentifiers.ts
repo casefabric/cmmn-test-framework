@@ -3,7 +3,6 @@
 import CaseService from "../../../../framework/service/case/caseservice";
 import WorldWideTestTenant from "../../../worldwidetesttenant";
 import TestCase from "../../../../framework/test/testcase";
-import TaskService from "../../../../framework/service/task/taskservice";
 import RepositoryService from "../../../../framework/service/case/repositoryservice";
 import CaseTeamMember, { CaseOwner } from "../../../../framework/cmmn/caseteammember";
 import CaseTeam from "../../../../framework/cmmn/caseteam";
@@ -14,27 +13,31 @@ import { assertGetCasesAndTasksFilter } from "../../../../framework/test/asserti
 
 const caseService = new CaseService();
 const repositoryService = new RepositoryService();
-const tenantName = 'football' + Math.random().toString(36).substring(2, 15);
-const worldwideTenant = new WorldWideTestTenant(tenantName);
-const tenant = worldwideTenant.name;
-const user1 = worldwideTenant.sender;
-const user2 = worldwideTenant.receiver;
 const footballStatsDefinition = 'footballstats.xml';
 const footballClubStatsDefinition = 'footballclubstats.xml';
 
 
 export default class TestFootballBusinessIdentifiers extends TestCase {
+    footballTenant = new WorldWideTestTenant(this.tenant);
+    user1 = this.footballTenant.sender;
+    user2 = this.footballTenant.receiver;
+
+    constructor(public tenant: string = 'football' + Math.random().toString(36).substring(2, 15)) {
+        super();
+    }
+
     async onPrepareTest() {
-        await worldwideTenant.create();
+        await this.footballTenant.create();
 
         // Validate and deploy footballstats model
-        await repositoryService.validateAndDeploy(user1, footballStatsDefinition, tenant);
+        await repositoryService.validateAndDeploy(this.user1, footballStatsDefinition, this.tenant);
 
         // Validate and deploy footballclubstats model
-        await repositoryService.validateAndDeploy(user1, footballClubStatsDefinition, tenant);
+        await repositoryService.validateAndDeploy(this.user1, footballClubStatsDefinition, this.tenant);
     }
 
     async run() {
+        const tenant = this.tenant;
         const filtersData = new FiltersData(tenant);
 
         console.log(`\n
@@ -45,17 +48,17 @@ Starting business identifier's filters test for footballstats model.
 
         // Populate the case instances with the different players
         for (const data of PlayerData.playerData) {
-            // Start cases with only user1 in the case team
+            // Start cases with only this.user1 in the case team
             const inputs = { "player": data };
-            const caseTeam = new CaseTeam([new CaseOwner(user1)]);
+            const caseTeam = new CaseTeam([new CaseOwner(this.user1)]);
             const definition = footballStatsDefinition;
             const startCase = { tenant, definition, inputs, caseTeam };
-            await caseService.startCase(user1, startCase);
+            await caseService.startCase(this.user1, startCase);
         }
 
         // tests against all filters in testFootballStatsFilters
         for (const filter of filtersData.testFootballStatsFilters) {
-            await assertGetCasesAndTasksFilter(user1, filter);
+            await assertGetCasesAndTasksFilter(this.user1, filter);
         }
 
         console.log(`\n
@@ -68,15 +71,15 @@ Starting business identifier's multi-user filters test for footballstats model.
         for (const data of PlayerData.playerDataForMultiUserTest) {
             // Case team for testing in FootballStats model (multi-user)
             const inputs = { "player": data };
-            const caseTeam = new CaseTeam([new CaseOwner(user1), new CaseTeamMember(user2)]);
+            const caseTeam = new CaseTeam([new CaseOwner(this.user1), new CaseTeamMember(this.user2)]);
             const definition = footballStatsDefinition;
             const startCase = { tenant, definition, inputs, caseTeam };
-            await caseService.startCase(user1, startCase);
+            await caseService.startCase(this.user1, startCase);
         }
 
         // tests against all filters in testFootballStatsMultiUserFilters
         for (const filter of filtersData.testFootballStatsMultiUserFilters) {
-            await assertGetCasesAndTasksFilter(user2, filter);
+            await assertGetCasesAndTasksFilter(this.user2, filter);
         }
 
         console.log(`\n
@@ -87,22 +90,22 @@ Starting business identifier's filters test for footballstats + footballclubstat
 
         // Populate the case instances with different club players
         for (const data of ClubData.clubData) {
-            // Start FootballClub cases with only user1 in the case team
+            // Start FootballClub cases with only this.user1 in the case team
             const definition = footballClubStatsDefinition;
             const inputs = { "player": data };
-            const caseTeam = new CaseTeam([new CaseOwner(user1)]);
+            const caseTeam = new CaseTeam([new CaseOwner(this.user1)]);
             const startCase = { tenant, definition, inputs, caseTeam };
-            await caseService.startCase(user1, startCase);
+            await caseService.startCase(this.user1, startCase);
         }
 
         // tests against all filters in testFootballStatsCombinedFilters
         for (const filter of filtersData.testFootballStatsCombinedFilters) {
-            await assertGetCasesAndTasksFilter(user1, filter);
+            await assertGetCasesAndTasksFilter(this.user1, filter);
         }
 
         // tests against all filters in testFootballStatsMultiUserCombinedFilters
         for (const filter of filtersData.testFootballStatsMultiUserCombinedFilters) {
-            await assertGetCasesAndTasksFilter(user2, filter);
+            await assertGetCasesAndTasksFilter(this.user2, filter);
         }
     }
 }
