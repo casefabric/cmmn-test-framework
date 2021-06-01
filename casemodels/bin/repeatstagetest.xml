@@ -35,7 +35,7 @@
                     <repetitionRule id="_6Clld_11">
                         <condition id="_6Clld_12">
                             <body>
-                                <![CDATA[true]]>
+                                <![CDATA[stage.index < 5]]>
                             </body>
                         </condition>
                     </repetitionRule>
@@ -135,6 +135,8 @@
         <input id="_HMzY_httpPort" name="httpPort"/>
         <input id="_pnjz_count" name="count"/>
         <output id="_6E7g_response" name="response"/>
+        <output id="_UJvH_errorCode" name="errorCode"/>
+        <output id="_52zr_errorPayload" name="errorPayload"/>
         <extensionElements>
             <cafienne:implementation xmlns:cafienne="org.cafienne" async="false" class="org.cafienne.processtask.implementation.http.HTTPCallDefinition">
                 <url>http://localhost:${httpPort}/getWaitTime?index=${count}</url>
@@ -142,7 +144,13 @@
                 <http-headers>
                     <http-header name="Accept">application/json</http-header>
                 </http-headers>
-                <parameterMapping sourceRef="responsePayload" targetRef="response"/>
+                <failure>
+                    <parameterMapping sourceRef="responseCode" targetRef="errorCode"/>
+                    <parameterMapping sourceRef="responsePayload" targetRef="errorPayload"/>
+                </failure>
+                <success>
+                    <parameterMapping sourceRef="responsePayload" targetRef="response"/>
+                </success>
             </cafienne:implementation>
         </extensionElements>
     </process>

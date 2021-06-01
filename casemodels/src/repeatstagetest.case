@@ -30,7 +30,7 @@
                 <repetitionRule id="_6Clld_11">
                     <condition id="_6Clld_12">
                         <body>
-                            <![CDATA[true]]>
+                            <![CDATA[stage.index < 5]]>
                         </body>
                     </condition>
                 </repetitionRule>
