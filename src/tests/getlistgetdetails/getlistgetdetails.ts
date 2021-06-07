@@ -66,7 +66,7 @@ export default class TestGetListGetDetails extends TestCase {
         await caseFileService.createCaseFileItem(user, caseInstance, "HTTPConfig", inputs);
 
         // Give the 'GetList.0' process task up to 5 seconds to fail and activate Stage 'Fail handling.0'
-        await assertPlanItemState(user, caseInstance, 'Fail handling', 0, 'Active', 10);
+        await assertPlanItemState(user, caseInstance, 'Fail handling', 0, 'Active');
 
         // MockService is not yet started. So, GetList goes to Failed state
         await assertPlanItemState(user, caseInstance, 'GetList', 0, 'Failed');
@@ -81,7 +81,7 @@ export default class TestGetListGetDetails extends TestCase {
         casePlanService.makePlanItemTransition(user, caseInstance, 'Try Again', 'Occur');
 
         // Give the 'GetList.1' process task up to 5 seconds to fail (because Mock is still not started) and activate Stage 'Fail handling.1'
-        await assertPlanItemState(user, caseInstance, 'Fail handling', 1, 'Active', 10);
+        await assertPlanItemState(user, caseInstance, 'Fail handling', 1, 'Active');
 
         // MockService is not yet started. So, GetList goes to Failed state
         await assertPlanItemState(user, caseInstance, 'GetList', 1, 'Failed');
@@ -96,11 +96,11 @@ export default class TestGetListGetDetails extends TestCase {
         casePlanService.makePlanItemTransition(user, caseInstance, 'Try Again', 'Occur');
 
         // Give the 'GetList.1' process task up to 5 seconds to fail (because Mock is still not started) and activate Stage 'Fail handling.1'
-        await assertPlanItemState(user, caseInstance, 'GetList', 2, 'Completed', 10);
+        await assertPlanItemState(user, caseInstance, 'GetList', 2, 'Completed');
 
         // GetDetails tasks of index upto 3 has to be completed
         for (let i = 0; i < 4; i++) {
-            await assertPlanItemState(user, caseInstance, 'GetDetails', i, 'Completed', 10);
+            await assertPlanItemState(user, caseInstance, 'GetDetails', i, 'Completed');
         }
 
         const exceptionCaseFile = await caseFileService.getCaseFile(user, caseInstance);

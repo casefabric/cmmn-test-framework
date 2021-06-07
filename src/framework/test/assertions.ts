@@ -59,7 +59,7 @@ export async function assertTask(user: User, task: Task, action: string, expecte
  * @returns {Promise<PlanItem>} the plan item if it is found
  * @throws {Error} if the plan item is not found after so many attempts
  */
-export async function assertPlanItemState(user: User, caseInstance: Case, planItemName: string, planItemIndex: number, expectedState: string, maxAttempts: number = 1, waitTimeBetweenAttempts = 1000): Promise<PlanItem> {
+export async function assertPlanItemState(user: User, caseInstance: Case, planItemName: string, planItemIndex: number, expectedState: string, maxAttempts: number = 10, waitTimeBetweenAttempts = 1000): Promise<PlanItem> {
     let currentAttempt = 1;
     while (true) {
         console.log(`Running attempt ${currentAttempt} of ${maxAttempts} to find '${planItemName}.${planItemIndex}' in state ${expectedState}`);
@@ -85,7 +85,7 @@ export async function assertPlanItemState(user: User, caseInstance: Case, planIt
  * @param user 
  * @param expectedState 
  */
-export async function assertCasePlanState(user: User, caseInstance: Case|string, expectedState: string, maxAttempts: number = 1, waitTimeBetweenAttempts = 1000) {
+export async function assertCasePlanState(user: User, caseInstance: Case|string, expectedState: string, maxAttempts: number = 10, waitTimeBetweenAttempts = 1000) {
     const caseId = checkCaseID(caseInstance);
     const tryGetCase = async () => {
         try {

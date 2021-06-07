@@ -56,10 +56,10 @@ export default class TestSubCase extends TestCase {
         await assertCaseTeamMember(sender, caseInstance, new CaseOwner(sender, []));
         await assertCaseTeamMember(sender, caseInstance, new CaseTeamMember(receiver, []), false);
 
-        await assertPlanItemState(sender, caseInstance, subCase.name, subCase.index, 'Active', 10, 2000);
+        await assertPlanItemState(sender, caseInstance, subCase.name, subCase.index, 'Active');
 
         // Get subcase is possible by sender
-        const childCaseInstance = await assertCasePlanState(sender, subCase.id, 'Active', 10, 2000);
+        const childCaseInstance = await assertCasePlanState(sender, subCase.id, 'Active');
 
         // Sender is the owner of the subcase and receiver doesn't exist in the subcase yet
         await assertCaseTeamMember(sender, childCaseInstance, new CaseOwner(sender, []));

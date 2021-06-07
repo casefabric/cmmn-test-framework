@@ -41,23 +41,23 @@ export default class TestArraySubCase extends TestCase {
         const caseInstance = await caseService.getCase(user, caseId);
         const subCasePlanItem = caseInstance.planitems.find(item => item.name === 'simpleinoutcase') as PlanItem;
 
-        await assertPlanItemState(user, caseInstance, subCasePlanItem.name, subCasePlanItem.index, 'Active', 10, 2000);
+        await assertPlanItemState(user, caseInstance, subCasePlanItem.name, subCasePlanItem.index, 'Active');
 
         // Get subcase is possible by sender
-        const subCaseInstance = await assertCasePlanState(user, subCasePlanItem.id, 'Active', 10, 2000);
+        const subCaseInstance = await assertCasePlanState(user, subCasePlanItem.id, 'Active');
 
         const numTasksToComplete = 3;
         const expectedCaseFileOutput = [];
         for (let i = 0; i < numTasksToComplete; i++) {
-            const taskInstance = await assertPlanItemState(user, subCaseInstance, 'Task', i, 'Active', 10, 2000);
+            const taskInstance = await assertPlanItemState(user, subCaseInstance, 'Task', i, 'Active');
             const taskOutput = { Out: i };
             expectedCaseFileOutput.push(i);
             await taskService.completeTask(user, taskInstance, taskOutput);
         }
 
         await casePlanService.raiseEvent(user, subCaseInstance, 'Complete Case');
-        await assertCasePlanState(user, subCasePlanItem.id, 'Completed', 10, 2000);
-        await assertPlanItemState(user, caseInstance, subCasePlanItem.name, subCasePlanItem.index, 'Completed', 10, 2000);
+        await assertCasePlanState(user, subCasePlanItem.id, 'Completed');
+        await assertPlanItemState(user, caseInstance, subCasePlanItem.name, subCasePlanItem.index, 'Completed');
 
         const caseFile = await caseFileService.getCaseFile(user, caseInstance);
         console.log("Completed Case Task with output: " + JSON.stringify(caseFile, undefined, 2));

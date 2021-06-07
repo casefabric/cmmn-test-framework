@@ -65,7 +65,7 @@ export default class TestProcessTask extends TestCase {
         await caseFileService.createCaseFileItem(user, caseInstance, 'ServiceInput', okServiceInput);
         await casePlanService.makePlanItemTransition(user, caseInstance, 'Get OK', 'Occur');
 
-        await assertPlanItemState(user, caseInstance, 'Get Object Response', 0, 'Completed', 5);
+        await assertPlanItemState(user, caseInstance, 'Get Object Response', 0, 'Completed');
 
         await caseFileService.getCaseFile(user, caseInstance).then(file => {
             console.log("Case File " + JSON.stringify(file, undefined, 2));
@@ -82,7 +82,7 @@ export default class TestProcessTask extends TestCase {
         await caseFileService.updateCaseFileItem(user, caseInstance, 'ServiceInput', failureServiceInput);
         await casePlanService.makePlanItemTransition(user, caseInstance, 'Get Error', 'Occur');
 
-        await assertPlanItemState(user, caseInstance, 'Get Error Response', 0, 'Failed', 5);
+        await assertPlanItemState(user, caseInstance, 'Get Error Response', 0, 'Failed');
 
         await caseFileService.getCaseFile(user, caseInstance).then(file => {
             console.log("Case File " + JSON.stringify(file, undefined, 2));
