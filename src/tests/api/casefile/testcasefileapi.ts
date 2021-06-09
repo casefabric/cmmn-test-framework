@@ -155,12 +155,6 @@ export default class TestCaseFileAPI extends TestCase {
         await caseFileService.updateCaseFileItem(user, caseInstance, 'RootCaseFileItem', invalidNestedPropertyValue, 400);
         await caseFileService.replaceCaseFileItem(user, caseInstance, 'RootCaseFileItem', invalidNestedPropertyValue, 400);
 
-        // Also a deeper nested type of property must be defined, both for update and replace
-        const undefinedNestedPropertyValue = Util.clone(caseFileItem);
-        undefinedNestedPropertyValue.ChildItem.ChildBirthDate = '2001-10-26';
-        await caseFileService.updateCaseFileItem(user, caseInstance, 'RootCaseFileItem', undefinedNestedPropertyValue, 400);
-        await caseFileService.replaceCaseFileItem(user, caseInstance, 'RootCaseFileItem', undefinedNestedPropertyValue, 400);
-
         // Update the case file item with only a new value for "RootProperty1" should only change that field.
         const shallowCopy = { RootProperty1: "second string" };
         caseFileItem.RootProperty1 = shallowCopy.RootProperty1; // Update the field locally for the assertion to work
@@ -200,12 +194,19 @@ export default class TestCaseFileAPI extends TestCase {
         await caseFileService.deleteCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildItem', 400);
 
         // Child item now must be undefined
-        await assertCaseFileContent(user, caseInstance, 'RootCaseFileItem/ChildItem', undefined);
+        await assertCaseFileContent(user, caseInstance, 'RootCaseFileItem/ChildItem', null);
 
         // Delete entire case file
         await caseFileService.deleteCaseFileItem(user, caseInstance, 'RootCaseFileItem');
+
+        // Child item now must be undefined
+        await assertCaseFileContent(user, caseInstance, 'RootCaseFileItem', null);
+
+        // Delete entire case file, does not have any effect, actually.
+        await caseFileService.deleteCaseFile(user, caseInstance);
+
         // Top level must be empty object
-        await assertCaseFileContent(user, caseInstance, '', {});
+        await assertCaseFileContent(user, caseInstance, '', {RootCaseFileItem: null});
 
         return caseInstance;
     }

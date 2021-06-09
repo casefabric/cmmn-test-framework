@@ -1,3 +1,4 @@
+import Tenant from '../../tenant/tenant';
 import User from '../../user';
 import CafienneService from '../cafienneservice';
 import { checkJSONResponse } from '../response';
@@ -18,5 +19,9 @@ export default class DebugService {
     async getParsedEvents(model: string, user?: User) {
         const response = await this.getEvents(model, user);
         return checkJSONResponse(response, 'Expecting model events', 200, [Object]);
+    }
+
+    async forceRecovery(user: User, modelId: string) {
+        return await cafienneService.patch(user, `/debug/force-recovery/${modelId}`)
     }
 }
