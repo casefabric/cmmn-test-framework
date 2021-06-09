@@ -200,12 +200,19 @@ export default class TestCaseFileAPI extends TestCase {
         await caseFileService.deleteCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildItem', 400);
 
         // Child item now must be undefined
-        await assertCaseFileContent(user, caseInstance, 'RootCaseFileItem/ChildItem', undefined);
+        await assertCaseFileContent(user, caseInstance, 'RootCaseFileItem/ChildItem', null);
 
         // Delete entire case file
         await caseFileService.deleteCaseFileItem(user, caseInstance, 'RootCaseFileItem');
+
+        // Child item now must be undefined
+        await assertCaseFileContent(user, caseInstance, 'RootCaseFileItem', null);
+
+        // Delete entire case file, does not have any effect, actually.
+        await caseFileService.deleteCaseFile(user, caseInstance);
+
         // Top level must be empty object
-        await assertCaseFileContent(user, caseInstance, '', {});
+        await assertCaseFileContent(user, caseInstance, '', {RootCaseFileItem: null});
 
         return caseInstance;
     }

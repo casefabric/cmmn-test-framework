@@ -49,6 +49,7 @@ import TestAnonymousStartCase from './tests/api/anonymous/testanonymousstartcase
 import TestNoAnonymousStartCase from './tests/api/anonymous/testnoanonymousstartcase';
 import TestCalculation from './tests/api/task/process/testcalculation';
 import TestHelloWorldBusinessIdentifiers from './tests/api/businessidentifiers/testhelloworldbusinessidentifiers';
+import TestCaseFileArrayAPI from './tests/api/casefile/testcasefilearrayapi';
 
 function findTestsFromCommandLineArguments(): Array<string> {
     const time = process.argv[2];
@@ -130,6 +131,7 @@ const AllTestCases = new TestClasses([
     , TestRepositoryAPI
     , TestTokenValidation
     , TestCaseFileAPI
+    , TestCaseFileArrayAPI
     , TestBootstrapCaseFileEvents
     , TestCasePlanAPI
     , TestCasePlanHistoryAPI
