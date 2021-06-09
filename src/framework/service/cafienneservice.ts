@@ -53,6 +53,11 @@ export default class CafienneService {
         return this.fetch(user, url, 'DELETE', headers);
     }
 
+    async patch(user: User, url: string) {
+        const headers = Object.create(CafienneService.headers);
+        return this.fetch(user, url, 'PATCH', headers);
+    }
+
     async get(url: string, user: User | undefined, filter?: QueryFilter, headers: Headers = Object.create(CafienneService.headers)) {
         if (filter) {
             url = extendURL(url, filter);
