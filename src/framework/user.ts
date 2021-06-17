@@ -45,14 +45,16 @@ export default class User {
     }
 
     set token(newToken: string) {
-        if (this.token !== newToken) {
-            if (!this.token) {
-                logger.debug(`Setting token for user ${this.id} to ${newToken}`);
+        if (Config.TokenService.log) {
+            if (this.token !== newToken) {
+                if (!this.token) {
+                    logger.debug(`Setting token for user ${this.id} to ${newToken}`);
+                } else {
+                    logger.debug(`Updating token for user ${this.id} to ${newToken}`);
+                }
             } else {
-                logger.debug(`Updating token for user ${this.id} to ${newToken}`);
+                logger.debug(`New token for user ${this.id} is same as before`);
             }
-        } else {
-            logger.debug(`New token for user ${this.id} is same as before`);
         }
 
         this.token_property = newToken;
@@ -69,7 +71,9 @@ export default class User {
      * Clear current token of user.
      */
     clearToken() {
-        logger.debug(`Clearing token for user ${this.id}`);
+        if (Config.TokenService.log) {
+            logger.debug(`Clearing token for user ${this.id}`);
+        }
         this.token_property = '';
     }
 

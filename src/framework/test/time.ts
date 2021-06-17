@@ -8,7 +8,9 @@ import logger from "../logger";
 */
 export async function SomeTime(millis: number, msg: string = `Waiting ${millis} milliseconds`) {
     await new Promise(resolve => {
-        logger.debug(msg);
+        if (Config.TestCase.log) {
+            logger.debug(msg);
+        }
         setTimeout(resolve, millis);
     });
 }

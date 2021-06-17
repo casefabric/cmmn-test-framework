@@ -59,14 +59,14 @@ export async function assertTask(user: User, task: Task, action: string, expecte
  * @returns {Promise<PlanItem>} the plan item if it is found
  * @throws {Error} if the plan item is not found after so many attempts
  */
-export async function assertPlanItemState(user: User, caseInstance: Case, planItemName: string, planItemIndex: number, expectedState: string, maxAttempts: number = 10, waitTimeBetweenAttempts = 1000): Promise<PlanItem> {
+export async function assertPlanItemState(user: User, caseInstance: Case, planItemName: string, planItemIndex: number, expectedState?: string, maxAttempts: number = 10, waitTimeBetweenAttempts = 1000): Promise<PlanItem> {
     let currentAttempt = 1;
     while (true) {
         console.log(`Running attempt ${currentAttempt} of ${maxAttempts} to find '${planItemName}.${planItemIndex}' in state ${expectedState}`);
         const freshCase = await caseService.getCase(user, caseInstance);
         // console.log("Current Plan Items\n" + (freshCase.planitems.map(item => "- '" + item.name + "." + item.index + "' ==> '" + item.currentState + "'")).join('\n'));
         const planItem = freshCase.planitems.find(p => p.name === planItemName && p.index === planItemIndex);
-        if (planItem?.currentState === expectedState) {
+        if (planItem && (! expectedState || planItem.currentState === expectedState)) {
             return planItem;
         }
         if (currentAttempt >= maxAttempts) {
@@ -85,7 +85,7 @@ export async function assertPlanItemState(user: User, caseInstance: Case, planIt
  * @param user 
  * @param expectedState 
  */
-export async function assertCasePlanState(user: User, caseInstance: Case|string, expectedState: string, maxAttempts: number = 10, waitTimeBetweenAttempts = 1000) {
+export async function assertCasePlanState(user: User, caseInstance: Case|string, expectedState?: string, maxAttempts: number = 10, waitTimeBetweenAttempts = 1000) {
     const caseId = checkCaseID(caseInstance);
     const tryGetCase = async () => {
         try {
@@ -97,10 +97,10 @@ export async function assertCasePlanState(user: User, caseInstance: Case|string,
     }
     let currentAttempt = 1;
     while (true) {
-        console.log(`Running attempt ${currentAttempt} of ${maxAttempts} to find case ${caseId} in state ${expectedState}`);
+        // console.log(`Running attempt ${currentAttempt} of ${maxAttempts} to find case ${caseId} in state ${expectedState}`);
         // Get case details
         const freshCase = await tryGetCase();
-        if (freshCase?.state === expectedState) {
+        if (freshCase && (!expectedState || freshCase.state === expectedState)) {
             return freshCase;
         }
         if (currentAttempt >= maxAttempts) {
@@ -125,6 +125,17 @@ export function verifyTaskInput(task: Task, taskInput: any) {
 }
 
 /**
+ * Get case task based on given task name in a case instance
+ * @param user 
+ * @param caseInstance 
+ * @param taskName 
+ */
+export async function getCaseTask(user: User, caseInstance: Case, taskName: string) {
+    return taskService.getCaseTask(user, caseInstance, taskName);
+}
+
+
+/**
  * Finds and returns a particular task with in list of tasks
  * and throws an error if it does not exist
  * @param tasks 
@@ -136,6 +147,25 @@ export function findTask(tasks: Task[], taskName: string): Task {
         throw new Error(`Cannot find task ${taskName}`);
     }
     return task;
+}
+
+/** 
+ * Finds and returns a particular planItem with in the case if exists
+ * and throws an error if it does not exist
+ * @param caseInstance 
+ * @param user 
+ * @param planItemName 
+ * @param index 
+ */
+export async function findPlanItem(user: User, caseInstance: Case, planItemName: string, index: number) {
+    // const casePlanItems = await casePlanService.getPlanItems(user, caseInstance);
+    // const planItem = casePlanItems.find(p => p.name === planItemName && p.index === index);
+    // if (!planItem) {
+    //     throw new Error('Cannot find plan item ' + planItemName);
+    // }
+    // return planItem;
+    return assertPlanItemState(user, caseInstance, planItemName, index);
+
 }
 
 /**

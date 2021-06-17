@@ -20,13 +20,13 @@ export default class PlatformService {
      * @param expectedStatusCode 
      */
     async createTenant(user: User, tenant: Tenant, expectedStatusCode: number = 204) {
-        logger.debug(`Creating Tenant ${tenant.name}`);
+        if (Config.PlatformService.log) logger.debug(`Creating Tenant ${tenant.name}`);
         const response = await this.cafienneService.post('/platform', user, tenant);
         if (response.status === 400 && expectedStatusCode === 204) {
             const msg = await response.text();
             if (msg === 'Tenant already exists') {
                 // Tenant already exists is ok.
-                logger.debug(`Tenant ${tenant.name} already exists.'`)
+                if (Config.PlatformService.log) logger.debug(`Tenant ${tenant.name} already exists.'`)
                 return response;
             }
         }

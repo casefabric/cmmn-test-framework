@@ -20,7 +20,9 @@ export default class CafienneService {
             const readAndUpdateHeader = (headerName: string) => {
                 const headerValue = response.headers.get(headerName);
                 if (headerValue) {
-                    logger.debug(`Updating ${headerName} to ${headerValue}`);
+                    if (Config.CafienneService.log.response.headers) {
+                        logger.info(`Updating ${headerName} to ${headerValue}`);
+                    }
                     CafienneService.headers.set(headerName, headerValue);
                 }
             }
@@ -83,20 +85,53 @@ export default class CafienneService {
         url = this.baseURL + (url.startsWith('/') ? url.substring(1) : url);
 
         const myCallNumber = callNumber++;
-        logger.info(`\n\nHTTP:${method}[${myCallNumber}] from [${user ? user.id : ''}] to ${url}`);
-        printHeaders('Request headers:', headers);
-        logger.debug(body);
+        if (Config.CafienneService.log.url) {
+            logger.info(`\n\nHTTP:${method}[${myCallNumber}] from [${user ? user.id : ''}] to ${url}`);
+        }
+        if (Config.CafienneService.log.request.headers) {
+            printHeaders('Request headers:', headers);
+        }
+        if (Config.CafienneService.log.request.body && body) {
+            logger.debug(body);
+        }
  
         const response = await fetch(url, { method, headers, body }).then(response => new CafienneResponse(response)).then(this.updateCaseLastModified);
-        // Add an extra newline to show the response
-        logger.debug();
-        logger.info(`RESPONSE[${myCallNumber}]==> ${response.status} ${response.statusText}`);
-        printHeaders('Response headers:', response.headers);
-        // For response ok, print to debug log only; for response not-ok print info logging
-        if (response.ok) {
-            await response.text().then(text => logger.debug(text));
+        
+        if (! response.ok && Config.CafienneService.log.response.error) {
+            if (!Config.CafienneService.log.url) {
+                logger.error(`\n\nHTTP:${method}[${myCallNumber}] from [${user ? user.id : ''}] to ${url}`);
+            }
+            // Print error responses in a different color
+            if (Config.CafienneService.log.request.headers || (Config.CafienneService.log.request.body && body)) {
+                // Add an extra newline to show the response
+                logger.debug();
+            }
+            logger.error(`RESPONSE[${myCallNumber}]==> ${response.status} ${response.statusText}`);
+            if (Config.CafienneService.log.response.headers) {
+                printHeaders('Response headers:', response.headers);
+            }
         } else {
-            await response.text().then(text => logger.info(text));            
+            if (Config.CafienneService.log.response.status) {
+                if (Config.CafienneService.log.request.headers || (Config.CafienneService.log.request.body && body)) {
+                    // Add an extra newline to show the response
+                    logger.debug();
+                }
+                logger.info(`RESPONSE[${myCallNumber}]==> ${response.status} ${response.statusText}`);
+            }
+            if (Config.CafienneService.log.response.headers) {
+                printHeaders('Response headers:', response.headers);
+            }
+        }
+
+
+        // Wait until full response text is arrived.
+        const text = await response.text();
+
+        // For response ok, print to debug log only; for response not-ok print info logging
+        if (!response.ok && Config.CafienneService.log.response.error) {
+            logger.error(text);
+        } else if (Config.CafienneService.log.response.body) {
+            logger.debug(text);
         }
 
         return response;

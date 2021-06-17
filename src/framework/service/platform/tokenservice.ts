@@ -32,7 +32,9 @@ export default class TokenService {
             body: JSON.stringify(claims)
         }
 
-        logger.debug("Getting token " + JSON.stringify(claims, undefined, 2));
+        if (Config.TokenService.log) {
+            logger.debug("Getting token " + JSON.stringify(claims, undefined, 2));
+        }
         const response = await fetch(Config.TokenService.url, object);
         const token = await response.text();
         if (!response.ok) {

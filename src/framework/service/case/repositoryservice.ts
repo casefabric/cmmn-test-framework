@@ -53,7 +53,9 @@ export default class RepositoryService {
         const msg = `ListCaseDefinitions is not expected to succeed for member ${user.id}`;
         const json = checkResponse(response, msg, expectedStatusCode);
 
-        logger.debug('Cases deployed in the server: ' + JSON.stringify(json, undefined, 2))
+        if (Config.RepositoryService.log) {
+            logger.debug('Cases deployed in the server: ' + JSON.stringify(json, undefined, 2))
+        }
         return json;
     }
 
@@ -90,14 +92,16 @@ export default class RepositoryService {
      * @param user User that deploys the case definition.
      * @param tenant Tenant in which the definition is deployed.
      */
-    async validateAndDeploy(user: User, fileName: string, tenant: string|Tenant) {
+    async validateAndDeploy(user: User, fileName: string, tenant: string | Tenant) {
         const tenantName = tenant instanceof Tenant ? tenant.name : tenant;
         const definition = readLocalXMLDocument(fileName);
         const modelName = fileName;
 
         const serverVersion = await this.loadCaseDefinition(user, modelName, tenantName);
         if (Comparison.sameXML(definition, serverVersion)) {
-            logger.debug(`Skipping deployment of ${fileName}, as server already has it`);
+            if (Config.RepositoryService.log) {
+                logger.debug(`Skipping deployment of ${fileName}, as server already has it`);
+            }
             return;
         }
 
@@ -138,6 +142,6 @@ export function readLocalFile(content: any): string {
     return FileSystem.readFileSync(fileName, 'utf8');
 }
 
-function getTenantName(tenant: Tenant|string) {
+function getTenantName(tenant: Tenant | string) {
     return tenant instanceof Tenant ? tenant.name : tenant;
 }

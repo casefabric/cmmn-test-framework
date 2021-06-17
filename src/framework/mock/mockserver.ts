@@ -1,5 +1,6 @@
 import express from 'express';
 import { Server } from 'http';
+import Config from '../../config';
 import logger from '../logger';
 import MockURL from './mockurl';
 
@@ -21,7 +22,9 @@ export default class MockServer {
     async start() {
         const promise = new Promise((resolve: Function) => {
             this.server = this.express.listen(this.port, () => {
-                logger.info("Started Mock Server on port " + this.port);
+                if (Config.MockService.registration) {
+                    logger.info("Started Mock Server on port " + this.port);
+                }
                 resolve();
             });
         });
@@ -31,9 +34,13 @@ export default class MockServer {
 
     async stop() {
         const promise = new Promise((done: Function) => {
-            logger.info("Stopping Mock server on port " + this.port);
+            if (Config.MockService.registration) {
+                logger.info("Stopping Mock server on port " + this.port);
+            }
             this.server.close(() => {
-                logger.info("Mock Server is stopped");
+                if (Config.MockService.registration) {
+                    logger.info("Mock Server is stopped");
+                }
                 done();
             });
         });

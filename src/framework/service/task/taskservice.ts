@@ -143,6 +143,25 @@ export default class TaskService {
     }
 
     /**
+     * Fetches all tasks from the specified case instance from the backend and searches within that list for the one that
+     * matches the task parameter (either task id or task name can be given).
+     * @param Case
+     * @param user
+     * @param task 
+     */
+     async getCaseTask(user: User, Case: Case | string, task: Task | PlanItem | string): Promise<Task> {
+        const taskId = getTaskId(task);
+        const tasks = await this.getCaseTasks(user, Case);
+        const responseTask = tasks.find(task => task.id === taskId || task.taskName === taskId);
+        if (! responseTask) {
+            const caseId = checkCaseID(Case);
+            throw new Error(`Cannot find task ${taskId} in case ${caseId}; tasks are ${tasks.map(t => t.taskName).join('\'')}`);
+        } else {
+            return responseTask;
+        }
+    }
+
+    /**
      * Returns all tasks from case instances with the specified definition
      * @param user 
      * @param definition 
