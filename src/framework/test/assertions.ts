@@ -11,6 +11,8 @@ import CaseTeamService from '../service/case/caseteamservice';
 import CaseTeamMember from '../cmmn/caseteammember';
 import { SomeTime } from './time';
 import PlanItem from '../cmmn/planitem';
+import Config from '../../config';
+import logger from '../logger';
 
 const caseService = new CaseService();
 const taskService = new TaskService();
@@ -29,7 +31,9 @@ const caseTeamService = new CaseTeamService();
  */
 export async function assertTask(user: User, task: Task, action: string, expectedState: string = '', expectedAssignee?: User, expectedOwner?: User, expectedLastModifiedBy?: User) {
     await taskService.getTask(user, task).then(task => {
-        console.log(`Task after ${action}: state=${task.taskState}, assignee='${task.assignee}', owner='${task.owner}', modifiedBy='${task.modifiedBy}' `);
+        if (Config.TestCase.log) {
+            logger.info(`Task after ${action}: state=${task.taskState}, assignee='${task.assignee}', owner='${task.owner}', modifiedBy='${task.modifiedBy}' `);
+        }
         if (task.taskState !== expectedState) {
             throw new Error(`Task ${task.taskName} is not in state '${expectedState}' but in state '${task.taskState}'`);
         }
@@ -62,9 +66,13 @@ export async function assertTask(user: User, task: Task, action: string, expecte
 export async function assertPlanItemState(user: User, caseInstance: Case, planItemName: string, planItemIndex: number, expectedState?: string, maxAttempts: number = 10, waitTimeBetweenAttempts = 1000): Promise<PlanItem> {
     let currentAttempt = 1;
     while (true) {
-        console.log(`Running attempt ${currentAttempt} of ${maxAttempts} to find '${planItemName}.${planItemIndex}' in state ${expectedState}`);
+        if (Config.TestCase.log) {
+            logger.info(`Running attempt ${currentAttempt} of ${maxAttempts} to find '${planItemName}.${planItemIndex}' in state ${expectedState}`);
+        }
         const freshCase = await caseService.getCase(user, caseInstance);
-        // console.log("Current Plan Items\n" + (freshCase.planitems.map(item => "- '" + item.name + "." + item.index + "' ==> '" + item.currentState + "'")).join('\n'));
+        if (Config.TestCase.log) {
+            logger.debug('Current Plan Items\n' + (freshCase.planitems.map(item => "- '" + item.name + "." + item.index + "' ==> '" + item.currentState + "'")).join('\n'));
+        }
         const planItem = freshCase.planitems.find(p => p.name === planItemName && p.index === planItemIndex);
         if (planItem && (! expectedState || planItem.currentState === expectedState)) {
             return planItem;
@@ -97,7 +105,9 @@ export async function assertCasePlanState(user: User, caseInstance: Case|string,
     }
     let currentAttempt = 1;
     while (true) {
-        // console.log(`Running attempt ${currentAttempt} of ${maxAttempts} to find case ${caseId} in state ${expectedState}`);
+        if (Config.TestCase.log) {
+            logger.info(`Running attempt ${currentAttempt} of ${maxAttempts} to find case ${caseId} in state ${expectedState}`);
+        }
         // Get case details
         const freshCase = await tryGetCase();
         if (freshCase && (!expectedState || freshCase.state === expectedState)) {
@@ -181,7 +191,9 @@ export function assertTaskCount(tasks: Task[], state: string, expectedCount: Num
  */
 export async function assertCaseFileContent(user: User, caseInstance: Case, path: string, expectedContent: any, log: boolean = false) {
     await caseFileService.getCaseFile(user, caseInstance).then(casefile => {
-        // console.log("Case File for reading path " + path, casefile);
+        if (Config.TestCase.log) {
+            logger.debug(`Case File for reading path ${path}:${JSON.stringify(casefile, undefined, 2)}`);
+        }
         const readCaseFileItem = (caseFile: any) => {
             const item = pathReader(caseFile, path);
             if (!item && caseFile.file) { // Temporary backwards compatibility; casefile.file will be dropped in 1.1.5
