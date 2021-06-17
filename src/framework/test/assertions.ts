@@ -125,17 +125,6 @@ export function verifyTaskInput(task: Task, taskInput: any) {
 }
 
 /**
- * Get case task based on given task name in a case instance
- * @param user 
- * @param caseInstance 
- * @param taskName 
- */
-export async function getCaseTask(user: User, caseInstance: Case, taskName: string) {
-    return taskService.getCaseTask(user, caseInstance, taskName);
-}
-
-
-/**
  * Finds and returns a particular task with in list of tasks
  * and throws an error if it does not exist
  * @param tasks 
