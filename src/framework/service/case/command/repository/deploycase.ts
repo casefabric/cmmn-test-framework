@@ -1,18 +1,16 @@
 /**
  * Interface with fields required to deploy a CMMN case into the Cafienne Engine
  */
-export default interface DeployCase {
+export default class DeployCase {
     /**
-     * XML File with the <definitions> in it
+     * 
+     * @param definition XML File with the <definitions> in it
+     * @param modelName Filename under which the case will be identified ('.xml' extension is added by the server)
+     * @param tenant Tenant in which the case must be deployed. If not given, the defaut tenant of the case system is used.
      */
-    definition: Document;
-    /**
-     * Tenant in which the case must be deployed.
-     * If not given, the defaut tenant of the case system is used.
-     */
-    tenant?: string;
-    /**
-     * Filename under which the case will be identified ('.xml' extension is added by the server)
-     */
-    modelName: string;
+    constructor(
+        public definition: Document,
+        public modelName: string,
+        public tenant?: string,
+    ) { }
 }

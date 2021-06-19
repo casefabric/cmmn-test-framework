@@ -43,7 +43,7 @@ export default class TestStatsAPI extends TestCase {
         await caseService.startCase(sender, startHelloWorldCase);
         startHelloWorldCase.caseTeam = caseTeamWithBothSenderAndReceiver;
         await caseService.startCase(sender, startHelloWorldCase);
-        const caseStarted = await caseService.startCase(sender, startHelloWorldCase) as Case;
+        const caseStarted = await caseService.startCase(sender, startHelloWorldCase);
         const caseInstance = await caseService.getCase(sender, caseStarted);
         const pid = caseInstance.planitems.find(item => item.type === 'CasePlan')?.id;
         if (!pid) {
@@ -56,7 +56,7 @@ export default class TestStatsAPI extends TestCase {
         await caseService.startCase(sender, startCaseTeamCase);
         await caseService.startCase(sender, startCaseTeamCase);
         startHelloWorldCase.caseTeam = caseTeamWithBothSenderAndReceiver;
-        await caseService.startCase(sender, startCaseTeamCase) as Case;
+        await caseService.startCase(sender, startCaseTeamCase);
 
         const hwFilter = { definition: 'HelloWorld', tenant};
         await this.getStatistics('overall', sender);

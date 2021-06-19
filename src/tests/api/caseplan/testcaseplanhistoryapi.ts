@@ -39,7 +39,7 @@ export default class TestCasePlanHistoryAPI extends TestCase {
         };
 
         const startCase = { tenant, definition, inputs };
-        const caseInstance = await caseService.startCase(user, startCase) as Case;
+        const caseInstance = await caseService.startCase(user, startCase);
         const planItems = await (await caseService.getCase(user, caseInstance)).planitems;
  
         const planHistory = await caseHistoryService.getCasePlanHistory(user, caseInstance);

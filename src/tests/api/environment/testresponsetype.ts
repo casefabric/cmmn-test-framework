@@ -29,7 +29,7 @@ export default class TestResponseType extends TestCase {
         const startCase = { tenant, definition, debug: true, caseTeam };
 
         // starts the case instance
-        const caseInstance = await caseService.startCase(user, startCase) as Case;
+        const caseInstance = await caseService.startCase(user, startCase);
 
         await this.tryFetchCase(caseInstance.id);
     }

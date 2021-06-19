@@ -1,6 +1,7 @@
 import User from "../user";
+import CMMNBaseClass from "./cmmnbaseclass";
 
-export default class CaseTeamMember {
+export default class CaseTeamMember extends CMMNBaseClass {
     memberId: string;
     removeRoles: string[]|undefined = undefined;
 
@@ -12,6 +13,7 @@ export default class CaseTeamMember {
      * @param isOwner Whether or not the new member is also a Case Owner
      */
     constructor(user?: any, public caseRoles: string[] = [], public memberType: string = 'user', public isOwner: (boolean|undefined) = undefined) {
+        super();
         this.memberId = user instanceof User ? user.id : user;
     }
 }

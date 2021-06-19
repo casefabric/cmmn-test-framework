@@ -32,7 +32,7 @@ export default class TestValidStartCase extends TestCase {
         const startCase = { tenant, definition, debug: true, caseTeam };
 
         // Starting a by sender case would not result in failure
-        const caseInstance = await caseService.startCase(sender, startCase) as Case;
+        const caseInstance = await caseService.startCase(sender, startCase);
 
         // Receiver can perform get case
         await caseService.getCase(receiver, caseInstance);

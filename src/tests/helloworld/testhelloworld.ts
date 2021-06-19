@@ -44,7 +44,7 @@ export default class TestHelloworld extends TestCase {
             }
         };
 
-        const caseInstance = await caseService.startCase(sender, startCase) as Case;
+        const caseInstance = await caseService.startCase(sender, startCase);
 
         const cases = await caseService.getCases(sender, { tenant: tenant, numberOfResults: 10000 });
         console.log("We have " + cases.length + " cases ...");

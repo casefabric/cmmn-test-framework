@@ -5,10 +5,7 @@ import TaskService from '../../../framework/service/task/taskservice';
 import TestCase from '../../../framework/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
-import CaseTeam from '../../../framework/cmmn/caseteam';
-import { CaseOwner } from '../../../framework/cmmn/caseteammember';
 import Case from '../../../framework/cmmn/case';
-import PlanItem from '../../../framework/cmmn/planitem';
 import Task from '../../../framework/cmmn/task';
 import Comparison from '../../../framework/test/comparison';
 

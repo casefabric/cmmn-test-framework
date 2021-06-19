@@ -6,11 +6,13 @@ import StartCase from './startcase';
 import StatisticsFilter from './statisticsfilter';
 import DiscretionaryItem from '../../cmmn/discretionaryitem';
 import { checkJSONResponse, checkResponse } from '../response';
+import { DiscretionaryItemsResponse } from './response/discretionaryitemsresponse';
+import { CaseStatistics } from './response/casestatistics';
 
 const cafienneService = new CafienneService();
 
 export default class CaseService {
-    async startCase(user: User, command: StartCase, expectedStatusCode: number = 200) {
+    async startCase(user: User, command: StartCase, expectedStatusCode: number = 200): Promise<Case> {
         if (!user) {
             // throw new Error("User must be specified");
         }
@@ -28,30 +30,27 @@ export default class CaseService {
         }
         const response = await cafienneService.post(url, user, request);
         const msg = `StartCase is not expected to succeed for user ${user ? user.id : 'anonymous'}`;
-        const json = await checkJSONResponse(response, msg, expectedStatusCode);
+        const json = await checkJSONResponse(response, msg, expectedStatusCode, Case);
 
         // Hack: copy "StartCaseResponse.caseInstanceId" to "Case.id" in the json prior to instantiating Case.
         // TODO: consider whether it is better to work with a "StartCaseResponse" object instead
         if (response.ok) {
             json.id = json.caseInstanceId;
-            const caseInstance = <Case>json;
-            console.log(`Created case instance with id: \t${caseInstance.id}`);
-            return caseInstance;
-        } else {
-            return response;
+            console.log(`Created case instance with id: \t${json.id}`);
         }
+        return json;
     }
 
     /**
      * Fetches and refreshes the case information from the backend
-     * @param Case 
+     * @param caseInstance 
      * @param user 
      */
-    async getCase(user: User, Case: Case | string, expectedStatusCode: number = 200): Promise<Case> {
-        const caseId = checkCaseID(Case);
+    async getCase(user: User, caseInstance: Case | string, expectedStatusCode: number = 200): Promise<Case> {
+        const caseId = checkCaseID(caseInstance);
         const response = await cafienneService.get(`/cases/${caseId}`, user);
         const msg = `GetCase is not expected to succeed for user ${user.id} in case ${caseId}`;
-        return checkJSONResponse(response, msg, expectedStatusCode);
+        return checkJSONResponse(response, msg, expectedStatusCode, Case);
     }
 
     /**
@@ -59,7 +58,7 @@ export default class CaseService {
      * @param Case 
      * @param user 
      */
-    async getDefinition(user: User, Case: Case | string, expectedStatusCode: number = 200) {
+    async getDefinition(user: User, Case: Case | string, expectedStatusCode: number = 200): Promise<Document> {
         const caseId = checkCaseID(Case);
         return cafienneService.getXml(`/cases/${caseId}/definition`, user);
     }
@@ -72,7 +71,7 @@ export default class CaseService {
     async getCases(user: User, filter?: CaseFilter, expectedStatusCode: number = 200): Promise<Array<Case>> {
         const response = await cafienneService.get('/cases', user, filter);
         const msg = `GetCases is not expected to succeed for user ${user.id}`;
-        return checkJSONResponse(response, msg, expectedStatusCode) as Promise<Array<Case>>;
+        return checkJSONResponse(response, msg, expectedStatusCode, [Case]);
     }
 
     /**
@@ -84,7 +83,7 @@ export default class CaseService {
         const caseId = checkCaseID(Case);
         const response = await cafienneService.get(`/cases/${caseId}/discretionaryitems`, user)
         const msg = `GetDiscretionaryItems is not expected to succeed for user ${user.id} in case ${caseId}`;
-        return <DiscretionaryItemsResponse>await checkJSONResponse(response, msg, expectedStatusCode);
+        return await checkJSONResponse(response, msg, expectedStatusCode, DiscretionaryItemsResponse);
     }
 
     /**
@@ -142,30 +141,4 @@ export function checkCaseID(Case: Case | string) {
         throw new Error('Case id has not been set. First the case has to be started');
     }
     return Case.id;
-}
-
-/**
- * Simple JSON interface wrapper
- */
-export interface DiscretionaryItemsResponse {
-    caseInstanceId: string;
-    name: string,
-    discretionaryItems: Array<DiscretionaryItem>;
-}
-
-export class CaseStatistics {
-    constructor(
-        public definition: string,
-        public totalInstances: number,
-        public numActive: number,
-        public numCompleted: number,
-        public numTerminated: number,
-        public numSuspended: number,
-        public numFailed: number,
-        public numClosed: number,
-        public numWithFailures: number) { }
-
-    toString() {
-        return `definition[${this.definition}]: total = ${this.totalInstances} active = ${this.numActive} closed = ${this.numClosed} completed = ${this.numCompleted} failed = ${this.numFailed} suspended = ${this.numSuspended} terminated = ${this.numTerminated} withFailures = ${this.numWithFailures}`;
-    }
 }

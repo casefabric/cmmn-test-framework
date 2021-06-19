@@ -52,7 +52,7 @@ export default class TestStartCaseEmptyRole extends TestCase {
         startCase.caseTeam = caseTeam2;
 
         // A case with valid role should start
-        const caseInstance = await caseService.startCase(sender, startCase) as Case;
+        const caseInstance = await caseService.startCase(sender, startCase);
 
         assertCaseTeam(receiver, caseInstance, caseTeam2);
 

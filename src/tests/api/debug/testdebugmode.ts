@@ -31,7 +31,7 @@ export default class TestDebugMode extends TestCase {
         const startCaseInDebugMode = { tenant, definition, inputs: startCaseInput, debug: true};
 
         // This should include a "DebugEnabled" event
-        let caseInstance = await caseService.startCase(user, startCaseInDebugMode) as Case;
+        let caseInstance = await caseService.startCase(user, startCaseInDebugMode);
         caseInstance = await caseService.getCase(user, caseInstance);
 
         // This should result in "DebugDisabled" event

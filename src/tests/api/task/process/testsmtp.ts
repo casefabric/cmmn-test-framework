@@ -54,7 +54,7 @@ export default class TestSMTP extends TestCase {
             }
         }
         const startCase = { tenant, definition, inputs };
-        const caseInstance = await caseService.startCase(user, startCase) as Case;
+        const caseInstance = await caseService.startCase(user, startCase);
 
         const sendMailTask = 'Send mail';
 

@@ -3,6 +3,7 @@ import RepositoryService, { readLocalXMLDocument } from "../../../framework/serv
 import WorldWideTestTenant from "../../worldwidetesttenant";
 import TenantService from "../../../framework/service/tenant/tenantservice";
 import TenantUser from "../../../framework/tenant/tenantuser";
+import DeployCase from "../../../framework/service/case/command/repository/deploycase";
 
 const repositoryService = new RepositoryService();
 const tenantService = new TenantService();
@@ -45,11 +46,7 @@ export default class TestRepositoryAPI extends TestCase {
         await repositoryService.validateCaseDefinition(tenantOwner, validCaseDefinition);
 
         // Deploying an invalid case definition to a valid file name should result in an error.
-        const deployInvalidCaseDefinition = {
-            definition: readLocalXMLDocument(invalidCaseDefinition),
-            modelName: invalidCaseDefinition,
-            tenant
-        };
+        const deployInvalidCaseDefinition = new DeployCase(readLocalXMLDocument(invalidCaseDefinition), invalidCaseDefinition, tenant);
         await repositoryService.deployCase(tenantOwner, deployInvalidCaseDefinition, 400);
 
         // Listing case definitions should succeed as tenant owner
@@ -68,11 +65,7 @@ export default class TestRepositoryAPI extends TestCase {
         await repositoryService.listCaseDefinitions(tenantUser, 'not-existing-tenant', 401);
 
         // Deploying an valid case definition should work for a tenant owner, but fail for a tenant user
-        const deployValidCaseDefinition = {
-            definition: readLocalXMLDocument(validCaseDefinition),
-            modelName: invalidCaseDefinition,
-            tenant
-        };
+        const deployValidCaseDefinition = new DeployCase(readLocalXMLDocument(validCaseDefinition), invalidCaseDefinition, tenant);
 
         // Should give "unauthorized"
         await repositoryService.deployCase(tenantUser, deployValidCaseDefinition, 401);

@@ -4,7 +4,6 @@ import CaseTeam from "../../cmmn/caseteam";
 import CaseTeamMember from "../../cmmn/caseteammember";
 import CafienneService from "../cafienneservice";
 import { checkResponse, checkJSONResponse } from "../response";
-import RoleBinding from "../../cmmn/rolebinding";
 import { checkCaseID } from "./caseservice";
 
 const cafienneService = new CafienneService();

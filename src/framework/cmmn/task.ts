@@ -1,30 +1,24 @@
+import CMMNBaseClass from "./cmmnbaseclass";
 
-export default class Task {
-    id: string = '';
-    taskName: string = '';
-    taskState: string = '';
-    assignee: string = '';
-    owner: string = '';
-    caseInstanceId: string = '';
-    tenant: string = '';
-    role: string = '';
-    lastModified: string = '';
-    modifiedBy: string = '';
-    dueDate: string = '';
-    createdOn: string = '';
-    createdBy: string = '';
-    input: any = {};
-    output: any = {};
-    taskModel: any = {};
-
-    constructor(json: any) {
-        // Copy and fill our properties from the json.
-        for (const key in this) {
-            if (Object.getOwnPropertyNames(this).indexOf(key) >= 0) {
-                this[key] = json[key];
-            }
-        }
-    }
+export default class Task extends CMMNBaseClass {
+    constructor(
+        public id: string,
+        public taskName: string,
+        public taskState: string,
+        public assignee: string,
+        public owner: string,
+        public caseInstanceId: string,
+        public tenant: string,
+        public role: string,
+        public lastModified: string,
+        public modifiedBy: string,
+        public dueDate: string,
+        public createdOn: string,
+        public createdBy: string,
+        public input: any,
+        public output: any,
+        public taskModel: any
+    ) { super(); }
 
     toString() {
         return this.taskName + '[' + this.id + ']';
@@ -46,6 +40,6 @@ export default class Task {
      * Returns true for Delegated, Unassigned and Assigned tasks.
      */
     static isActive(task: Task) {
-        return task.isActive();
+        return task && task.isActive();
     }
 }

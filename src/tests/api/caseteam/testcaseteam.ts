@@ -36,7 +36,7 @@ export default class TestCaseTeam extends TestCase {
         const caseTeam = new CaseTeam([]);
         const startCase = { tenant, definition, debug: true, caseTeam };
 
-        const caseInstance = await caseService.startCase(sender, startCase) as Case;
+        const caseInstance = await caseService.startCase(sender, startCase);
 
         // Getting the case must be allowed for sender
         await caseService.getCase(sender, caseInstance);

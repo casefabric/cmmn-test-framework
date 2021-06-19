@@ -26,7 +26,6 @@ const employee = worldwideTenant.employee;
 
 const requestorRole = 'Requestor';
 const approverRole = 'Approver';
-const paRole = 'PersonalAssistant';
 const participantRole = 'CaseParticipant';
 
 export default class TestRoleBinding extends TestCase {
@@ -43,7 +42,7 @@ export default class TestRoleBinding extends TestCase {
         ]);
         const startCase = { tenant, definition, debug: true, caseTeam };
 
-        const caseInstance = await caseService.startCase(sender, startCase) as Case;
+        const caseInstance = await caseService.startCase(sender, startCase);
 
         // Getting the case must be allowed for both sender and receiver
         await caseService.getCase(sender, caseInstance);

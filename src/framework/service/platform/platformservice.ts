@@ -67,7 +67,7 @@ export default class PlatformService {
     async getUserInformation(user: User): Promise<UserInformation> {
         const url = '/platform/user';
         const response = await this.cafienneService.get(url, user);
-        return checkJSONResponse(response, 'Expected valid user information', 200) as Promise<UserInformation>;
+        return checkJSONResponse(response, 'Expected valid user information', 200, UserInformation);
     }
 
     /**

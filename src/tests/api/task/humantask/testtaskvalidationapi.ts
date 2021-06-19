@@ -77,7 +77,7 @@ export default class TestTaskValidationAPI extends TestCase {
         }
 
         const startCase = { tenant, definition, inputs };
-        let caseInstance = await caseService.startCase(pete, startCase) as Case;
+        let caseInstance = await caseService.startCase(pete, startCase);
         caseInstance = await caseService.getCase(pete, caseInstance);
 
         await pingMock.untilCallInvoked(3000);

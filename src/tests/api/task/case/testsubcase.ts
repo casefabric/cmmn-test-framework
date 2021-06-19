@@ -43,7 +43,7 @@ export default class TestSubCase extends TestCase {
         };
 
         // Sender starts the parent case
-        const caseInstance = await caseService.startCase(sender, startCase) as Case;
+        const caseInstance = await caseService.startCase(sender, startCase);
 
         // Sender creates Greet case file item
         await caseFileService.createCaseFileItem(sender, caseInstance, 'Greet', inputs.Greet);

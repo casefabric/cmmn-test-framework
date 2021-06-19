@@ -35,7 +35,7 @@ export default class TestArraySubCase extends TestCase {
         const startCase = { tenant, definition, inputs };
 
         // Start the parent case
-        const caseId = await caseService.startCase(user, startCase) as Case;
+        const caseId = await caseService.startCase(user, startCase);
 
         // Retrieve subcase 
         const caseInstance = await caseService.getCase(user, caseId);

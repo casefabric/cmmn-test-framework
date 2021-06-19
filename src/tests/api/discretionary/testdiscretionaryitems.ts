@@ -25,7 +25,7 @@ export default class TestDiscretionaryItems extends TestCase {
     async run() {
         const startCase = { tenant, definition };
 
-        let caseInstance = await caseService.startCase(user, startCase) as Case;
+        let caseInstance = await caseService.startCase(user, startCase);
         caseInstance = await caseService.getCase(user, caseInstance);
 
         // console.log("Plan items first is: ", caseInstance.planitems)

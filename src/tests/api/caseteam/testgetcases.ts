@@ -1,7 +1,6 @@
 'use strict';
 
 import CaseService from '../../../framework/service/case/caseservice';
-import TaskService from '../../../framework/service/task/taskservice';
 import TestCase from '../../../framework/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
@@ -41,7 +40,7 @@ export default class TestGetCases extends TestCase {
 
         await this.getCaseList({tenant, numberOfResults: 10000}, "Initial list has cases");
 
-        const newCase = await caseService.startCase(sender, startCase) as Case;
+        const newCase = await caseService.startCase(sender, startCase);
 
         await this.getCaseList({tenant, numberOfResults: 10000}, "After startcase");
         await this.getCaseList({tenant, state:"Failed"}, "Failed within tenant");

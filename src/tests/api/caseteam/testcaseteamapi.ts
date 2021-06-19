@@ -55,7 +55,7 @@ export default class TestCaseTeamAPI extends TestCase {
         await caseService.startCase(sender, startCase, 400);
 
         caseTeam.members[2].caseRoles = []; // Change roles of requestor to be empty instead of having wrong roles
-        const caseInstance = await caseService.startCase(sender, startCase) as Case;
+        const caseInstance = await caseService.startCase(sender, startCase);
 
 
         // Try to set a team with invalid users
@@ -170,7 +170,7 @@ export default class TestCaseTeamAPI extends TestCase {
     async testOwnership(caseTeam: CaseTeam, ownerWhoRemoves: User, ownerToRemove: User, removingOwnershipShouldSucceed: boolean = true) {
         // Starting a by ownerWhoRemoves should not result in failure
         const startCase = { tenant, definition, debug: true, caseTeam };
-        const caseInstance = await caseService.startCase(ownerWhoRemoves, startCase) as Case;
+        const caseInstance = await caseService.startCase(ownerWhoRemoves, startCase);
 
         // ownerToRemove can perform get case and get team
         await caseService.getCase(ownerToRemove, caseInstance);

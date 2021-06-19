@@ -1,7 +1,9 @@
+import CMMNBaseClass from "./cmmnbaseclass";
+
 /**
  * JSON Wrapper for plan items in a case instance
  */
-export default class PlanItem {
+export default class PlanItem extends CMMNBaseClass {
     /**
      * 
      * @param id Plan item id
@@ -30,9 +32,5 @@ export default class PlanItem {
         public index: number,
         public lastModified: string,
         public modifiedBy: string
-    ) { }
-
-    toString() {
-        return JSON.stringify(this, undefined, 2);
-    }
+    ) { super() }
 }

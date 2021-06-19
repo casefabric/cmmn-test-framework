@@ -1,9 +1,10 @@
+import CMMNBaseClass from "./cmmnbaseclass";
 import CMMNDocumentation from "./cmmndocumentation";
 
 /**
  * JSON Wrapper for case file item documentation in a case instance
  */
-export default class CaseFileItemDocumentation {
+export default class CaseFileItemDocumentation extends CMMNBaseClass {
     /**
      * 
      * @param path Plan item id
@@ -12,9 +13,5 @@ export default class CaseFileItemDocumentation {
     constructor(
         public path: string,
         public documentation: CMMNDocumentation,
-    ) { }
-
-    toString() {
-        return JSON.stringify(this, undefined, 2);
-    }
+    ) { super(); }
 }

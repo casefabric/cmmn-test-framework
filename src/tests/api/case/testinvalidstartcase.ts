@@ -17,8 +17,6 @@ const caseService = new CaseService();
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const sender = worldwideTenant.sender;
-
-
 export default class TestInvalidStartCase extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
@@ -39,7 +37,7 @@ export default class TestInvalidStartCase extends TestCase {
         // Case team with invalid roles
         startCase.caseTeam = new CaseTeam([new CaseOwner(sender, ["ADMIN", "Not-Exisitng-CaseRole-Not-Allowed-In-Team"])]);
         await this.tryStartCase("Invalid roles should fail");
-        
+
         // TODO: add a check for invalid member type in the backend??
         // Case team with invalid member type
         // startCase.caseTeam = new CaseTeam([new CaseOwner(sender, [], 'wrong-type')]);
@@ -79,7 +77,7 @@ export default class TestInvalidStartCase extends TestCase {
         startCase.tenant = tenant;
 
         // Wrong input should fail
-        startCase.inputs = {'not-existing-input-parameter': 123};
+        startCase.inputs = { 'not-existing-input-parameter': 123 };
         await this.tryStartCase(`Wrong inputs should fail`);
 
         // Remove definition should make it fail
@@ -88,7 +86,7 @@ export default class TestInvalidStartCase extends TestCase {
     }
 
     async tryStartCase(msg: string, expectedResponseCode: number = 400) {
-        console.log('\n============\n'+msg);
+        console.log('\n============\n' + msg);
         const response = await caseService.startCase(sender, this.startCase, expectedResponseCode)
         if (response instanceof CafienneResponse) {
             await response.text().then(response => console.log("Response text: " + response));

@@ -97,7 +97,7 @@ export default class TestTravelRequest extends TestCase {
             , new CaseTeamMember(requestor, ['Requestor'])
         ]);
         const startCase: StartCase = { tenant, definition, inputs, debug: true, caseTeam };
-        const caseInstance = await caseService.startCase(requestor, startCase) as Case;
+        const caseInstance = await caseService.startCase(requestor, startCase);
         await caseService.getCase(approver, caseInstance).then(caseInstance => {
             // console.log("CI: " + caseInstance)
         });

@@ -86,7 +86,7 @@ export default class TestTaskFilterAPI extends TestCase {
         };
         
         const startCase1 = { tenant, definition, inputs, debug: true };
-        const caseStarted = await caseService.startCase(user, startCase1) as Case;
+        const caseStarted = await caseService.startCase(user, startCase1);
         const caseInstance = await caseService.getCase(user, caseStarted);
         const tasks = await taskService.getCaseTasks(user, caseInstance);
         const firstTask = tasks.find(task => task.taskName === firstTaskName);

@@ -1,7 +1,9 @@
+import CMMNBaseClass from "./cmmnbaseclass";
+
 /**
  * JSON Wrapper for plan item documentation in a case instance
  */
-export default class CMMNDocumentation {
+export default class CMMNDocumentation extends CMMNBaseClass {
     /**
      * 
      * @param text Plan item id
@@ -10,9 +12,5 @@ export default class CMMNDocumentation {
     constructor(
         public text: string,
         public textFormat: string,
-    ) { }
-
-    toString() {
-        return JSON.stringify(this, undefined, 2);
-    }
+    ) { super() }
 }

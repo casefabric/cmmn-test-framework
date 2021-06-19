@@ -51,7 +51,7 @@ export default class TestGetListGetDetails extends TestCase {
         const startCase = { tenant, definition };
 
         // Starts the case with user
-        let caseInstance = await caseService.startCase(user, startCase) as Case;
+        let caseInstance = await caseService.startCase(user, startCase);
 
         await ServerSideProcessing();
 

@@ -1,6 +1,9 @@
 import TenantUser from "./tenantuser";
 
-export default interface UserInformation {
-    userId: string;
-    tenants: Array<TenantUser>;
+export default class UserInformation {
+    constructor(
+        public userId: string,
+        public tenants: Array<TenantUser>
+    ) { };
+
 }

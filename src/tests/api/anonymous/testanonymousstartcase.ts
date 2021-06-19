@@ -76,7 +76,7 @@ export default class TestAnonymousStartCase extends TestCase {
 
     async createCase(path: string, expectedStatusCode: number = 200, lanaHasAccess: number = 200) {
         // Default instance, pointing to helloworld
-        const caseInstance = await requestService.requestCase(path, this.inputs, undefined, undefined, expectedStatusCode) as Case;
+        const caseInstance = await requestService.requestCase(path, this.inputs, undefined, undefined, expectedStatusCode);
 
         if (expectedStatusCode === 200) {
             console.log(`\nCase id\t${caseInstance.id}`);

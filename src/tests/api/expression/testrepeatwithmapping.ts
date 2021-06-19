@@ -29,7 +29,7 @@ export default class TestRepeatWithMapping extends TestCase {
 
     async run() {
         const startCase = { tenant, definition };
-        const caseInstance = await caseService.startCase(user, startCase) as Case;
+        const caseInstance = await caseService.startCase(user, startCase);
 
         const firstTaskName = 'Create Children';
         const secondTaskName = 'Edit GrandChild';

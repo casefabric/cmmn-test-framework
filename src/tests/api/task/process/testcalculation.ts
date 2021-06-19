@@ -10,6 +10,7 @@ import DebugService from '../../../../framework/service/case/debugservice';
 import CaseFileService from '../../../../framework/service/case/casefileservice';
 import Comparison from '../../../../framework/test/comparison';
 import { assert } from 'console';
+import CaseFile from '../../../../framework/cmmn/casefile';
 
 const repositoryService = new RepositoryService();
 const definition = 'calculation.xml';
@@ -59,7 +60,7 @@ export default class TestCalculation extends TestCase {
             }
         }
         const startCase = { tenant, definition, inputs };
-        const caseInstance = await caseService.startCase(user, startCase) as Case;
+        const caseInstance = await caseService.startCase(user, startCase);
 
         const calculationTask = 'CalculationTask';
 

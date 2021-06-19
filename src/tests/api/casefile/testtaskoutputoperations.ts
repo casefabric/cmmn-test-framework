@@ -102,7 +102,7 @@ export default class TestTaskOutputOperations extends TestCase {
         if (!this.caseInstance) {
             throw new Error(msg);
         }
-        return this.caseInstance as Case;
+        return this.caseInstance;
     }
 
     printCase() {

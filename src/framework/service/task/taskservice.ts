@@ -127,7 +127,7 @@ export default class TaskService {
         const taskName = getTaskName(task);
         const response = await cafienneService.get(`tasks/${taskId}`, user);
         const msg = `GetTask is not expected to succeed for user ${user.id} on task ${taskId}`;
-        return await checkJSONResponse(response, msg, expectedStatusCode);
+        return await checkJSONResponse(response, msg, expectedStatusCode, Task);
     }
 
     /**
@@ -139,7 +139,7 @@ export default class TaskService {
         const caseId = checkCaseID(Case);
         const response = await cafienneService.get(`/tasks/case/${caseId}`, user);
         const msg = `GetCaseTasks is not expected to succeed for member ${user.id} in case ${caseId}`;
-        return await checkJSONResponse(response, msg, expectedStatusCode);
+        return await checkJSONResponse(response, msg, expectedStatusCode, [Task]);
     }
 
     /**
@@ -178,7 +178,7 @@ export default class TaskService {
     async getTasks(user: User, filter?: TaskFilter, expectedStatusCode: number = 200): Promise<Array<Task>> {
         const response = await cafienneService.get('/tasks', user, filter);
         const msg = `GetTasks is not expected to succeed for member ${user.id}`;
-        return await checkJSONResponse(response, msg, expectedStatusCode);
+        return await checkJSONResponse(response, msg, expectedStatusCode, [Task]);
     }
 
     /**

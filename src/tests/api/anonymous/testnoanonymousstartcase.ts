@@ -3,12 +3,8 @@
 import CaseService from '../../../framework/service/case/caseservice';
 import TestCase from '../../../framework/test/testcase';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
-import CaseTeamMember, { CaseOwner } from '../../../framework/cmmn/caseteammember';
-import CaseTeam from '../../../framework/cmmn/caseteam';
 import Case from '../../../framework/cmmn/case';
 import TenantUser, { TenantOwner } from '../../../framework/tenant/tenantuser';
-import Tenant from '../../../framework/tenant/tenant';
-import User from '../../../framework/user';
 import RequestService from '../../../framework/service/anonymous/requestservice';
 import AnonymousWorld from './anonymousworld';
 
@@ -49,7 +45,7 @@ export default class TestNoAnonymousStartCase extends TestCase {
 
     async createCase(path: string, expectedStatusCode: number = 200, lanaHasAccess: number = 200) {
         // Default instance, pointing to helloworld
-        const caseInstance = await requestService.requestCase(path, this.inputs, undefined, undefined, expectedStatusCode) as Case;
+        const caseInstance = await requestService.requestCase(path, this.inputs, undefined, undefined, expectedStatusCode);
 
         if (expectedStatusCode === 200) {
             console.log(`\nCase id\t${caseInstance.id}`);

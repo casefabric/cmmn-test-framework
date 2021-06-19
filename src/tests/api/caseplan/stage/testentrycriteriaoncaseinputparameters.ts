@@ -82,7 +82,7 @@ export default class TestEntryCriteriaOnCaseInputParameters extends TestCase {
         
         const startCase = { tenant, definition, inputs, caseTeam, debug: true };
 
-        const caseInstance = await caseService.startCase(sender, startCase) as Case;
+        const caseInstance = await caseService.startCase(sender, startCase);
 
         return await caseService.getCase(sender, caseInstance);
     }
@@ -99,7 +99,7 @@ export default class TestEntryCriteriaOnCaseInputParameters extends TestCase {
         
         const startCase = { tenant, definition, inputs, caseTeam, debug: true };
 
-        const caseInstance = await caseService.startCase(sender, startCase) as Case;
+        const caseInstance = await caseService.startCase(sender, startCase);
 
         await caseService.getCase(sender, caseInstance).then(printCaseSummary);
 
@@ -121,7 +121,7 @@ export default class TestEntryCriteriaOnCaseInputParameters extends TestCase {
         
         const startCase = { tenant, definition, inputs, caseTeam, debug: true };
 
-        const caseInstance = await caseService.startCase(sender, startCase) as Case;
+        const caseInstance = await caseService.startCase(sender, startCase);
 
         await caseService.getCase(sender, caseInstance).then(printCaseSummary);
 
