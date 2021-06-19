@@ -148,25 +148,6 @@ export function findTask(tasks: Task[], taskName: string): Task {
     return task;
 }
 
-/** 
- * Finds and returns a particular planItem with in the case if exists
- * and throws an error if it does not exist
- * @param caseInstance 
- * @param user 
- * @param planItemName 
- * @param index 
- */
-export async function findPlanItem(user: User, caseInstance: Case, planItemName: string, index: number) {
-    // const casePlanItems = await casePlanService.getPlanItems(user, caseInstance);
-    // const planItem = casePlanItems.find(p => p.name === planItemName && p.index === index);
-    // if (!planItem) {
-    //     throw new Error('Cannot find plan item ' + planItemName);
-    // }
-    // return planItem;
-    return assertPlanItemState(user, caseInstance, planItemName, index);
-
-}
-
 /**
  * Asserts the number of tasks that have specified state with expected count
  * @param tasks 
