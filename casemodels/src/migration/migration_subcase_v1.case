@@ -1,0 +1,27 @@
+<case id="migration/migration_subcase_v1.case" name="migration_subcase" expressionLanguage="spel" guid="_0UEh7">
+    <caseFileModel>
+        <caseFileItem id="_0UEh7_0" name="Input" multiplicity="ExactlyOne" definitionRef="root.cfid"/>
+        <caseFileItem id="_0UEh7_2" name="Output" multiplicity="ExactlyOne" definitionRef="root.cfid"/>
+    </caseFileModel>
+    <casePlanModel id="cm__0UEh7_0" name="migration_subcase" autoComplete="true">
+        <planItem id="pi_ht__0UEh7_0" name="HumanTask_0" definitionRef="ht__0UEh7_0">
+            <itemControl id="_0UEh7_4">
+                <repetitionRule id="_0UEh7_5">
+                    <condition id="_0UEh7_6">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
+        </planItem>
+        <humanTask id="ht__0UEh7_0" name="HumanTask_0" isBlocking="true"/>
+    </casePlanModel>
+    <caseRoles>
+        <role id="_0UEh7_7" name="role1"/>
+        <role id="_0UEh7_8" name="role2"/>
+        <role id="_0UEh7_9" name="role3_v1"/>
+    </caseRoles>
+    <input id="_0UEh7_1" name="Input" bindingRef="_0UEh7_0"/>
+    <output id="_0UEh7_3" name="Output" bindingRef="_0UEh7_2"/>
+</case>

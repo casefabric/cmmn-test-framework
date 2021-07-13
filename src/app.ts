@@ -51,6 +51,7 @@ import TestCalculation from './tests/api/task/process/testcalculation';
 import TestHelloWorldBusinessIdentifiers from './tests/api/businessidentifiers/testhelloworldbusinessidentifiers';
 import TestCaseFileArrayAPI from './tests/api/casefile/testcasefilearrayapi';
 import TestCaseMigration from './tests/api/case/migration/testcasemigration';
+import TestSubCaseMigration from './tests/api/case/migration/testsubcasemigration';
 
 function findTestsFromCommandLineArguments(): Array<string> {
     const time = process.argv[2];
@@ -165,6 +166,7 @@ const AllTestCases = new TestClasses([
     , TestCalculation
     , TestGetListGetDetails
     , TestCaseMigration
+    , TestSubCaseMigration
 ]);
 
 
