@@ -30,6 +30,33 @@ export default class TestCaseFileArrayAPI extends TestCase {
 
     async run() {
         await this.createChildArray();
+        await this.runRootArray();
+    }
+
+    async runRootArray() {
+        const caseInstance = await this.createEmptyCase();
+        const rootArray3Elements = [{
+            RootProperty1: "string",
+            RootProperty2: true
+        }, {
+            RootProperty1: "string",
+            RootProperty2: true
+        }, {
+            RootProperty1: "string",
+            RootProperty2: true
+        }];
+
+        await caseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFileArray', rootArray3Elements);
+        const rootArray1Element = [{
+            RootProperty1: "string1",
+            RootProperty2: false
+        }];
+
+        await caseFileService.getCaseFile(user, caseInstance).then(file => console.log(JSON.stringify(file, undefined, 2)));
+
+        await caseFileService.replaceCaseFileItem(user, caseInstance, 'RootCaseFileArray', rootArray1Element);
+        // await caseFileService.replaceCaseFileItem(user, caseInstance, 'RootCaseFileArray', rootArray1Element);
+        await caseFileService.getCaseFile(user, caseInstance).then(file => console.log(JSON.stringify(file, undefined, 2)));
     }
 
     async createEmptyCase(): Promise<Case> {
