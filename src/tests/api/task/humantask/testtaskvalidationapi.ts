@@ -9,7 +9,6 @@ import { ServerSideProcessing } from '../../../../framework/test/time';
 import TaskContent from './taskcontent';
 import Comparison from '../../../../framework/test/comparison';
 import { assertPlanItemState } from '../../../../framework/test/assertions'
-import Case from '../../../../framework/cmmn/case';
 import MockServer from '../../../../framework/mock/mockserver';
 import GetMock from '../../../../framework/mock/getmock';
 import PostMock from '../../../../framework/mock/postmock';
@@ -101,6 +100,11 @@ export default class TestTaskValidationAPI extends TestCase {
             throw new Error('Expecting a task with name "HumanTask", but the case does not seem to have one');
         }
 
+        const taskWithDefaultValidation = tasks.find(t => t.taskName == 'HumanTaskWithDefaultValidation')
+        if (! taskWithDefaultValidation) {
+            throw new Error('Expecting a task with name "HumanTaskWithDefaultValidation", but the case does not seem to have one');
+        }
+
         // It should not be possible to validate task output if the task has not yet been claimed.
         // await taskService.validateTaskOutput(pete, decisionTask, TaskContent.TaskOutputDecisionCanceled, 400);
 
@@ -142,6 +146,18 @@ export default class TestTaskValidationAPI extends TestCase {
 
         // It should be possible to complete the task with decision approved
         await taskService.completeTask(pete, decisionTask, TaskContent.TaskOutputDecisionApproved);
+
+        // Default output validation should fail on booleans that are passed as string
+        await taskService.validateTaskOutput(pete, taskWithDefaultValidation, TaskContent.TaskOutputInvalidBooleanProperty, 400);
+
+        // Default output validation should fail on integers that are passed as string
+        await taskService.validateTaskOutput(pete, taskWithDefaultValidation, TaskContent.TaskOutputInvalidIntegerProperty, 400);
+
+        // Default output validation should fail on invalid time formats
+        await taskService.validateTaskOutput(pete, taskWithDefaultValidation, TaskContent.TaskOutputInvalidTimeProperty, 400);
+
+        // It should be possible to complete the task with decision approved
+        await taskService.validateTaskOutput(pete, taskWithDefaultValidation, TaskContent.TaskOutputValidProperties);
 
         // In the end, stop the mock service, such that the test completes.
         // await mock.stop();

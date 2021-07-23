@@ -1,0 +1,7 @@
+<caseFileItemDefinition name="defaulttaskoutput" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified">
+    <property name="booleanProperty" type="http://www.omg.org/spec/CMMN/PropertyType/boolean"/>
+    <property name="stringProperty" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    <property name="timeProperty" type="http://www.omg.org/spec/CMMN/PropertyType/time"/>
+    <property name="integerProperty" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
+    <property name="anyProperty" type="http://www.omg.org/spec/CMMN/PropertyType/Unspecified"/>
+</caseFileItemDefinition>

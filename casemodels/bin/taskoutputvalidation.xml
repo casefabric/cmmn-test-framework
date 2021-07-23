@@ -1,4 +1,14 @@
 <definitions>
+    <caseFileItemDefinition name="string" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="string.cfid"/>
+    <caseFileItemDefinition name="http" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="http.cfid"/>
+    <caseFileItemDefinition name="mockresponsecode" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="mockresponsecode.cfid"/>
+    <caseFileItemDefinition name="defaulttaskoutput" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="defaulttaskoutput.cfid">
+        <property name="booleanProperty" type="http://www.omg.org/spec/CMMN/PropertyType/boolean"/>
+        <property name="stringProperty" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="timeProperty" type="http://www.omg.org/spec/CMMN/PropertyType/time"/>
+        <property name="integerProperty" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
+        <property name="anyProperty" type="http://www.omg.org/spec/CMMN/PropertyType/Unspecified"/>
+    </caseFileItemDefinition>
     <case id="taskoutputvalidation.case" name="taskoutputvalidation" expressionLanguage="spel">
         <caseFileModel>
             <caseFileItem id="_qgYaQ_0" name="TaskInput" multiplicity="ExactlyOne" definitionRef="string.cfid">
@@ -18,12 +28,14 @@
                     <caseFileItem id="_qgYaQ_37" name="mockResponseCode" multiplicity="ExactlyOne" definitionRef="mockresponsecode.cfid"/>
                 </children>
             </caseFileItem>
+            <caseFileItem id="_z74uc_14" name="DefaultTaskOutput" multiplicity="ExactlyOne" definitionRef="defaulttaskoutput.cfid"/>
         </caseFileModel>
         <casePlanModel id="cm__qgYaQ_0" name="taskoutputvalidation" autoComplete="true">
             <planItem id="pi_ht__qgYaQ_0" name="HumanTask" definitionRef="ht__qgYaQ_0">
                 <entryCriterion id="_qgYaQ_25" name="EntryCriterion_0" sentryRef="crit__qgYaQ_0"/>
             </planItem>
             <planItem id="pi_pt__qgYaQ_0" name="AssertMockServiceIsRunning" definitionRef="pt__qgYaQ_0"/>
+            <planItem id="pi_ht__z74uc_0" name="HumanTaskWithDefaultValidation" definitionRef="ht__z74uc_0"/>
             <sentry id="crit__qgYaQ_0" name="Sentry_0">
                 <planItemOnPart id="_qgYaQ_27" name="PlanItemOnPart_0" sourceRef="pi_pt__qgYaQ_0">
                     <standardEvent>complete</standardEvent>
@@ -59,6 +71,20 @@
                             </transformation>
                         </parameterMapping>
                         <parameterMapping id="_qgYaQ_16" name="ParameterMapping_4" sourceRef="_DtOu_Decision" targetRef="_qgYaQ_15"/>
+                    </cafienne:implementation>
+                </extensionElements>
+            </humanTask>
+            <humanTask id="ht__z74uc_0" name="HumanTaskWithDefaultValidation" isBlocking="true">
+                <outputs id="_z74uc_13" name="DefaultTaskOutput" bindingRef="_z74uc_14"/>
+                <extensionElements mustUnderstand="false">
+                    <cafienne:implementation xmlns:cafienne="org.cafienne" name="humanTaskTest" description="" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="humanTaskTest.humantask">
+                        <input id="_DdDX_DueDate" name="DueDate"/>
+                        <input id="_jg3q_Assignee" name="Assignee"/>
+                        <input id="_ydL3_Owner" name="Owner"/>
+                        <input id="_67M8_Content" name="Content"/>
+                        <output id="_DtOu_Decision" name="Decision"/>
+                        <task-model> { "JSONSchema" : "Some schema in here" }</task-model>
+                        <parameterMapping id="_z74uc_9" sourceRef="_DtOu_Decision" targetRef="_z74uc_13"/>
                     </cafienne:implementation>
                 </extensionElements>
             </humanTask>
@@ -110,9 +136,6 @@
             </cafienne:implementation>
         </extensionElements>
     </process>
-    <caseFileItemDefinition name="string" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="string.cfid"/>
-    <caseFileItemDefinition name="http" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="http.cfid"/>
-    <caseFileItemDefinition name="mockresponsecode" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="mockresponsecode.cfid"/>
     <CMMNDI>
         <CMMNDiagram>
             <CMMNShape cmmnElementRef="cm__qgYaQ_0">
@@ -126,6 +149,12 @@
             </CMMNShape>
             <CMMNShape cmmnElementRef="_qgYaQ_25">
                 <Bounds x="414" y="130" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__z74uc_0">
+                <Bounds x="200" y="290" width="210" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__z74uc_1">
+                <Bounds x="80" y="410" width="140" height="80"/>
             </CMMNShape>
             <CMMNEdge sourceCMMNElementRef="pi_pt__qgYaQ_0" targetCMMNElementRef="_qgYaQ_25"/>
         </CMMNDiagram>

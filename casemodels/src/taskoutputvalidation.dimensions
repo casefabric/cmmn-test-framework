@@ -12,6 +12,12 @@
         <CMMNShape cmmnElementRef="_qgYaQ_25">
             <Bounds x="414" y="130" width="12" height="20"/>
         </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ht__z74uc_0">
+            <Bounds x="200" y="290" width="210" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ht__z74uc_1">
+            <Bounds x="80" y="410" width="140" height="80"/>
+        </CMMNShape>
         <CMMNEdge sourceCMMNElementRef="pi_pt__qgYaQ_0" targetCMMNElementRef="_qgYaQ_25"/>
     </CMMNDiagram>
 </CMMNDI>
