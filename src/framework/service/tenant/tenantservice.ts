@@ -8,7 +8,7 @@ import { checkResponse, checkJSONResponse } from '../response';
 
 
 /**
- * Connection to the /registration APIs of Cafienne
+ * Connection to the /tenant APIs of Cafienne
  */
 export default class TenantService {
     cafienneService = new CafienneService();
