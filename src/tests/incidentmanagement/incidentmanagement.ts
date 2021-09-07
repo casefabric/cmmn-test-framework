@@ -6,11 +6,11 @@ import TestCase from '../../framework/test/testcase';
 import WorldWideTestTenant from '../worldwidetesttenant';
 import RepositoryService from '../../framework/service/case/repositoryservice';
 import { ServerSideProcessing } from '../../framework/test/time';
-import { assertPlanItemState, assertTask, verifyTaskInput, findTask } from '../../framework/test/assertions'
+import { assertPlanItemState} from '../../framework/test/caseassertions/plan'
+import { assertTask, verifyTaskInput, findTask } from '../../framework/test/caseassertions/task'
 import IncidentContent from './incidentmanagementcontent';
 import CaseTeam from '../../framework/cmmn/caseteam';
 import CaseTeamMember, { CaseOwner } from '../../framework/cmmn/caseteammember';
-import Case from '../../framework/cmmn/case';
 import MockServer from '../../framework/mock/mockserver';
 import GetMock from '../../framework/mock/getmock';
 

@@ -6,10 +6,8 @@ import TestCase from '../../../framework/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
 import CaseFileService from '../../../framework/service/case/casefileservice';
-import { assertCaseFileContent } from '../../../framework/test/assertions';
+import assertCaseFileContent from '../../../framework/test/caseassertions/file';
 import Case from '../../../framework/cmmn/case';
-import Util from '../../../framework/test/util';
-import { SomeTime } from '../../../framework/test/time';
 import DebugService from '../../../framework/service/case/debugservice';
 
 const repositoryService = new RepositoryService();

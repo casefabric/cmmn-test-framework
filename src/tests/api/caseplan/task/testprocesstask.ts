@@ -6,10 +6,10 @@ import WorldWideTestTenant from '../../../worldwidetesttenant';
 import RepositoryService from '../../../../framework/service/case/repositoryservice';
 import CasePlanService from '../../../../framework/service/case/caseplanservice';
 import CaseFileService from '../../../../framework/service/case/casefileservice';
-import Case from '../../../../framework/cmmn/case';
 import MockServer from '../../../../framework/mock/mockserver';
 import PostMock from '../../../../framework/mock/postmock';
-import { assertCaseFileContent, assertPlanItemState } from '../../../../framework/test/assertions';
+import { assertPlanItemState } from '../../../../framework/test/caseassertions/plan';
+import assertCaseFileContent from '../../../../framework/test/caseassertions/file';
 
 const repositoryService = new RepositoryService();
 const definition = 'processtasktest.xml';

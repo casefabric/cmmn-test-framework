@@ -8,7 +8,7 @@ import WorldWideTestTenant from '../../../worldwidetesttenant';
 import { ServerSideProcessing } from '../../../../framework/test/time';
 import TaskContent from './taskcontent';
 import Comparison from '../../../../framework/test/comparison';
-import { assertPlanItemState } from '../../../../framework/test/assertions'
+import { assertPlanItemState } from '../../../../framework/test/caseassertions/plan'
 import MockServer from '../../../../framework/mock/mockserver';
 import GetMock from '../../../../framework/mock/getmock';
 import PostMock from '../../../../framework/mock/postmock';

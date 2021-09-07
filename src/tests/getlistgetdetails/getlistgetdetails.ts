@@ -5,7 +5,7 @@ import TestCase from '../../framework/test/testcase';
 import WorldWideTestTenant from '../worldwidetesttenant';
 import RepositoryService from '../../framework/service/case/repositoryservice';
 import { ServerSideProcessing } from '../../framework/test/time';
-import { assertPlanItemState } from '../../framework/test/assertions'
+import { assertPlanItemState } from '../../framework/test/caseassertions/plan'
 import CasePlanService from '../../framework/service/case/caseplanservice';
 import CaseFileService from '../../framework/service/case/casefileservice';
 import Case from '../../framework/cmmn/case';
