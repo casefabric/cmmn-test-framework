@@ -2,7 +2,7 @@ import User from '../user';
 import Task from '../cmmn/task';
 import Comparison from './comparison';
 import TaskService from '../service/task/taskservice';
-import CaseService, { checkCaseID } from '../service/case/caseservice';
+import CaseService from '../service/case/caseservice';
 import Case from '../../framework/cmmn/case';
 import CaseFileService from '../service/case/casefileservice';
 import { pathReader } from '../cmmn/casefile';
@@ -53,7 +53,7 @@ export async function assertTask(user: User, task: Task, action: string, expecte
  * Retrieves the plan items of the case and asserts that the plan item has the expected state.
  * Optionally runs repeated loops to await the plan item to reach the expected state.
  * Handy to use for ProcessTask and CaseTasks and their potential follow-ups, as these tasks run asynchronously in the backend.
- * @param caseInstance 
+ * @param caseId 
  * @param user 
  * @param planItemName 
  * @param planItemIndex 
@@ -63,13 +63,13 @@ export async function assertTask(user: User, task: Task, action: string, expecte
  * @returns {Promise<PlanItem>} the plan item if it is found
  * @throws {Error} if the plan item is not found after so many attempts
  */
-export async function assertPlanItemState(user: User, caseInstance: Case, planItemName: string, planItemIndex: number, expectedState?: string, maxAttempts: number = 10, waitTimeBetweenAttempts = 1000): Promise<PlanItem> {
+export async function assertPlanItemState(user: User, caseId: Case | string, planItemName: string, planItemIndex: number, expectedState?: string, maxAttempts: number = 10, waitTimeBetweenAttempts = 1000): Promise<PlanItem> {
     let currentAttempt = 1;
     while (true) {
         if (Config.TestCase.log) {
             logger.info(`Running attempt ${currentAttempt} of ${maxAttempts} to find '${planItemName}.${planItemIndex}' in state ${expectedState}`);
         }
-        const freshCase = await caseService.getCase(user, caseInstance);
+        const freshCase = await caseService.getCase(user, caseId);
         if (Config.TestCase.log) {
             logger.debug('Current Plan Items\n' + (freshCase.planitems.map(item => "- '" + item.name + "." + item.index + "' ==> '" + item.currentState + "'")).join('\n'));
         }
@@ -89,12 +89,11 @@ export async function assertPlanItemState(user: User, caseInstance: Case, planIt
 
 /**
  * Asserts the state of the case plan
- * @param caseInstance 
+ * @param caseId 
  * @param user 
  * @param expectedState 
  */
-export async function assertCasePlanState(user: User, caseInstance: Case | string, expectedState?: string, maxAttempts: number = 10, waitTimeBetweenAttempts = 1000) {
-    const caseId = checkCaseID(caseInstance);
+export async function assertCasePlanState(user: User, caseId: Case | string, expectedState?: string, maxAttempts: number = 10, waitTimeBetweenAttempts = 1000) {
     const tryGetCase = async () => {
         try {
             // Get case details
@@ -165,13 +164,13 @@ export function assertTaskCount(tasks: Task[], state: string, expectedCount: Num
  * Read the case instance's case file on behalf of the user and verify that the element at the end of the path matches the expectedContent.
  * Path can be something like /Greeting/
  * 
- * @param caseInstance 
+ * @param caseId 
  * @param user 
  * @param path 
  * @param expectedContent 
  */
-export async function assertCaseFileContent(user: User, caseInstance: Case, path: string, expectedContent: any, log: boolean = false) {
-    await caseFileService.getCaseFile(user, caseInstance).then(casefile => {
+export async function assertCaseFileContent(user: User, caseId: Case | string, path: string, expectedContent: any, log: boolean = false) {
+    await caseFileService.getCaseFile(user, caseId).then(casefile => {
         if (Config.TestCase.log) {
             logger.debug(`Case File for reading path ${path}:${JSON.stringify(casefile, undefined, 2)}`);
         }
@@ -274,28 +273,28 @@ async function verifyTeam(actualTeam: CaseTeam, expectedTeam: CaseTeam) {
 /**
  * Asserts the case team with the given team
  * and throws error if it doesn't match
- * @param caseInstance 
+ * @param caseId 
  * @param user 
  * @param expectedTeam 
  */
-export async function assertCaseTeam(user: User, caseInstance: Case, expectedTeam: CaseTeam) {
+export async function assertCaseTeam(user: User, caseId: Case | string, expectedTeam: CaseTeam) {
     // Get case team via getCaseTeam
-    await caseTeamService.getCaseTeam(user, caseInstance).then(convertToCaseTeam).then(team => verifyTeam(team, expectedTeam));
+    await caseTeamService.getCaseTeam(user, caseId).then(convertToCaseTeam).then(team => verifyTeam(team, expectedTeam));
 
     // Get case team via getCase
-    await caseService.getCase(user, caseInstance).then(caseInstance => caseInstance.team).then(convertToCaseTeam).then(team => verifyTeam(team, expectedTeam));
+    await caseService.getCase(user, caseId).then(caseInstance => caseInstance.team).then(convertToCaseTeam).then(team => verifyTeam(team, expectedTeam));
 }
 
 /**
  * Asserts a member's presence in the case team
  * @param member 
- * @param caseInstance 
+ * @param caseId 
  * @param user 
  * @param expectNoFailures 
  */
-export async function assertCaseTeamMember(user: User, caseInstance: Case, member: CaseTeamMember, expectNoFailures: boolean = true) {
+export async function assertCaseTeamMember(user: User, caseId: Case | string, member: CaseTeamMember, expectNoFailures: boolean = true) {
     // Get case team via getCaseTeam
-    const team = await caseTeamService.getCaseTeam(user, caseInstance);
+    const team = await caseTeamService.getCaseTeam(user, caseId);
     const actualCaseTeam = await convertToCaseTeam(team);
 
     const [status, msg] = hasMember(actualCaseTeam, member)

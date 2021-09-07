@@ -46,4 +46,8 @@ export default class Case extends CMMNBaseClass {
         public planitems: Array<PlanItem>,
         public file: CaseFile
     ) { super(); }
+
+    toString() {
+        return this.id;
+    }
 }

@@ -4,7 +4,6 @@ import Task from '../../cmmn/task';
 import Case from '../../cmmn/case';
 import TaskFilter from './taskfilter';
 import { checkResponse, checkJSONResponse } from '../response';
-import { checkCaseID } from '../case/caseservice';
 import PlanItem from '../../cmmn/planitem';
 
 const cafienneService = new CafienneService();
@@ -135,8 +134,7 @@ export default class TaskService {
      * @param Case
      * @param user 
      */
-    async getCaseTasks(user: User, Case: Case | string, expectedStatusCode: number = 200): Promise<Array<Task>> {
-        const caseId = checkCaseID(Case);
+    async getCaseTasks(user: User, caseId: Case | string, expectedStatusCode: number = 200): Promise<Array<Task>> {
         const response = await cafienneService.get(`/tasks/case/${caseId}`, user);
         const msg = `GetCaseTasks is not expected to succeed for member ${user.id} in case ${caseId}`;
         return await checkJSONResponse(response, msg, expectedStatusCode, [Task]);
@@ -149,12 +147,11 @@ export default class TaskService {
      * @param user
      * @param task 
      */
-     async getCaseTask(user: User, Case: Case | string, task: Task | PlanItem | string): Promise<Task> {
+    async getCaseTask(user: User, caseId: Case | string, task: Task | PlanItem | string): Promise<Task> {
         const taskId = getTaskId(task);
         const tasks = await this.getCaseTasks(user, Case);
         const responseTask = tasks.find(task => task.id === taskId || task.taskName === taskId);
-        if (! responseTask) {
-            const caseId = checkCaseID(Case);
+        if (!responseTask) {
             throw new Error(`Cannot find task ${taskId} in case ${caseId}; tasks are ${tasks.map(t => t.taskName).join('\'')}`);
         } else {
             return responseTask;

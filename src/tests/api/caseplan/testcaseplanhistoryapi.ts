@@ -30,7 +30,7 @@ export default class TestCasePlanHistoryAPI extends TestCase {
     }
 
     async run() {
-        
+
         const inputs = {
             Greeting: {
                 Message: 'Hello there',
@@ -41,7 +41,7 @@ export default class TestCasePlanHistoryAPI extends TestCase {
         const startCase = { tenant, definition, inputs };
         const caseInstance = await caseService.startCase(user, startCase);
         const planItems = await (await caseService.getCase(user, caseInstance)).planitems;
- 
+
         const planHistory = await caseHistoryService.getCasePlanHistory(user, caseInstance);
         if (planHistory.length !== planItems.length) {
             throw new Error(`Expected ${planItems.length} history items, but found ${planHistory.length}`);
@@ -55,9 +55,9 @@ export default class TestCasePlanHistoryAPI extends TestCase {
 
         await this.assertHistoryItems(caseInstance, firstPlanItem, 5);
         await this.assertHistoryItems(caseInstance, secondPlanItem, 4);
-        
+
         const firstTask = (await taskService.getCaseTasks(user, caseInstance)).find(task => task.id === firstPlanItem.id);
-        if (! firstTask) {
+        if (!firstTask) {
             throw new Error('Could not find task?!');
         }
         const taskOutput = {
@@ -80,14 +80,14 @@ export default class TestCasePlanHistoryAPI extends TestCase {
 
     getPlanItem(planItems: Array<PlanItem>, name: string): PlanItem {
         const planItem = planItems.find(item => item.name === name);
-        if (! planItem) {
+        if (!planItem) {
             throw new Error(`Expected a plan item named '${name}' but it does not seem to exist`);
         }
         return planItem;
     }
 
-    async assertHistoryItems(caseInstance: Case, planItem: PlanItem, expectedNumber: number) {
-        const planItemHistory = await caseHistoryService.getPlanItemHistory(user, caseInstance, planItem.id).then(planItemHistory => {
+    async assertHistoryItems(caseId: Case | string, planItem: PlanItem, expectedNumber: number) {
+        const planItemHistory = await caseHistoryService.getPlanItemHistory(user, caseId, planItem.id).then(planItemHistory => {
             if (planItemHistory.length !== expectedNumber) {
                 throw new Error(`Expected ${expectedNumber} history items for the HumanTask ${planItem.name} but found ${planItemHistory.length}`);
             }

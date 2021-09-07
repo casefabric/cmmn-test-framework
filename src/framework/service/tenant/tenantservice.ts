@@ -19,9 +19,9 @@ export default class TenantService {
      * @param tenant 
      * @param expectedStatusCode 
      */
-    async getTenantOwners(user: User, tenant: Tenant, expectedStatusCode: number = 200) {
-        const response = await this.cafienneService.get(`/tenant/${tenant.name}/owners`, user);
-        const msg = `GetTenantOwners is not expected to succeed for user ${user.id} in tenant ${tenant.name}`;
+    async getTenantOwners(user: User, tenant: Tenant | string, expectedStatusCode: number = 200) {
+        const response = await this.cafienneService.get(`/tenant/${tenant}/owners`, user);
+        const msg = `GetTenantOwners is not expected to succeed for user ${user.id} in tenant ${tenant}`;
         return checkJSONResponse(response, msg, expectedStatusCode);
     }
 
@@ -32,7 +32,7 @@ export default class TenantService {
      * @param newOwner User id of the owner to be added
      * @param expectedStatusCode 
      */
-    async addTenantOwner(user: User, tenant: Tenant, newOwner: string, expectedStatusCode: number = 204) {
+    async addTenantOwner(user: User, tenant: Tenant | string, newOwner: string, expectedStatusCode: number = 204) {
         const upsertUser = new UpsertableTenantUser(newOwner);
         upsertUser.isOwner = true;
         return this.updateTenantUser(user, tenant, upsertUser, expectedStatusCode);
@@ -45,7 +45,7 @@ export default class TenantService {
      * @param formerOwner User id of the owner to be removed
      * @param expectedStatusCode 
      */
-    async removeTenantOwner(user: User, tenant: Tenant, formerOwner: string, expectedStatusCode: number = 204) {
+    async removeTenantOwner(user: User, tenant: Tenant | string, formerOwner: string, expectedStatusCode: number = 204) {
         const upsertUser = new UpsertableTenantUser(formerOwner);
         upsertUser.isOwner = false;
         return this.updateTenantUser(user, tenant, upsertUser, expectedStatusCode);
@@ -57,9 +57,9 @@ export default class TenantService {
      * @param tenant 
      * @param expectedStatusCode 
      */
-    async getTenantUsers(user: User, tenant: Tenant, expectedStatusCode: number = 200) {
-        const response = await this.cafienneService.get(`/tenant/${tenant.name}/users`, user);
-        const msg = `GetTenantUsers is not expected to succeed for user ${user.id} in tenant ${tenant.name}`;
+    async getTenantUsers(user: User, tenant: Tenant | string, expectedStatusCode: number = 200) {
+        const response = await this.cafienneService.get(`/tenant/${tenant}/users`, user);
+        const msg = `GetTenantUsers is not expected to succeed for user ${user.id} in tenant ${tenant}`;
         return checkJSONResponse(response, msg, expectedStatusCode, [TenantUser]);
     }
 
@@ -69,9 +69,9 @@ export default class TenantService {
      * @param tenant 
      * @param expectedStatusCode 
      */
-    async getDisabledUserAccounts(user: User, tenant: Tenant, expectedStatusCode: number = 200) {
-        const response = await this.cafienneService.get(`/tenant/${tenant.name}/disabled-accounts`, user);
-        const msg = `GettingDisabledAccounts is not expected to succeed for user ${user.id} in tenant ${tenant.name}`;
+    async getDisabledUserAccounts(user: User, tenant: Tenant | string, expectedStatusCode: number = 200) {
+        const response = await this.cafienneService.get(`/tenant/${tenant}/disabled-accounts`, user);
+        const msg = `GettingDisabledAccounts is not expected to succeed for user ${user.id} in tenant ${tenant}`;
         return checkJSONResponse(response, msg, expectedStatusCode, [TenantUser]);
     }
 
@@ -82,9 +82,9 @@ export default class TenantService {
      * @param tenantUserId 
      * @param expectedStatusCode 
      */
-    async getTenantUser(user: User, tenant: Tenant, tenantUserId: string, expectedStatusCode: number = 200) {
-        const response = await this.cafienneService.get(`/tenant/${tenant.name}/users/${tenantUserId}`, user);
-        const msg = `GetTenantUser(${tenantUserId}) is not expected to succeed for user ${user.id} in tenant ${tenant.name}`;
+    async getTenantUser(user: User, tenant: Tenant | string, tenantUserId: string, expectedStatusCode: number = 200) {
+        const response = await this.cafienneService.get(`/tenant/${tenant}/users/${tenantUserId}`, user);
+        const msg = `GetTenantUser(${tenantUserId}) is not expected to succeed for user ${user.id} in tenant ${tenant}`;
         return checkJSONResponse(response, msg, expectedStatusCode, TenantUser);
     }
 
@@ -95,7 +95,7 @@ export default class TenantService {
      * @param newTenantUser 
      * @param expectedStatusCode 
      */
-    async addTenantUser(user: User, tenant: Tenant, newTenantUser: TenantUser, expectedStatusCode: number = 204) {
+    async addTenantUser(user: User, tenant: Tenant | string, newTenantUser: TenantUser, expectedStatusCode: number = 204) {
         return this.updateTenantUser(user, tenant, newTenantUser, expectedStatusCode);
     }
 
@@ -106,9 +106,9 @@ export default class TenantService {
      * @param newTenantUser 
      * @param expectedStatusCode 
      */
-    async updateTenantUser(user: User, tenant: Tenant, newTenantUser: UpsertableTenantUser, expectedStatusCode: number = 204) {
-        const response = await this.cafienneService.put(`/tenant/${tenant.name}/users`, user, newTenantUser);
-        const msg = `UpdateTenantUser is not expected to succeed for user ${user.id} in tenant ${tenant.name}`;
+    async updateTenantUser(user: User, tenant: Tenant | string, newTenantUser: UpsertableTenantUser, expectedStatusCode: number = 204) {
+        const response = await this.cafienneService.put(`/tenant/${tenant}/users`, user, newTenantUser);
+        const msg = `UpdateTenantUser is not expected to succeed for user ${user.id} in tenant ${tenant}`;
         return checkResponse(response, msg, expectedStatusCode);
     }
 
@@ -119,9 +119,9 @@ export default class TenantService {
      * @param newTenantUser 
      * @param expectedStatusCode 
      */
-    async replaceTenantUser(user: User, tenant: Tenant, newTenantUser: UpsertableTenantUser, expectedStatusCode: number = 204) {
-        const response = await this.cafienneService.post(`/tenant/${tenant.name}/users`, user, newTenantUser);
-        const msg = `ReplaceTenantUser is not expected to succeed for user ${user.id} in tenant ${tenant.name}`;
+    async replaceTenantUser(user: User, tenant: Tenant | string, newTenantUser: UpsertableTenantUser, expectedStatusCode: number = 204) {
+        const response = await this.cafienneService.post(`/tenant/${tenant}/users`, user, newTenantUser);
+        const msg = `ReplaceTenantUser is not expected to succeed for user ${user.id} in tenant ${tenant}`;
         return checkResponse(response, msg, expectedStatusCode);
     }
 
@@ -132,9 +132,9 @@ export default class TenantService {
      * @param usersToUpdate 
      * @param expectedStatusCode 
      */
-    async updateTenantUsers(user: User, tenant: Tenant, usersToUpdate: Array<TenantUser>, expectedStatusCode: number = 204) {
-        const response = await this.cafienneService.put(`/tenant/${tenant.name}`, user, { users: usersToUpdate });
-        const msg = `UpdateTenant is not expected to succeed for user ${user.id} in tenant ${tenant.name}`;
+    async updateTenantUsers(user: User, tenant: Tenant | string, usersToUpdate: Array<TenantUser>, expectedStatusCode: number = 204) {
+        const response = await this.cafienneService.put(`/tenant/${tenant}`, user, { users: usersToUpdate });
+        const msg = `UpdateTenant is not expected to succeed for user ${user.id} in tenant ${tenant}`;
         return checkResponse(response, msg, expectedStatusCode);
     }
 
@@ -145,8 +145,8 @@ export default class TenantService {
      * @param expectedStatusCode 
      */
     async replaceTenant(user: User, tenant: Tenant, expectedStatusCode: number = 204) {
-        const response = await this.cafienneService.post(`/tenant/${tenant.name}`, user, tenant);
-        const msg = `ReplaceTenant is not expected to succeed for user ${user.id} in tenant ${tenant.name}`;
+        const response = await this.cafienneService.post(`/tenant/${tenant}`, user, tenant);
+        const msg = `ReplaceTenant is not expected to succeed for user ${user.id} in tenant ${tenant}`;
         return checkResponse(response, msg, expectedStatusCode);
     }
 
@@ -157,7 +157,7 @@ export default class TenantService {
      * @param tenantUserId Id of the user to be disabled
      * @param expectedStatusCode 
      */
-    async disableTenantUser(user: User, tenant: Tenant, tenantUserId: string, expectedStatusCode: number = 204) {
+    async disableTenantUser(user: User, tenant: Tenant | string, tenantUserId: string, expectedStatusCode: number = 204) {
         const upsertUser = new UpsertableTenantUser(tenantUserId);
         upsertUser.enabled = false;
         return this.updateTenantUser(user, tenant, upsertUser, expectedStatusCode);
@@ -170,7 +170,7 @@ export default class TenantService {
      * @param tenantUserId 
      * @param expectedStatusCode 
      */
-    async enableTenantUser(user: User, tenant: Tenant, tenantUserId: string, expectedStatusCode: number = 204) {
+    async enableTenantUser(user: User, tenant: Tenant | string, tenantUserId: string, expectedStatusCode: number = 204) {
         const upsertUser = new UpsertableTenantUser(tenantUserId);
         upsertUser.enabled = true;
         return this.updateTenantUser(user, tenant, upsertUser, expectedStatusCode);
@@ -184,9 +184,9 @@ export default class TenantService {
      * @param newRole Name of the new role
      * @param expectedStatusCode 
      */
-    async addTenantUserRole(user: User, tenant: Tenant, tenantUserId: string, newRole: string, expectedStatusCode: number = 204) {
-        const response = await this.cafienneService.put(`/tenant/${tenant.name}/users/${tenantUserId}/roles/${newRole}`, user);
-        const msg = `Adding role ${newRole} to user ${tenantUserId} is not expected to succeed for user ${user.id} in tenant ${tenant.name}`;
+    async addTenantUserRole(user: User, tenant: Tenant | string, tenantUserId: string, newRole: string, expectedStatusCode: number = 204) {
+        const response = await this.cafienneService.put(`/tenant/${tenant}/users/${tenantUserId}/roles/${newRole}`, user);
+        const msg = `Adding role ${newRole} to user ${tenantUserId} is not expected to succeed for user ${user.id} in tenant ${tenant}`;
         return checkResponse(response, msg, expectedStatusCode);
     }
 
@@ -198,9 +198,9 @@ export default class TenantService {
      * @param formerRole Name of the role to be removed
      * @param expectedStatusCode 
      */
-    async removeTenantUserRole(user: User, tenant: Tenant, tenantUserId: string, formerRole: string, expectedStatusCode: number = 204) {
-        const response = await this.cafienneService.delete(`/tenant/${tenant.name}/users/${tenantUserId}/roles/${formerRole}`, user);
-        const msg = `Removing role ${formerRole} from user ${tenantUserId} is not expected to succeed for user ${user.id} in tenant ${tenant.name}`;
+    async removeTenantUserRole(user: User, tenant: Tenant | string, tenantUserId: string, formerRole: string, expectedStatusCode: number = 204) {
+        const response = await this.cafienneService.delete(`/tenant/${tenant}/users/${tenantUserId}/roles/${formerRole}`, user);
+        const msg = `Removing role ${formerRole} from user ${tenantUserId} is not expected to succeed for user ${user.id} in tenant ${tenant}`;
         return checkResponse(response, msg, expectedStatusCode);
     }
 }

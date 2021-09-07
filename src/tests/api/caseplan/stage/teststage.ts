@@ -47,7 +47,7 @@ export default class TestRepeatingStage extends TestCase {
         let caseInstance = await caseService.startCase(sender, startCase);
         caseInstance = await caseService.getCase(sender, caseInstance);
         // return;
- 
+
         const taskName = 'SendResponse';
         const planItem = caseInstance.planitems.find(p => p.name === taskName);
         if (!planItem) {
@@ -72,13 +72,13 @@ export default class TestRepeatingStage extends TestCase {
     }
 }
 
-async function getTasksThenClaimAndCompleteNextTask(caseInstance: Case, taskOutput: object) {
+async function getTasksThenClaimAndCompleteNextTask(caseId: Case | string, taskOutput: object) {
     const taskName = 'SendResponse';
-    const nextTasks = await taskService.getCaseTasks(sender, caseInstance);
+    const nextTasks = await taskService.getCaseTasks(sender, caseId);
     nextTasks.forEach(t => delete t.taskModel);
     console.log(JSON.stringify(nextTasks, undefined, 2))
     const nextTask = nextTasks.find(task => task.taskName === taskName && task.taskState === 'Unassigned');
-    if (! nextTask) {
+    if (!nextTask) {
         throw new Error('Expecting a new task in unassigned state');
     }
     await taskService.claimTask(sender, nextTask);
