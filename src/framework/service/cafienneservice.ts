@@ -46,6 +46,7 @@ export default class CafienneService {
 
             readAndUpdateHeader('Case-Last-Modified');
             readAndUpdateHeader('Tenant-Last-Modified');
+            readAndUpdateHeader('Consent-Group-Last-Modified');
         }
         return response;
     }

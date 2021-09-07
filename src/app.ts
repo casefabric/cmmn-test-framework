@@ -54,6 +54,7 @@ import TestCaseMigration from './tests/api/case/migration/testcasemigration';
 import TestSubCaseMigration from './tests/api/case/migration/testsubcasemigration';
 import TestRecovery from './tests/api/environment/testrecovery';
 import TestSwagger from './tests/api/environment/testswagger';
+import TestConsentGroupAPI from './tests/api/consentgroup/testconsentgroupapi';
 
 function findTestsFromCommandLineArguments(): Array<string> {
     const time = process.argv[2];
@@ -121,6 +122,8 @@ const AllTestCases = new TestClasses([
     , TestResponseType
     , TestSwagger
     , TestHelloworld
+    , TestTenantRegistration
+    , TestConsentGroupAPI
     , TestTaskCompletion
     , TestTaskOutputOperations
     , TestTaskBindingRefinement
@@ -135,7 +138,6 @@ const AllTestCases = new TestClasses([
     , TestTaskCountAPI
     , TestDebugMode
     , TestDocumentationAPI
-    , TestTenantRegistration
     , TestRepositoryAPI
     , TestTokenValidation
     , TestCaseFileAPI
