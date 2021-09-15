@@ -32,7 +32,7 @@ export default class TestCaseFileAPI extends TestCase {
         await this.createEmptyRootCaseFileArray();
         await this.createFullCaseFileRootItem();
         await this.createFullCaseFile();
-        await this.createCaseFileItemChild();
+        await this.runChildOperations();
     }
 
     async createEmptyCase(): Promise<Case> {
@@ -291,9 +291,17 @@ export default class TestCaseFileAPI extends TestCase {
     }
 
 
-    async createCaseFileItemChild() {
-        this.logTestName("createCaseFileItemChild");
+    async runChildOperations() {
+        this.logTestName("runChildOperations");
         const caseInstance = await this.createEmptyCase();
+
+        // Assert that it is not possible to create the child without having the root item
+        const childItem = this.createChildItem();
+        await caseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildItem', childItem, 400);
+
+        // And the same for a grand child
+        const grandChildItem = this.createGrandChildItem();
+        await caseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildItem/GrandChildItem', grandChildItem, 400);
 
         // Setting the parent item to "null" will cause a null value; 
         // Then create the child item directly.
@@ -303,9 +311,21 @@ export default class TestCaseFileAPI extends TestCase {
         });
         await assertCaseFileContent(user, caseInstance, 'RootCaseFileItem', null);
 
-        const childItem = this.createChildItem();
+        // Even though now the root item exists, it should still not be possible to create the grand child
+        await caseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildItem/GrandChildItem', grandChildItem, 400);
+        
+        // However it should now be possible to create the child case file item
         await caseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildItem', childItem);
         await assertCaseFileContent(user, caseInstance, 'RootCaseFileItem/ChildItem', childItem);
+
+        // And now it should also be possible to create the grand child
+        await caseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildItem/GrandChildItem', grandChildItem);
+        await assertCaseFileContent(user, caseInstance, 'RootCaseFileItem/ChildItem/GrandChildItem', grandChildItem);
+
+        // Now test that we can also directly update a case file item, even if it is not yet created.
+        const childArray = [this.createChildItem(), this.createChildItem()];
+        await caseFileService.updateCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildArray', childArray);
+        await assertCaseFileContent(user, caseInstance, 'RootCaseFileItem/ChildArray', childArray);
 
         return caseInstance;
     }
