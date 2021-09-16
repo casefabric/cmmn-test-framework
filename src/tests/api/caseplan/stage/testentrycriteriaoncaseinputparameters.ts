@@ -145,8 +145,8 @@ function printCaseSummary(c: Case) {
     messages.push(` Tasks:\n  - ${tasks.join('\n  - ')}`);
     const stages = c.planitems.filter(p => p.type === 'Stage').map(p => `'${p.name}.${p.index}' in state ${p.currentState}`);
     messages.push(` Stages:\n  - ${stages.join('\n  - ')}`);
-    const numTeamMembers = c.team.length;
-    const numOwners = c.team.filter(m => m.isOwner).length;
+    const numTeamMembers = c.team.members.length;
+    const numOwners = c.team.members.filter(m => m.isOwner).length;
     messages.push(`CaseTeam: ${numTeamMembers} members with ${numOwners} owners`);
     console.log(messages.join('\n'));
     return c;

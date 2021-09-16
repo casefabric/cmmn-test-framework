@@ -8,22 +8,6 @@ import CaseTeamMember from '../../cmmn/caseteammember';
 const caseService = new CaseService();
 const caseTeamService = new CaseTeamService();
 
-/**
- * A simple converter method which converts JSON caseTeam to object
- * @param team 
- */
- async function convertToCaseTeam(team: CaseTeam | Array<CaseTeamMember>) {
-    let actualCaseTeamArray: Array<CaseTeamMember> = []
-    const rawMembers = team instanceof CaseTeam ? team.members : team;
-    rawMembers.forEach(member => {
-        // console.log("Converting member " + JSON.stringify(member, undefined, 2))
-        const newMember = new CaseTeamMember(member.memberId, member.caseRoles, member.memberType, member.isOwner)
-        // console.log("Converted member " + JSON.stringify(newMember, undefined, 2))
-        actualCaseTeamArray.push(newMember);
-    });
-    return new CaseTeam(actualCaseTeamArray)
-}
-
 function findMember(team: CaseTeam, expectedMember: CaseTeamMember) {
     return team.members.find(member => member.memberId === expectedMember.memberId && member.memberType === expectedMember.memberType);
 }
@@ -97,10 +81,10 @@ async function verifyTeam(actualTeam: CaseTeam, expectedTeam: CaseTeam) {
  */
 export async function assertCaseTeam(user: User, caseId: Case | string, expectedTeam: CaseTeam) {
     // Get case team via getCaseTeam
-    await caseTeamService.getCaseTeam(user, caseId).then(convertToCaseTeam).then(team => verifyTeam(team, expectedTeam));
+    await caseTeamService.getCaseTeam(user, caseId).then(team => verifyTeam(team, expectedTeam));
 
     // Get case team via getCase
-    await caseService.getCase(user, caseId).then(caseInstance => caseInstance.team).then(convertToCaseTeam).then(team => verifyTeam(team, expectedTeam));
+    await caseService.getCase(user, caseId).then(caseInstance => caseInstance.team).then(team => verifyTeam(team, expectedTeam));
 }
 
 /**
@@ -112,8 +96,7 @@ export async function assertCaseTeam(user: User, caseId: Case | string, expected
  */
 export async function assertCaseTeamMember(user: User, caseId: Case | string, member: CaseTeamMember, expectNoFailures: boolean = true) {
     // Get case team via getCaseTeam
-    const team = await caseTeamService.getCaseTeam(user, caseId);
-    const actualCaseTeam = await convertToCaseTeam(team);
+    const actualCaseTeam = await caseTeamService.getCaseTeam(user, caseId);
 
     const [status, msg] = hasMember(actualCaseTeam, member)
     if ((expectNoFailures && !status) || status && !expectNoFailures) {

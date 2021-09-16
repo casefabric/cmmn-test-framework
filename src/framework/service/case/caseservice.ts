@@ -8,6 +8,7 @@ import DiscretionaryItem from '../../cmmn/discretionaryitem';
 import { checkJSONResponse, checkResponse } from '../response';
 import { DiscretionaryItemsResponse } from './response/discretionaryitemsresponse';
 import { CaseStatistics } from './response/casestatistics';
+import CaseTeam from '../../cmmn/caseteam';
 
 const cafienneService = new CafienneService();
 
@@ -47,9 +48,13 @@ export default class CaseService {
      * @param user 
      */
     async getCase(user: User, caseId: Case | string, expectedStatusCode: number = 200): Promise<Case> {
+        const convertCaseTeamFormat = (json: any) => {
+            if (json.team && !json.team.members) json.team = new CaseTeam(json.team);
+            return json;
+        }
         const response = await cafienneService.get(`/cases/${caseId}`, user);
         const msg = `GetCase is not expected to succeed for user ${user.id} in case ${caseId}`;
-        return checkJSONResponse(response, msg, expectedStatusCode, Case);
+        return checkJSONResponse(response, msg, expectedStatusCode, Case).then(convertCaseTeamFormat);
     }
 
     /**
