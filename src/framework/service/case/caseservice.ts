@@ -23,7 +23,7 @@ export default class CaseService {
             inputs: command.inputs,
             caseTeam: command.caseTeam,
             definition: command.definition,
-            tenant: command.tenant,
+            tenant: command.tenant?.toString(),
             caseInstanceId,
             debug
         }

@@ -18,7 +18,7 @@ import TestTravelRequest from './tests/travelrequest/testtravelrequest';
 import TestEntryCriteriaOnCaseInputParameters from './tests/api/caseplan/stage/testentrycriteriaoncaseinputparameters';
 import TestStage from './tests/api/caseplan/stage/teststage';
 import TestCaseTeamAPI from './tests/api/caseteam/testcaseteamapi';
-import TestRoleBinding from './tests/api/caseteam/testrolebinding';
+import TestCaseTeamTenantRoleBinding from './tests/api/caseteam/testrolebinding';
 import TestTaskAPI from './tests/api/task/humantask/testtaskapi';
 import TestTaskCountAPI from './tests/api/task/humantask/testtaskcountapi';
 import TestCaseTeam from './tests/api/caseteam/testcaseteam';
@@ -55,6 +55,7 @@ import TestSubCaseMigration from './tests/api/case/migration/testsubcasemigratio
 import TestRecovery from './tests/api/environment/testrecovery';
 import TestSwagger from './tests/api/environment/testswagger';
 import TestConsentGroupAPI from './tests/api/consentgroup/testconsentgroupapi';
+import TestCaseTeamConsentGroupAPI from './tests/api/caseteam/testcaseteamconsentgroupapi';
 
 function findTestsFromCommandLineArguments(): Array<string> {
     const time = process.argv[2];
@@ -153,14 +154,15 @@ const AllTestCases = new TestClasses([
     , TestStageTaskExpressions
     , TestProcessTask
     , TestCaseTeamAPI
-    , TestRoleBinding
     , TestCaseTeam
+    , TestCaseTeamTenantRoleBinding
+    , TestCaseTeamConsentGroupAPI
+    , TestCaseTeamTaskAuthorizations
     , TestEventAuthorization
     , TestIncidentManagement
     , TestTravelRequest
     , TestInvalidStartCase
     , TestValidStartCase
-    , TestCaseTeamTaskAuthorizations
     , TestStartCaseEmptyRole
     , TestSubCase
     , TestArraySubCase

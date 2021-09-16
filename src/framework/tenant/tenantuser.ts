@@ -1,3 +1,4 @@
+import ConsentGroupMember, { ConsentGroupOwner } from "../service/consentgroup/consentgroupmember";
 import User from "../user";
 
 
@@ -37,6 +38,26 @@ export default class TenantUser extends UpsertableTenantUser {
     constructor(public userId: string, public roles: Array<string> = [], public name?: string, public email?: string, public isOwner: boolean = false, public enabled: boolean = true) {
         super(userId, roles, name, email, isOwner, enabled);
      }
+
+     
+    /**
+     * Creates a new ConsentGroupMember object with the given roles.
+     * The ConsentGroupMember will get the user id of this user.
+     * @param roles 
+     */
+     asCGM(...roles: Array<string>) {
+        return new ConsentGroupMember(this.id, roles);
+    }
+
+    /**
+     * Creates a new ConsentGroupOwner object with the given roles.
+     * The ConsentGroupMember will get the user id of this user.
+     * @param roles 
+     */
+     asCGO(...roles: Array<string>) {
+        return new ConsentGroupOwner(this.id, roles);
+    }
+
 }
 
 export class TenantOwner extends TenantUser {

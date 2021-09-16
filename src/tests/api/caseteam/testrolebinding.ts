@@ -24,7 +24,7 @@ const requestorRole = 'Requestor';
 const approverRole = 'Approver';
 const participantRole = 'CaseParticipant';
 
-export default class TestRoleBinding extends TestCase {
+export default class TestCaseTeamTenantRoleBinding extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
         await RepositoryService.validateAndDeploy(sender, definition, tenant);
@@ -94,11 +94,6 @@ export default class TestRoleBinding extends TestCase {
         const failureText = await response.text();
         console.log("Response: " + response.status)
         console.log("Response: " + failureText);
-        if (response.status === 401) {
-            if (response.statusText == "Unauthorizied") {
-                console.log("Unexpected")
-            }
-        }
         if (failureText.indexOf(expectedMessage) < 0) {
             throw new Error('Expected message to contain "' + expectedMessage + '" but received "' + failureText + '"');
         }

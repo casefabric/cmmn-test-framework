@@ -4,6 +4,7 @@ import CaseTeam from "../../cmmn/caseteam";
 import CaseTeamMember from "../../cmmn/caseteammember";
 import CafienneService from "../cafienneservice";
 import { checkResponse, checkJSONResponse } from "../response";
+import CaseTeamGroup from "../../cmmn/caseteamgroup";
 
 export default class CaseTeamService {
     /**
@@ -26,6 +27,28 @@ export default class CaseTeamService {
      */
     static async setCaseTeam(user: User, caseId: Case | string, team: CaseTeam, expectedStatusCode: number = 200, msg = `SetCaseTeam is not expected to succeed for user ${user} in case ${caseId}`) {
         const response = await CafienneService.post(`/cases/${caseId}/caseteam`, user, team);
+        return checkResponse(response, msg, expectedStatusCode);
+    }
+
+    /**
+     * Add or update a case team member.
+     * @param Case 
+     * @param user 
+     * @param group 
+     */
+     static async setGroup(user: User, caseId: Case | string, group: CaseTeamGroup, expectedStatusCode: number = 200, msg = `SetCaseTeamGroup(${group}) is not expected to succeed for user ${user} in case ${caseId}`) {
+        const response = await CafienneService.post(`/cases/${caseId}/caseteam/groups`, user, group);
+        return checkResponse(response, msg, expectedStatusCode);
+    }
+
+    /**
+     * Delete the specified member from the case team.
+     * @param Case 
+     * @param user 
+     * @param group 
+     */
+    static async removeGroup(user: User, caseId: Case | string, groupId: CaseTeamGroup | string, expectedStatusCode: number = 200, msg = `RemoveCaseTeamGroup(${groupId}) is not expected to succeed for user ${user} in case ${caseId}`) {
+        const response = await CafienneService.delete(`/cases/${caseId}/caseteam/groups/${groupId}`, user);
         return checkResponse(response, msg, expectedStatusCode);
     }
 
