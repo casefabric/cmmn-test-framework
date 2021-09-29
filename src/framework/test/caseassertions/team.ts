@@ -99,7 +99,7 @@ export async function assertCaseTeamMember(user: User, caseId: Case | string, me
     const actualCaseTeam = await caseTeamService.getCaseTeam(user, caseId);
 
     const [status, msg] = hasMember(actualCaseTeam, member)
-    if ((expectNoFailures && !status) || status && !expectNoFailures) {
+    if ((expectNoFailures && !status) || (status && !expectNoFailures)) {
         throw new Error(msg);
     }
 }
