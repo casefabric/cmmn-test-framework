@@ -5,8 +5,7 @@ import TaskService from '../../../framework/service/task/taskservice';
 import TestCase from '../../../framework/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
-import Case from '../../../framework/cmmn/case';
-import { assertCaseFileContent } from '../../../framework/test/assertions';
+import assertCaseFileContent from '../../../framework/test/caseassertions/file';
 
 const repositoryService = new RepositoryService();
 const definition = 'expressions.xml';

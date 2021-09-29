@@ -6,9 +6,9 @@ import RepositoryService from '../../../framework/service/case/repositoryservice
 import CaseService from '../../../framework/service/case/caseservice';
 import CaseTeamService from '../../../framework/service/case/caseteamservice';
 import TaskService from '../../../framework/service/task/taskservice';
-import { assertTaskCount, assertTask, findTask, assertCaseTeamMember } from '../../../framework/test/assertions';
+import { assertCaseTeamMember } from '../../../framework/test/caseassertions/team';
+import { assertTaskCount, assertTask, findTask } from '../../../framework/test/caseassertions/task';
 import { CaseOwner, TenantRoleMember } from '../../../framework/cmmn/caseteammember';
-import Case from '../../../framework/cmmn/case';
 import CaseTeam from '../../../framework/cmmn/caseteam';
 
 const repositoryService = new RepositoryService();

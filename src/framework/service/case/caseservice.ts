@@ -8,6 +8,7 @@ import DiscretionaryItem from '../../cmmn/discretionaryitem';
 import { checkJSONResponse, checkResponse } from '../response';
 import { DiscretionaryItemsResponse } from './response/discretionaryitemsresponse';
 import { CaseStatistics } from './response/casestatistics';
+import CaseTeam from '../../cmmn/caseteam';
 
 const cafienneService = new CafienneService();
 
@@ -43,14 +44,17 @@ export default class CaseService {
 
     /**
      * Fetches and refreshes the case information from the backend
-     * @param caseInstance 
+     * @param caseId 
      * @param user 
      */
-    async getCase(user: User, caseInstance: Case | string, expectedStatusCode: number = 200): Promise<Case> {
-        const caseId = checkCaseID(caseInstance);
+    async getCase(user: User, caseId: Case | string, expectedStatusCode: number = 200): Promise<Case> {
+        const convertCaseTeamFormat = (json: any) => {
+            if (json.team && !json.team.members) json.team = new CaseTeam(json.team);
+            return json;
+        }
         const response = await cafienneService.get(`/cases/${caseId}`, user);
         const msg = `GetCase is not expected to succeed for user ${user.id} in case ${caseId}`;
-        return checkJSONResponse(response, msg, expectedStatusCode, Case);
+        return checkJSONResponse(response, msg, expectedStatusCode, Case).then(convertCaseTeamFormat);
     }
 
     /**
@@ -58,8 +62,7 @@ export default class CaseService {
      * @param Case 
      * @param user 
      */
-    async getDefinition(user: User, Case: Case | string, expectedStatusCode: number = 200): Promise<Document> {
-        const caseId = checkCaseID(Case);
+    async getDefinition(user: User, caseId: Case | string, expectedStatusCode: number = 200): Promise<Document> {
         return cafienneService.getXml(`/cases/${caseId}/definition`, user);
     }
 
@@ -79,8 +82,7 @@ export default class CaseService {
      * @param Case 
      * @param user 
      */
-    async getDiscretionaryItems(user: User, Case: Case | string, expectedStatusCode: number = 200): Promise<DiscretionaryItemsResponse> {
-        const caseId = checkCaseID(Case);
+    async getDiscretionaryItems(user: User, caseId: Case | string, expectedStatusCode: number = 200): Promise<DiscretionaryItemsResponse> {
         const response = await cafienneService.get(`/cases/${caseId}/discretionaryitems`, user)
         const msg = `GetDiscretionaryItems is not expected to succeed for user ${user.id} in case ${caseId}`;
         return await checkJSONResponse(response, msg, expectedStatusCode, DiscretionaryItemsResponse);
@@ -94,8 +96,7 @@ export default class CaseService {
      * @param planItemId Optional id for the plan item resulting of the planning. If not specified, server will generate one.
      * @returns The id of the newly planned item
      */
-    async planDiscretionaryItem(user: User, Case: Case | string, item: DiscretionaryItem, planItemId?: string, expectedStatusCode: number = 200): Promise<string> {
-        const caseId = checkCaseID(Case);
+    async planDiscretionaryItem(user: User, caseId: Case | string, item: DiscretionaryItem, planItemId?: string, expectedStatusCode: number = 200): Promise<string> {
         const itemToPlan = { name: item.name, parentId: item.parentId, definitionId: item.definitionId, planItemId }
 
         const response = await cafienneService.post(`/cases/${caseId}/discretionaryitems/plan`, user, itemToPlan);
@@ -121,24 +122,9 @@ export default class CaseService {
      * @param user 
      * @param debugEnabled 
      */
-    async changeDebugMode(user: User, Case: Case | string, debugEnabled: boolean, expectedStatusCode: number = 200) {
-        const caseId = checkCaseID(Case);
+    async changeDebugMode(user: User, caseId: Case | string, debugEnabled: boolean, expectedStatusCode: number = 200) {
         const response = await cafienneService.put(`/cases/${caseId}/debug/${debugEnabled}`, user);
         const msg = `ChangeDebugMode is not expected to succeed for user ${user.id} in case ${caseId}`;
         return checkResponse(response, msg, expectedStatusCode);
     }
-}
-
-/**
- * Throw an error if Case.id is not filled.
- * @param Case 
- */
-export function checkCaseID(Case: Case | string) {
-    if (typeof (Case) === 'string') {
-        return Case;
-    }
-    if (!Case.id) {
-        throw new Error('Case id has not been set. First the case has to be started');
-    }
-    return Case.id;
 }

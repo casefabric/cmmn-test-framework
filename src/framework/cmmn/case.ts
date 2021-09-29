@@ -42,8 +42,12 @@ export default class Case extends CMMNBaseClass {
         // public inputs: object,
         // public outputs: object,
 
-        public team: Array<CaseTeamMember>,
+        public team: CaseTeam,
         public planitems: Array<PlanItem>,
         public file: CaseFile
     ) { super(); }
+
+    toString() {
+        return this.id;
+    }
 }

@@ -5,9 +5,8 @@ import TaskService from '../../../framework/service/task/taskservice';
 import TestCase from '../../../framework/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
-import Case from '../../../framework/cmmn/case';
-import { assertCaseFileContent } from '../../../framework/test/assertions';
-import { verifyTaskInput } from '../../../framework/test/assertions';
+import assertCaseFileContent from '../../../framework/test/caseassertions/file';
+import { verifyTaskInput } from '../../../framework/test/caseassertions/task';
 import CasePlanService from '../../../framework/service/case/caseplanservice';
 import PlanItem from '../../../framework/cmmn/planitem';
 

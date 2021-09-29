@@ -7,8 +7,7 @@ import RepositoryService from '../../../framework/service/case/repositoryservice
 import CaseTeamService from '../../../framework/service/case/caseteamservice';
 import CaseTeamMember, { CaseOwner } from '../../../framework/cmmn/caseteammember';
 import CaseTeam from '../../../framework/cmmn/caseteam';
-import Case from '../../../framework/cmmn/case';
-import { assertCaseTeam } from '../../../framework/test/assertions';
+import { assertCaseTeam } from '../../../framework/test/caseassertions/team';
 import StartCase from '../../../framework/service/case/startcase';
 
 const repositoryService = new RepositoryService();

@@ -9,9 +9,10 @@ import CaseTeam from "../../../../framework/cmmn/caseteam";
 import PlayerData from "./playerdata";
 import ClubData from "./clubdata";
 import FiltersData from "./filtersdata";
-import { assertGetCasesAndTasksFilter } from "../../../../framework/test/assertions";
+import TaskService from "../../../../framework/service/task/taskservice";
 
 const caseService = new CaseService();
+const taskService = new TaskService();
 const repositoryService = new RepositoryService();
 const footballStatsDefinition = 'footballstats.xml';
 const footballClubStatsDefinition = 'footballclubstats.xml';
@@ -108,4 +109,26 @@ Starting business identifier's filters test for footballstats + footballclubstat
             await assertGetCasesAndTasksFilter(this.user2, filter);
         }
     }
+}
+
+
+/**
+ * A simple assertion method for filters against getCases, and getTasks
+ * @param user
+ * @param input should contain filter, expectedValue, and message fields
+ */
+ async function assertGetCasesAndTasksFilter(user: User, input: any) {
+    // Asserts test filter against getCases
+    await caseService.getCases(user, input.filter).then(cases => {
+        if (cases.length != input.expectedValue) {
+            throw new Error(input.message + cases.length);
+        }
+    });
+
+    // Asserts test filter against getTasks
+    await taskService.getTasks(user, input.filter).then(tasks => {
+        if (tasks.length != input.expectedValue) {
+            throw new Error(input.message + tasks.length);
+        }
+    });
 }

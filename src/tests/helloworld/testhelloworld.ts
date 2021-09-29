@@ -5,10 +5,10 @@ import TaskService from '../../framework/service/task/taskservice';
 import TestCase from '../../framework/test/testcase';
 import WorldWideTestTenant from '../worldwidetesttenant';
 import RepositoryService from '../../framework/service/case/repositoryservice';
-import { assertTask, verifyTaskInput, assertCasePlanState, findTask } from '../../framework/test/assertions';
+import { assertCasePlanState } from '../../framework/test/caseassertions/plan';
+import { assertTask, verifyTaskInput, findTask } from '../../framework/test/caseassertions/task';
 import CaseTeam from '../../framework/cmmn/caseteam';
 import CaseTeamMember, { CaseOwner } from '../../framework/cmmn/caseteammember';
-import Case from '../../framework/cmmn/case';
 
 const repositoryService = new RepositoryService();
 const definition = 'helloworld.xml';

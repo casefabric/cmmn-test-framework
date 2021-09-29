@@ -14,4 +14,8 @@ export default class Tenant {
     getOwners() {
         return this.users.filter(user => user.isOwner);
     }
+
+    toString() {
+        return this.name;
+    }
 }

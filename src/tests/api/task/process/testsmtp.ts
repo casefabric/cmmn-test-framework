@@ -6,7 +6,7 @@ import TestCase from '../../../../framework/test/testcase';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
 import RepositoryService from '../../../../framework/service/case/repositoryservice';
 import Case from '../../../../framework/cmmn/case';
-import { assertPlanItemState } from '../../../../framework/test/assertions';
+import { assertPlanItemState } from '../../../../framework/test/caseassertions/plan';
 import DebugService from '../../../../framework/service/case/debugservice';
 
 const repositoryService = new RepositoryService();

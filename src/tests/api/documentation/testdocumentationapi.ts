@@ -59,8 +59,8 @@ export default class TestDocumentationAPI extends TestCase {
         }
     }
 
-    async assertPlanItemDocumentation(caseInstance: Case, planItem: PlanItem) {
-        await casePlanService.getPlanItemDocumentation(user, caseInstance, planItem.id).then(documentation => {
+    async assertPlanItemDocumentation(caseId: Case | string, planItem: PlanItem) {
+        await casePlanService.getPlanItemDocumentation(user, caseId, planItem.id).then(documentation => {
             // If plan item name contains the word "Documented" then we expect to find documentation, otherwise it should be empty
             const expectedDocumentation = planItem.name.indexOf('Documented')>=0 ? planItem.name + ' Documentation' : undefined;
             if (documentation.text !== expectedDocumentation) {

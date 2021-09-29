@@ -6,8 +6,7 @@ import WorldWideTestTenant from '../../worldwidetesttenant';
 import RepositoryService, { readLocalXMLDocument } from '../../../framework/service/case/repositoryservice';
 import { CaseOwner } from '../../../framework/cmmn/caseteammember';
 import CaseTeam from '../../../framework/cmmn/caseteam';
-import Case from '../../../framework/cmmn/case';
-import { assertCaseTeam } from '../../../framework/test/assertions';
+import { assertCaseTeam } from '../../../framework/test/caseassertions/team';
 import Comparison from '../../../framework/test/comparison';
 
 const repositoryService = new RepositoryService();
@@ -46,7 +45,7 @@ export default class TestValidStartCase extends TestCase {
 
         const definitionContents = readLocalXMLDocument(definition);
 
-        if (! Comparison.sameXML(definitionContents, serverDefinition)) {
+        if (!Comparison.sameXML(definitionContents, serverDefinition)) {
             throw new Error('Expecting to find exactly the same definition as we sent to the engine, but it differs ...');
         }
         // const dcString = definitionContents.toString();

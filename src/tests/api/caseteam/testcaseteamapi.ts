@@ -9,8 +9,7 @@ import CaseFileService from '../../../framework/service/case/casefileservice';
 import CaseTeamMember, { CaseOwner, TenantRoleMember } from '../../../framework/cmmn/caseteammember';
 import CaseTeam from '../../../framework/cmmn/caseteam';
 import TenantService from '../../../framework/service/tenant/tenantservice';
-import Case from '../../../framework/cmmn/case';
-import { assertCaseTeam, assertCaseTeamMember } from '../../../framework/test/assertions';
+import { assertCaseTeam, assertCaseTeamMember } from '../../../framework/test/caseassertions/team';
 import User from '../../../framework/user';
 
 const repositoryService = new RepositoryService();

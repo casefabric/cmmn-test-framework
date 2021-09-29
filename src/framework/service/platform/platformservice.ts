@@ -39,9 +39,9 @@ export default class PlatformService {
      * @param tenant 
      * @param expectedStatusCode 
      */
-    async disableTenant(user: User, tenant: Tenant, expectedStatusCode: number = 204) {
-        const response = await this.cafienneService.put(`/platform/${tenant.name}/disable`, user);
-        return checkResponse(response, 'Disabling the tenant ' + tenant.name + ' was not expected to succeed', expectedStatusCode);
+    async disableTenant(user: User, tenant: Tenant | string, expectedStatusCode: number = 204) {
+        const response = await this.cafienneService.put(`/platform/${tenant}/disable`, user);
+        return checkResponse(response, 'Disabling the tenant ' + tenant + ' was not expected to succeed', expectedStatusCode);
     }
 
     /**
@@ -50,9 +50,9 @@ export default class PlatformService {
      * @param tenant 
      * @param expectedStatusCode 
      */
-    async enableTenant(user: User, tenant: Tenant, expectedStatusCode: number = 204) {
-        const response = await this.cafienneService.put(`/platform/${tenant.name}/enable`, user);
-        return checkResponse(response, 'Enabling the tenant ' + tenant.name + ' succeeded unexpectedly', expectedStatusCode);
+    async enableTenant(user: User, tenant: Tenant | string, expectedStatusCode: number = 204) {
+        const response = await this.cafienneService.put(`/platform/${tenant}/enable`, user);
+        return checkResponse(response, 'Enabling the tenant ' + tenant + ' succeeded unexpectedly', expectedStatusCode);
     }
 
     async getDisabledTenants(user: User, expectedStatusCode: number = 200) {
