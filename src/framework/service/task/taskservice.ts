@@ -147,7 +147,7 @@ export default class TaskService {
      */
     static async getCaseTask(user: User, caseId: Case | string, task: Task | PlanItem | string): Promise<Task> {
         const taskId = getTaskId(task);
-        const tasks = await this.getCaseTasks(user, Case);
+        const tasks = await this.getCaseTasks(user, caseId);
         const responseTask = tasks.find(task => task.id === taskId || task.taskName === taskId);
         if (!responseTask) {
             throw new Error(`Cannot find task ${taskId} in case ${caseId}; tasks are ${tasks.map(t => t.taskName).join('\'')}`);

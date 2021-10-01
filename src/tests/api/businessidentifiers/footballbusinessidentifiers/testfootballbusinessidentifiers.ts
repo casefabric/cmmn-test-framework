@@ -10,6 +10,7 @@ import PlayerData from "./playerdata";
 import ClubData from "./clubdata";
 import FiltersData from "./filtersdata";
 import TaskService from "../../../../framework/service/task/taskservice";
+import User from "../../../../framework/user";
 
 const footballStatsDefinition = 'footballstats.xml';
 const footballClubStatsDefinition = 'footballclubstats.xml';
