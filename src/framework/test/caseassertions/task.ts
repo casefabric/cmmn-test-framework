@@ -9,8 +9,6 @@ import PlanItem from '../../cmmn/planitem';
 import Config from '../../../config';
 import logger from '../../logger';
 
-const caseService = new CaseService();
-const taskService = new TaskService();
 
 
 /**
@@ -23,7 +21,7 @@ const taskService = new TaskService();
  * @param expectedOwner 
  */
 export async function assertTask(user: User, task: Task, action: string, expectedState: string = '', expectedAssignee?: User, expectedOwner?: User, expectedLastModifiedBy?: User) {
-    await taskService.getTask(user, task).then(task => {
+    await TaskService.getTask(user, task).then(task => {
         if (Config.TestCase.log) {
             logger.info(`Task after ${action}: state=${task.taskState}, assignee='${task.assignee}', owner='${task.owner}', modifiedBy='${task.modifiedBy}' `);
         }
@@ -62,7 +60,7 @@ export async function assertPlanItemState(user: User, caseId: Case | string, pla
         if (Config.TestCase.log) {
             logger.info(`Running attempt ${currentAttempt} of ${maxAttempts} to find '${planItemName}.${planItemIndex}' in state ${expectedState}`);
         }
-        const freshCase = await caseService.getCase(user, caseId);
+        const freshCase = await CaseService.getCase(user, caseId);
         if (Config.TestCase.log) {
             logger.debug('Current Plan Items\n' + (freshCase.planitems.map(item => "- '" + item.name + "." + item.index + "' ==> '" + item.currentState + "'")).join('\n'));
         }
@@ -90,7 +88,7 @@ export async function assertCasePlanState(user: User, caseId: Case | string, exp
     const tryGetCase = async () => {
         try {
             // Get case details
-            return await caseService.getCase(user, caseId);
+            return await CaseService.getCase(user, caseId);
         } catch (error) {
             // ignore the error
         }

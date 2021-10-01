@@ -10,20 +10,16 @@ import assertCaseFileContent from '../../../framework/test/caseassertions/file';
 import Case from '../../../framework/cmmn/case';
 import Util from '../../../framework/test/util';
 
-const repositoryService = new RepositoryService();
 const definition = 'casefile.xml';
 
-const caseService = new CaseService();
 const worldwideTenant = new WorldWideTestTenant();
 const user = worldwideTenant.sender;
 const tenant = worldwideTenant.name;
 
-const caseFileService = new CaseFileService();
-
 export default class TestCaseFileAPI extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(user, definition, tenant);
+        await RepositoryService.validateAndDeploy(user, definition, tenant);
     }
 
     async run() {
@@ -37,7 +33,7 @@ export default class TestCaseFileAPI extends TestCase {
 
     async createEmptyCase(): Promise<Case> {
         const startCase = { tenant, definition };
-        const caseInstance = await caseService.startCase(user, startCase);
+        const caseInstance = await CaseService.startCase(user, startCase);
         return caseInstance;
     }
 
@@ -64,10 +60,10 @@ export default class TestCaseFileAPI extends TestCase {
         this.logTestName("createEmptyCaseFile");
         const caseInstance = await this.createEmptyCase();
 
-        await caseFileService.createCaseFile(user, caseInstance, {});
+        await CaseFileService.createCaseFile(user, caseInstance, {});
         await assertCaseFileContent(user, caseInstance, '', {});
 
-        await caseFileService.createCaseFile(user, caseInstance, {
+        await CaseFileService.createCaseFile(user, caseInstance, {
             RootCaseFileItem: {},
             RootCaseFileArray: [{}]
         });
@@ -82,7 +78,7 @@ export default class TestCaseFileAPI extends TestCase {
         this.logTestName("createEmptyRootCaseFileItem");
         const caseInstance = await this.createEmptyCase();
 
-        await caseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFileItem', {});
+        await CaseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFileItem', {});
         await assertCaseFileContent(user, caseInstance, 'RootCaseFileItem', {});
 
         return caseInstance;
@@ -92,7 +88,7 @@ export default class TestCaseFileAPI extends TestCase {
         this.logTestName("createEmptyRootCaseFileArray");
         const caseInstance = await this.createEmptyCase();
 
-        await caseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFileArray', {});
+        await CaseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFileArray', {});
         await assertCaseFileContent(user, caseInstance, 'RootCaseFileArray', [{}]);
 
         return caseInstance;
@@ -110,63 +106,63 @@ export default class TestCaseFileAPI extends TestCase {
         }
 
         // Invalid Path assertions
-        await caseFileService.createCaseFileItem(user, caseInstance, 'RootCasee', caseFileItem, 400);
-        await caseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFile[', caseFileItem, 400);
-        await caseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFile[/', caseFileItem, 400);
-        await caseFileService.createCaseFileItem(user, caseInstance, '//RootCaseFile', caseFileItem, 400);
-        await caseFileService.createCaseFileItem(user, caseInstance, '/RootCaseFile//', caseFileItem, 400);
-        await caseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFile', caseFileItem, 400);
+        await CaseFileService.createCaseFileItem(user, caseInstance, 'RootCasee', caseFileItem, 400);
+        await CaseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFile[', caseFileItem, 400);
+        await CaseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFile[/', caseFileItem, 400);
+        await CaseFileService.createCaseFileItem(user, caseInstance, '//RootCaseFile', caseFileItem, 400);
+        await CaseFileService.createCaseFileItem(user, caseInstance, '/RootCaseFile//', caseFileItem, 400);
+        await CaseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFile', caseFileItem, 400);
 
-        await caseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFileItem', caseFileItem);
+        await CaseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFileItem', caseFileItem);
         await assertCaseFileContent(user, caseInstance, 'RootCaseFileItem', caseFileItem);
 
         // Creating same case file item again should not be allowed
-        await caseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFileItem', caseFileItem, 400);
+        await CaseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFileItem', caseFileItem, 400);
 
         caseFileItem.RootProperty2 = false;
-        await caseFileService.updateCaseFileItem(user, caseInstance, 'RootCaseFileItem', caseFileItem);
+        await CaseFileService.updateCaseFileItem(user, caseInstance, 'RootCaseFileItem', caseFileItem);
         await assertCaseFileContent(user, caseInstance, 'RootCaseFileItem/RootProperty2', false);
 
         // More invalid Path assertions
         const newFirstChild = this.createChildItem("diff", 40);
-        await caseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildArray[3]', newFirstChild, 400);
-        await caseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildArray[2]', newFirstChild, 400);
-        await caseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildArray[1]', newFirstChild, 400);
-        await caseFileService.updateCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildItem[1]', newFirstChild, 400);
-        await caseFileService.updateCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildArray[1]', newFirstChild);
+        await CaseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildArray[3]', newFirstChild, 400);
+        await CaseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildArray[2]', newFirstChild, 400);
+        await CaseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildArray[1]', newFirstChild, 400);
+        await CaseFileService.updateCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildItem[1]', newFirstChild, 400);
+        await CaseFileService.updateCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildArray[1]', newFirstChild);
         await assertCaseFileContent(user, caseInstance, 'RootCaseFileItem/ChildArray[1]', newFirstChild);
 
-        await caseFileService.getCaseFile(user, caseInstance).then(file => console.log(JSON.stringify(file, undefined, 2)));
+        await CaseFileService.getCaseFile(user, caseInstance).then(file => console.log(JSON.stringify(file, undefined, 2)));
         caseFileItem.ChildArray.push(this.createFamily());
-        await caseFileService.replaceCaseFileItem(user, caseInstance, 'RootCaseFileItem', caseFileItem);
+        await CaseFileService.replaceCaseFileItem(user, caseInstance, 'RootCaseFileItem', caseFileItem);
         await assertCaseFileContent(user, caseInstance, 'RootCaseFileItem', caseFileItem);
 
-        await caseFileService.replaceCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildArray', caseFileItem.ChildArray);
+        await CaseFileService.replaceCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildArray', caseFileItem.ChildArray);
         await assertCaseFileContent(user, caseInstance, 'RootCaseFileItem', caseFileItem);
 
         // It should not be possible to set an invalid type of property, both for update and replace
         const invalidPropertyValue = { RootProperty2: 'string instead of boolean' };
-        await caseFileService.updateCaseFileItem(user, caseInstance, 'RootCaseFileItem', invalidPropertyValue, 400);
-        await caseFileService.replaceCaseFileItem(user, caseInstance, 'RootCaseFileItem', invalidPropertyValue, 400);
+        await CaseFileService.updateCaseFileItem(user, caseInstance, 'RootCaseFileItem', invalidPropertyValue, 400);
+        await CaseFileService.replaceCaseFileItem(user, caseInstance, 'RootCaseFileItem', invalidPropertyValue, 400);
 
         // Also a deeper nested type of property must have the valid type, both for update and replace
         const invalidNestedPropertyValue = Util.clone(caseFileItem);
         invalidNestedPropertyValue.ChildItem.ChildAge = true;
-        await caseFileService.updateCaseFileItem(user, caseInstance, 'RootCaseFileItem', invalidNestedPropertyValue, 400);
-        await caseFileService.replaceCaseFileItem(user, caseInstance, 'RootCaseFileItem', invalidNestedPropertyValue, 400);
+        await CaseFileService.updateCaseFileItem(user, caseInstance, 'RootCaseFileItem', invalidNestedPropertyValue, 400);
+        await CaseFileService.replaceCaseFileItem(user, caseInstance, 'RootCaseFileItem', invalidNestedPropertyValue, 400);
 
         // Update the case file item with only a new value for "RootProperty1" should only change that field.
         const shallowCopy = { RootProperty1: "second string" };
         caseFileItem.RootProperty1 = shallowCopy.RootProperty1; // Update the field locally for the assertion to work
-        await caseFileService.updateCaseFileItem(user, caseInstance, 'RootCaseFileItem', shallowCopy);
+        await CaseFileService.updateCaseFileItem(user, caseInstance, 'RootCaseFileItem', shallowCopy);
         await assertCaseFileContent(user, caseInstance, 'RootCaseFileItem', caseFileItem);
 
         // Replace the case file item with the shallow copy should remove all others
-        await caseFileService.replaceCaseFileItem(user, caseInstance, 'RootCaseFileItem', shallowCopy);
+        await CaseFileService.replaceCaseFileItem(user, caseInstance, 'RootCaseFileItem', shallowCopy);
         await assertCaseFileContent(user, caseInstance, 'RootCaseFileItem', shallowCopy);
 
         // And putting back old structure should work too
-        await caseFileService.replaceCaseFileItem(user, caseInstance, 'RootCaseFileItem', caseFileItem);
+        await CaseFileService.replaceCaseFileItem(user, caseInstance, 'RootCaseFileItem', caseFileItem);
         await assertCaseFileContent(user, caseInstance, 'RootCaseFileItem', caseFileItem);
 
         // Testing some deeper property updates
@@ -174,36 +170,36 @@ export default class TestCaseFileAPI extends TestCase {
         deeplyNestedPropertyUpdate.RootProperty1 = "Trying to do deep property updates";
         deeplyNestedPropertyUpdate.ChildArray[2].GrandChildArray[0].GrandChildName = "Second name update";
         deeplyNestedPropertyUpdate.ChildArray[1].ChildName = "First name update";
-        await caseFileService.updateCaseFileItem(user, caseInstance, 'RootCaseFileItem', deeplyNestedPropertyUpdate);
+        await CaseFileService.updateCaseFileItem(user, caseInstance, 'RootCaseFileItem', deeplyNestedPropertyUpdate);
         await assertCaseFileContent(user, caseInstance, 'RootCaseFileItem/ChildArray[2]', deeplyNestedPropertyUpdate.ChildArray[2]);
         await assertCaseFileContent(user, caseInstance, 'RootCaseFileItem/ChildArray[1]/ChildName', "First name update");
 
         // Testing some deeper path based updates
         const childItemUpdate = this.createChildItem(undefined, 26);
-        await caseFileService.updateCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildItem', childItemUpdate);
+        await CaseFileService.updateCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildItem', childItemUpdate);
         await assertCaseFileContent(user, caseInstance, 'RootCaseFileItem/ChildItem/ChildAge', 26);
 
         // Testing some deeper path based updates
         const secondGrandChildArrayUpdate = [this.createGrandChildItem(), this.createGrandChildItem('My favorite kid'), this.createGrandChildItem('Just one more')];
-        await caseFileService.updateCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildItem/GrandChildArray', secondGrandChildArrayUpdate);
+        await CaseFileService.updateCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildItem/GrandChildArray', secondGrandChildArrayUpdate);
 
         await assertCaseFileContent(user, caseInstance, 'RootCaseFileItem/ChildItem/ChildAge', 26);
         await assertCaseFileContent(user, caseInstance, 'RootCaseFileItem/ChildItem/GrandChildArray', secondGrandChildArrayUpdate);
 
-        await caseFileService.deleteCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildItem');
-        await caseFileService.deleteCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildItem', 400);
+        await CaseFileService.deleteCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildItem');
+        await CaseFileService.deleteCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildItem', 400);
 
         // Child item now must be undefined
         await assertCaseFileContent(user, caseInstance, 'RootCaseFileItem/ChildItem', null);
 
         // Delete entire case file
-        await caseFileService.deleteCaseFileItem(user, caseInstance, 'RootCaseFileItem');
+        await CaseFileService.deleteCaseFileItem(user, caseInstance, 'RootCaseFileItem');
 
         // Child item now must be undefined
         await assertCaseFileContent(user, caseInstance, 'RootCaseFileItem', null);
 
         // Delete entire case file, does not have any effect, actually.
-        await caseFileService.deleteCaseFile(user, caseInstance);
+        await CaseFileService.deleteCaseFile(user, caseInstance);
 
         // Top level must be empty object
         await assertCaseFileContent(user, caseInstance, '', {RootCaseFileItem: null});
@@ -231,7 +227,7 @@ export default class TestCaseFileAPI extends TestCase {
             RootCaseFileArray: [{}]
         }
 
-        await caseFileService.createCaseFile(user, caseInstance, caseFile);
+        await CaseFileService.createCaseFile(user, caseInstance, caseFile);
         await assertCaseFileContent(user, caseInstance, '', caseFile, true);// true --> the content matching is logged to console
 
         const updateCaseFileArray = {
@@ -242,7 +238,7 @@ export default class TestCaseFileAPI extends TestCase {
         }
 
         // Updating case file should add the RootCaseFileArray content
-        await caseFileService.updateCaseFile(user, caseInstance, updateCaseFileArray);
+        await CaseFileService.updateCaseFile(user, caseInstance, updateCaseFileArray);
         await assertCaseFileContent(user, caseInstance, '', {
             RootCaseFileItem: caseFileItem,
             RootCaseFileArray: [{
@@ -252,7 +248,7 @@ export default class TestCaseFileAPI extends TestCase {
         });
 
         // Replacing case file should remove the RootCaseFileItem
-        await caseFileService.replaceCaseFile(user, caseInstance, updateCaseFileArray);
+        await CaseFileService.replaceCaseFile(user, caseInstance, updateCaseFileArray);
         await assertCaseFileContent(user, caseInstance, '', {
             RootCaseFileArray: [{
                 RootProperty1: "string",
@@ -261,7 +257,7 @@ export default class TestCaseFileAPI extends TestCase {
         });
 
         // After clearing the RootCaseFileItem we can create it again, as it was removed, not discarded.
-        await caseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFileItem', caseFileItem);
+        await CaseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFileItem', caseFileItem);
         await assertCaseFileContent(user, caseInstance, '', {
             RootCaseFileItem: caseFileItem,
             RootCaseFileArray: [{
@@ -271,7 +267,7 @@ export default class TestCaseFileAPI extends TestCase {
         }, true);
 
         // Similarly, we can clear even the entire case file contents!
-        await caseFileService.replaceCaseFile(user, caseInstance, {});
+        await CaseFileService.replaceCaseFile(user, caseInstance, {});
         await assertCaseFileContent(user, caseInstance, '', {});
 
         const newCaseFile = {
@@ -283,11 +279,11 @@ export default class TestCaseFileAPI extends TestCase {
         }
 
         // And thereafter create an entirely new one ...
-        await caseFileService.createCaseFile(user, caseInstance, newCaseFile);
+        await CaseFileService.createCaseFile(user, caseInstance, newCaseFile);
         await assertCaseFileContent(user, caseInstance, '', newCaseFile);
 
         // ... but not twice
-        await caseFileService.createCaseFile(user, caseInstance, newCaseFile, 400);
+        await CaseFileService.createCaseFile(user, caseInstance, newCaseFile, 400);
     }
 
 
@@ -297,34 +293,34 @@ export default class TestCaseFileAPI extends TestCase {
 
         // Assert that it is not possible to create the child without having the root item
         const childItem = this.createChildItem();
-        await caseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildItem', childItem, 400);
+        await CaseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildItem', childItem, 400);
 
         // And the same for a grand child
         const grandChildItem = this.createGrandChildItem();
-        await caseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildItem/GrandChildItem', grandChildItem, 400);
+        await CaseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildItem/GrandChildItem', grandChildItem, 400);
 
         // Setting the parent item to "null" will cause a null value; 
         // Then create the child item directly.
         // CaseFileMerger code should replace the parent value from null with a json object.
-        await caseFileService.createCaseFile(user, caseInstance, {
+        await CaseFileService.createCaseFile(user, caseInstance, {
             RootCaseFileItem: null
         });
         await assertCaseFileContent(user, caseInstance, 'RootCaseFileItem', null);
 
         // Even though now the root item exists, it should still not be possible to create the grand child
-        await caseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildItem/GrandChildItem', grandChildItem, 400);
+        await CaseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildItem/GrandChildItem', grandChildItem, 400);
         
         // However it should now be possible to create the child case file item
-        await caseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildItem', childItem);
+        await CaseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildItem', childItem);
         await assertCaseFileContent(user, caseInstance, 'RootCaseFileItem/ChildItem', childItem);
 
         // And now it should also be possible to create the grand child
-        await caseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildItem/GrandChildItem', grandChildItem);
+        await CaseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildItem/GrandChildItem', grandChildItem);
         await assertCaseFileContent(user, caseInstance, 'RootCaseFileItem/ChildItem/GrandChildItem', grandChildItem);
 
         // Now test that we can also directly update a case file item, even if it is not yet created.
         const childArray = [this.createChildItem(), this.createChildItem()];
-        await caseFileService.updateCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildArray', childArray);
+        await CaseFileService.updateCaseFileItem(user, caseInstance, 'RootCaseFileItem/ChildArray', childArray);
         await assertCaseFileContent(user, caseInstance, 'RootCaseFileItem/ChildArray', childArray);
 
         return caseInstance;

@@ -9,11 +9,8 @@ import CaseTeamMember, { CaseOwner } from '../../../../framework/cmmn/caseteamme
 import Case from '../../../../framework/cmmn/case';
 import CaseFileService from '../../../../framework/service/case/casefileservice';
 
-const repositoryService = new RepositoryService();
 const definition = 'entrycriteriaoncaseinputparameters.xml';
 
-const caseService = new CaseService();
-const caseFileService = new CaseFileService();
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const employee = worldwideTenant.employee;
@@ -23,7 +20,7 @@ const receiver = worldwideTenant.receiver;
 export default class TestEntryCriteriaOnCaseInputParameters extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(sender, definition, tenant);
+        await RepositoryService.validateAndDeploy(sender, definition, tenant);
     }
 
     async run() {
@@ -54,8 +51,8 @@ export default class TestEntryCriteriaOnCaseInputParameters extends TestCase {
         }
         console.log(`\nPositive test result: found ${case1.planitems.length} plan items in all three cases`);
         
-        await caseFileService.createCaseFileItem(sender, case1, 'Greeting/Child', {name:'child3'});
-        const changedCase1 = await caseService.getCase(sender, case1);
+        await CaseFileService.createCaseFileItem(sender, case1, 'Greeting/Child', {name:'child3'});
+        const changedCase1 = await CaseService.getCase(sender, case1);
         if (case1.planitems.length + 2 != changedCase1.planitems.length) {
             throw new Error('Creating another case file item in first case should lead to new Stage and Task, but apparently that is not working anymore');
         }
@@ -82,9 +79,9 @@ export default class TestEntryCriteriaOnCaseInputParameters extends TestCase {
         
         const startCase = { tenant, definition, inputs, caseTeam, debug: true };
 
-        const caseInstance = await caseService.startCase(sender, startCase);
+        const caseInstance = await CaseService.startCase(sender, startCase);
 
-        return await caseService.getCase(sender, caseInstance);
+        return await CaseService.getCase(sender, caseInstance);
     }
 
     async testAddingTwoChildren_in_one_shot() {
@@ -99,13 +96,13 @@ export default class TestEntryCriteriaOnCaseInputParameters extends TestCase {
         
         const startCase = { tenant, definition, inputs, caseTeam, debug: true };
 
-        const caseInstance = await caseService.startCase(sender, startCase);
+        const caseInstance = await CaseService.startCase(sender, startCase);
 
-        await caseService.getCase(sender, caseInstance).then(printCaseSummary);
+        await CaseService.getCase(sender, caseInstance).then(printCaseSummary);
 
-        await caseFileService.updateCaseFileItem(sender, caseInstance, 'Greeting', {Child:[{name:'child1'}, {name:'child2'}]});
+        await CaseFileService.updateCaseFileItem(sender, caseInstance, 'Greeting', {Child:[{name:'child1'}, {name:'child2'}]});
         
-        return await caseService.getCase(sender, caseInstance);
+        return await CaseService.getCase(sender, caseInstance);
 
     }
 
@@ -121,16 +118,16 @@ export default class TestEntryCriteriaOnCaseInputParameters extends TestCase {
         
         const startCase = { tenant, definition, inputs, caseTeam, debug: true };
 
-        const caseInstance = await caseService.startCase(sender, startCase);
+        const caseInstance = await CaseService.startCase(sender, startCase);
 
-        await caseService.getCase(sender, caseInstance).then(printCaseSummary);
+        await CaseService.getCase(sender, caseInstance).then(printCaseSummary);
 
-        await caseFileService.createCaseFileItem(sender, caseInstance, 'Greeting/Child', {name:'child1'});
-        await caseService.getCase(sender, caseInstance).then(printCaseSummary);
+        await CaseFileService.createCaseFileItem(sender, caseInstance, 'Greeting/Child', {name:'child1'});
+        await CaseService.getCase(sender, caseInstance).then(printCaseSummary);
 
-        await caseFileService.createCaseFileItem(sender, caseInstance, 'Greeting/Child', {name:'child2'});
+        await CaseFileService.createCaseFileItem(sender, caseInstance, 'Greeting/Child', {name:'child2'});
         
-        return await caseService.getCase(sender, caseInstance).then(printCaseSummary);
+        return await CaseService.getCase(sender, caseInstance).then(printCaseSummary);
     }
 }
 

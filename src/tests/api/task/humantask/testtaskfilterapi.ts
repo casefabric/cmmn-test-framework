@@ -8,12 +8,9 @@ import RepositoryService from '../../../../framework/service/case/repositoryserv
 import Case from '../../../../framework/cmmn/case';
 import TaskFilter from '../../../../framework/service/task/taskfilter';
 
-const repositoryService = new RepositoryService();
 const definition1 = 'helloworld.xml';
 const definition2 = 'helloworld2.xml';
 
-const caseService = new CaseService();
-const taskService = new TaskService();
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
@@ -22,8 +19,8 @@ const receiver = worldwideTenant.receiver;
 export default class TestTaskFilterAPI extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(user, definition1, tenant);
-        await repositoryService.validateAndDeploy(user, definition2, tenant);
+        await RepositoryService.validateAndDeploy(user, definition1, tenant);
+        await RepositoryService.validateAndDeploy(user, definition2, tenant);
     }
 
     async run() {
@@ -70,7 +67,7 @@ export default class TestTaskFilterAPI extends TestCase {
 
     async assertTaskCount(filter: TaskFilter, expectedCount: number = -1) {  
         filter.tenant = tenant;      
-        const filteredTasks = await taskService.getTasks(user, filter);
+        const filteredTasks = await TaskService.getTasks(user, filter);
         console.log(`Found ${filteredTasks.length} for filter ${JSON.stringify(filter)}`);
         if (expectedCount >= 0 && filteredTasks.length !== expectedCount) {
             throw new Error(`Expected to find ${expectedCount} tasks but found ${filteredTasks.length} for filter ${JSON.stringify(filter)}`);
@@ -86,9 +83,9 @@ export default class TestTaskFilterAPI extends TestCase {
         };
         
         const startCase1 = { tenant, definition, inputs, debug: true };
-        const caseStarted = await caseService.startCase(user, startCase1);
-        const caseInstance = await caseService.getCase(user, caseStarted);
-        const tasks = await taskService.getCaseTasks(user, caseInstance);
+        const caseStarted = await CaseService.startCase(user, startCase1);
+        const caseInstance = await CaseService.getCase(user, caseStarted);
+        const tasks = await TaskService.getCaseTasks(user, caseInstance);
         const firstTask = tasks.find(task => task.taskName === firstTaskName);
         if (! firstTask) {
             throw new Error(`Expected to find a task named '${firstTaskName}' but we found only tasks ${tasks.map(task => `'${task.taskName}'`).join(',')}`);
@@ -100,7 +97,7 @@ export default class TestTaskFilterAPI extends TestCase {
             }
         };
 
-        await taskService.completeTask(user, firstTask, taskOutput);
+        await TaskService.completeTask(user, firstTask, taskOutput);
 
         return caseInstance;
     }

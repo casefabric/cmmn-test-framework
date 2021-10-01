@@ -4,7 +4,6 @@ import logger from '../logger';
 import User from '../user';
 import QueryFilter, { extendURL } from './queryfilter';
 import CafienneResponse from './response';
-import { json } from 'express';
 
 class CafienneHeaders {
     public values:any = new Object();
@@ -28,11 +27,11 @@ export default class CafienneService {
         return getHeaders(user, from);
     }
 
-    get baseURL() {
+    static get baseURL() {
         return Config.CafienneService.url;
     }
 
-    async updateCaseLastModified(response: CafienneResponse) {
+    static async updateCaseLastModified(response: CafienneResponse) {
         // TODO: this currently is not a Singleton, but it should be...
         if (response.ok) {
             const readAndUpdateHeader = (headerName: string) => {
@@ -51,44 +50,44 @@ export default class CafienneService {
         return response;
     }
 
-    async post(url: string, user: User, request?: object, method = 'POST') {
+    static async post(url: string, user: User, request?: object, method = 'POST') {
         const body = (typeof request === 'string') ? `"${request}"` : request ? JSON.stringify(request, undefined, 2) : undefined;
         return this.fetch(user, url, method, getHeaders(user), body);    
     }
 
-    async postXML(url: string, user: User, request: Document, method = 'POST'): Promise<CafienneResponse> {
+    static async postXML(url: string, user: User, request: Document, method = 'POST'): Promise<CafienneResponse> {
         const headers = getHeaders(user, { 'Content-Type': 'application/xml'});
         const body = request.toString();
         return this.fetch(user, url, method, headers, body);
     }
 
-    async put(url: string, user: User, request?: object) {
+    static async put(url: string, user: User, request?: object) {
         // Sorry, bit of a hack here...
         return this.post(url, user, request, 'PUT');
     }
 
-    async delete(url: string, user: User) {
+    static async delete(url: string, user: User) {
         return this.fetch(user, url, 'DELETE');
     }
 
-    async patch(user: User, url: string) {
+    static async patch(user: User, url: string) {
         const headers = getHeaders(user);
         return this.fetch(user, url, 'PATCH', headers);
     }
 
-    async get(url: string, user: User | undefined, filter?: QueryFilter, headers?: Headers) {
+    static async get(url: string, user: User | undefined, filter?: QueryFilter, headers?: Headers) {
         if (filter) {
             url = extendURL(url, filter);
         }
         return this.fetch(user, url, 'GET', headers);
     }
 
-    async getXml(url: string, user: User): Promise<Document> {
+    static async getXml(url: string, user: User): Promise<Document> {
         const headers = getHeaders(user, {'Content-Type': 'text/xml'});
         return (await this.get(url, user, undefined, headers)).xml();
     }
 
-    async fetch(user: User | undefined, url: string, method: string, headers?: Headers, body?: string): Promise<CafienneResponse> {
+    static async fetch(user: User | undefined, url: string, method: string, headers?: Headers, body?: string): Promise<CafienneResponse> {
         if (! headers) {
             headers = getHeaders(user);
         }

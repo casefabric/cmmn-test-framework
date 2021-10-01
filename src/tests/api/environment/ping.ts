@@ -3,8 +3,6 @@ import { SomeTime } from "../../../framework/test/time";
 import PlatformService from "../../../framework/service/platform/platformservice";
 import TestCase from "../../../framework/test/testcase";
 
-const platform = new PlatformService();
-
 export default class PingTestEnvironment extends TestCase {
     async run() {
         await pingTestEnvironment();
@@ -53,8 +51,8 @@ export async function pingTestEnvironment(platformAdmin: User = new User('admin'
         console.log("Pinging engine for health and version ... ");
         
         try {
-            await platform.getHealth().then(health => console.log("Platform health: "  + JSON.stringify(health, undefined, 2)));
-            await platform.getVersion().then(version => console.log("Platform version: "  + JSON.stringify(version, undefined, 2)));    
+            await PlatformService.getHealth().then(health => console.log("Platform health: "  + JSON.stringify(health, undefined, 2)));
+            await PlatformService.getVersion().then(version => console.log("Platform version: "  + JSON.stringify(version, undefined, 2)));    
 
             console.log("Login to IDP and case engine as platform admin ... ");
             const loggedIn = await login(platformAdmin);

@@ -11,9 +11,6 @@ import { assertPlanItemState } from "../../framework/test/caseassertions/plan";
 import CasePlanService from "../../framework/service/case/caseplanservice";
 import { ServerSideProcessing, SomeTime } from "../../framework/test/time";
 
-const repositoryService = new RepositoryService();
-const caseService = new CaseService();
-const casePlanService = new CasePlanService();
 const worldwideTenant = new WorldWideTestTenant();
 
 const definition = 'repeatstagetest.xml';
@@ -56,7 +53,7 @@ export default class TestRepeatStage extends TestCase {
         console.log("\n\n============Started mock server. Now creating tenant\n\n");
         await worldwideTenant.create();
         // Deploy the case model
-        await repositoryService.validateAndDeploy(user, definition, tenant);
+        await RepositoryService.validateAndDeploy(user, definition, tenant);
     }
 
     async run() {
@@ -67,7 +64,7 @@ export default class TestRepeatStage extends TestCase {
         }
 
         const startCase = { tenant, definition, inputs };
-        const caseInstance = await caseService.startCase(user, startCase);
+        const caseInstance = await CaseService.startCase(user, startCase);
 
 
         // Let the Status stage repeat for 3 times
@@ -80,7 +77,7 @@ export default class TestRepeatStage extends TestCase {
             await ServerSideProcessing();
             await SomeTime(1000);
 
-            await caseService.getCase(user, caseInstance).then(caze => {
+            await CaseService.getCase(user, caseInstance).then(caze => {
                 console.log("Case now has " + caze.planitems.length +"  plan items");
                 caze.planitems.filter(p => p.name === 'Status').forEach(s => {
                     console.log(`Status[${s.index}] is in state ${s.currentState}\thaving id: ${s.id}`)
@@ -93,7 +90,7 @@ export default class TestRepeatStage extends TestCase {
         }
 
         // Make transistion on Kill user event
-        await casePlanService.makePlanItemTransition(user, caseInstance, 'Kill', 'Occur');
+        await CasePlanService.makePlanItemTransition(user, caseInstance, 'Kill', 'Occur');
 
         console.log("Case ID:\t" + caseInstance.id);
     }

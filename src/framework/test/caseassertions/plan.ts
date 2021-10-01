@@ -6,7 +6,6 @@ import PlanItem from '../../cmmn/planitem';
 import Config from '../../../config';
 import logger from '../../logger';
 
-const caseService = new CaseService();
 
 /**
  * Retrieves the plan items of the case and asserts that the plan item has the expected state.
@@ -28,7 +27,7 @@ export async function assertPlanItemState(user: User, caseId: Case | string, pla
         if (Config.TestCase.log) {
             logger.info(`Running attempt ${currentAttempt} of ${maxAttempts} to find '${planItemName}.${planItemIndex}' in state ${expectedState}`);
         }
-        const freshCase = await caseService.getCase(user, caseId);
+        const freshCase = await CaseService.getCase(user, caseId);
         if (Config.TestCase.log) {
             logger.debug('Current Plan Items\n' + (freshCase.planitems.map(item => "- '" + item.name + "." + item.index + "' ==> '" + item.currentState + "'")).join('\n'));
         }
@@ -56,7 +55,7 @@ export async function assertCasePlanState(user: User, caseId: Case | string, exp
     const tryGetCase = async () => {
         try {
             // Get case details
-            return await caseService.getCase(user, caseId);
+            return await CaseService.getCase(user, caseId);
         } catch (error) {
             // ignore the error
         }

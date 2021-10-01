@@ -5,28 +5,21 @@ import TestCase from '../../../framework/test/testcase';
 
 import WorldWideTestTenant from '../../worldwidetesttenant';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
-import CasePlanService from '../../../framework/service/case/caseplanservice';
 import PlanItem from '../../../framework/cmmn/planitem';
 import Case from '../../../framework/cmmn/case';
 import CaseHistoryService from '../../../framework/service/case/casehistoryservice';
 import TaskService from '../../../framework/service/task/taskservice';
 
-const repositoryService = new RepositoryService();
 const definition = 'helloworld.xml';
 
-const caseService = new CaseService();
 const worldwideTenant = new WorldWideTestTenant();
 const user = worldwideTenant.sender;
 const tenant = worldwideTenant.name;
 
-const casePlanService = new CasePlanService();
-const caseHistoryService = new CaseHistoryService();
-const taskService = new TaskService();
-
 export default class TestCasePlanHistoryAPI extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(user, definition, tenant);
+        await RepositoryService.validateAndDeploy(user, definition, tenant);
     }
 
     async run() {
@@ -39,10 +32,10 @@ export default class TestCasePlanHistoryAPI extends TestCase {
         };
 
         const startCase = { tenant, definition, inputs };
-        const caseInstance = await caseService.startCase(user, startCase);
-        const planItems = await (await caseService.getCase(user, caseInstance)).planitems;
+        const caseInstance = await CaseService.startCase(user, startCase);
+        const planItems = await (await CaseService.getCase(user, caseInstance)).planitems;
 
-        const planHistory = await caseHistoryService.getCasePlanHistory(user, caseInstance);
+        const planHistory = await CaseHistoryService.getCasePlanHistory(user, caseInstance);
         if (planHistory.length !== planItems.length) {
             throw new Error(`Expected ${planItems.length} history items, but found ${planHistory.length}`);
         }
@@ -56,7 +49,7 @@ export default class TestCasePlanHistoryAPI extends TestCase {
         await this.assertHistoryItems(caseInstance, firstPlanItem, 5);
         await this.assertHistoryItems(caseInstance, secondPlanItem, 4);
 
-        const firstTask = (await taskService.getCaseTasks(user, caseInstance)).find(task => task.id === firstPlanItem.id);
+        const firstTask = (await TaskService.getCaseTasks(user, caseInstance)).find(task => task.id === firstPlanItem.id);
         if (!firstTask) {
             throw new Error('Could not find task?!');
         }
@@ -65,13 +58,13 @@ export default class TestCasePlanHistoryAPI extends TestCase {
                 Message: 'Toedeledoki',
             }
         };
-        await taskService.completeTask(user, firstTask, taskOutput);
+        await TaskService.completeTask(user, firstTask, taskOutput);
 
         await this.assertHistoryItems(caseInstance, firstPlanItem, 6);
         await this.assertHistoryItems(caseInstance, secondPlanItem, 5);
 
         // Length of case plan history should not have changed.
-        await caseHistoryService.getCasePlanHistory(user, caseInstance).then(casePlanHistory => {
+        await CaseHistoryService.getCasePlanHistory(user, caseInstance).then(casePlanHistory => {
             if (casePlanHistory.length !== planItems.length) {
                 throw new Error(`Expected ${planItems.length} history items, but found ${planHistory.length}`);
             }
@@ -87,7 +80,7 @@ export default class TestCasePlanHistoryAPI extends TestCase {
     }
 
     async assertHistoryItems(caseId: Case | string, planItem: PlanItem, expectedNumber: number) {
-        const planItemHistory = await caseHistoryService.getPlanItemHistory(user, caseId, planItem.id).then(planItemHistory => {
+        const planItemHistory = await CaseHistoryService.getPlanItemHistory(user, caseId, planItem.id).then(planItemHistory => {
             if (planItemHistory.length !== expectedNumber) {
                 throw new Error(`Expected ${expectedNumber} history items for the HumanTask ${planItem.name} but found ${planItemHistory.length}`);
             }

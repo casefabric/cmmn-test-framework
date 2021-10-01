@@ -7,11 +7,8 @@ import WorldWideTestTenant from '../../worldwidetesttenant';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
 import Case from '../../../framework/cmmn/case';
 
-const repositoryService = new RepositoryService();
 const definition = 'stagetaskexpressions.xml';
 
-const caseService = new CaseService();
-const taskService = new TaskService();
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
@@ -19,7 +16,7 @@ const user = worldwideTenant.sender;
 export default class TestStageTaskExpressions extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(user, definition, tenant);
+        await RepositoryService.validateAndDeploy(user, definition, tenant);
     }
 
     async run() {
@@ -35,10 +32,10 @@ export default class TestStageTaskExpressions extends TestCase {
             }
         }
         const startCase = { tenant, definition, inputs };
-        const caseId = await caseService.startCase(user, startCase);
-        const caseInstance = await caseService.getCase(user, caseId);
+        const caseId = await CaseService.startCase(user, startCase);
+        const caseInstance = await CaseService.getCase(user, caseId);
 
-        const tasks = await taskService.getCaseTasks(user, caseInstance);
+        const tasks = await TaskService.getCaseTasks(user, caseInstance);
         const assignees = tasks.map(task => task.assignee);
         console.log('Assignees: ' + JSON.stringify(assignees));
         const taskItems = tasks.map(task => {

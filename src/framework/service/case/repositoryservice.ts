@@ -10,7 +10,6 @@ import logger from '../../logger';
 import Tenant from '../../tenant/tenant';
 
 const FileSystem = fs;
-const cafienneService = new CafienneService();
 
 export default class RepositoryService {
     /**
@@ -18,14 +17,14 @@ export default class RepositoryService {
      * @param command 
      * @param user 
      */
-    async deployCase(user: User, command: DeployCase, expectedStatusCode: number = 204) {
+    static async deployCase(user: User, command: DeployCase, expectedStatusCode: number = 204) {
         if (!user) {
             throw new Error('User must be specified');
         }
         const tenantQueryParameter = command.tenant ? 'tenant=' + command.tenant : '';
         // Hmmm... Duplicate '/repository/repository/' is needed currently...
         const url = `/repository/deploy/${command.modelName}?${tenantQueryParameter}`;
-        const response = await cafienneService.postXML(url, user, command.definition);
+        const response = await CafienneService.postXML(url, user, command.definition);
         return checkResponse(response, 'Deployment of case ' + command.modelName + ' failed', expectedStatusCode);
     }
 
@@ -35,10 +34,10 @@ export default class RepositoryService {
      * @param user 
      * @param tenant 
      */
-    async loadCaseDefinition(user: User, fileName: string, tenant: string | Tenant, expectedStatusCode: number = 200) {
+    static async loadCaseDefinition(user: User, fileName: string, tenant: string | Tenant, expectedStatusCode: number = 200) {
         const modelName = fileName.endsWith('.xml') ? fileName.substring(0, fileName.length - 4) : fileName;
 
-        const xml = await cafienneService.getXml(`/repository/load/${modelName}?tenant=${getTenantName(tenant)}`, user);
+        const xml = await CafienneService.getXml(`/repository/load/${modelName}?tenant=${getTenantName(tenant)}`, user);
         return xml;
     }
 
@@ -47,9 +46,9 @@ export default class RepositoryService {
      * @param tenant 
      * @param user 
      */
-    async listCaseDefinitions(user: User, tenant?: string | Tenant, expectedStatusCode: number = 200) {
+    static async listCaseDefinitions(user: User, tenant?: string | Tenant, expectedStatusCode: number = 200) {
         const tenantQueryParameter = tenant ? '?tenant=' + getTenantName(tenant) : '';
-        const response = await cafienneService.get(`/repository/list${tenantQueryParameter}`, user);
+        const response = await CafienneService.get(`/repository/list${tenantQueryParameter}`, user);
         const msg = `ListCaseDefinitions is not expected to succeed for member ${user.id}`;
         const json = checkResponse(response, msg, expectedStatusCode);
 
@@ -63,10 +62,10 @@ export default class RepositoryService {
      * Invokes the validation API
      * @param source 
      */
-    async validateCaseDefinition(user: User, source: Document | string, expectedStatusCode: number = 200) {
+    static async validateCaseDefinition(user: User, source: Document | string, expectedStatusCode: number = 200) {
         const url = `/repository/validate`;
         const xml = readLocalXMLDocument(source);
-        const response = await cafienneService.postXML(url, user, xml);
+        const response = await CafienneService.postXML(url, user, xml);
         const status = response.status;
         if (status !== expectedStatusCode) {
             if (response.ok) {
@@ -92,7 +91,7 @@ export default class RepositoryService {
      * @param user User that deploys the case definition.
      * @param tenant Tenant in which the definition is deployed.
      */
-    async validateAndDeploy(user: User, fileName: string, tenant: string | Tenant) {
+    static async validateAndDeploy(user: User, fileName: string, tenant: string | Tenant) {
         const tenantName = tenant instanceof Tenant ? tenant.name : tenant;
         const definition = readLocalXMLDocument(fileName);
         const modelName = fileName;

@@ -10,28 +10,23 @@ import TenantUser from '../../framework/tenant/tenantuser';
 import TenantService from '../../framework/service/tenant/tenantservice';
 import CaseTeam from '../../framework/cmmn/caseteam';
 import CaseTeamMember, { CaseOwner } from '../../framework/cmmn/caseteammember';
-import Case from '../../framework/cmmn/case';
 
-const repositoryService = new RepositoryService();
 const definition = 'travelrequest.xml';
 
-const caseService = new CaseService();
-const taskService = new TaskService();
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const requestor = new TenantUser('requestor', ['Requestor'], 'Hank', 'requestor@requestors.com');
 const approver = new TenantUser('approver', ['Approver'], 'Gerald', 'gerald-the-approver@mostly-helpless.com');
 const lana = new TenantUser('lana', ['PersonalAssistant', 'Requestor', 'Approver'], 'lana', 'lana@all-you-need-is-me.com');
-const tenantService = new TenantService();
 
 export default class TestTravelRequest extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
         const platformOwner = worldwideTenant.sender;
         try {
-            await tenantService.addTenantUser(platformOwner, worldwideTenant.tenant, requestor);
-            await tenantService.addTenantUser(platformOwner, worldwideTenant.tenant, approver);
-            await tenantService.addTenantUser(platformOwner, worldwideTenant.tenant, lana);            
+            await TenantService.addTenantUser(platformOwner, worldwideTenant.tenant, requestor);
+            await TenantService.addTenantUser(platformOwner, worldwideTenant.tenant, approver);
+            await TenantService.addTenantUser(platformOwner, worldwideTenant.tenant, lana);            
         } catch (e) {
             if (e.message.indexOf('already exists') < 0) {
                 console.log(e);
@@ -39,7 +34,7 @@ export default class TestTravelRequest extends TestCase {
             }
         }
 
-        await repositoryService.validateAndDeploy(platformOwner, definition, tenant);
+        await RepositoryService.validateAndDeploy(platformOwner, definition, tenant);
 
         await requestor.login();
         await approver.login();
@@ -97,12 +92,12 @@ export default class TestTravelRequest extends TestCase {
             , new CaseTeamMember(requestor, ['Requestor'])
         ]);
         const startCase: StartCase = { tenant, definition, inputs, debug: true, caseTeam };
-        const caseInstance = await caseService.startCase(requestor, startCase);
-        await caseService.getCase(approver, caseInstance).then(caseInstance => {
+        const caseInstance = await CaseService.startCase(requestor, startCase);
+        await CaseService.getCase(approver, caseInstance).then(caseInstance => {
             // console.log("CI: " + caseInstance)
         });
 
-        const tasks = await taskService.getCaseTasks(approver, caseInstance);
+        const tasks = await TaskService.getCaseTasks(approver, caseInstance);
         console.log("Approver tasks: ", tasks);
         const approvalTask = tasks.find(task => task.taskName === approvalTaskName);
         if (! approvalTask) {
@@ -117,26 +112,26 @@ export default class TestTravelRequest extends TestCase {
             }
         };
 
-        await taskService.completeTask(approver, approvalTask, approveTaskOutput);
+        await TaskService.completeTask(approver, approvalTask, approveTaskOutput);
 
         await lana.login();
-        const lanasCaseTasks = await taskService.getCaseTasks(lana, caseInstance);
+        const lanasCaseTasks = await TaskService.getCaseTasks(lana, caseInstance);
         const createTravelOrderTask = lanasCaseTasks.find(task => task.taskName === createTravelOrderTaskName);
         if (! createTravelOrderTask) {
             throw new Error('Did not receive expected task with name ' + createTravelOrderTaskName);
         }
 
-        await taskService.claimTask(lana, createTravelOrderTask);
-        await taskService.completeTask(lana, createTravelOrderTask);
+        await TaskService.claimTask(lana, createTravelOrderTask);
+        await TaskService.completeTask(lana, createTravelOrderTask);
 
         if (Destination === destinationUS) {
             console.log("We also need to arrange Visa and Esta");
-            const requestorTasks = await taskService.getCaseTasks(requestor,caseInstance);
+            const requestorTasks = await TaskService.getCaseTasks(requestor,caseInstance);
             const arrangeVisaTask = requestorTasks.find(task => task.taskName === arrangeVisaTaskName)
             if (! arrangeVisaTask) {
                 throw new Error('Did not receive expected task with name ' + arrangeVisaTaskName);
             }
-                await taskService.completeTask(requestor, arrangeVisaTask);
+                await TaskService.completeTask(requestor, arrangeVisaTask);
         }
 
         console.log("Completed test case travel request for case with id " + caseInstance.id);

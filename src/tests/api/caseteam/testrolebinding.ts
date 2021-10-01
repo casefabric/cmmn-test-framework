@@ -12,12 +12,8 @@ import Task from '../../../framework/cmmn/task';
 import User from '../../../framework/user';
 import Case from '../../../framework/cmmn/case';
 
-const repositoryService = new RepositoryService();
 const definition = 'caseteam.xml';
 
-const caseService = new CaseService();
-const taskService = new TaskService();
-const caseTeamService = new CaseTeamService();
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const sender = worldwideTenant.sender;
@@ -31,7 +27,7 @@ const participantRole = 'CaseParticipant';
 export default class TestRoleBinding extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(sender, definition, tenant);
+        await RepositoryService.validateAndDeploy(sender, definition, tenant);
     }
 
     async run() {
@@ -42,17 +38,17 @@ export default class TestRoleBinding extends TestCase {
         ]);
         const startCase = { tenant, definition, debug: true, caseTeam };
 
-        const caseInstance = await caseService.startCase(sender, startCase);
+        const caseInstance = await CaseService.startCase(sender, startCase);
 
         // Getting the case must be allowed for both sender and receiver
-        await caseService.getCase(sender, caseInstance);
-        const receiverCase = await caseService.getCase(receiver, caseInstance);
+        await CaseService.getCase(sender, caseInstance);
+        const receiverCase = await CaseService.getCase(receiver, caseInstance);
 
         // Employee's role is not part of case team
-        await caseService.getCase(employee, caseInstance, 404);
+        await CaseService.getCase(employee, caseInstance, 404);
 
         // Print the case team
-        await caseTeamService.getCaseTeam(sender, caseInstance).then(team => {
+        await CaseTeamService.getCaseTeam(sender, caseInstance).then(team => {
             if (caseTeam.members.length != team.members.length) {
                 throw new Error('Unexpected different number of members');
             }
@@ -61,7 +57,7 @@ export default class TestRoleBinding extends TestCase {
         });
 
         // Claim a task a receiver should work
-        const tasks = await taskService.getCaseTasks(receiver, receiverCase);
+        const tasks = await TaskService.getCaseTasks(receiver, receiverCase);
         const approveTask = tasks.find(task => task.taskName === 'Approve');
         if (!approveTask) {
             throw new Error('Cannot find Approve task');
@@ -76,15 +72,15 @@ export default class TestRoleBinding extends TestCase {
         // Claim task must not be possible for the receiver with task not found error
         await this.claimTaskShouldFail(receiver, approveTask, 'You do not have permission to perform this operation', 401);
 
-        // await new TenantService().addTenantUserRole(sender, worldwideTenant.tenant, receiver.id, "Sender");
-        // await caseTeamService.addMemberRole(caseInstance, sender, "Receiver", "Approver");
+        // TenantService.addTenantUserRole(sender, worldwideTenant.tenant, receiver.id, "Sender");
+        // await CaseTeamService.addMemberRole(caseInstance, sender, "Receiver", "Approver");
 
-        await caseTeamService.setMember(sender, caseInstance, new CaseTeamMember(receiver, ["Approver"]))
+        await CaseTeamService.setMember(sender, caseInstance, new CaseTeamMember(receiver, ["Approver"]))
         // Now it should be possible
-        // await taskService.claimTask(receiver, approveTask);
+        // await TaskService.claimTask(receiver, approveTask);
 
         // Claim task must be possible for the receiver
-        await taskService.claimTask(sender, approveTask);
+        await TaskService.claimTask(sender, approveTask);
 
         // Remove role binding for receiver, and see if he can still access the case
 
@@ -93,8 +89,8 @@ export default class TestRoleBinding extends TestCase {
 
     async claimTaskShouldFail(user: User, task: Task, expectedMessage: string, expectedStatusCode: number) {
         // Claim task must be possible for the receiver
-        const response = await taskService.claimTask(user, task, expectedStatusCode);
-        // const response = await caseService.getDiscretionaryItems(employee, receiverCase, false);
+        const response = await TaskService.claimTask(user, task, expectedStatusCode);
+        // const response = await CaseService.getDiscretionaryItems(employee, receiverCase, false);
         const failureText = await response.text();
         console.log("Response: " + response.status)
         console.log("Response: " + failureText);

@@ -11,12 +11,8 @@ import PostMock from '../../../../framework/mock/postmock';
 import { assertPlanItemState } from '../../../../framework/test/caseassertions/plan';
 import assertCaseFileContent from '../../../../framework/test/caseassertions/file';
 
-const repositoryService = new RepositoryService();
 const definition = 'processtasktest.xml';
 
-const caseService = new CaseService();
-const casePlanService = new CasePlanService();
-const caseFileService = new CaseFileService();
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
@@ -37,7 +33,7 @@ export default class TestProcessTask extends TestCase {
     async onPrepareTest() {
         await mock.start();
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(user, definition, tenant);
+        await RepositoryService.validateAndDeploy(user, definition, tenant);
     }
 
     async run() {
@@ -50,10 +46,10 @@ export default class TestProcessTask extends TestCase {
         const startCase = { tenant, definition, inputs };
 
         // Starts the case with user
-        let caseInstance = await caseService.startCase(user, startCase);
+        let caseInstance = await CaseService.startCase(user, startCase);
 
         // Get case details
-        caseInstance = await caseService.getCase(user, caseInstance);
+        caseInstance = await CaseService.getCase(user, caseInstance);
 
         const okServiceInput = {
             code: 200,
@@ -62,12 +58,12 @@ export default class TestProcessTask extends TestCase {
             }
         }
 
-        await caseFileService.createCaseFileItem(user, caseInstance, 'ServiceInput', okServiceInput);
-        await casePlanService.makePlanItemTransition(user, caseInstance, 'Get OK', 'Occur');
+        await CaseFileService.createCaseFileItem(user, caseInstance, 'ServiceInput', okServiceInput);
+        await CasePlanService.makePlanItemTransition(user, caseInstance, 'Get OK', 'Occur');
 
         await assertPlanItemState(user, caseInstance, 'Get Object Response', 0, 'Completed');
 
-        await caseFileService.getCaseFile(user, caseInstance).then(file => {
+        await CaseFileService.getCaseFile(user, caseInstance).then(file => {
             console.log("Case File " + JSON.stringify(file, undefined, 2));
         })
 
@@ -79,12 +75,12 @@ export default class TestProcessTask extends TestCase {
             code: 500,
             payload: 'If you feed me with errors, I will return them'
         }
-        await caseFileService.updateCaseFileItem(user, caseInstance, 'ServiceInput', failureServiceInput);
-        await casePlanService.makePlanItemTransition(user, caseInstance, 'Get Error', 'Occur');
+        await CaseFileService.updateCaseFileItem(user, caseInstance, 'ServiceInput', failureServiceInput);
+        await CasePlanService.makePlanItemTransition(user, caseInstance, 'Get Error', 'Occur');
 
         await assertPlanItemState(user, caseInstance, 'Get Error Response', 0, 'Failed');
 
-        await caseFileService.getCaseFile(user, caseInstance).then(file => {
+        await CaseFileService.getCaseFile(user, caseInstance).then(file => {
             console.log("Case File " + JSON.stringify(file, undefined, 2));
         })
 

@@ -1,12 +1,8 @@
 import TokenService from './service/platform/tokenservice';
-import TenantService from './service/tenant/tenantservice';
 import UserInformation from './tenant/userinformation';
 import PlatformService from './service/platform/platformservice';
 import Config from '../config';
 import logger from './logger';
-
-const tokenService = new TokenService();
-const platformService = new PlatformService();
 
 export default class User {
     /**
@@ -81,7 +77,7 @@ export default class User {
      * Technical method to get/refresh a token for this user.
      */
     async refreshToken() {
-        const newToken = await tokenService.getToken(this);
+        const newToken = await TokenService.getToken(this);
         this.token = newToken;
         return newToken;
     }
@@ -90,6 +86,6 @@ export default class User {
      * Refresh the user information with latest from case engine.
      */
     async refreshUserInformation() {
-        this.userInformation = await platformService.getUserInformation(this);
+        this.userInformation = await PlatformService.getUserInformation(this);
     }
 }

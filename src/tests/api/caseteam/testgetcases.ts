@@ -11,10 +11,8 @@ import User from '../../../framework/user';
 import CaseTeamService from '../../../framework/service/case/caseteamservice';
 import Case from '../../../framework/cmmn/case';
 
-const repositoryService = new RepositoryService();
 const definition = 'helloworld.xml';
 
-const caseService = new CaseService();
 const worldwideTenant = new WorldWideTestTenant("abc");
 const tenant = worldwideTenant.name;
 const sender = worldwideTenant.sender;
@@ -24,7 +22,7 @@ const employee = worldwideTenant.employee;
 export default class TestGetCases extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(sender, definition, tenant);
+        await RepositoryService.validateAndDeploy(sender, definition, tenant);
     }
 
     async run() {
@@ -40,7 +38,7 @@ export default class TestGetCases extends TestCase {
 
         await this.getCaseList({tenant, numberOfResults: 10000}, "Initial list has cases");
 
-        const newCase = await caseService.startCase(sender, startCase);
+        const newCase = await CaseService.startCase(sender, startCase);
 
         await this.getCaseList({tenant, numberOfResults: 10000}, "After startcase");
         await this.getCaseList({tenant, state:"Failed"}, "Failed within tenant");
@@ -50,13 +48,13 @@ export default class TestGetCases extends TestCase {
         await this.getCaseList({}, "Across tenant", receiver);
         await this.getCaseList({}, "Across tenant", employee);
 
-        await new CaseTeamService().setMember(sender, newCase, new CaseTeamMember(employee));
+        await CaseTeamService.setMember(sender, newCase, new CaseTeamMember(employee));
         
         await this.getCaseList({}, "After added to team", employee);
     }
 
     async getCaseList(filter: CaseFilter, msg: string, user: User = sender) {
-        const caseList = await caseService.getCases(user, filter);
+        const caseList = await CaseService.getCases(user, filter);
         console.log(msg +": " + caseList.length);
         return caseList;
     }

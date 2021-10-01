@@ -3,13 +3,11 @@ import CafienneService from '../cafienneservice';
 import Case from '../../cmmn/case';
 import { checkJSONResponse } from '../response';
 
-const cafienneService = new CafienneService();
-
 export default class RequestService {
-    async requestCase(casePath: string = '', inputs: any, caseInstanceId?: string, debug?: boolean, expectedStatusCode: number = 200): Promise<Case> {
+    static async requestCase(casePath: string = '', inputs: any, caseInstanceId?: string, debug?: boolean, expectedStatusCode: number = 200): Promise<Case> {
         console.log("Anonymously requesting Case[" + casePath + "]");
         const url = `/request/case/${casePath}`;
-        const response = await cafienneService.post(url, User.NONE, { inputs, caseInstanceId, debug });
+        const response = await CafienneService.post(url, User.NONE, { inputs, caseInstanceId, debug });
         const msg = `Anonymously requesting Case is not expected to succeed`;
         const json = await checkJSONResponse(response, msg, expectedStatusCode, Case);
 

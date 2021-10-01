@@ -8,12 +8,7 @@ import TenantUser, { TenantOwner } from '../../../framework/tenant/tenantuser';
 import RequestService from '../../../framework/service/anonymous/requestservice';
 import AnonymousWorld from './anonymousworld';
 
-const repositoryService = new RepositoryService();
 const definition = 'helloworld.xml';
-
-const caseService = new CaseService();
-const requestService = new RequestService();
-
 
 const suzy = new TenantOwner('suzy', ['Receiver'], 'receiver', 'receiver@receivers.com')
 const lana = new TenantUser('lana', ['Sender'], 'sender', 'sender@senders.com');
@@ -35,7 +30,7 @@ export default class TestNoAnonymousStartCase extends TestCase {
     async onPrepareTest() {
         await anonymousWorld.create();
         await anonymousWorldWithoutLana.create();
-        await repositoryService.validateAndDeploy(suzy, definition, tenant);
+        await RepositoryService.validateAndDeploy(suzy, definition, tenant);
     }
 
     async run() {
@@ -45,17 +40,17 @@ export default class TestNoAnonymousStartCase extends TestCase {
 
     async createCase(path: string, expectedStatusCode: number = 200, lanaHasAccess: number = 200) {
         // Default instance, pointing to helloworld
-        const caseInstance = await requestService.requestCase(path, this.inputs, undefined, undefined, expectedStatusCode);
+        const caseInstance = await RequestService.requestCase(path, this.inputs, undefined, undefined, expectedStatusCode);
 
         if (expectedStatusCode === 200) {
             console.log(`\nCase id\t${caseInstance.id}`);
 
-            await caseService.getCase(suzy, caseInstance).then(caze => {
+            await CaseService.getCase(suzy, caseInstance).then(caze => {
                 console.log(`Case is created by user '${caze.createdBy}'`);
             });
 
             console.log(`Checking whether lana has access - expecting response code ${lanaHasAccess}`);
-            await caseService.getCase(lana, caseInstance, lanaHasAccess);
+            await CaseService.getCase(lana, caseInstance, lanaHasAccess);
 
         } else {
             console.log('Failed to create case instance, as expected');

@@ -7,11 +7,8 @@ import WorldWideTestTenant from '../../worldwidetesttenant';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
 import assertCaseFileContent from '../../../framework/test/caseassertions/file';
 
-const repositoryService = new RepositoryService();
 const definition = 'expressions.xml';
 
-const caseService = new CaseService();
-const taskService = new TaskService();
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
@@ -19,12 +16,12 @@ const user = worldwideTenant.sender;
 export default class TestTaskExpressions extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(user, definition, tenant);
+        await RepositoryService.validateAndDeploy(user, definition, tenant);
     }
 
     async run() {
         const startCase = { tenant, definition };
-        const caseInstance = await caseService.startCase(user, startCase);
+        const caseInstance = await CaseService.startCase(user, startCase);
 
         const taskName = 'Task map output properties';
         const taskOutput = {
@@ -32,7 +29,7 @@ export default class TestTaskExpressions extends TestCase {
             ChildAge: 23
         }
 
-        const tasks = await taskService.getCaseTasks(user, caseInstance);
+        const tasks = await TaskService.getCaseTasks(user, caseInstance);
         const task = tasks.find(task => {
             if (task.taskName === taskName) console.log("Found task '" + taskName + "' in state " + task.taskState)
             return task.taskName === taskName && task.taskState !== 'Completed'
@@ -41,7 +38,7 @@ export default class TestTaskExpressions extends TestCase {
             throw new Error('There is no Active instance of task ' + taskName);
         }
         console.log(`Invoking ${taskName} with ${JSON.stringify(taskOutput)}`)
-        await taskService.completeTask(user, task, { Out: taskOutput });
+        await TaskService.completeTask(user, task, { Out: taskOutput });
 
         await assertCaseFileContent(user, caseInstance, 'ChildItem', taskOutput);
 

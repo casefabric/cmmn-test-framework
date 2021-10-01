@@ -9,11 +9,8 @@ import Case from '../../../framework/cmmn/case';
 import Task from '../../../framework/cmmn/task';
 import Comparison from '../../../framework/test/comparison';
 
-const repositoryService = new RepositoryService();
 const definition = 'taskbindingrefinement.xml';
 
-const caseService = new CaseService();
-const taskService = new TaskService();
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
@@ -22,7 +19,7 @@ export default class TestTaskBindingRefinement extends TestCase {
 
     async onPrepareTest() {
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(user, definition, tenant);
+        await RepositoryService.validateAndDeploy(user, definition, tenant);
     }
 
     async run() {
@@ -31,11 +28,11 @@ export default class TestTaskBindingRefinement extends TestCase {
         };
 
         const startCase = { tenant, definition, inputs };
-        const caseId = await caseService.startCase(user, startCase) as Case
-        const caseInstance = await caseService.getCase(user, caseId);
+        const caseId = await CaseService.startCase(user, startCase) as Case
+        const caseInstance = await CaseService.getCase(user, caseId);
 
         const getPlanItem = (planItemId: string) => caseInstance.planitems.find(item => item.id === planItemId);
-        const tasks = await taskService.getCaseTasks(user, caseInstance);
+        const tasks = await TaskService.getCaseTasks(user, caseInstance);
         tasks.sort((a: Task, b: Task) => {
             if (a.taskName < b.taskName) return -1;
             if (b.taskName < a.taskName) return 1;

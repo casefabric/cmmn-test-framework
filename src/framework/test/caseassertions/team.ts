@@ -5,8 +5,6 @@ import CaseTeam from '../../cmmn/caseteam';
 import CaseTeamService from '../../service/case/caseteamservice';
 import CaseTeamMember from '../../cmmn/caseteammember';
 
-const caseService = new CaseService();
-const caseTeamService = new CaseTeamService();
 
 function findMember(team: CaseTeam, expectedMember: CaseTeamMember) {
     return team.members.find(member => member.memberId === expectedMember.memberId && member.memberType === expectedMember.memberType);
@@ -81,10 +79,10 @@ async function verifyTeam(actualTeam: CaseTeam, expectedTeam: CaseTeam) {
  */
 export async function assertCaseTeam(user: User, caseId: Case | string, expectedTeam: CaseTeam) {
     // Get case team via getCaseTeam
-    await caseTeamService.getCaseTeam(user, caseId).then(team => verifyTeam(team, expectedTeam));
+    await CaseTeamService.getCaseTeam(user, caseId).then(team => verifyTeam(team, expectedTeam));
 
     // Get case team via getCase
-    await caseService.getCase(user, caseId).then(caseInstance => caseInstance.team).then(team => verifyTeam(team, expectedTeam));
+    await CaseService.getCase(user, caseId).then(caseInstance => caseInstance.team).then(team => verifyTeam(team, expectedTeam));
 }
 
 /**
@@ -96,7 +94,7 @@ export async function assertCaseTeam(user: User, caseId: Case | string, expected
  */
 export async function assertCaseTeamMember(user: User, caseId: Case | string, member: CaseTeamMember, expectNoFailures: boolean = true) {
     // Get case team via getCaseTeam
-    const actualCaseTeam = await caseTeamService.getCaseTeam(user, caseId);
+    const actualCaseTeam = await CaseTeamService.getCaseTeam(user, caseId);
 
     const [status, msg] = hasMember(actualCaseTeam, member)
     if ((expectNoFailures && !status) || (status && !expectNoFailures)) {

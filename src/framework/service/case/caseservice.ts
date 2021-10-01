@@ -10,10 +10,8 @@ import { DiscretionaryItemsResponse } from './response/discretionaryitemsrespons
 import { CaseStatistics } from './response/casestatistics';
 import CaseTeam from '../../cmmn/caseteam';
 
-const cafienneService = new CafienneService();
-
 export default class CaseService {
-    async startCase(user: User, command: StartCase, expectedStatusCode: number = 200): Promise<Case> {
+    static async startCase(user: User, command: StartCase, expectedStatusCode: number = 200): Promise<Case> {
         if (!user) {
             // throw new Error("User must be specified");
         }
@@ -29,7 +27,7 @@ export default class CaseService {
             caseInstanceId,
             debug
         }
-        const response = await cafienneService.post(url, user, request);
+        const response = await CafienneService.post(url, user, request);
         const msg = `StartCase is not expected to succeed for user ${user ? user.id : 'anonymous'}`;
         const json = await checkJSONResponse(response, msg, expectedStatusCode, Case);
 
@@ -47,12 +45,12 @@ export default class CaseService {
      * @param caseId 
      * @param user 
      */
-    async getCase(user: User, caseId: Case | string, expectedStatusCode: number = 200): Promise<Case> {
+    static async getCase(user: User, caseId: Case | string, expectedStatusCode: number = 200): Promise<Case> {
         const convertCaseTeamFormat = (json: any) => {
             if (json.team && !json.team.members) json.team = new CaseTeam(json.team);
             return json;
         }
-        const response = await cafienneService.get(`/cases/${caseId}`, user);
+        const response = await CafienneService.get(`/cases/${caseId}`, user);
         const msg = `GetCase is not expected to succeed for user ${user.id} in case ${caseId}`;
         return checkJSONResponse(response, msg, expectedStatusCode, Case).then(convertCaseTeamFormat);
     }
@@ -62,8 +60,8 @@ export default class CaseService {
      * @param Case 
      * @param user 
      */
-    async getDefinition(user: User, caseId: Case | string, expectedStatusCode: number = 200): Promise<Document> {
-        return cafienneService.getXml(`/cases/${caseId}/definition`, user);
+    static async getDefinition(user: User, caseId: Case | string, expectedStatusCode: number = 200): Promise<Document> {
+        return CafienneService.getXml(`/cases/${caseId}/definition`, user);
     }
 
     /**
@@ -71,8 +69,8 @@ export default class CaseService {
      * @param filter 
      * @param user 
      */
-    async getCases(user: User, filter?: CaseFilter, expectedStatusCode: number = 200): Promise<Array<Case>> {
-        const response = await cafienneService.get('/cases', user, filter);
+    static async getCases(user: User, filter?: CaseFilter, expectedStatusCode: number = 200): Promise<Array<Case>> {
+        const response = await CafienneService.get('/cases', user, filter);
         const msg = `GetCases is not expected to succeed for user ${user.id}`;
         return checkJSONResponse(response, msg, expectedStatusCode, [Case]);
     }
@@ -82,8 +80,8 @@ export default class CaseService {
      * @param Case 
      * @param user 
      */
-    async getDiscretionaryItems(user: User, caseId: Case | string, expectedStatusCode: number = 200): Promise<DiscretionaryItemsResponse> {
-        const response = await cafienneService.get(`/cases/${caseId}/discretionaryitems`, user)
+    static async getDiscretionaryItems(user: User, caseId: Case | string, expectedStatusCode: number = 200): Promise<DiscretionaryItemsResponse> {
+        const response = await CafienneService.get(`/cases/${caseId}/discretionaryitems`, user)
         const msg = `GetDiscretionaryItems is not expected to succeed for user ${user.id} in case ${caseId}`;
         return await checkJSONResponse(response, msg, expectedStatusCode, DiscretionaryItemsResponse);
     }
@@ -96,10 +94,10 @@ export default class CaseService {
      * @param planItemId Optional id for the plan item resulting of the planning. If not specified, server will generate one.
      * @returns The id of the newly planned item
      */
-    async planDiscretionaryItem(user: User, caseId: Case | string, item: DiscretionaryItem, planItemId?: string, expectedStatusCode: number = 200): Promise<string> {
+    static async planDiscretionaryItem(user: User, caseId: Case | string, item: DiscretionaryItem, planItemId?: string, expectedStatusCode: number = 200): Promise<string> {
         const itemToPlan = { name: item.name, parentId: item.parentId, definitionId: item.definitionId, planItemId }
 
-        const response = await cafienneService.post(`/cases/${caseId}/discretionaryitems/plan`, user, itemToPlan);
+        const response = await CafienneService.post(`/cases/${caseId}/discretionaryitems/plan`, user, itemToPlan);
         const msg = `PlanDiscretionaryItem is not expected to succeed for user ${user.id} in case ${caseId}`;
         const json = await checkJSONResponse(response, msg, expectedStatusCode);
         return json.planItemId;
@@ -110,8 +108,8 @@ export default class CaseService {
      * @param user 
      * @param filter 
      */
-    async getCaseStatistics(user: User, filter?: StatisticsFilter, expectedStatusCode: number = 200): Promise<Array<CaseStatistics>> {
-        const response = await cafienneService.get('/cases/stats', user, filter);
+    static async getCaseStatistics(user: User, filter?: StatisticsFilter, expectedStatusCode: number = 200): Promise<Array<CaseStatistics>> {
+        const response = await CafienneService.get('/cases/stats', user, filter);
         const msg = `GetCaseStatistics is not expected to succeed for user ${user.id}`;
         return checkJSONResponse(response, msg, expectedStatusCode, [CaseStatistics]);
     }
@@ -122,8 +120,8 @@ export default class CaseService {
      * @param user 
      * @param debugEnabled 
      */
-    async changeDebugMode(user: User, caseId: Case | string, debugEnabled: boolean, expectedStatusCode: number = 200) {
-        const response = await cafienneService.put(`/cases/${caseId}/debug/${debugEnabled}`, user);
+    static async changeDebugMode(user: User, caseId: Case | string, debugEnabled: boolean, expectedStatusCode: number = 200) {
+        const response = await CafienneService.put(`/cases/${caseId}/debug/${debugEnabled}`, user);
         const msg = `ChangeDebugMode is not expected to succeed for user ${user.id} in case ${caseId}`;
         return checkResponse(response, msg, expectedStatusCode);
     }

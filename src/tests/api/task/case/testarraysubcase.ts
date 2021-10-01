@@ -11,13 +11,7 @@ import PlanItem from "../../../../framework/cmmn/planitem";
 import CasePlanService from "../../../../framework/service/case/caseplanservice";
 import Comparison from "../../../../framework/test/comparison";
 
-const repositoryService = new RepositoryService();
-const caseService = new CaseService();
-const casePlanService = new CasePlanService();
-const taskService = new TaskService();
 const worldwideTenant = new WorldWideTestTenant();
-const caseFileService = new CaseFileService();
-
 const definition = 'subcasewitharrayoutput.xml';
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
@@ -25,7 +19,7 @@ const user = worldwideTenant.sender;
 export default class TestArraySubCase extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(user, definition, tenant);
+        await RepositoryService.validateAndDeploy(user, definition, tenant);
     }
 
     async run() {
@@ -33,10 +27,10 @@ export default class TestArraySubCase extends TestCase {
         const startCase = { tenant, definition, inputs };
 
         // Start the parent case
-        const caseId = await caseService.startCase(user, startCase);
+        const caseId = await CaseService.startCase(user, startCase);
 
         // Retrieve subcase 
-        const caseInstance = await caseService.getCase(user, caseId);
+        const caseInstance = await CaseService.getCase(user, caseId);
         const subCasePlanItem = caseInstance.planitems.find(item => item.name === 'simpleinoutcase') as PlanItem;
 
         await assertPlanItemState(user, caseInstance, subCasePlanItem.name, subCasePlanItem.index, 'Active');
@@ -50,14 +44,14 @@ export default class TestArraySubCase extends TestCase {
             const taskInstance = await assertPlanItemState(user, subCaseInstance, 'Task', i, 'Active');
             const taskOutput = { Out: i };
             expectedCaseFileOutput.push(i);
-            await taskService.completeTask(user, taskInstance, taskOutput);
+            await TaskService.completeTask(user, taskInstance, taskOutput);
         }
 
-        await casePlanService.raiseEvent(user, subCaseInstance, 'Complete Case');
+        await CasePlanService.raiseEvent(user, subCaseInstance, 'Complete Case');
         await assertCasePlanState(user, subCasePlanItem.id, 'Completed');
         await assertPlanItemState(user, caseInstance, subCasePlanItem.name, subCasePlanItem.index, 'Completed');
 
-        const caseFile = await caseFileService.getCaseFile(user, caseInstance);
+        const caseFile = await CaseFileService.getCaseFile(user, caseInstance);
         console.log("Completed Case Task with output: " + JSON.stringify(caseFile, undefined, 2));
         const out = caseFile.out;
         if (! Comparison.sameArray(out, expectedCaseFileOutput)) {

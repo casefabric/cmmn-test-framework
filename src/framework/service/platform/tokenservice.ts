@@ -11,7 +11,7 @@ export default class TokenService {
      * @param issuedAt
      * @param expiresAt 
      */
-    async getToken(user: User, issuer:string = Config.TokenService.issuer, issuedAt: Date = new Date(), expiresAt?: Date): Promise<string> {
+    static async getToken(user: User, issuer:string = Config.TokenService.issuer, issuedAt: Date = new Date(), expiresAt?: Date): Promise<string> {
         if (! expiresAt) {
             expiresAt = new Date();
             expiresAt.setDate(expiresAt.getDate() + 2);
@@ -26,7 +26,7 @@ export default class TokenService {
         return this.fetchToken(claims);
     }
 
-    async fetchToken(claims: object) {
+    static async fetchToken(claims: object) {
         const object = {
             method: 'POST',
             body: JSON.stringify(claims)

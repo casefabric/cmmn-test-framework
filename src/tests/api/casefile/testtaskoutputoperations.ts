@@ -10,11 +10,8 @@ import { CaseOwner } from '../../../framework/cmmn/caseteammember';
 import Case from '../../../framework/cmmn/case';
 import PlanItem from '../../../framework/cmmn/planitem';
 
-const repositoryService = new RepositoryService();
 const definition = 'taskoutputoperations.xml';
 
-const caseService = new CaseService();
-const taskService = new TaskService();
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
@@ -23,7 +20,7 @@ export default class TestTaskOutputOperations extends TestCase {
     private caseInstance?: Case;
     async onPrepareTest() {
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(user, definition, tenant);
+        await RepositoryService.validateAndDeploy(user, definition, tenant);
     }
 
     async run() {
@@ -31,7 +28,7 @@ export default class TestTaskOutputOperations extends TestCase {
         const caseTeam = new CaseTeam([new CaseOwner(user)]);
 
         const startCase = { tenant, definition, inputs, caseTeam, debug: true };
-        this.caseInstance = await caseService.startCase(user, startCase) as Case
+        this.caseInstance = await CaseService.startCase(user, startCase) as Case
 
         await this.freshCase();
         this.printPlan();
@@ -82,11 +79,11 @@ export default class TestTaskOutputOperations extends TestCase {
     }
 
     async freshCase() {
-        this.caseInstance = await caseService.getCase(user, this.case());
+        this.caseInstance = await CaseService.getCase(user, this.case());
     }
 
     async runTask(taskName: string, output: any) {
-        const tasks = await taskService.getCaseTasks(user, this.case());
+        const tasks = await TaskService.getCaseTasks(user, this.case());
         const task = tasks.find(task => {
             if (task.taskName === taskName) console.log("Found task '" + taskName +"' in state " + task.taskState)
             return task.taskName === taskName && task.taskState !== 'Completed'
@@ -95,7 +92,7 @@ export default class TestTaskOutputOperations extends TestCase {
             throw new Error('There is no Active instance of task ' + taskName);
         }
         console.log(`Invoking ${taskName} with ${JSON.stringify(output)}`)
-        await taskService.completeTask(user, task, {Out: output});
+        await TaskService.completeTask(user, task, {Out: output});
     }
 
     case(msg = 'Cannot get the case if it is not yet started') {

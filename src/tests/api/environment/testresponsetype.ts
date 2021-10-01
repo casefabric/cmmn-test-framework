@@ -10,8 +10,6 @@ import Case from '../../../framework/cmmn/case';
 import Config from '../../../config';
 import CafienneService, { printHeaders } from '../../../framework/service/cafienneservice';
 
-const repositoryService = new RepositoryService();
-const caseService = new CaseService();
 const worldwideTenant = new WorldWideTestTenant('wwtt-2');
 const definition = 'caseteam.xml';
 const tenant = worldwideTenant.name;
@@ -21,7 +19,7 @@ const requestorRole = "Requestor";
 export default class TestResponseType extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(user, definition, tenant);
+        await RepositoryService.validateAndDeploy(user, definition, tenant);
     }
 
     async run() {
@@ -29,7 +27,7 @@ export default class TestResponseType extends TestCase {
         const startCase = { tenant, definition, debug: true, caseTeam };
 
         // starts the case instance
-        const caseInstance = await caseService.startCase(user, startCase);
+        const caseInstance = await CaseService.startCase(user, startCase);
 
         await this.tryFetchCase(caseInstance.id);
     }

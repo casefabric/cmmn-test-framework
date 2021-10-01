@@ -10,7 +10,6 @@ import Case from '../../../framework/cmmn/case';
 
 const definition = 'caseteam.xml';
 
-const caseService = new CaseService();
 const worldwideTenant = new WorldWideTestTenant('wwtt-4');
 const tenant = worldwideTenant.name;
 const sender = worldwideTenant.sender;
@@ -19,7 +18,7 @@ const receiver = worldwideTenant.receiver;
 export default class TestDefinitionInStartCase extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        // await repositoryService.validateAndDeploy(sender, definition, tenant);
+        // await RepositoryService.validateAndDeploy(sender, definition, tenant);
     }
 
     async run() {
@@ -30,9 +29,9 @@ export default class TestDefinitionInStartCase extends TestCase {
         const startCase = { tenant, definition: definitionContents, debug: true, caseTeam };
 
         // Starting a by sender case would not result in failure
-        const caseInstance = await caseService.startCase(sender, startCase);
+        const caseInstance = await CaseService.startCase(sender, startCase);
 
         // Receiver can perform get case
-        await caseService.getCase(receiver, caseInstance)
+        await CaseService.getCase(receiver, caseInstance)
     }
 }

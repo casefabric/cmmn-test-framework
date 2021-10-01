@@ -13,12 +13,7 @@ import CaseFileService from "../../../../framework/service/case/casefileservice"
 import CaseTeamMember, { CaseOwner } from "../../../../framework/cmmn/caseteammember";
 import PlanItem from "../../../../framework/cmmn/planitem";
 
-const repositoryService = new RepositoryService();
-const caseService = new CaseService();
-const taskService = new TaskService();
 const worldwideTenant = new WorldWideTestTenant();
-const caseFileService = new CaseFileService();
-
 const definition = 'subcasetest.xml';
 const tenant = worldwideTenant.name;
 const sender = worldwideTenant.sender;
@@ -27,7 +22,7 @@ const receiver = worldwideTenant.receiver;
 export default class TestSubCase extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(sender, definition, tenant);
+        await RepositoryService.validateAndDeploy(sender, definition, tenant);
     }
 
     async run() {
@@ -45,13 +40,13 @@ export default class TestSubCase extends TestCase {
         };
 
         // Sender starts the parent case
-        const caseInstance = await caseService.startCase(sender, startCase);
+        const caseInstance = await CaseService.startCase(sender, startCase);
 
         // Sender creates Greet case file item
-        await caseFileService.createCaseFileItem(sender, caseInstance, 'Greet', inputs.Greet);
+        await CaseFileService.createCaseFileItem(sender, caseInstance, 'Greet', inputs.Greet);
 
         // Retrieve subcase 
-        const parentCaseInstance = await caseService.getCase(sender, caseInstance);
+        const parentCaseInstance = await CaseService.getCase(sender, caseInstance);
         const subCase = parentCaseInstance.planitems.find(item => item.name === 'call helloworld') as PlanItem;
         
         // Sender is the owner of the parent case and receiver doesn't exist in the parent case
@@ -69,25 +64,25 @@ export default class TestSubCase extends TestCase {
 
         // Get Receive Greeting task
         const receiveTaskName = 'Receive Greeting and Send response';
-        const tasks = await taskService.getCaseTasks(sender, childCaseInstance);
+        const tasks = await TaskService.getCaseTasks(sender, childCaseInstance);
         const receiveGreetingTask = findTask(tasks, receiveTaskName);
 
         // Complete Receive Greeting task by sender
-        await taskService.completeTask(sender, receiveGreetingTask, taskOutput);
+        await TaskService.completeTask(sender, receiveGreetingTask, taskOutput);
 
         // Get Read Response task
         const responseTaskName = 'Read response';
-        const nextTasks = await taskService.getCaseTasks(sender, childCaseInstance);
+        const nextTasks = await TaskService.getCaseTasks(sender, childCaseInstance);
         const readResponseTask = findTask(nextTasks, responseTaskName);
 
         // Sender assigns the Read Response task to receiver
-        await taskService.assignTask(sender, readResponseTask, receiver);
+        await TaskService.assignTask(sender, readResponseTask, receiver);
 
         // Now, receiver is part of the subcase team and completes the Read Response task
         await assertCaseTeamMember(sender, childCaseInstance, new CaseTeamMember(receiver, []));
 
         // Receiver completes the Read Response task
-        await taskService.completeTask(receiver, readResponseTask);
+        await TaskService.completeTask(receiver, readResponseTask);
 
         // Both subcase and parent case plans should be completed
         await assertCasePlanState(sender, childCaseInstance, 'Completed');

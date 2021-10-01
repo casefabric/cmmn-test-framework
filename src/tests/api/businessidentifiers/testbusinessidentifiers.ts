@@ -7,9 +7,7 @@ import IdentifierFilter from '../../../framework/service/identifier/identifierfi
 import TestFootballBusinessIdentifiers from './footballbusinessidentifiers/testfootballbusinessidentifiers';
 import logger from '../../../framework/logger';
 
-const identifierService = new CaseIdentifierService();
 const worldwideTenant = new WorldWideTestTenant('inactive-tenant-' + Math.random().toString(36).substring(2, 15));
-
 const user = worldwideTenant.sender;
 
 export default class TestBusinessIdentifiers extends TestCase {
@@ -40,7 +38,7 @@ export default class TestBusinessIdentifiers extends TestCase {
         await this.printList({ offset : 10, numberOfResults: 5});
         await this.printList({ name : 'name'});
 
-        await identifierService.getIdentifierNames(user).then(list => {
+        await CaseIdentifierService.getIdentifierNames(user).then(list => {
             logger.debug(`List: ${JSON.stringify(list, undefined, 2)}`);
         });
 
@@ -62,7 +60,7 @@ export default class TestBusinessIdentifiers extends TestCase {
     }
 
     async printList(filter?: IdentifierFilter) {
-        const list = await identifierService.getIdentifiers(user, filter);
+        const list = await CaseIdentifierService.getIdentifiers(user, filter);
         this.lists.push(list);
         logger.debug(`List: ${JSON.stringify(list, undefined, 2)}`);
     }

@@ -12,12 +12,8 @@ import Case from '../../framework/cmmn/case';
 import MockServer from '../../framework/mock/mockserver';
 import GetMock from '../../framework/mock/getmock';
 
-const repositoryService = new RepositoryService();
 const definition = 'getlist_getdetails.xml';
 
-const caseService = new CaseService();
-const casePlanService = new CasePlanService();
-const caseFileService = new CaseFileService();
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
@@ -40,7 +36,7 @@ export default class TestGetListGetDetails extends TestCase {
     async onPrepareTest() {
         // await mock.start();
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(user, definition, tenant);
+        await RepositoryService.validateAndDeploy(user, definition, tenant);
     }
 
     async run() {
@@ -51,19 +47,19 @@ export default class TestGetListGetDetails extends TestCase {
         const startCase = { tenant, definition };
 
         // Starts the case with user
-        let caseInstance = await caseService.startCase(user, startCase);
+        let caseInstance = await CaseService.startCase(user, startCase);
 
         await ServerSideProcessing();
 
         // Get case details
-        caseInstance = await caseService.getCase(user, caseInstance);
+        caseInstance = await CaseService.getCase(user, caseInstance);
 
         // When the case starts, GetCasesList & GetFirstCase tasks will be in available state
         await assertPlanItemState(user, caseInstance, 'GetList', 0, 'Available');
         await assertPlanItemState(user, caseInstance, 'GetDetails', 0, 'Available');
 
         // Create the CaseFileItem Request only with port
-        await caseFileService.createCaseFileItem(user, caseInstance, "HTTPConfig", inputs);
+        await CaseFileService.createCaseFileItem(user, caseInstance, "HTTPConfig", inputs);
 
         // Give the 'GetList.0' process task up to 5 seconds to fail and activate Stage 'Fail handling.0'
         await assertPlanItemState(user, caseInstance, 'Fail handling', 0, 'Active');
@@ -78,7 +74,7 @@ export default class TestGetListGetDetails extends TestCase {
         await assertPlanItemState(user, caseInstance, 'GetList Failed', 0, 'Completed');
 
         // Trigger the 'Try Again' event
-        casePlanService.makePlanItemTransition(user, caseInstance, 'Try Again', 'Occur');
+        CasePlanService.makePlanItemTransition(user, caseInstance, 'Try Again', 'Occur');
 
         // Give the 'GetList.1' process task up to 5 seconds to fail (because Mock is still not started) and activate Stage 'Fail handling.1'
         await assertPlanItemState(user, caseInstance, 'Fail handling', 1, 'Active');
@@ -93,7 +89,7 @@ export default class TestGetListGetDetails extends TestCase {
         mock.start();
 
         // Trigger the 'Try Again' event
-        await casePlanService.makePlanItemTransition(user, caseInstance, 'Try Again', 'Occur');
+        await CasePlanService.makePlanItemTransition(user, caseInstance, 'Try Again', 'Occur');
 
         // Give the 'GetList.1' process task up to 5 seconds to fail (because Mock is still not started) and activate Stage 'Fail handling.1'
         await assertPlanItemState(user, caseInstance, 'GetList', 2, 'Completed');
@@ -103,7 +99,7 @@ export default class TestGetListGetDetails extends TestCase {
             await assertPlanItemState(user, caseInstance, 'GetDetails', i, 'Completed');
         }
 
-        const exceptionCaseFile = await caseFileService.getCaseFile(user, caseInstance);
+        const exceptionCaseFile = await CaseFileService.getCaseFile(user, caseInstance);
 
 
         // Verify exception case file content with the handler

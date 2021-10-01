@@ -10,9 +10,6 @@ import CaseTeam from '../../../framework/cmmn/caseteam';
 import { assertCaseTeam } from '../../../framework/test/caseassertions/team';
 import StartCase from '../../../framework/service/case/startcase';
 
-const repositoryService = new RepositoryService();
-const caseService = new CaseService();
-const caseTeamService = new CaseTeamService();
 const worldwideTenant = new WorldWideTestTenant('wwtt-4');
 const definition = 'caseteam.xml';
 const tenant = worldwideTenant.name;
@@ -25,7 +22,7 @@ const emptyRole = "";
 export default class TestStartCaseEmptyRole extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(sender, definition, tenant);
+        await RepositoryService.validateAndDeploy(sender, definition, tenant);
     }
 
     startCase: StartCase = { tenant, definition, debug: true };
@@ -40,7 +37,7 @@ export default class TestStartCaseEmptyRole extends TestCase {
         startCase.caseTeam = caseTeam1;
 
         // A case with empty role should not start
-        await caseService.startCase(sender, startCase, 400);
+        await CaseService.startCase(sender, startCase, 400);
 
         delete startCase.caseTeam;
 
@@ -51,17 +48,17 @@ export default class TestStartCaseEmptyRole extends TestCase {
         startCase.caseTeam = caseTeam2;
 
         // A case with valid role should start
-        const caseInstance = await caseService.startCase(sender, startCase);
+        const caseInstance = await CaseService.startCase(sender, startCase);
 
         assertCaseTeam(receiver, caseInstance, caseTeam2);
 
         // receiver cannot add sender with empty role
-        await caseTeamService.setMember(receiver, caseInstance, new CaseTeamMember(sender, [emptyRole], 'user', false), 400);
+        await CaseTeamService.setMember(receiver, caseInstance, new CaseTeamMember(sender, [emptyRole], 'user', false), 400);
 
         // receiver can add sender without roles
-        await caseTeamService.setMember(receiver, caseInstance, new CaseTeamMember(sender, [], 'user', false));
+        await CaseTeamService.setMember(receiver, caseInstance, new CaseTeamMember(sender, [], 'user', false));
 
         // receiver cannot remove empty role from sender
-        await caseTeamService.removeMemberRoles(receiver, caseInstance, new CaseTeamMember(sender), [emptyRole], 400);
+        await CaseTeamService.removeMemberRoles(receiver, caseInstance, new CaseTeamMember(sender), [emptyRole], 400);
    }
 }

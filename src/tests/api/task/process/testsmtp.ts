@@ -1,19 +1,14 @@
 'use strict';
 
 import CaseService from '../../../../framework/service/case/caseservice';
-import TaskService from '../../../../framework/service/task/taskservice';
 import TestCase from '../../../../framework/test/testcase';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
 import RepositoryService from '../../../../framework/service/case/repositoryservice';
-import Case from '../../../../framework/cmmn/case';
 import { assertPlanItemState } from '../../../../framework/test/caseassertions/plan';
 import DebugService from '../../../../framework/service/case/debugservice';
 
-const repositoryService = new RepositoryService();
 const definition = 'smtptest.xml';
 
-const caseService = new CaseService();
-const debugService = new DebugService();
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
@@ -21,7 +16,7 @@ const user = worldwideTenant.sender;
 export default class TestSMTP extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(user, definition, tenant);
+        await RepositoryService.validateAndDeploy(user, definition, tenant);
     }
 
     async run() {
@@ -54,11 +49,11 @@ export default class TestSMTP extends TestCase {
             }
         }
         const startCase = { tenant, definition, inputs };
-        const caseInstance = await caseService.startCase(user, startCase);
+        const caseInstance = await CaseService.startCase(user, startCase);
 
         const sendMailTask = 'Send mail';
 
-        const taskId = await caseService.getCase(user, caseInstance).then(v => v.planitems.find(i => i.name === sendMailTask)?.id);
+        const taskId = await CaseService.getCase(user, caseInstance).then(v => v.planitems.find(i => i.name === sendMailTask)?.id);
         if (!taskId) {
             throw new Error(`Expecting a task with name ${sendMailTask} to be available in the case, but it was not found`);
         }
@@ -67,7 +62,7 @@ export default class TestSMTP extends TestCase {
             await assertPlanItemState(user, caseInstance, sendMailTask, 0, 'Completed', 10);
         } catch (notFoundError) {
             // If the test fails after 10 calls, get the events for the task and see if we can print any logging info
-            await debugService.getParsedEvents(taskId, user).then(events => {
+            await DebugService.getParsedEvents(taskId, user).then(events => {
                 console.log("Found events " + JSON.stringify(events, undefined, 2));
             });
             throw notFoundError;

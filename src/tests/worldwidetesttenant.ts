@@ -3,8 +3,6 @@ import TenantUser, { TenantOwner } from "../framework/tenant/tenantuser";
 import Tenant from "../framework/tenant/tenant";
 import PlatformService from "../framework/service/platform/platformservice";
 
-const platformService = new PlatformService();
-
 /**
  * Simple test tenant to avoid duplicate code
  */
@@ -15,7 +13,6 @@ export default class WorldWideTestTenant {
     tenant: Tenant = new Tenant(this.name, [this.sender, this.receiver, this.employee]);
 
     constructor(public readonly name: string = 'World-Wide-Test-Tenant', public platformAdmin: User = new User('admin')) {
-
     }
 
     /**
@@ -23,7 +20,7 @@ export default class WorldWideTestTenant {
      */
     async create() {
         await this.platformAdmin.login();
-        await platformService.createTenant(this.platformAdmin, this.tenant);
+        await PlatformService.createTenant(this.platformAdmin, this.tenant);
         await this.sender.login();
         await this.receiver.login();
         await this.employee.login();

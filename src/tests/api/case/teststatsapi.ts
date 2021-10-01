@@ -11,12 +11,10 @@ import User from '../../../framework/user';
 import StatisticsFilter from '../../../framework/service/case/statisticsfilter';
 import CasePlanService from '../../../framework/service/case/caseplanservice';
 
-const repositoryService = new RepositoryService();
 const helloworldDefinition = 'helloworld.xml';
 const caseTeamDefinition = 'caseteam.xml';
 
 
-const caseService = new CaseService();
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const sender = worldwideTenant.sender;
@@ -25,8 +23,8 @@ const receiver = worldwideTenant.receiver;
 export default class TestStatsAPI extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(sender, helloworldDefinition, tenant);
-        await repositoryService.validateAndDeploy(sender, caseTeamDefinition, tenant);
+        await RepositoryService.validateAndDeploy(sender, helloworldDefinition, tenant);
+        await RepositoryService.validateAndDeploy(sender, caseTeamDefinition, tenant);
     }
 
     async run() {
@@ -40,23 +38,23 @@ export default class TestStatsAPI extends TestCase {
         //  Make one case go to Terminated state
         const inputs = { Greeting: { Message: 'Hello there', From: sender.id } };
         const startHelloWorldCase = { tenant, definition: helloworldDefinition, inputs, caseTeam, debug: true };
-        await caseService.startCase(sender, startHelloWorldCase);
+        await CaseService.startCase(sender, startHelloWorldCase);
         startHelloWorldCase.caseTeam = caseTeamWithBothSenderAndReceiver;
-        await caseService.startCase(sender, startHelloWorldCase);
-        const caseStarted = await caseService.startCase(sender, startHelloWorldCase);
-        const caseInstance = await caseService.getCase(sender, caseStarted);
+        await CaseService.startCase(sender, startHelloWorldCase);
+        const caseStarted = await CaseService.startCase(sender, startHelloWorldCase);
+        const caseInstance = await CaseService.getCase(sender, caseStarted);
         const pid = caseInstance.planitems.find(item => item.type === 'CasePlan')?.id;
         if (!pid) {
             throw new Error('Cannot find case plan?!');
         }
-        new CasePlanService().makePlanItemTransition(sender, caseStarted, pid, "Terminate");
+        CasePlanService.makePlanItemTransition(sender, caseStarted, pid, "Terminate");
  
         // Start 3 cases 'caseteam.xml', and one of them with both sender and receiver
         const startCaseTeamCase = { tenant, definition: caseTeamDefinition, caseTeam, debug: true };
-        await caseService.startCase(sender, startCaseTeamCase);
-        await caseService.startCase(sender, startCaseTeamCase);
+        await CaseService.startCase(sender, startCaseTeamCase);
+        await CaseService.startCase(sender, startCaseTeamCase);
         startHelloWorldCase.caseTeam = caseTeamWithBothSenderAndReceiver;
-        await caseService.startCase(sender, startCaseTeamCase);
+        await CaseService.startCase(sender, startCaseTeamCase);
 
         const hwFilter = { definition: 'HelloWorld', tenant};
         await this.getStatistics('overall', sender);
@@ -68,7 +66,7 @@ export default class TestStatsAPI extends TestCase {
     }
 
     async getStatistics(msg: string, user: User, filter?: StatisticsFilter) {
-        await caseService.getCaseStatistics(user, filter).then(stats => {
+        await CaseService.getCaseStatistics(user, filter).then(stats => {
             console.log(`${user.id} statistics for '${msg}' cases:${stats.map(stat => '\n- '+stat)}`);
             return stats;
         })

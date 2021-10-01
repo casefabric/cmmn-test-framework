@@ -9,11 +9,8 @@ import CaseTeam from '../../../framework/cmmn/caseteam';
 import { CaseOwner } from '../../../framework/cmmn/caseteammember';
 import { findTask } from '../../../framework/test/caseassertions/task';
 
-const repositoryService = new RepositoryService();
 const definition = 'helloworld.xml';
 
-const caseService = new CaseService();
-const taskService = new TaskService();
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
@@ -21,7 +18,7 @@ const user = worldwideTenant.sender;
 export default class TestTaskCompletion extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(user, definition, tenant);
+        await RepositoryService.validateAndDeploy(user, definition, tenant);
     }
 
     async run() {
@@ -35,10 +32,10 @@ export default class TestTaskCompletion extends TestCase {
         const caseTeam = new CaseTeam([new CaseOwner(user)]);
         
         const startCase = { tenant, definition, inputs, caseTeam, debug: true };
-        const caseInstance = await caseService.startCase(user, startCase);
+        const caseInstance = await CaseService.startCase(user, startCase);
 
         const taskName = 'Receive Greeting and Send response';
-        const tasks = await taskService.getCaseTasks(user, caseInstance);
+        const tasks = await TaskService.getCaseTasks(user, caseInstance);
         const receiveGreetingTask = findTask(tasks, taskName);
 
         const invalidTaskOutput = {
@@ -48,7 +45,7 @@ export default class TestTaskCompletion extends TestCase {
             }
         };
 
-        await taskService.completeTask(user, receiveGreetingTask, invalidTaskOutput, 400);
+        await TaskService.completeTask(user, receiveGreetingTask, invalidTaskOutput, 400);
 
         const validTaskOutput = {
             Response: {
@@ -58,6 +55,6 @@ export default class TestTaskCompletion extends TestCase {
             }
         };
 
-        await taskService.completeTask(user, receiveGreetingTask, validTaskOutput);
+        await TaskService.completeTask(user, receiveGreetingTask, validTaskOutput);
     }
 }

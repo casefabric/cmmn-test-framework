@@ -6,8 +6,6 @@ import { pathReader } from '../../cmmn/casefile';
 import Config from '../../../config';
 import logger from '../../logger';
 
-const caseFileService = new CaseFileService();
-
 /**
  * Read the case instance's case file on behalf of the user and verify that the element at the end of the path matches the expectedContent.
  * Path can be something like /Greeting/
@@ -18,7 +16,7 @@ const caseFileService = new CaseFileService();
  * @param expectedContent 
  */
 export default async function assertCaseFileContent(user: User, caseId: Case | string, path: string, expectedContent: any, log: boolean = false) {
-    await caseFileService.getCaseFile(user, caseId).then(casefile => {
+    await CaseFileService.getCaseFile(user, caseId).then(casefile => {
         if (Config.TestCase.log) {
             logger.debug(`Case File for reading path ${path}:${JSON.stringify(casefile, undefined, 2)}`);
         }

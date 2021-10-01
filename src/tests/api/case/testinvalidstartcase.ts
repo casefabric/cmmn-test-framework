@@ -10,18 +10,16 @@ import TenantService from '../../../framework/service/tenant/tenantservice';
 import StartCase from '../../../framework/service/case/startcase';
 import CafienneResponse from '../../../framework/service/response';
 
-const repositoryService = new RepositoryService();
 const definition = 'caseteam.xml';
 
-const caseService = new CaseService();
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const sender = worldwideTenant.sender;
 export default class TestInvalidStartCase extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(sender, definition, tenant);
-        await new TenantService().addTenantUserRole(sender, worldwideTenant.tenant, sender.id, "Receiver");
+        await RepositoryService.validateAndDeploy(sender, definition, tenant);
+        TenantService.addTenantUserRole(sender, worldwideTenant.tenant, sender.id, "Receiver");
     }
 
     startCase: StartCase = { tenant, definition, debug: true };
@@ -87,7 +85,7 @@ export default class TestInvalidStartCase extends TestCase {
 
     async tryStartCase(msg: string, expectedResponseCode: number = 400) {
         console.log('\n============\n' + msg);
-        const response = await caseService.startCase(sender, this.startCase, expectedResponseCode)
+        const response = await CaseService.startCase(sender, this.startCase, expectedResponseCode)
         if (response instanceof CafienneResponse) {
             await response.text().then(response => console.log("Response text: " + response));
         }

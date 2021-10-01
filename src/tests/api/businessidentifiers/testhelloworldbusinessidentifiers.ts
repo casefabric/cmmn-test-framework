@@ -10,9 +10,6 @@ import CaseFileService from '../../../framework/service/case/casefileservice';
 import Case from '../../../framework/cmmn/case';
 import User from '../../../framework/user';
 
-const repositoryService = new RepositoryService();
-const caseService = new CaseService();
-const caseFileService = new CaseFileService();
 const worldwideTenant = new WorldWideTestTenant();
 
 const definition = 'helloworld.xml';
@@ -24,7 +21,7 @@ const receiver = worldwideTenant.receiver;
 export default class TestHelloWorldBusinessIdentifiers extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await repositoryService.validateAndDeploy(sender, definition, tenant);
+        await RepositoryService.validateAndDeploy(sender, definition, tenant);
     }
 
     async run() {
@@ -48,13 +45,13 @@ export default class TestHelloWorldBusinessIdentifiers extends TestCase {
 
         const caseTeam = new CaseTeam([new CaseOwner(employee), new CaseTeamMember(sender), new CaseTeamMember(receiver)]);
         const startCase = { tenant, definition, inputs, caseTeam, debug: true };
-        const caseInstance = await caseService.startCase(sender, startCase);
+        const caseInstance = await CaseService.startCase(sender, startCase);
 
         // Initial input has no message in it, so there should not be any additional values
         await messageFilter.assertExtraMatches(0);
 
         // Update case file item
-        await caseFileService.updateCaseFileItem(sender, caseInstance, 'Greeting', { Message: '' });
+        await CaseFileService.updateCaseFileItem(sender, caseInstance, 'Greeting', { Message: '' });
 
         // Show that now we find a case for th message filter
         await messageFilter.assertExtraMatches(1);
@@ -65,7 +62,7 @@ export default class TestHelloWorldBusinessIdentifiers extends TestCase {
         await combinedFilter.assertExtraMatches(0);
 
         // Update case file item
-        await caseFileService.updateCaseFileItem(sender, caseInstance, 'Greeting', { Message: 'hello' });
+        await CaseFileService.updateCaseFileItem(sender, caseInstance, 'Greeting', { Message: 'hello' });
 
         // Update and assert filters
         await helloFilter.assertExtraMatches(1);
@@ -74,7 +71,7 @@ export default class TestHelloWorldBusinessIdentifiers extends TestCase {
 
         // Deleted the case file item; now business identifiers must be cleared, 
         // hence original results should come.
-        await caseFileService.deleteCaseFileItem(sender, caseInstance, 'Greeting');
+        await CaseFileService.deleteCaseFileItem(sender, caseInstance, 'Greeting');
         // Check no more extra matches
         await helloFilter.assertExtraMatches(0);
         await toFilter.assertExtraMatches(0);
@@ -102,7 +99,7 @@ class FilterContext {
     }
 
     async fetchInitialValue() {
-        await caseService.getCases(this.user, this.filter).then(cases => {
+        await CaseService.getCases(this.user, this.filter).then(cases => {
             this.initialValue = cases.length;
             console.log(`Initial value for filter ${this} is ${this.initialValue}`);
         })
@@ -118,6 +115,6 @@ class FilterContext {
 
     async assertExtraMatches(expectedExtraMatches: number) {
         // Assert getCases against filter - it should return the initial value plus the expected extra matches
-        await caseService.getCases(this.user, this.filter).then(cases => this.assert(cases, expectedExtraMatches));
+        await CaseService.getCases(this.user, this.filter).then(cases => this.assert(cases, expectedExtraMatches));
     }
 }
