@@ -19,7 +19,7 @@ export default class TestInvalidStartCase extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
         await RepositoryService.validateAndDeploy(sender, definition, tenant);
-        TenantService.addTenantUserRole(sender, worldwideTenant.tenant, sender.id, "Receiver");
+        await TenantService.addTenantUserRole(sender, worldwideTenant.tenant, sender.id, "Receiver");
     }
 
     startCase: StartCase = { tenant, definition, debug: true };
