@@ -17,7 +17,7 @@ export default class RepositoryService {
      * @param command 
      * @param user 
      */
-    static async deployCase(user: User, command: DeployCase, expectedStatusCode: number = 204) {
+    static async deployCase(user: User, command: DeployCase, expectedStatusCode: number = 204, msg = `Deployment of case ${command.modelName} failed`) {
         if (!user) {
             throw new Error('User must be specified');
         }
@@ -25,7 +25,7 @@ export default class RepositoryService {
         // Hmmm... Duplicate '/repository/repository/' is needed currently...
         const url = `/repository/deploy/${command.modelName}?${tenantQueryParameter}`;
         const response = await CafienneService.postXML(url, user, command.definition);
-        return checkResponse(response, 'Deployment of case ' + command.modelName + ' failed', expectedStatusCode);
+        return checkResponse(response, msg, expectedStatusCode);
     }
 
     /**
@@ -46,10 +46,9 @@ export default class RepositoryService {
      * @param tenant 
      * @param user 
      */
-    static async listCaseDefinitions(user: User, tenant?: string | Tenant, expectedStatusCode: number = 200) {
+    static async listCaseDefinitions(user: User, tenant?: string | Tenant, expectedStatusCode: number = 200, msg = `ListCaseDefinitions is not expected to succeed for member ${user}`) {
         const tenantQueryParameter = tenant ? '?tenant=' + getTenantName(tenant) : '';
         const response = await CafienneService.get(`/repository/list${tenantQueryParameter}`, user);
-        const msg = `ListCaseDefinitions is not expected to succeed for member ${user.id}`;
         const json = checkResponse(response, msg, expectedStatusCode);
 
         if (Config.RepositoryService.log) {

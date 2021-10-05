@@ -10,9 +10,8 @@ export default class CaseHistoryService {
      * @param Case 
      * @param user 
      */
-    static async getCasePlanHistory(user: User, caseId: Case | string, expectedStatusCode: number = 200): Promise<Array<PlanItemHistory>> {
+    static async getCasePlanHistory(user: User, caseId: Case | string, expectedStatusCode: number = 200, msg = `GetCasePlanHistory is not expected to succeed for user ${user} in case ${caseId}`): Promise<Array<PlanItemHistory>> {
         const response = await CafienneService.get(`/cases/${caseId}/history/planitems`, user);
-        const msg = `GetCasePlanHistory is not expected to succeed for user ${user.id} in case ${caseId}`;
         return checkJSONResponse(response, msg, expectedStatusCode, [PlanItemHistory]);
     }
 
@@ -22,9 +21,8 @@ export default class CaseHistoryService {
      * @param user 
      * @param planItemId
      */
-    static async getPlanItemHistory(user: User, caseId: Case | string, planItemId: string, expectedStatusCode: number = 200): Promise<Array<PlanItemHistory>> {
+    static async getPlanItemHistory(user: User, caseId: Case | string, planItemId: string, expectedStatusCode: number = 200, msg = `GetPlanItemHistory is not expected to succeed for user ${user} in case ${caseId}`): Promise<Array<PlanItemHistory>> {
         const response = await CafienneService.get(`/cases/${caseId}/history/planitems/${planItemId}`, user);
-        const msg = `GetPlanItemHistory is not expected to succeed for user ${user.id} in case ${caseId}`;
         return checkJSONResponse(response, msg, expectedStatusCode, [PlanItemHistory]);
     }
 }

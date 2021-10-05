@@ -16,11 +16,17 @@ export default class TaskService {
      * @param user User claiming the task
      * @param expectedStatusCode defaults to true; if false is specified, then a failure is expected in the invocation.
      */
-    static async claimTask(user: User, task: Task | PlanItem | string, expectedStatusCode: number = 202) {
+    static async claimTask(user: User, task: Task | PlanItem | string, expectedStatusCode: number = 202, msg = '') {
         const taskId = getTaskId(task);
         const taskName = getTaskName(task);
+        if (!msg) {
+            msg = `Task '${taskName}' with id ${taskId} was claimed succesfully, but this was not expected`;
+        }
+        if (! msg) {
+            msg = msg;
+        }
         const response = await CafienneService.put(`tasks/${taskId}/claim`, user);
-        return checkResponse(response, `Task '${taskName}' with id ${taskId} was claimed succesfully, but this was not expected`, expectedStatusCode);
+        return checkResponse(response, msg, expectedStatusCode);
     }
 
     /**
@@ -29,11 +35,14 @@ export default class TaskService {
      * @param user User revoking the task
      * @param expectedStatusCode defaults to true; if false is specified, then a failure is expected in the invocation.
      */
-    static async revokeTask(user: User, task: Task | PlanItem | string, expectedStatusCode: number = 202) {
+    static async revokeTask(user: User, task: Task | PlanItem | string, expectedStatusCode: number = 202, msg = '') {
         const taskId = getTaskId(task);
         const taskName = getTaskName(task);
+        if (!msg) {
+            msg = `Task '${taskName}' with id ${taskId} was revoked succesfully, but this was not expected`;
+        }
         const response = await CafienneService.put(`tasks/${taskId}/revoke`, user);
-        return checkResponse(response, `Task '${taskName}' with id ${taskId} was revoked succesfully, but this was not expected`, expectedStatusCode);
+        return checkResponse(response, msg, expectedStatusCode);
     }
 
     /**
@@ -43,9 +52,12 @@ export default class TaskService {
      * @param assignee User to which the task is assigned
      * @param expectedStatusCode defaults to true; if false is specified, then a failure is expected in the invocation.
      */
-    static async assignTask(user: User, task: Task | PlanItem | string, assignee: User, expectedStatusCode: number = 202) {
+    static async assignTask(user: User, task: Task | PlanItem | string, assignee: User, expectedStatusCode: number = 202, msg = '') {
         const taskId = getTaskId(task);
         const taskName = getTaskName(task);
+        if (! msg) {
+            msg = `Task '${taskName}' with id ${taskId} was assigned successfully, but this was not expected`;
+        }
         const response = await CafienneService.put(`tasks/${taskId}/assign`, user, { assignee: assignee.id });
         return checkResponse(response, `Task '${taskName}' with id ${taskId} was assigned successfully, but this was not expected`, expectedStatusCode);
     }
@@ -57,9 +69,12 @@ export default class TaskService {
      * @param assignee User to which the task is delegated
      * @param expectedStatusCode defaults to true; if false is specified, then a failure is expected in the invocation.
      */
-    static async delegateTask(user: User, task: Task | PlanItem | string, assignee: User, expectedStatusCode: number = 202) {
+    static async delegateTask(user: User, task: Task | PlanItem | string, assignee: User, expectedStatusCode: number = 202, msg = '') {
         const taskId = getTaskId(task);
         const taskName = getTaskName(task);
+        if (! msg) {
+            msg = `Task '${taskName}' with id ${taskId} was delegated succesfully, but this was not expected`;
+        }
         const response = await CafienneService.put(`tasks/${taskId}/delegate`, user, { assignee: assignee.id });
         return checkResponse(response, `Task '${taskName}' with id ${taskId} was delegated succesfully, but this was not expected`, expectedStatusCode);
     }
@@ -71,9 +86,12 @@ export default class TaskService {
      * @param taskOutput 
      * @param expectedStatusCode defaults to true; if false is specified, then a failure is expected in the invocation.
      */
-    static async completeTask(user: User, task: Task | PlanItem | string, taskOutput = {}, expectedStatusCode: number = 202) {
+    static async completeTask(user: User, task: Task | PlanItem | string, taskOutput = {}, expectedStatusCode: number = 202, msg = '') {
         const taskId = getTaskId(task);
         const taskName = getTaskName(task);
+        if (! msg) {
+            msg = `Task '${taskName}' with id ${taskId} was completed succesfully, but this was not expected`;
+        }
         const response = await CafienneService.post(`tasks/${taskId}/complete`, user, taskOutput);
         return checkResponse(response, `Task '${taskName}' with id ${taskId} was completed succesfully, but this was not expected`, expectedStatusCode);
     }
@@ -85,11 +103,14 @@ export default class TaskService {
      * @param taskOutput Task output to validate
      * @param expectedStatusCode defaults to true; if false is specified, then a failure is expected in the invocation.
      */
-    static async validateTaskOutput(user: User, task: Task | PlanItem | string, taskOutput = {}, expectedStatusCode: number = 202) {
+    static async validateTaskOutput(user: User, task: Task | PlanItem | string, taskOutput = {}, expectedStatusCode: number = 202, msg = '') {
         const taskId = getTaskId(task);
         const taskName = getTaskName(task);
+        if (! msg) {
+            msg = `Task output for '${taskName}' with id ${taskId} was validated succesfully, but this was not expected`;
+        }
         const response = await CafienneService.post(`tasks/${taskId}`, user, taskOutput);
-        const res = await checkResponse(response, `Task output for '${taskName}' with id ${taskId} was validated succesfully, but this was not expected`, expectedStatusCode);
+        const res = await checkResponse(response, msg, expectedStatusCode);
         if (response.ok) {
             const json = await response.json();
             return json;
@@ -106,9 +127,12 @@ export default class TaskService {
      * @param taskOutput Task output to save
      * @param expectedStatusCode defaults to true; if false is specified, then a failure is expected in the invocation.
      */
-    static async saveTaskOutput(user: User, task: Task | PlanItem | string, taskOutput = {}, expectedStatusCode: number = 202) {
+    static async saveTaskOutput(user: User, task: Task | PlanItem | string, taskOutput = {}, expectedStatusCode: number = 202, msg = '') {
         const taskId = getTaskId(task);
         const taskName = getTaskName(task);
+        if (! msg) {
+            msg = `Task output for '${taskName}' with id ${taskId} was saved succesfully, but this was not expected`;
+        }
         const response = await CafienneService.put(`tasks/${taskId}`, user, taskOutput);
         return checkResponse(response, `Task output for '${taskName}' with id ${taskId} was saved succesfully, but this was not expected`, expectedStatusCode);
     }
@@ -119,11 +143,12 @@ export default class TaskService {
      * @param task
      * @param user 
      */
-    static async getTask(user: User, task: Task | PlanItem | string, expectedStatusCode: number = 200): Promise<Task> {
+    static async getTask(user: User, task: Task | PlanItem | string, expectedStatusCode: number = 200, msg = ''): Promise<Task> {
         const taskId = getTaskId(task);
-        const taskName = getTaskName(task);
+        if (!msg) {
+            msg = `GetTask is not expected to succeed for user ${user} on task ${taskId}`;
+        }
         const response = await CafienneService.get(`tasks/${taskId}`, user);
-        const msg = `GetTask is not expected to succeed for user ${user.id} on task ${taskId}`;
         return await checkJSONResponse(response, msg, expectedStatusCode, Task);
     }
 
@@ -132,9 +157,8 @@ export default class TaskService {
      * @param Case
      * @param user 
      */
-    static async getCaseTasks(user: User, caseId: Case | string, expectedStatusCode: number = 200): Promise<Array<Task>> {
+    static async getCaseTasks(user: User, caseId: Case | string, expectedStatusCode: number = 200, msg = `GetCaseTasks is not expected to succeed for member ${user} in case ${caseId}`): Promise<Array<Task>> {
         const response = await CafienneService.get(`/tasks/case/${caseId}`, user);
-        const msg = `GetCaseTasks is not expected to succeed for member ${user.id} in case ${caseId}`;
         return await checkJSONResponse(response, msg, expectedStatusCode, [Task]);
     }
 
@@ -170,9 +194,8 @@ export default class TaskService {
      * @param user User fetching the task list
      * @param filter Optional filter for the tasks (e.g., to get only Active tasks)
      */
-    static async getTasks(user: User, filter?: TaskFilter, expectedStatusCode: number = 200): Promise<Array<Task>> {
+    static async getTasks(user: User, filter?: TaskFilter, expectedStatusCode: number = 200, msg = `GetTasks is not expected to succeed for member ${user}`): Promise<Array<Task>> {
         const response = await CafienneService.get('/tasks', user, filter);
-        const msg = `GetTasks is not expected to succeed for member ${user.id}`;
         return await checkJSONResponse(response, msg, expectedStatusCode, [Task]);
     }
 
@@ -182,9 +205,8 @@ export default class TaskService {
      * @param user 
      * @param filter 
      */
-    static async countTasks(user: User, filter?: TaskFilter, expectedStatusCode: number = 200): Promise<TaskCount> {
+    static async countTasks(user: User, filter?: TaskFilter, expectedStatusCode: number = 200, msg = `CountTasks is not expected to succeed for member ${user}`): Promise<TaskCount> {
         const response = await CafienneService.get('/tasks/user/count', user, filter);
-        const msg = `GetTasks is not expected to succeed for member ${user.id}`;
         return await checkJSONResponse(response, msg, expectedStatusCode);
     }
 }

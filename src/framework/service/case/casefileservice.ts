@@ -10,9 +10,8 @@ export default class CaseFileService {
      * @param Case 
      * @param user 
      */
-    static async getCaseFile(user: User, caseId: Case | string, expectedStatusCode: number = 200) {
+    static async getCaseFile(user: User, caseId: Case | string, expectedStatusCode: number = 200, msg = `GetCaseFile is not expected to succeed for user ${user} in case ${caseId}`) {
         const response = await CafienneService.get(`/cases/${caseId}/casefile`, user);
-        const msg = `GetCaseFile is not expected to succeed for user ${user.id} in case ${caseId}`;
         return checkJSONResponse(response, msg, expectedStatusCode);
     }
 
@@ -22,9 +21,8 @@ export default class CaseFileService {
      * @param user 
      * @param planItemId
      */
-    static async getCaseFileDocumentation(user: User, caseId: Case | string, expectedStatusCode: number = 200): Promise<Array<CaseFileItemDocumentation>> {
+    static async getCaseFileDocumentation(user: User, caseId: Case | string, expectedStatusCode: number = 200, msg = `GetPlanItem is not expected to succeed for user ${user} in case ${caseId}`): Promise<Array<CaseFileItemDocumentation>> {
         const response = await CafienneService.get(`/cases/${caseId}/documentation/casefile`, user);
-        const msg = `GetPlanItem is not expected to succeed for user ${user.id} in case ${caseId}`;
         return checkJSONResponse(response, msg, expectedStatusCode, [CaseFileItemDocumentation]);
     }
 
@@ -35,9 +33,8 @@ export default class CaseFileService {
      * @param path 
      * @param data Any json structure matching the case file definition
      */
-    static async createCaseFileItem(user: User, caseId: Case | string, path: string, data: object, expectedStatusCode: number = 200) {
+    static async createCaseFileItem(user: User, caseId: Case | string, path: string, data: object, expectedStatusCode: number = 200, msg = `CreateCaseFileItem is not expected to succeed for user ${user} in case ${caseId}`) {
         const response = await CafienneService.post(`/cases/${caseId}/casefile/create/${encodeURI(path)}`, user, data);
-        const msg = `CreateCaseFileItem is not expected to succeed for user ${user.id} in case ${caseId}`;
         return checkResponse(response, msg, expectedStatusCode);
     }
 
@@ -48,9 +45,8 @@ export default class CaseFileService {
      * @param path 
      * @param data 
      */
-    static async updateCaseFileItem(user: User, caseId: Case | string, path: string, data: any, expectedStatusCode: number = 200) {
+    static async updateCaseFileItem(user: User, caseId: Case | string, path: string, data: any, expectedStatusCode: number = 200, msg = `UpdateCaseFileItem is not expected to succeed for user ${user} in case ${caseId}`) {
         const response = await CafienneService.put(`/cases/${caseId}/casefile/update/${encodeURI(path)}`, user, data);
-        const msg = `UpdateCaseFileItem is not expected to succeed for user ${user.id} in case ${caseId}`;
         return checkResponse(response, msg, expectedStatusCode);
     }
 
@@ -61,9 +57,8 @@ export default class CaseFileService {
      * @param path 
      * @param data 
      */
-    static async replaceCaseFileItem(user: User, caseId: Case | string, path: string, data: object, expectedStatusCode: number = 200) {
+    static async replaceCaseFileItem(user: User, caseId: Case | string, path: string, data: object, expectedStatusCode: number = 200, msg = `ReplaceCaseFileItem is not expected to succeed for user ${user} in case ${caseId}`) {
         const response = await CafienneService.put(`/cases/${caseId}/casefile/replace/${encodeURI(path)}`, user, data);
-        const msg = `ReplaceCaseFileItem is not expected to succeed for user ${user.id} in case ${caseId}`;
         return checkResponse(response, msg, expectedStatusCode);
     }
 
@@ -73,9 +68,8 @@ export default class CaseFileService {
      * @param user 
      * @param path 
      */
-    static async deleteCaseFileItem(user: User, caseId: Case | string, path: string, expectedStatusCode: number = 200) {
+    static async deleteCaseFileItem(user: User, caseId: Case | string, path: string, expectedStatusCode: number = 200, msg = `DeleteCaseFileItem is not expected to succeed for user ${user} in case ${caseId}`) {
         const response = await CafienneService.delete(`/cases/${caseId}/casefile/delete/${encodeURI(path)}`, user);
-        const msg = `DeleteCaseFileItem is not expected to succeed for user ${user.id} in case ${caseId}`;
         return checkResponse(response, msg, expectedStatusCode);
     }
 
@@ -86,9 +80,8 @@ export default class CaseFileService {
      * @param path 
      * @param data Any json structure matching the case file definition
      */
-    static async createCaseFile(user: User, caseId: Case | string, data: object, expectedStatusCode: number = 200) {
+    static async createCaseFile(user: User, caseId: Case | string, data: object, expectedStatusCode: number = 200, msg = `CreateCaseFile is not expected to succeed for user ${user} in case ${caseId}`) {
         const response = await CafienneService.post(`/cases/${caseId}/casefile/create/`, user, data);
-        const msg = `CreateCaseFile is not expected to succeed for user ${user.id} in case ${caseId}`;
         return checkResponse(response, msg, expectedStatusCode);
     }
 
@@ -99,9 +92,8 @@ export default class CaseFileService {
      * @param path 
      * @param data 
      */
-    static async updateCaseFile(user: User, caseId: Case | string, data: any, expectedStatusCode: number = 200) {
+    static async updateCaseFile(user: User, caseId: Case | string, data: any, expectedStatusCode: number = 200, msg = `UpdateCaseFile is not expected to succeed for user ${user} in case ${caseId}`) {
         const response = await CafienneService.put(`/cases/${caseId}/casefile/update/`, user, data);
-        const msg = `UpdateCaseFile is not expected to succeed for user ${user.id} in case ${caseId}`;
         return checkResponse(response, msg, expectedStatusCode);
     }
 
@@ -112,9 +104,8 @@ export default class CaseFileService {
      * @param path 
      * @param data 
      */
-    static async replaceCaseFile(user: User, caseId: Case | string, data: object, expectedStatusCode: number = 200) {
+    static async replaceCaseFile(user: User, caseId: Case | string, data: object, expectedStatusCode: number = 200, msg = `ReplaceCaseFile is not expected to succeed for user ${user} in case ${caseId}`) {
         const response = await CafienneService.put(`/cases/${caseId}/casefile/replace/`, user, data);
-        const msg = `ReplaceCaseFile is not expected to succeed for user ${user.id} in case ${caseId}`;
         return checkResponse(response, msg, expectedStatusCode);
     }
 
@@ -124,9 +115,8 @@ export default class CaseFileService {
      * @param user 
      * @param path 
      */
-    static async deleteCaseFile(user: User, caseId: Case | string, expectedStatusCode: number = 200) {
+    static async deleteCaseFile(user: User, caseId: Case | string, expectedStatusCode: number = 200, msg = `DeleteCaseFile is not expected to succeed for user ${user} in case ${caseId}`) {
         const response = await CafienneService.delete(`/cases/${caseId}/casefile/delete/`, user);
-        const msg = `DeleteCaseFile is not expected to succeed for user ${user.id} in case ${caseId}`;
         return checkResponse(response, msg, expectedStatusCode);
     }
 }

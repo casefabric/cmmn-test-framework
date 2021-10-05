@@ -93,13 +93,13 @@ export default class TestTaskCountAPI extends TestCase {
     async getUnassignedTasks(numberOfResults: number) {
         // Simple test
         const taskList = await TaskService.getTasks(user, { taskState: 'Unassigned', numberOfResults, tenant });
-        console.log(`User ${user.id} has ${taskList.length} unassigned tasks`);
+        console.log(`User ${user} has ${taskList.length} unassigned tasks`);
         return taskList.length;
     }
 
     async getAssignedTasks(numberOfResults: number) {
         const numAssigned = (await TaskService.getTasks(user, { assignee: user.id, taskState : 'Assigned', numberOfResults, tenant })).length;
-        console.log(`User ${user.id} has ${numAssigned} tasks assigned`);
+        console.log(`User ${user} has ${numAssigned} tasks assigned`);
         return numAssigned;
     }
 }

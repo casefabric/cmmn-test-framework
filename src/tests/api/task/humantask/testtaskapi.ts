@@ -103,7 +103,7 @@ export default class TestTaskAPI extends TestCase {
     async getUnassignedTasks(user: User) {
         // Simple test
         const taskList = await TaskService.getTasks(user, { tenant, taskState: 'Unassigned' });
-        console.log(`User ${user.id} has ${taskList.length} unassigned tasks in tenant ${tenant}`);
+        console.log(`User ${user} has ${taskList.length} unassigned tasks in tenant ${tenant}`);
         return taskList.length;
     }
 
