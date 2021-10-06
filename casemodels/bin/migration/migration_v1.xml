@@ -1,0 +1,79 @@
+<definitions>
+    <caseFileItemDefinition name="root" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="root.cfid">
+        <property name="Outcome" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
+    </caseFileItemDefinition>
+    <case id="migration/migration_v0.case" name="migration_v0" expressionLanguage="spel">
+        <caseFileModel>
+            <caseFileItem id="_RYrWb_7" name="Input" multiplicity="ExactlyOne" definitionRef="root.cfid"/>
+        </caseFileModel>
+        <casePlanModel id="cm__RYrWb_0" name="migration_v0" autoComplete="true">
+            <planItem id="pi_ht__RYrWb_0" name="HumanTask" definitionRef="ht__RYrWb_0"/>
+            <planItem id="pi_ct__RYrWb_0" name="migration_subcase" definitionRef="ct__RYrWb_0">
+                <entryCriterion id="_RYrWb_4" name="EntryCriterion_0" sentryRef="crit__RYrWb_0"/>
+            </planItem>
+            <sentry id="crit__RYrWb_0">
+                <planItemOnPart id="_RYrWb_5" sourceRef="pi_ht__RYrWb_0">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <humanTask id="ht__RYrWb_0" name="HumanTask" isBlocking="true"/>
+            <caseTask id="ct__RYrWb_0" name="migration_subcase" isBlocking="true" caseRef="migration/migration_subcase_v1.case"/>
+        </casePlanModel>
+        <caseRoles>
+            <role id="_0UEh7_7" name="role1"/>
+            <role id="_0UEh7_8" name="role2"/>
+            <role id="_0UEh7_9" name="role3_v1"/>
+        </caseRoles>
+        <input id="_RYrWb_9" name="Input" bindingRef="_RYrWb_7"/>
+    </case>
+    <case id="migration/migration_subcase_v1.case" name="migration_subcase" expressionLanguage="spel">
+        <caseFileModel>
+            <caseFileItem id="_0UEh7_0" name="Input" multiplicity="ExactlyOne" definitionRef="root.cfid"/>
+            <caseFileItem id="_0UEh7_2" name="Output" multiplicity="ExactlyOne" definitionRef="root.cfid"/>
+        </caseFileModel>
+        <casePlanModel id="cm__0UEh7_0" name="migration_subcase" autoComplete="true">
+            <planItem id="pi_ht__0UEh7_0" name="HumanTask_0" definitionRef="ht__0UEh7_0">
+                <itemControl id="_0UEh7_4">
+                    <repetitionRule id="_0UEh7_5">
+                        <condition id="_0UEh7_6">
+                            <body>
+                                <![CDATA[true]]>
+                            </body>
+                        </condition>
+                    </repetitionRule>
+                </itemControl>
+            </planItem>
+            <humanTask id="ht__0UEh7_0" name="HumanTask_0" isBlocking="true"/>
+        </casePlanModel>
+        <caseRoles>
+            <role id="_0UEh7_7" name="role1"/>
+            <role id="_0UEh7_8" name="role2"/>
+            <role id="_0UEh7_9" name="role3_v1"/>
+        </caseRoles>
+        <input id="_0UEh7_1" name="Input" bindingRef="_0UEh7_0"/>
+        <output id="_0UEh7_3" name="Output" bindingRef="_0UEh7_2"/>
+    </case>
+    <CMMNDI>
+        <CMMNDiagram>
+            <CMMNShape cmmnElementRef="cm__RYrWb_0">
+                <Bounds x="20" y="20" width="800" height="500"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__RYrWb_0">
+                <Bounds x="120" y="90" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ct__RYrWb_0">
+                <Bounds x="120" y="250" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_RYrWb_4">
+                <Bounds x="184" y="240" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNEdge sourceCMMNElementRef="pi_ht__RYrWb_0" targetCMMNElementRef="_RYrWb_4"/>
+            <CMMNShape cmmnElementRef="cm__0UEh7_0">
+                <Bounds x="20" y="20" width="800" height="500"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__0UEh7_0">
+                <Bounds x="200" y="140" width="140" height="80"/>
+            </CMMNShape>
+        </CMMNDiagram>
+    </CMMNDI>
+</definitions>

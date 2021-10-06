@@ -1,0 +1,27 @@
+<CMMNDI>
+    <CMMNDiagram>
+        <CMMNShape cmmnElementRef="cm_HelloWorld.case_HelloWorld_0">
+            <Bounds x="20" y="10" width="626" height="330"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="cm_csVQy_167">
+            <Bounds x="90" y="90" width="130" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="cm_cs3hg_196">
+            <Bounds x="340" y="90" width="130" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ht__nTPPc_0">
+            <Bounds x="120" y="210" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ht__nTPPc_1">
+            <Bounds x="310" y="190" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_nTPPc_20">
+            <Bounds x="304" y="210" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_nTPPc_0">
+            <Bounds x="334" y="120" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNEdge sourceCMMNElementRef="cm_csVQy_167" targetCMMNElementRef="_nTPPc_20"/>
+        <CMMNEdge sourceCMMNElementRef="cm_csVQy_167" targetCMMNElementRef="_nTPPc_0"/>
+    </CMMNDiagram>
+</CMMNDI>

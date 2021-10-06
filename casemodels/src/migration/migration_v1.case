@@ -1,0 +1,24 @@
+<case id="migration/migration_v0.case" name="migration_v0" expressionLanguage="spel" guid="_RYrWb">
+    <caseFileModel>
+        <caseFileItem id="_RYrWb_7" name="Input" multiplicity="ExactlyOne" definitionRef="root.cfid"/>
+    </caseFileModel>
+    <casePlanModel id="cm__RYrWb_0" name="migration_v0" autoComplete="true">
+        <planItem id="pi_ht__RYrWb_0" name="HumanTask" definitionRef="ht__RYrWb_0"/>
+        <planItem id="pi_ct__RYrWb_0" name="migration_subcase" definitionRef="ct__RYrWb_0">
+            <entryCriterion id="_RYrWb_4" name="EntryCriterion_0" sentryRef="crit__RYrWb_0"/>
+        </planItem>
+        <sentry id="crit__RYrWb_0">
+            <planItemOnPart id="_RYrWb_5" sourceRef="pi_ht__RYrWb_0">
+                <standardEvent>complete</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <humanTask id="ht__RYrWb_0" name="HumanTask" isBlocking="true"/>
+        <caseTask id="ct__RYrWb_0" name="migration_subcase" isBlocking="true" caseRef="migration/migration_subcase_v1.case"/>
+    </casePlanModel>
+    <caseRoles>
+        <role id="_0UEh7_7" name="role1"/>
+        <role id="_0UEh7_8" name="role2"/>
+        <role id="_0UEh7_9" name="role3_v1"/>
+    </caseRoles>
+    <input id="_RYrWb_9" name="Input" bindingRef="_RYrWb_7"/>
+</case>
