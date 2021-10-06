@@ -16,7 +16,7 @@ export default class PlatformService {
      * @param tenant 
      * @param expectedStatusCode 
      */
-    static async createTenant(user: User, tenant: Tenant, expectedStatusCode: number = 204) {
+    static async createTenant(user: User, tenant: Tenant, expectedStatusCode: number = 204, errorMsg = `CreateTenant is not expected to succeed for user ${user} in tenant ${tenant}`) {
         if (Config.PlatformService.log) logger.debug(`Creating Tenant ${tenant.name}`);
         const response = await CafienneService.post('/platform', user, tenant);
         if (response.status === 400 && expectedStatusCode === 204) {
@@ -27,7 +27,7 @@ export default class PlatformService {
                 return response;
             }
         }
-        return checkResponse(response, 'CreateTenant is not expected to succeed for user ' + user.id + ' in tenant ' + tenant.name, expectedStatusCode);
+        return checkResponse(response, errorMsg, expectedStatusCode);
     }
 
     /**
@@ -36,9 +36,9 @@ export default class PlatformService {
      * @param tenant 
      * @param expectedStatusCode 
      */
-    static async disableTenant(user: User, tenant: Tenant | string, expectedStatusCode: number = 204) {
+    static async disableTenant(user: User, tenant: Tenant | string, expectedStatusCode: number = 204, msg = `Disabling the tenant ${tenant} was not expected to succeed`) {
         const response = await CafienneService.put(`/platform/${tenant}/disable`, user);
-        return checkResponse(response, 'Disabling the tenant ' + tenant + ' was not expected to succeed', expectedStatusCode);
+        return checkResponse(response, msg, expectedStatusCode);
     }
 
     /**
@@ -47,9 +47,9 @@ export default class PlatformService {
      * @param tenant 
      * @param expectedStatusCode 
      */
-    static async enableTenant(user: User, tenant: Tenant | string, expectedStatusCode: number = 204) {
+    static async enableTenant(user: User, tenant: Tenant | string, expectedStatusCode: number = 204, msg = `Enabling the tenant ${tenant} was not expected to succeed`) {
         const response = await CafienneService.put(`/platform/${tenant}/enable`, user);
-        return checkResponse(response, 'Enabling the tenant ' + tenant + ' succeeded unexpectedly', expectedStatusCode);
+        return checkResponse(response, msg, expectedStatusCode);
     }
 
     static async getDisabledTenants(user: User, expectedStatusCode: number = 200) {

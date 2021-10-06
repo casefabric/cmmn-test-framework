@@ -9,9 +9,8 @@ export default class CaseIdentifierService {
      * @param filter 
      * @param user 
      */
-    static async getIdentifiers(user: User, filter?: IdentifierFilter, expectedStatusCode: number = 200): Promise<Array<any>> {
+    static async getIdentifiers(user: User, filter?: IdentifierFilter, expectedStatusCode: number = 200, msg = `GetIdentifiers is not expected to succeed for user ${user}`): Promise<Array<any>> {
         const response = await CafienneService.get('/identifiers', user, filter);
-        const msg = `GetIdentifiers is not expected to succeed for user ${user.id}`;
         return checkJSONResponse(response, msg, expectedStatusCode);
     }
 
@@ -20,9 +19,8 @@ export default class CaseIdentifierService {
      * @param filter 
      * @param user 
      */
-     static async getIdentifierNames(user: User, filter?: IdentifierFilter, expectedStatusCode: number = 200): Promise<Array<any>> {
+     static async getIdentifierNames(user: User, filter?: IdentifierFilter, expectedStatusCode: number = 200, msg = `GetIdentifiers is not expected to succeed for user ${user}`): Promise<Array<any>> {
         const response = await CafienneService.get('/identifiers/names', user, filter);
-        const msg = `GetIdentifiers is not expected to succeed for user ${user.id}`;
         return checkJSONResponse(response, msg, expectedStatusCode);
     }
 }

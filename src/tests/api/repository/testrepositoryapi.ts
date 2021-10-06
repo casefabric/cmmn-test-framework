@@ -58,23 +58,23 @@ export default class TestRepositoryAPI extends TestCase {
         // Listing case definitions should succeed, because tenant user is only in 1 tenant
         await RepositoryService.listCaseDefinitions(tenantUser);
 
-        // Listing case definitions fail in wrong tenant with unauthorized
-        await RepositoryService.listCaseDefinitions(tenantUser, 'not-existing-tenant', 401);
+        // Listing case definitions should fail in wrong tenant with unauthorized
+        await RepositoryService.listCaseDefinitions(tenantUser, 'not-existing-tenant', 401, 'Listing case definitions should fail in wrong tenant with unauthorized');
 
         // Deploying an valid case definition should work for a tenant owner, but fail for a tenant user
         const deployValidCaseDefinition = new DeployCase(readLocalXMLDocument(validCaseDefinition), invalidCaseDefinition, tenant);
 
         // Should give "unauthorized"
-        await RepositoryService.deployCase(tenantUser, deployValidCaseDefinition, 401);
+        await RepositoryService.deployCase(tenantUser, deployValidCaseDefinition, 401, 'Deploying an valid case definition should fail for a tenant user');
 
         // As tenant owner it should succeed
         await RepositoryService.deployCase(tenantOwner, deployValidCaseDefinition);
 
         // Try test on empty tenant for a user with multiple tenants should fail
         await tenantUserInBothTenants.login();
-        await RepositoryService.listCaseDefinitions(tenantUserInBothTenants, undefined, 400);
+        await RepositoryService.listCaseDefinitions(tenantUserInBothTenants, undefined, 400, 'Listing case definitions without passing tenant information if the user belongs to multiple tenants should fail');
 
         // Listing case definitions without being registered in a tenant should not be possible
-        await RepositoryService.listCaseDefinitions(repositoryTenant.platformAdmin, undefined, 401);
+        await RepositoryService.listCaseDefinitions(repositoryTenant.platformAdmin, undefined, 401, 'Listing case definitions without being registered in a tenant should not be possible');
     }
 }

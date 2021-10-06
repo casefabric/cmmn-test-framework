@@ -142,14 +142,14 @@ export default class TestCaseFileAPI extends TestCase {
 
         // It should not be possible to set an invalid type of property, both for update and replace
         const invalidPropertyValue = { RootProperty2: 'string instead of boolean' };
-        await CaseFileService.updateCaseFileItem(user, caseInstance, 'RootCaseFileItem', invalidPropertyValue, 400);
-        await CaseFileService.replaceCaseFileItem(user, caseInstance, 'RootCaseFileItem', invalidPropertyValue, 400);
+        await CaseFileService.updateCaseFileItem(user, caseInstance, 'RootCaseFileItem', invalidPropertyValue, 400, 'It should not be possible to update an invalid type of property');
+        await CaseFileService.replaceCaseFileItem(user, caseInstance, 'RootCaseFileItem', invalidPropertyValue, 400, 'It should not be possible to replace an invalid type of property');
 
         // Also a deeper nested type of property must have the valid type, both for update and replace
         const invalidNestedPropertyValue = Util.clone(caseFileItem);
         invalidNestedPropertyValue.ChildItem.ChildAge = true;
-        await CaseFileService.updateCaseFileItem(user, caseInstance, 'RootCaseFileItem', invalidNestedPropertyValue, 400);
-        await CaseFileService.replaceCaseFileItem(user, caseInstance, 'RootCaseFileItem', invalidNestedPropertyValue, 400);
+        await CaseFileService.updateCaseFileItem(user, caseInstance, 'RootCaseFileItem', invalidNestedPropertyValue, 400, 'It should not be possible to update a deeper nested invalid type of property');
+        await CaseFileService.replaceCaseFileItem(user, caseInstance, 'RootCaseFileItem', invalidNestedPropertyValue, 400, 'It should not be possible to replace a deeper nested invalid type of property');
 
         // Update the case file item with only a new value for "RootProperty1" should only change that field.
         const shallowCopy = { RootProperty1: "second string" };

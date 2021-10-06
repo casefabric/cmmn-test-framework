@@ -67,7 +67,7 @@ export default class TestStatsAPI extends TestCase {
 
     async getStatistics(msg: string, user: User, filter?: StatisticsFilter) {
         await CaseService.getCaseStatistics(user, filter).then(stats => {
-            console.log(`${user.id} statistics for '${msg}' cases:${stats.map(stat => '\n- '+stat)}`);
+            console.log(`${user} statistics for '${msg}' cases:${stats.map(stat => '\n- '+stat)}`);
             return stats;
         })
     }

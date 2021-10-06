@@ -85,7 +85,7 @@ export default class TestInvalidStartCase extends TestCase {
 
     async tryStartCase(msg: string, expectedResponseCode: number = 400) {
         console.log('\n============\n' + msg);
-        const response = await CaseService.startCase(sender, this.startCase, expectedResponseCode)
+        const response = await CaseService.startCase(sender, this.startCase, expectedResponseCode, msg)
         if (response instanceof CafienneResponse) {
             await response.text().then(response => console.log("Response text: " + response));
         }

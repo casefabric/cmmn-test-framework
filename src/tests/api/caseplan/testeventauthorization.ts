@@ -66,7 +66,7 @@ export default class TestEventAuthorization extends TestCase {
         });
 
         // This should fail
-        await CasePlanService.makePlanItemTransition(user, caseInstance, employeeUserEvent.id, 'Occur', 401);
+        await CasePlanService.makePlanItemTransition(user, caseInstance, employeeUserEvent.id, 'Occur', 401, 'Raising an event wihtout having the proper role should fail');
 
         // This should succeed
         await CasePlanService.makePlanItemTransition(employee, caseInstance, employeeUserEvent.id, 'Occur');

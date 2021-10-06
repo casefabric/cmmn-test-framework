@@ -100,7 +100,10 @@ export default class CafienneResponse {
 export async function checkResponse(response: CafienneResponse, errorMsg: string, expectedStatusCode: number): Promise<CafienneResponse> {
     if (response.status !== expectedStatusCode) {
         const responseText = await response.text();
-        throw new Error(`Expected status ${expectedStatusCode} instead of ${response.status} ${response.statusText}: ${responseText}`);
+        if (!errorMsg) {
+            errorMsg = `Expected status ${expectedStatusCode} instead of ${response.status} ${response.statusText}: ${responseText}`;
+        }
+        throw new Error(errorMsg);
     }
     return response;
 }
@@ -121,14 +124,20 @@ export async function checkJSONResponse(response: CafienneResponse, errorMsg: st
             // console.log("\n\n Return type is " , returnType)
             if (returnType instanceof Array) {
                 if (returnType.length == 0) {
-                    throw new Error('Return type must have at least 1 element');
+                    if (! errorMsg) {
+                        errorMsg = 'Return type must have at least 1 element';
+                    }
+                    throw new Error(errorMsg);
                 }
                 const constructorCall = returnType[0] as any;
                 if (json instanceof Array) {
                     const array = <Array<object>>json;
                     return array.map(tenantUser => Object.assign(new constructorCall, tenantUser));
                 } else {
-                    throw new Error(`Expected a json array with objects of type ${constructorCall.name}, but the response was not an array: ${JSON.stringify(json, undefined, 2)}`);
+                    if (! errorMsg) {
+                        errorMsg = `Expected a json array with objects of type ${constructorCall.name}, but the response was not an array: ${JSON.stringify(json, undefined, 2)}`;
+                    }
+                    throw new Error(errorMsg);
                 }
             } else if (returnType !== undefined) {
                 const constructorCall = returnType as any;

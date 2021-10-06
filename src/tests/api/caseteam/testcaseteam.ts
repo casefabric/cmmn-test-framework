@@ -89,8 +89,8 @@ export default class TestCaseTeam extends TestCase {
         tasks = await TaskService.getCaseTasks(sender, caseInstance);
         assertTaskCount(tasks, 'Unassigned', 2);
 
-        // As receiver is not a caseteam owner, he cannot remove sender (who is owner)
-        await CaseTeamService.removeMember(receiver, caseInstance, sender, 401);
+        // As receiver is not a caseteam owner, he should not be able to remove sender (who is owner)
+        await CaseTeamService.removeMember(receiver, caseInstance, sender, 401, 'As receiver is not a caseteam owner, he should not be able to remove sender (who is owner)');
 
         // Sender makes receiver a case team owner; but via user mapping
         await CaseTeamService.setMember(sender, caseInstance, new CaseOwner(receiver, [requestorRole]));
