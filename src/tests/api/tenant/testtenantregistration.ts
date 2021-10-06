@@ -60,13 +60,13 @@ export default class TestTenantRegistration extends TestCase {
         await platformAdmin.login();
 
         // Creating tenant as tenantOwner should fail.
-        await PlatformService.createTenant(tenantOwner1, tenant1, 401);
+        await PlatformService.createTenant(tenantOwner1, tenant1, 401, 'Creating tenant as tenantOwner should fail');
 
         // Creating tenant as platformOwner should not succeed if there are no active owners
         tenantOwner1.enabled = false;
         tenantOwner2.enabled = false;
         tenantOwner3.enabled = false;
-        await PlatformService.createTenant(platformAdmin, tenant1, 400);
+        await PlatformService.createTenant(platformAdmin, tenant1, 400, 'Creating tenant as platformOwner should not succeed if there are no active owners');
 
         // Creating tenant as platformOwner should succeed.
         tenantOwner1.enabled = true;
@@ -75,9 +75,9 @@ export default class TestTenantRegistration extends TestCase {
         await PlatformService.createTenant(platformAdmin, tenant1);
 
         // Creating tenant again should fail because tenant already exists
-        await PlatformService.createTenant(platformAdmin, tenant1, 400);
+        await PlatformService.createTenant(platformAdmin, tenant1, 400, 'Creating tenant again should fail because tenant already exists');
         // Getting tenant owners as platformOwner should fail.
-        await TenantService.getTenantOwners(platformAdmin, tenant1, 401);
+        await TenantService.getTenantOwners(platformAdmin, tenant1, 401, 'Getting tenant owners as platformOwner should fail.');
 
         // Login again to refresh the user information, after which it should contain the new tenant info
         await tenantOwner1.login();
@@ -97,12 +97,12 @@ export default class TestTenantRegistration extends TestCase {
         await TenantService.getTenantUsers(tenantOwner1, tenant1).then(users => checkUserCount(users, 6));
 
         // Platform owner should not be able to get list of users
-        await TenantService.getTenantUsers(platformAdmin, tenant1, 401);
+        await TenantService.getTenantUsers(platformAdmin, tenant1, 401, 'Platform owner should not be able to get list of users');
     }
 
     async tryCreateTenantUser() {
         // Not allowed to get a non-existing user
-        await TenantService.getTenantUser(tenantOwner1, tenant1, "not a tenant user at all", 404);
+        await TenantService.getTenantUser(tenantOwner1, tenant1, "not a tenant user at all", 404, 'A non-existing user should return 404 NotFound');
 
         // Should be possible to add a new tenant user
         await TenantService.addTenantUser(tenantOwner1, tenant1, user4);
@@ -117,7 +117,7 @@ export default class TestTenantRegistration extends TestCase {
         await TenantService.getTenantUsers(tenantOwner1, tenant1).then(users => checkUserCount(users, 7));
 
         // New user is allowed to fetch the user list of the tenant... Are they?
-        await TenantService.getTenantUsers(user4, tenant1, 401);
+        await TenantService.getTenantUsers(user4, tenant1, 401, 'Getting users if not logged in should return a 401');
         await user4.login();
         // ... well i guess only if they are logged in...
         await TenantService.getTenantUsers(user4, tenant1).then(users => checkUserCount(users, 7));
@@ -151,7 +151,7 @@ export default class TestTenantRegistration extends TestCase {
 
     async tryDisableEnableTenants() {
         // Tenant owner 1 may not disable the tenant
-        await PlatformService.disableTenant(tenantOwner1, tenant1, 401);
+        await PlatformService.disableTenant(tenantOwner1, tenant1, 401, 'Tenant owner 1 should not be allowed to disable the tenant');
 
         // But the platform admin is allowed to
         await PlatformService.disableTenant(platformAdmin, tenant1);
@@ -161,9 +161,9 @@ export default class TestTenantRegistration extends TestCase {
 
         // And the platform admin is not allowed to enable/disable a non-existing tenant
         const nonExistingTenant = new Tenant("not-created", [tenantOwner1]);
-        await PlatformService.enableTenant(platformAdmin, nonExistingTenant, 400);
+        await PlatformService.enableTenant(platformAdmin, nonExistingTenant, 400, 'The platform admin should not be allowed to enable a non-existing tenant');
 
-        await PlatformService.disableTenant(platformAdmin, nonExistingTenant, 400);
+        await PlatformService.disableTenant(platformAdmin, nonExistingTenant, 400, 'The platform admin should not be allowed to disable a non-existing tenant');
     }
 
     async tryDisableEnableUserAccounts() {
@@ -183,7 +183,7 @@ export default class TestTenantRegistration extends TestCase {
         // There should be 1 disabled user account
         await TenantService.getDisabledUserAccounts(tenantOwner1, tenant1).then(users => checkUserCount(users, 1));
         // Not allowed to get a disabled user account
-        await TenantService.getTenantUser(tenantOwner1, tenant1, tenantOwner2.id, 404);
+        await TenantService.getTenantUser(tenantOwner1, tenant1, tenantOwner2.id, 404, 'It should not be allowed to get a disabled user account');
 
         // Enable the user account again and validate that the user can be retrieved again.
         await TenantService.enableTenantUser(tenantOwner1, tenant1, tenantOwner2.id)
@@ -350,14 +350,14 @@ export default class TestTenantRegistration extends TestCase {
         await TenantService.getTenantOwners(tenantOwner1, tenant1).then(owners => {
             owners.forEach((owner:string) => initialOwners.push(new TenantUser(owner)));
         });
-        await TenantService.updateTenantUsers(tenantOwner1, tenant1, initialOwners, 400);
+        await TenantService.updateTenantUsers(tenantOwner1, tenant1, initialOwners, 400, 'Making all tenant owners plain tenant users should not be allowed');
 
         // Now make the owners again, but disable their accounts; should also not be allowed
         initialOwners.forEach(user => {
             user.isOwner = true;
             user.enabled = false;
         });
-        await TenantService.updateTenantUsers(tenantOwner1, tenant1, initialOwners, 400);
+        await TenantService.updateTenantUsers(tenantOwner1, tenant1, initialOwners, 400, 'Disabling all tenant owner accounts should not be allowed');
 
         // Now try to individually disable all owner accounts; should fail only for the last one.
         //  Note: we're doing it with the last owner ;)
@@ -368,7 +368,7 @@ export default class TestTenantRegistration extends TestCase {
             if (owner !== lastTenantOwner) {
                 await TenantService.updateTenantUser(lastTenantOwner, tenant1, owner);
             } else {
-                await TenantService.updateTenantUser(lastTenantOwner, tenant1, owner, 400);
+                await TenantService.updateTenantUser(lastTenantOwner, tenant1, owner, 400, 'Disabling last active tenant owner account should not be allowed');
             }
         }
 
@@ -396,8 +396,8 @@ export default class TestTenantRegistration extends TestCase {
         const newUserList = [updatedTenantOwner1, updatedTenantUser1];
 
         // It should not be possible to replace the tenant without giving new owner information
-        await TenantService.replaceTenant(tenantOwner1, new Tenant(tenantName, noList), 400);
-        await TenantService.replaceTenant(tenantOwner1, new Tenant(tenantName, noOwnerList), 400);
+        await TenantService.replaceTenant(tenantOwner1, new Tenant(tenantName, noList), 400, 'It should not be possible to replace the tenant without setting users');
+        await TenantService.replaceTenant(tenantOwner1, new Tenant(tenantName, noOwnerList), 400, 'It should not be possible to replace the tenant without setting new owners');
         await TenantService.replaceTenant(tenantOwner1, new Tenant(tenantName, newUserList));
 
         await TenantService.getTenantUsers(tenantOwner1, tenant1).then((users: Array<TenantUser>) => {
@@ -435,7 +435,7 @@ export default class TestTenantRegistration extends TestCase {
         });
 
         // It should not be possible to remove the last owner
-        await TenantService.disableTenantUser(tenantOwner1, tenant1, tenantOwner1.id, 400);
+        await TenantService.disableTenantUser(tenantOwner1, tenant1, tenantOwner1.id, 400, 'It should not be possible to remove the last owner');
 
         // Restore the original tenant in one shot.
         await TenantService.replaceTenant(tenantOwner1, tenant1);
@@ -510,7 +510,7 @@ export default class TestTenantRegistration extends TestCase {
 
         // Replacing a non-existing user should fail, whereas "updating" is actually an upsert.
         const notExistingUser = new UpsertableTenantUser(`I-don't-think-so-i-don't-exist`)
-        await TenantService.replaceTenantUser(tenantOwner1, tenant1, notExistingUser, 400);
+        await TenantService.replaceTenantUser(tenantOwner1, tenant1, notExistingUser, 400, 'Replacing a non-existing user should fail');
         await TenantService.updateTenantUser(tenantOwner1, tenant1, notExistingUser);
         await TenantService.getTenantUser(tenantOwner1, tenant1, notExistingUser.id).then(user => {
             console.log(`Better start thinking then, dear ${user.userId}`);

@@ -34,8 +34,8 @@ export default class TestValidStartCase extends TestCase {
         // Receiver can perform get case
         await CaseService.getCase(receiver, caseInstance);
 
-        // Sender cannot perform get case
-        await CaseService.getCase(sender, caseInstance, 404)
+        // Sender should not be able to get case
+        await CaseService.getCase(sender, caseInstance, 404, 'Sender should not be able to get case');
 
         await assertCaseTeam(receiver, caseInstance, caseTeam);
 

@@ -78,16 +78,16 @@ export default class TestCaseTeamAPI extends TestCase {
         await CaseService.getCase(sender, caseInstance);
 
         // Removing someone that is not part of the team should fail
-        await CaseTeamService.removeMember(sender, caseInstance, employee, 400);
+        await CaseTeamService.removeMember(sender, caseInstance, employee, 400, 'Removing someone that is not part of the team should fail');
 
         // Fetch case team. Should not be allowed for receiver, but should work for sender.
-        await CaseTeamService.getCaseTeam(receiver, caseInstance, 404);
+        await CaseTeamService.getCaseTeam(receiver, caseInstance, 404, 'Fetch case team. Should not be allowed for receiver, but should work for sender');
         await CaseTeamService.getCaseTeam(sender, caseInstance);
 
         // Getting the case file is allowed for sender, as he is part of the team
         await CaseFileService.getCaseFile(sender, caseInstance);
         // Getting the case file is not allowed for receiver, as he is no longer part of the team
-        await CaseFileService.getCaseFile(receiver, caseInstance, 404);
+        await CaseFileService.getCaseFile(receiver, caseInstance, 404, 'Getting the case file is not allowed for receiver, as he is no longer part of the team');
 
         // Add employee to the team, and show that he now has access to the case
         await CaseTeamService.setMember(sender, caseInstance, new CaseTeamMember(employee));
@@ -99,11 +99,11 @@ export default class TestCaseTeamAPI extends TestCase {
         // Replace entire case team; removes sender and employee and then adds receiver and employee
         const newTeam = new CaseTeam([new CaseTeamMember(receiver, [requestorRole]), new CaseTeamMember(employee)]);
         // This call fails, because the new case team does not have any owners defined
-        await CaseTeamService.setCaseTeam(sender, caseInstance, newTeam, 400);
+        await CaseTeamService.setCaseTeam(sender, caseInstance, newTeam, 400, 'This call fails, because the new case team does not have any owners defined');
         // Make receiver the owner, and then it should work
         newTeam.members[0].isOwner = true;
         // This call fails, because employee is not an owner
-        await CaseTeamService.setCaseTeam(employee, caseInstance, newTeam, 401);
+        await CaseTeamService.setCaseTeam(employee, caseInstance, newTeam, 401, 'This call fails, because employee is not an owner');
         await CaseTeamService.setCaseTeam(sender, caseInstance, newTeam);
 
         // Verify whether receiver is owner or not
@@ -122,12 +122,12 @@ export default class TestCaseTeamAPI extends TestCase {
         await assertCaseTeam(employee, caseInstance, newTeam);
 
         // Add a role that is not defined in the case model should not be possible
-        await CaseTeamService.setMember(receiver, caseInstance, new CaseOwner(receiver, [notExistingRole]), 400);
+        await CaseTeamService.setMember(receiver, caseInstance, new CaseOwner(receiver, [notExistingRole]), 400, 'Add a role that is not defined in the case model should not be possible');
 
         // Add an empty role should not be possible through setting a member
-        await CaseTeamService.setMember(receiver, caseInstance, new CaseTeamMember(employee, [emptyRole]), 400);
+        await CaseTeamService.setMember(receiver, caseInstance, new CaseTeamMember(employee, [emptyRole]), 400, 'Add an empty role should not be possible through setting a member');
         // But not when assigning a non existing role
-        await CaseTeamService.setMember(receiver, caseInstance, new CaseTeamMember(employee, ['a/b/c']), 400);
+        await CaseTeamService.setMember(receiver, caseInstance, new CaseTeamMember(employee, ['a/b/c']), 400, 'Add an invalid role should not be possible through setting a member');
 
         // Now add approver role to the employee and see if that works
         await CaseTeamService.setMember(receiver, caseInstance, new CaseTeamMember(employee, [approverRole]));

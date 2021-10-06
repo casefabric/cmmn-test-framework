@@ -45,7 +45,7 @@ export default class TestTaskCompletion extends TestCase {
             }
         };
 
-        await TaskService.completeTask(user, receiveGreetingTask, invalidTaskOutput, 400);
+        await TaskService.completeTask(user, receiveGreetingTask, invalidTaskOutput, 400, 'It should not be possible to complete a task with an invalid typed case file item property');
 
         const validTaskOutput = {
             Response: {
