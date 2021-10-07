@@ -52,6 +52,7 @@ import TestHelloWorldBusinessIdentifiers from './tests/api/businessidentifiers/t
 import TestCaseFileArrayAPI from './tests/api/casefile/testcasefilearrayapi';
 import TestCaseMigration from './tests/api/case/migration/testcasemigration';
 import TestSubCaseMigration from './tests/api/case/migration/testsubcasemigration';
+import TestRecovery from './tests/api/environment/testrecovery';
 
 function findTestsFromCommandLineArguments(): Array<string> {
     const time = process.argv[2];
@@ -167,6 +168,7 @@ const AllTestCases = new TestClasses([
     , TestGetListGetDetails
     , TestCaseMigration
     , TestSubCaseMigration
+    , TestRecovery
 ]);
 
 
