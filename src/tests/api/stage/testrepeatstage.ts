@@ -1,15 +1,15 @@
 'use strict';
 
-import RepositoryService from "../../framework/service/case/repositoryservice";
-import CaseService from "../../framework/service/case/caseservice";
-import WorldWideTestTenant from "../worldwidetesttenant";
-import MockServer from "../../framework/mock/mockserver";
-import GetMock from "../../framework/mock/getmock";
-import TestCase from "../../framework/test/testcase";
-import Case from "../../framework/cmmn/case";
-import { assertPlanItemState } from "../../framework/test/caseassertions/plan";
-import CasePlanService from "../../framework/service/case/caseplanservice";
-import { ServerSideProcessing, SomeTime } from "../../framework/test/time";
+import RepositoryService from "../../../framework/service/case/repositoryservice";
+import CaseService from "../../../framework/service/case/caseservice";
+import WorldWideTestTenant from "../../worldwidetesttenant";
+import MockServer from "../../../framework/mock/mockserver";
+import GetMock from "../../../framework/mock/getmock";
+import TestCase from "../../../framework/test/testcase";
+import Case from "../../../framework/cmmn/case";
+import { assertPlanItemState } from "../../../framework/test/caseassertions/plan";
+import CasePlanService from "../../../framework/service/case/caseplanservice";
+import { ServerSideProcessing, SomeTime } from "../../../framework/test/time";
 
 const worldwideTenant = new WorldWideTestTenant();
 

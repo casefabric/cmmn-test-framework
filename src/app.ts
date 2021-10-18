@@ -32,7 +32,7 @@ import TestCaseTeamTaskAuthorizations from './tests/api/caseteam/testcaseteamtas
 import TestSubCase from './tests/api/task/case/testsubcase';
 import TestTaskCompletion from './tests/api/casefile/testtaskcompletion';
 import TestTaskOutputOperations from './tests/api/casefile/testtaskoutputoperations';
-import TestRepeatStage from './tests/stage/testrepeatstage';
+import TestRepeatStage from './tests/api/stage/testrepeatstage';
 import TestGetListGetDetails from './tests/getlistgetdetails/getlistgetdetails';
 import TestBootstrapCaseFileEvents from './tests/api/case/testbootstrapcasefileevents';
 import TestDocumentationAPI from './tests/api/documentation/testdocumentationapi';
