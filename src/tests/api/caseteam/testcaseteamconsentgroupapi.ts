@@ -8,6 +8,7 @@ import CaseTeamService from '../../../framework/service/case/caseteamservice';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
 import TestCase from '../../../framework/test/testcase';
 import MultiTenantSetup from '../../multitenantsetup';
+import User from '../../../framework/user';
 
 // Case definition with the roles
 const definition = 'caseteam.xml';
@@ -119,5 +120,21 @@ export default class TestCaseTeamConsentGroupAPI extends TestCase {
 
         // As a marsgroup2 member, elon should have access
         await CaseService.getCase(universe.elon, caseInstance, 200, 'As a marsgroup2 member, elon should have access');
+
+        // It should also be possible to add a member that is not even registered in the case system. As long as that member has a valid token, they should be able to get the case.
+        const someone = new User('Some-one-out-there');
+        const someoneElse = new User('Not just someone out there');
+        await CaseTeamService.setMember(universe.boy, caseInstance, new CaseTeamMember(someone));
+
+        await someone.login();
+        await someoneElse.login();
+
+        // Someone should have access ...
+        await CaseService.getCase(someone, caseInstance);
+
+        // ... someone else not
+        await CaseService.getCase(someoneElse, caseInstance, 404);
+
+        await CaseTeamService.getCaseTeam(someone, caseInstance).then(team => console.log(JSON.stringify(team, undefined, 2)));
     }
 }

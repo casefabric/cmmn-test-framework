@@ -164,19 +164,18 @@ export default class TestCaseTeamTaskAuthorizations extends TestCase {
         await TaskService.completeTask(receiver, approveTask);
         await assertTask(sender, approveTask, 'Complete', 'Completed', receiver, employee);
 
-        // Sender should not be able to delegate Request task to false-user who is not in the team and tenant
-        await TaskService.delegateTask(sender, requestTask, new TenantUser('I\'m not in the tenant'), 404, 'Sender should not be able to delegate Request task to false-user who is not in the team and tenant');
+        const notExistingTenantUserId = `I'm not in the tenant`;
+
+        // Sender should not be able to assign Request task to false-user who is not in the team
+        await TaskService.assignTask(employee, requestTask, new TenantUser(notExistingTenantUserId), 401, 'Employee should not be able to assign Request task as he is not case owner');
+        await assertTask(sender, requestTask, 'Delegate', 'Unassigned', User.NONE, User.NONE);
+
+        // Sender should not be able to delegate Request task to false-user who is not in the team
+        await TaskService.delegateTask(employee, requestTask, new TenantUser(notExistingTenantUserId), 401, 'Employee should not be able to delegate Request task as he is not case owner');
         await assertTask(sender, requestTask, 'Delegate', 'Unassigned', User.NONE, User.NONE);
 
         // As the task is not delegated false-user cannot be part of the case team
-        await assertCaseTeamMember(sender, caseInstance, new CaseTeamMember('I\'m not in the tenant'), false);
-
-        // Sender should not be able to assign Request task to false-user who is not in the team and tenant
-        await TaskService.assignTask(sender, requestTask, new TenantUser('I\'m not in the tenant'), 404, 'Sender should not be able to assign Request task to false-user who is not in the team and tenant');
-        await assertTask(sender, requestTask, 'Delegate', 'Unassigned', User.NONE, User.NONE);
-
-        // As the task is not assigned false-user cannot be part of the case team
-        await assertCaseTeamMember(sender, caseInstance, new CaseTeamMember('I\'m not in the tenant'), false);
+        await assertCaseTeamMember(sender, caseInstance, new CaseTeamMember(notExistingTenantUserId), false);
 
         // Sender can remove employee from case team
         await CaseTeamService.removeMember(sender, caseInstance, employee);

@@ -52,9 +52,9 @@ export default class TestCaseTeamAPI extends TestCase {
         caseTeam.members[2].caseRoles = []; // Change roles of requestor to be empty instead of having wrong roles
         const caseInstance = await CaseService.startCase(sender, startCase);
 
-        // Try to set a team with invalid users; it should fail because there are no owners
+        // It should not be possible to start a case without case owners in the team
         const t2 = new CaseTeam([new CaseTeamMember('Piet', [requestorRole]), new CaseTeamMember('Joop'), new CaseTeamMember(receiver)]);
-        await CaseTeamService.setCaseTeam(sender, caseInstance, t2, 404);
+        await CaseTeamService.setCaseTeam(sender, caseInstance, t2, 400, 'It should not be possible to start a case without case owners in the team');
 
         // Getting the case must be allowed for both sender and receiver
         await CaseService.getCase(sender, caseInstance);
