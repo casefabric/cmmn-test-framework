@@ -59,7 +59,7 @@ export default class TaskService {
             msg = `Task '${taskName}' with id ${taskId} was assigned successfully, but this was not expected`;
         }
         const response = await CafienneService.put(`tasks/${taskId}/assign`, user, { assignee: assignee.id });
-        return checkResponse(response, `Task '${taskName}' with id ${taskId} was assigned successfully, but this was not expected`, expectedStatusCode);
+        return checkResponse(response, msg, expectedStatusCode);
     }
 
     /**
@@ -76,7 +76,7 @@ export default class TaskService {
             msg = `Task '${taskName}' with id ${taskId} was delegated succesfully, but this was not expected`;
         }
         const response = await CafienneService.put(`tasks/${taskId}/delegate`, user, { assignee: assignee.id });
-        return checkResponse(response, `Task '${taskName}' with id ${taskId} was delegated succesfully, but this was not expected`, expectedStatusCode);
+        return checkResponse(response, msg, expectedStatusCode);
     }
 
     /**
@@ -93,7 +93,7 @@ export default class TaskService {
             msg = `Task '${taskName}' with id ${taskId} was completed succesfully, but this was not expected`;
         }
         const response = await CafienneService.post(`tasks/${taskId}/complete`, user, taskOutput);
-        return checkResponse(response, `Task '${taskName}' with id ${taskId} was completed succesfully, but this was not expected`, expectedStatusCode);
+        return checkResponse(response, msg, expectedStatusCode);
     }
 
     /**
@@ -134,7 +134,7 @@ export default class TaskService {
             msg = `Task output for '${taskName}' with id ${taskId} was saved succesfully, but this was not expected`;
         }
         const response = await CafienneService.put(`tasks/${taskId}`, user, taskOutput);
-        return checkResponse(response, `Task output for '${taskName}' with id ${taskId} was saved succesfully, but this was not expected`, expectedStatusCode);
+        return checkResponse(response, msg, expectedStatusCode);
     }
 
     /**

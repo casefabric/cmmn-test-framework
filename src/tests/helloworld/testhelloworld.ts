@@ -67,11 +67,13 @@ export default class TestHelloworld extends TestCase {
         const nextTasks = await TaskService.getCaseTasks(sender, caseInstance);
         const readResponseTask = findTask(nextTasks, responseTaskName);
         if (readResponseTask.assignee !== sender.id) {
-            throw new Error('Expecting task to be assigned to sending user');
+            throw new Error('Expecting task to be assigned to sending user, but found ' + readResponseTask.assignee + ' instead');
         }
         await TaskService.completeTask(sender, readResponseTask);
         await assertTask(sender, readResponseTask, 'Complete', 'Completed', sender, sender, sender);
 
         await assertCasePlanState(sender, caseInstance, 'Completed');
+
+        console.log(`\n\nCase ID: ${freshCaseInstance.id}\n\nCase Team:${JSON.stringify(freshCaseInstance.team, undefined, 2)}`);
     }
 }

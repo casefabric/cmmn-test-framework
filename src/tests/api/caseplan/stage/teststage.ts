@@ -16,7 +16,7 @@ const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const sender = worldwideTenant.sender;
 
-export default class TestRepeatingStage extends TestCase {
+export default class TestStage extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
         await RepositoryService.validateAndDeploy(sender, definition, tenant);
@@ -72,14 +72,22 @@ export default class TestRepeatingStage extends TestCase {
 async function getTasksThenClaimAndCompleteNextTask(caseId: Case | string, taskOutput: object) {
     const taskName = 'SendResponse';
     const nextTasks = await TaskService.getCaseTasks(sender, caseId);
-    nextTasks.forEach(t => delete t.taskModel);
-    console.log(JSON.stringify(nextTasks, undefined, 2))
+    // nextTasks.forEach(t => delete t.taskModel);
     const nextTask = nextTasks.find(task => task.taskName === taskName && task.taskState === 'Unassigned');
     if (!nextTask) {
-        throw new Error('Expecting a new task in unassigned state');
+        const tasks = `Tasks:\n- ${nextTasks.map(task => task.summary()).join('\n- ')}`
+        console.log(tasks)
+        throw new Error(`Expecting a new task '${taskName}'' in unassigned state`);
     }
     await TaskService.claimTask(sender, nextTask);
     await TaskService.completeTask(sender, nextTask, taskOutput);
+    await TaskService.getCaseTasks(sender, caseId).then(tasks => {
+        const freshInformationOnNextTask = tasks.find(t => t.id === nextTask.id);
+        console.log("NExt task is now: " + freshInformationOnNextTask?.summary());
+        if (freshInformationOnNextTask?.taskState !== 'Completed') {
+            console.log("That's quite weird!")
+        }
+    });
 
 }
 

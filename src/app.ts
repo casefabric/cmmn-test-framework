@@ -16,7 +16,7 @@ import TestEventAuthorization from './tests/api/caseplan/testeventauthorization'
 import PingTestEnvironment, { PingTokenService } from './tests/api/environment/ping';
 import TestTravelRequest from './tests/travelrequest/testtravelrequest';
 import TestEntryCriteriaOnCaseInputParameters from './tests/api/caseplan/stage/testentrycriteriaoncaseinputparameters';
-import TestRepeatingStage from './tests/api/caseplan/stage/teststage';
+import TestStage from './tests/api/caseplan/stage/teststage';
 import TestCaseTeamAPI from './tests/api/caseteam/testcaseteamapi';
 import TestRoleBinding from './tests/api/caseteam/testrolebinding';
 import TestTaskAPI from './tests/api/task/humantask/testtaskapi';
@@ -125,7 +125,7 @@ const AllTestCases = new TestClasses([
     , TestTaskOutputOperations
     , TestTaskBindingRefinement
     , TestEntryCriteriaOnCaseInputParameters
-    , TestRepeatingStage
+    , TestStage
     , TestUsersCaseAPI
     , TestDiscretionaryItems
     , TestStatsAPI

@@ -8,7 +8,7 @@ import PlatformService from "../framework/service/platform/platformservice";
  */
 export default class WorldWideTestTenant {
     sender = new TenantOwner('sending-user', ['Sender'], 'sender', 'sender@senders.com');
-    receiver = new TenantOwner('receiving-user', ['Receiver'], 'receiver', 'receiver@receivers.com')
+    receiver = new TenantOwner('receiving-user', ['Receiver'], 'receiver', 'receiver@receivers.com');
     employee = new TenantUser('employee', ['Employee'], 'another employee', 'without any email address');
     tenant: Tenant = new Tenant(this.name, [this.sender, this.receiver, this.employee]);
 
