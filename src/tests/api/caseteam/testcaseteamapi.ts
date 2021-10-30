@@ -47,18 +47,14 @@ export default class TestCaseTeamAPI extends TestCase {
         const startCase = { tenant, definition, debug: true, caseTeam };
 
         // It should not be possible to start a case with invalid role names
-        await CaseService.startCase(sender, startCase, 400);
+        await CaseService.startCase(sender, startCase, 400, 'It should not be possible to start a case with invalid role names');
 
         caseTeam.members[2].caseRoles = []; // Change roles of requestor to be empty instead of having wrong roles
         const caseInstance = await CaseService.startCase(sender, startCase);
 
-
-        // Try to set a team with invalid users
+        // Try to set a team with invalid users; it should fail because there are no owners
         const t2 = new CaseTeam([new CaseTeamMember('Piet', [requestorRole]), new CaseTeamMember('Joop'), new CaseTeamMember(receiver)]);
-        // This call fails, because the new case team does not have existing users
         await CaseTeamService.setCaseTeam(sender, caseInstance, t2, 404);
-        // This call fails, because the new member is not an existing user
-        await CaseTeamService.setMember(sender, caseInstance, new CaseTeamMember('PietjePrecies'), 404);
 
         // Getting the case must be allowed for both sender and receiver
         await CaseService.getCase(sender, caseInstance);
