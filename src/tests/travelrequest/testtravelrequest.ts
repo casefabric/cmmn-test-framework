@@ -8,8 +8,9 @@ import RepositoryService from '../../framework/service/case/repositoryservice';
 import StartCase from '../../framework/service/case/startcase';
 import TenantUser from '../../framework/tenant/tenantuser';
 import TenantService from '../../framework/service/tenant/tenantservice';
-import CaseTeam from '../../framework/cmmn/caseteam';
-import CaseTeamMember, { CaseOwner } from '../../framework/cmmn/caseteammember';
+import CaseTeam from '../../framework/cmmn/team/caseteam';
+import { CaseOwner } from '../../framework/cmmn/team/caseteamuser';
+import CaseTeamUser from "../../framework/cmmn/team/caseteamuser";
 
 const definition = 'travelrequest.xml';
 
@@ -88,8 +89,8 @@ export default class TestTravelRequest extends TestCase {
         };
         const caseTeam = new CaseTeam([
             new CaseOwner(approver, ['Approver'])
-            , new CaseTeamMember(lana, ['PersonalAssistant'])
-            , new CaseTeamMember(requestor, ['Requestor'])
+            , new CaseTeamUser(lana, ['PersonalAssistant'])
+            , new CaseTeamUser(requestor, ['Requestor'])
         ]);
         const startCase: StartCase = { tenant, definition, inputs, debug: true, caseTeam };
         const caseInstance = await CaseService.startCase(requestor, startCase);

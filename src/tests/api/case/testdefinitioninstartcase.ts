@@ -4,8 +4,8 @@ import CaseService from '../../../framework/service/case/caseservice';
 import TestCase from '../../../framework/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 import { readLocalFile } from '../../../framework/service/case/repositoryservice';
-import { CaseOwner } from '../../../framework/cmmn/caseteammember';
-import CaseTeam from '../../../framework/cmmn/caseteam';
+import { CaseOwner } from '../../../framework/cmmn/team/caseteamuser';
+import CaseTeam from '../../../framework/cmmn/team/caseteam';
 import Case from '../../../framework/cmmn/case';
 
 const definition = 'caseteam.xml';

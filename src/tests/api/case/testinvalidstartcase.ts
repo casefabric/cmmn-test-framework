@@ -4,8 +4,9 @@ import CaseService from '../../../framework/service/case/caseservice';
 import TestCase from '../../../framework/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
-import CaseTeamMember, { CaseOwner } from '../../../framework/cmmn/caseteammember';
-import CaseTeam from '../../../framework/cmmn/caseteam';
+import { CaseOwner } from '../../../framework/cmmn/team/caseteamuser';
+import CaseTeamUser from "../../../framework/cmmn/team/caseteamuser";
+import CaseTeam from '../../../framework/cmmn/team/caseteam';
 import TenantService from '../../../framework/service/tenant/tenantservice';
 import StartCase from '../../../framework/service/case/startcase';
 import CafienneResponse from '../../../framework/service/response';
@@ -29,7 +30,7 @@ export default class TestInvalidStartCase extends TestCase {
         const startCase = this.startCase;
 
         // Case team without owner
-        startCase.caseTeam = new CaseTeam([new CaseTeamMember(sender)]);
+        startCase.caseTeam = new CaseTeam([new CaseTeamUser(sender)]);
         await this.tryStartCase("Missing owner should fail");
 
         // Case team with invalid roles

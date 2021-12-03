@@ -18,7 +18,7 @@ import TestTravelRequest from './tests/travelrequest/testtravelrequest';
 import TestEntryCriteriaOnCaseInputParameters from './tests/api/caseplan/stage/testentrycriteriaoncaseinputparameters';
 import TestStage from './tests/api/caseplan/stage/teststage';
 import TestCaseTeamAPI from './tests/api/caseteam/testcaseteamapi';
-import TestCaseTeamTenantRoleBinding from './tests/api/caseteam/testrolebinding';
+import TestCaseTeamTenantRoleMembers from './tests/api/caseteam/testcaseteamtenantrolemembers';
 import TestTaskAPI from './tests/api/task/humantask/testtaskapi';
 import TestTaskCountAPI from './tests/api/task/humantask/testtaskcountapi';
 import TestCaseTeam from './tests/api/caseteam/testcaseteam';
@@ -155,7 +155,7 @@ const AllTestCases = new TestClasses([
     , TestProcessTask
     , TestCaseTeamAPI
     , TestCaseTeam
-    , TestCaseTeamTenantRoleBinding
+    , TestCaseTeamTenantRoleMembers
     , TestCaseTeamConsentGroupAPI
     , TestCaseTeamTaskAuthorizations
     , TestEventAuthorization

@@ -8,7 +8,7 @@ import DiscretionaryItem from '../../cmmn/discretionaryitem';
 import { checkJSONResponse, checkResponse } from '../response';
 import { DiscretionaryItemsResponse } from './response/discretionaryitemsresponse';
 import { CaseStatistics } from './response/casestatistics';
-import CaseTeam from '../../cmmn/caseteam';
+import CaseTeam from '../../cmmn/team/caseteam';
 
 export default class CaseService {
     static async startCase(user: User, command: StartCase, expectedStatusCode: number = 200, msg = `StartCase is not expected to succeed for user ${user ? user.id : 'anonymous'}`): Promise<Case> {
@@ -46,7 +46,7 @@ export default class CaseService {
      */
     static async getCase(user: User, caseId: Case | string, expectedStatusCode: number = 200, msg = `GetCase is not expected to succeed for user ${user} in case ${caseId}`): Promise<Case> {
         const convertCaseTeamFormat = (json: any) => {
-            if (json.team && !json.team.members) json.team = new CaseTeam(json.team);
+            if (json.team && !(json.team.members || json.team.users || json.team.tenantRoles || json.team.groups)) json.team = new CaseTeam(json.team);
             return json;
         }
         const response = await CafienneService.get(`/cases/${caseId}`, user);

@@ -1,7 +1,7 @@
 import PlanItem from './planitem';
-import CaseTeam from './caseteam';
+import CaseTeam from './team/caseteam';
 import CaseFile from './casefile';
-import CaseTeamMember from './caseteammember';
+import CaseTeamUser from "./team/caseteamuser";
 import CMMNBaseClass from './cmmnbaseclass';
 
 /**

@@ -1,16 +1,16 @@
 'use strict';
 
-import CaseService from '../../../framework/service/case/caseservice';
-import TestCase from '../../../framework/test/testcase';
-import WorldWideTestTenant from '../../worldwidetesttenant';
-import RepositoryService from '../../../framework/service/case/repositoryservice';
-import CaseTeamService from '../../../framework/service/case/caseteamservice';
-import CaseTeamMember, { CaseOwner, TenantRoleMember } from '../../../framework/cmmn/caseteammember';
-import CaseTeam from '../../../framework/cmmn/caseteam';
-import TaskService from '../../../framework/service/task/taskservice';
 import Task from '../../../framework/cmmn/task';
+import CaseTeam from '../../../framework/cmmn/team/caseteam';
+import CaseTeamUser, { CaseOwner } from '../../../framework/cmmn/team/caseteamuser';
+import CaseTeamTenantRole from '../../../framework/cmmn/team/caseteamtenantrole';
+import CaseService from '../../../framework/service/case/caseservice';
+import CaseTeamService from '../../../framework/service/case/caseteamservice';
+import RepositoryService from '../../../framework/service/case/repositoryservice';
+import TaskService from '../../../framework/service/task/taskservice';
+import TestCase from '../../../framework/test/testcase';
 import User from '../../../framework/user';
-import Case from '../../../framework/cmmn/case';
+import WorldWideTestTenant from '../../worldwidetesttenant';
 
 const definition = 'caseteam.xml';
 
@@ -24,7 +24,7 @@ const requestorRole = 'Requestor';
 const approverRole = 'Approver';
 const participantRole = 'CaseParticipant';
 
-export default class TestCaseTeamTenantRoleBinding extends TestCase {
+export default class TestCaseTeamTenantRoleMembers extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
         await RepositoryService.validateAndDeploy(sender, definition, tenant);
@@ -33,8 +33,9 @@ export default class TestCaseTeamTenantRoleBinding extends TestCase {
     async run() {
         const caseTeam = new CaseTeam([
             new CaseOwner(sender)
-            , new TenantRoleMember('Sender', [requestorRole, approverRole])
-            , new TenantRoleMember('Receiver', [participantRole])
+        ], [], [
+            new CaseTeamTenantRole('Sender', [requestorRole, approverRole]),
+            new CaseTeamTenantRole('Receiver', [participantRole])
         ]);
         const startCase = { tenant, definition, debug: true, caseTeam };
 
@@ -49,7 +50,7 @@ export default class TestCaseTeamTenantRoleBinding extends TestCase {
 
         // Print the case team
         await CaseTeamService.getCaseTeam(sender, caseInstance).then(team => {
-            if (caseTeam.members.length != team.members.length) {
+            if (caseTeam.users.length != team.users.length) {
                 throw new Error('Unexpected different number of members');
             }
             // assertBindings(caseTeam.roleBindings, team.roleBindings);
@@ -75,7 +76,7 @@ export default class TestCaseTeamTenantRoleBinding extends TestCase {
         // TenantService.addTenantUserRole(sender, worldwideTenant.tenant, receiver.id, "Sender");
         // await CaseTeamService.addMemberRole(caseInstance, sender, "Receiver", "Approver");
 
-        await CaseTeamService.setMember(sender, caseInstance, new CaseTeamMember(receiver, ["Approver"]))
+        await CaseTeamService.setUser(sender, caseInstance, new CaseTeamUser(receiver, ["Approver"]))
         // Now it should be possible
         // await TaskService.claimTask(receiver, approveTask);
 

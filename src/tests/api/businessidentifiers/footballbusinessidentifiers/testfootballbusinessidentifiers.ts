@@ -1,16 +1,16 @@
 'use strict';
 
+import CaseTeam from "../../../../framework/cmmn/team/caseteam";
+import CaseTeamUser, { CaseOwner } from "../../../../framework/cmmn/team/caseteamuser";
 import CaseService from "../../../../framework/service/case/caseservice";
-import WorldWideTestTenant from "../../../worldwidetesttenant";
-import TestCase from "../../../../framework/test/testcase";
 import RepositoryService from "../../../../framework/service/case/repositoryservice";
-import CaseTeamMember, { CaseOwner } from "../../../../framework/cmmn/caseteammember";
-import CaseTeam from "../../../../framework/cmmn/caseteam";
-import PlayerData from "./playerdata";
+import TaskService from "../../../../framework/service/task/taskservice";
+import TestCase from "../../../../framework/test/testcase";
+import User from "../../../../framework/user";
+import WorldWideTestTenant from "../../../worldwidetesttenant";
 import ClubData from "./clubdata";
 import FiltersData from "./filtersdata";
-import TaskService from "../../../../framework/service/task/taskservice";
-import User from "../../../../framework/user";
+import PlayerData from "./playerdata";
 
 const footballStatsDefinition = 'footballstats.xml';
 const footballClubStatsDefinition = 'footballclubstats.xml';
@@ -70,7 +70,7 @@ Starting business identifier's multi-user filters test for footballstats model.
         for (const data of PlayerData.playerDataForMultiUserTest) {
             // Case team for testing in FootballStats model (multi-user)
             const inputs = { "player": data };
-            const caseTeam = new CaseTeam([new CaseOwner(this.user1), new CaseTeamMember(this.user2)]);
+            const caseTeam = new CaseTeam([new CaseOwner(this.user1), new CaseTeamUser(this.user2)]);
             const definition = footballStatsDefinition;
             const startCase = { tenant, definition, inputs, caseTeam };
             await CaseService.startCase(this.user1, startCase);

@@ -9,8 +9,9 @@ import { ServerSideProcessing } from '../../framework/test/time';
 import { assertPlanItemState} from '../../framework/test/caseassertions/plan'
 import { assertTask, verifyTaskInput, findTask } from '../../framework/test/caseassertions/task'
 import IncidentContent from './incidentmanagementcontent';
-import CaseTeam from '../../framework/cmmn/caseteam';
-import CaseTeamMember, { CaseOwner } from '../../framework/cmmn/caseteammember';
+import CaseTeam from '../../framework/cmmn/team/caseteam';
+import { CaseOwner } from '../../framework/cmmn/team/caseteamuser';
+import CaseTeamUser from "../../framework/cmmn/team/caseteamuser";
 import MockServer from '../../framework/mock/mockserver';
 import GetMock from '../../framework/mock/getmock';
 
@@ -63,7 +64,7 @@ export default class TestIncidentManagement extends TestCase {
     async run() {
         const inputs = IncidentContent.inputs;
         const firstTaskInput = IncidentContent.firstTaskInput;
-        const caseTeam = new CaseTeam([new CaseOwner(raiser), new CaseTeamMember(solver)]);
+        const caseTeam = new CaseTeam([new CaseOwner(raiser), new CaseTeamUser(solver)]);
         const startCase = { tenant, definition, inputs, caseTeam };
         const firstTaskName = 'Verify Details';
 

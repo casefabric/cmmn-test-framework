@@ -1,14 +1,15 @@
 'use strict';
 
-import CaseTeam from '../../../framework/cmmn/caseteam';
-import CaseTeamGroup, { GroupRoleMapping, GroupRoleMappingWithCaseOwnership } from '../../../framework/cmmn/caseteamgroup';
-import CaseTeamMember, { CaseOwner, TenantRoleMember } from '../../../framework/cmmn/caseteammember';
+import CaseTeam from '../../../framework/cmmn/team/caseteam';
+import CaseTeamGroup, { GroupRoleMapping, GroupRoleMappingWithCaseOwnership } from '../../../framework/cmmn/team/caseteamgroup';
+import CaseTeamUser, { CaseOwner } from '../../../framework/cmmn/team/caseteamuser';
+import CaseTeamTenantRole from '../../../framework/cmmn/team/caseteamtenantrole';
 import CaseService from '../../../framework/service/case/caseservice';
 import CaseTeamService from '../../../framework/service/case/caseteamservice';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
 import TestCase from '../../../framework/test/testcase';
-import MultiTenantSetup from '../../multitenantsetup';
 import User from '../../../framework/user';
+import MultiTenantSetup from '../../multitenantsetup';
 
 // Case definition with the roles
 const definition = 'caseteam.xml';
@@ -46,8 +47,9 @@ export default class TestCaseTeamConsentGroupAPI extends TestCase {
         const caseTeam = new CaseTeam([
             new CaseOwner(universe.boy), // No special roles, case owner can perform all non-consent group related tasks. 
             new CaseOwner(universe.girl, [caseRolePA]), // This case owner can also do consent group tasks with PA as performer.
-            new TenantRoleMember('Family') // The whole family has access to the case. But only those in world, not those in moon or mars
-        ], caseGroups);
+        ], caseGroups, [
+            new CaseTeamTenantRole('Family') // The whole family has access to the case. But only those in world, not those in moon or mars
+        ]);
 
         // Command to start the case with.
         const startCase = { tenant, definition, caseTeam };
@@ -98,13 +100,13 @@ export default class TestCaseTeamConsentGroupAPI extends TestCase {
         await CaseService.getCase(universe.elon, caseInstance, 404, 'Elon should not have access, as he is from a different planet');
 
         // Add jeff not through consent, but simply by user id, should no longer check on tenant membership of the user.
-        await CaseTeamService.setMember(universe.boy, caseInstance, new CaseTeamMember(universe.jeff));
+        await CaseTeamService.setUser(universe.boy, caseInstance, new CaseTeamUser(universe.jeff));
 
         // As a platform user, jeff should have access
         await CaseService.getCase(universe.jeff, caseInstance, 200, 'As a platform user, jeff should have access');
 
         // Remove member jeff
-        await CaseTeamService.removeMember(universe.boy, caseInstance, universe.jeff);
+        await CaseTeamService.removeUser(universe.boy, caseInstance, universe.jeff);
 
         // Jeff should no longer have access, as his user membership is removed
         await CaseService.getCase(universe.jeff, caseInstance, 404, 'Jeff should no longer have access, as his user membership is removed');
@@ -124,7 +126,7 @@ export default class TestCaseTeamConsentGroupAPI extends TestCase {
         // It should also be possible to add a member that is not even registered in the case system. As long as that member has a valid token, they should be able to get the case.
         const someone = new User('Some-one-out-there');
         const someoneElse = new User('Not just someone out there');
-        await CaseTeamService.setMember(universe.boy, caseInstance, new CaseTeamMember(someone));
+        await CaseTeamService.setUser(universe.boy, caseInstance, new CaseTeamUser(someone));
 
         await someone.login();
         await someoneElse.login();

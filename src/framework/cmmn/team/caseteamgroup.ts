@@ -1,5 +1,5 @@
-import ConsentGroup from "../service/consentgroup/consentgroup";
-import CMMNBaseClass from "./cmmnbaseclass";
+import ConsentGroup from "../../service/consentgroup/consentgroup";
+import CMMNBaseClass from "../cmmnbaseclass";
 
 export default class CaseTeamGroup extends CMMNBaseClass {
     public groupId: string;
@@ -15,19 +15,23 @@ export default class CaseTeamGroup extends CMMNBaseClass {
         super();
         this.groupId = '' + group;
     }
+
+    toString() {
+        return this.groupId;
+    }
 }
 
 export class GroupRoleMapping {
     public isOwner: boolean = false;
     public caseRoles: Array<string> = [];
-    constructor(public groupRole: string, ...caseRoleList: Array<string>) {
-        this.caseRoles = caseRoleList;
+    constructor(public groupRole: string, caseRoleList: string | Array<string>) {
+        this.caseRoles = typeof caseRoleList === 'string' ? [caseRoleList] : caseRoleList;
     }
 }
 
 export class GroupRoleMappingWithCaseOwnership extends GroupRoleMapping {
     public isOwner: boolean = true;
-    constructor(public groupRole: string, ...caseRoleList: Array<string>) {
-        super(groupRole, ...caseRoleList);
+    constructor(public groupRole: string, caseRoleList: string | Array<string>) {
+        super(groupRole, caseRoleList);
     }
 }

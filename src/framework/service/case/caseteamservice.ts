@@ -1,10 +1,11 @@
-import User from "../../user";
 import Case from "../../cmmn/case";
-import CaseTeam from "../../cmmn/caseteam";
-import CaseTeamMember from "../../cmmn/caseteammember";
+import CaseTeam from "../../cmmn/team/caseteam";
+import CaseTeamGroup from "../../cmmn/team/caseteamgroup";
+import CaseTeamUser from "../../cmmn/team/caseteamuser";
+import CaseTeamTenantRole from "../../cmmn/team/caseteamtenantrole";
+import User from "../../user";
 import CafienneService from "../cafienneservice";
-import { checkResponse, checkJSONResponse } from "../response";
-import CaseTeamGroup from "../../cmmn/caseteamgroup";
+import { checkJSONResponse, checkResponse } from "../response";
 
 export default class CaseTeamService {
     /**
@@ -34,6 +35,28 @@ export default class CaseTeamService {
      * Add or update a case team member.
      * @param Case 
      * @param user 
+     * @param caseTeamUser 
+     */
+    static async setUser(user: User, caseId: Case | string, caseTeamUser: CaseTeamUser, expectedStatusCode: number = 200, msg = `SetCaseTeamUser(${caseTeamUser}) is not expected to succeed for user ${user} in case ${caseId}`) {
+        const response = await CafienneService.post(`/cases/${caseId}/caseteam/users`, user, caseTeamUser);
+        return checkResponse(response, msg, expectedStatusCode);
+    }
+
+    /**
+     * Delete the specified member from the case team.
+     * @param Case 
+     * @param user 
+     * @param member 
+     */
+    static async removeUser(user: User, caseId: Case | string, userId: User | CaseTeamUser | string, expectedStatusCode: number = 200, msg = `RemoveCaseTeamUser(${userId}) is not expected to succeed for user ${user} in case ${caseId}`) {
+        const response = await CafienneService.delete(`/cases/${caseId}/caseteam/users/${userId}`, user);
+        return checkResponse(response, msg, expectedStatusCode);
+    }
+
+    /**
+     * Add or update a case team member.
+     * @param Case 
+     * @param user 
      * @param group 
      */
      static async setGroup(user: User, caseId: Case | string, group: CaseTeamGroup, expectedStatusCode: number = 200, msg = `SetCaseTeamGroup(${group}) is not expected to succeed for user ${user} in case ${caseId}`) {
@@ -53,42 +76,24 @@ export default class CaseTeamService {
     }
 
     /**
-     * Delete the specified member from the case team.
-     * @param Case 
-     * @param user 
-     * @param member 
-     */
-    static async removeMember(user: User, caseId: Case | string, member: User|CaseTeamMember, expectedStatusCode: number = 200, msg = '') {
-        const memberType = member instanceof User ? 'user' : member.memberType;
-        const memberId = member instanceof User ? member.id : member.memberId; 
-        if (! msg) {
-            msg = `RemoveTeamMember is not expected to succeed for member ${memberId} of type ${memberType} in case ${caseId}`;
-        }
-        const response = await CafienneService.delete(`/cases/${caseId}/caseteam/${memberId}?type=${memberType}`, user);
-        return checkResponse(response, msg, expectedStatusCode);
-    }
-
-    /**
      * Add or update a case team member.
      * @param Case 
      * @param user 
-     * @param member 
+     * @param tenantRole 
      */
-    static async setMember(user: User, caseId: Case | string, member: CaseTeamMember, expectedStatusCode: number = 200, msg = `SetTeamMember is not expected to succeed for user ${user} in case ${caseId}`) {
-        const response = await CafienneService.put(`/cases/${caseId}/caseteam`, user, member);
+     static async setTenantRole(user: User, caseId: Case | string, tenantRole: CaseTeamTenantRole, expectedStatusCode: number = 200, msg = `SetCaseTeamTenantRole(${tenantRole}) is not expected to succeed for user ${user} in case ${caseId}`) {
+        const response = await CafienneService.post(`/cases/${caseId}/caseteam/tenant-roles`, user, tenantRole);
         return checkResponse(response, msg, expectedStatusCode);
     }
 
     /**
-     * Remove a role from a case team member.
+     * Delete the specified member from the case team.
      * @param Case 
      * @param user 
-     * @param member 
+     * @param tenantRole 
      */
-    static async removeMemberRoles(user: User, caseId: Case | string, member: CaseTeamMember, roles: string|string[], expectedStatusCode: number = 200, msg = `RemoveTeamMemberRole is not expected to succeed for user ${user} in case ${caseId}`) {
-        const memberWithoutRoles = Object.assign({}, member);
-        memberWithoutRoles.removeRoles = roles instanceof Array ? roles : [roles];
-        const response = await CafienneService.put(`/cases/${caseId}/caseteam`, user, memberWithoutRoles);
+    static async removeTenantRole(user: User, caseId: Case | string, tenantRoleName: CaseTeamTenantRole | string, expectedStatusCode: number = 200, msg = `RemoveCaseTeamTenantRole(${tenantRoleName}) is not expected to succeed for user ${user} in case ${caseId}`) {
+        const response = await CafienneService.delete(`/cases/${caseId}/caseteam/tenant-roles/${tenantRoleName}`, user);
         return checkResponse(response, msg, expectedStatusCode);
     }
 }

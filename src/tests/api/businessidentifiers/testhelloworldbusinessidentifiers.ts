@@ -4,8 +4,9 @@ import CaseService from '../../../framework/service/case/caseservice';
 import TestCase from '../../../framework/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
-import CaseTeam from '../../../framework/cmmn/caseteam';
-import CaseTeamMember, { CaseOwner } from '../../../framework/cmmn/caseteammember';
+import CaseTeam from '../../../framework/cmmn/team/caseteam';
+import { CaseOwner } from '../../../framework/cmmn/team/caseteamuser';
+import CaseTeamUser from "../../../framework/cmmn/team/caseteamuser";
 import CaseFileService from '../../../framework/service/case/casefileservice';
 import Case from '../../../framework/cmmn/case';
 import User from '../../../framework/user';
@@ -43,7 +44,7 @@ export default class TestHelloWorldBusinessIdentifiers extends TestCase {
         await toFilter.fetchInitialValue();
         await combinedFilter.fetchInitialValue();
 
-        const caseTeam = new CaseTeam([new CaseOwner(employee), new CaseTeamMember(sender), new CaseTeamMember(receiver)]);
+        const caseTeam = new CaseTeam([new CaseOwner(employee), new CaseTeamUser(sender), new CaseTeamUser(receiver)]);
         const startCase = { tenant, definition, inputs, caseTeam, debug: true };
         const caseInstance = await CaseService.startCase(sender, startCase);
 

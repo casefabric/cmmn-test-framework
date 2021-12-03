@@ -1,4 +1,4 @@
-import CaseTeam from "../../cmmn/caseteam";
+import CaseTeam from "../../cmmn/team/caseteam";
 import Tenant from "../../tenant/tenant";
 
 /**

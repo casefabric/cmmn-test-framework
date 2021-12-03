@@ -5,8 +5,9 @@ import TaskService from '../../../../framework/service/task/taskservice';
 import TestCase from '../../../../framework/test/testcase';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
 import RepositoryService from '../../../../framework/service/case/repositoryservice';
-import CaseTeam from '../../../../framework/cmmn/caseteam';
-import CaseTeamMember, { CaseOwner } from '../../../../framework/cmmn/caseteammember';
+import CaseTeam from '../../../../framework/cmmn/team/caseteam';
+import { CaseOwner } from '../../../../framework/cmmn/team/caseteamuser';
+import CaseTeamUser from "../../../../framework/cmmn/team/caseteamuser";
 import CaseTeamService from '../../../../framework/service/case/caseteamservice';
 import Case from '../../../../framework/cmmn/case';
 import User from '../../../../framework/user';
@@ -79,7 +80,7 @@ export default class TestTaskAPI extends TestCase {
         });
 
         // Now add receiver to the case team, and show that now he also gets to see the unassigned task
-        await CaseTeamService.setMember(sender, caseInstance, new CaseTeamMember(receiver));
+        await CaseTeamService.setUser(sender, caseInstance, new CaseTeamUser(receiver));
 
         await this.getReceiverUnassignedTasks(receiversTaskCountBeforeStartCase + 1);
 

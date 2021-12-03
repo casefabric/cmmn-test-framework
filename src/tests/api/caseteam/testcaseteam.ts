@@ -6,10 +6,11 @@ import RepositoryService from '../../../framework/service/case/repositoryservice
 import CaseService from '../../../framework/service/case/caseservice';
 import CaseTeamService from '../../../framework/service/case/caseteamservice';
 import TaskService from '../../../framework/service/task/taskservice';
-import { assertCaseTeamMember } from '../../../framework/test/caseassertions/team';
+import { assertCaseTeamTenantRole, assertCaseTeamUser } from '../../../framework/test/caseassertions/team';
 import { assertTaskCount, assertTask, findTask } from '../../../framework/test/caseassertions/task';
-import { CaseOwner, TenantRoleMember } from '../../../framework/cmmn/caseteammember';
-import CaseTeam from '../../../framework/cmmn/caseteam';
+import { CaseOwner } from '../../../framework/cmmn/team/caseteamuser';
+import CaseTeam from '../../../framework/cmmn/team/caseteam';
+import CaseTeamTenantRole from '../../../framework/cmmn/team/caseteamtenantrole';
 
 
 const tenantName = Math.random().toString(36).substring(7);
@@ -58,8 +59,8 @@ export default class TestCaseTeam extends TestCase {
         assertTaskCount(tasks, 'Unassigned', 4);
 
         // Add Approver role to sender
-        await CaseTeamService.setMember(sender, caseInstance, new CaseOwner(sender, [approverRole]));
-        await assertCaseTeamMember(sender, caseInstance, new CaseOwner(sender, [approverRole]));
+        await CaseTeamService.setUser(sender, caseInstance, new CaseOwner(sender, [approverRole]));
+        await assertCaseTeamUser(sender, caseInstance, new CaseOwner(sender, [approverRole]));
 
         // Now, sender can claim 'Approve' task
         await TaskService.claimTask(sender, approveTask)
@@ -74,8 +75,8 @@ export default class TestCaseTeam extends TestCase {
         await TaskService.getCaseTasks(receiver, caseInstance, 404);
 
         // Sender can add a role mapping to the case team
-        await CaseTeamService.setMember(sender, caseInstance, new TenantRoleMember('Receiver', [requestorRole]));
-        await assertCaseTeamMember(sender, caseInstance, new TenantRoleMember('Receiver', [requestorRole]));
+        await CaseTeamService.setTenantRole(sender, caseInstance, new CaseTeamTenantRole('Receiver', [requestorRole]));
+        await assertCaseTeamTenantRole(sender, caseInstance, new CaseTeamTenantRole('Receiver', [requestorRole]));
 
         // Now, getting the case and case tasks should be possible for receiver
         await TaskService.getCaseTasks(receiver, caseInstance);
@@ -90,17 +91,17 @@ export default class TestCaseTeam extends TestCase {
         assertTaskCount(tasks, 'Unassigned', 2);
 
         // As receiver is not a caseteam owner, he should not be able to remove sender (who is owner)
-        await CaseTeamService.removeMember(receiver, caseInstance, sender, 401, 'As receiver is not a caseteam owner, he should not be able to remove sender (who is owner)');
+        await CaseTeamService.removeUser(receiver, caseInstance, sender, 401, 'As receiver is not a caseteam owner, he should not be able to remove sender (who is owner)');
 
         // Sender makes receiver a case team owner; but via user mapping
-        await CaseTeamService.setMember(sender, caseInstance, new CaseOwner(receiver, [requestorRole]));
-        await assertCaseTeamMember(sender, caseInstance, new CaseOwner(receiver, [requestorRole]));
+        await CaseTeamService.setUser(sender, caseInstance, new CaseOwner(receiver, [requestorRole]));
+        await assertCaseTeamUser(sender, caseInstance, new CaseOwner(receiver, [requestorRole]));
 
         await CaseService.getCase(receiver, caseInstance);
         
         // Now, receiver can remove sender
-        await CaseTeamService.removeMember(receiver, caseInstance, sender);
-        await assertCaseTeamMember(receiver, caseInstance, new CaseOwner(sender, [approverRole]), false);
+        await CaseTeamService.removeUser(receiver, caseInstance, sender);
+        await assertCaseTeamUser(receiver, caseInstance, new CaseOwner(sender, [approverRole]), false);
 
         // Finally, sender cannot perform find case, case tasks, and task
         await CaseService.getCase(sender, caseInstance, 404);

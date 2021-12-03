@@ -7,8 +7,9 @@ import WorldWideTestTenant from '../../worldwidetesttenant';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
 import CasePlanService from '../../../framework/service/case/caseplanservice';
 import PlanItem from '../../../framework/cmmn/planitem';
-import CaseTeamMember, { CaseOwner } from '../../../framework/cmmn/caseteammember';
-import CaseTeam from '../../../framework/cmmn/caseteam';
+import { CaseOwner } from '../../../framework/cmmn/team/caseteamuser';
+import CaseTeamUser from "../../../framework/cmmn/team/caseteamuser";
+import CaseTeam from '../../../framework/cmmn/team/caseteam';
 import CaseHistoryService from '../../../framework/service/case/casehistoryservice';
 
 const definition = 'eventlistener.xml';
@@ -25,7 +26,7 @@ export default class TestEventAuthorization extends TestCase {
     }
 
     async run() {
-        const caseTeam = new CaseTeam([new CaseOwner(user), new CaseTeamMember(employee, ["Employee"])]);
+        const caseTeam = new CaseTeam([new CaseOwner(user), new CaseTeamUser(employee, ["Employee"])]);
 
         const startCase = { tenant, definition, caseTeam };
 
