@@ -58,7 +58,7 @@ export default class TestInvalidStartCase extends TestCase {
 
         // Wrong tenant should fail
         startCase.tenant = 'not-existing-tenants';
-        await this.tryStartCase(`Wrong tenant should fail with 401`, 401);
+        await this.tryStartCase(`Wrong tenant should fail with 404`, 404);
 
         // If user has multiple tenants, listing cases without tenant should fail
         const tenantCount = sender.userInformation?.tenants.length;
