@@ -25,7 +25,7 @@
             </planItemOnPart>
         </sentry>
         <planningTable id="pt_cm_undefined_3">
-            <discretionaryItem id="cm_csQA1_10" name="T4" definitionRef="pid_cm_csQA1_10" applicabilityRuleRefs="rule_csQA1_1">
+            <discretionaryItem id="cm_csQA1_10" name="T4" definitionRef="pid_cm_csQA1_10" applicabilityRuleRefs="rule_csQA1_1" authorizedRoleRefs="_Jn9Vt_7 _Jn9Vt_8">
                 <itemControl>
                     <repetitionRule id="cm_csQA1_10_repetitionRule">
                         <condition>
@@ -40,7 +40,7 @@
             <applicabilityRule id="rule_csQA1_1" name="isValid">
                 <condition>
                     <body>
-                            <![CDATA[discretionaryItem.name=="Opnieuw T1" || (stage.T2 != null && stage.T2.state == T(org.cafienne.cmmn.instance.State).Active)]]>
+                        <![CDATA[discretionaryItem.name=="Opnieuw T1" || (stage.T2 != null && stage.T2.state.isActive())]]>
                     </body>
                 </condition>
             </applicabilityRule>
@@ -48,7 +48,7 @@
         <humanTask id="pid_cm_csQA1_4" name="T1" isBlocking="true"/>
         <humanTask id="pid_cm_csQA1_6" name="T2" isBlocking="true">
             <planningTable id="pt_cm_7">
-                <discretionaryItem id="cm_csQA1_13" name="Opnieuw T1" definitionRef="pid_cm_csQA1_13" applicabilityRuleRefs="rule_csQA1_0"/>
+                <discretionaryItem id="cm_csQA1_13" name="Opnieuw T1" definitionRef="pid_cm_csQA1_13" applicabilityRuleRefs="rule_csQA1_0" authorizedRoleRefs="_Jn9Vt_7"/>
                 <applicabilityRule id="rule_csQA1_0" name="isValid">
                     <condition>
                         <body>
@@ -65,10 +65,34 @@
         <humanTask id="pid_cm_csQA1_16" name="Opnieuw T1" isBlocking="true"/>
         <stage id="pid_cm_csQA1_24" name="Stage" autoComplete="false">
             <planningTable id="pt_cm_25">
-                <discretionaryItem id="cm_csQA1_27" name="T5" definitionRef="pid_cm_csQA1_27"/>
+                <discretionaryItem id="cm_csQA1_27" name="T5" definitionRef="pid_cm_csQA1_27" authorizedRoleRefs="_Jn9Vt_8"/>
             </planningTable>
         </stage>
     </casePlanModel>
+    <caseRoles>
+        <role id="_Jn9Vt_7" name="Employee"/>
+        <role id="_Jn9Vt_8" name="Manager"/>
+    </caseRoles>
+    <textAnnotation id="_Jn9Vt_9">
+        <text>
+            <![CDATA[Can only be planned by "Employee" role]]>
+        </text>
+    </textAnnotation>
+    <textAnnotation id="_Jn9Vt_10">
+        <text>
+            <![CDATA[Can be planned by roles "Employee" and "Manager"]]>
+        </text>
+    </textAnnotation>
+    <textAnnotation id="_Jn9Vt_11">
+        <text>
+            <![CDATA[No role based planning authorization]]>
+        </text>
+    </textAnnotation>
+    <textAnnotation id="_Jn9Vt_12">
+        <text>
+            <![CDATA[Can only be planned by role "Manager"]]>
+        </text>
+    </textAnnotation>
     <extensionElements mustUnderstand="false">
         <cafienne:start-case-model xmlns:cafienne="org.cafienne">{
   "schema":{

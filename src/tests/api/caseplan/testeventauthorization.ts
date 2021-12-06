@@ -1,75 +1,103 @@
 'use strict';
 
-import CaseService from '../../../framework/service/case/caseservice';
-import TestCase from '../../../framework/test/testcase';
-
-import WorldWideTestTenant from '../../worldwidetesttenant';
-import RepositoryService from '../../../framework/service/case/repositoryservice';
-import CasePlanService from '../../../framework/service/case/caseplanservice';
-import PlanItem from '../../../framework/cmmn/planitem';
-import { CaseOwner } from '../../../framework/cmmn/team/caseteamuser';
-import CaseTeamUser from "../../../framework/cmmn/team/caseteamuser";
+import Case from '../../../framework/cmmn/case';
 import CaseTeam from '../../../framework/cmmn/team/caseteam';
+import CaseTeamUser, { CaseOwner } from "../../../framework/cmmn/team/caseteamuser";
 import CaseHistoryService from '../../../framework/service/case/casehistoryservice';
+import CasePlanService from '../../../framework/service/case/caseplanservice';
+import CaseService from '../../../framework/service/case/caseservice';
+import RepositoryService from '../../../framework/service/case/repositoryservice';
+import { assertPlanItem } from '../../../framework/test/caseassertions/plan';
+import TestCase from '../../../framework/test/testcase';
+import WorldWideTestTenant from '../../worldwidetesttenant';
+
 
 const definition = 'eventlistener.xml';
 
 const worldwideTenant = new WorldWideTestTenant();
-const user = worldwideTenant.sender;
 const tenant = worldwideTenant.name;
-const employee = worldwideTenant.employee;
+const caseOwner = worldwideTenant.sender;
+const caseEmployee = worldwideTenant.employee;
+const caseMember = worldwideTenant.receiver;
 
 export default class TestEventAuthorization extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(user, definition, tenant);
+        await RepositoryService.validateAndDeploy(caseOwner, definition, tenant);
     }
 
     async run() {
-        const caseTeam = new CaseTeam([new CaseOwner(user), new CaseTeamUser(employee, ["Employee"])]);
+        const caseTeam = new CaseTeam([
+            new CaseOwner(caseOwner),
+            new CaseTeamUser(caseMember, []),
+            new CaseTeamUser(caseEmployee, ["Employee"])]);
 
         const startCase = { tenant, definition, caseTeam };
 
-        const caseInstance = await CaseService.startCase(user, startCase);
-        await CaseService.getCase(user, caseInstance);
-        
-        const planItems = await CasePlanService.getPlanItems(user, caseInstance);
-        // console.log("PLanItems: " + planItems)
+        const caseInstance = await CaseService.startCase(caseOwner, startCase).then(id => CaseService.getCase(caseOwner, id));
 
-        const plainUserEvent = planItems.find((item: PlanItem) => item.name === 'PlainUserEvent');
-        if (! plainUserEvent) {
-            throw new Error('Did not find expected PlainUserEvent');
-        }
-        const employeeUserEvent = planItems.find((item: PlanItem) => item.name === 'EmployeeUserEvent');
-        if (! employeeUserEvent) {
-            throw new Error('Did not find expected EmployeeUserEvent');
-        }
-        
-        const planItem = await CasePlanService.getPlanItem(user, caseInstance, plainUserEvent.id);
-        // console.log("PLanItem: " + planItem)
+        await this.runPlainUserEventTests(caseInstance);
 
-        const history = await CaseHistoryService.getPlanItemHistory(user, caseInstance, planItem.id);
-        // console.log("History: " + history)
-        if (history.length !== 2) {
-            throw new Error(`Expected 2 history items for the UserEvent ${planItem.name} but found ${history.length}`);
-        }
+        await this.runEmployeeUserEventTests(caseInstance);
 
-        await CasePlanService.makePlanItemTransition(user, caseInstance, planItem.id, 'Occur');
-
-        await CasePlanService.getPlanItems(user, caseInstance).then(items => {
-            if (! items.find((item: PlanItem) => item.name === 'T1')) {
-                throw new Error(`Expected a plan item with name 'T1' but it was not found`)
-            }
-        });
-
-        await CaseService.getCase(user, caseInstance).then(caze => {
+        await CaseService.getCase(caseOwner, caseInstance).then(caze => {
             // console.log('Resulting case: ' + JSON.stringify(caze, undefined, 2));
         });
-
-        // This should fail
-        await CasePlanService.makePlanItemTransition(user, caseInstance, employeeUserEvent.id, 'Occur', 401, 'Raising an event wihtout having the proper role should fail');
-
-        // This should succeed
-        await CasePlanService.makePlanItemTransition(employee, caseInstance, employeeUserEvent.id, 'Occur');
     }
+
+    async runPlainUserEventTests(caseInstance: Case) {
+        const plainUserEvent = await assertPlanItem(caseOwner, caseInstance, 'PlainUserEvent', 0);
+
+        if (!plainUserEvent) {
+            throw new Error(`Did not find user event 'PlainUserEvent'`);
+        }
+
+        // Check UserEvent has 2 history items
+        await this.checkUserEventHistory(caseInstance, plainUserEvent.id, 2);
+
+        // Any case member can raise this event
+        await CasePlanService.raiseEvent(caseMember, caseInstance, plainUserEvent.id);
+
+        // Check UserEvent has 2 history items
+        await this.checkUserEventHistory(caseInstance, plainUserEvent.id, 3);
+
+        // Check that raising PlainUserEvent has resulted in the new task 'T1'
+        await assertPlanItem(caseOwner, caseInstance, 'T1', 0);
+    }
+
+    async runEmployeeUserEventTests(caseInstance: Case) {
+        await assertPlanItem(caseOwner, caseInstance, 'Repeater', 0, 'Active');
+        const employeeUserEvent = await assertPlanItem(caseOwner, caseInstance, 'EmployeeUserEvent', 0);
+        if (!employeeUserEvent) {
+            throw new Error(`Did not find user event 'EmployeeUserEvent'`);
+        }
+
+        // Raising the EmployeeUserEVent by caseMember should fail because caseMember does not have role 'Employee'
+        await CasePlanService.raiseEvent(caseMember, caseInstance, employeeUserEvent.id, 401, `Raising the EmployeeUserEVent by caseMember should fail because caseMember does not have role 'Employee'`);
+
+        // Raising the EmployeeUserEVent by caseEmployee should succeed because caseEmployee has role 'Employee'
+        await CasePlanService.raiseEvent(caseEmployee, caseInstance, employeeUserEvent.id, 200, `Raising the EmployeeUserEVent by caseEmployee should succeed because caseEmployee has role 'Employee'`);
+
+        // Check that raising EmployeeUserEVent has resulted in achieving the milestone 'M1'
+        await assertPlanItem(caseOwner, caseInstance, 'M1', 0);
+
+        // Next event round should have become active
+        await assertPlanItem(caseOwner, caseInstance, 'Repeater', 1, 'Active');
+
+        const nextEmployeeEvent = await assertPlanItem(caseOwner, caseInstance, 'EmployeeUserEvent', 0, 'Available');
+
+        // Raising the EmployeeUserEVent by caseOwner should succeed because of case ownership
+        await CasePlanService.raiseEvent(caseOwner, caseInstance, nextEmployeeEvent.id, 200, `Raising the EmployeeUserEVent by caseOwner should succeed because of case ownership`);
+    }
+
+    async checkUserEventHistory(caseInstance: Case, id: string, expectedNumberOfHistoryItems: number) {
+        // Fetch the plan item, and then the history.
+        const planItem = await CasePlanService.getPlanItem(caseOwner, caseInstance, id);
+        const history = await CaseHistoryService.getPlanItemHistory(caseOwner, caseInstance, planItem.id);
+        // console.log("History: " + history)
+        if (history.length !== expectedNumberOfHistoryItems) {
+            throw new Error(`Expected ${expectedNumberOfHistoryItems} history items for the UserEvent ${planItem.name} but found ${history.length}`);
+        }
+    }
+
 }
