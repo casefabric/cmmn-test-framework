@@ -8,7 +8,7 @@ import WorldWideTestTenant from '../../../worldwidetesttenant';
 import { ServerSideProcessing } from '../../../../framework/test/time';
 import TaskContent from './taskcontent';
 import Comparison from '../../../../framework/test/comparison';
-import { assertPlanItemState } from '../../../../framework/test/caseassertions/plan'
+import { assertPlanItem } from '../../../../framework/test/caseassertions/plan'
 import MockServer from '../../../../framework/mock/mockserver';
 import GetMock from '../../../../framework/mock/getmock';
 import PostMock from '../../../../framework/mock/postmock';
@@ -84,7 +84,7 @@ export default class TestTaskValidationAPI extends TestCase {
 
         caseInstance = await CaseService.getCase(pete, caseInstance);
 
-        await assertPlanItemState(pete, caseInstance, 'AssertMockServiceIsRunning', 0, 'Completed')
+        await assertPlanItem(pete, caseInstance, 'AssertMockServiceIsRunning', 0, 'Completed')
 
         const taskId = caseInstance.planitems.find(p => p.name === 'HumanTask')?.id;
         if (!taskId) {

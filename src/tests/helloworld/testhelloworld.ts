@@ -5,7 +5,7 @@ import TaskService from '../../framework/service/task/taskservice';
 import TestCase from '../../framework/test/testcase';
 import WorldWideTestTenant from '../worldwidetesttenant';
 import RepositoryService from '../../framework/service/case/repositoryservice';
-import { assertCasePlanState } from '../../framework/test/caseassertions/plan';
+import { assertCasePlan } from '../../framework/test/caseassertions/plan';
 import { assertTask, verifyTaskInput, findTask } from '../../framework/test/caseassertions/task';
 import CaseTeam from '../../framework/cmmn/team/caseteam';
 import { CaseOwner } from '../../framework/cmmn/team/caseteamuser';
@@ -73,7 +73,7 @@ export default class TestHelloworld extends TestCase {
         await TaskService.completeTask(sender, readResponseTask);
         await assertTask(sender, readResponseTask, 'Complete', 'Completed', sender, sender, sender);
 
-        await assertCasePlanState(sender, caseInstance, 'Completed');
+        await assertCasePlan(sender, caseInstance, 'Completed');
 
         console.log(`\n\nCase ID: ${freshCaseInstance.id}\n\nCase Team:${JSON.stringify(freshCaseInstance.team, undefined, 2)}`);
     }

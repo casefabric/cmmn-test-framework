@@ -7,7 +7,7 @@ import MockServer from "../../../framework/mock/mockserver";
 import GetMock from "../../../framework/mock/getmock";
 import TestCase from "../../../framework/test/testcase";
 import Case from "../../../framework/cmmn/case";
-import { assertPlanItemState } from "../../../framework/test/caseassertions/plan";
+import { assertPlanItem } from "../../../framework/test/caseassertions/plan";
 import CasePlanService from "../../../framework/service/case/caseplanservice";
 import { ServerSideProcessing, SomeTime } from "../../../framework/test/time";
 
@@ -86,7 +86,7 @@ export default class TestRepeatStage extends TestCase {
             })
 
             // Status stage of index i must be completed
-            await assertPlanItemState(user, caseInstance, 'Status', i, 'Completed');
+            await assertPlanItem(user, caseInstance, 'Status', i, 'Completed');
         }
 
         // Make transistion on Kill user event

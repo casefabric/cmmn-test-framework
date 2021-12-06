@@ -4,7 +4,7 @@ import CaseService from '../../../../framework/service/case/caseservice';
 import TestCase from '../../../../framework/test/testcase';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
 import RepositoryService from '../../../../framework/service/case/repositoryservice';
-import { assertPlanItemState } from '../../../../framework/test/caseassertions/plan';
+import { assertPlanItem } from '../../../../framework/test/caseassertions/plan';
 import assertCaseFileContent from '../../../../framework/test/caseassertions/file';
 import DebugService from '../../../../framework/service/case/debugservice';
 import CaseFileService from '../../../../framework/service/case/casefileservice';
@@ -63,7 +63,7 @@ export default class TestCalculation extends TestCase {
         }
 
         try {
-            await assertPlanItemState(user, caseInstance, calculationTask, 0, 'Completed');
+            await assertPlanItem(user, caseInstance, calculationTask, 0, 'Completed');
         } catch (notFoundError) {
             // If the test fails after 10 calls, get the events for the task and see if we can print any logging info
             await DebugService.getParsedEvents(caseInstance.id, user).then(events => {

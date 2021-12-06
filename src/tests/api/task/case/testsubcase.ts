@@ -6,7 +6,7 @@ import CaseFileService from "../../../../framework/service/case/casefileservice"
 import CaseService from "../../../../framework/service/case/caseservice";
 import RepositoryService from "../../../../framework/service/case/repositoryservice";
 import TaskService from "../../../../framework/service/task/taskservice";
-import { assertCasePlanState, assertPlanItemState } from "../../../../framework/test/caseassertions/plan";
+import { assertCasePlan, assertPlanItem } from "../../../../framework/test/caseassertions/plan";
 import { findTask } from "../../../../framework/test/caseassertions/task";
 import { assertCaseTeamUser } from "../../../../framework/test/caseassertions/team";
 import TestCase from "../../../../framework/test/testcase";
@@ -52,10 +52,10 @@ export default class TestSubCase extends TestCase {
         await assertCaseTeamUser(sender, caseInstance, new CaseOwner(sender, []));
         await assertCaseTeamUser(sender, caseInstance, new CaseTeamUser(receiver, []), false);
 
-        await assertPlanItemState(sender, caseInstance, subCase.name, subCase.index, 'Active');
+        await assertPlanItem(sender, caseInstance, subCase.name, subCase.index, 'Active');
 
         // Get subcase is possible by sender
-        const childCaseInstance = await assertCasePlanState(sender, subCase.id, 'Active');
+        const childCaseInstance = await assertCasePlan(sender, subCase.id, 'Active');
 
         // Sender is the owner of the subcase and receiver doesn't exist in the subcase yet
         await assertCaseTeamUser(sender, childCaseInstance, new CaseOwner(sender, []));
@@ -84,13 +84,13 @@ export default class TestSubCase extends TestCase {
         await TaskService.completeTask(receiver, readResponseTask);
 
         // Both subcase and parent case plans should be completed
-        await assertCasePlanState(sender, childCaseInstance, 'Completed');
+        await assertCasePlan(sender, childCaseInstance, 'Completed');
 
         // Give the server some time to respond back from subcase to parent case
-        await assertPlanItemState(sender, caseInstance, subCase.name, subCase.index, 'Completed', 10, 2000);
+        await assertPlanItem(sender, caseInstance, subCase.name, subCase.index, 'Completed', 10, 2000);
 
         // And now check parent case.
-        await assertCasePlanState(sender, parentCaseInstance, 'Completed');
+        await assertCasePlan(sender, parentCaseInstance, 'Completed');
 
         // Still, receiver should not be part of the parent case team
         await assertCaseTeamUser(sender, parentCaseInstance, new CaseTeamUser(receiver, []), false);
