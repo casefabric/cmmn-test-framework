@@ -56,6 +56,7 @@ import TestRecovery from './tests/api/environment/testrecovery';
 import TestSwagger from './tests/api/environment/testswagger';
 import TestConsentGroupAPI from './tests/api/consentgroup/testconsentgroupapi';
 import TestCaseTeamConsentGroupAPI from './tests/api/caseteam/testcaseteamconsentgroupapi';
+import TestCaseTeamAuthorizations from './tests/api/caseteam/testcaseteamauthorizations';
 
 function findTestsFromCommandLineArguments(): Array<string> {
     const time = process.argv[2];
@@ -158,6 +159,7 @@ const AllTestCases = new TestClasses([
     , TestCaseTeamTenantRoleMembers
     , TestCaseTeamConsentGroupAPI
     , TestCaseTeamTaskAuthorizations
+    , TestCaseTeamAuthorizations
     , TestEventAuthorization
     , TestIncidentManagement
     , TestTravelRequest
