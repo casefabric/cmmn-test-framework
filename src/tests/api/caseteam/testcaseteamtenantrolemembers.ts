@@ -31,12 +31,12 @@ export default class TestCaseTeamTenantRoleMembers extends TestCase {
     }
 
     async run() {
-        const caseTeam = new CaseTeam([
-            new CaseOwner(sender)
-        ], [], [
-            new CaseTeamTenantRole('Sender', [requestorRole, approverRole]),
-            new CaseTeamTenantRole('Receiver', [participantRole])
-        ]);
+        const caseOwnerSenderUser = new CaseOwner(sender);
+        const caseOwnerReceiverUser = new CaseTeamUser(receiver, ["Approver"]);
+        const caseSenderRole = new CaseTeamTenantRole('Sender', [requestorRole, approverRole]);
+        const caseReceiverRole = new CaseTeamTenantRole('Receiver', [participantRole]);
+
+        const caseTeam = new CaseTeam([caseOwnerSenderUser], [], [caseSenderRole, caseReceiverRole]);
         const startCase = { tenant, definition, debug: true, caseTeam };
 
         const caseInstance = await CaseService.startCase(sender, startCase);
@@ -50,11 +50,28 @@ export default class TestCaseTeamTenantRoleMembers extends TestCase {
 
         // Print the case team
         await CaseTeamService.getCaseTeam(sender, caseInstance).then(team => {
-            if (caseTeam.users.length != team.users.length) {
+            if (caseTeam.users.length != team.users.length || caseTeam.tenantRoles.length != team.tenantRoles.length) {
                 throw new Error('Unexpected different number of members');
             }
             // assertBindings(caseTeam.roleBindings, team.roleBindings);
             console.log('Team: ' + JSON.stringify(team, undefined, 2));
+        });
+
+        // Make sender a case owner
+        caseSenderRole.isOwner = true;
+        await CaseTeamService.setCaseTeam(sender, caseInstance, caseTeam);
+        await CaseTeamService.getCaseTeam(sender, caseInstance).then(team => {
+            if (!team.tenantRoles.find(role => role.tenantRole === caseSenderRole.tenantRole && role.isOwner)) {
+                throw new Error('Expecting case sender role to have case ownership')
+            }
+        });
+        // And revert ownership again
+        caseSenderRole.isOwner = false;
+        await CaseTeamService.setCaseTeam(sender, caseInstance, caseTeam);
+        await CaseTeamService.getCaseTeam(sender, caseInstance).then(team => {
+            if (!team.tenantRoles.find(role => role.tenantRole === caseSenderRole.tenantRole && !role.isOwner)) {
+                throw new Error('Expecting case sender role to have case ownership')
+            }
         });
 
         // Claim a task a receiver should work
@@ -76,7 +93,7 @@ export default class TestCaseTeamTenantRoleMembers extends TestCase {
         // TenantService.addTenantUserRole(sender, worldwideTenant.tenant, receiver.id, "Sender");
         // await CaseTeamService.addMemberRole(caseInstance, sender, "Receiver", "Approver");
 
-        await CaseTeamService.setUser(sender, caseInstance, new CaseTeamUser(receiver, ["Approver"]))
+        await CaseTeamService.setUser(sender, caseInstance, caseOwnerReceiverUser);
         // Now it should be possible
         // await TaskService.claimTask(receiver, approveTask);
 
@@ -84,8 +101,6 @@ export default class TestCaseTeamTenantRoleMembers extends TestCase {
         await TaskService.claimTask(sender, approveTask);
 
         // Remove role binding for receiver, and see if he can still access the case
-
-
     }
 
     async claimTaskShouldFail(user: User, task: Task, expectedMessage: string, expectedStatusCode: number) {
