@@ -18,6 +18,13 @@ export default class ConsentGroup {
         this.tenant = tenantIdentifier?.toString();
     }
 
+    toJson() {
+        const tenant = this.tenant;
+        const id = this.id;
+        const members = this.members.map(member => (member.toJson) ? member.toJson() : member);
+        return { tenant, id, members };
+    }
+
     /**
      * Returns the tenant users that are owner.
      */

@@ -18,7 +18,7 @@ export default class PlatformService {
      */
     static async createTenant(user: User, tenant: Tenant, expectedStatusCode: number = 204, errorMsg = `CreateTenant is not expected to succeed for user ${user} in tenant ${tenant}`) {
         if (Config.PlatformService.log) logger.debug(`Creating Tenant ${tenant.name}`);
-        const response = await CafienneService.post('/platform', user, tenant);
+        const response = await CafienneService.post('/platform', user, tenant.toJson());
         if (response.status === 400 && expectedStatusCode === 204) {
             const msg = await response.text();
             if (msg === 'Tenant already exists') {

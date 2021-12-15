@@ -1,12 +1,10 @@
-import User from '../../user';
-import CafienneService from '../cafienneservice';
-import Tenant from '../../tenant/tenant';
-import { checkResponse, checkJSONResponse } from '../response';
-import ConsentGroup from './consentgroup';
-import ConsentGroupMember from './consentgroupmember';
-import { UpsertableConsentGroupMember } from './consentgroupmember';
 import Config from '../../../config';
 import logger from '../../logger';
+import User from '../../user';
+import CafienneService from '../cafienneservice';
+import { checkJSONResponse, checkResponse } from '../response';
+import ConsentGroup from './consentgroup';
+import ConsentGroupMember from './consentgroupmember';
 
 
 /**
@@ -27,7 +25,7 @@ export default class ConsentGroupService {
             throw new Error('Creating a Consent Group can only be done if the tenant property is filled.');
         }
 
-        const response = await CafienneService.post(`/consent-group/${tenant}`, user, group);
+        const response = await CafienneService.post(`/consent-group/${tenant}`, user, group.toJson());
         if (response.status === 400 && expectedStatusCode === 200) {
             const msg = await response.text();
             if (msg === 'Consent group already exists') {
@@ -78,8 +76,8 @@ export default class ConsentGroupService {
      * @param newUser The new user information that will be updated
      * @param expectedStatusCode 
      */
-    static async setGroupMember(user: User, groupId: ConsentGroup | string, newUser: UpsertableConsentGroupMember, expectedStatusCode: number = 202) {
-        const response = await CafienneService.post(`/consent-group/${groupId}/members`, user, newUser);
+    static async setGroupMember(user: User, groupId: ConsentGroup | string, newUser: ConsentGroupMember, expectedStatusCode: number = 202) {
+        const response = await CafienneService.post(`/consent-group/${groupId}/members`, user, newUser.toJson());
         const msg = `SetGroupMember is not expected to succeed for user ${user.id} in consent group ${groupId}`;
         return checkResponse(response, msg, expectedStatusCode);
     }

@@ -15,6 +15,10 @@ export default class Tenant {
         return this.users.filter(user => user.isOwner);
     }
 
+    toJson() {
+        return { name: this.name, users: this.users.map(user => user.toJson ? user.toJson() : user)}
+    }
+
     toString() {
         return this.name;
     }

@@ -1,7 +1,7 @@
 import User from "../../../framework/user";
 import TenantService from "../../../framework/service/tenant/tenantservice";
 import Tenant from "../../../framework/tenant/tenant";
-import TenantUser, { TenantOwner, UpsertableTenantUser } from "../../../framework/tenant/tenantuser";
+import TenantUser, { TenantOwner } from "../../../framework/tenant/tenantuser";
 import TestCase from "../../../framework/test/testcase";
 import Comparison from "../../../framework/test/comparison";
 import PlatformService from "../../../framework/service/platform/platformservice";
@@ -347,7 +347,7 @@ export default class TestTenantRegistration extends TestCase {
             }
         });
 
-        await TenantService.setTenantUser(tenantOwner1, tenant1, new UpsertableTenantUser(userId));
+        await TenantService.setTenantUser(tenantOwner1, tenant1, new TenantUser(userId));
         await TenantService.getTenantUser(tenantOwner1, tenant1, userId).then(user => {
             console.log("User: " + JSON.stringify(user, undefined, 2));
             if (user.name) {
@@ -372,7 +372,7 @@ export default class TestTenantRegistration extends TestCase {
         for (let i = 0; i < ownerList.length; i++) {
             const userId = ownerList[i];
             if (userId !== tenantOwner1.id) {
-                const replaceTheOwner = new UpsertableTenantUser(userId);
+                const replaceTheOwner = new TenantUser(userId);
                 replaceTheOwner.enabled = false;
                 await TenantService.setTenantUser(tenantOwner1, tenant1, replaceTheOwner);
             }
@@ -392,7 +392,7 @@ export default class TestTenantRegistration extends TestCase {
         await TenantService.setTenantUser(tenantOwner1, tenant1, tenantOwner1, 400);
 
         // Replacing a non-existing user should fail, whereas "updating" is actually an upsert.
-        const notExistingUser = new UpsertableTenantUser(`I-don't-think-so-i-don't-exist`)
+        const notExistingUser = new TenantUser(`I-don't-think-so-i-don't-exist`)
         await TenantService.setTenantUser(tenantOwner1, tenant1, notExistingUser);
         await TenantService.getTenantUser(tenantOwner1, tenant1, notExistingUser.id).then(user => {
             console.log(`Better start thinking then, dear ${user.userId}`);

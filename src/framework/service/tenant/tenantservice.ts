@@ -1,7 +1,7 @@
 import User from '../../user';
 import CafienneService from '../cafienneservice';
 import Tenant from '../../tenant/tenant';
-import TenantUser, { UpsertableTenantUser } from '../../tenant/tenantuser';
+import TenantUser from '../../tenant/tenantuser';
 import { checkResponse, checkJSONResponse } from '../response';
 
 
@@ -49,7 +49,7 @@ export default class TenantService {
      * @param tenantUserId 
      * @param expectedStatusCode 
      */
-    static async getTenantUser(user: User, tenant: Tenant | string, tenantUserId: UpsertableTenantUser | string, expectedStatusCode: number = 200,  msg = `GetTenantUser(${tenantUserId}) is not expected to succeed for user ${user} in tenant ${tenant}`) {
+    static async getTenantUser(user: User, tenant: Tenant | string, tenantUserId: TenantUser | string, expectedStatusCode: number = 200,  msg = `GetTenantUser(${tenantUserId}) is not expected to succeed for user ${user} in tenant ${tenant}`) {
         const response = await CafienneService.get(`/tenant/${tenant}/users/${tenantUserId}`, user);
         return checkJSONResponse(response, msg, expectedStatusCode, TenantUser);
     }
@@ -61,8 +61,9 @@ export default class TenantService {
      * @param newTenantUser 
      * @param expectedStatusCode 
      */
-    static async setTenantUser(user: User, tenant: Tenant | string, newTenantUser: UpsertableTenantUser, expectedStatusCode: number = 204,  msg = `SetTenantUser is not expected to succeed for user ${user} in tenant ${tenant}`) {
-        const response = await CafienneService.post(`/tenant/${tenant}/users`, user, newTenantUser);
+    static async setTenantUser(user: User, tenant: Tenant | string, newTenantUser: TenantUser, expectedStatusCode: number = 204,  msg = `SetTenantUser is not expected to succeed for user ${user} in tenant ${tenant}`) {
+        const userToSet = newTenantUser.toJson ? newTenantUser.toJson() : newTenantUser;
+        const response = await CafienneService.post(`/tenant/${tenant}/users`, user, userToSet);
         return checkResponse(response, msg, expectedStatusCode);
     }
 
@@ -73,7 +74,7 @@ export default class TenantService {
      * @param newTenantUser 
      * @param expectedStatusCode 
      */
-     static async removeTenantUser(user: User, tenant: Tenant | string, tenantUser: UpsertableTenantUser | string, expectedStatusCode: number = 204,  msg = `RemoveTenantUser is not expected to succeed for user ${user} in tenant ${tenant}`) {
+     static async removeTenantUser(user: User, tenant: Tenant | string, tenantUser: TenantUser | string, expectedStatusCode: number = 204,  msg = `RemoveTenantUser is not expected to succeed for user ${user} in tenant ${tenant}`) {
         const response = await CafienneService.delete(`/tenant/${tenant}/users/${tenantUser}`, user);
         return checkResponse(response, msg, expectedStatusCode);
     }
@@ -85,7 +86,7 @@ export default class TenantService {
      * @param expectedStatusCode 
      */
     static async replaceTenant(user: User, tenant: Tenant, expectedStatusCode: number = 204,  msg = `ReplaceTenant is not expected to succeed for user ${user} in tenant ${tenant}`) {
-        const response = await CafienneService.post(`/tenant/${tenant}`, user, tenant);
+        const response = await CafienneService.post(`/tenant/${tenant}`, user, tenant.toJson());
         return checkResponse(response, msg, expectedStatusCode);
     }
 }
