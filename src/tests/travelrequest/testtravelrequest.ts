@@ -25,9 +25,9 @@ export default class TestTravelRequest extends TestCase {
         await worldwideTenant.create();
         const platformOwner = worldwideTenant.sender;
         try {
-            await TenantService.addTenantUser(platformOwner, worldwideTenant.tenant, requestor);
-            await TenantService.addTenantUser(platformOwner, worldwideTenant.tenant, approver);
-            await TenantService.addTenantUser(platformOwner, worldwideTenant.tenant, lana);            
+            await TenantService.setTenantUser(platformOwner, worldwideTenant.tenant, requestor);
+            await TenantService.setTenantUser(platformOwner, worldwideTenant.tenant, approver);
+            await TenantService.setTenantUser(platformOwner, worldwideTenant.tenant, lana);            
         } catch (e) {
             if (e.message.indexOf('already exists') < 0) {
                 console.log(e);

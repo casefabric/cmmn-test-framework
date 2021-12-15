@@ -1,14 +1,12 @@
 'use strict';
 
 import CaseTeam from '../../../framework/cmmn/team/caseteam';
-import { CaseOwner } from '../../../framework/cmmn/team/caseteamuser';
-import CaseTeamUser from '../../../framework/cmmn/team/caseteamuser';
 import CaseTeamTenantRole from '../../../framework/cmmn/team/caseteamtenantrole';
+import CaseTeamUser, { CaseOwner } from '../../../framework/cmmn/team/caseteamuser';
 import CaseFileService from '../../../framework/service/case/casefileservice';
 import CaseService from '../../../framework/service/case/caseservice';
 import CaseTeamService from '../../../framework/service/case/caseteamservice';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
-import TenantService from '../../../framework/service/tenant/tenantservice';
 import { assertCaseTeam, assertCaseTeamUser } from '../../../framework/test/caseassertions/team';
 import TestCase from '../../../framework/test/testcase';
 import User from '../../../framework/user';
@@ -32,7 +30,6 @@ export default class TestCaseTeamAPI extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
         await RepositoryService.validateAndDeploy(sender, definition, tenant);
-        await TenantService.addTenantUserRole(sender, worldwideTenant.tenant, sender.id, 'Receiver');
     }
 
     async run() {

@@ -1,15 +1,13 @@
 'use strict';
 
-import CaseService from '../../../framework/service/case/caseservice';
-import TestCase from '../../../framework/test/testcase';
-import WorldWideTestTenant from '../../worldwidetesttenant';
-import RepositoryService from '../../../framework/service/case/repositoryservice';
-import { CaseOwner } from '../../../framework/cmmn/team/caseteamuser';
-import CaseTeamUser from "../../../framework/cmmn/team/caseteamuser";
 import CaseTeam from '../../../framework/cmmn/team/caseteam';
-import TenantService from '../../../framework/service/tenant/tenantservice';
+import CaseTeamUser, { CaseOwner } from "../../../framework/cmmn/team/caseteamuser";
+import CaseService from '../../../framework/service/case/caseservice';
+import RepositoryService from '../../../framework/service/case/repositoryservice';
 import StartCase from '../../../framework/service/case/startcase';
 import CafienneResponse from '../../../framework/service/response';
+import TestCase from '../../../framework/test/testcase';
+import WorldWideTestTenant from '../../worldwidetesttenant';
 
 const definition = 'caseteam.xml';
 
@@ -20,7 +18,6 @@ export default class TestInvalidStartCase extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
         await RepositoryService.validateAndDeploy(sender, definition, tenant);
-        await TenantService.addTenantUserRole(sender, worldwideTenant.tenant, sender.id, "Receiver");
     }
 
     startCase: StartCase = { tenant, definition, debug: true };

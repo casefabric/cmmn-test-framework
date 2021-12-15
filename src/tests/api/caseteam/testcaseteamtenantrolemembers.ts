@@ -90,9 +90,6 @@ export default class TestCaseTeamTenantRoleMembers extends TestCase {
         // Claim task must not be possible for the receiver with task not found error
         await this.claimTaskShouldFail(receiver, approveTask, 'You do not have permission to perform this operation', 401);
 
-        // TenantService.addTenantUserRole(sender, worldwideTenant.tenant, receiver.id, "Sender");
-        // await CaseTeamService.addMemberRole(caseInstance, sender, "Receiver", "Approver");
-
         await CaseTeamService.setUser(sender, caseInstance, caseOwnerReceiverUser);
         // Now it should be possible
         // await TaskService.claimTask(receiver, approveTask);
