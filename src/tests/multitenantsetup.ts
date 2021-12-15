@@ -40,9 +40,9 @@ export default class MultiTenantSetup {
     groupRoleTester = 'tester';
 
     // Create consent groups
-    moonGroup = new ConsentGroup(this.moon, [this.neil.asCGO(), this.buzz.asCGM(this.groupRoleUser), this.alien.asCGM(this.groupRoleTester)], 'moon-group');
-    marsGroup = new ConsentGroup(this.mars, [this.jeff.asCGO(), this.boy.asCGM(this.groupRoleUser), this.alien.asCGM(this.groupRoleTester)], 'mars-group');
-    marsGroup2 = new ConsentGroup(this.mars, [this.boy.asCGO(), this.elon.asCGM(this.groupRoleUser), this.martian.asCGM(this.groupRoleTester)], 'mars-group2');
+    moonGroup = new ConsentGroup([this.neil.asCGO(), this.buzz.asCGM(this.groupRoleUser), this.alien.asCGM(this.groupRoleTester)], 'moon-group');
+    marsGroup = new ConsentGroup([this.jeff.asCGO(), this.boy.asCGM(this.groupRoleUser), this.alien.asCGM(this.groupRoleTester)], 'mars-group');
+    marsGroup2 = new ConsentGroup([this.boy.asCGO(), this.elon.asCGM(this.groupRoleUser), this.martian.asCGM(this.groupRoleTester)], 'mars-group2');
 
     constructor(public platformAdmin: User = new User('admin')) {
     }
@@ -67,9 +67,9 @@ export default class MultiTenantSetup {
         await this.jeff.login();
         await this.alien.login();
         await this.martian.login();
-        await ConsentGroupService.createGroup(this.neil, this.moonGroup);
-        await ConsentGroupService.createGroup(this.boy, this.marsGroup);
-        await ConsentGroupService.createGroup(this.boy, this.marsGroup2);
+        await ConsentGroupService.createGroup(this.neil, this.moon, this.moonGroup);
+        await ConsentGroupService.createGroup(this.boy, this.mars, this.marsGroup);
+        await ConsentGroupService.createGroup(this.boy, this.mars, this.marsGroup2);
         // Additionally get the groups, to since ConsentGroupLastModified 
         //  is not taken into account when running e.g. StartCase.
         await ConsentGroupService.getGroup(this.neil, this.moonGroup);

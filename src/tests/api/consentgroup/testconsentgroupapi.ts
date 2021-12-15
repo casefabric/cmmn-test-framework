@@ -28,7 +28,7 @@ export default class TestConsentGroupAPI extends TestCase {
         const member = new ConsentGroupMember(tenantUser.id, []); // Employee
         const newMember = new ConsentGroupMember(tenantOwner.id, ["MemberRole"]); // Receiver
         const members: Array<ConsentGroupMember> = [];
-        const group = new ConsentGroup(tenant, members, groupId);
+        const group = new ConsentGroup(members, groupId);
         await owner.login();
         await member.login();
         await newMember.login();
@@ -36,23 +36,23 @@ export default class TestConsentGroupAPI extends TestCase {
         // Check that it is not possible to add a member if the group does not yet exist
         await ConsentGroupService.setGroupMember(tenantOwner, `not-existing-group-${guid}`, member, 404);
         // Check that only tenant owners can create a consent group
-        await ConsentGroupService.createGroup(tenantUser, group, 401);
+        await ConsentGroupService.createGroup(tenantUser, tenant, group, 401);
         // Check that a consent group must have at least one member
-        await ConsentGroupService.createGroup(tenantOwner, group, 400);
+        await ConsentGroupService.createGroup(tenantOwner, tenant, group, 400);
         // Add a member
         members.push(member);
         // Check that a consent group must have at least one owner
-        await ConsentGroupService.createGroup(tenantOwner, group, 400);
+        await ConsentGroupService.createGroup(tenantOwner, tenant, group, 400);
         // Add an owner
         members.push(owner);
         // Now it should be possible to create a group
-        await ConsentGroupService.createGroup(tenantAndGroupOwner, group);
+        await ConsentGroupService.createGroup(tenantAndGroupOwner, tenant, group);
         // But it should not be possible to create the same group again.
-        await ConsentGroupService.createGroup(tenantAndGroupOwner, group, 400);
+        await ConsentGroupService.createGroup(tenantAndGroupOwner, tenant, group, 400);
 
         // If we remove the initial groupId, then we should be able to again create a group.
         delete group.id;
-        await ConsentGroupService.createGroup(tenantAndGroupOwner, group);
+        await ConsentGroupService.createGroup(tenantAndGroupOwner, tenant, group);
         // Validate that the new group indeed has a different id
         if (group.id === groupId) {
             throw new Error(`Expected the server to generate a new group id, but found client-side generated group id???`);

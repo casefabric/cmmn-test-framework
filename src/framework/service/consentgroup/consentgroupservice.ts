@@ -1,5 +1,6 @@
 import Config from '../../../config';
 import logger from '../../logger';
+import Tenant from '../../tenant/tenant';
 import User from '../../user';
 import CafienneService from '../cafienneservice';
 import { checkJSONResponse, checkResponse } from '../response';
@@ -19,12 +20,7 @@ export default class ConsentGroupService {
      * @param expectedStatusCode 
      * @returns 
      */
-    static async createGroup(user: User, group: ConsentGroup, expectedStatusCode: number = 200) {
-        const tenant = group.tenant;
-        if (! tenant) {
-            throw new Error('Creating a Consent Group can only be done if the tenant property is filled.');
-        }
-
+    static async createGroup(user: User, tenant: Tenant | string, group: ConsentGroup, expectedStatusCode: number = 200) {
         const response = await CafienneService.post(`/consent-group/${tenant}`, user, group.toJson());
         if (response.status === 400 && expectedStatusCode === 200) {
             const msg = await response.text();
