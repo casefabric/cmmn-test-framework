@@ -53,7 +53,7 @@ import TestCaseFileArrayAPI from './tests/api/casefile/testcasefilearrayapi';
 import TestCaseMigration from './tests/api/case/migration/testcasemigration';
 import TestSubCaseMigration from './tests/api/case/migration/testsubcasemigration';
 import TestRecovery from './tests/api/environment/testrecovery';
-import PingSwagger from './tests/api/environment/pingswagger';
+import TestSwagger from './tests/api/environment/testswagger';
 
 function findTestsFromCommandLineArguments(): Array<string> {
     const time = process.argv[2];
@@ -118,8 +118,8 @@ class TestResults {
 const AllTestCases = new TestClasses([
     PingTokenService
     , PingTestEnvironment
-    , PingSwagger
     , TestResponseType
+    , TestSwagger
     , TestHelloworld
     , TestTaskCompletion
     , TestTaskOutputOperations
