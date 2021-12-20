@@ -1,14 +1,13 @@
 'use strict';
 
+import Config from '../../../config';
+import CaseTeam from '../../../framework/cmmn/caseteam';
+import { CaseOwner } from '../../../framework/cmmn/caseteammember';
+import CafienneService, { printHeaders } from '../../../framework/service/cafienneservice';
 import CaseService from '../../../framework/service/case/caseservice';
+import RepositoryService from '../../../framework/service/case/repositoryservice';
 import TestCase from '../../../framework/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
-import RepositoryService from '../../../framework/service/case/repositoryservice';
-import { CaseOwner } from '../../../framework/cmmn/caseteammember';
-import CaseTeam from '../../../framework/cmmn/caseteam';
-import Case from '../../../framework/cmmn/case';
-import Config from '../../../config';
-import CafienneService, { printHeaders } from '../../../framework/service/cafienneservice';
 
 const worldwideTenant = new WorldWideTestTenant('wwtt-2');
 const definition = 'caseteam.xml';
