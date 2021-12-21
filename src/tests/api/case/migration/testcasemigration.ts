@@ -4,13 +4,14 @@ import TaskService from '../../../../framework/service/task/taskservice';
 import TestCase from '../../../../framework/test/testcase';
 import RepositoryService from '../../../../framework/service/case/repositoryservice';
 import Case from '../../../../framework/cmmn/case';
-import CaseTeam from '../../../../framework/cmmn/caseteam';
+import CaseTeam from '../../../../framework/cmmn/team/caseteam';
 import CaseService from '../../../../framework/service/case/caseservice';
 import CaseMigrationService, { DefinitionMigration } from '../../../../framework/service/case/casemigrationservice';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
 import { findTask } from '../../../../framework/test/caseassertions/task';
 import CaseFileService from '../../../../framework/service/case/casefileservice';
-import CaseTeamMember, { CaseOwner } from '../../../../framework/cmmn/caseteammember';
+import { CaseOwner } from '../../../../framework/cmmn/team/caseteamuser';
+import CaseTeamUser from "../../../../framework/cmmn/team/caseteamuser";
 import CaseTeamService from '../../../../framework/service/case/caseteamservice';
 import CasePlanService from '../../../../framework/service/case/caseplanservice';
 
@@ -38,7 +39,7 @@ export default class TestCaseMigration extends TestCase {
         
         const caseTeam = new CaseTeam([
             new CaseOwner(user, ["ADMIN", "TempRole"]), 
-            new CaseTeamMember(worldwideTenant.receiver, ["OneMore"])
+            new CaseTeamUser(worldwideTenant.receiver, ["OneMore"])
         ]);
         const startCase = { 
             tenant, 

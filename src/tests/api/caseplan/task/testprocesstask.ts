@@ -8,7 +8,7 @@ import CasePlanService from '../../../../framework/service/case/caseplanservice'
 import CaseFileService from '../../../../framework/service/case/casefileservice';
 import MockServer from '../../../../framework/mock/mockserver';
 import PostMock from '../../../../framework/mock/postmock';
-import { assertPlanItemState } from '../../../../framework/test/caseassertions/plan';
+import { assertPlanItem } from '../../../../framework/test/caseassertions/plan';
 import assertCaseFileContent from '../../../../framework/test/caseassertions/file';
 
 const definition = 'processtasktest.xml';
@@ -61,7 +61,7 @@ export default class TestProcessTask extends TestCase {
         await CaseFileService.createCaseFileItem(user, caseInstance, 'ServiceInput', okServiceInput);
         await CasePlanService.makePlanItemTransition(user, caseInstance, 'Get OK', 'Occur');
 
-        await assertPlanItemState(user, caseInstance, 'Get Object Response', 0, 'Completed');
+        await assertPlanItem(user, caseInstance, 'Get Object Response', 0, 'Completed');
 
         await CaseFileService.getCaseFile(user, caseInstance).then(file => {
             console.log("Case File " + JSON.stringify(file, undefined, 2));
@@ -78,7 +78,7 @@ export default class TestProcessTask extends TestCase {
         await CaseFileService.updateCaseFileItem(user, caseInstance, 'ServiceInput', failureServiceInput);
         await CasePlanService.makePlanItemTransition(user, caseInstance, 'Get Error', 'Occur');
 
-        await assertPlanItemState(user, caseInstance, 'Get Error Response', 0, 'Failed');
+        await assertPlanItem(user, caseInstance, 'Get Error Response', 0, 'Failed');
 
         await CaseFileService.getCaseFile(user, caseInstance).then(file => {
             console.log("Case File " + JSON.stringify(file, undefined, 2));

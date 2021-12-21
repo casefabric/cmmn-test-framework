@@ -6,11 +6,12 @@ import TestCase from '../../framework/test/testcase';
 import WorldWideTestTenant from '../worldwidetesttenant';
 import RepositoryService from '../../framework/service/case/repositoryservice';
 import { ServerSideProcessing } from '../../framework/test/time';
-import { assertPlanItemState} from '../../framework/test/caseassertions/plan'
+import { assertPlanItem} from '../../framework/test/caseassertions/plan'
 import { assertTask, verifyTaskInput, findTask } from '../../framework/test/caseassertions/task'
 import IncidentContent from './incidentmanagementcontent';
-import CaseTeam from '../../framework/cmmn/caseteam';
-import CaseTeamMember, { CaseOwner } from '../../framework/cmmn/caseteammember';
+import CaseTeam from '../../framework/cmmn/team/caseteam';
+import { CaseOwner } from '../../framework/cmmn/team/caseteamuser';
+import CaseTeamUser from "../../framework/cmmn/team/caseteamuser";
 import MockServer from '../../framework/mock/mockserver';
 import GetMock from '../../framework/mock/getmock';
 
@@ -63,7 +64,7 @@ export default class TestIncidentManagement extends TestCase {
     async run() {
         const inputs = IncidentContent.inputs;
         const firstTaskInput = IncidentContent.firstTaskInput;
-        const caseTeam = new CaseTeam([new CaseOwner(raiser), new CaseTeamMember(solver)]);
+        const caseTeam = new CaseTeam([new CaseOwner(raiser), new CaseTeamUser(solver)]);
         const startCase = { tenant, definition, inputs, caseTeam };
         const firstTaskName = 'Verify Details';
 
@@ -108,17 +109,17 @@ Starting another case instance of incident management to test Invalid status.
         await ServerSideProcessing();
 
         // Verify completion of Assign Specialist plan item
-        await assertPlanItemState(raiser, caseInstance, 'Assign Specialist', 0, 'Completed');
+        await assertPlanItem(raiser, caseInstance, 'Assign Specialist', 0, 'Completed');
 
         // Verify completion of Assigned plan item
-        await assertPlanItemState(raiser, caseInstance, 'Assigned', 0, 'Completed');
+        await assertPlanItem(raiser, caseInstance, 'Assigned', 0, 'Completed');
 
 
         // Next step fails too often
         await ServerSideProcessing();
 
         // Verify completion of first Notify Customer plan item
-        await assertPlanItemState(raiser, caseInstance, 'Notify Customer', 0, 'Completed');
+        await assertPlanItem(raiser, caseInstance, 'Notify Customer', 0, 'Completed');
 
         const secondTaskInput = IncidentContent.secondTaskInput;
 
@@ -144,12 +145,12 @@ Starting another case instance of incident management to test Invalid status.
         await assertTask(raiser, workOnIncidentTask, 'Complete', 'Completed', solver);
 
         // Verify completion of Complete plan item
-        await assertPlanItemState(raiser, caseInstance, 'Complete', 0, 'Completed');
+        await assertPlanItem(raiser, caseInstance, 'Complete', 0, 'Completed');
 
         await ServerSideProcessing();
 
         // Verify completion of second Notify Customer plan item
-        await assertPlanItemState(raiser, caseInstance, 'Notify Customer', 1, 'Completed');
+        await assertPlanItem(raiser, caseInstance, 'Notify Customer', 1, 'Completed');
     }
 
     async testInvalidStatus(startCase: any, firstTaskName: string, firstTaskInput: any) {
@@ -179,15 +180,15 @@ Starting another case instance of incident management to test Invalid status.
         await ServerSideProcessing();
 
         // Verify completion of Invalid Status plan item
-        await assertPlanItemState(raiser, caseInstance, 'Invalid Status', 0, 'Completed');
+        await assertPlanItem(raiser, caseInstance, 'Invalid Status', 0, 'Completed');
 
         await ServerSideProcessing();
 
         // Verify completion of first Notify Customer plan item
-        await assertPlanItemState(raiser, caseInstance, 'Notify Customer', 0, 'Completed');
+        await assertPlanItem(raiser, caseInstance, 'Notify Customer', 0, 'Completed');
 
         // Verify completion of Complete plan item
-        await assertPlanItemState(raiser, caseInstance, 'Complete', 0, 'Available');
+        await assertPlanItem(raiser, caseInstance, 'Complete', 0, 'Available');
     }
 }
 

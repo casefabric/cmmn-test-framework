@@ -100,6 +100,11 @@ export default class CafienneResponse {
 export async function checkResponse(response: CafienneResponse, errorMsg: string, expectedStatusCode: number): Promise<CafienneResponse> {
     if (response.status !== expectedStatusCode) {
         const responseText = await response.text();
+        if (expectedStatusCode >= 200 && expectedStatusCode < 300) {
+            // Change error messages, by default 
+            // Is not expected to succeed ===> Is expected to succeed
+            errorMsg = errorMsg.replace('is not expected to succeed for user', 'is expected to succeed for user');
+        }
         if (!errorMsg) {
             errorMsg = `Expected status ${expectedStatusCode} instead of ${response.status} ${response.statusText}: ${responseText}`;
         }
@@ -141,7 +146,7 @@ export async function checkJSONResponse(response: CafienneResponse, errorMsg: st
                 }
             } else if (returnType !== undefined) {
                 const constructorCall = returnType as any;
-                return Object.assign(new constructorCall, json);
+                return Object.assign(new constructorCall(), json);
             }
         }
         return json;

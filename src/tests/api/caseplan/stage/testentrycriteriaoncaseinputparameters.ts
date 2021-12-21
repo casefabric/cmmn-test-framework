@@ -4,8 +4,9 @@ import CaseService from '../../../../framework/service/case/caseservice';
 import TestCase from '../../../../framework/test/testcase';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
 import RepositoryService from '../../../../framework/service/case/repositoryservice';
-import CaseTeam from '../../../../framework/cmmn/caseteam';
-import CaseTeamMember, { CaseOwner } from '../../../../framework/cmmn/caseteammember';
+import CaseTeam from '../../../../framework/cmmn/team/caseteam';
+import { CaseOwner } from '../../../../framework/cmmn/team/caseteamuser';
+import CaseTeamUser from "../../../../framework/cmmn/team/caseteamuser";
 import Case from '../../../../framework/cmmn/case';
 import CaseFileService from '../../../../framework/service/case/casefileservice';
 
@@ -75,7 +76,7 @@ export default class TestEntryCriteriaOnCaseInputParameters extends TestCase {
                 From: sender.id
             }
         };
-        const caseTeam = new CaseTeam([new CaseOwner(employee), new CaseTeamMember(sender), new CaseTeamMember(receiver)]);
+        const caseTeam = new CaseTeam([new CaseOwner(employee), new CaseTeamUser(sender), new CaseTeamUser(receiver)]);
         
         const startCase = { tenant, definition, inputs, caseTeam, debug: true };
 
@@ -92,7 +93,7 @@ export default class TestEntryCriteriaOnCaseInputParameters extends TestCase {
                 From: sender.id
             }
         };
-        const caseTeam = new CaseTeam([new CaseOwner(employee), new CaseTeamMember(sender), new CaseTeamMember(receiver)]);
+        const caseTeam = new CaseTeam([new CaseOwner(employee), new CaseTeamUser(sender), new CaseTeamUser(receiver)]);
         
         const startCase = { tenant, definition, inputs, caseTeam, debug: true };
 
@@ -114,7 +115,7 @@ export default class TestEntryCriteriaOnCaseInputParameters extends TestCase {
                 From: sender.id
             }
         };
-        const caseTeam = new CaseTeam([new CaseOwner(employee), new CaseTeamMember(sender), new CaseTeamMember(receiver)]);
+        const caseTeam = new CaseTeam([new CaseOwner(employee), new CaseTeamUser(sender), new CaseTeamUser(receiver)]);
         
         const startCase = { tenant, definition, inputs, caseTeam, debug: true };
 
@@ -142,8 +143,8 @@ function printCaseSummary(c: Case) {
     messages.push(` Tasks:\n  - ${tasks.join('\n  - ')}`);
     const stages = c.planitems.filter(p => p.type === 'Stage').map(p => `'${p.name}.${p.index}' in state ${p.currentState}`);
     messages.push(` Stages:\n  - ${stages.join('\n  - ')}`);
-    const numTeamMembers = c.team.members.length;
-    const numOwners = c.team.members.filter(m => m.isOwner).length;
+    const numTeamMembers = c.team.users.length;
+    const numOwners = c.team.users.filter(m => m.isOwner).length;
     messages.push(`CaseTeam: ${numTeamMembers} members with ${numOwners} owners`);
     console.log(messages.join('\n'));
     return c;

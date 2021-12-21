@@ -4,7 +4,7 @@ import CaseService from '../../../../framework/service/case/caseservice';
 import TestCase from '../../../../framework/test/testcase';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
 import RepositoryService from '../../../../framework/service/case/repositoryservice';
-import { assertPlanItemState } from '../../../../framework/test/caseassertions/plan';
+import { assertPlanItem } from '../../../../framework/test/caseassertions/plan';
 import DebugService from '../../../../framework/service/case/debugservice';
 
 const definition = 'smtptest.xml';
@@ -59,7 +59,7 @@ export default class TestSMTP extends TestCase {
         }
 
         try {
-            await assertPlanItemState(user, caseInstance, sendMailTask, 0, 'Completed', 10);
+            await assertPlanItem(user, caseInstance, sendMailTask, 0, 'Completed', 10);
         } catch (notFoundError) {
             // If the test fails after 10 calls, get the events for the task and see if we can print any logging info
             await DebugService.getParsedEvents(taskId, user).then(events => {

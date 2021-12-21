@@ -5,10 +5,11 @@ import TaskService from '../../framework/service/task/taskservice';
 import TestCase from '../../framework/test/testcase';
 import WorldWideTestTenant from '../worldwidetesttenant';
 import RepositoryService from '../../framework/service/case/repositoryservice';
-import { assertCasePlanState } from '../../framework/test/caseassertions/plan';
+import { assertCasePlan } from '../../framework/test/caseassertions/plan';
 import { assertTask, verifyTaskInput, findTask } from '../../framework/test/caseassertions/task';
-import CaseTeam from '../../framework/cmmn/caseteam';
-import CaseTeamMember, { CaseOwner } from '../../framework/cmmn/caseteammember';
+import CaseTeam from '../../framework/cmmn/team/caseteam';
+import { CaseOwner } from '../../framework/cmmn/team/caseteamuser';
+import CaseTeamUser from "../../framework/cmmn/team/caseteamuser";
 
 const definition = 'helloworld.xml';
 
@@ -31,7 +32,7 @@ export default class TestHelloworld extends TestCase {
                 From: sender.id
             }
         };
-        const caseTeam = new CaseTeam([new CaseOwner(employee), new CaseTeamMember(sender), new CaseTeamMember(receiver)]);
+        const caseTeam = new CaseTeam([new CaseOwner(employee), new CaseTeamUser(sender), new CaseTeamUser(receiver)]);
         
         const startCase = { tenant, definition, inputs, caseTeam, debug: true };
 
@@ -67,11 +68,13 @@ export default class TestHelloworld extends TestCase {
         const nextTasks = await TaskService.getCaseTasks(sender, caseInstance);
         const readResponseTask = findTask(nextTasks, responseTaskName);
         if (readResponseTask.assignee !== sender.id) {
-            throw new Error('Expecting task to be assigned to sending user');
+            throw new Error('Expecting task to be assigned to sending user, but found ' + readResponseTask.assignee + ' instead');
         }
         await TaskService.completeTask(sender, readResponseTask);
         await assertTask(sender, readResponseTask, 'Complete', 'Completed', sender, sender, sender);
 
-        await assertCasePlanState(sender, caseInstance, 'Completed');
+        await assertCasePlan(sender, caseInstance, 'Completed');
+
+        console.log(`\n\nCase ID: ${freshCaseInstance.id}\n\nCase Team:${JSON.stringify(freshCaseInstance.team, undefined, 2)}`);
     }
 }

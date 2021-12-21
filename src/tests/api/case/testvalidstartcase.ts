@@ -4,8 +4,8 @@ import CaseService from '../../../framework/service/case/caseservice';
 import TestCase from '../../../framework/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 import RepositoryService, { readLocalXMLDocument } from '../../../framework/service/case/repositoryservice';
-import { CaseOwner } from '../../../framework/cmmn/caseteammember';
-import CaseTeam from '../../../framework/cmmn/caseteam';
+import { CaseOwner } from '../../../framework/cmmn/team/caseteamuser';
+import CaseTeam from '../../../framework/cmmn/team/caseteam';
 import { assertCaseTeam } from '../../../framework/test/caseassertions/team';
 import Comparison from '../../../framework/test/comparison';
 

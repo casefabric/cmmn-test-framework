@@ -5,8 +5,9 @@ import TestCase from '../../../framework/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
 import CaseTeamService from '../../../framework/service/case/caseteamservice';
-import CaseTeamMember, { CaseOwner } from '../../../framework/cmmn/caseteammember';
-import CaseTeam from '../../../framework/cmmn/caseteam';
+import { CaseOwner } from '../../../framework/cmmn/team/caseteamuser';
+import CaseTeamUser from "../../../framework/cmmn/team/caseteamuser";
+import CaseTeam from '../../../framework/cmmn/team/caseteam';
 import { assertCaseTeam } from '../../../framework/test/caseassertions/team';
 import StartCase from '../../../framework/service/case/startcase';
 
@@ -53,12 +54,11 @@ export default class TestStartCaseEmptyRole extends TestCase {
         assertCaseTeam(receiver, caseInstance, caseTeam2);
 
         // receiver cannot add sender with empty role
-        await CaseTeamService.setMember(receiver, caseInstance, new CaseTeamMember(sender, [emptyRole], 'user', false), 400);
+        await CaseTeamService.setUser(receiver, caseInstance, new CaseTeamUser(sender, [emptyRole]), 400);
 
         // receiver can add sender without roles
-        await CaseTeamService.setMember(receiver, caseInstance, new CaseTeamMember(sender, [], 'user', false));
+        await CaseTeamService.setUser(receiver, caseInstance, new CaseTeamUser(sender, []));
 
-        // receiver cannot remove empty role from sender
-        await CaseTeamService.removeMemberRoles(receiver, caseInstance, new CaseTeamMember(sender), [emptyRole], 400);
+        await CaseTeamService.setUser(receiver, caseInstance, new CaseTeamUser(sender, [emptyRole]), 400);
    }
 }

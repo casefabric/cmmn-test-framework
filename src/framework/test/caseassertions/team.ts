@@ -1,73 +1,116 @@
-import User from '../../user';
-import CaseService from '../../service/case/caseservice';
 import Case from '../../cmmn/case';
-import CaseTeam from '../../cmmn/caseteam';
+import CaseTeam from '../../cmmn/team/caseteam';
+import CaseTeamUser from '../../cmmn/team/caseteamuser';
+import CaseTeamTenantRole from '../../cmmn/team/caseteamtenantrole';
 import CaseTeamService from '../../service/case/caseteamservice';
-import CaseTeamMember from '../../cmmn/caseteammember';
+import User from '../../user';
 
-
-function findMember(team: CaseTeam, expectedMember: CaseTeamMember) {
-    return team.members.find(member => member.memberId === expectedMember.memberId && member.memberType === expectedMember.memberType);
+function findMember(team: CaseTeam, expectedMember: CaseTeamUser) {
+    return team.users.find(member => member.userId === expectedMember.userId);
 }
 
-function hasMember(team: CaseTeam, expectedMember: CaseTeamMember): [boolean, string] {
-    const actualMember = findMember(team, expectedMember);
-    if (!actualMember) {
-        const memberWithSameIDButDifferentType = team.members.find(member => member.memberId === expectedMember.memberId)
-        if (memberWithSameIDButDifferentType) {
-            return [false, `Case team contains a member with id '${expectedMember.memberId}', but the member has type ${memberWithSameIDButDifferentType.memberType} instead of ${expectedMember.memberType}`]
-        } else {
-            return [false, `Case team does not contain a member with id '${expectedMember.memberId}'`]
-        }
-    } else {
-        // Check roles
-        const actualRoles = actualMember.caseRoles;
-        const expectedRoles = expectedMember.caseRoles;
-
-        if (actualRoles && !expectedRoles) {
-            return [false, `Did not expect to found roles on team member ${expectedMember.memberId}, but found [${actualRoles}]`];
-        }
-        if (!actualRoles && expectedRoles) {
-            return [false, `Did not found roles on team member ${expectedMember.memberId}, expected [${expectedRoles}]`];
-        }
-        const missingRoles = expectedRoles.filter(expected => !actualRoles.find(role => role === expected))
-        if (missingRoles.length > 0) {
-            return [false, `Team member ${expectedMember.memberId} misses expected roles ${missingRoles}`];
-        }
-
-        const unexpectedRoles = actualRoles.filter(actualRole => !expectedRoles.find(role => role === actualRole))
-        if (unexpectedRoles.length > 0) {
-            return [false, `Team member ${expectedMember.memberId} is not expected to have roles [${unexpectedRoles}]`];
-        }
-
-        if (expectedMember.isOwner !== undefined && expectedMember.isOwner !== actualMember.isOwner) {
-            return [false, `Team member ${expectedMember.memberId} is${expectedMember.isOwner ? ' ' : ' not '}expected to be case owner`];
+function hasUser(team: CaseTeam, expectedMember: CaseTeamUser, expectNoDifferences: boolean = true) {
+    const differs = (msg: string) => {
+        if (expectNoDifferences) {
+            throw new Error(msg);
         }
     }
-    return [true, `Member ${expectedMember.memberId} is present in the team`];
+
+    const actualMember = findMember(team, expectedMember);
+    if (!actualMember) {
+        differs(`Case team does not contain a user '${expectedMember}'`);
+        return;
+    }
+
+    // Check roles
+    const actualRoles = actualMember.caseRoles;
+    const expectedRoles = expectedMember.caseRoles;
+
+    if (actualRoles && !expectedRoles) {
+        differs(`Did not expect to found roles on team member ${expectedMember}, but found [${actualRoles}]`);
+    }
+    if (!actualRoles && expectedRoles) {
+        differs(`Did not found roles on team member ${expectedMember}, expected [${expectedRoles}]`);
+    }
+    const missingRoles = expectedRoles.filter(expected => !actualRoles.find(role => role === expected))
+    if (missingRoles.length > 0) {
+        differs(`Team member ${expectedMember} misses expected roles ${missingRoles}`);
+    }
+
+    const unexpectedRoles = actualRoles.filter(actualRole => !expectedRoles.find(role => role === actualRole))
+    if (unexpectedRoles.length > 0) {
+        differs(`Team member ${expectedMember} is not expected to have roles [${unexpectedRoles}]`);
+    }
+
+    if (expectedMember.isOwner !== undefined && expectedMember.isOwner !== actualMember.isOwner) {
+        differs(`Team member ${expectedMember} is${expectedMember.isOwner ? ' ' : ' not '}expected to be case owner`);
+    }
+
+    if (! expectNoDifferences) {
+        throw new Error(`Member ${expectedMember} is unexpectedly present in the team`);
+    }
+}
+
+function hasTenantRole(team: CaseTeam, expectedTenantRole: CaseTeamTenantRole, expectNoDifferences: boolean = true) {
+    const differs = (msg: string) => {
+        if (expectNoDifferences) {
+            throw new Error(msg);
+        }
+    }
+
+    const actualMember = team.tenantRoles.find(member => member.tenantRole === expectedTenantRole.tenantRole);
+    if (!actualMember) {
+        differs(`Case team does not contain a tenant role '${expectedTenantRole}'`);
+        return;
+    }
+
+    // Check roles
+    const actualRoles = actualMember.caseRoles;
+    const expectedRoles = expectedTenantRole.caseRoles;
+
+    if (actualRoles && !expectedRoles) {
+        differs(`Did not expect to found case roles on tenant role ${expectedTenantRole}, but found [${actualRoles}]`);
+    }
+    if (!actualRoles && expectedRoles) {
+        differs(`Did not find expected case roles on tenant role ${expectedTenantRole}, expected [${expectedRoles}]`);
+    }
+    const missingRoles = expectedRoles.filter(expected => !actualRoles.find(role => role === expected))
+    if (missingRoles.length > 0) {
+        differs(`Tenant role ${expectedTenantRole} misses expected roles ${missingRoles}`);
+    }
+
+    const unexpectedRoles = actualRoles.filter(actualRole => !expectedRoles.find(role => role === actualRole))
+    if (unexpectedRoles.length > 0) {
+        differs(`Tenant role ${expectedTenantRole} is not expected to have roles [${unexpectedRoles}]`);
+    }
+
+    if (expectedTenantRole.isOwner !== undefined && expectedTenantRole.isOwner !== actualMember.isOwner) {
+        differs(`Tenant role ${expectedTenantRole} is${expectedTenantRole.isOwner ? ' ' : ' not '}expected to be case owner`);
+    }
+
+    if (! expectNoDifferences) {
+        throw new Error(`Tenant role ${expectedTenantRole} is unexpectedly present in the team`);
+    }
 }
 
 async function verifyTeam(actualTeam: CaseTeam, expectedTeam: CaseTeam) {
-    const missingMembers = expectedTeam.members.filter(member => !findMember(actualTeam, member));
-    const tooManyMembers = actualTeam.members.filter(member => !findMember(expectedTeam, member));
+    const missingMembers = expectedTeam.users.filter(member => !findMember(actualTeam, member));
+    const tooManyMembers = actualTeam.users.filter(member => !findMember(expectedTeam, member));
 
     // Simple case team member stringyfier that prints type of member and user id
-    const membersPrinter = (members: Array<CaseTeamMember>) => `[${members.map(m => `${m.memberType}::${m.memberId}`)}]`;
+    const membersPrinter = (members: Array<CaseTeamUser>) => `[${members.join(', ')}]`;
 
     if (missingMembers.length > 0 && tooManyMembers.length > 0) {
-        throw new Error(`Missing Case Team members ${membersPrinter(missingMembers)}, found unexpected members ${membersPrinter(tooManyMembers)}`);
+        throw new Error(`Missing Case Team members ${membersPrinter(missingMembers)}, found unexpected users ${membersPrinter(tooManyMembers)}`);
     }
     if (missingMembers.length > 0) {
-        throw new Error(`Expecting Case Team to contain ${expectedTeam.members.length} members, but found ${actualTeam.members.length}; missing members ${membersPrinter(missingMembers)}`);
+        throw new Error(`Expecting Case Team to contain ${expectedTeam.users.length} members, but found ${actualTeam.users.length}; missing members ${membersPrinter(missingMembers)}`);
     }
     if (tooManyMembers.length > 0) {
-        throw new Error(`Expecting Case Team to contain ${expectedTeam.members.length} members, but found ${actualTeam.members.length}, with unexpected members ${membersPrinter(tooManyMembers)}`);
+        throw new Error(`Expecting Case Team to contain ${expectedTeam.users.length} members, but found ${actualTeam.users.length}, with unexpected members ${membersPrinter(tooManyMembers)}`);
     }
 
-    expectedTeam.members.forEach(expectedMember => {
-        const [status, msg] = hasMember(actualTeam, expectedMember);
-        if (!status) throw new Error(msg);
-    });
+    expectedTeam.users.forEach(expectedMember => hasUser(actualTeam, expectedMember));
 }
 
 /**
@@ -78,11 +121,7 @@ async function verifyTeam(actualTeam: CaseTeam, expectedTeam: CaseTeam) {
  * @param expectedTeam 
  */
 export async function assertCaseTeam(user: User, caseId: Case | string, expectedTeam: CaseTeam) {
-    // Get case team via getCaseTeam
-    await CaseTeamService.getCaseTeam(user, caseId).then(team => verifyTeam(team, expectedTeam));
-
-    // Get case team via getCase
-    await CaseService.getCase(user, caseId).then(caseInstance => caseInstance.team).then(team => verifyTeam(team, expectedTeam));
+    CaseTeamService.getCaseTeam(user, caseId).then(team => verifyTeam(team, expectedTeam));
 }
 
 /**
@@ -92,12 +131,21 @@ export async function assertCaseTeam(user: User, caseId: Case | string, expected
  * @param user 
  * @param expectNoFailures 
  */
-export async function assertCaseTeamMember(user: User, caseId: Case | string, member: CaseTeamMember, expectNoFailures: boolean = true) {
+export async function assertCaseTeamUser(user: User, caseId: Case | string, member: CaseTeamUser, expectNoFailures: boolean = true) {
     // Get case team via getCaseTeam
     const actualCaseTeam = await CaseTeamService.getCaseTeam(user, caseId);
+    hasUser(actualCaseTeam, member, expectNoFailures);
+}
 
-    const [status, msg] = hasMember(actualCaseTeam, member)
-    if ((expectNoFailures && !status) || (status && !expectNoFailures)) {
-        throw new Error(msg);
-    }
+/**
+ * Asserts a member's presence in the case team
+ * @param member 
+ * @param caseId 
+ * @param user 
+ * @param expectNoFailures 
+ */
+ export async function assertCaseTeamTenantRole(user: User, caseId: Case | string, member: CaseTeamTenantRole, expectNoFailures: boolean = true) {
+    // Get case team via getCaseTeam
+    const actualCaseTeam = await CaseTeamService.getCaseTeam(user, caseId);
+    hasTenantRole(actualCaseTeam, member, expectNoFailures);
 }

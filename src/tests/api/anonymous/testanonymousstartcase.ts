@@ -48,20 +48,14 @@ export default class TestAnonymousStartCase extends TestCase {
         // Test missing definition
         await this.createCase('not-existing-definition', 500);
 
-        // Test invalid case team
-        await this.createCase('invalid-caseteam-user', 500);
-
         // Test invalid case roles
         await this.createCase('invalid-case-roles', 500);
 
         // Test invalid case team members in default engine tenant (world)
-        await this.createCase('helloworld-in-default-tenant', 500);
+        await this.createCase('helloworld-in-default-tenant', 200, 404);
 
         // Test 'invalid' case team members because tenant does not exist
         await this.createCase('invalid-tenant', 500);
-
-        // Test invalid case team members across different tenant instance
-        await this.createCase('helloworld-without-lana-cannot-have-lana-in-caseteam', 500);
 
         // Test creation in different tenant should not have access for lana
         await this.createCase('helloworld-without-lana', 200, 404);        

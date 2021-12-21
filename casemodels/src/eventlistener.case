@@ -7,23 +7,21 @@
             <entryCriterion id="_vdfDP_11" name="UserEventOccurred" sentryRef="crit__vdfDP_1"/>
         </planItem>
         <planItem id="pi_ue__vdfDP_0" name="PlainUserEvent" definitionRef="ue__vdfDP_0"/>
-        <planItem id="pi_ue__vdfDP_1" name="EmployeeUserEvent" definitionRef="ue__vdfDP_1"/>
-        <planItem id="pi_ms__vdfDP_0" name="M1" definitionRef="ms__vdfDP_0">
-            <entryCriterion id="_vdfDP_4" name="EntryCriterion_0" sentryRef="crit__vdfDP_0"/>
-            <itemControl id="_vdfDP_1">
-                <requiredRule id="_vdfDP_2">
-                    <condition id="_vdfDP_3">
-                        <body>
-                            <![CDATA[true]]>
-                        </body>
-                    </condition>
-                </requiredRule>
-            </itemControl>
-        </planItem>
         <planItem id="pi_ht__vdfDP_1" name="PlainTask" definitionRef="ht__vdfDP_1">
             <itemControl id="_vdfDP_7">
                 <repetitionRule id="_vdfDP_8">
                     <condition id="_vdfDP_9">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
+        </planItem>
+        <planItem id="pi__RFdjm_1" name="Repeater" definitionRef="_RFdjm_1">
+            <itemControl id="_RFdjm_2">
+                <repetitionRule id="_RFdjm_3">
+                    <condition id="_RFdjm_4">
                         <body>
                             <![CDATA[true]]>
                         </body>
@@ -36,16 +34,31 @@
                 <standardEvent>occur</standardEvent>
             </planItemOnPart>
         </sentry>
-        <sentry id="crit__vdfDP_0">
-            <planItemOnPart id="_vdfDP_5" sourceRef="pi_ue__vdfDP_1">
-                <standardEvent>occur</standardEvent>
-            </planItemOnPart>
-        </sentry>
         <humanTask id="ht__vdfDP_0" name="T1" isBlocking="true"/>
         <humanTask id="ht__vdfDP_1" name="PlainTask" isBlocking="true"/>
         <milestone id="ms__vdfDP_0" name="M1"/>
         <userEvent id="ue__vdfDP_0" name="PlainUserEvent"/>
         <userEvent id="ue__vdfDP_1" name="EmployeeUserEvent" authorizedRoleRefs="_vdfDP_6"/>
+        <stage id="_RFdjm_1" name="Repeater" autoComplete="true">
+            <planItem id="pi_ue__vdfDP_1" name="EmployeeUserEvent" definitionRef="ue__vdfDP_1"/>
+            <planItem id="pi_ms__vdfDP_0" name="M1" definitionRef="ms__vdfDP_0">
+                <entryCriterion id="_vdfDP_4" name="EntryCriterion_0" sentryRef="crit__vdfDP_0"/>
+                <itemControl id="_vdfDP_1">
+                    <requiredRule id="_vdfDP_2">
+                        <condition id="_vdfDP_3">
+                            <body>
+                                <![CDATA[true]]>
+                            </body>
+                        </condition>
+                    </requiredRule>
+                </itemControl>
+            </planItem>
+            <sentry id="crit__vdfDP_0">
+                <planItemOnPart id="_vdfDP_5" sourceRef="pi_ue__vdfDP_1">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </sentry>
+        </stage>
     </casePlanModel>
     <caseRoles>
         <role id="_vdfDP_6" name="Employee"/>

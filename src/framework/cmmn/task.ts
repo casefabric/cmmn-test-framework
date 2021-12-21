@@ -21,7 +21,11 @@ export default class Task extends CMMNBaseClass {
     ) { super(); }
 
     toString() {
-        return this.taskName + '[' + this.id + ']';
+        return `${this.taskName}[${this.id}]`;
+    }
+
+    summary() {
+        return this.toString() + ` - ${this.taskState}`
     }
 
     isCompleted() {

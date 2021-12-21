@@ -5,7 +5,7 @@ import TestCase from '../../framework/test/testcase';
 import WorldWideTestTenant from '../worldwidetesttenant';
 import RepositoryService from '../../framework/service/case/repositoryservice';
 import { ServerSideProcessing } from '../../framework/test/time';
-import { assertPlanItemState } from '../../framework/test/caseassertions/plan'
+import { assertPlanItem } from '../../framework/test/caseassertions/plan'
 import CasePlanService from '../../framework/service/case/caseplanservice';
 import CaseFileService from '../../framework/service/case/casefileservice';
 import Case from '../../framework/cmmn/case';
@@ -55,35 +55,35 @@ export default class TestGetListGetDetails extends TestCase {
         caseInstance = await CaseService.getCase(user, caseInstance);
 
         // When the case starts, GetCasesList & GetFirstCase tasks will be in available state
-        await assertPlanItemState(user, caseInstance, 'GetList', 0, 'Available');
-        await assertPlanItemState(user, caseInstance, 'GetDetails', 0, 'Available');
+        await assertPlanItem(user, caseInstance, 'GetList', 0, 'Available');
+        await assertPlanItem(user, caseInstance, 'GetDetails', 0, 'Available');
 
         // Create the CaseFileItem Request only with port
         await CaseFileService.createCaseFileItem(user, caseInstance, "HTTPConfig", inputs);
 
         // Give the 'GetList.0' process task up to 5 seconds to fail and activate Stage 'Fail handling.0'
-        await assertPlanItemState(user, caseInstance, 'Fail handling', 0, 'Active');
+        await assertPlanItem(user, caseInstance, 'Fail handling', 0, 'Active');
 
         // MockService is not yet started. So, GetList goes to Failed state
-        await assertPlanItemState(user, caseInstance, 'GetList', 0, 'Failed');
+        await assertPlanItem(user, caseInstance, 'GetList', 0, 'Failed');
 
         // GetDetails remains in Available state
-        await assertPlanItemState(user, caseInstance, 'GetDetails', 0, 'Available');
+        await assertPlanItem(user, caseInstance, 'GetDetails', 0, 'Available');
 
         // GetList Failed should be in completed state
-        await assertPlanItemState(user, caseInstance, 'GetList Failed', 0, 'Completed');
+        await assertPlanItem(user, caseInstance, 'GetList Failed', 0, 'Completed');
 
         // Trigger the 'Try Again' event
         CasePlanService.makePlanItemTransition(user, caseInstance, 'Try Again', 'Occur');
 
         // Give the 'GetList.1' process task up to 5 seconds to fail (because Mock is still not started) and activate Stage 'Fail handling.1'
-        await assertPlanItemState(user, caseInstance, 'Fail handling', 1, 'Active');
+        await assertPlanItem(user, caseInstance, 'Fail handling', 1, 'Active');
 
         // MockService is not yet started. So, GetList goes to Failed state
-        await assertPlanItemState(user, caseInstance, 'GetList', 1, 'Failed');
+        await assertPlanItem(user, caseInstance, 'GetList', 1, 'Failed');
 
         // GetDetails remains in Available state
-        await assertPlanItemState(user, caseInstance, 'GetDetails', 0, 'Available');
+        await assertPlanItem(user, caseInstance, 'GetDetails', 0, 'Available');
 
         // Starting mock service
         mock.start();
@@ -92,11 +92,11 @@ export default class TestGetListGetDetails extends TestCase {
         await CasePlanService.makePlanItemTransition(user, caseInstance, 'Try Again', 'Occur');
 
         // Give the 'GetList.1' process task up to 5 seconds to fail (because Mock is still not started) and activate Stage 'Fail handling.1'
-        await assertPlanItemState(user, caseInstance, 'GetList', 2, 'Completed');
+        await assertPlanItem(user, caseInstance, 'GetList', 2, 'Completed');
 
         // GetDetails tasks of index upto 3 has to be completed
         for (let i = 0; i < 4; i++) {
-            await assertPlanItemState(user, caseInstance, 'GetDetails', i, 'Completed');
+            await assertPlanItem(user, caseInstance, 'GetDetails', i, 'Completed');
         }
 
         const exceptionCaseFile = await CaseFileService.getCaseFile(user, caseInstance);

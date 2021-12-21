@@ -19,7 +19,7 @@ export default class TestRepositoryAPI extends TestCase {
 
         const addUser = async (user:TenantUser, tenant: WorldWideTestTenant) => {
             try {
-                await TenantService.addTenantUser(tenantOwner, tenant.tenant, user);
+                await TenantService.setTenantUser(tenantOwner, tenant.tenant, user);
             } catch (e) {
                 if (e.message.indexOf('already exists') < 0) {
                     throw e;
@@ -59,7 +59,7 @@ export default class TestRepositoryAPI extends TestCase {
         await RepositoryService.listCaseDefinitions(tenantUser);
 
         // Listing case definitions should fail in wrong tenant with unauthorized
-        await RepositoryService.listCaseDefinitions(tenantUser, 'not-existing-tenant', 401, 'Listing case definitions should fail in wrong tenant with unauthorized');
+        await RepositoryService.listCaseDefinitions(tenantUser, 'not-existing-tenant', 404, 'Listing case definitions should fail in wrong tenant with not found');
 
         // Deploying an valid case definition should work for a tenant owner, but fail for a tenant user
         const deployValidCaseDefinition = new DeployCase(readLocalXMLDocument(validCaseDefinition), invalidCaseDefinition, tenant);

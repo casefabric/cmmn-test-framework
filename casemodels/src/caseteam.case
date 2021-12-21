@@ -3,11 +3,61 @@
         <caseFileItem id="_jAVt1_3" name="Root" multiplicity="ExactlyOne" definitionRef="root.cfid"/>
     </caseFileModel>
     <casePlanModel id="cm__jAVt1_0" name="caseteam" autoComplete="true">
-        <planItem id="pi_ht__jAVt1_0" name="Approve" definitionRef="ht__jAVt1_0"/>
-        <planItem id="pi_ht__jAVt1_1" name="Request" definitionRef="ht__jAVt1_1"/>
-        <planItem id="pi_ht__jAVt1_2" name="Assist" definitionRef="ht__jAVt1_2"/>
-        <planItem id="pi_ht__Crena_0" name="Arbitrary Task" definitionRef="ht__Crena_0"/>
-        <planItem id="pi_ht__Crena_1" name="Task Without Role" definitionRef="ht__Crena_1"/>
+        <planItem id="pi_ht__jAVt1_0" name="Approve" definitionRef="ht__jAVt1_0">
+            <itemControl id="_Crena_0">
+                <repetitionRule id="_Crena_8">
+                    <condition id="_Crena_9">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
+        </planItem>
+        <planItem id="pi_ht__jAVt1_1" name="Request" definitionRef="ht__jAVt1_1">
+            <itemControl id="_Crena_1">
+                <repetitionRule id="_Crena_6">
+                    <condition id="_Crena_7">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
+        </planItem>
+        <planItem id="pi_ht__jAVt1_2" name="Assist" definitionRef="ht__jAVt1_2">
+            <itemControl id="_Crena_2">
+                <repetitionRule id="_Crena_10">
+                    <condition id="_Crena_11">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
+        </planItem>
+        <planItem id="pi_ht__Crena_0" name="Arbitrary Task" definitionRef="ht__Crena_0">
+            <itemControl id="_Crena_4">
+                <repetitionRule id="_Crena_14">
+                    <condition id="_Crena_15">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
+        </planItem>
+        <planItem id="pi_ht__Crena_1" name="Task Without Role" definitionRef="ht__Crena_1">
+            <itemControl id="_Crena_5">
+                <repetitionRule id="_Crena_12">
+                    <condition id="_Crena_13">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
+        </planItem>
         <humanTask id="ht__jAVt1_0" name="Approve" isBlocking="true" performerRef="_jAVt1_1"/>
         <humanTask id="ht__jAVt1_1" name="Request" isBlocking="true" performerRef="_jAVt1_0"/>
         <humanTask id="ht__jAVt1_2" name="Assist" isBlocking="true" performerRef="_jAVt1_2"/>

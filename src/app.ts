@@ -16,9 +16,9 @@ import TestEventAuthorization from './tests/api/caseplan/testeventauthorization'
 import PingTestEnvironment, { PingTokenService } from './tests/api/environment/ping';
 import TestTravelRequest from './tests/travelrequest/testtravelrequest';
 import TestEntryCriteriaOnCaseInputParameters from './tests/api/caseplan/stage/testentrycriteriaoncaseinputparameters';
-import TestRepeatingStage from './tests/api/caseplan/stage/teststage';
+import TestStage from './tests/api/caseplan/stage/teststage';
 import TestCaseTeamAPI from './tests/api/caseteam/testcaseteamapi';
-import TestRoleBinding from './tests/api/caseteam/testrolebinding';
+import TestCaseTeamTenantRoleMembers from './tests/api/caseteam/testcaseteamtenantrolemembers';
 import TestTaskAPI from './tests/api/task/humantask/testtaskapi';
 import TestTaskCountAPI from './tests/api/task/humantask/testtaskcountapi';
 import TestCaseTeam from './tests/api/caseteam/testcaseteam';
@@ -54,6 +54,9 @@ import TestCaseMigration from './tests/api/case/migration/testcasemigration';
 import TestSubCaseMigration from './tests/api/case/migration/testsubcasemigration';
 import TestRecovery from './tests/api/environment/testrecovery';
 import TestSwagger from './tests/api/environment/testswagger';
+import TestConsentGroupAPI from './tests/api/consentgroup/testconsentgroupapi';
+import TestCaseTeamConsentGroupAPI from './tests/api/caseteam/testcaseteamconsentgroupapi';
+import TestCaseTeamAuthorizations from './tests/api/caseteam/testcaseteamauthorizations';
 
 function findTestsFromCommandLineArguments(): Array<string> {
     const time = process.argv[2];
@@ -121,11 +124,13 @@ const AllTestCases = new TestClasses([
     , TestResponseType
     , TestSwagger
     , TestHelloworld
+    , TestTenantRegistration
+    , TestConsentGroupAPI
     , TestTaskCompletion
     , TestTaskOutputOperations
     , TestTaskBindingRefinement
     , TestEntryCriteriaOnCaseInputParameters
-    , TestRepeatingStage
+    , TestStage
     , TestUsersCaseAPI
     , TestDiscretionaryItems
     , TestStatsAPI
@@ -135,7 +140,6 @@ const AllTestCases = new TestClasses([
     , TestTaskCountAPI
     , TestDebugMode
     , TestDocumentationAPI
-    , TestTenantRegistration
     , TestRepositoryAPI
     , TestTokenValidation
     , TestCaseFileAPI
@@ -151,14 +155,16 @@ const AllTestCases = new TestClasses([
     , TestStageTaskExpressions
     , TestProcessTask
     , TestCaseTeamAPI
-    , TestRoleBinding
     , TestCaseTeam
+    , TestCaseTeamTenantRoleMembers
+    , TestCaseTeamConsentGroupAPI
+    , TestCaseTeamTaskAuthorizations
+    , TestCaseTeamAuthorizations
     , TestEventAuthorization
     , TestIncidentManagement
     , TestTravelRequest
     , TestInvalidStartCase
     , TestValidStartCase
-    , TestCaseTeamTaskAuthorizations
     , TestStartCaseEmptyRole
     , TestSubCase
     , TestArraySubCase

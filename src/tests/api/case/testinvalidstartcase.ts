@@ -1,14 +1,13 @@
 'use strict';
 
+import CaseTeam from '../../../framework/cmmn/team/caseteam';
+import CaseTeamUser, { CaseOwner } from "../../../framework/cmmn/team/caseteamuser";
 import CaseService from '../../../framework/service/case/caseservice';
-import TestCase from '../../../framework/test/testcase';
-import WorldWideTestTenant from '../../worldwidetesttenant';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
-import CaseTeamMember, { CaseOwner } from '../../../framework/cmmn/caseteammember';
-import CaseTeam from '../../../framework/cmmn/caseteam';
-import TenantService from '../../../framework/service/tenant/tenantservice';
 import StartCase from '../../../framework/service/case/startcase';
 import CafienneResponse from '../../../framework/service/response';
+import TestCase from '../../../framework/test/testcase';
+import WorldWideTestTenant from '../../worldwidetesttenant';
 
 const definition = 'caseteam.xml';
 
@@ -19,7 +18,6 @@ export default class TestInvalidStartCase extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
         await RepositoryService.validateAndDeploy(sender, definition, tenant);
-        await TenantService.addTenantUserRole(sender, worldwideTenant.tenant, sender.id, "Receiver");
     }
 
     startCase: StartCase = { tenant, definition, debug: true };
@@ -29,7 +27,7 @@ export default class TestInvalidStartCase extends TestCase {
         const startCase = this.startCase;
 
         // Case team without owner
-        startCase.caseTeam = new CaseTeam([new CaseTeamMember(sender)]);
+        startCase.caseTeam = new CaseTeam([new CaseTeamUser(sender)]);
         await this.tryStartCase("Missing owner should fail");
 
         // Case team with invalid roles
@@ -58,7 +56,7 @@ export default class TestInvalidStartCase extends TestCase {
 
         // Wrong tenant should fail
         startCase.tenant = 'not-existing-tenants';
-        await this.tryStartCase(`Wrong tenant should fail with 401`, 401);
+        await this.tryStartCase(`Wrong tenant should fail with 404`, 404);
 
         // If user has multiple tenants, listing cases without tenant should fail
         const tenantCount = sender.userInformation?.tenants.length;

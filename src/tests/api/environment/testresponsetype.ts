@@ -1,8 +1,8 @@
 'use strict';
 
 import Config from '../../../config';
-import CaseTeam from '../../../framework/cmmn/caseteam';
-import { CaseOwner } from '../../../framework/cmmn/caseteammember';
+import CaseTeam from '../../../framework/cmmn/team/caseteam';
+import { CaseOwner } from '../../../framework/cmmn/team/caseteamuser';
 import CafienneService, { printHeaders } from '../../../framework/service/cafienneservice';
 import CaseService from '../../../framework/service/case/caseservice';
 import RepositoryService from '../../../framework/service/case/repositoryservice';

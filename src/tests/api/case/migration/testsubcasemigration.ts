@@ -3,12 +3,13 @@
 import TaskService from '../../../../framework/service/task/taskservice';
 import TestCase from '../../../../framework/test/testcase';
 import RepositoryService from '../../../../framework/service/case/repositoryservice';
-import CaseTeam from '../../../../framework/cmmn/caseteam';
+import CaseTeam from '../../../../framework/cmmn/team/caseteam';
 import CaseService from '../../../../framework/service/case/caseservice';
 import CaseMigrationService, { DefinitionMigration } from '../../../../framework/service/case/casemigrationservice';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
 import { findTask } from '../../../../framework/test/caseassertions/task';
-import CaseTeamMember, { CaseOwner } from '../../../../framework/cmmn/caseteammember';
+import { CaseOwner } from '../../../../framework/cmmn/team/caseteamuser';
+import CaseTeamUser from "../../../../framework/cmmn/team/caseteamuser";
 import CaseTeamService from '../../../../framework/service/case/caseteamservice';
 
 const base_definition = 'migration/migration_v0.xml';
@@ -35,7 +36,7 @@ export default class TestSubCaseMigration extends TestCase {
         
         const caseTeam = new CaseTeam([
             new CaseOwner(user, ["role1", "role2", "role3", "role4"]), 
-            new CaseTeamMember(worldwideTenant.receiver, ["role3"])
+            new CaseTeamUser(worldwideTenant.receiver, ["role3"])
         ]);
         const startCase = { 
             tenant, 
@@ -69,5 +70,9 @@ export default class TestSubCaseMigration extends TestCase {
 
         // Migrate caseInstance1, and then complete the task in case1
         const case1_after = await CaseMigrationService.migrateDefinition(user, case1_before, migratedDefinition).then(() => CaseService.getCase(user, case1_before));
+
+        console.log(`Case ID: ${case1_after.id}\n`);
+
+        console.log(`Sub Case ID: ${case1_after.planitems.find(item => item.name === 'migration_subcase')?.id}\n`);
     }
 }
