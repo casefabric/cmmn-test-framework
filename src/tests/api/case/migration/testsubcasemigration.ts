@@ -70,5 +70,9 @@ export default class TestSubCaseMigration extends TestCase {
 
         // Migrate caseInstance1, and then complete the task in case1
         const case1_after = await CaseMigrationService.migrateDefinition(user, case1_before, migratedDefinition).then(() => CaseService.getCase(user, case1_before));
+
+        console.log(`Case ID: ${case1_after.id}\n`);
+
+        console.log(`Sub Case ID: ${case1_after.planitems.find(item => item.name === 'migration_subcase')?.id}\n`);
     }
 }
