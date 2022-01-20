@@ -57,6 +57,7 @@ import TestSwagger from './tests/api/environment/testswagger';
 import TestConsentGroupAPI from './tests/api/consentgroup/testconsentgroupapi';
 import TestCaseTeamConsentGroupAPI from './tests/api/caseteam/testcaseteamconsentgroupapi';
 import TestCaseTeamAuthorizations from './tests/api/caseteam/testcaseteamauthorizations';
+import TestCompatibility from './tests/compatibility/testcompatibility';
 
 function findTestsFromCommandLineArguments(): Array<string> {
     const time = process.argv[2];
@@ -177,6 +178,7 @@ const AllTestCases = new TestClasses([
     , TestCaseMigration
     , TestSubCaseMigration
     , TestRecovery
+    , TestCompatibility
 ]);
 
 
