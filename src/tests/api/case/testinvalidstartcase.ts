@@ -3,10 +3,12 @@
 import CaseTeam from '../../../framework/cmmn/team/caseteam';
 import CaseTeamUser, { CaseOwner } from "../../../framework/cmmn/team/caseteamuser";
 import CaseService from '../../../framework/service/case/caseservice';
+import DebugService from '../../../framework/service/case/debugservice';
 import RepositoryService from '../../../framework/service/case/repositoryservice';
 import StartCase from '../../../framework/service/case/startcase';
 import CafienneResponse from '../../../framework/service/response';
 import TestCase from '../../../framework/test/testcase';
+import { SomeTime } from '../../../framework/test/time';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 
 const definition = 'caseteam.xml';
@@ -46,8 +48,13 @@ export default class TestInvalidStartCase extends TestCase {
         startCase.caseInstanceId = 'Ueè';
         await this.tryStartCase(`Invalid case instance id '${startCase.caseInstanceId}' should fail`);
 
-        // Invalid format of case instance id
+        // Using tenant id as case instance id should fail. tenant is 'World-Wide-Test-Tenant'
         startCase.caseInstanceId = tenant;
+        await this.tryStartCase(`Using tenant id as case instance id '${startCase.caseInstanceId}' should fail`);
+
+        // Force tenant recovery and then try again, again it should fail. This validates the recovery in combination first command in different type of model actor
+        await DebugService.forceRecovery(sender, tenant);
+        await SomeTime(1000, 'Waiting for the tenant to go out-of-memory');
         await this.tryStartCase(`Using tenant id as case instance id '${startCase.caseInstanceId}' should fail`);
 
 
