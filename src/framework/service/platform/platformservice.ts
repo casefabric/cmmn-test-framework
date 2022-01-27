@@ -21,7 +21,7 @@ export default class PlatformService {
         const response = await CafienneService.post('/platform', user, tenant.toJson());
         if (response.status === 400 && expectedStatusCode === 204) {
             const msg = await response.text();
-            if (msg === 'Tenant already exists') {
+            if (msg === 'Tenant already exists' || msg.indexOf('Failure while handling message CreateTenant') >= 0) {
                 // Tenant already exists is ok.
                 if (Config.PlatformService.log) logger.debug(`Tenant ${tenant.name} already exists.'`)
                 return response;

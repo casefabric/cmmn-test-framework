@@ -24,7 +24,7 @@ export default class ConsentGroupService {
         const response = await CafienneService.post(`/consent-group/${tenant}`, user, group.toJson());
         if (response.status === 400 && expectedStatusCode === 200) {
             const msg = await response.text();
-            if (msg === 'Consent group already exists') {
+            if (msg === 'Consent group already exists' || msg.indexOf('Failure while handling message CreateConsentGroup') >= 0) {
                 // Tenant already exists is ok.
                 if (Config.PlatformService.log) logger.debug(`Consent group ${group} already exists.'`)
                 return response;

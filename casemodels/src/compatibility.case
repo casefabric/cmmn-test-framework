@@ -1,0 +1,70 @@
+<case id="compatibility.case" name="compatibility" expressionLanguage="spel" guid="_Htde2">
+    <caseFileModel>
+        <caseFileItem id="_Htde2_3" name="Greeting" multiplicity="ExactlyOne" definitionRef="greeting.cfid"/>
+    </caseFileModel>
+    <casePlanModel id="cm__Htde2_0" name="compatibility" autoComplete="true">
+        <planItem id="pi_ms__Htde2_0" name="Test Closed" definitionRef="ms__Htde2_0">
+            <entryCriterion id="_Htde2_10" name="EntryCriterion_0" sentryRef="crit__Htde2_0"/>
+            <itemControl id="_Htde2_7">
+                <requiredRule id="_Htde2_8">
+                    <condition id="_Htde2_9">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </requiredRule>
+            </itemControl>
+        </planItem>
+        <planItem id="pi_ue__Htde2_0" name="Close Test" definitionRef="ue__Htde2_0"/>
+        <planItem id="pi__Htde2_15" name="Repeating timed sub cases" definitionRef="_Htde2_15">
+            <itemControl id="_Htde2_16">
+                <repetitionRule id="_Htde2_18">
+                    <condition id="_Htde2_19">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
+        </planItem>
+        <sentry id="crit__Htde2_0">
+            <planItemOnPart id="_Htde2_11" sourceRef="pi_ue__Htde2_0">
+                <standardEvent>occur</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <sentry id="crit__Htde2_2">
+            <planItemOnPart id="_Htde2_6" sourceRef="pi_ms__Htde2_0">
+                <standardEvent>occur</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <exitCriterion id="_Htde2_5" name="ExitCriterion_0" sentryRef="crit__Htde2_2"/>
+        <caseTask id="ct__Htde2_0" name="HelloWorld" isBlocking="true" caseRef="helloworld.case">
+            <inputs id="_Htde2_12" name="Greeting" bindingRef="_Htde2_3"/>
+            <parameterMapping id="_Htde2_1" sourceRef="_Htde2_12" targetRef="csVQy_inCPs_0"/>
+        </caseTask>
+        <milestone id="ms__Htde2_0" name="Test Closed"/>
+        <userEvent id="ue__Htde2_0" name="Close Test"/>
+        <timerEvent id="tmr__Htde2_0" name="After 1 second">
+            <timerExpression id="_Htde2_17">
+                <body>
+                    <![CDATA[PT1S]]>
+                </body>
+            </timerExpression>
+            <planItemStartTrigger id="_Htde2_2">
+                <standardEvent></standardEvent>
+            </planItemStartTrigger>
+        </timerEvent>
+        <stage id="_Htde2_15" name="Repeating timed sub cases" autoComplete="true">
+            <planItem id="pi_tmr__Htde2_0" name="After 1 second" definitionRef="tmr__Htde2_0"/>
+            <planItem id="pi_ct__Htde2_0" name="HelloWorld" definitionRef="ct__Htde2_0">
+                <entryCriterion id="_Htde2_13" name="EntryCriterion_1" sentryRef="crit__Htde2_1"/>
+            </planItem>
+            <sentry id="crit__Htde2_1">
+                <planItemOnPart id="_Htde2_14" sourceRef="pi_tmr__Htde2_0">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </sentry>
+        </stage>
+    </casePlanModel>
+    <input id="_Htde2_4" name="Greeting" bindingRef="_Htde2_3"/>
+</case>
