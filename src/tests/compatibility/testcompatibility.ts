@@ -14,6 +14,7 @@ import { SomeTime } from '../../framework/test/time';
 import WorldWideTestTenant from '../worldwidetesttenant';
 import CaseTeam from '../../framework/cmmn/team/caseteam';
 import CaseTeamUser, { CaseOwner } from '../../framework/cmmn/team/caseteamuser';
+import PlanItem from '../../framework/cmmn/planitem';
 
 const definition = 'compatibility.xml';
 
@@ -116,7 +117,7 @@ export default class TestCompatibility extends TestCase {
         
         
         const taskName = 'Receive Greeting and Send response';
-        const planItem = caseInstance.planitems.find(p => p.name === taskName);
+        const planItem = caseInstance.planitems.find((p: PlanItem) => p.name === taskName);
         if (!planItem) {
             throw new Error('Cannot find plan item ' + taskName);
         }

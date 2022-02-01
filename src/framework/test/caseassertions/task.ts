@@ -4,6 +4,7 @@ import logger from '../../logger';
 import TaskService from '../../service/task/taskservice';
 import User from '../../user';
 import Comparison from '../comparison';
+import { PollUntilSuccess } from '../time';
 
 
 
@@ -17,22 +18,24 @@ import Comparison from '../comparison';
  * @param expectedOwner 
  */
 export async function assertTask(user: User, task: Task | string, action: string, expectedState: string = '', expectedAssignee?: User, expectedOwner?: User, expectedLastModifiedBy?: User) {
-    await TaskService.getTask(user, task).then(task => {
-        if (Config.TestCase.log) {
-            logger.info(`Task after ${action}: state=${task.taskState}, assignee='${task.assignee}', owner='${task.owner}', modifiedBy='${task.modifiedBy}' `);
-        }
-        if (task.taskState !== expectedState) {
-            throw new Error(`Task ${task.taskName} is not in state '${expectedState}' but in state '${task.taskState}'`);
-        }
-        if (expectedAssignee && task.assignee !== expectedAssignee.id) {
-            throw new Error(`Task ${task.taskName} is not assigned to '${expectedAssignee}' but to user '${task.assignee}'`);
-        }
-        if (expectedOwner && task.owner !== expectedOwner.id) {
-            throw new Error(`Task ${task.taskName} is not owned by '${expectedOwner}' but by '${task.owner}'`);
-        }
-        if (expectedLastModifiedBy && task.modifiedBy !== expectedLastModifiedBy.id) {
-            throw new Error(`Task ${task.taskName} is not last modified by '${expectedLastModifiedBy}' but by '${task.modifiedBy}'`);
-        }
+    await PollUntilSuccess(async function() {
+         await TaskService.getTask(user, task).then(task => {
+            if (Config.TestCase.log) {
+                logger.info(`Task after ${action}: state=${task.taskState}, assignee='${task.assignee}', owner='${task.owner}', modifiedBy='${task.modifiedBy}' `);
+            }
+            if (task.taskState !== expectedState) {
+                throw new Error(`Task ${task.taskName} is not in state '${expectedState}' but in state '${task.taskState}'`);
+            }
+            if (expectedAssignee && task.assignee !== expectedAssignee.id) {
+                throw new Error(`Task ${task.taskName} is not assigned to '${expectedAssignee}' but to user '${task.assignee}'`);
+            }
+            if (expectedOwner && task.owner !== expectedOwner.id) {
+                throw new Error(`Task ${task.taskName} is not owned by '${expectedOwner}' but by '${task.owner}'`);
+            }
+            if (expectedLastModifiedBy && task.modifiedBy !== expectedLastModifiedBy.id) {
+                throw new Error(`Task ${task.taskName} is not last modified by '${expectedLastModifiedBy}' but by '${task.modifiedBy}'`);
+            }
+        });
     });
 }
 

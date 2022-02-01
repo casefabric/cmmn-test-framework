@@ -1,5 +1,6 @@
 import Config from "../../config";
 import logger from "../logger";
+import { PollUntil  } from 'poll-until-promise';
 
 /**
 * Simple helper method to wait some time.
@@ -22,4 +23,15 @@ export async function SomeTime(millis: number, msg: string = `Waiting ${millis} 
  */
 export async function ServerSideProcessing(msg: string = `Awaiting async server processing for ${Config.CafienneService.cqrsWaitTime} milliseconds`) {
     await SomeTime(Config.CafienneService.cqrsWaitTime, msg);
+}
+
+const poller:PollUntil = new PollUntil({
+    interval: 500,
+    timeout: Config.TestCase.polltimeout,
+    backoffFactor: 1.5,
+    message: `Failed after retrying for ${Config.TestCase.polltimeout} ms`
+})
+
+export async function PollUntilSuccess(action: any){
+    return await poller.execute(action);
 }
