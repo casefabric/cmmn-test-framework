@@ -2,7 +2,7 @@ import fs from 'fs';
 import { DOMParser } from 'xmldom';
 import CafienneService from '../cafienneservice';
 import DeployCase from './command/repository/deploycase';
-import Config from '../../../config';
+import Config from '../../config';
 import User from '../../user';
 import { checkResponse } from '../response';
 import Comparison from '../../test/comparison';

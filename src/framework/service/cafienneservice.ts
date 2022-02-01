@@ -1,5 +1,5 @@
 import fetch from 'isomorphic-fetch';
-import Config from '../../config';
+import Config from '../config';
 import logger from '../logger';
 import User from '../user';
 import QueryFilter, { extendURL } from './queryfilter';

@@ -3,7 +3,7 @@ import CaseService from '../../service/case/caseservice';
 import Case from '../../cmmn/case';
 import { SomeTime } from '../time';
 import PlanItem from '../../cmmn/planitem';
-import Config from '../../../config';
+import Config from '../../config';
 import logger from '../../logger';
 
 /**
@@ -20,9 +20,9 @@ import logger from '../../logger';
  * @returns {Promise<PlanItem>} the plan item if it is found
  * @throws {Error} if the plan item is not found after so many attempts
  */
-export async function assertPlanItem(user: User, caseId: Case | string, planItemName: string, planItemIndex: number = 0, expectedState?: string, maxAttempts: number = 10, waitTimeBetweenAttempts = 1000): Promise<PlanItem> {
+export async function assertPlanItem(user: User, caseId: Case | string, planItemName: string, planItemIndex: number = 0, expectedState?: string, maxAttempts: number = 20, waitTimeBetweenAttempts = 1000): Promise<PlanItem> {
     let currentAttempt = 1;
-    while (true) {
+    while (currentAttempt < maxAttempts) {
         if (Config.TestCase.log) {
             logger.info(`Running attempt ${currentAttempt} of ${maxAttempts} to find '${planItemName}.${planItemIndex}' in state ${expectedState}`);
         }
@@ -53,7 +53,7 @@ export async function assertPlanItem(user: User, caseId: Case | string, planItem
  * @param user 
  * @param expectedState 
  */
-export async function assertCasePlan(user: User, caseId: Case | string, expectedState?: string, maxAttempts: number = 10, waitTimeBetweenAttempts = 1000) {
+export async function assertCasePlan(user: User, caseId: Case | string, expectedState?: string, maxAttempts: number = 20, waitTimeBetweenAttempts = 1000) {
     const tryGetCase = async () => {
         try {
             // Get case details
@@ -63,7 +63,7 @@ export async function assertCasePlan(user: User, caseId: Case | string, expected
         }
     }
     let currentAttempt = 1;
-    while (true) {
+    while (currentAttempt < maxAttempts) {
         if (Config.TestCase.log) {
             logger.info(`Running attempt ${currentAttempt} of ${maxAttempts} to find case ${caseId} in state ${expectedState}`);
         }

@@ -2,7 +2,7 @@ import TestCase from "../../../framework/test/testcase";
 import User from "../../../framework/user";
 import PlatformService from "../../../framework/service/platform/platformservice";
 import TokenService, { dateAsSeconds } from "../../../framework/service/platform/tokenservice";
-import Config from "../../../config";
+import Config from "../../../framework/config";
 
 const user = new User('admin')
 

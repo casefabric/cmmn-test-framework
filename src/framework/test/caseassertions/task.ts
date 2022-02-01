@@ -1,4 +1,4 @@
-import Config from '../../../config';
+import Config from '../../config';
 import Task from '../../cmmn/task';
 import logger from '../../logger';
 import TaskService from '../../service/task/taskservice';

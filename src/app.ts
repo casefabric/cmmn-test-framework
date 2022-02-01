@@ -7,7 +7,7 @@ import TestHelloworld from './tests/helloworld/testhelloworld';
 import TestIncidentManagement from './tests/incidentmanagement/incidentmanagement';
 import TestTenantRegistration from './tests/api/tenant/testtenantregistration';
 import TestTaskValidationAPI from './tests/api/task/humantask/testtaskvalidationapi';
-import Config from './config';
+import Config from './framework/config';
 import TestRepositoryAPI from './tests/api/repository/testrepositoryapi';
 import TestTokenValidation from './tests/api/environment/tokentest';
 import TestCaseFileAPI from './tests/api/casefile/testcasefileapi';

@@ -1,7 +1,7 @@
 import TokenService from './service/platform/tokenservice';
 import UserInformation from './tenant/userinformation';
 import PlatformService from './service/platform/platformservice';
-import Config from '../config';
+import Config from './config';
 import logger from './logger';
 
 export default class User {

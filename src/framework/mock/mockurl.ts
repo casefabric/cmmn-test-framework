@@ -1,5 +1,5 @@
 import { Response, Request, } from 'express';
-import Config from '../../config';
+import Config from '../config';
 import MockServer from './mockserver';
 import { OutgoingHttpHeaders } from 'http';
 import { timingSafeEqual } from 'crypto';

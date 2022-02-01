@@ -1,4 +1,4 @@
-import Config from '../../../config';
+import Config from '../../config';
 import logger from '../../logger';
 import Tenant from '../../tenant/tenant';
 import User from '../../user';

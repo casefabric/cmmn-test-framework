@@ -3,7 +3,7 @@ import Comparison from '../comparison';
 import Case from '../../cmmn/case';
 import CaseFileService from '../../service/case/casefileservice';
 import { pathReader } from '../../cmmn/casefile';
-import Config from '../../../config';
+import Config from '../../config';
 import logger from '../../logger';
 
 /**

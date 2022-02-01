@@ -1,9 +1,8 @@
 import express from 'express';
 import { Server } from 'http';
-import Config from '../../config';
+import Config from '../config';
 import logger from '../logger';
 import MockURL from './mockurl';
-
 /**
  * Simple mock service, leveraging Express to handle POST and GET requests,
  * It has an in-memory "synchronization" mechanism through which it is possible to see if the mock is actually being invoked, including a timeout mechanism.
@@ -15,10 +14,8 @@ export default class MockServer {
     express = express();
     server!: Server;
     mocks: Array<MockURL> = [];
-
     constructor(public port: number) {
     }
-
     async start() {
         const promise = new Promise((resolve: Function) => {
             this.server = this.express.listen(this.port, () => {
@@ -31,7 +28,6 @@ export default class MockServer {
         this.mocks.forEach(mock => mock.register());
         return promise;
     }
-
     async stop() {
         const promise = new Promise((done: Function) => {
             if (Config.MockService.registration) {

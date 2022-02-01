@@ -2,7 +2,7 @@ import User from '../../user';
 import CafienneService from '../cafienneservice';
 import Tenant from '../../tenant/tenant';
 import UserInformation from '../../tenant/userinformation';
-import Config from '../../../config';
+import Config from '../../config';
 import { checkResponse, checkJSONResponse } from '../response';
 import logger from '../../logger';
 
