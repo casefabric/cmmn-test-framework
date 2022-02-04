@@ -3,6 +3,7 @@ import { Server } from 'http';
 import Config from '../../config';
 import logger from '../logger';
 import MockURL from './mockurl';
+import enableDestroy from 'server-destroy';
 
 /**
  * Simple mock service, leveraging Express to handle POST and GET requests,
@@ -20,30 +21,25 @@ export default class MockServer {
     }
 
     async start() {
-        const promise = new Promise((resolve: Function) => {
-            this.server = this.express.listen(this.port, () => {
-                if (Config.MockService.registration) {
-                    logger.info("Started Mock Server on port " + this.port);
-                }
-                resolve();
-            });
+        this.server = this.express.listen(this.port, () => {
+            if (Config.MockService.registration) {
+                logger.info("Started Mock Server on port " + this.port);
+            }
         });
         this.mocks.forEach(mock => mock.register());
-        return promise;
+        enableDestroy(this.server);
     }
 
     async stop() {
-        const promise = new Promise((done: Function) => {
-            if (Config.MockService.registration) {
-                logger.info("Stopping Mock server on port " + this.port);
+        if (Config.MockService.registration) {
+            logger.info("Stopping Mock server on port " + this.port);
+        }
+
+        this.server.destroy(function(err) {
+            if (err) {
+                return logger.info('shutdown failed' + err.message);
             }
-            this.server.close(() => {
-                if (Config.MockService.registration) {
-                    logger.info("Mock Server is stopped");
-                }
-                done();
-            });
+            logger.info('Mock server is stopped');
         });
-        return promise;
     }
 }
