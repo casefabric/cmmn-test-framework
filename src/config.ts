@@ -53,7 +53,8 @@ const Config = {
     },
     TestCase: {
         // Whether or not to show log messages on the console (e.g. wait time messages for server side processing)
-        log: true
+        log: true,
+        polltimeout: 20_000
     }
 }
 

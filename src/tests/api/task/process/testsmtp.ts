@@ -59,7 +59,7 @@ export default class TestSMTP extends TestCase {
         }
 
         try {
-            await assertPlanItem(user, caseInstance, sendMailTask, 0, 'Completed', 10);
+            await assertPlanItem(user, caseInstance, sendMailTask, 0, 'Completed');
         } catch (notFoundError) {
             // If the test fails after 10 calls, get the events for the task and see if we can print any logging info
             await DebugService.getParsedEvents(taskId, user).then(events => {

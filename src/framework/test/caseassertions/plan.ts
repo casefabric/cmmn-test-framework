@@ -1,7 +1,7 @@
 import User from '../../user';
 import CaseService from '../../service/case/caseservice';
 import Case from '../../cmmn/case';
-import { SomeTime } from '../time';
+import { PollUntilSuccess, SomeTime } from '../time';
 import PlanItem from '../../cmmn/planitem';
 import Config from '../../../config';
 import logger from '../../logger';
@@ -20,12 +20,8 @@ import logger from '../../logger';
  * @returns {Promise<PlanItem>} the plan item if it is found
  * @throws {Error} if the plan item is not found after so many attempts
  */
-export async function assertPlanItem(user: User, caseId: Case | string, planItemName: string, planItemIndex: number = 0, expectedState?: string, maxAttempts: number = 10, waitTimeBetweenAttempts = 1000): Promise<PlanItem> {
-    let currentAttempt = 1;
-    while (true) {
-        if (Config.TestCase.log) {
-            logger.info(`Running attempt ${currentAttempt} of ${maxAttempts} to find '${planItemName}.${planItemIndex}' in state ${expectedState}`);
-        }
+export async function assertPlanItem(user: User, caseId: Case | string, planItemName: string, planItemIndex: number = 0, expectedState?: string): Promise<PlanItem> {
+    return await PollUntilSuccess(async function() {
         const freshCase = await CaseService.getCase(user, caseId);
         if (Config.TestCase.log) {
             logger.debug('Current Plan Items\n' + (freshCase.planitems.map(item => "- '" + item.name + "." + item.index + "' ==> '" + item.currentState + "'")).join('\n'));
@@ -41,10 +37,8 @@ export async function assertPlanItem(user: User, caseId: Case | string, planItem
         }
 
         const currentMsg = !matchers.length ? 'not (yet) found in the case plan' : `in state ${matchers[matchers.length - 1].currentState}`;
-        await SomeTime(waitTimeBetweenAttempts, `Waiting ${waitTimeBetweenAttempts} millis before refreshing info on '${planItemName}.${planItemIndex}' to be in state ${expectedState}. The item is currently ${currentMsg}`);
-        currentAttempt++;
-    }
-    throw new Error(`Did not find the plan item '${planItemName}.${planItemIndex}' in state ${expectedState} after ${maxAttempts} attempts`);
+        throw new Error(`Did not find the plan item '${planItemName}.${planItemIndex}' in state ${expectedState}`);
+    });
 }
 
 /**
@@ -53,31 +47,21 @@ export async function assertPlanItem(user: User, caseId: Case | string, planItem
  * @param user 
  * @param expectedState 
  */
-export async function assertCasePlan(user: User, caseId: Case | string, expectedState?: string, maxAttempts: number = 10, waitTimeBetweenAttempts = 1000) {
-    const tryGetCase = async () => {
-        try {
-            // Get case details
-            return await CaseService.getCase(user, caseId);
-        } catch (error) {
-            // ignore the error
-        }
-    }
-    let currentAttempt = 1;
-    while (true) {
-        if (Config.TestCase.log) {
-            logger.info(`Running attempt ${currentAttempt} of ${maxAttempts} to find case ${caseId} in state ${expectedState}`);
+export async function assertCasePlan(user: User, caseId: Case | string, expectedState?: string) {
+    return await PollUntilSuccess(async function() {
+        const tryGetCase = async () => {
+            try {
+                // Get case details
+                return await CaseService.getCase(user, caseId);
+            } catch (error) {
+                // ignore the error
+            }
         }
         // Get case details
         const freshCase = await tryGetCase();
         if (freshCase && (!expectedState || freshCase.state === expectedState)) {
             return freshCase;
         }
-        if (currentAttempt >= maxAttempts) {
-            break;
-        }
-        const currentMsg = !freshCase ? 'not (yet) found' : `in state ${freshCase.state}`;
-        await SomeTime(waitTimeBetweenAttempts, `Waiting ${waitTimeBetweenAttempts} millis before refreshing info on case ${caseId} to be in state ${expectedState}. The item is currently ${currentMsg}`);
-        currentAttempt++;
-    }
-    throw new Error(`Did not find the case ${caseId} in state ${expectedState} after ${maxAttempts} attempts`);
+        throw new Error(`Did not find the case ${caseId} in state ${expectedState}`);
+    });
 }

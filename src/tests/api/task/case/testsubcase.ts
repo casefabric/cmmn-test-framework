@@ -87,7 +87,7 @@ export default class TestSubCase extends TestCase {
         await assertCasePlan(sender, childCaseInstance, 'Completed');
 
         // Give the server some time to respond back from subcase to parent case
-        await assertPlanItem(sender, caseInstance, subCase.name, subCase.index, 'Completed', 10, 2000);
+        await assertPlanItem(sender, caseInstance, subCase.name, subCase.index, 'Completed');
 
         // And now check parent case.
         await assertCasePlan(sender, parentCaseInstance, 'Completed');
