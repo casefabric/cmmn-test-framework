@@ -1,10 +1,10 @@
 'use strict';
 
-import CaseService from '../../../framework/service/case/caseservice';
-import TestCase from '../../../framework/test/testcase';
-import RepositoryService from '../../../framework/service/case/repositoryservice';
-import TenantUser, { TenantOwner } from '../../../framework/tenant/tenantuser';
-import RequestService from '../../../framework/service/anonymous/requestservice';
+import CaseService from '@cafienne/typescript-client/service/case/caseservice';
+import TestCase from '@cafienne/typescript-client/test/testcase';
+import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
+import TenantUser, { TenantOwner } from '@cafienne/typescript-client/tenant/tenantuser';
+import RequestService from '@cafienne/typescript-client/service/anonymous/requestservice';
 import AnonymousWorld from './anonymousworld';
 
 const definition = 'helloworld.xml';

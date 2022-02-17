@@ -1,14 +1,14 @@
 'use strict';
 
-import CaseService from '../../../framework/service/case/caseservice';
-import TestCase from '../../../framework/test/testcase';
+import CaseService from '@cafienne/typescript-client/service/case/caseservice';
+import TestCase from '@cafienne/typescript-client/test/testcase';
 
 import WorldWideTestTenant from '../../worldwidetesttenant';
-import RepositoryService from '../../../framework/service/case/repositoryservice';
-import CaseFileService from '../../../framework/service/case/casefileservice';
-import assertCaseFileContent from '../../../framework/test/caseassertions/file';
-import Case from '../../../framework/cmmn/case';
-import DebugService from '../../../framework/service/case/debugservice';
+import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
+import CaseFileService from '@cafienne/typescript-client/service/case/casefileservice';
+import assertCaseFileContent from '@cafienne/typescript-client/test/caseassertions/file';
+import Case from '@cafienne/typescript-client/cmmn/case';
+import DebugService from '@cafienne/typescript-client/service/case/debugservice';
 
 const definition = 'casefile.xml';
 

@@ -1,15 +1,15 @@
 'use strict';
 
-import RepositoryService from "../../../../framework/service/case/repositoryservice";
-import CaseService from "../../../../framework/service/case/caseservice";
-import TaskService from "../../../../framework/service/task/taskservice";
+import RepositoryService from "@cafienne/typescript-client/service/case/repositoryservice";
+import CaseService from "@cafienne/typescript-client/service/case/caseservice";
+import TaskService from "@cafienne/typescript-client/service/task/taskservice";
 import WorldWideTestTenant from "../../../worldwidetesttenant";
-import TestCase from "../../../../framework/test/testcase";
-import { assertCasePlan, assertPlanItem } from "../../../../framework/test/caseassertions/plan";
-import CaseFileService from "../../../../framework/service/case/casefileservice";
-import PlanItem from "../../../../framework/cmmn/planitem";
-import CasePlanService from "../../../../framework/service/case/caseplanservice";
-import Comparison from "../../../../framework/test/comparison";
+import TestCase from "@cafienne/typescript-client/test/testcase";
+import { assertCasePlan, assertPlanItem } from "@cafienne/typescript-client/test/caseassertions/plan";
+import CaseFileService from "@cafienne/typescript-client/service/case/casefileservice";
+import PlanItem from "@cafienne/typescript-client/cmmn/planitem";
+import CasePlanService from "@cafienne/typescript-client/service/case/caseplanservice";
+import Comparison from "@cafienne/typescript-client/test/comparison";
 
 const worldwideTenant = new WorldWideTestTenant();
 const definition = 'subcasewitharrayoutput.xml';

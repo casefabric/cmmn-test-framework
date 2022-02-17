@@ -1,19 +1,19 @@
 'use strict';
 
-import TaskService from '../../../../framework/service/task/taskservice';
-import TestCase from '../../../../framework/test/testcase';
-import RepositoryService from '../../../../framework/service/case/repositoryservice';
-import Case from '../../../../framework/cmmn/case';
-import CaseTeam from '../../../../framework/cmmn/team/caseteam';
-import CaseService from '../../../../framework/service/case/caseservice';
-import CaseMigrationService, { DefinitionMigration } from '../../../../framework/service/case/casemigrationservice';
+import TaskService from '@cafienne/typescript-client/service/task/taskservice';
+import TestCase from '@cafienne/typescript-client/test/testcase';
+import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
+import Case from '@cafienne/typescript-client/cmmn/case';
+import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
+import CaseService from '@cafienne/typescript-client/service/case/caseservice';
+import CaseMigrationService, { DefinitionMigration } from '@cafienne/typescript-client/service/case/casemigrationservice';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
-import { findTask } from '../../../../framework/test/caseassertions/task';
-import CaseFileService from '../../../../framework/service/case/casefileservice';
-import { CaseOwner } from '../../../../framework/cmmn/team/caseteamuser';
-import CaseTeamUser from "../../../../framework/cmmn/team/caseteamuser";
-import CaseTeamService from '../../../../framework/service/case/caseteamservice';
-import CasePlanService from '../../../../framework/service/case/caseplanservice';
+import { findTask } from '@cafienne/typescript-client/test/caseassertions/task';
+import CaseFileService from '@cafienne/typescript-client/service/case/casefileservice';
+import { CaseOwner } from '@cafienne/typescript-client/cmmn/team/caseteamuser';
+import CaseTeamUser from "@cafienne/typescript-client/cmmn/team/caseteamuser";
+import CaseTeamService from '@cafienne/typescript-client/service/case/caseteamservice';
+import CasePlanService from '@cafienne/typescript-client/service/case/caseplanservice';
 
 const base_definition = 'helloworld_base.xml';
 const definitionMigrated = 'helloworld_migrated.xml';

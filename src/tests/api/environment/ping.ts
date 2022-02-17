@@ -1,7 +1,7 @@
-import User from "../../../framework/user";
-import { SomeTime } from "../../../framework/test/time";
-import PlatformService from "../../../framework/service/platform/platformservice";
-import TestCase from "../../../framework/test/testcase";
+import User from "@cafienne/typescript-client/user";
+import { SomeTime } from "@cafienne/typescript-client/test/time";
+import PlatformService from "@cafienne/typescript-client/service/platform/platformservice";
+import TestCase from "@cafienne/typescript-client/test/testcase";
 
 export default class PingTestEnvironment extends TestCase {
     async run() {

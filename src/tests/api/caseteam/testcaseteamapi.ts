@@ -1,15 +1,15 @@
 'use strict';
 
-import CaseTeam from '../../../framework/cmmn/team/caseteam';
-import CaseTeamTenantRole from '../../../framework/cmmn/team/caseteamtenantrole';
-import CaseTeamUser, { CaseOwner } from '../../../framework/cmmn/team/caseteamuser';
-import CaseFileService from '../../../framework/service/case/casefileservice';
-import CaseService from '../../../framework/service/case/caseservice';
-import CaseTeamService from '../../../framework/service/case/caseteamservice';
-import RepositoryService from '../../../framework/service/case/repositoryservice';
-import { assertCaseTeam, assertCaseTeamUser } from '../../../framework/test/caseassertions/team';
-import TestCase from '../../../framework/test/testcase';
-import User from '../../../framework/user';
+import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
+import CaseTeamTenantRole from '@cafienne/typescript-client/cmmn/team/caseteamtenantrole';
+import CaseTeamUser, { CaseOwner } from '@cafienne/typescript-client/cmmn/team/caseteamuser';
+import CaseFileService from '@cafienne/typescript-client/service/case/casefileservice';
+import CaseService from '@cafienne/typescript-client/service/case/caseservice';
+import CaseTeamService from '@cafienne/typescript-client/service/case/caseteamservice';
+import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
+import { assertCaseTeam, assertCaseTeamUser } from '@cafienne/typescript-client/test/caseassertions/team';
+import TestCase from '@cafienne/typescript-client/test/testcase';
+import User from '@cafienne/typescript-client/user';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 
 const definition = 'caseteam.xml';

@@ -1,16 +1,16 @@
 'use strict';
 
-import CaseService from '../../../framework/service/case/caseservice';
-import TestCase from '../../../framework/test/testcase';
+import CaseService from '@cafienne/typescript-client/service/case/caseservice';
+import TestCase from '@cafienne/typescript-client/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
-import RepositoryService from '../../../framework/service/case/repositoryservice';
-import CaseTeam from '../../../framework/cmmn/team/caseteam';
-import { CaseOwner } from '../../../framework/cmmn/team/caseteamuser';
-import CaseTeamUser from "../../../framework/cmmn/team/caseteamuser";
-import CaseFilter from '../../../framework/service/case/casefilter';
-import User from '../../../framework/user';
-import CaseTeamService from '../../../framework/service/case/caseteamservice';
-import Case from '../../../framework/cmmn/case';
+import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
+import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
+import { CaseOwner } from '@cafienne/typescript-client/cmmn/team/caseteamuser';
+import CaseTeamUser from "@cafienne/typescript-client/cmmn/team/caseteamuser";
+import CaseFilter from '@cafienne/typescript-client/service/case/casefilter';
+import User from '@cafienne/typescript-client/user';
+import CaseTeamService from '@cafienne/typescript-client/service/case/caseteamservice';
+import Case from '@cafienne/typescript-client/cmmn/case';
 
 const definition = 'helloworld.xml';
 

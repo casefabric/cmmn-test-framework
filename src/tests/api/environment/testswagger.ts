@@ -1,6 +1,6 @@
-import CafienneService from "../../../framework/service/cafienneservice";
-import { checkJSONResponse } from "../../../framework/service/response";
-import TestCase from "../../../framework/test/testcase";
+import CafienneService from "@cafienne/typescript-client/service/cafienneservice";
+import { checkJSONResponse } from "@cafienne/typescript-client/service/response";
+import TestCase from "@cafienne/typescript-client/test/testcase";
 
 export default class TestSwagger extends TestCase {
     async run() {
