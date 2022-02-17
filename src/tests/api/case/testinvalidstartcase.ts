@@ -1,14 +1,14 @@
 'use strict';
 
-import CaseTeam from '../../../framework/cmmn/team/caseteam';
-import CaseTeamUser, { CaseOwner } from "../../../framework/cmmn/team/caseteamuser";
-import CaseService from '../../../framework/service/case/caseservice';
-import DebugService from '../../../framework/service/case/debugservice';
-import RepositoryService from '../../../framework/service/case/repositoryservice';
-import StartCase from '../../../framework/service/case/startcase';
-import CafienneResponse from '../../../framework/service/response';
-import TestCase from '../../../framework/test/testcase';
-import { SomeTime } from '../../../framework/test/time';
+import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
+import CaseTeamUser, { CaseOwner } from "@cafienne/typescript-client/cmmn/team/caseteamuser";
+import CaseService from '@cafienne/typescript-client/service/case/caseservice';
+import DebugService from '@cafienne/typescript-client/service/case/debugservice';
+import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
+import StartCase from '@cafienne/typescript-client/service/case/startcase';
+import CafienneResponse from '@cafienne/typescript-client/service/response';
+import TestCase from '@cafienne/typescript-client/test/testcase';
+import { SomeTime } from '@cafienne/typescript-client/test/time';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 
 const definition = 'caseteam.xml';

@@ -1,12 +1,12 @@
-import CaseService from "../../../framework/service/case/caseservice";
-import DebugService from "../../../framework/service/case/debugservice";
-import RepositoryService from "../../../framework/service/case/repositoryservice";
-import TaskService from "../../../framework/service/task/taskservice";
-import TenantService from "../../../framework/service/tenant/tenantservice";
-import Tenant from "../../../framework/tenant/tenant";
-import TenantUser, { TenantOwner } from "../../../framework/tenant/tenantuser";
-import { findTask } from "../../../framework/test/caseassertions/task";
-import TestCase from "../../../framework/test/testcase";
+import CaseService from "@cafienne/typescript-client/service/case/caseservice";
+import DebugService from "@cafienne/typescript-client/service/case/debugservice";
+import RepositoryService from "@cafienne/typescript-client/service/case/repositoryservice";
+import TaskService from "@cafienne/typescript-client/service/task/taskservice";
+import TenantService from "@cafienne/typescript-client/service/tenant/tenantservice";
+import Tenant from "@cafienne/typescript-client/tenant/tenant";
+import TenantUser, { TenantOwner } from "@cafienne/typescript-client/tenant/tenantuser";
+import { findTask } from "@cafienne/typescript-client/test/caseassertions/task";
+import TestCase from "@cafienne/typescript-client/test/testcase";
 import WorldWideTestTenant from "../../worldwidetesttenant";
 
 const worldwideTenant = new WorldWideTestTenant();

@@ -1,16 +1,16 @@
 'use strict';
 
-import TestCase from '../../../framework/test/testcase';
+import TestCase from '@cafienne/typescript-client/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
-import RepositoryService from '../../../framework/service/case/repositoryservice';
-import CaseService from '../../../framework/service/case/caseservice';
-import CaseTeamService from '../../../framework/service/case/caseteamservice';
-import TaskService from '../../../framework/service/task/taskservice';
-import { assertCaseTeamTenantRole, assertCaseTeamUser } from '../../../framework/test/caseassertions/team';
-import { assertTaskCount, assertTask, findTask } from '../../../framework/test/caseassertions/task';
-import { CaseOwner } from '../../../framework/cmmn/team/caseteamuser';
-import CaseTeam from '../../../framework/cmmn/team/caseteam';
-import CaseTeamTenantRole from '../../../framework/cmmn/team/caseteamtenantrole';
+import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
+import CaseService from '@cafienne/typescript-client/service/case/caseservice';
+import CaseTeamService from '@cafienne/typescript-client/service/case/caseteamservice';
+import TaskService from '@cafienne/typescript-client/service/task/taskservice';
+import { assertCaseTeamTenantRole, assertCaseTeamUser } from '@cafienne/typescript-client/test/caseassertions/team';
+import { assertTaskCount, assertTask, findTask } from '@cafienne/typescript-client/test/caseassertions/task';
+import { CaseOwner } from '@cafienne/typescript-client/cmmn/team/caseteamuser';
+import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
+import CaseTeamTenantRole from '@cafienne/typescript-client/cmmn/team/caseteamtenantrole';
 
 
 const tenantName = Math.random().toString(36).substring(7);

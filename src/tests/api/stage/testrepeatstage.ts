@@ -1,15 +1,15 @@
 'use strict';
 
-import RepositoryService from "../../../framework/service/case/repositoryservice";
-import CaseService from "../../../framework/service/case/caseservice";
+import RepositoryService from "@cafienne/typescript-client/service/case/repositoryservice";
+import CaseService from "@cafienne/typescript-client/service/case/caseservice";
 import WorldWideTestTenant from "../../worldwidetesttenant";
-import MockServer from "../../../framework/mock/mockserver";
-import GetMock from "../../../framework/mock/getmock";
-import TestCase from "../../../framework/test/testcase";
-import Case from "../../../framework/cmmn/case";
-import { assertPlanItem } from "../../../framework/test/caseassertions/plan";
-import CasePlanService from "../../../framework/service/case/caseplanservice";
-import { ServerSideProcessing, SomeTime } from "../../../framework/test/time";
+import MockServer from "@cafienne/typescript-client/mock/mockserver";
+import GetMock from "@cafienne/typescript-client/mock/getmock";
+import TestCase from "@cafienne/typescript-client/test/testcase";
+import Case from "@cafienne/typescript-client/cmmn/case";
+import { assertPlanItem } from "@cafienne/typescript-client/test/caseassertions/plan";
+import CasePlanService from "@cafienne/typescript-client/service/case/caseplanservice";
+import { ServerSideProcessing, SomeTime } from "@cafienne/typescript-client/test/time";
 
 const worldwideTenant = new WorldWideTestTenant();
 

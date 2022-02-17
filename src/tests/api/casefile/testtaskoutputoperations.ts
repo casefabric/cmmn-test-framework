@@ -1,14 +1,14 @@
 'use strict';
 
-import CaseService from '../../../framework/service/case/caseservice';
-import TaskService from '../../../framework/service/task/taskservice';
-import TestCase from '../../../framework/test/testcase';
+import CaseService from '@cafienne/typescript-client/service/case/caseservice';
+import TaskService from '@cafienne/typescript-client/service/task/taskservice';
+import TestCase from '@cafienne/typescript-client/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
-import RepositoryService from '../../../framework/service/case/repositoryservice';
-import CaseTeam from '../../../framework/cmmn/team/caseteam';
-import { CaseOwner } from '../../../framework/cmmn/team/caseteamuser';
-import Case from '../../../framework/cmmn/case';
-import PlanItem from '../../../framework/cmmn/planitem';
+import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
+import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
+import { CaseOwner } from '@cafienne/typescript-client/cmmn/team/caseteamuser';
+import Case from '@cafienne/typescript-client/cmmn/case';
+import PlanItem from '@cafienne/typescript-client/cmmn/planitem';
 
 const definition = 'taskoutputoperations.xml';
 

@@ -1,11 +1,11 @@
 'use strict';
 
-import CaseService from '../../../framework/service/case/caseservice';
-import TaskService from '../../../framework/service/task/taskservice';
-import TestCase from '../../../framework/test/testcase';
+import CaseService from '@cafienne/typescript-client/service/case/caseservice';
+import TaskService from '@cafienne/typescript-client/service/task/taskservice';
+import TestCase from '@cafienne/typescript-client/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
-import RepositoryService from '../../../framework/service/case/repositoryservice';
-import assertCaseFileContent from '../../../framework/test/caseassertions/file';
+import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
+import assertCaseFileContent from '@cafienne/typescript-client/test/caseassertions/file';
 
 const definition = 'expressions.xml';
 

@@ -1,15 +1,15 @@
 'use strict';
 
-import CaseService from '../../../../framework/service/case/caseservice';
-import TestCase from '../../../../framework/test/testcase';
+import CaseService from '@cafienne/typescript-client/service/case/caseservice';
+import TestCase from '@cafienne/typescript-client/test/testcase';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
-import RepositoryService from '../../../../framework/service/case/repositoryservice';
-import CasePlanService from '../../../../framework/service/case/caseplanservice';
-import CaseFileService from '../../../../framework/service/case/casefileservice';
-import MockServer from '../../../../framework/mock/mockserver';
-import PostMock from '../../../../framework/mock/postmock';
-import { assertPlanItem } from '../../../../framework/test/caseassertions/plan';
-import assertCaseFileContent from '../../../../framework/test/caseassertions/file';
+import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
+import CasePlanService from '@cafienne/typescript-client/service/case/caseplanservice';
+import CaseFileService from '@cafienne/typescript-client/service/case/casefileservice';
+import MockServer from '@cafienne/typescript-client/mock/mockserver';
+import PostMock from '@cafienne/typescript-client/mock/postmock';
+import { assertPlanItem } from '@cafienne/typescript-client/test/caseassertions/plan';
+import assertCaseFileContent from '@cafienne/typescript-client/test/caseassertions/file';
 
 const definition = 'processtasktest.xml';
 

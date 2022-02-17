@@ -1,18 +1,18 @@
 'use strict';
 
-import CaseService from '../../../framework/service/case/caseservice';
-import TestCase from '../../../framework/test/testcase';
+import CaseService from '@cafienne/typescript-client/service/case/caseservice';
+import TestCase from '@cafienne/typescript-client/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
-import RepositoryService from '../../../framework/service/case/repositoryservice';
-import { CaseOwner } from '../../../framework/cmmn/team/caseteamuser';
-import CaseTeamUser from "../../../framework/cmmn/team/caseteamuser";
-import CaseTeam from '../../../framework/cmmn/team/caseteam';
-import { findTask, assertTask } from '../../../framework/test/caseassertions/task';
-import { assertCaseTeamUser } from '../../../framework/test/caseassertions/team';
-import TaskService from '../../../framework/service/task/taskservice';
-import User from '../../../framework/user';
-import CaseTeamService from '../../../framework/service/case/caseteamservice';
-import TenantUser from '../../../framework/tenant/tenantuser';
+import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
+import { CaseOwner } from '@cafienne/typescript-client/cmmn/team/caseteamuser';
+import CaseTeamUser from "@cafienne/typescript-client/cmmn/team/caseteamuser";
+import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
+import { findTask, assertTask } from '@cafienne/typescript-client/test/caseassertions/task';
+import { assertCaseTeamUser } from '@cafienne/typescript-client/test/caseassertions/team';
+import TaskService from '@cafienne/typescript-client/service/task/taskservice';
+import User from '@cafienne/typescript-client/user';
+import CaseTeamService from '@cafienne/typescript-client/service/case/caseteamservice';
+import TenantUser from '@cafienne/typescript-client/tenant/tenantuser';
 
 const worldwideTenant = new WorldWideTestTenant('wwtt-3');
 

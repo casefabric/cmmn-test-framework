@@ -1,4 +1,4 @@
-import TestCase from './framework/test/testcase';
+import TestCase from '@cafienne/typescript-client/test/testcase';
 import TestStatsAPI from './tests/api/case/teststatsapi';
 import TestUsersCaseAPI from './tests/api/case/usercases';
 import TestDiscretionaryItems from './tests/api/discretionary/testdiscretionaryitems';

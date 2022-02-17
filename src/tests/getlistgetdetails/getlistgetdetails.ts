@@ -1,16 +1,16 @@
 'use strict';
 
-import CaseService from '../../framework/service/case/caseservice';
-import TestCase from '../../framework/test/testcase';
+import CaseService from '@cafienne/typescript-client/service/case/caseservice';
+import TestCase from '@cafienne/typescript-client/test/testcase';
 import WorldWideTestTenant from '../worldwidetesttenant';
-import RepositoryService from '../../framework/service/case/repositoryservice';
-import { ServerSideProcessing } from '../../framework/test/time';
-import { assertPlanItem } from '../../framework/test/caseassertions/plan'
-import CasePlanService from '../../framework/service/case/caseplanservice';
-import CaseFileService from '../../framework/service/case/casefileservice';
-import Case from '../../framework/cmmn/case';
-import MockServer from '../../framework/mock/mockserver';
-import GetMock from '../../framework/mock/getmock';
+import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
+import { ServerSideProcessing } from '@cafienne/typescript-client/test/time';
+import { assertPlanItem } from '@cafienne/typescript-client/test/caseassertions/plan'
+import CasePlanService from '@cafienne/typescript-client/service/case/caseplanservice';
+import CaseFileService from '@cafienne/typescript-client/service/case/casefileservice';
+import Case from '@cafienne/typescript-client/cmmn/case';
+import MockServer from '@cafienne/typescript-client/mock/mockserver';
+import GetMock from '@cafienne/typescript-client/mock/getmock';
 
 const definition = 'getlist_getdetails.xml';
 

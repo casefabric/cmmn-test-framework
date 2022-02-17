@@ -1,14 +1,14 @@
 'use strict';
 
-import CaseTeam from '../../../framework/cmmn/team/caseteam';
-import CaseTeamGroup, { GroupRoleMapping, GroupRoleMappingWithCaseOwnership } from '../../../framework/cmmn/team/caseteamgroup';
-import CaseTeamUser, { CaseOwner } from '../../../framework/cmmn/team/caseteamuser';
-import CaseTeamTenantRole from '../../../framework/cmmn/team/caseteamtenantrole';
-import CaseService from '../../../framework/service/case/caseservice';
-import CaseTeamService from '../../../framework/service/case/caseteamservice';
-import RepositoryService from '../../../framework/service/case/repositoryservice';
-import TestCase from '../../../framework/test/testcase';
-import User from '../../../framework/user';
+import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
+import CaseTeamGroup, { GroupRoleMapping, GroupRoleMappingWithCaseOwnership } from '@cafienne/typescript-client/cmmn/team/caseteamgroup';
+import CaseTeamUser, { CaseOwner } from '@cafienne/typescript-client/cmmn/team/caseteamuser';
+import CaseTeamTenantRole from '@cafienne/typescript-client/cmmn/team/caseteamtenantrole';
+import CaseService from '@cafienne/typescript-client/service/case/caseservice';
+import CaseTeamService from '@cafienne/typescript-client/service/case/caseteamservice';
+import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
+import TestCase from '@cafienne/typescript-client/test/testcase';
+import User from '@cafienne/typescript-client/user';
 import MultiTenantSetup from '../../multitenantsetup';
 
 // Case definition with the roles

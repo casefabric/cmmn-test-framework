@@ -1,14 +1,14 @@
 'use strict';
 
-import CaseService from '../../../../framework/service/case/caseservice';
-import TestCase from '../../../../framework/test/testcase';
+import CaseService from '@cafienne/typescript-client/service/case/caseservice';
+import TestCase from '@cafienne/typescript-client/test/testcase';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
-import RepositoryService from '../../../../framework/service/case/repositoryservice';
-import CaseTeam from '../../../../framework/cmmn/team/caseteam';
-import { CaseOwner } from '../../../../framework/cmmn/team/caseteamuser';
-import CaseTeamUser from "../../../../framework/cmmn/team/caseteamuser";
-import Case from '../../../../framework/cmmn/case';
-import CaseFileService from '../../../../framework/service/case/casefileservice';
+import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
+import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
+import { CaseOwner } from '@cafienne/typescript-client/cmmn/team/caseteamuser';
+import CaseTeamUser from "@cafienne/typescript-client/cmmn/team/caseteamuser";
+import Case from '@cafienne/typescript-client/cmmn/case';
+import CaseFileService from '@cafienne/typescript-client/service/case/casefileservice';
 
 const definition = 'entrycriteriaoncaseinputparameters.xml';
 

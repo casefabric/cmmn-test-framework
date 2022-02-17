@@ -1,20 +1,20 @@
 'use strict';
 
-import CaseService from '../../framework/service/case/caseservice';
-import TaskService from '../../framework/service/task/taskservice';
-import CaseFileService from '../../framework/service/case/casefileservice';
-import CasePlanService from '../../framework/service/case/caseplanservice';
-import CaseTeamService from '../../framework/service/case/caseteamservice';
-import DebugService from '../../framework/service/case/debugservice';
-import RepositoryService from '../../framework/service/case/repositoryservice';
-import { assertCasePlan } from '../../framework/test/caseassertions/plan';
-import { assertTask, verifyTaskInput, findTask } from '../../framework/test/caseassertions/task';
-import TestCase from '../../framework/test/testcase';
-import { SomeTime } from '../../framework/test/time';
+import CaseService from '@cafienne/typescript-client/service/case/caseservice';
+import TaskService from '@cafienne/typescript-client/service/task/taskservice';
+import CaseFileService from '@cafienne/typescript-client/service/case/casefileservice';
+import CasePlanService from '@cafienne/typescript-client/service/case/caseplanservice';
+import CaseTeamService from '@cafienne/typescript-client/service/case/caseteamservice';
+import DebugService from '@cafienne/typescript-client/service/case/debugservice';
+import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
+import { assertCasePlan } from '@cafienne/typescript-client/test/caseassertions/plan';
+import { assertTask, verifyTaskInput, findTask } from '@cafienne/typescript-client/test/caseassertions/task';
+import TestCase from '@cafienne/typescript-client/test/testcase';
+import { SomeTime } from '@cafienne/typescript-client/test/time';
 import WorldWideTestTenant from '../worldwidetesttenant';
-import CaseTeam from '../../framework/cmmn/team/caseteam';
-import CaseTeamUser, { CaseOwner } from '../../framework/cmmn/team/caseteamuser';
-import PlanItem from '../../framework/cmmn/planitem';
+import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
+import CaseTeamUser, { CaseOwner } from '@cafienne/typescript-client/cmmn/team/caseteamuser';
+import PlanItem from '@cafienne/typescript-client/cmmn/planitem';
 
 const definition = 'compatibility.xml';
 

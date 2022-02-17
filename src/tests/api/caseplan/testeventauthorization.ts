@@ -1,14 +1,14 @@
 'use strict';
 
-import Case from '../../../framework/cmmn/case';
-import CaseTeam from '../../../framework/cmmn/team/caseteam';
-import CaseTeamUser, { CaseOwner } from "../../../framework/cmmn/team/caseteamuser";
-import CaseHistoryService from '../../../framework/service/case/casehistoryservice';
-import CasePlanService from '../../../framework/service/case/caseplanservice';
-import CaseService from '../../../framework/service/case/caseservice';
-import RepositoryService from '../../../framework/service/case/repositoryservice';
-import { assertPlanItem } from '../../../framework/test/caseassertions/plan';
-import TestCase from '../../../framework/test/testcase';
+import Case from '@cafienne/typescript-client/cmmn/case';
+import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
+import CaseTeamUser, { CaseOwner } from "@cafienne/typescript-client/cmmn/team/caseteamuser";
+import CaseHistoryService from '@cafienne/typescript-client/service/case/casehistoryservice';
+import CasePlanService from '@cafienne/typescript-client/service/case/caseplanservice';
+import CaseService from '@cafienne/typescript-client/service/case/caseservice';
+import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
+import { assertPlanItem } from '@cafienne/typescript-client/test/caseassertions/plan';
+import TestCase from '@cafienne/typescript-client/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 
 

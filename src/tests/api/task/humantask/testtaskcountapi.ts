@@ -1,13 +1,13 @@
 'use strict';
 
-import CaseService from '../../../../framework/service/case/caseservice';
-import TaskService, { TaskCount } from '../../../../framework/service/task/taskservice';
-import TestCase from '../../../../framework/test/testcase';
+import CaseService from '@cafienne/typescript-client/service/case/caseservice';
+import TaskService, { TaskCount } from '@cafienne/typescript-client/service/task/taskservice';
+import TestCase from '@cafienne/typescript-client/test/testcase';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
-import RepositoryService from '../../../../framework/service/case/repositoryservice';
-import Case from '../../../../framework/cmmn/case';
-import Task from '../../../../framework/cmmn/task';
-import CasePlanService from '../../../../framework/service/case/caseplanservice';
+import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
+import Case from '@cafienne/typescript-client/cmmn/case';
+import Task from '@cafienne/typescript-client/cmmn/task';
+import CasePlanService from '@cafienne/typescript-client/service/case/caseplanservice';
 
 const definition = 'helloworld2.xml';
 

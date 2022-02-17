@@ -1,17 +1,17 @@
 'use strict';
 
-import CaseService from '../../../../framework/service/case/caseservice';
-import RepositoryService from '../../../../framework/service/case/repositoryservice';
-import TaskService from '../../../../framework/service/task/taskservice';
-import TestCase from '../../../../framework/test/testcase';
+import CaseService from '@cafienne/typescript-client/service/case/caseservice';
+import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
+import TaskService from '@cafienne/typescript-client/service/task/taskservice';
+import TestCase from '@cafienne/typescript-client/test/testcase';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
-import { ServerSideProcessing } from '../../../../framework/test/time';
+import { ServerSideProcessing } from '@cafienne/typescript-client/test/time';
 import TaskContent from './taskcontent';
-import Comparison from '../../../../framework/test/comparison';
-import { assertPlanItem } from '../../../../framework/test/caseassertions/plan'
-import MockServer from '../../../../framework/mock/mockserver';
-import GetMock from '../../../../framework/mock/getmock';
-import PostMock from '../../../../framework/mock/postmock';
+import Comparison from '@cafienne/typescript-client/test/comparison';
+import { assertPlanItem } from '@cafienne/typescript-client/test/caseassertions/plan'
+import MockServer from '@cafienne/typescript-client/mock/mockserver';
+import GetMock from '@cafienne/typescript-client/mock/getmock';
+import PostMock from '@cafienne/typescript-client/mock/postmock';
 
 const definition = 'taskoutputvalidation.xml';
 
