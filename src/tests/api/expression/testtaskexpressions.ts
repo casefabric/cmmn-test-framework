@@ -42,6 +42,6 @@ export default class TestTaskExpressions extends TestCase {
 
         await assertCaseFileContent(user, caseInstance, 'ChildItem', taskOutput);
 
-        console.log('\n\n\t\tCase ID:\t\t' + caseInstance.id);
+        console.log('\n  Case ID:\t' + caseInstance.id);
     }
 }

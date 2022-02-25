@@ -1,10 +1,36 @@
 <CMMNDI>
     <CMMNDiagram>
         <CMMNShape cmmnElementRef="cm__O4sf3_0">
-            <Bounds x="20" y="20" width="800" height="500"/>
+            <Bounds x="20" y="20" width="800" height="700"/>
         </CMMNShape>
         <CMMNShape cmmnElementRef="pi_ht__O4sf3_0">
-            <Bounds x="210" y="140" width="140" height="80"/>
+            <Bounds x="220" y="100" width="140" height="80"/>
         </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ms__O4sf3_0">
+            <Bounds x="260" y="270" width="100" height="40"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ue__O4sf3_0">
+            <Bounds x="120" y="270" width="32" height="32"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_O4sf3_14">
+            <Bounds x="254" y="280" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ms__O4sf3_1">
+            <Bounds x="260" y="400" width="100" height="40"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ue__O4sf3_1">
+            <Bounds x="130" y="410" width="32" height="32"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_O4sf3_19">
+            <Bounds x="254" y="410" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi__O4sf3_23">
+            <Bounds x="70" y="230" width="130" height="120"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi__O4sf3_27">
+            <Bounds x="70" y="370" width="140" height="130"/>
+        </CMMNShape>
+        <CMMNEdge sourceCMMNElementRef="pi_ue__O4sf3_0" targetCMMNElementRef="_O4sf3_14"/>
+        <CMMNEdge sourceCMMNElementRef="pi_ue__O4sf3_1" targetCMMNElementRef="_O4sf3_19"/>
     </CMMNDiagram>
 </CMMNDI>

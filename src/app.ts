@@ -58,6 +58,7 @@ import TestConsentGroupAPI from './tests/api/consentgroup/testconsentgroupapi';
 import TestCaseTeamConsentGroupAPI from './tests/api/caseteam/testcaseteamconsentgroupapi';
 import TestCaseTeamAuthorizations from './tests/api/caseteam/testcaseteamauthorizations';
 import TestCompatibility from './tests/compatibility/testcompatibility';
+import TestCaseFileExpressions from './tests/api/expression/testcasefileexpressions';
 
 function findTestsFromCommandLineArguments(): Array<string> {
     const time = process.argv[2];
@@ -145,6 +146,7 @@ const AllTestCases = new TestClasses([
     , TestTokenValidation
     , TestCaseFileAPI
     , TestCaseFileArrayAPI
+    , TestCaseFileExpressions
     , TestBootstrapCaseFileEvents
     , TestCasePlanAPI
     , TestCasePlanHistoryAPI
