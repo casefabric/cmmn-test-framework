@@ -13,8 +13,8 @@ import WorldWideTestTenant from '../../worldwidetesttenant';
 
 const definition = 'caseteam.xml';
 
-const worldwideTenant = new WorldWideTestTenant();
-const tenant = worldwideTenant.name;
+const tenant = Math.random().toString(36).substring(7);
+const worldwideTenant = new WorldWideTestTenant(tenant);
 const sender = worldwideTenant.sender;
 export default class TestInvalidStartCase extends TestCase {
     async onPrepareTest() {
@@ -64,18 +64,6 @@ export default class TestInvalidStartCase extends TestCase {
         // Wrong tenant should fail
         startCase.tenant = 'not-existing-tenants';
         await this.tryStartCase(`Wrong tenant should fail with 404`, 404);
-
-        // If user has multiple tenants, listing cases without tenant should fail
-        const tenantCount = sender.userInformation?.tenants.length;
-        if (tenantCount && tenantCount > 1) {
-            // Empty and undefined tenant should fail when user is in multiple tenants
-            startCase.tenant = '';
-            await this.tryStartCase(`Empty tenant should fail`);
-
-            // Undefined tenant should fail
-            startCase.tenant = undefined;
-            await this.tryStartCase(`Undefined tenant should fail`);
-        }
 
         startCase.tenant = tenant;
 
