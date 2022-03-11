@@ -1,4 +1,5 @@
 import TestCase from '@cafienne/typescript-client/test/testcase';
+import CafienneConfig from '@cafienne/typescript-client/config';
 import TestStatsAPI from './tests/api/case/teststatsapi';
 import TestUsersCaseAPI from './tests/api/case/usercases';
 import TestDiscretionaryItems from './tests/api/discretionary/testdiscretionaryitems';
@@ -238,6 +239,7 @@ async function runTests(testDeclarations: Array<any>, onlyDefaults: boolean) {
 }
 
 function main() {
+    Object.assign(CafienneConfig, Config);
 
     const commandLineTestNames = findTestsFromCommandLineArguments();
     const commandLineTestClasses = commandLineTestNames.map(TestClasses.getTestClass)
@@ -259,13 +261,13 @@ function main() {
 
 try {
     main();
-} catch (error) {
+} catch (error:any) {
     console.log(error.message);
     process.exit(-1);
 }
 
 class TestError extends Error {
-    constructor(public error: Error, message: string) {
+    constructor(public error: any, message: string) {
         super(message);
     }
 }
