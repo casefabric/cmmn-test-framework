@@ -261,13 +261,13 @@ function main() {
 
 try {
     main();
-} catch (error:any) {
+} catch (error) {
     console.log(error.message);
     process.exit(-1);
 }
 
 class TestError extends Error {
-    constructor(public error: any, message: string) {
+    constructor(public error: Error, message: string) {
         super(message);
     }
 }
