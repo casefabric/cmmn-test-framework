@@ -21,6 +21,8 @@ const sender = worldwideTenant.sender;
 const receiver = worldwideTenant.receiver;
 
 export default class TestStatsAPI extends TestCase {
+    public isDefaultTest: boolean = false;
+
     async onPrepareTest() {
         await worldwideTenant.create();
         await RepositoryService.validateAndDeploy(sender, helloworldDefinition, tenant);
