@@ -60,6 +60,7 @@ import TestCaseTeamConsentGroupAPI from './tests/api/caseteam/testcaseteamconsen
 import TestCaseTeamAuthorizations from './tests/api/caseteam/testcaseteamauthorizations';
 import TestCompatibility from './tests/compatibility/testcompatibility';
 import TestCaseFileExpressions from './tests/api/expression/testcasefileexpressions';
+import NextVersion from './nextversion/nextversion';
 
 function findTestsFromCommandLineArguments(): Array<string> {
     const time = process.argv[2];
@@ -240,6 +241,7 @@ async function runTests(testDeclarations: Array<any>, onlyDefaults: boolean) {
 
 function main() {
     Object.assign(CafienneConfig, Config);
+    NextVersion.enable();
 
     const commandLineTestNames = findTestsFromCommandLineArguments();
     const commandLineTestClasses = commandLineTestNames.map(TestClasses.getTestClass)

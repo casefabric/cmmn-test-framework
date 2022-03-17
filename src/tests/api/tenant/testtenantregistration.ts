@@ -73,7 +73,7 @@ export default class TestTenantRegistration extends TestCase {
         // Creating tenant again should fail because tenant already exists
         await PlatformService.createTenant(platformAdmin, tenant1, 400, 'Creating tenant again should fail because tenant already exists');
         // Getting tenant owners as platformOwner should fail.
-        await TenantService.getTenantOwners(platformAdmin, tenant1, 401, 'Getting tenant owners as platformOwner should fail.');
+        await TenantService.getTenantOwners(platformAdmin, tenant1, 404, 'Getting tenant owners as platformOwner should fail.');
 
         // Login again to refresh the user information, after which it should contain the new tenant info
         await tenantOwner1.login();
@@ -93,7 +93,7 @@ export default class TestTenantRegistration extends TestCase {
         await TenantService.getTenantUsers(tenantOwner1, tenant1).then(users => checkUserCount(users, 6));
 
         // Platform owner should not be able to get list of users
-        await TenantService.getTenantUsers(platformAdmin, tenant1, 401, 'Platform owner should not be able to get list of users');
+        await TenantService.getTenantUsers(platformAdmin, tenant1, 404, 'Platform owner should not be able to get list of users');
     }
 
     async tryAddRemoveTenantUser() {

@@ -1,10 +1,11 @@
 import ConsentGroup from "@cafienne/typescript-client/service/consentgroup/consentgroup";
-import ConsentGroupService from "@cafienne/typescript-client/service/consentgroup/consentgroupservice";
 import ConsentGroupMember, { ConsentGroupOwner } from "@cafienne/typescript-client/service/consentgroup/consentgroupmember";
+import ConsentGroupService from "@cafienne/typescript-client/service/consentgroup/consentgroupservice";
 import TestCase from "@cafienne/typescript-client/test/testcase";
-import WorldWideTestTenant from "../../worldwidetesttenant";
-import assertSameGroup, { assertMemberHasNoRoles, assertMemberRole } from "@cafienne/typescript-client/test/userassertions/consentgroup";
 import { SomeTime } from "@cafienne/typescript-client/test/time";
+import assertSameGroup, { assertMemberHasNoRoles, assertMemberRole } from "@cafienne/typescript-client/test/userassertions/consentgroup";
+import { ExtendedConsentGroupService } from "../../../nextversion/nextversion";
+import WorldWideTestTenant from "../../worldwidetesttenant";
 
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
@@ -14,8 +15,6 @@ const tenantUser = worldwideTenant.employee;
 
 const guid = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 const groupId = `consent-group-${guid}`;
-const groupName = 'my-very-own-consent-group';
-const groupDescription = 'welll ... my very own consent group description';
 
 export default class TestConsentGroupAPI extends TestCase {
     async onPrepareTest() {
@@ -26,7 +25,7 @@ export default class TestConsentGroupAPI extends TestCase {
     async run() {
         const owner = new ConsentGroupOwner(tenantAndGroupOwner.id, ['OwnerRole', 'GroupRole']); // Sender
         const member = new ConsentGroupMember(tenantUser.id, []); // Employee
-        const newMember = new ConsentGroupMember(tenantOwner.id, ["MemberRole"]); // Receiver
+        const newMember = new ConsentGroupMember(tenantOwner.id, ['MemberRole']); // Receiver
         const members: Array<ConsentGroupMember> = [];
         const group = new ConsentGroup(members, groupId);
         await owner.login();
@@ -49,6 +48,33 @@ export default class TestConsentGroupAPI extends TestCase {
         await ConsentGroupService.createGroup(tenantAndGroupOwner, tenant, group);
         // But it should not be possible to create the same group again.
         await ConsentGroupService.createGroup(tenantAndGroupOwner, tenant, group, 400);
+
+        // Yet again it should be possible to replace the group (this should not lead to state changes)
+        await ExtendedConsentGroupService.replaceGroup(tenantAndGroupOwner, group);
+
+        // Trying to replace without a new owner is not possible
+        group.members = [member];
+        await ExtendedConsentGroupService.replaceGroup(tenantAndGroupOwner, group, 400);
+
+        // Trying to replace with duplicate members is not possible
+        group.members = [member, owner, member];
+        await ExtendedConsentGroupService.replaceGroup(tenantAndGroupOwner, group, 400);
+
+        // Replace and give a role to the member
+        group.members = [member, owner];
+        member.roles = ['MemberRole'];
+        await ExtendedConsentGroupService.replaceGroup(tenantAndGroupOwner, group);
+
+        // Remove the member and add a role to the owner.
+        group.members = [owner];
+        owner.roles = ['OwnerRole', 'MemberRole']
+        await ExtendedConsentGroupService.replaceGroup(tenantAndGroupOwner, group);
+
+        // Restore original group
+        owner.roles = ['OwnerRole', 'GroupRole'];
+        member.roles = [];
+        group.members = [member, owner];
+        await ExtendedConsentGroupService.replaceGroup(tenantAndGroupOwner, group);
 
         // If we remove the initial groupId, then we should be able to again create a group.
         delete group.id;

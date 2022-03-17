@@ -81,13 +81,14 @@ export default class TestCaseTeamAuthorizations extends TestCase {
         const caseInstance = await CaseService.startCase(universe.boy, startCase);
 
         // This test validates the base query extension on case team membership
-        await this.validateCaseAccess(caseInstance);
-
+        await this.validateCaseQueryAccess(caseInstance);
+        // This test validates the base query extension on case team membership
+        await this.validateCaseCommandAccess(caseInstance);
         // This test validates that only members of the marsGroup can access the task, and not e.g. the case owners
         await this.validateRequestTaskAccess(caseInstance);
-        // // This test validates that only tenant members with Family role can access the task, and not e.g. a consent group owner
+        // This test validates that only tenant members with Family role can access the task, and not e.g. a consent group owner
         await this.validateApproveTaskAccess(caseInstance);
-        // // This test validates that all members except for one specific group can access the task
+        // This test validates that all members except for one specific group can access the task
         await this.validateParticipantTaskAccess(caseInstance);
         // Validate
         await this.validateAssistTaskAccess(caseInstance);
@@ -95,7 +96,7 @@ export default class TestCaseTeamAuthorizations extends TestCase {
         await this.validateRolelessTaskAccess(caseInstance);
     }
 
-    async validateRequestTaskAccess(caseInstance: Case) {
+    async validateRequestTaskAccess(caseInstance: Case|string) {
         // Jeff is owner of the mars group, and is allowed to Assign and Delegate the task.
         //  Boy is case owner, but the request task is exclusive to the mars group, and therefore he cannot assign the task
         //  Also he is mars group member, but not mars group owner, so also therefore he cannot assign the task.
@@ -105,7 +106,7 @@ export default class TestCaseTeamAuthorizations extends TestCase {
         await this.validateTaskAccess(caseInstance, requestTask, taskPerformers, taskManagers);        
     }
 
-    async validateApproveTaskAccess(caseInstance: Case) {
+    async validateApproveTaskAccess(caseInstance: Case|string) {
         // Approve task is only available to tenant user with 'Family' role.
         // Boy is case owner and can therefore manage the task
         const taskPerformers: Array<User> = familyCaseMembers;
@@ -114,7 +115,7 @@ export default class TestCaseTeamAuthorizations extends TestCase {
         await this.validateTaskAccess(caseInstance, approveTask, taskPerformers, taskManagers);        
     }
 
-    async validateParticipantTaskAccess(caseInstance: Case) {
+    async validateParticipantTaskAccess(caseInstance: Case|string) {
         // The whole case team, except for the mars2Group, has the participant role and should be able to access the task.
         const taskPerformers = [...familyCaseMembers, ...moonGroupCaseMembers, ...marsGroupCaseMembers];
         // Boy is case owner, neil owns moonGroup and jeff owns marsGroup
@@ -123,7 +124,7 @@ export default class TestCaseTeamAuthorizations extends TestCase {
         await this.validateTaskAccess(caseInstance, participantTask, taskPerformers, taskManagers);
     }
 
-    async validateAssistTaskAccess(caseInstance: Case) {
+    async validateAssistTaskAccess(caseInstance: Case|string) {
         // The assist task can be taken by both case owners and moonmen that are moontester or owner of the moongroup.
         const taskManagers = [universe.boy, universe.neil]; // Case owner and consent group owner
         const taskPerformers = [universe.dad, universe.alien]; // Users with role 'PersonalAssistant'
@@ -131,7 +132,7 @@ export default class TestCaseTeamAuthorizations extends TestCase {
         await this.validateTaskAccess(caseInstance, assistTask, taskPerformers, taskManagers);
     }
 
-    async validateRolelessTaskAccess(caseInstance: Case) {
+    async validateRolelessTaskAccess(caseInstance: Case|string) {
         // All case team members should be able to access a task without a caseRole
         const taskPerformers = caseTeamMembers;
         // boy is both case owner from tenant perspective and group owner of marsGroup2
@@ -141,7 +142,7 @@ export default class TestCaseTeamAuthorizations extends TestCase {
         await this.validateTaskAccess(caseInstance, taskWithoutRole, taskPerformers, taskManagers);
     }
 
-    async validateCaseAccess(caseInstance: Case) {
+    async validateCaseQueryAccess(caseInstance: Case|string) {
         const usersWithCaseAccess = caseTeamMembers;
         const usersWithoutCaseAccess = universe.people.filter(person => caseTeamMembers.filter(user => user.id === person.id).length === 0);
 
@@ -153,6 +154,21 @@ export default class TestCaseTeamAuthorizations extends TestCase {
         for (const user of usersWithoutCaseAccess) {
             console.log(`Checking whether user ${user} has access to case ${caseInstance}`);
             await CaseService.getCase(user, caseInstance, 404, `Did not expect user ${user} to have access on case ${caseInstance}`);
+        };
+    }
+
+    async validateCaseCommandAccess(caseInstance: Case|string) {
+        const usersWithCaseAccess = caseTeamMembers;
+        const usersWithoutCaseAccess = universe.people.filter(person => caseTeamMembers.filter(user => user.id === person.id).length === 0);
+
+        for (const user of usersWithCaseAccess) {
+            console.log(`\nChecking whether user ${user} has access to case ${caseInstance}`);
+            await CaseService.getDiscretionaryItems(user, caseInstance, 200, `Expected user ${user} to have access on case ${caseInstance}`);
+        };
+
+        for (const user of usersWithoutCaseAccess) {
+            console.log(`\nChecking whether user ${user} has access to case ${caseInstance}`);
+            await CaseService.getDiscretionaryItems(user, caseInstance, 404, `Did not expect user ${user} to have access on case ${caseInstance}`);
         };
     }
 
@@ -174,14 +190,14 @@ export default class TestCaseTeamAuthorizations extends TestCase {
         const taskName = task.name;
 
         for (const user of usersWithTaskAccess) {
-            console.log(`Checking whether user ${user} has access to task ${taskName}`);
+            console.log(`\nChecking whether user ${user} has access to task ${taskName}`);
             await TaskService.claimTask(user, task, 202, `Expected user ${user} to have access to claim task ${taskName}`);
             await TaskService.revokeTask(user, task, 202, `Expected user ${user} to have access to revoke task ${taskName}`);
             await TaskService.getTask(user, task).then(task => console.log("Task state is: " + task.taskState));
         };
 
         for (const user of usersWithoutTaskAccess) {
-            console.log(`Checking whether user ${user} has access to task ${taskName}`);
+            console.log(`\nChecking whether user ${user} has access to task ${taskName}`);
             await TaskService.claimTask(user, task, 401, `Not expected that user ${user} has access to claim task ${taskName}`);
         };
     }
@@ -192,7 +208,7 @@ export default class TestCaseTeamAuthorizations extends TestCase {
 
         const taskName = task.name;
         for (const user of taskManagers) {
-            console.log(`Checking whether user ${user} is allowed to manage task ${taskName}`);
+            console.log(`\nChecking whether user ${user} is allowed to manage task ${taskName}`);
             if (assignee) {
                 await TaskService.assignTask(user, task, assignee, 202, `Expected user ${user} to have access to assign task ${taskName}`);
                 await TaskService.revokeTask(user, task, 202, `Expected user ${user} to have access to revoke task ${taskName}`);
@@ -200,7 +216,7 @@ export default class TestCaseTeamAuthorizations extends TestCase {
         };
 
         for (const user of others) {
-            console.log(`Checking whether user ${user} is allowed to manage task ${taskName}`);
+            console.log(`\nChecking whether user ${user} is allowed to manage task ${taskName}`);
             await TaskService.assignTask(user, task, assignee, 401, `Not expected that user ${user} is allowed to manage task ${taskName}`);
         };
     }
