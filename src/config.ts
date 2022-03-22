@@ -15,8 +15,8 @@ const Config = {
             // Whether or not to log HTTP call information (user, url, method type, headers)
             url: true, // URL includes call number, method type and user id
             request: {
-                headers: true, // Shows request headers
-                body: true, // Shows request body
+                headers: false, // Shows request headers
+                body: false, // Shows request body
             },
             response: {
                 status: true, // Shows response statusCode and statusMessage, including call number 

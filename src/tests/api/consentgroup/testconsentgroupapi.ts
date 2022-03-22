@@ -4,7 +4,6 @@ import ConsentGroupService from "@cafienne/typescript-client/service/consentgrou
 import TestCase from "@cafienne/typescript-client/test/testcase";
 import { SomeTime } from "@cafienne/typescript-client/test/time";
 import assertSameGroup, { assertMemberHasNoRoles, assertMemberRole } from "@cafienne/typescript-client/test/userassertions/consentgroup";
-import { ExtendedConsentGroupService } from "../../../nextversion/nextversion";
 import WorldWideTestTenant from "../../worldwidetesttenant";
 
 const worldwideTenant = new WorldWideTestTenant();
@@ -50,31 +49,31 @@ export default class TestConsentGroupAPI extends TestCase {
         await ConsentGroupService.createGroup(tenantAndGroupOwner, tenant, group, 400);
 
         // Yet again it should be possible to replace the group (this should not lead to state changes)
-        await ExtendedConsentGroupService.replaceGroup(tenantAndGroupOwner, group);
+        await ConsentGroupService.replaceGroup(tenantAndGroupOwner, group);
 
         // Trying to replace without a new owner is not possible
         group.members = [member];
-        await ExtendedConsentGroupService.replaceGroup(tenantAndGroupOwner, group, 400);
+        await ConsentGroupService.replaceGroup(tenantAndGroupOwner, group, 400);
 
         // Trying to replace with duplicate members is not possible
         group.members = [member, owner, member];
-        await ExtendedConsentGroupService.replaceGroup(tenantAndGroupOwner, group, 400);
+        await ConsentGroupService.replaceGroup(tenantAndGroupOwner, group, 400);
 
         // Replace and give a role to the member
         group.members = [member, owner];
         member.roles = ['MemberRole'];
-        await ExtendedConsentGroupService.replaceGroup(tenantAndGroupOwner, group);
+        await ConsentGroupService.replaceGroup(tenantAndGroupOwner, group);
 
         // Remove the member and add a role to the owner.
         group.members = [owner];
         owner.roles = ['OwnerRole', 'MemberRole']
-        await ExtendedConsentGroupService.replaceGroup(tenantAndGroupOwner, group);
+        await ConsentGroupService.replaceGroup(tenantAndGroupOwner, group);
 
         // Restore original group
         owner.roles = ['OwnerRole', 'GroupRole'];
         member.roles = [];
         group.members = [member, owner];
-        await ExtendedConsentGroupService.replaceGroup(tenantAndGroupOwner, group);
+        await ConsentGroupService.replaceGroup(tenantAndGroupOwner, group);
 
         // If we remove the initial groupId, then we should be able to again create a group.
         delete group.id;
