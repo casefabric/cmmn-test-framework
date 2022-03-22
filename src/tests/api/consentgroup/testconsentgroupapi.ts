@@ -87,16 +87,29 @@ export default class TestConsentGroupAPI extends TestCase {
         // Get the group
         await ConsentGroupService.getGroup(tenantAndGroupOwner, group);
 
+        // Check that the group owner can get a group member
+        await ConsentGroupService.getGroupMember(tenantAndGroupOwner, group, member);
+
+        // Check that the group member can get a group member
+        await ConsentGroupService.getGroupMember(member, group, tenantAndGroupOwner);
+
         // Get it and check it to be the same as expected
         await assertSameGroup(tenantAndGroupOwner, group);
 
-        // Check that non-group members are not allowed to get the group
+        // Check that non-group members are not allowed to get the group, nor members of the group
         await ConsentGroupService.getGroup(tenantOwner, group, 404);
+        await ConsentGroupService.getGroupMember(tenantOwner, group, tenantAndGroupOwner, 404);
 
         await ConsentGroupService.setGroupMember(tenantAndGroupOwner, group, newMember)
 
         // Check that new member can now also get the group
         await ConsentGroupService.getGroup(tenantOwner, group);
+
+        // Check that the group owner can get a group member
+        await ConsentGroupService.getGroupMember(tenantOwner, group, member);
+
+        // Check that the group owner can get the new group member
+        await ConsentGroupService.getGroupMember(member, group, newMember);
 
         // Move the member also in the local group and check that server and client are the same
         group.members.push(newMember);
