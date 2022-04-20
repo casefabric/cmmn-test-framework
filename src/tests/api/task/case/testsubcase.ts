@@ -1,6 +1,7 @@
 'use strict';
 
 import PlanItem from "@cafienne/typescript-client/cmmn/planitem";
+import State from "@cafienne/typescript-client/cmmn/state";
 import CaseTeamUser, { CaseOwner } from "@cafienne/typescript-client/cmmn/team/caseteamuser";
 import CaseFileService from "@cafienne/typescript-client/service/case/casefileservice";
 import CaseService from "@cafienne/typescript-client/service/case/caseservice";
@@ -52,10 +53,10 @@ export default class TestSubCase extends TestCase {
         await assertCaseTeamUser(sender, caseInstance, new CaseOwner(sender, []));
         await assertCaseTeamUser(sender, caseInstance, new CaseTeamUser(receiver, []), false);
 
-        await assertPlanItem(sender, caseInstance, subCase.name, subCase.index, 'Active');
+        await assertPlanItem(sender, caseInstance, subCase.name, subCase.index, State.Active);
 
         // Get subcase is possible by sender
-        const childCaseInstance = await assertCasePlan(sender, subCase.id, 'Active');
+        const childCaseInstance = await assertCasePlan(sender, subCase.id, State.Active);
 
         // Sender is the owner of the subcase and receiver doesn't exist in the subcase yet
         await assertCaseTeamUser(sender, childCaseInstance, new CaseOwner(sender, []));
@@ -84,13 +85,13 @@ export default class TestSubCase extends TestCase {
         await TaskService.completeTask(receiver, readResponseTask);
 
         // Both subcase and parent case plans should be completed
-        await assertCasePlan(sender, childCaseInstance, 'Completed');
+        await assertCasePlan(sender, childCaseInstance, State.Completed);
 
         // Give the server some time to respond back from subcase to parent case
-        await assertPlanItem(sender, caseInstance, subCase.name, subCase.index, 'Completed');
+        await assertPlanItem(sender, caseInstance, subCase.name, subCase.index, State.Completed);
 
         // And now check parent case.
-        await assertCasePlan(sender, parentCaseInstance, 'Completed');
+        await assertCasePlan(sender, parentCaseInstance, State.Completed);
 
         // Still, receiver should not be part of the parent case team
         await assertCaseTeamUser(sender, parentCaseInstance, new CaseTeamUser(receiver, []), false);

@@ -2,6 +2,7 @@
 
 import Case from '@cafienne/typescript-client/cmmn/case';
 import PlanItem from '@cafienne/typescript-client/cmmn/planitem';
+import State from '@cafienne/typescript-client/cmmn/state';
 import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
 import CaseTeamGroup, { GroupRoleMapping } from '@cafienne/typescript-client/cmmn/team/caseteamgroup';
 import CaseTeamTenantRole from '@cafienne/typescript-client/cmmn/team/caseteamtenantrole';
@@ -49,7 +50,6 @@ const caseTeam = new CaseTeam([
     // The whole Family has access to the case as Approver. But only 'Family' in world, not 'Family' in moon or mars
     new CaseTeamTenantRole('Family', [caseRoleParticipant, caseRoleApprover])
 ]);
-
 
 // Different tenants having the same tenantRole 'Family'. The role is present in both 'world' and 'moon' tenant.
 // In this test case we validate that even if you have the same tenant role name, it does not mean you get case access.
@@ -173,7 +173,7 @@ export default class TestCaseTeamAuthorizations extends TestCase {
     }
 
     async validateTaskAccess(caseInstance: Case | string, taskName: string, taskPerformers: Array<User>, taskManagers: Array<User>) {
-        const task = await assertPlanItem(universe.boy, caseInstance, taskName, -1, 'Active');
+        const task = await assertPlanItem(universe.boy, caseInstance, taskName, -1, State.Active);
         if (!task) {
             throw new Error(`Cannot find an active task ${taskName} in case ${caseInstance}`)
         }

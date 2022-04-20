@@ -11,6 +11,7 @@ import { assertTaskCount, assertTask, findTask } from '@cafienne/typescript-clie
 import { CaseOwner } from '@cafienne/typescript-client/cmmn/team/caseteamuser';
 import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
 import CaseTeamTenantRole from '@cafienne/typescript-client/cmmn/team/caseteamtenantrole';
+import TaskState from '@cafienne/typescript-client/cmmn/taskstate';
 
 
 const tenantName = Math.random().toString(36).substring(7);
@@ -52,7 +53,7 @@ export default class TestCaseTeam extends TestCase {
         
         // Sender can claim task 'Task Without Role'
         await TaskService.claimTask(sender, taskWithoutRole);
-        await assertTask(sender, taskWithoutRole, 'Claim', 'Assigned', sender, sender);
+        await assertTask(sender, taskWithoutRole, 'Claim', TaskState.Assigned, sender, sender);
         
         // There should be 4 Unassigned tasks
         tasks = await TaskService.getCaseTasks(sender, caseInstance);
@@ -64,7 +65,7 @@ export default class TestCaseTeam extends TestCase {
 
         // Now, sender can claim 'Approve' task
         await TaskService.claimTask(sender, approveTask)
-        await assertTask(sender, approveTask, 'Claim', 'Assigned', sender, sender);
+        await assertTask(sender, approveTask, 'Claim', TaskState.Assigned, sender, sender);
 
         // There should be 3 Unassigned tasks
         tasks = await TaskService.getCaseTasks(sender, caseInstance);
@@ -84,7 +85,7 @@ export default class TestCaseTeam extends TestCase {
 
         // Receiver can claim 'Request' task
         await TaskService.claimTask(receiver, requestTask);
-        await assertTask(receiver, requestTask, 'Claim', 'Assigned', receiver, receiver);
+        await assertTask(receiver, requestTask, 'Claim', TaskState.Assigned, receiver, receiver);
 
         // There should be 2 Unassigned tasks
         tasks = await TaskService.getCaseTasks(sender, caseInstance);

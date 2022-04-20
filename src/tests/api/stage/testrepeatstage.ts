@@ -10,6 +10,8 @@ import Case from "@cafienne/typescript-client/cmmn/case";
 import { assertPlanItem } from "@cafienne/typescript-client/test/caseassertions/plan";
 import CasePlanService from "@cafienne/typescript-client/service/case/caseplanservice";
 import { ServerSideProcessing, SomeTime } from "@cafienne/typescript-client/test/time";
+import State from "@cafienne/typescript-client/cmmn/state";
+import Transition from "@cafienne/typescript-client/cmmn/transition";
 
 const worldwideTenant = new WorldWideTestTenant();
 
@@ -86,11 +88,11 @@ export default class TestRepeatStage extends TestCase {
             })
 
             // Status stage of index i must be completed
-            await assertPlanItem(user, caseInstance, 'Status', i, 'Completed');
+            await assertPlanItem(user, caseInstance, 'Status', i, State.Completed);
         }
 
         // Make transistion on Kill user event
-        await CasePlanService.makePlanItemTransition(user, caseInstance, 'Kill', 'Occur');
+        await CasePlanService.makePlanItemTransition(user, caseInstance, 'Kill', Transition.Occur);
 
         console.log("Case ID:\t" + caseInstance.id);
     }

@@ -15,6 +15,8 @@ import WorldWideTestTenant from '../worldwidetesttenant';
 import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
 import CaseTeamUser, { CaseOwner } from '@cafienne/typescript-client/cmmn/team/caseteamuser';
 import PlanItem from '@cafienne/typescript-client/cmmn/planitem';
+import TaskState from '@cafienne/typescript-client/cmmn/taskstate';
+import State from '@cafienne/typescript-client/cmmn/state';
 
 const definition = 'compatibility.xml';
 
@@ -78,10 +80,10 @@ export default class TestCompatibility extends TestCase {
             throw new Error('Expecting task to be assigned to sending user');
         }
         await TaskService.completeTask(sender, readResponseTask);
-        await assertTask(sender, readResponseTask, 'Complete', 'Completed', sender, sender, sender);
+        await assertTask(sender, readResponseTask, 'Complete', TaskState.Completed, sender, sender, sender);
 
         // Closing the read-response task should recover the parent case
-        await assertCasePlan(sender, caseInstance, 'Completed');
+        await assertCasePlan(sender, caseInstance, State.Completed);
 
         // Now it should be possible to retrieve root case id again.
         await CaseService.getDiscretionaryItems(sender, rootCaseId);      
@@ -127,18 +129,18 @@ export default class TestCompatibility extends TestCase {
         await verifyTaskInput(receiveGreetingTask, inputs)
 
         await TaskService.claimTask(receiver, receiveGreetingTask);
-        await assertTask(sender, receiveGreetingTask, 'Claim', 'Assigned', receiver);
+        await assertTask(sender, receiveGreetingTask, 'Claim', TaskState.Assigned, receiver);
 
         await TaskService.delegateTask(receiver, receiveGreetingTask, sender);
-        await assertTask(sender, receiveGreetingTask, 'Delegate', 'Delegated', sender);
+        await assertTask(sender, receiveGreetingTask, 'Delegate', TaskState.Delegated, sender);
 
         await TaskService.saveTaskOutput(sender, receiveGreetingTask, { Response: { Message : 'Temporary task output'}});
 
         await TaskService.revokeTask(sender, receiveGreetingTask);
-        await assertTask(sender, receiveGreetingTask, 'Revoke', 'Assigned', receiver);
+        await assertTask(sender, receiveGreetingTask, 'Revoke', TaskState.Assigned, receiver);
 
         await TaskService.completeTask(receiver, receiveGreetingTask, taskOutput);
-        await assertTask(sender, receiveGreetingTask, 'Complete', 'Completed', receiver);
+        await assertTask(sender, receiveGreetingTask, 'Complete', TaskState.Completed, receiver);
 
         // Replace the greeting
         await CaseFileService.replaceCaseFileItem(sender, caseInstance, 'Greeting', { Message: 'Awaiting your response...', });

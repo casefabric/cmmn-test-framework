@@ -10,6 +10,8 @@ import MockServer from '@cafienne/typescript-client/mock/mockserver';
 import PostMock from '@cafienne/typescript-client/mock/postmock';
 import { assertPlanItem } from '@cafienne/typescript-client/test/caseassertions/plan';
 import assertCaseFileContent from '@cafienne/typescript-client/test/caseassertions/file';
+import Transition from '@cafienne/typescript-client/cmmn/transition';
+import State from '@cafienne/typescript-client/cmmn/state';
 
 const definition = 'processtasktest.xml';
 
@@ -59,9 +61,9 @@ export default class TestProcessTask extends TestCase {
         }
 
         await CaseFileService.createCaseFileItem(user, caseInstance, 'ServiceInput', okServiceInput);
-        await CasePlanService.makePlanItemTransition(user, caseInstance, 'Get OK', 'Occur');
+        await CasePlanService.makePlanItemTransition(user, caseInstance, 'Get OK', Transition.Occur);
 
-        await assertPlanItem(user, caseInstance, 'Get Object Response', 0, 'Completed');
+        await assertPlanItem(user, caseInstance, 'Get Object Response', 0, State.Completed);
 
         await CaseFileService.getCaseFile(user, caseInstance).then(file => {
             console.log("Case File " + JSON.stringify(file, undefined, 2));
@@ -76,9 +78,9 @@ export default class TestProcessTask extends TestCase {
             payload: 'If you feed me with errors, I will return them'
         }
         await CaseFileService.updateCaseFileItem(user, caseInstance, 'ServiceInput', failureServiceInput);
-        await CasePlanService.makePlanItemTransition(user, caseInstance, 'Get Error', 'Occur');
+        await CasePlanService.makePlanItemTransition(user, caseInstance, 'Get Error', Transition.Occur);
 
-        await assertPlanItem(user, caseInstance, 'Get Error Response', 0, 'Failed');
+        await assertPlanItem(user, caseInstance, 'Get Error Response', 0, State.Failed);
 
         await CaseFileService.getCaseFile(user, caseInstance).then(file => {
             console.log("Case File " + JSON.stringify(file, undefined, 2));

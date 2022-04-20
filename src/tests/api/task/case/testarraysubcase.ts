@@ -10,6 +10,7 @@ import CaseFileService from "@cafienne/typescript-client/service/case/casefilese
 import PlanItem from "@cafienne/typescript-client/cmmn/planitem";
 import CasePlanService from "@cafienne/typescript-client/service/case/caseplanservice";
 import Comparison from "@cafienne/typescript-client/test/comparison";
+import State from "@cafienne/typescript-client/cmmn/state";
 
 const worldwideTenant = new WorldWideTestTenant();
 const definition = 'subcasewitharrayoutput.xml';
@@ -33,23 +34,23 @@ export default class TestArraySubCase extends TestCase {
         const caseInstance = await CaseService.getCase(user, caseId);
         const subCasePlanItem = caseInstance.planitems.find(item => item.name === 'simpleinoutcase') as PlanItem;
 
-        await assertPlanItem(user, caseInstance, subCasePlanItem.name, subCasePlanItem.index, 'Active');
+        await assertPlanItem(user, caseInstance, subCasePlanItem.name, subCasePlanItem.index, State.Active);
 
         // Get subcase is possible by sender
-        const subCaseInstance = await assertCasePlan(user, subCasePlanItem.id, 'Active');
+        const subCaseInstance = await assertCasePlan(user, subCasePlanItem.id, State.Active);
 
         const numTasksToComplete = 3;
         const expectedCaseFileOutput = [];
         for (let i = 0; i < numTasksToComplete; i++) {
-            const taskInstance = await assertPlanItem(user, subCaseInstance, 'Task', i, 'Active');
+            const taskInstance = await assertPlanItem(user, subCaseInstance, 'Task', i, State.Active);
             const taskOutput = { Out: i };
             expectedCaseFileOutput.push(i);
             await TaskService.completeTask(user, taskInstance, taskOutput);
         }
 
         await CasePlanService.raiseEvent(user, subCaseInstance, 'Complete Case');
-        await assertCasePlan(user, subCasePlanItem.id, 'Completed');
-        await assertPlanItem(user, caseInstance, subCasePlanItem.name, subCasePlanItem.index, 'Completed');
+        await assertCasePlan(user, subCasePlanItem.id, State.Completed);
+        await assertPlanItem(user, caseInstance, subCasePlanItem.name, subCasePlanItem.index, State.Completed);
 
         const caseFile = await CaseFileService.getCaseFile(user, caseInstance);
         console.log("Completed Case Task with output: " + JSON.stringify(caseFile, undefined, 2));

@@ -8,6 +8,7 @@ import { assertPlanItem } from '@cafienne/typescript-client/test/caseassertions/
 import assertCaseFileContent from '@cafienne/typescript-client/test/caseassertions/file';
 import DebugService from '@cafienne/typescript-client/service/case/debugservice';
 import CaseFileService from '@cafienne/typescript-client/service/case/casefileservice';
+import State from '@cafienne/typescript-client/cmmn/state';
 
 const definition = 'calculation.xml';
 
@@ -63,7 +64,7 @@ export default class TestCalculation extends TestCase {
         }
 
         try {
-            await assertPlanItem(user, caseInstance, calculationTask, 0, 'Completed');
+            await assertPlanItem(user, caseInstance, calculationTask, 0, State.Completed);
         } catch (notFoundError) {
             // If the test fails after 10 calls, get the events for the task and see if we can print any logging info
             await DebugService.getParsedEvents(caseInstance.id, user).then(events => {

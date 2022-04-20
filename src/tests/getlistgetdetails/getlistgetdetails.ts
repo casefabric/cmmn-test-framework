@@ -1,16 +1,17 @@
 'use strict';
 
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import TestCase from '@cafienne/typescript-client/test/testcase';
-import WorldWideTestTenant from '../worldwidetesttenant';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import { ServerSideProcessing } from '@cafienne/typescript-client/test/time';
-import { assertPlanItem } from '@cafienne/typescript-client/test/caseassertions/plan'
-import CasePlanService from '@cafienne/typescript-client/service/case/caseplanservice';
-import CaseFileService from '@cafienne/typescript-client/service/case/casefileservice';
-import Case from '@cafienne/typescript-client/cmmn/case';
-import MockServer from '@cafienne/typescript-client/mock/mockserver';
+import State from '@cafienne/typescript-client/cmmn/state';
+import Transition from '@cafienne/typescript-client/cmmn/transition';
 import GetMock from '@cafienne/typescript-client/mock/getmock';
+import MockServer from '@cafienne/typescript-client/mock/mockserver';
+import CaseFileService from '@cafienne/typescript-client/service/case/casefileservice';
+import CasePlanService from '@cafienne/typescript-client/service/case/caseplanservice';
+import CaseService from '@cafienne/typescript-client/service/case/caseservice';
+import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
+import { assertPlanItem } from '@cafienne/typescript-client/test/caseassertions/plan';
+import TestCase from '@cafienne/typescript-client/test/testcase';
+import { ServerSideProcessing } from '@cafienne/typescript-client/test/time';
+import WorldWideTestTenant from '../worldwidetesttenant';
 
 const definition = 'getlist_getdetails.xml';
 
@@ -55,48 +56,48 @@ export default class TestGetListGetDetails extends TestCase {
         caseInstance = await CaseService.getCase(user, caseInstance);
 
         // When the case starts, GetCasesList & GetFirstCase tasks will be in available state
-        await assertPlanItem(user, caseInstance, 'GetList', 0, 'Available');
-        await assertPlanItem(user, caseInstance, 'GetDetails', 0, 'Available');
+        await assertPlanItem(user, caseInstance, 'GetList', 0, State.Available);
+        await assertPlanItem(user, caseInstance, 'GetDetails', 0, State.Available);
 
         // Create the CaseFileItem Request only with port
         await CaseFileService.createCaseFileItem(user, caseInstance, "HTTPConfig", inputs);
 
         // Give the 'GetList.0' process task up to 5 seconds to fail and activate Stage 'Fail handling.0'
-        await assertPlanItem(user, caseInstance, 'Fail handling', 0, 'Active');
+        await assertPlanItem(user, caseInstance, 'Fail handling', 0, State.Active);
 
         // MockService is not yet started. So, GetList goes to Failed state
-        await assertPlanItem(user, caseInstance, 'GetList', 0, 'Failed');
+        await assertPlanItem(user, caseInstance, 'GetList', 0, State.Failed);
 
         // GetDetails remains in Available state
-        await assertPlanItem(user, caseInstance, 'GetDetails', 0, 'Available');
+        await assertPlanItem(user, caseInstance, 'GetDetails', 0, State.Available);
 
         // GetList Failed should be in completed state
-        await assertPlanItem(user, caseInstance, 'GetList Failed', 0, 'Completed');
+        await assertPlanItem(user, caseInstance, 'GetList Failed', 0, State.Completed);
 
         // Trigger the 'Try Again' event
-        CasePlanService.makePlanItemTransition(user, caseInstance, 'Try Again', 'Occur');
+        CasePlanService.makePlanItemTransition(user, caseInstance, 'Try Again', Transition.Occur);
 
         // Give the 'GetList.1' process task up to 5 seconds to fail (because Mock is still not started) and activate Stage 'Fail handling.1'
-        await assertPlanItem(user, caseInstance, 'Fail handling', 1, 'Active');
+        await assertPlanItem(user, caseInstance, 'Fail handling', 1, State.Active);
 
         // MockService is not yet started. So, GetList goes to Failed state
-        await assertPlanItem(user, caseInstance, 'GetList', 1, 'Failed');
+        await assertPlanItem(user, caseInstance, 'GetList', 1, State.Failed);
 
         // GetDetails remains in Available state
-        await assertPlanItem(user, caseInstance, 'GetDetails', 0, 'Available');
+        await assertPlanItem(user, caseInstance, 'GetDetails', 0, State.Available);
 
         // Starting mock service
         mock.start();
 
         // Trigger the 'Try Again' event
-        await CasePlanService.makePlanItemTransition(user, caseInstance, 'Try Again', 'Occur');
+        await CasePlanService.makePlanItemTransition(user, caseInstance, 'Try Again', Transition.Occur);
 
         // Give the 'GetList.1' process task up to 5 seconds to fail (because Mock is still not started) and activate Stage 'Fail handling.1'
-        await assertPlanItem(user, caseInstance, 'GetList', 2, 'Completed');
+        await assertPlanItem(user, caseInstance, 'GetList', 2, State.Completed);
 
         // GetDetails tasks of index upto 3 has to be completed
         for (let i = 0; i < 4; i++) {
-            await assertPlanItem(user, caseInstance, 'GetDetails', i, 'Completed');
+            await assertPlanItem(user, caseInstance, 'GetDetails', i, State.Completed);
         }
 
         const exceptionCaseFile = await CaseFileService.getCaseFile(user, caseInstance);

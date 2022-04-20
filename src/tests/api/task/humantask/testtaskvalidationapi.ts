@@ -12,6 +12,7 @@ import { assertPlanItem } from '@cafienne/typescript-client/test/caseassertions/
 import MockServer from '@cafienne/typescript-client/mock/mockserver';
 import GetMock from '@cafienne/typescript-client/mock/getmock';
 import PostMock from '@cafienne/typescript-client/mock/postmock';
+import State from '@cafienne/typescript-client/cmmn/state';
 
 const definition = 'taskoutputvalidation.xml';
 
@@ -84,7 +85,7 @@ export default class TestTaskValidationAPI extends TestCase {
 
         caseInstance = await CaseService.getCase(pete, caseInstance);
 
-        await assertPlanItem(pete, caseInstance, 'AssertMockServiceIsRunning', 0, 'Completed')
+        await assertPlanItem(pete, caseInstance, 'AssertMockServiceIsRunning', 0, State.Completed);
 
         const taskId = caseInstance.planitems.find(p => p.name === 'HumanTask')?.id;
         if (!taskId) {

@@ -8,6 +8,7 @@ import RepositoryService from '@cafienne/typescript-client/service/case/reposito
 import CasePlanService from '@cafienne/typescript-client/service/case/caseplanservice';
 import PlanItem from '@cafienne/typescript-client/cmmn/planitem';
 import CaseHistoryService from '@cafienne/typescript-client/service/case/casehistoryservice';
+import Transition from '@cafienne/typescript-client/cmmn/transition';
 
 const definition = 'eventlistener.xml';
 
@@ -52,7 +53,7 @@ export default class TestCasePlanAPI extends TestCase {
             }
         });
 
-        await CasePlanService.makePlanItemTransition(user, caseInstance, planItem.id, 'Occur');
+        await CasePlanService.makePlanItemTransition(user, caseInstance, planItem.id, Transition.Occur);
 
         await CaseHistoryService.getPlanItemHistory(user, caseInstance, planItem.id).then(history => {
             // console.log("History: " + history)

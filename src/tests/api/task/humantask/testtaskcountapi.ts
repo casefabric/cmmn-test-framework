@@ -8,6 +8,7 @@ import RepositoryService from '@cafienne/typescript-client/service/case/reposito
 import Case from '@cafienne/typescript-client/cmmn/case';
 import Task from '@cafienne/typescript-client/cmmn/task';
 import CasePlanService from '@cafienne/typescript-client/service/case/caseplanservice';
+import Transition from '@cafienne/typescript-client/cmmn/transition';
 
 const definition = 'helloworld2.xml';
 
@@ -62,7 +63,7 @@ export default class TestTaskCountAPI extends TestCase {
         }
 
         // Now terminate one of the 3 case instances. This should remove the claimed "SendResponse" task, and also remove 1 "Task that is always started" task
-        await CasePlanService.makePlanItemTransition(user, caseInstance, 'TerminateCase', 'Occur');        
+        await CasePlanService.makePlanItemTransition(user, caseInstance, 'TerminateCase', Transition.Occur);        
         await this.validateTaskCountChange(taskCountAfter.claimed - 1, taskCountAfter.unclaimed - 1, `Task Count after terminating one case with a claimed and an unclaimed task`);
         await this.getTasks('SendResponse', numSendResponseTasksBefore + 2);
     }

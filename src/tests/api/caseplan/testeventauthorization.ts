@@ -1,6 +1,7 @@
 'use strict';
 
 import Case from '@cafienne/typescript-client/cmmn/case';
+import State from '@cafienne/typescript-client/cmmn/state';
 import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
 import CaseTeamUser, { CaseOwner } from "@cafienne/typescript-client/cmmn/team/caseteamuser";
 import CaseHistoryService from '@cafienne/typescript-client/service/case/casehistoryservice';
@@ -66,7 +67,7 @@ export default class TestEventAuthorization extends TestCase {
     }
 
     async runEmployeeUserEventTests(caseInstance: Case) {
-        await assertPlanItem(caseOwner, caseInstance, 'Repeater', 0, 'Active');
+        await assertPlanItem(caseOwner, caseInstance, 'Repeater', 0, State.Active);
         const employeeUserEvent = await assertPlanItem(caseOwner, caseInstance, 'EmployeeUserEvent', 0);
         if (!employeeUserEvent) {
             throw new Error(`Did not find user event 'EmployeeUserEvent'`);
@@ -82,9 +83,9 @@ export default class TestEventAuthorization extends TestCase {
         await assertPlanItem(caseOwner, caseInstance, 'M1', 0);
 
         // Next event round should have become active
-        await assertPlanItem(caseOwner, caseInstance, 'Repeater', 1, 'Active');
+        await assertPlanItem(caseOwner, caseInstance, 'Repeater', 1, State.Active);
 
-        const nextEmployeeEvent = await assertPlanItem(caseOwner, caseInstance, 'EmployeeUserEvent', 0, 'Available');
+        const nextEmployeeEvent = await assertPlanItem(caseOwner, caseInstance, 'EmployeeUserEvent', 0, State.Available);
 
         // Raising the EmployeeUserEVent by caseOwner should succeed because of case ownership
         await CasePlanService.raiseEvent(caseOwner, caseInstance, nextEmployeeEvent.id, 200, `Raising the EmployeeUserEVent by caseOwner should succeed because of case ownership`);

@@ -6,6 +6,7 @@ import WorldWideTestTenant from '../../../worldwidetesttenant';
 import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
 import { assertPlanItem } from '@cafienne/typescript-client/test/caseassertions/plan';
 import DebugService from '@cafienne/typescript-client/service/case/debugservice';
+import State from '@cafienne/typescript-client/cmmn/state';
 
 const definition = 'smtptest.xml';
 
@@ -59,7 +60,7 @@ export default class TestSMTP extends TestCase {
         }
 
         try {
-            await assertPlanItem(user, caseInstance, sendMailTask, 0, 'Completed');
+            await assertPlanItem(user, caseInstance, sendMailTask, 0, State.Completed);
         } catch (notFoundError) {
             // If the test fails after 10 calls, get the events for the task and see if we can print any logging info
             await DebugService.getParsedEvents(taskId, user).then(events => {

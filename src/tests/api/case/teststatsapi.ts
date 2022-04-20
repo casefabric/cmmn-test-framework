@@ -10,6 +10,8 @@ import Case from '@cafienne/typescript-client/cmmn/case';
 import User from '@cafienne/typescript-client/user';
 import StatisticsFilter from '@cafienne/typescript-client/service/case/statisticsfilter';
 import CasePlanService from '@cafienne/typescript-client/service/case/caseplanservice';
+import Transition from '@cafienne/typescript-client/cmmn/transition';
+import State from '@cafienne/typescript-client/cmmn/state';
 
 const helloworldDefinition = 'helloworld.xml';
 const caseTeamDefinition = 'caseteam.xml';
@@ -34,7 +36,7 @@ export default class TestStatsAPI extends TestCase {
         const caseTeamWithBothSenderAndReceiver = new CaseTeam([
             new CaseOwner(sender)
             , new CaseOwner(receiver)]);
-        
+
 
         // Start 3 cases helloworld cases; 1 with only sender, next 2 with sender and receiver;
         //  Make one case go to Terminated state
@@ -49,8 +51,8 @@ export default class TestStatsAPI extends TestCase {
         if (!pid) {
             throw new Error('Cannot find case plan?!');
         }
-        CasePlanService.makePlanItemTransition(sender, caseStarted, pid, "Terminate");
- 
+        CasePlanService.makePlanItemTransition(sender, caseStarted, pid, Transition.Terminate);
+
         // Start 3 cases 'caseteam.xml', and one of them with both sender and receiver
         const startCaseTeamCase = { tenant, definition: caseTeamDefinition, caseTeam, debug: true };
         await CaseService.startCase(sender, startCaseTeamCase);
@@ -58,18 +60,18 @@ export default class TestStatsAPI extends TestCase {
         startHelloWorldCase.caseTeam = caseTeamWithBothSenderAndReceiver;
         await CaseService.startCase(sender, startCaseTeamCase);
 
-        const hwFilter = { definition: 'HelloWorld', tenant};
+        const hwFilter = { definition: 'HelloWorld', tenant };
         await this.getStatistics('overall', sender);
-        await this.getStatistics('Terminated', sender, {state:'Terminated'});
+        await this.getStatistics('Terminated', sender, { state: State.Terminated });
         await this.getStatistics('HelloWorld', sender, hwFilter);
         await this.getStatistics('overall', receiver);
-        await this.getStatistics('Failed', receiver, {state:'Failed'});
+        await this.getStatistics('Failed', receiver, { state: State.Failed });
         await this.getStatistics('HelloWorld', receiver, hwFilter);
     }
 
     async getStatistics(msg: string, user: User, filter?: StatisticsFilter) {
         await CaseService.getCaseStatistics(user, filter).then(stats => {
-            console.log(`${user} statistics for '${msg}' cases:${stats.map(stat => '\n- '+stat)}`);
+            console.log(`${user} statistics for '${msg}' cases:${stats.map(stat => '\n- ' + stat)}`);
             return stats;
         })
     }

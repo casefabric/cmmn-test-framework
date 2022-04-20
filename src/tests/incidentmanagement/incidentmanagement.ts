@@ -14,6 +14,8 @@ import { CaseOwner } from '@cafienne/typescript-client/cmmn/team/caseteamuser';
 import CaseTeamUser from "@cafienne/typescript-client/cmmn/team/caseteamuser";
 import MockServer from '@cafienne/typescript-client/mock/mockserver';
 import GetMock from '@cafienne/typescript-client/mock/getmock';
+import TaskState from '@cafienne/typescript-client/cmmn/taskstate';
+import State from '@cafienne/typescript-client/cmmn/state';
 
 const definition = 'IncidentManagementForTraining.xml';
 
@@ -96,30 +98,30 @@ Starting another case instance of incident management to test Invalid status.
 
         // Claim Verify Details task by raiser
         await TaskService.claimTask(raiser, verifyDetailsTask);
-        await assertTask(raiser, verifyDetailsTask, 'Claim', 'Assigned', raiser, raiser);
+        await assertTask(raiser, verifyDetailsTask, 'Claim', TaskState.Assigned, raiser, raiser);
 
         const verifyDetailsInputs = IncidentContent.verifyDetailsInputs;
 
         // Complete Verify Details task by raiser
         await TaskService.completeTask(raiser, verifyDetailsTask, verifyDetailsInputs);
-        await assertTask(raiser, verifyDetailsTask, 'Complete', 'Completed', raiser);
+        await assertTask(raiser, verifyDetailsTask, 'Complete', TaskState.Completed, raiser);
 
         // Since process completion happens asynchronously in the Cafienne engine, we will still wait 
         //  a second before continuing the test script
         await ServerSideProcessing();
 
         // Verify completion of Assign Specialist plan item
-        await assertPlanItem(raiser, caseInstance, 'Assign Specialist', 0, 'Completed');
+        await assertPlanItem(raiser, caseInstance, 'Assign Specialist', 0, State.Completed);
 
         // Verify completion of Assigned plan item
-        await assertPlanItem(raiser, caseInstance, 'Assigned', 0, 'Completed');
+        await assertPlanItem(raiser, caseInstance, 'Assigned', 0, State.Completed);
 
 
         // Next step fails too often
         await ServerSideProcessing();
 
         // Verify completion of first Notify Customer plan item
-        await assertPlanItem(raiser, caseInstance, 'Notify Customer', 0, 'Completed');
+        await assertPlanItem(raiser, caseInstance, 'Notify Customer', 0, State.Completed);
 
         const secondTaskInput = IncidentContent.secondTaskInput;
 
@@ -132,25 +134,25 @@ Starting another case instance of incident management to test Invalid status.
 
         // Can't claim Work on Incident task by solver as he is assigned to it
         await TaskService.claimTask(solver, workOnIncidentTask, 400);
-        await assertTask(raiser, workOnIncidentTask, 'Claim', 'Assigned', solver, solver);
+        await assertTask(raiser, workOnIncidentTask, 'Claim', TaskState.Assigned, solver, solver);
 
         const finalTaskOutput = IncidentContent.finalTaskOutput;
 
         // employee cannot complete a task assigned to solver
         await TaskService.completeTask(employee, workOnIncidentTask, finalTaskOutput, 404);
-        await assertTask(raiser, workOnIncidentTask, 'Claim', 'Assigned', solver);
+        await assertTask(raiser, workOnIncidentTask, 'Claim', TaskState.Assigned, solver);
 
         // Complete Work on Incident task by solver
         await TaskService.completeTask(solver, workOnIncidentTask, finalTaskOutput);
-        await assertTask(raiser, workOnIncidentTask, 'Complete', 'Completed', solver);
+        await assertTask(raiser, workOnIncidentTask, 'Complete', TaskState.Completed, solver);
 
         // Verify completion of Complete plan item
-        await assertPlanItem(raiser, caseInstance, 'Complete', 0, 'Completed');
+        await assertPlanItem(raiser, caseInstance, 'Complete', 0, State.Completed);
 
         await ServerSideProcessing();
 
         // Verify completion of second Notify Customer plan item
-        await assertPlanItem(raiser, caseInstance, 'Notify Customer', 1, 'Completed');
+        await assertPlanItem(raiser, caseInstance, 'Notify Customer', 1, State.Completed);
     }
 
     async testInvalidStatus(startCase: any, firstTaskName: string, firstTaskInput: any) {
@@ -167,28 +169,28 @@ Starting another case instance of incident management to test Invalid status.
 
         // Claim Verify Details task by raiser
         await TaskService.claimTask(raiser, verifyDetailsTask);
-        await assertTask(raiser, verifyDetailsTask, 'Claim', 'Assigned', raiser, raiser);
+        await assertTask(raiser, verifyDetailsTask, 'Claim', TaskState.Assigned, raiser, raiser);
 
         const verifyDetailsInputs = IncidentContent.verifyDetailsInputsInvalidCase;
 
         // Complete Verify Details task by raiser
         await TaskService.completeTask(raiser, verifyDetailsTask, verifyDetailsInputs);
-        await assertTask(raiser, verifyDetailsTask, 'Complete', 'Completed', raiser);
+        await assertTask(raiser, verifyDetailsTask, 'Complete', TaskState.Completed, raiser);
 
         // Since process completion happens asynchronously in the Cafienne engine, we will still wait 
         //  a second before continuing the test script
         await ServerSideProcessing();
 
         // Verify completion of Invalid Status plan item
-        await assertPlanItem(raiser, caseInstance, 'Invalid Status', 0, 'Completed');
+        await assertPlanItem(raiser, caseInstance, 'Invalid Status', 0, State.Completed);
 
         await ServerSideProcessing();
 
         // Verify completion of first Notify Customer plan item
-        await assertPlanItem(raiser, caseInstance, 'Notify Customer', 0, 'Completed');
+        await assertPlanItem(raiser, caseInstance, 'Notify Customer', 0, State.Completed);
 
         // Verify completion of Complete plan item
-        await assertPlanItem(raiser, caseInstance, 'Complete', 0, 'Available');
+        await assertPlanItem(raiser, caseInstance, 'Complete', 0, State.Available);
     }
 }
 

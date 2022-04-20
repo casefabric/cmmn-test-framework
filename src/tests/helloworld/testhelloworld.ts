@@ -10,6 +10,8 @@ import { assertTask, verifyTaskInput, findTask } from '@cafienne/typescript-clie
 import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
 import { CaseOwner } from '@cafienne/typescript-client/cmmn/team/caseteamuser';
 import CaseTeamUser from "@cafienne/typescript-client/cmmn/team/caseteamuser";
+import TaskState from '@cafienne/typescript-client/cmmn/taskstate';
+import State from '@cafienne/typescript-client/cmmn/state';
 
 const definition = 'helloworld.xml';
 
@@ -59,10 +61,10 @@ export default class TestHelloworld extends TestCase {
         await verifyTaskInput(receiveGreetingTask, inputs)
 
         await TaskService.claimTask(receiver, receiveGreetingTask);
-        await assertTask(sender, receiveGreetingTask, 'Claim', 'Assigned', receiver);
+        await assertTask(sender, receiveGreetingTask, 'Claim', TaskState.Assigned, receiver);
 
         await TaskService.completeTask(receiver, receiveGreetingTask, taskOutput);
-        await assertTask(sender, receiveGreetingTask, 'Complete', 'Completed', receiver);
+        await assertTask(sender, receiveGreetingTask, 'Complete', TaskState.Completed, receiver);
 
         const responseTaskName = 'Read response';
         const nextTasks = await TaskService.getCaseTasks(sender, caseInstance);
@@ -71,9 +73,9 @@ export default class TestHelloworld extends TestCase {
             throw new Error('Expecting task to be assigned to sending user, but found ' + readResponseTask.assignee + ' instead');
         }
         await TaskService.completeTask(sender, readResponseTask);
-        await assertTask(sender, readResponseTask, 'Complete', 'Completed', sender, sender, sender);
+        await assertTask(sender, readResponseTask, 'Complete', TaskState.Completed, sender, sender, sender);
 
-        await assertCasePlan(sender, caseInstance, 'Completed');
+        await assertCasePlan(sender, caseInstance, State.Completed);
 
         console.log(`\n\nCase ID: ${freshCaseInstance.id}\n\nCase Team:${JSON.stringify(freshCaseInstance.team, undefined, 2)}`);
     }
