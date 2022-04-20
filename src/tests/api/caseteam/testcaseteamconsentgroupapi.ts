@@ -28,6 +28,29 @@ const tenant = universe.futureWorld;
 // Invalid Consent group roles
 const invalidGroupRole = 'ThisRoleIsNotInTheConsentGroup';
 const invalidGroupId = 'GroupThatDoesNotExist';
+const invalidCaseRoleMapping = new GroupRoleMapping(universe.groupRoleTester, invalidCaseRole);
+const invalidGroupRoleMapping = new GroupRoleMapping(invalidGroupRole, caseRolePA);
+const validMappingTesterIsPA = new GroupRoleMappingWithCaseOwnership(universe.groupRoleTester, caseRolePA);
+const validMappingUserIsRequestor = new GroupRoleMapping(universe.groupRoleUser, caseRoleRequestor);
+
+const caseTeamMoonGroup = new CaseTeamGroup(universe.moonGroup);
+const caseTeamMarsGroup = new CaseTeamGroup(universe.marsGroup, [new GroupRoleMapping(universe.groupRoleTester, caseRoleParticipant)]);
+const caseTeamMars2Group = new CaseTeamGroup(universe.marsGroup2, [new GroupRoleMapping('', '')]); // Basically anyone in the group
+const invalidGroup = new CaseTeamGroup(invalidGroupId, [validMappingTesterIsPA]);
+const groupWithoutId = new CaseTeamGroup('', [validMappingTesterIsPA]);
+const caseGroups = [caseTeamMoonGroup, invalidGroup];
+
+const caseTeam = new CaseTeam([
+    new CaseOwner(universe.boy), // No special roles, case owner can perform all non-consent group related tasks. 
+    new CaseOwner(universe.girl, [caseRolePA]), // This case owner can also do consent group tasks with PA as performer.
+], caseGroups, [
+    new CaseTeamTenantRole('Family') // The whole family has access to the case. But only those in world, not those in moon or mars
+]);
+
+// Command to start the case with.
+const startCase = { tenant, definition, caseTeam };
+
+
 export default class TestCaseTeamConsentGroupAPI extends TestCase {
     async onPrepareTest() {
         await universe.create();
@@ -35,27 +58,38 @@ export default class TestCaseTeamConsentGroupAPI extends TestCase {
     }
 
     async run() {
-        const invalidCaseRoleMapping = new GroupRoleMapping(universe.groupRoleTester, invalidCaseRole);
-        const invalidGroupRoleMapping = new GroupRoleMapping(invalidGroupRole, caseRolePA);
-        const validMappingTesterIsPA = new GroupRoleMappingWithCaseOwnership(universe.groupRoleTester, caseRolePA);
-        const validMappingUserIsRequestor = new GroupRoleMapping(universe.groupRoleUser, caseRoleRequestor);
 
-        const caseTeamMoonGroup = new CaseTeamGroup(universe.moonGroup);
-        const caseTeamMarsGroup = new CaseTeamGroup(universe.marsGroup, [new GroupRoleMapping(universe.groupRoleTester, caseRoleParticipant)]);
-        const caseTeamMars2Group = new CaseTeamGroup(universe.marsGroup2, [new GroupRoleMapping('', '')]); // Basically anyone in the group
-        const invalidGroup = new CaseTeamGroup(invalidGroupId, [validMappingTesterIsPA]);
-        const caseGroups = [caseTeamMoonGroup, invalidGroup];
+        // First run a number of negative tests on trying to pass the case team along the start case command with invalid groups
+        await this.startCaseNegativeTesting();
 
-        const caseTeam = new CaseTeam([
-            new CaseOwner(universe.boy), // No special roles, case owner can perform all non-consent group related tasks. 
-            new CaseOwner(universe.girl, [caseRolePA]), // This case owner can also do consent group tasks with PA as performer.
-        ], caseGroups, [
-            new CaseTeamTenantRole('Family') // The whole family has access to the case. But only those in world, not those in moon or mars
-        ]);
+        // It should be possible to start a case with the valid role names
+        caseTeamMoonGroup.mappings = [validMappingTesterIsPA, validMappingUserIsRequestor];
+        const caseInstance = await CaseService.startCase(universe.boy, startCase, undefined, 'It should be possible to start a case with the valid role names');
 
-        // Command to start the case with.
-        const startCase = { tenant, definition, caseTeam };
+        await CaseTeamService.getCaseTeam(universe.boy, caseInstance).then(team => console.log(JSON.stringify(team, undefined, 2)));
 
+        // Below we perform a series of tests on the case team of the case instance.
+
+        // First, check the access to the case for the specified team
+        await this.validateCaseAccess(caseInstance);
+
+        // Below run a series of negative tests on the CaseTeam.setGroup API
+        await this.setGroupNegativeTesting(caseInstance);
+
+        // Show that we have multiple ways to give a user case access
+        await this.addJeffAsUserAndThroughGroup(caseInstance);
+
+        // Modify the mars group in multiple ways
+        await this.testVariousGroupUpdates(caseInstance);
+
+        // Show that we can add a different consent group to the case team
+        await this.testAdditionalGroup(caseInstance);
+
+        // Show that we can add users to the team without them being registered in a group or a tenant, but simply by token.
+        await this.testTokenBasedCafienneAccess(caseInstance);
+    }
+
+    async startCaseNegativeTesting() {
         // It should not be possible to start a case without mappings
         await CaseService.startCase(universe.boy, startCase, 400, 'It should not be possible to start a case with groups that have no mappings');
 
@@ -65,8 +99,16 @@ export default class TestCaseTeamConsentGroupAPI extends TestCase {
         // It should not be possible to start a case with a non-existing consent group.
         await CaseService.startCase(universe.boy, startCase, 404, 'It should not be possible to start a case with a non-existing consent group');
 
-        // Correct the case team to a valid group
+        // It should not be possible to start a case without a groupId
+        caseTeam.groups = [groupWithoutId];
+        await CaseService.startCase(universe.boy, startCase, 400, 'It should not be possible to start a case without a groupId');
+
+        // Correct the case team to a valid group only
         caseTeam.groups = [caseTeamMoonGroup];
+
+        // Still, it should not be possible to start a case with empty group mappings.
+        caseTeamMoonGroup.mappings = [];
+        await CaseService.startCase(universe.boy, startCase, 400, 'It should not be possible to start a case with groups that have no mappings');
 
         // It should not be possible to start a case with an invalid case role
         caseTeamMoonGroup.mappings = [invalidCaseRoleMapping];
@@ -75,13 +117,9 @@ export default class TestCaseTeamConsentGroupAPI extends TestCase {
         // It should not be possible to start a case with an invalid group role
         caseTeamMoonGroup.mappings = [invalidGroupRoleMapping];
         await CaseService.startCase(universe.boy, startCase, 404, 'It should not be possible to start a case with an invalid group role');
+    }
 
-        // It should be possible to start a case with the valid role names
-        caseTeamMoonGroup.mappings = [validMappingTesterIsPA, validMappingUserIsRequestor];
-        const caseInstance = await CaseService.startCase(universe.boy, startCase, undefined, 'It should be possible to start a case with the valid role names');
-
-        await CaseTeamService.getCaseTeam(universe.boy, caseInstance).then(team => console.log(JSON.stringify(team, undefined, 2)));
-
+    async validateCaseAccess(caseInstance: Case) {
         // Tenant members should be able to access the case
         await CaseService.getCase(universe.boy, caseInstance);
 
@@ -97,9 +135,34 @@ export default class TestCaseTeamConsentGroupAPI extends TestCase {
 
         // Jeff should not have access, as he is from a different planet
         await CaseService.getCase(universe.jeff, caseInstance, 404, 'Jeff should not have access, as he is from a different planet');
+    }
 
-        // And so is Elon
-        await CaseService.getCase(universe.elon, caseInstance, 404, 'Elon should not have access, as he is from a different planet');
+    async setGroupNegativeTesting(caseInstance: Case) {
+
+        // Check what happens if we send an empty json
+        const emptyGroupFormat = Object.assign({}) as CaseTeamGroup;
+        await CaseTeamService.setGroup(universe.boy, caseInstance, emptyGroupFormat, 400);
+
+        // Setting the group without groupId should also not be possible at the individual case team group operation
+        await CaseTeamService.setGroup(universe.boy, caseInstance, groupWithoutId, 400);
+
+        // Passing invalid group should not be allowed
+        await CaseTeamService.setGroup(universe.boy, caseInstance, invalidGroup, 404);
+
+        // Check that it is not allowed to set a group without mappings
+        caseTeamMoonGroup.mappings = [];
+        await CaseTeamService.setGroup(universe.boy, caseInstance, caseTeamMoonGroup, 400);
+        
+        // Check that it is not allowed to update a group with invalid case roles
+        caseTeamMoonGroup.mappings = [invalidCaseRoleMapping];
+        await CaseTeamService.setGroup(universe.boy, caseInstance, caseTeamMoonGroup, 400);
+
+        // It should not be possible to start a case with an invalid group role
+        caseTeamMoonGroup.mappings = [invalidGroupRoleMapping];
+        await CaseTeamService.setGroup(universe.boy, caseInstance, caseTeamMoonGroup, 404);
+    }
+
+    async addJeffAsUserAndThroughGroup(caseInstance: Case) {
 
         // Add jeff not through consent, but simply by user id, should no longer check on tenant membership of the user.
         await CaseTeamService.setUser(universe.boy, caseInstance, new CaseTeamUser(universe.jeff));
@@ -118,7 +181,9 @@ export default class TestCaseTeamConsentGroupAPI extends TestCase {
 
         // As a marsgroup test user, jeff should have access
         await CaseService.getCase(universe.jeff, caseInstance, 200, 'As a marsgroup test user, jeff should have access');
+    }
 
+    async testVariousGroupUpdates(caseInstance: Case) {
         // Add mars group again, then Jeff should continue to have access and the group should not have been changed.
         await CaseTeamService.setGroup(universe.boy, caseInstance, caseTeamMarsGroup);
 
@@ -138,12 +203,20 @@ export default class TestCaseTeamConsentGroupAPI extends TestCase {
         await CaseTeamService.setGroup(universe.boy, caseInstance, caseTeamMarsGroup);
         await assertSameGroup(universe.boy, caseInstance, caseTeamMarsGroup);
         await assertSameGroup(universe.boy, caseInstance, caseTeamMarsGroupAlternative, false);
+    }
+
+    async testAdditionalGroup(caseInstance: Case) {
+        // First, validate that elon does not have access, as he is from a different planet
+        await CaseService.getCase(universe.elon, caseInstance, 404, 'Elon should not have access, as he is from a different planet');
 
         // Add mars2 group, then Elon should also get access
         await CaseTeamService.setGroup(universe.boy, caseInstance, caseTeamMars2Group);
 
         // As a marsgroup2 member, elon should have access
         await CaseService.getCase(universe.elon, caseInstance, 200, 'As a marsgroup2 member, elon should have access');
+    }
+
+    async testTokenBasedCafienneAccess(caseInstance: Case) {
 
         // It should also be possible to add a member that is not even registered in the case system. As long as that member has a valid token, they should be able to get the case.
         const someone = new User('Some-one-out-there');
@@ -160,5 +233,6 @@ export default class TestCaseTeamConsentGroupAPI extends TestCase {
         await CaseService.getCase(someoneElse, caseInstance, 404);
 
         await CaseTeamService.getCaseTeam(someone, caseInstance).then(team => console.log(JSON.stringify(team, undefined, 2)));
+
     }
 }
