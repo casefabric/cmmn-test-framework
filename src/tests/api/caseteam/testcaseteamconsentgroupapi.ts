@@ -10,6 +10,8 @@ import RepositoryService from '@cafienne/typescript-client/service/case/reposito
 import TestCase from '@cafienne/typescript-client/test/testcase';
 import User from '@cafienne/typescript-client/user';
 import MultiTenantSetup from '../../multitenantsetup';
+import Case from '@cafienne/typescript-client/cmmn/case';
+import { assertSameGroup } from '@cafienne/typescript-client';
 
 // Case definition with the roles
 const definition = 'caseteam.xml';
@@ -116,6 +118,26 @@ export default class TestCaseTeamConsentGroupAPI extends TestCase {
 
         // As a marsgroup test user, jeff should have access
         await CaseService.getCase(universe.jeff, caseInstance, 200, 'As a marsgroup test user, jeff should have access');
+
+        // Add mars group again, then Jeff should continue to have access and the group should not have been changed.
+        await CaseTeamService.setGroup(universe.boy, caseInstance, caseTeamMarsGroup);
+
+        // Group should not have changed.
+        await assertSameGroup(universe.boy, caseInstance, caseTeamMarsGroup);
+
+        // And also jeff should still have access
+        await CaseService.getCase(universe.jeff, caseInstance, 200, 'As a marsgroup test user, jeff should have access');
+
+        // Change the group mappings and check they are applied
+        const caseTeamMarsGroupAlternative = new CaseTeamGroup(universe.marsGroup, [new GroupRoleMapping(universe.groupRoleTester, [caseRoleApprover, caseRoleRequestor])]);
+        await CaseTeamService.setGroup(universe.boy, caseInstance, caseTeamMarsGroupAlternative);
+        await assertSameGroup(universe.boy, caseInstance, caseTeamMarsGroupAlternative);
+        await assertSameGroup(universe.boy, caseInstance, caseTeamMarsGroup, false);
+
+        // Restore the initial group mappings and check they are applied
+        await CaseTeamService.setGroup(universe.boy, caseInstance, caseTeamMarsGroup);
+        await assertSameGroup(universe.boy, caseInstance, caseTeamMarsGroup);
+        await assertSameGroup(universe.boy, caseInstance, caseTeamMarsGroupAlternative, false);
 
         // Add mars2 group, then Elon should also get access
         await CaseTeamService.setGroup(universe.boy, caseInstance, caseTeamMars2Group);
