@@ -57,20 +57,36 @@ export default class TestCaseTeamTenantRoleMembers extends TestCase {
             console.log('Team: ' + JSON.stringify(team, undefined, 2));
         });
 
-        // Make sender a case owner
+        // Make sender a case owner, and remove the requestorRole, and add the participantRole
         caseSenderRole.isOwner = true;
-        await CaseTeamService.setCaseTeam(sender, caseInstance, caseTeam);
+        caseSenderRole.caseRoles = [approverRole, participantRole];
+        await CaseTeamService.setTenantRole(sender, caseInstance, caseSenderRole);
         await CaseTeamService.getCaseTeam(sender, caseInstance).then(team => {
             if (!team.tenantRoles.find(role => role.tenantRole === caseSenderRole.tenantRole && role.isOwner)) {
-                throw new Error('Expecting case sender role to have case ownership')
+                throw new Error('Expecting case sender role to have case ownership');
             }
         });
-        // And revert ownership again
+        // And revert ownership and role changes
         caseSenderRole.isOwner = false;
+        caseSenderRole.caseRoles = [requestorRole, approverRole];
         await CaseTeamService.setCaseTeam(sender, caseInstance, caseTeam);
         await CaseTeamService.getCaseTeam(sender, caseInstance).then(team => {
-            if (!team.tenantRoles.find(role => role.tenantRole === caseSenderRole.tenantRole && !role.isOwner)) {
-                throw new Error('Expecting case sender role to have case ownership')
+            if (team.tenantRoles.find(role => role.tenantRole === caseSenderRole.tenantRole && role.isOwner)) {
+                throw new Error('Expecting case sender role to no longer have case ownership');
+            }
+        });
+
+        // Check to see if we can remove the tenant role (and then add it again)
+        await CaseTeamService.removeTenantRole(sender, caseInstance, caseSenderRole);
+        await CaseTeamService.getCaseTeam(sender, caseInstance).then(team => {
+            if (team.tenantRoles.find(role => role.tenantRole === caseSenderRole.tenantRole)) {
+                throw new Error('Expecting case sender role to no longer be part of the case team');
+            }
+        });
+        await CaseTeamService.setTenantRole(sender, caseInstance, caseSenderRole);
+        await CaseTeamService.getCaseTeam(sender, caseInstance).then(team => {
+            if (! team.tenantRoles.find(role => role.tenantRole === caseSenderRole.tenantRole)) {
+                throw new Error('Expecting case sender role to be part of the case team again');
             }
         });
 

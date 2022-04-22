@@ -11,7 +11,7 @@ import TestCase from '@cafienne/typescript-client/test/testcase';
 import User from '@cafienne/typescript-client/user';
 import MultiTenantSetup from '../../multitenantsetup';
 import Case from '@cafienne/typescript-client/cmmn/case';
-import { assertSameGroup } from '@cafienne/typescript-client';
+import { assertSameGroup, SomeTime } from '@cafienne/typescript-client';
 
 // Case definition with the roles
 const definition = 'caseteam.xml';
@@ -194,7 +194,7 @@ export default class TestCaseTeamConsentGroupAPI extends TestCase {
         await CaseService.getCase(universe.jeff, caseInstance, 200, 'As a marsgroup test user, jeff should have access');
 
         // Change the group mappings and check they are applied
-        const caseTeamMarsGroupAlternative = new CaseTeamGroup(universe.marsGroup, [new GroupRoleMapping(universe.groupRoleTester, [caseRoleApprover, caseRoleRequestor])]);
+        const caseTeamMarsGroupAlternative = new CaseTeamGroup(universe.marsGroup, [new GroupRoleMapping(universe.groupRoleTester, [caseRoleApprover, caseRoleRequestor]), validMappingUserIsRequestor]);
         await CaseTeamService.setGroup(universe.boy, caseInstance, caseTeamMarsGroupAlternative);
         await assertSameGroup(universe.boy, caseInstance, caseTeamMarsGroupAlternative);
         await assertSameGroup(universe.boy, caseInstance, caseTeamMarsGroup, false);
@@ -203,6 +203,24 @@ export default class TestCaseTeamConsentGroupAPI extends TestCase {
         await CaseTeamService.setGroup(universe.boy, caseInstance, caseTeamMarsGroup);
         await assertSameGroup(universe.boy, caseInstance, caseTeamMarsGroup);
         await assertSameGroup(universe.boy, caseInstance, caseTeamMarsGroupAlternative, false);
+
+        // Check to see if we can remove the group and set it again.
+        await CaseTeamService.removeGroup(universe.boy, caseInstance, caseTeamMarsGroup);
+        await CaseTeamService.getCaseTeam(universe.boy, caseInstance).then(team => {
+            if (team.groups.filter(group => group.groupId === caseTeamMarsGroup.groupId).length > 0) {
+                throw new Error(`Marsgroup should not be part of the case team anymore, but it is still found.`)
+            }
+        });
+
+        // Set the mars group again and check is is available again
+        await CaseTeamService.setGroup(universe.boy, caseInstance, caseTeamMarsGroup);
+        await assertSameGroup(universe.boy, caseInstance, caseTeamMarsGroup);
+
+        // Now also give it ownership, and also different case roles
+        const groupMapping = new GroupRoleMappingWithCaseOwnership(universe.groupRoleTester, [caseRoleRequestor, caseRoleApprover]);
+        const caseTeamMarsGroupWithOwnership = new CaseTeamGroup(universe.marsGroup, [groupMapping]);
+        await CaseTeamService.setGroup(universe.boy, caseInstance, caseTeamMarsGroupWithOwnership);
+        await assertSameGroup(universe.boy, caseInstance, caseTeamMarsGroupWithOwnership);
     }
 
     async testAdditionalGroup(caseInstance: Case) {

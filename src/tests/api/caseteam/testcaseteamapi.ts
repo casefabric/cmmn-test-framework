@@ -1,5 +1,6 @@
 'use strict';
 
+import Case from '@cafienne/typescript-client/cmmn/case';
 import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
 import CaseTeamTenantRole from '@cafienne/typescript-client/cmmn/team/caseteamtenantrole';
 import CaseTeamUser, { CaseOwner } from '@cafienne/typescript-client/cmmn/team/caseteamuser';
@@ -27,6 +28,8 @@ const notExistingRole = 'ThisRoleIsNotInTheCaseDefinition';
 const emptyRole = '';
 
 export default class TestCaseTeamAPI extends TestCase {
+    private casesCreated: Array<Case> = [];
+
     async onPrepareTest() {
         await worldwideTenant.create();
         await RepositoryService.validateAndDeploy(sender, definition, tenant);
@@ -35,6 +38,8 @@ export default class TestCaseTeamAPI extends TestCase {
     async run() {
         await this.generalAPITest();
         await this.ownershipTest();
+
+        console.log("Test Case Team API generated cases\n- " + this.casesCreated.join("\n- "))
     }
 
     async generalAPITest() {
@@ -49,6 +54,7 @@ export default class TestCaseTeamAPI extends TestCase {
 
         caseTeam.tenantRoles[0].caseRoles = []; // Change roles of requestor to be empty instead of having wrong roles
         const caseInstance = await CaseService.startCase(sender, startCase);
+        this.casesCreated.push(caseInstance);
 
         // It should not be possible to start a case without case owners in the team
         const t2 = new CaseTeam([
@@ -116,6 +122,18 @@ export default class TestCaseTeamAPI extends TestCase {
         await CaseService.getCase(receiver, caseInstance);
         await CaseService.getCase(employee, caseInstance);
 
+        // Generate multiple events on the user, and validate them
+        await CaseTeamService.setUser(receiver, caseInstance, new CaseTeamUser(employee, [requestorRole]));
+        await assertCaseTeamUser(receiver, caseInstance, new CaseTeamUser(employee, [requestorRole]));
+        await CaseTeamService.setUser(receiver, caseInstance, new CaseOwner(employee, [approverRole]));
+        await assertCaseTeamUser(receiver, caseInstance, new CaseOwner(employee, [approverRole]));
+
+        // Show that setCaseTeam is idempotent
+        await CaseTeamService.setCaseTeam(receiver, caseInstance, newTeam);
+        await assertCaseTeam(receiver, caseInstance, newTeam);
+        await CaseTeamService.setCaseTeam(receiver, caseInstance, newTeam);
+        await assertCaseTeam(receiver, caseInstance, newTeam);
+
         // Compare the case team with both what the GET case API thinks it is and what the GET case team API thinks it is
         await assertCaseTeam(employee, caseInstance, newTeam);
 
@@ -143,7 +161,6 @@ export default class TestCaseTeamAPI extends TestCase {
         // Now add PA role to the receiver and see if that works
         await CaseTeamService.setUser(receiver, caseInstance, new CaseOwner(receiver, [approverRole, paRole]));
         await assertCaseTeamUser(receiver, caseInstance, new CaseOwner(receiver, [approverRole, paRole]));
-
     }
 
     async ownershipTest() {
@@ -164,6 +181,7 @@ export default class TestCaseTeamAPI extends TestCase {
         // Starting a by ownerWhoRemoves should not result in failure
         const startCase = { tenant, definition, debug: true, caseTeam };
         const caseInstance = await CaseService.startCase(ownerWhoRemoves, startCase);
+        this.casesCreated.push(caseInstance);
 
         // ownerToRemove can perform get case and get team
         await CaseService.getCase(ownerToRemove, caseInstance);
@@ -188,5 +206,7 @@ export default class TestCaseTeamAPI extends TestCase {
         const expectedStatusCodeForCaseTeamActions = removingOwnershipShouldSucceed ? 401 : 200;
         await CaseTeamService.setUser(ownerToRemove, caseInstance, new CaseOwner(employee), expectedStatusCodeForCaseTeamActions);
         await CaseTeamService.setUser(ownerToRemove, caseInstance, new CaseTeamUser(employee, []), expectedStatusCodeForCaseTeamActions);
+
+        return caseInstance;
     }
 }
