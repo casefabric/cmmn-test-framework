@@ -9,6 +9,7 @@ import assertCaseFileContent from '@cafienne/typescript-client/test/caseassertio
 import DebugService from '@cafienne/typescript-client/service/case/debugservice';
 import CaseFileService from '@cafienne/typescript-client/service/case/casefileservice';
 import State from '@cafienne/typescript-client/cmmn/state';
+import Case from '@cafienne/typescript-client/cmmn/case';
 
 const definition = 'calculation.xml';
 
@@ -17,6 +18,8 @@ const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
 
 export default class TestCalculation extends TestCase {
+    private casesCreated: Array<Case> = [];
+
     async onPrepareTest() {
         await worldwideTenant.create();
         await RepositoryService.validateAndDeploy(user, definition, tenant);
@@ -25,6 +28,7 @@ export default class TestCalculation extends TestCase {
     async run() {
         await this.runStep(2);
         await this.runStep(1);
+        console.log("Test Case Team API generated cases\n- " + this.casesCreated.join("\n- "))
     }
 
     async runStep(nr: number) {
@@ -55,6 +59,7 @@ export default class TestCalculation extends TestCase {
         }
         const startCase = { tenant, definition, inputs };
         const caseInstance = await CaseService.startCase(user, startCase);
+        this.casesCreated.push(caseInstance);
 
         const calculationTask = 'CalculationTask';
 

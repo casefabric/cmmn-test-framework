@@ -11,6 +11,7 @@
         <caseFileItem id="_ZlziS_14" name="Output3" multiplicity="ExactlyOne" definitionRef="unspecified.cfid"/>
         <caseFileItem id="_ZlziS_21" name="Output4" multiplicity="ExactlyOne" definitionRef="unspecified.cfid"/>
         <caseFileItem id="_ZlziS_22" name="Output5" multiplicity="ExactlyOne" definitionRef="unspecified.cfid"/>
+        <caseFileItem id="_ZlziS_20" name="Output6" multiplicity="ExactlyOne" definitionRef="unspecified.cfid"/>
     </caseFileModel>
     <casePlanModel id="cm__ZlziS_0" name="calculation" autoComplete="true">
         <planItem id="pi_pt__ZlziS_0" name="CalculationTask" definitionRef="pt__ZlziS_0"/>
@@ -28,6 +29,7 @@
             <outputs id="_ZlziS_18" name="Output3" bindingRef="_ZlziS_14"/>
             <outputs id="_ZlziS_23" name="Output4" bindingRef="_ZlziS_21"/>
             <outputs id="_ZlziS_24" name="Output5" bindingRef="_ZlziS_22"/>
+            <outputs id="_ZlziS_28" name="Output6" bindingRef="_ZlziS_20"/>
             <parameterMapping id="_ZlziS_5" sourceRef="_ZlziS_9" targetRef="_L7Tg_in1"/>
             <parameterMapping id="_ZlziS_6" sourceRef="_ZlziS_10" targetRef="_0Fl1_in2"/>
             <parameterMapping id="_ZlziS_7" sourceRef="_spg6_out1" targetRef="_ZlziS_11"/>
@@ -35,6 +37,7 @@
             <parameterMapping id="_ZlziS_16" sourceRef="_isCx_out3" targetRef="_ZlziS_18"/>
             <parameterMapping id="_ZlziS_8" sourceRef="_QBe0_out4" targetRef="_ZlziS_23"/>
             <parameterMapping id="_ZlziS_19" sourceRef="_p93u_out5" targetRef="_ZlziS_24"/>
+            <parameterMapping id="_ZlziS_26" sourceRef="_8TPL_out6" targetRef="_ZlziS_28"/>
         </processTask>
     </casePlanModel>
     <input id="_ZlziS_12" name="Root" bindingRef="_ZlziS_0"/>
