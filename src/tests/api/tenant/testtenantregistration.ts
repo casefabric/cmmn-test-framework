@@ -30,7 +30,7 @@ export default class TestTenantRegistration extends TestCase {
         await this.tryCreateTenant();
 
         await this.tryAddRemoveTenantUser();
-
+return;
         await this.tryChangeOwnership();
 
         await this.tryDisableEnableTenants();
@@ -97,6 +97,10 @@ export default class TestTenantRegistration extends TestCase {
     }
 
     async tryAddRemoveTenantUser() {
+        // Reproduce issue https://github.com/cafienne/cafienne-engine/issues/322
+        const invalidUser = Object.assign({}) as TenantUser;
+        await TenantService.setTenantUser(tenantOwner1, tenant1, invalidUser, 400, 'It should not be possible to register an invalid tenant user');
+
         const tempUser = new TenantUser('tempUser', ['all', 'the', 'roles', 'we', 'can', 'imagine'], 'tempName');
 
         // Not allowed to get a non-existing user

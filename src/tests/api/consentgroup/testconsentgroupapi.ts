@@ -15,26 +15,29 @@ const tenantUser = worldwideTenant.employee;
 const guid = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 const groupId = `consent-group-${guid}`;
 
+const owner = new ConsentGroupOwner(tenantAndGroupOwner.id, ['OwnerRole', 'GroupRole']); // Sender
+const member = new ConsentGroupMember(tenantUser.id, []); // Employee
+const newMember = new ConsentGroupMember(tenantOwner.id, ['MemberRole']); // Receiver
+const members: Array<ConsentGroupMember> = [];
+const group = new ConsentGroup(members, groupId);
+
 export default class TestConsentGroupAPI extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-    }
-
-
-    async run() {
-        const owner = new ConsentGroupOwner(tenantAndGroupOwner.id, ['OwnerRole', 'GroupRole']); // Sender
-        const member = new ConsentGroupMember(tenantUser.id, []); // Employee
-        const newMember = new ConsentGroupMember(tenantOwner.id, ['MemberRole']); // Receiver
-        const members: Array<ConsentGroupMember> = [];
-        const group = new ConsentGroup(members, groupId);
         await owner.login();
         await member.login();
         await newMember.login();
+    }
 
+    async run() {
+        await this.tryCreateGroup(); 
+        await this.tryReplaceGroup();
+        await this.tryChangeGroup();
+    }
+
+    async tryCreateGroup() {
         // Check that it is not possible to add a member if the group does not yet exist
         await ConsentGroupService.setGroupMember(tenantOwner, `not-existing-group-${guid}`, member, 404);
-        // Check that only tenant owners can create a consent group
-        await ConsentGroupService.createGroup(tenantUser, tenant, group, 401);
         // Check that a consent group must have at least one member
         await ConsentGroupService.createGroup(tenantOwner, tenant, group, 400);
         // Add a member
@@ -43,11 +46,15 @@ export default class TestConsentGroupAPI extends TestCase {
         await ConsentGroupService.createGroup(tenantOwner, tenant, group, 400);
         // Add an owner
         members.push(owner);
+        // Check that only tenant owners can create a consent group
+        await ConsentGroupService.createGroup(tenantUser, tenant, group, 401);
         // Now it should be possible to create a group
         await ConsentGroupService.createGroup(tenantAndGroupOwner, tenant, group);
         // But it should not be possible to create the same group again.
         await ConsentGroupService.createGroup(tenantAndGroupOwner, tenant, group, 400);
+    }
 
+    async tryReplaceGroup() {
         // Yet again it should be possible to replace the group (this should not lead to state changes)
         await ConsentGroupService.replaceGroup(tenantAndGroupOwner, group);
 
@@ -86,6 +93,9 @@ export default class TestConsentGroupAPI extends TestCase {
         // Get the group
         await ConsentGroupService.getGroup(tenantAndGroupOwner, group);
 
+    }
+
+    async tryChangeGroup() {
         // Check that the group owner can get a group member
         await ConsentGroupService.getGroupMember(tenantAndGroupOwner, group, member);
 
@@ -99,7 +109,11 @@ export default class TestConsentGroupAPI extends TestCase {
         await ConsentGroupService.getGroup(tenantOwner, group, 404);
         await ConsentGroupService.getGroupMember(tenantOwner, group, tenantAndGroupOwner, 404);
 
-        await ConsentGroupService.setGroupMember(tenantAndGroupOwner, group, newMember)
+        // Reproduce issue https://github.com/cafienne/cafienne-engine/issues/323
+        const invalidMember = Object.assign({toJson: () => { return {} }}) as ConsentGroupMember; // Need to override toJson method to create an empty member.
+        await ConsentGroupService.setGroupMember(tenantAndGroupOwner, group, invalidMember, 400);
+
+        await ConsentGroupService.setGroupMember(tenantAndGroupOwner, group, newMember);
 
         // Check that new member can now also get the group
         await ConsentGroupService.getGroup(tenantOwner, group);
