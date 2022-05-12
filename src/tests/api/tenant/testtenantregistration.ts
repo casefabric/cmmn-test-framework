@@ -23,6 +23,11 @@ const tenant1 = new Tenant(tenantName, [tenantOwner1, tenantOwner2, tenantOwner3
 
 
 export default class TestTenantRegistration extends TestCase {
+
+    async onPrepareTest() {
+        await platformAdmin.login();
+    }
+
     /**
      * @override
      */
@@ -30,7 +35,7 @@ export default class TestTenantRegistration extends TestCase {
         await this.tryCreateTenant();
 
         await this.tryAddRemoveTenantUser();
-return;
+
         await this.tryChangeOwnership();
 
         await this.tryDisableEnableTenants();
@@ -47,7 +52,6 @@ return;
     }
 
     async tryCreateTenant() {
-        await platformAdmin.login();
 
         // Creating tenant as tenantOwner should fail.
         await PlatformService.createTenant(tenantOwner1, tenant1, 401, 'Creating tenant as tenantOwner should fail');
