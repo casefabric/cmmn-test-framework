@@ -113,10 +113,6 @@ export default class TestCaseTeamConsentGroupAPI extends TestCase {
         // It should not be possible to start a case with an invalid case role
         caseTeamMoonGroup.mappings = [invalidCaseRoleMapping];
         await CaseService.startCase(universe.boy, startCase, 400, 'It should not be possible to start a case with an invalid case role');
-
-        // It should not be possible to start a case with an invalid group role
-        caseTeamMoonGroup.mappings = [invalidGroupRoleMapping];
-        await CaseService.startCase(universe.boy, startCase, 404, 'It should not be possible to start a case with an invalid group role');
     }
 
     async validateCaseAccess(caseInstance: Case) {
@@ -156,10 +152,6 @@ export default class TestCaseTeamConsentGroupAPI extends TestCase {
         // Check that it is not allowed to update a group with invalid case roles
         caseTeamMoonGroup.mappings = [invalidCaseRoleMapping];
         await CaseTeamService.setGroup(universe.boy, caseInstance, caseTeamMoonGroup, 400);
-
-        // It should not be possible to start a case with an invalid group role
-        caseTeamMoonGroup.mappings = [invalidGroupRoleMapping];
-        await CaseTeamService.setGroup(universe.boy, caseInstance, caseTeamMoonGroup, 404);
     }
 
     async addJeffAsUserAndThroughGroup(caseInstance: Case) {
