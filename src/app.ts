@@ -61,6 +61,7 @@ import TestCaseTeamAuthorizations from './tests/api/caseteam/testcaseteamauthori
 import TestCompatibility from './tests/compatibility/testcompatibility';
 import TestCaseFileExpressions from './tests/api/expression/testcasefileexpressions';
 import NextVersion from './nextversion/nextversion';
+import TestDefinitionInStartCase from './tests/api/case/testdefinitioninstartcase';
 
 function findTestsFromCommandLineArguments(): Array<string> {
     const time = process.argv[2];
@@ -177,6 +178,7 @@ const AllTestCases = new TestClasses([
     , TestSMTP
     , TestNoAnonymousStartCase
     , TestAnonymousStartCase
+    , TestDefinitionInStartCase
     , TestCalculation
     , TestGetListGetDetails
     , TestCaseMigration

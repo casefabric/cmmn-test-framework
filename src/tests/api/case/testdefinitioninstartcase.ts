@@ -1,12 +1,11 @@
 'use strict';
 
+import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
+import { CaseOwner } from '@cafienne/typescript-client/cmmn/team/caseteamuser';
 import CaseService from '@cafienne/typescript-client/service/case/caseservice';
+import { readLocalFile } from '@cafienne/typescript-client/service/case/repositoryservice';
 import TestCase from '@cafienne/typescript-client/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
-import { readLocalFile } from '@cafienne/typescript-client/service/case/repositoryservice';
-import { CaseOwner } from '@cafienne/typescript-client/cmmn/team/caseteamuser';
-import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
-import Case from '@cafienne/typescript-client/cmmn/case';
 
 const definition = 'caseteam.xml';
 
@@ -16,6 +15,8 @@ const sender = worldwideTenant.sender;
 const receiver = worldwideTenant.receiver;
 
 export default class TestDefinitionInStartCase extends TestCase {
+    isDefaultTest: boolean = false;
+
     async onPrepareTest() {
         await worldwideTenant.create();
         // await RepositoryService.validateAndDeploy(sender, definition, tenant);
