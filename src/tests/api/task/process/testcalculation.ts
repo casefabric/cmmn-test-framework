@@ -101,4 +101,3 @@ export default class TestCalculation extends TestCase {
         console.log(`\nCase ID:\t${caseInstance.id}`);
     }
 }
-

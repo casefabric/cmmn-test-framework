@@ -13,7 +13,6 @@ import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
 import CaseTeamTenantRole from '@cafienne/typescript-client/cmmn/team/caseteamtenantrole';
 import TaskState from '@cafienne/typescript-client/cmmn/taskstate';
 
-
 const tenantName = Math.random().toString(36).substring(7);
 const worldwideTenant = new WorldWideTestTenant(tenantName);
 const tenant = worldwideTenant.name;

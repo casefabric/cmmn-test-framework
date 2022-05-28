@@ -1,17 +1,17 @@
 'use strict';
 
+import { assertSameGroup } from '@cafienne/typescript-client';
+import Case from '@cafienne/typescript-client/cmmn/case';
 import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
 import CaseTeamGroup, { GroupRoleMapping, GroupRoleMappingWithCaseOwnership } from '@cafienne/typescript-client/cmmn/team/caseteamgroup';
-import CaseTeamUser, { CaseOwner } from '@cafienne/typescript-client/cmmn/team/caseteamuser';
 import CaseTeamTenantRole from '@cafienne/typescript-client/cmmn/team/caseteamtenantrole';
+import CaseTeamUser, { CaseOwner } from '@cafienne/typescript-client/cmmn/team/caseteamuser';
 import CaseService from '@cafienne/typescript-client/service/case/caseservice';
 import CaseTeamService from '@cafienne/typescript-client/service/case/caseteamservice';
 import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
 import TestCase from '@cafienne/typescript-client/test/testcase';
 import User from '@cafienne/typescript-client/user';
 import MultiTenantSetup from '../../multitenantsetup';
-import Case from '@cafienne/typescript-client/cmmn/case';
-import { assertSameGroup, SomeTime } from '@cafienne/typescript-client';
 
 // Case definition with the roles
 const definition = 'caseteam.xml';
