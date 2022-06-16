@@ -75,7 +75,7 @@ export default class TestGetListGetDetails extends TestCase {
         await assertPlanItem(user, caseInstance, 'GetList Failed', 0, State.Completed);
 
         // Trigger the 'Try Again' event
-        CasePlanService.makePlanItemTransition(user, caseInstance, 'Try Again', Transition.Occur);
+        await CasePlanService.makePlanItemTransition(user, caseInstance, 'Try Again', Transition.Occur);
 
         // Give the 'GetList.1' process task up to 5 seconds to fail (because Mock is still not started) and activate Stage 'Fail handling.1'
         await assertPlanItem(user, caseInstance, 'Fail handling', 1, State.Active);
