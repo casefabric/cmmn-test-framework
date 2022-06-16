@@ -1,6 +1,7 @@
 <process id="GetListWebService.process" name="GetListWebService" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
     <input id="httpPort" name="httpPort"/>
     <input id="testParameter" name="testParameter"/>
+    <input id="_OLKF_HEADER" name="HEADER"/>
     <output id="responseCode" name="responseCode"/>
     <output id="responseMessage" name="responseMessage"/>
     <output id="output" name="output"/>
@@ -12,7 +13,7 @@
             <url>http://localhost:${httpPort}/getListWebService</url>
             <method>GET</method>
             <http-headers>
-                <http-header name="Accept">application/json</http-header>
+                <http-header name="Accept">${HEADER}</http-header>
             </http-headers>
             <parameterMapping sourceRef="exception" targetRef="exception"/>
             <parameterMapping sourceRef="responsePayload" targetRef="detailsIdentifiers">

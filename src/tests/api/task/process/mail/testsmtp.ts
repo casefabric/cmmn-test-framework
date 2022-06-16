@@ -2,7 +2,7 @@
 
 import CaseService from '@cafienne/typescript-client/service/case/caseservice';
 import TestCase from '@cafienne/typescript-client/test/testcase';
-import WorldWideTestTenant from '../../../worldwidetesttenant';
+import WorldWideTestTenant from '../../../../worldwidetesttenant';
 import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
 import { assertPlanItem } from '@cafienne/typescript-client/test/caseassertions/plan';
 import DebugService from '@cafienne/typescript-client/service/case/debugservice';

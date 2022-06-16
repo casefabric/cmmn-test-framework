@@ -1,68 +1,70 @@
-import TestCase from '@cafienne/typescript-client/test/testcase';
 import CafienneConfig from '@cafienne/typescript-client/config';
-import TestStatsAPI from './tests/api/case/teststatsapi';
-import TestUsersCaseAPI from './tests/api/case/usercases';
-import TestDiscretionaryItems from './tests/api/discretionary/testdiscretionaryitems';
-import TestDebugMode from './tests/api/debug/testdebugmode';
-import TestHelloworld from './tests/helloworld/testhelloworld';
-import TestIncidentManagement from './tests/incidentmanagement/incidentmanagement';
-import TestTenantRegistration from './tests/api/tenant/testtenantregistration';
-import TestTaskValidationAPI from './tests/api/task/humantask/testtaskvalidationapi';
+import TestCase from '@cafienne/typescript-client/test/testcase';
 import Config from './config';
-import TestRepositoryAPI from './tests/api/repository/testrepositoryapi';
-import TestTokenValidation from './tests/api/environment/tokentest';
-import TestCaseFileAPI from './tests/api/casefile/testcasefileapi';
-import TestCasePlanAPI from './tests/api/caseplan/testcaseplanapi';
-import TestEventAuthorization from './tests/api/caseplan/testeventauthorization';
-import PingTestEnvironment, { PingTokenService } from './tests/api/environment/ping';
-import TestTravelRequest from './tests/travelrequest/testtravelrequest';
-import TestEntryCriteriaOnCaseInputParameters from './tests/api/caseplan/stage/testentrycriteriaoncaseinputparameters';
-import TestStage from './tests/api/caseplan/stage/teststage';
-import TestCaseTeamAPI from './tests/api/caseteam/testcaseteamapi';
-import TestCaseTeamTenantRoleMembers from './tests/api/caseteam/testcaseteamtenantrolemembers';
-import TestTaskAPI from './tests/api/task/humantask/testtaskapi';
-import TestTaskCountAPI from './tests/api/task/humantask/testtaskcountapi';
-import TestCaseTeam from './tests/api/caseteam/testcaseteam';
-import TestInvalidStartCase from './tests/api/case/testinvalidstartcase';
-import TestValidStartCase from './tests/api/case/testvalidstartcase';
-import TestStartCaseEmptyRole from './tests/api/caseteam/teststartcaseemptyrole';
-import TestResponseType from './tests/api/environment/testresponsetype';
-import TestBusinessIdentifiers from './tests/api/businessidentifiers/testbusinessidentifiers';
-import TestFootballBusinessIdentifiers from './tests/api/businessidentifiers/footballbusinessidentifiers/testfootballbusinessidentifiers';
-import TestCaseTeamTaskAuthorizations from './tests/api/caseteam/testcaseteamtaskauthorizations';
-import TestSubCase from './tests/api/task/case/testsubcase';
-import TestTaskCompletion from './tests/api/casefile/testtaskcompletion';
-import TestTaskOutputOperations from './tests/api/casefile/testtaskoutputoperations';
-import TestRepeatStage from './tests/api/stage/testrepeatstage';
-import TestGetListGetDetails from './tests/getlistgetdetails/getlistgetdetails';
-import TestBootstrapCaseFileEvents from './tests/api/case/testbootstrapcasefileevents';
-import TestDocumentationAPI from './tests/api/documentation/testdocumentationapi';
-import TestCasePlanHistoryAPI from './tests/api/caseplan/testcaseplanhistoryapi';
-import TestTaskFilterAPI from './tests/api/task/humantask/testtaskfilterapi';
-import TestTaskExpressions from './tests/api/expression/testtaskexpressions';
-import TestStageTaskExpressions from './tests/api/expression/teststagetaskexpressions';
-import TestProcessTask from './tests/api/caseplan/task/testprocesstask';
-import TestRepeatWithMapping from './tests/api/expression/testrepeatwithmapping';
-import TestSMTP from './tests/api/task/process/testsmtp';
-import TestTaskBindingRefinement from './tests/api/casefile/testtaskbindingrefinement';
-import TestArraySubCase from './tests/api/task/case/testarraysubcase';
+import NextVersion from './nextversion/nextversion';
 import TestAnonymousStartCase from './tests/api/anonymous/testanonymousstartcase';
 import TestNoAnonymousStartCase from './tests/api/anonymous/testnoanonymousstartcase';
-import TestCalculation from './tests/api/task/process/testcalculation';
+import TestFootballBusinessIdentifiers from './tests/api/businessidentifiers/footballbusinessidentifiers/testfootballbusinessidentifiers';
+import TestBusinessIdentifiers from './tests/api/businessidentifiers/testbusinessidentifiers';
 import TestHelloWorldBusinessIdentifiers from './tests/api/businessidentifiers/testhelloworldbusinessidentifiers';
-import TestCaseFileArrayAPI from './tests/api/casefile/testcasefilearrayapi';
 import TestCaseMigration from './tests/api/case/migration/testcasemigration';
 import TestSubCaseMigration from './tests/api/case/migration/testsubcasemigration';
-import TestRecovery from './tests/api/environment/testrecovery';
-import TestSwagger from './tests/api/environment/testswagger';
-import TestConsentGroupAPI from './tests/api/consentgroup/testconsentgroupapi';
-import TestCaseTeamConsentGroupAPI from './tests/api/caseteam/testcaseteamconsentgroupapi';
-import TestCaseTeamAuthorizations from './tests/api/caseteam/testcaseteamauthorizations';
-import TestCompatibility from './tests/compatibility/testcompatibility';
-import TestCaseFileExpressions from './tests/api/expression/testcasefileexpressions';
-import NextVersion from './nextversion/nextversion';
+import TestBootstrapCaseFileEvents from './tests/api/case/testbootstrapcasefileevents';
 import TestDefinitionInStartCase from './tests/api/case/testdefinitioninstartcase';
-import TestGetListMigration from './tests/getlistgetdetails/getlist_migration';
+import TestInvalidStartCase from './tests/api/case/testinvalidstartcase';
+import TestStatsAPI from './tests/api/case/teststatsapi';
+import TestValidStartCase from './tests/api/case/testvalidstartcase';
+import TestUsersCaseAPI from './tests/api/case/usercases';
+import TestCaseFileAPI from './tests/api/casefile/testcasefileapi';
+import TestCaseFileArrayAPI from './tests/api/casefile/testcasefilearrayapi';
+import TestTaskBindingRefinement from './tests/api/casefile/testtaskbindingrefinement';
+import TestTaskCompletion from './tests/api/casefile/testtaskcompletion';
+import TestTaskOutputOperations from './tests/api/casefile/testtaskoutputoperations';
+import TestEntryCriteriaOnCaseInputParameters from './tests/api/caseplan/stage/testentrycriteriaoncaseinputparameters';
+import TestStage from './tests/api/caseplan/stage/teststage';
+import TestProcessTask from './tests/api/caseplan/task/testprocesstask';
+import TestCasePlanAPI from './tests/api/caseplan/testcaseplanapi';
+import TestCasePlanHistoryAPI from './tests/api/caseplan/testcaseplanhistoryapi';
+import TestEventAuthorization from './tests/api/caseplan/testeventauthorization';
+import TestCaseTeam from './tests/api/caseteam/testcaseteam';
+import TestCaseTeamAPI from './tests/api/caseteam/testcaseteamapi';
+import TestCaseTeamAuthorizations from './tests/api/caseteam/testcaseteamauthorizations';
+import TestCaseTeamConsentGroupAPI from './tests/api/caseteam/testcaseteamconsentgroupapi';
+import TestCaseTeamTaskAuthorizations from './tests/api/caseteam/testcaseteamtaskauthorizations';
+import TestCaseTeamTenantRoleMembers from './tests/api/caseteam/testcaseteamtenantrolemembers';
+import TestStartCaseEmptyRole from './tests/api/caseteam/teststartcaseemptyrole';
+import TestConsentGroupAPI from './tests/api/consentgroup/testconsentgroupapi';
+import TestDebugMode from './tests/api/debug/testdebugmode';
+import TestDiscretionaryItems from './tests/api/discretionary/testdiscretionaryitems';
+import TestDocumentationAPI from './tests/api/documentation/testdocumentationapi';
+import PingTestEnvironment, { PingTokenService } from './tests/api/environment/ping';
+import TestRecovery from './tests/api/environment/testrecovery';
+import TestResponseType from './tests/api/environment/testresponsetype';
+import TestSwagger from './tests/api/environment/testswagger';
+import TestTokenValidation from './tests/api/environment/tokentest';
+import TestCaseFileExpressions from './tests/api/expression/testcasefileexpressions';
+import TestRepeatWithMapping from './tests/api/expression/testrepeatwithmapping';
+import TestStageTaskExpressions from './tests/api/expression/teststagetaskexpressions';
+import TestTaskExpressions from './tests/api/expression/testtaskexpressions';
+import TestRepositoryAPI from './tests/api/repository/testrepositoryapi';
+import TestRepeatStage from './tests/api/stage/testrepeatstage';
+import TestArraySubCase from './tests/api/task/case/testarraysubcase';
+import TestSubCase from './tests/api/task/case/testsubcase';
+import TestTaskAPI from './tests/api/task/humantask/testtaskapi';
+import TestTaskCountAPI from './tests/api/task/humantask/testtaskcountapi';
+import TestTaskFilterAPI from './tests/api/task/humantask/testtaskfilterapi';
+import TestTaskValidationAPI from './tests/api/task/humantask/testtaskvalidationapi';
+import TestGetListGetDetails from './tests/api/task/process/http/getlistgetdetails';
+import TestDashedParameters from './tests/api/task/process/http/testdashedparameters';
+import TestInputMappingFailure from './tests/api/task/process/http/testinputmappingfailure';
+import TestSMTP from './tests/api/task/process/mail/testsmtp';
+import TestProcessTaskMigration from './tests/api/task/process/migration/testprocesstaskmigration';
+import TestCalculation from './tests/api/task/process/testcalculation';
+import TestTenantRegistration from './tests/api/tenant/testtenantregistration';
+import TestCompatibility from './tests/compatibility/testcompatibility';
+import TestHelloworld from './tests/helloworld/testhelloworld';
+import TestIncidentManagement from './tests/incidentmanagement/incidentmanagement';
+import TestTravelRequest from './tests/travelrequest/testtravelrequest';
 
 function findTestsFromCommandLineArguments(): Array<string> {
     const time = process.argv[2];
@@ -182,7 +184,9 @@ const AllTestCases = new TestClasses([
     , TestDefinitionInStartCase
     , TestCalculation
     , TestGetListGetDetails
-    , TestGetListMigration
+    , TestDashedParameters
+    , TestInputMappingFailure
+    , TestProcessTaskMigration
     , TestCaseMigration
     , TestSubCaseMigration
     , TestRecovery

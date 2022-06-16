@@ -9,7 +9,7 @@ import CaseService from '@cafienne/typescript-client/service/case/caseservice';
 import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
 import { assertPlanItem } from '@cafienne/typescript-client/test/caseassertions/plan';
 import TestCase from '@cafienne/typescript-client/test/testcase';
-import WorldWideTestTenant from '../worldwidetesttenant';
+import WorldWideTestTenant from '../../../../worldwidetesttenant';
 
 const definition = 'migration/getlist.xml';
 const newDefinition = 'migration/getlist_v1.xml';
@@ -19,9 +19,8 @@ const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
 
 
-export default class TestGetListMigration extends TestCase {
+export default class TestProcessTaskMigration extends TestCase {
     async onPrepareTest() {
-        // await mock.start();
         await worldwideTenant.create();
         await RepositoryService.validateAndDeploy(user, definition, tenant);
         await RepositoryService.validateAndDeploy(user, newDefinition, tenant);

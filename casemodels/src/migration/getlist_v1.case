@@ -14,7 +14,7 @@
         <caseFileItem id="_Sp9aR_1" name="HTTPConfig" multiplicity="ExactlyOne" definitionRef="http.cfid"/>
         <caseFileItem id="_Sp9aR_27" name="Exception" multiplicity="ZeroOrMore" definitionRef="exception.cfid"/>
     </caseFileModel>
-    <casePlanModel id="cm_getlist" name="getlist" autoComplete="true">
+    <casePlanModel id="cm_getlist" name="getlist_v1" autoComplete="true">
         <planItem id="pi_pt__LQXO7_8" name="GetList" definitionRef="pt__LQXO7_8">
             <entryCriterion id="_Sp9aR_11" name="EntryCriterion_1" sentryRef="crit__Sp9aR_0"/>
             <itemControl id="_Sp9aR_0">
@@ -39,17 +39,42 @@
                 </requiredRule>
             </itemControl>
         </planItem>
+        <planItem id="pi_ue__y8vam_0" name="TriggerDashedParameterProcess" definitionRef="ue__y8vam_0"/>
+        <planItem id="pi_pt__y8vam_0" name="process_with_dashed_parameter" definitionRef="pt__y8vam_0">
+            <entryCriterion id="_y8vam_14" name="EntryCriterion_0" sentryRef="crit__y8vam_0"/>
+        </planItem>
+        <planItem id="pi_ue__y8vam_1" name="TriggerInputMappingFailure" definitionRef="ue__y8vam_1"/>
+        <planItem id="pi_pt__y8vam_1" name="process_with_mapping_failure" definitionRef="pt__y8vam_1">
+            <entryCriterion id="_y8vam_24" name="EntryCriterion_3" sentryRef="crit__y8vam_1"/>
+        </planItem>
+        <planItem id="pi_ue__y8vam_2" name="TriggerCaseTermination" definitionRef="ue__y8vam_2"/>
         <sentry id="crit__Sp9aR_0">
             <caseFileItemOnPart id="_Sp9aR_12" sourceRef="_Sp9aR_1">
                 <standardEvent>create</standardEvent>
             </caseFileItemOnPart>
         </sentry>
         <sentry id="crit__Sp9aR_3">
-            <caseFileItemOnPart id="_y8vam_1" sourceRef="_LQXO7_6">
-                <standardEvent>create</standardEvent>
-            </caseFileItemOnPart>
+            <planItemOnPart id="_y8vam_1" sourceRef="pi_ue__y8vam_2">
+                <standardEvent>occur</standardEvent>
+            </planItemOnPart>
         </sentry>
-        <processTask id="pt__LQXO7_8" name="GetList" isBlocking="true" processRef="migration/getlist_v1.process">
+        <sentry id="crit__y8vam_0">
+            <planItemOnPart id="_y8vam_15" sourceRef="pi_ue__y8vam_0">
+                <standardEvent>occur</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <sentry id="crit__y8vam_1">
+            <planItemOnPart id="_y8vam_25" sourceRef="pi_ue__y8vam_1">
+                <standardEvent>occur</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <sentry id="crit__y8vam_2">
+            <planItemOnPart id="_y8vam_30" sourceRef="pi_ms__Sp9aR_0">
+                <standardEvent>occur</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <exitCriterion id="_y8vam_28" name="ExitCriterion_0" sentryRef="crit__y8vam_2"/>
+        <processTask id="pt__LQXO7_8" name="GetList" isBlocking="true" processRef="migration/getlist.process">
             <inputs id="_Sp9aR_5" name="HTTPConfig" bindingRef="_Sp9aR_1"/>
             <outputs id="_LQXO7_14" name="responseCode"/>
             <parameterMapping id="_LQXO7_11" sourceRef="_Sp9aR_5" targetRef="httpPort">
@@ -61,6 +86,29 @@
             </parameterMapping>
             <parameterMapping id="_LQXO7_15" sourceRef="responseCode" targetRef="_LQXO7_14"/>
         </processTask>
+        <processTask id="pt__y8vam_0" name="process_with_dashed_parameter" isBlocking="true" processRef="migration/getlist.process">
+            <inputs id="_y8vam_50" name="HTTPConfig" bindingRef="_Sp9aR_1"/>
+            <parameterMapping id="_y8vam_26" sourceRef="_y8vam_50" targetRef="httpPort">
+                <transformation id="_y8vam_48">
+                    <body>
+                        <![CDATA[HTTPConfig.port]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+        </processTask>
+        <processTask id="pt__y8vam_1" name="process_with_mapping_failure" isBlocking="true" processRef="migration/getlist.process">
+            <inputs id="_y8vam_46" name="HTTPConfig" bindingRef="_Sp9aR_1"/>
+            <parameterMapping id="_y8vam_38" sourceRef="_y8vam_46" targetRef="httpPort">
+                <transformation id="_y8vam_47">
+                    <body>
+                        <![CDATA[HTTPConfig.port]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+        </processTask>
         <milestone id="ms__Sp9aR_0" name="Avoid case completion on failure of getlist"/>
+        <userEvent id="ue__y8vam_0" name="TriggerDashedParameterProcess"/>
+        <userEvent id="ue__y8vam_1" name="TriggerInputMappingFailure"/>
+        <userEvent id="ue__y8vam_2" name="TriggerCaseTermination"/>
     </casePlanModel>
 </case>

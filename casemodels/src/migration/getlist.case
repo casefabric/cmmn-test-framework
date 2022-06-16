@@ -39,16 +39,41 @@
                 </requiredRule>
             </itemControl>
         </planItem>
+        <planItem id="pi_ue__y8vam_0" name="TriggerDashedParameterProcess" definitionRef="ue__y8vam_0"/>
+        <planItem id="pi_pt__y8vam_0" name="process_with_dashed_parameter" definitionRef="pt__y8vam_0">
+            <entryCriterion id="_y8vam_14" name="EntryCriterion_0" sentryRef="crit__y8vam_0"/>
+        </planItem>
+        <planItem id="pi_ue__y8vam_1" name="TriggerInputMappingFailure" definitionRef="ue__y8vam_1"/>
+        <planItem id="pi_pt__y8vam_1" name="process_with_mapping_failure" definitionRef="pt__y8vam_1">
+            <entryCriterion id="_y8vam_24" name="EntryCriterion_3" sentryRef="crit__y8vam_1"/>
+        </planItem>
+        <planItem id="pi_ue__y8vam_2" name="TriggerCaseTermination" definitionRef="ue__y8vam_2"/>
         <sentry id="crit__Sp9aR_0">
             <caseFileItemOnPart id="_Sp9aR_12" sourceRef="_Sp9aR_1">
                 <standardEvent>create</standardEvent>
             </caseFileItemOnPart>
         </sentry>
         <sentry id="crit__Sp9aR_3">
-            <caseFileItemOnPart id="_y8vam_1" sourceRef="_LQXO7_6">
-                <standardEvent>create</standardEvent>
-            </caseFileItemOnPart>
+            <planItemOnPart id="_y8vam_1" sourceRef="pi_ue__y8vam_2">
+                <standardEvent>occur</standardEvent>
+            </planItemOnPart>
         </sentry>
+        <sentry id="crit__y8vam_0">
+            <planItemOnPart id="_y8vam_15" sourceRef="pi_ue__y8vam_0">
+                <standardEvent>occur</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <sentry id="crit__y8vam_1">
+            <planItemOnPart id="_y8vam_25" sourceRef="pi_ue__y8vam_1">
+                <standardEvent>occur</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <sentry id="crit__y8vam_2">
+            <planItemOnPart id="_y8vam_30" sourceRef="pi_ms__Sp9aR_0">
+                <standardEvent>occur</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <exitCriterion id="_y8vam_28" name="ExitCriterion_0" sentryRef="crit__y8vam_2"/>
         <processTask id="pt__LQXO7_8" name="GetList" isBlocking="true" processRef="migration/getlist.process">
             <inputs id="_Sp9aR_5" name="HTTPConfig" bindingRef="_Sp9aR_1"/>
             <outputs id="_LQXO7_14" name="responseCode"/>
@@ -61,6 +86,37 @@
             </parameterMapping>
             <parameterMapping id="_LQXO7_15" sourceRef="responseCode" targetRef="_LQXO7_14"/>
         </processTask>
+        <processTask id="pt__y8vam_0" name="process_with_dashed_parameter" isBlocking="true" processRef="process_with_dashed_parameter.process">
+            <inputs id="_y8vam_17" name="HTTPConfig" bindingRef="_Sp9aR_1"/>
+            <outputs id="_y8vam_11" name="Exception" bindingRef="_Sp9aR_27"/>
+            <parameterMapping id="_y8vam_8" sourceRef="_y8vam_17" targetRef="_XU7o_port">
+                <transformation id="_y8vam_19">
+                    <body>
+                        <![CDATA[HTTPConfig.port]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+            <parameterMapping id="_y8vam_20" sourceRef="_dTMD_exception" targetRef="_y8vam_11"/>
+        </processTask>
+        <processTask id="pt__y8vam_1" name="process_with_mapping_failure" isBlocking="true" processRef="process_with_mapping_failure.process">
+            <inputs id="_y8vam_29" name="HTTPConfig" bindingRef="_Sp9aR_1"/>
+            <parameterMapping id="_y8vam_12" sourceRef="_y8vam_29" targetRef="_avHJ_port">
+                <transformation id="_y8vam_27">
+                    <body>
+                        <![CDATA[HTTPConfig.port]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
+        </processTask>
         <milestone id="ms__Sp9aR_0" name="Avoid case completion on failure of getlist"/>
+        <userEvent id="ue__y8vam_0" name="TriggerDashedParameterProcess"/>
+        <userEvent id="ue__y8vam_1" name="TriggerInputMappingFailure"/>
+        <userEvent id="ue__y8vam_2" name="TriggerCaseTermination"/>
     </casePlanModel>
+    <input id="_y8vam_18" name="HTTPConfig" bindingRef="_Sp9aR_1"/>
+    <textAnnotation id="_y8vam_26">
+        <text>
+            <![CDATA[This case supports multiple test patterns, mostly on negative testing and optional recovery for that through migration]]>
+        </text>
+    </textAnnotation>
 </case>

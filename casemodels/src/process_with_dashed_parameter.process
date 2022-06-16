@@ -1,0 +1,20 @@
+<process name="process_with_dashed_parameter" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
+    <input id="_XU7o_port" name="http-Port"/>
+    <output id="_Bzbt_responsePayload" name="responsePayload"/>
+    <output id="_JEBX_responseMessage" name="responseMessage"/>
+    <output id="_O7iw_responseCode" name="responseCode"/>
+    <output id="_dTMD_exception" name="exception"/>
+    <extensionElements>
+        <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.http.HTTPCallDefinition">
+            <url>http://localhost:${http-Port}/getListWebService</url>
+            <method>GET</method>
+            <http-headers>
+                <http-header name="Accept">application/json</http-header>
+            </http-headers>
+            <failure sourceRef="exception" targetRef="exception"/>
+            <success sourceRef="responsePayload" targetRef="responsePayload"/>
+            <parameterMapping sourceRef="responseCode" targetRef="responseCode"/>
+            <parameterMapping sourceRef="responseMessage" targetRef="responseMessage"/>
+        </cafienne:implementation>
+    </extensionElements>
+</process>
