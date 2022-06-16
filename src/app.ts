@@ -62,6 +62,7 @@ import TestCompatibility from './tests/compatibility/testcompatibility';
 import TestCaseFileExpressions from './tests/api/expression/testcasefileexpressions';
 import NextVersion from './nextversion/nextversion';
 import TestDefinitionInStartCase from './tests/api/case/testdefinitioninstartcase';
+import TestGetListMigration from './tests/getlistgetdetails/getlist_migration';
 
 function findTestsFromCommandLineArguments(): Array<string> {
     const time = process.argv[2];
@@ -181,6 +182,7 @@ const AllTestCases = new TestClasses([
     , TestDefinitionInStartCase
     , TestCalculation
     , TestGetListGetDetails
+    , TestGetListMigration
     , TestCaseMigration
     , TestSubCaseMigration
     , TestRecovery
