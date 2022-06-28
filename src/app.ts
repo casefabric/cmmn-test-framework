@@ -61,6 +61,7 @@ import TestSMTP from './tests/api/task/process/mail/testsmtp';
 import TestProcessTaskMigration from './tests/api/task/process/migration/testprocesstaskmigration';
 import TestCalculation from './tests/api/task/process/testcalculation';
 import TestTenantRegistration from './tests/api/tenant/testtenantregistration';
+import TestVersion from './tests/api/version/testversion';
 import TestCompatibility from './tests/compatibility/testcompatibility';
 import TestHelloworld from './tests/helloworld/testhelloworld';
 import TestIncidentManagement from './tests/incidentmanagement/incidentmanagement';
@@ -132,6 +133,7 @@ const AllTestCases = new TestClasses([
     , TestResponseType
     , TestSwagger
     , TestHelloworld
+    , TestVersion
     , TestTenantRegistration
     , TestConsentGroupAPI
     , TestTaskCompletion
