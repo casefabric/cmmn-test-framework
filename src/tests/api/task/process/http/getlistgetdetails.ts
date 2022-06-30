@@ -11,7 +11,7 @@ import RepositoryService from '@cafienne/typescript-client/service/case/reposito
 import { assertPlanItem } from '@cafienne/typescript-client/test/caseassertions/plan';
 import TestCase from '@cafienne/typescript-client/test/testcase';
 import { ServerSideProcessing } from '@cafienne/typescript-client/test/time';
-import WorldWideTestTenant from '../worldwidetesttenant';
+import WorldWideTestTenant from '../../../../worldwidetesttenant';
 
 const definition = 'getlist_getdetails.xml';
 
@@ -35,7 +35,6 @@ new GetMock(mock, '/details/:detailsKey', call => {
 
 export default class TestGetListGetDetails extends TestCase {
     async onPrepareTest() {
-        // await mock.start();
         await worldwideTenant.create();
         await RepositoryService.validateAndDeploy(user, definition, tenant);
     }
@@ -75,7 +74,7 @@ export default class TestGetListGetDetails extends TestCase {
         await assertPlanItem(user, caseInstance, 'GetList Failed', 0, State.Completed);
 
         // Trigger the 'Try Again' event
-        CasePlanService.makePlanItemTransition(user, caseInstance, 'Try Again', Transition.Occur);
+        await CasePlanService.makePlanItemTransition(user, caseInstance, 'Try Again', Transition.Occur);
 
         // Give the 'GetList.1' process task up to 5 seconds to fail (because Mock is still not started) and activate Stage 'Fail handling.1'
         await assertPlanItem(user, caseInstance, 'Fail handling', 1, State.Active);
@@ -87,7 +86,7 @@ export default class TestGetListGetDetails extends TestCase {
         await assertPlanItem(user, caseInstance, 'GetDetails', 0, State.Available);
 
         // Starting mock service
-        mock.start();
+        await mock.start();
 
         // Trigger the 'Try Again' event
         await CasePlanService.makePlanItemTransition(user, caseInstance, 'Try Again', Transition.Occur);

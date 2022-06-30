@@ -4,7 +4,9 @@
         <property name="description" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
         <property name="id" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
     </caseFileItemDefinition>
-    <caseFileItemDefinition name="http" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="http.cfid"/>
+    <caseFileItemDefinition name="http" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="http.cfid">
+        <property name="port" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
+    </caseFileItemDefinition>
     <caseFileItemDefinition name="exception" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="exception.cfid"/>
     <case id="getlist_getdetails.case" name="getlist_getdetails" expressionLanguage="spel">
         <documentation textFormat="text/plain">
@@ -96,6 +98,7 @@
             </sentry>
             <processTask id="pt__LQXO7_8" name="GetList" isBlocking="true" processRef="GetListWebService.process">
                 <inputs id="_Sp9aR_5" name="HTTPConfig" bindingRef="_Sp9aR_1"/>
+                <inputs id="_Sp9aR_33" name="HEADER"/>
                 <outputs id="_LQXO7_14" name="responseCode"/>
                 <outputs id="_LQXO7_16" name="responseMessage" bindingRef="_Sp9aR_27"/>
                 <outputs id="_LQXO7_18" name="output"/>
@@ -119,6 +122,13 @@
                 <parameterMapping id="_LQXO7_19" sourceRef="output" targetRef="_LQXO7_18"/>
                 <parameterMapping id="_LQXO7_21" sourceRef="detailsIdentifiers" targetRef="_LQXO7_20"/>
                 <parameterMapping id="_LQXO7_23" sourceRef="headerContentLength" targetRef="_LQXO7_22"/>
+                <parameterMapping id="_Sp9aR_29" sourceRef="_Sp9aR_33" targetRef="_OLKF_HEADER">
+                    <transformation id="_Sp9aR_32">
+                        <body>
+                            <![CDATA["application/json"]]>
+                        </body>
+                    </transformation>
+                </parameterMapping>
             </processTask>
             <processTask id="pt__LQXO7_24" name="GetDetails" isBlocking="true" processRef="GetDetailsWebService.process">
                 <inputs id="_LQXO7_28" name="detailsId" bindingRef="_LQXO7_7"/>
@@ -154,6 +164,7 @@
     <process id="GetListWebService.process" name="GetListWebService" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
         <input id="httpPort" name="httpPort"/>
         <input id="testParameter" name="testParameter"/>
+        <input id="_OLKF_HEADER" name="HEADER"/>
         <output id="responseCode" name="responseCode"/>
         <output id="responseMessage" name="responseMessage"/>
         <output id="output" name="output"/>
@@ -165,7 +176,7 @@
                 <url>http://localhost:${httpPort}/getListWebService</url>
                 <method>GET</method>
                 <http-headers>
-                    <http-header name="Accept">application/json</http-header>
+                    <http-header name="Accept">${HEADER}</http-header>
                 </http-headers>
                 <parameterMapping sourceRef="exception" targetRef="exception"/>
                 <parameterMapping sourceRef="responsePayload" targetRef="detailsIdentifiers">

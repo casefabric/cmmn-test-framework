@@ -88,6 +88,7 @@
         </sentry>
         <processTask id="pt__LQXO7_8" name="GetList" isBlocking="true" processRef="GetListWebService.process">
             <inputs id="_Sp9aR_5" name="HTTPConfig" bindingRef="_Sp9aR_1"/>
+            <inputs id="_Sp9aR_33" name="HEADER"/>
             <outputs id="_LQXO7_14" name="responseCode"/>
             <outputs id="_LQXO7_16" name="responseMessage" bindingRef="_Sp9aR_27"/>
             <outputs id="_LQXO7_18" name="output"/>
@@ -111,6 +112,13 @@
             <parameterMapping id="_LQXO7_19" sourceRef="output" targetRef="_LQXO7_18"/>
             <parameterMapping id="_LQXO7_21" sourceRef="detailsIdentifiers" targetRef="_LQXO7_20"/>
             <parameterMapping id="_LQXO7_23" sourceRef="headerContentLength" targetRef="_LQXO7_22"/>
+            <parameterMapping id="_Sp9aR_29" sourceRef="_Sp9aR_33" targetRef="_OLKF_HEADER">
+                <transformation id="_Sp9aR_32">
+                    <body>
+                        <![CDATA["application/json"]]>
+                    </body>
+                </transformation>
+            </parameterMapping>
         </processTask>
         <processTask id="pt__LQXO7_24" name="GetDetails" isBlocking="true" processRef="GetDetailsWebService.process">
             <inputs id="_LQXO7_28" name="detailsId" bindingRef="_LQXO7_7"/>
