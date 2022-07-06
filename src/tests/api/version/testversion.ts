@@ -30,7 +30,7 @@ export default class TestVersion extends TestCase {
         const caseInstance = await CaseService.startCase(user, { tenant, definition }).then(id => CaseService.getCase(user, id));
 
         // Retrieve the initial set of events.
-        const firstEventBatch = await DebugService.getParsedEvents(caseInstance.id, user);
+        const firstEventBatch = (await DebugService.getParsedEvents(caseInstance.id, user)).filter((event: any) => event.type !== 'DebugEvent');
 
         // Compare engine version from engine versus the one that the case instance thinks it has. They MUST be the same ;)
         const caseDefinitionApplied = firstEventBatch.find((event: any) => event.type === 'CaseDefinitionApplied');
@@ -42,7 +42,8 @@ export default class TestVersion extends TestCase {
 
         // Retrieve discretionaries and see if there are any additional events. It is either 1 or 0, depending whether debug flag is on.
         await CaseService.getDiscretionaryItems(user, caseInstance);
-        const secondEventBatch = await DebugService.getParsedEvents(caseInstance.id, user);
+        await CaseService.getCase(user, caseInstance); // Also get the case, in order to make it await processing of additional events through CaseLastModified header
+        const secondEventBatch = (await DebugService.getParsedEvents(caseInstance.id, user)).filter((event: any) => event.type !== 'DebugEvent');
 
         // Force recovery, so that the engine version state is removed from the case instance and set again, and tested against the actual engine version.
         await DebugService.forceRecovery(user, caseInstance.id);
@@ -50,7 +51,8 @@ export default class TestVersion extends TestCase {
         // Now again get the discretionaries, that will recover the case instance. Then check that there are as many new events as previously, and also check
         //  there is no EngineVersionChanged event either.
         await CaseService.getDiscretionaryItems(user, caseInstance);
-        const thirdEventBatch = await DebugService.getParsedEvents(caseInstance.id, user);
+        await CaseService.getCase(user, caseInstance); // Also get the case, in order to make it await processing of additional events through CaseLastModified header
+        const thirdEventBatch = (await DebugService.getParsedEvents(caseInstance.id, user)).filter((event: any) => event.type !== 'DebugEvent');
 
         console.log(`Event batch sizes: ${firstEventBatch.length}, ${secondEventBatch.length}, ${thirdEventBatch.length}`);
 
