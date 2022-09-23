@@ -62,6 +62,8 @@ export default class TestCaseTeamConsentGroupAPI extends TestCase {
         // First run a number of negative tests on trying to pass the case team along the start case command with invalid groups
         await this.startCaseNegativeTesting();
 
+        await this.validateStartCase();
+
         // It should be possible to start a case with the valid role names
         caseTeamMoonGroup.mappings = [validMappingTesterIsPA, validMappingUserIsRequestor];
         const caseInstance = await CaseService.startCase(universe.boy, startCase, undefined, 'It should be possible to start a case with the valid role names');
@@ -113,6 +115,43 @@ export default class TestCaseTeamConsentGroupAPI extends TestCase {
         // It should not be possible to start a case with an invalid case role
         caseTeamMoonGroup.mappings = [invalidCaseRoleMapping];
         await CaseService.startCase(universe.boy, startCase, 400, 'It should not be possible to start a case with an invalid case role');
+    }
+    async validateStartCase() {
+        // Command to start the case with owner only via user
+        await CaseService.startCase(universe.jeff, { 
+            tenant: universe.mars, 
+            definition, 
+            caseTeam: new CaseTeam (
+                [ 
+                    new CaseOwner(universe.jeff),
+                ], 
+                [], 
+                []) 
+            });
+        // Command to start the case with owner only via roles
+        await CaseService.startCase(universe.jeff, { 
+            tenant: universe.mars, 
+            definition, 
+            caseTeam: new CaseTeam (
+                [], 
+                [], 
+                [ 
+                    { tenantRole: universe.groupRoleTester, caseRoles: [caseRoleRequestor], isOwner: true}
+                ]) 
+            });
+        // Command to start the case with owner only via consent group
+        await CaseService.startCase(universe.jeff, { 
+            tenant: universe.mars, 
+            definition, 
+            caseTeam: new CaseTeam (
+                [], 
+                [   new CaseTeamGroup(universe.marsGroup, [
+                        { groupRole: universe.groupRoleTester, caseRoles:[caseRoleRequestor], isOwner: true },
+                    ])
+                ], 
+                []) 
+            });
+                 
     }
 
     async validateCaseAccess(caseInstance: Case) {
