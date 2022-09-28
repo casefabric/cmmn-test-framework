@@ -59,8 +59,8 @@ export default class TestCaseTeamConsentGroupAPI extends TestCase {
 
     async run() {
 
-        // First run a number of negative tests on trying to pass the case team along the start case command with invalid groups
-        await this.startCaseNegativeTesting();
+        // First run a number of negative and positive tests on trying to pass the case team along the start case command with invalid groups
+        await this.startCaseTesting();
 
         await this.validateStartCase();
 
@@ -89,6 +89,11 @@ export default class TestCaseTeamConsentGroupAPI extends TestCase {
 
         // Show that we can add users to the team without them being registered in a group or a tenant, but simply by token.
         await this.testTokenBasedCafienneAccess(caseInstance);
+    }
+
+    async startCaseTesting() {
+        await this.startCaseNegativeTesting();
+        await this.startCasePositiveTesting();
     }
 
     async startCaseNegativeTesting() {
@@ -154,6 +159,37 @@ export default class TestCaseTeamConsentGroupAPI extends TestCase {
                  
     }
 
+    async startCasePositiveTesting() {
+        // Command to start the case with owner only via user
+        await CaseService.startCase(universe.jeff, {
+            tenant: universe.mars,
+            definition,
+            caseTeam: new CaseTeam(
+                [new CaseOwner(universe.jeff)],
+                [],
+                [])
+        });
+        // Command to start the case with owner only via roles
+        await CaseService.startCase(universe.jeff, {
+            tenant: universe.mars,
+            definition,
+            caseTeam: new CaseTeam(
+                [],
+                [],
+                [{ tenantRole: universe.groupRoleTester, caseRoles: [caseRoleRequestor], isOwner: true }])
+        });
+        // Command to start the case with owner only via consent group
+        await CaseService.startCase(universe.jeff, {
+            tenant: universe.mars,
+            definition,
+            caseTeam: new CaseTeam(
+                [],
+                [new CaseTeamGroup(universe.marsGroup, [{ groupRole: universe.groupRoleTester, caseRoles: [caseRoleRequestor], isOwner: true },])],
+                [])
+        });
+
+    }
+
     async validateCaseAccess(caseInstance: Case) {
         // Tenant members should be able to access the case
         await CaseService.getCase(universe.boy, caseInstance);
@@ -187,7 +223,7 @@ export default class TestCaseTeamConsentGroupAPI extends TestCase {
         // Check that it is not allowed to set a group without mappings
         caseTeamMoonGroup.mappings = [];
         await CaseTeamService.setGroup(universe.boy, caseInstance, caseTeamMoonGroup, 400);
-        
+
         // Check that it is not allowed to update a group with invalid case roles
         caseTeamMoonGroup.mappings = [invalidCaseRoleMapping];
         await CaseTeamService.setGroup(universe.boy, caseInstance, caseTeamMoonGroup, 400);
