@@ -59,8 +59,10 @@ export default class TestCaseTeamConsentGroupAPI extends TestCase {
 
     async run() {
 
-        // First run a number of negative tests on trying to pass the case team along the start case command with invalid groups
-        await this.startCaseNegativeTesting();
+        // First run a number of negative and positive tests on trying to pass the case team along the start case command with invalid groups
+        await this.startCaseTesting();
+
+        await this.validateStartCase();
 
         // It should be possible to start a case with the valid role names
         caseTeamMoonGroup.mappings = [validMappingTesterIsPA, validMappingUserIsRequestor];
@@ -89,6 +91,11 @@ export default class TestCaseTeamConsentGroupAPI extends TestCase {
         await this.testTokenBasedCafienneAccess(caseInstance);
     }
 
+    async startCaseTesting() {
+        await this.startCaseNegativeTesting();
+        await this.startCasePositiveTesting();
+    }
+
     async startCaseNegativeTesting() {
         // It should not be possible to start a case without mappings
         await CaseService.startCase(universe.boy, startCase, 400, 'It should not be possible to start a case with groups that have no mappings');
@@ -113,6 +120,74 @@ export default class TestCaseTeamConsentGroupAPI extends TestCase {
         // It should not be possible to start a case with an invalid case role
         caseTeamMoonGroup.mappings = [invalidCaseRoleMapping];
         await CaseService.startCase(universe.boy, startCase, 400, 'It should not be possible to start a case with an invalid case role');
+    }
+    async validateStartCase() {
+        // Command to start the case with owner only via user
+        await CaseService.startCase(universe.jeff, { 
+            tenant: universe.mars, 
+            definition, 
+            caseTeam: new CaseTeam (
+                [ 
+                    new CaseOwner(universe.jeff),
+                ], 
+                [], 
+                []) 
+            });
+        // Command to start the case with owner only via roles
+        await CaseService.startCase(universe.jeff, { 
+            tenant: universe.mars, 
+            definition, 
+            caseTeam: new CaseTeam (
+                [], 
+                [], 
+                [ 
+                    { tenantRole: universe.groupRoleTester, caseRoles: [caseRoleRequestor], isOwner: true}
+                ]) 
+            });
+        // Command to start the case with owner only via consent group
+        await CaseService.startCase(universe.jeff, { 
+            tenant: universe.mars, 
+            definition, 
+            caseTeam: new CaseTeam (
+                [], 
+                [   new CaseTeamGroup(universe.marsGroup, [
+                        { groupRole: universe.groupRoleTester, caseRoles:[caseRoleRequestor], isOwner: true },
+                    ])
+                ], 
+                []) 
+            });
+                 
+    }
+
+    async startCasePositiveTesting() {
+        // Command to start the case with owner only via user
+        await CaseService.startCase(universe.jeff, {
+            tenant: universe.mars,
+            definition,
+            caseTeam: new CaseTeam(
+                [new CaseOwner(universe.jeff)],
+                [],
+                [])
+        });
+        // Command to start the case with owner only via roles
+        await CaseService.startCase(universe.jeff, {
+            tenant: universe.mars,
+            definition,
+            caseTeam: new CaseTeam(
+                [],
+                [],
+                [{ tenantRole: universe.groupRoleTester, caseRoles: [caseRoleRequestor], isOwner: true }])
+        });
+        // Command to start the case with owner only via consent group
+        await CaseService.startCase(universe.jeff, {
+            tenant: universe.mars,
+            definition,
+            caseTeam: new CaseTeam(
+                [],
+                [new CaseTeamGroup(universe.marsGroup, [{ groupRole: universe.groupRoleTester, caseRoles: [caseRoleRequestor], isOwner: true },])],
+                [])
+        });
+
     }
 
     async validateCaseAccess(caseInstance: Case) {
@@ -148,7 +223,7 @@ export default class TestCaseTeamConsentGroupAPI extends TestCase {
         // Check that it is not allowed to set a group without mappings
         caseTeamMoonGroup.mappings = [];
         await CaseTeamService.setGroup(universe.boy, caseInstance, caseTeamMoonGroup, 400);
-        
+
         // Check that it is not allowed to update a group with invalid case roles
         caseTeamMoonGroup.mappings = [invalidCaseRoleMapping];
         await CaseTeamService.setGroup(universe.boy, caseInstance, caseTeamMoonGroup, 400);
