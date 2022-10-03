@@ -1,0 +1,23 @@
+<CMMNDI>
+    <CMMNDiagram>
+        <CMMNShape cmmnElementRef="cm__Ajqyl_0">
+            <Bounds x="20" y="20" width="720" height="460"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ct__Ajqyl_0">
+            <Bounds x="500" y="120" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_Ajqyl_1">
+            <Bounds x="60" y="280" width="430" height="130"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ms__Ajqyl_0">
+            <Bounds x="120" y="130" width="200" height="60"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_Ajqyl_3">
+            <Bounds x="494" y="150" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi__Ajqyl_6">
+            <Bounds x="60" y="90" width="350" height="150"/>
+        </CMMNShape>
+        <CMMNEdge sourceCMMNElementRef="pi_ms__Ajqyl_0" targetCMMNElementRef="_Ajqyl_3"/>
+    </CMMNDiagram>
+</CMMNDI>

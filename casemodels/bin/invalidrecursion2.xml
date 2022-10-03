@@ -1,0 +1,54 @@
+<definitions>
+    <caseFileItemDefinition name="root" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="root.cfid">
+        <property name="Outcome" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
+    </caseFileItemDefinition>
+    <case id="invalidrecursion2.case" name="invalidrecursion2" expressionLanguage="spel">
+        <caseFileModel>
+            <caseFileItem id="_Ajqyl_5" name="root" multiplicity="ExactlyOne" definitionRef="root.cfid"/>
+        </caseFileModel>
+        <casePlanModel id="cm__Ajqyl_0" name="invalidrecursion2" autoComplete="true">
+            <planItem id="pi_ct__Ajqyl_0" name="invalidrecursion2" definitionRef="ct__Ajqyl_0">
+                <entryCriterion id="_Ajqyl_3" name="EntryCriterion_0" sentryRef="crit__Ajqyl_0"/>
+            </planItem>
+            <planItem id="pi__Ajqyl_6" name="Immediate Stage" definitionRef="_Ajqyl_6"/>
+            <sentry id="crit__Ajqyl_0">
+                <planItemOnPart id="_Ajqyl_4" sourceRef="pi_ms__Ajqyl_0">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <caseTask id="ct__Ajqyl_0" name="invalidrecursion2" isBlocking="true" caseRef="invalidrecursion2.case"/>
+            <milestone id="ms__Ajqyl_0" name="Milestone without entry criterion"/>
+            <stage id="_Ajqyl_6" name="Immediate Stage" autoComplete="true">
+                <planItem id="pi_ms__Ajqyl_0" name="Milestone without entry criterion" definitionRef="ms__Ajqyl_0"/>
+            </stage>
+        </casePlanModel>
+        <textAnnotation id="_Ajqyl_1">
+            <text>
+                <![CDATA[A recursive call with an entry criterion depending on the occur of a milestone that has itself no entry criteria should also not be allowed, since that milestone will occur immediately and hence the recursive call as well.]]>
+            </text>
+        </textAnnotation>
+    </case>
+    <CMMNDI>
+        <CMMNDiagram>
+            <CMMNShape cmmnElementRef="cm__Ajqyl_0">
+                <Bounds x="20" y="20" width="720" height="460"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ct__Ajqyl_0">
+                <Bounds x="500" y="120" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_Ajqyl_1">
+                <Bounds x="60" y="280" width="430" height="130"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ms__Ajqyl_0">
+                <Bounds x="120" y="130" width="200" height="60"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_Ajqyl_3">
+                <Bounds x="494" y="150" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi__Ajqyl_6">
+                <Bounds x="60" y="90" width="350" height="150"/>
+            </CMMNShape>
+            <CMMNEdge sourceCMMNElementRef="pi_ms__Ajqyl_0" targetCMMNElementRef="_Ajqyl_3"/>
+        </CMMNDiagram>
+    </CMMNDI>
+</definitions>

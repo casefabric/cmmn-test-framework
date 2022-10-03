@@ -1,0 +1,64 @@
+<case id="invalidrecursion3.case" name="invalidrecursion3" expressionLanguage="spel" guid="_9Et6z">
+    <caseFileModel>
+        <caseFileItem id="_9Et6z_5" name="root" multiplicity="ExactlyOne" definitionRef="root.cfid">
+            <children>
+                <caseFileItem id="_9Et6z_18" name="child" multiplicity="ExactlyOne" definitionRef="child.cfid"/>
+            </children>
+        </caseFileItem>
+    </caseFileModel>
+    <casePlanModel id="cm__9Et6z_0" name="invalidrecursion3" autoComplete="true">
+        <planItem id="pi__9Et6z_9" name="Stage_0" definitionRef="_9Et6z_9">
+            <entryCriterion id="_9Et6z_19" name="EntryCriterion_4" sentryRef="crit__9Et6z_4"/>
+        </planItem>
+        <planItem id="pi_ms__9Et6z_2" name="Milestone_2" definitionRef="ms__9Et6z_2">
+            <entryCriterion id="_9Et6z_4" name="EntryCriterion_0" sentryRef="crit__9Et6z_0"/>
+        </planItem>
+        <planItem id="pi_ms__9Et6z_0" name="Milestone_0" definitionRef="ms__9Et6z_0">
+            <entryCriterion id="_9Et6z_11" name="EntryCriterion_1" sentryRef="crit__9Et6z_1"/>
+        </planItem>
+        <planItem id="pi__9Et6z_7" name="Stage_1" definitionRef="_9Et6z_7">
+            <entryCriterion id="_9Et6z_13" name="EntryCriterion_2" sentryRef="crit__9Et6z_2"/>
+        </planItem>
+        <sentry id="crit__9Et6z_4">
+            <planItemOnPart id="_9Et6z_20" sourceRef="pi_ms__9Et6z_2">
+                <standardEvent>occur</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <sentry id="crit__9Et6z_0">
+            <planItemOnPart id="_9Et6z_6" sourceRef="pi_ms__9Et6z_0">
+                <standardEvent>occur</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <sentry id="crit__9Et6z_1">
+            <planItemOnPart id="_9Et6z_12" sourceRef="pi_tmr__9Et6z_0">
+                <standardEvent>occur</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <sentry id="crit__9Et6z_2">
+            <caseFileItemOnPart id="_9Et6z_21" sourceRef="_9Et6z_18">
+                <standardEvent>create</standardEvent>
+            </caseFileItemOnPart>
+        </sentry>
+        <planningTable id="_9Et6z_22"/>
+        <caseTask id="ct__9Et6z_0" name="invalidrecursion3" isBlocking="true" caseRef="invalidrecursion3.case"/>
+        <milestone id="ms__9Et6z_2" name="Milestone_2"/>
+        <milestone id="ms__9Et6z_0" name="Milestone_0"/>
+        <timerEvent id="tmr__9Et6z_0" name="TimerEvent_0">
+            <timerExpression id="_9Et6z_15">
+                <body>
+                    <![CDATA[PT2S]]>
+                </body>
+            </timerExpression>
+            <planItemStartTrigger id="_9Et6z_10">
+                <standardEvent></standardEvent>
+            </planItemStartTrigger>
+        </timerEvent>
+        <stage id="_9Et6z_9" name="Stage_0" autoComplete="true">
+            <planItem id="pi_ct__9Et6z_0" name="invalidrecursion3" definitionRef="ct__9Et6z_0"/>
+        </stage>
+        <stage id="_9Et6z_7" name="Stage_1" autoComplete="true">
+            <planItem id="pi_tmr__9Et6z_0" name="TimerEvent_0" definitionRef="tmr__9Et6z_0"/>
+        </stage>
+    </casePlanModel>
+    <input id="_9Et6z_16" name="root" bindingRef="_9Et6z_5"/>
+</case>
