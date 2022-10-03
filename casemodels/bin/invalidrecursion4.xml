@@ -1,0 +1,46 @@
+<definitions>
+    <caseFileItemDefinition name="root" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="root.cfid">
+        <property name="Outcome" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
+    </caseFileItemDefinition>
+    <case id="invalidrecursion4.case" name="invalidrecursion4" expressionLanguage="spel">
+        <caseFileModel>
+            <caseFileItem id="_2P2HC_2" name="root" multiplicity="ExactlyOne" definitionRef="root.cfid"/>
+        </caseFileModel>
+        <casePlanModel id="cm__2P2HC_0" name="invalidrecursion4" autoComplete="true">
+            <planItem id="pi_ct__2P2HC_0" name="invalidrecursion4" definitionRef="ct__2P2HC_0">
+                <entryCriterion id="_2P2HC_1" name="EntryCriterion_0" sentryRef="crit__2P2HC_0"/>
+            </planItem>
+            <sentry id="crit__2P2HC_0">
+                <ifPart id="_2P2HC_3" contextRef="_2P2HC_2">
+                    <condition id="_2P2HC_4">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </ifPart>
+            </sentry>
+            <caseTask id="ct__2P2HC_0" name="invalidrecursion4" isBlocking="true" caseRef="invalidrecursion4.case"/>
+        </casePlanModel>
+        <textAnnotation id="_2P2HC_5">
+            <text>
+                <![CDATA[The entry criterion only has an ifPart, hence might start immediately]]>
+            </text>
+        </textAnnotation>
+    </case>
+    <CMMNDI>
+        <CMMNDiagram>
+            <CMMNShape cmmnElementRef="cm__2P2HC_0">
+                <Bounds x="20" y="20" width="800" height="500"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ct__2P2HC_0">
+                <Bounds x="130" y="110" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_2P2HC_1">
+                <Bounds x="124" y="140" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_2P2HC_5">
+                <Bounds x="320" y="110" width="230" height="80"/>
+            </CMMNShape>
+        </CMMNDiagram>
+    </CMMNDI>
+</definitions>

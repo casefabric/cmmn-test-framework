@@ -46,6 +46,7 @@ import TestCaseFileExpressions from './tests/api/expression/testcasefileexpressi
 import TestRepeatWithMapping from './tests/api/expression/testrepeatwithmapping';
 import TestStageTaskExpressions from './tests/api/expression/teststagetaskexpressions';
 import TestTaskExpressions from './tests/api/expression/testtaskexpressions';
+import TestRecursiveDefinitions from './tests/api/repository/testrecursivedefinitions';
 import TestRepositoryAPI from './tests/api/repository/testrepositoryapi';
 import TestRepeatStage from './tests/api/stage/testrepeatstage';
 import TestArraySubCase from './tests/api/task/case/testarraysubcase';
@@ -151,6 +152,7 @@ const AllTestCases = new TestClasses([
     , TestDebugMode
     , TestDocumentationAPI
     , TestRepositoryAPI
+    , TestRecursiveDefinitions
     , TestTokenValidation
     , TestCaseFileAPI
     , TestCaseFileArrayAPI

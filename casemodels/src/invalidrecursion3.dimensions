@@ -1,0 +1,47 @@
+<CMMNDI>
+    <CMMNDiagram>
+        <CMMNShape cmmnElementRef="cm__9Et6z_0">
+            <Bounds x="20" y="20" width="800" height="500"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi__9Et6z_9">
+            <Bounds x="90" y="100" width="270" height="140"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ms__9Et6z_2">
+            <Bounds x="60" y="300" width="100" height="40"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_9Et6z_19">
+            <Bounds x="114" y="230" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ms__9Et6z_0">
+            <Bounds x="300" y="290" width="100" height="40"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_9Et6z_4">
+            <Bounds x="154" y="310" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi__9Et6z_7">
+            <Bounds x="180" y="360" width="420" height="140"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_tmr__9Et6z_0">
+            <Bounds x="300" y="390" width="32" height="32"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_9Et6z_11">
+            <Bounds x="314" y="320" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_9Et6z_13">
+            <Bounds x="464" y="350" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_9Et6z_18">
+            <Bounds x="460" y="240" width="25" height="40"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_9Et6z_22">
+            <Bounds x="300" y="33" width="24" height="16"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ct__9Et6z_0">
+            <Bounds x="150" y="130" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNEdge sourceCMMNElementRef="pi_ms__9Et6z_2" targetCMMNElementRef="_9Et6z_19"/>
+        <CMMNEdge sourceCMMNElementRef="pi_ms__9Et6z_0" targetCMMNElementRef="_9Et6z_4"/>
+        <CMMNEdge sourceCMMNElementRef="pi_tmr__9Et6z_0" targetCMMNElementRef="_9Et6z_11"/>
+        <CMMNEdge label="create" sourceCMMNElementRef="_9Et6z_18" targetCMMNElementRef="_9Et6z_13"/>
+    </CMMNDiagram>
+</CMMNDI>

@@ -1,0 +1,26 @@
+<case id="invalidrecursion2.case" name="invalidrecursion2" expressionLanguage="spel" guid="_Ajqyl">
+    <caseFileModel>
+        <caseFileItem id="_Ajqyl_5" name="root" multiplicity="ExactlyOne" definitionRef="root.cfid"/>
+    </caseFileModel>
+    <casePlanModel id="cm__Ajqyl_0" name="invalidrecursion2" autoComplete="true">
+        <planItem id="pi_ct__Ajqyl_0" name="invalidrecursion2" definitionRef="ct__Ajqyl_0">
+            <entryCriterion id="_Ajqyl_3" name="EntryCriterion_0" sentryRef="crit__Ajqyl_0"/>
+        </planItem>
+        <planItem id="pi__Ajqyl_6" name="Immediate Stage" definitionRef="_Ajqyl_6"/>
+        <sentry id="crit__Ajqyl_0">
+            <planItemOnPart id="_Ajqyl_4" sourceRef="pi_ms__Ajqyl_0">
+                <standardEvent>occur</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <caseTask id="ct__Ajqyl_0" name="invalidrecursion2" isBlocking="true" caseRef="invalidrecursion2.case"/>
+        <milestone id="ms__Ajqyl_0" name="Milestone without entry criterion"/>
+        <stage id="_Ajqyl_6" name="Immediate Stage" autoComplete="true">
+            <planItem id="pi_ms__Ajqyl_0" name="Milestone without entry criterion" definitionRef="ms__Ajqyl_0"/>
+        </stage>
+    </casePlanModel>
+    <textAnnotation id="_Ajqyl_1">
+        <text>
+            <![CDATA[A recursive call with an entry criterion depending on the occur of a milestone that has itself no entry criteria should also not be allowed, since that milestone will occur immediately and hence the recursive call as well.]]>
+        </text>
+    </textAnnotation>
+</case>

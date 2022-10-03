@@ -1,0 +1,17 @@
+<CMMNDI>
+    <CMMNDiagram>
+        <CMMNShape cmmnElementRef="cm__HiuBi_0">
+            <Bounds x="20" y="20" width="800" height="500"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ht__HiuBi_0">
+            <Bounds x="140" y="130" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ct__HiuBi_0">
+            <Bounds x="360" y="130" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_HiuBi_2">
+            <Bounds x="354" y="160" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNEdge sourceCMMNElementRef="pi_ht__HiuBi_0" targetCMMNElementRef="_HiuBi_2"/>
+    </CMMNDiagram>
+</CMMNDI>
