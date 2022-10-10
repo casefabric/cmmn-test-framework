@@ -54,6 +54,7 @@ import TestSubCase from './tests/api/task/case/testsubcase';
 import TestTaskAPI from './tests/api/task/humantask/testtaskapi';
 import TestTaskCountAPI from './tests/api/task/humantask/testtaskcountapi';
 import TestTaskFilterAPI from './tests/api/task/humantask/testtaskfilterapi';
+import TestTaskFilterAPI2 from './tests/api/task/humantask/testtaskfilterapi2';
 import TestTaskValidationAPI from './tests/api/task/humantask/testtaskvalidationapi';
 import TestGetListGetDetails from './tests/api/task/process/http/getlistgetdetails';
 import TestDashedParameters from './tests/api/task/process/http/testdashedparameters';
@@ -148,6 +149,7 @@ const AllTestCases = new TestClasses([
     , TestTaskValidationAPI
     , TestTaskAPI
     , TestTaskFilterAPI
+    , TestTaskFilterAPI2
     , TestTaskCountAPI
     , TestDebugMode
     , TestDocumentationAPI
