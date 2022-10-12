@@ -20,6 +20,7 @@ import TestCaseFileArrayAPI from './tests/api/casefile/testcasefilearrayapi';
 import TestTaskBindingRefinement from './tests/api/casefile/testtaskbindingrefinement';
 import TestTaskCompletion from './tests/api/casefile/testtaskcompletion';
 import TestTaskOutputOperations from './tests/api/casefile/testtaskoutputoperations';
+import TestTimer from './tests/api/caseplan/event/testtimer';
 import TestEntryCriteriaOnCaseInputParameters from './tests/api/caseplan/stage/testentrycriteriaoncaseinputparameters';
 import TestStage from './tests/api/caseplan/stage/teststage';
 import TestProcessTask from './tests/api/caseplan/task/testprocesstask';
@@ -143,6 +144,7 @@ const AllTestCases = new TestClasses([
     , TestTaskBindingRefinement
     , TestEntryCriteriaOnCaseInputParameters
     , TestStage
+    , TestTimer
     , TestUsersCaseAPI
     , TestDiscretionaryItems
     , TestStatsAPI
