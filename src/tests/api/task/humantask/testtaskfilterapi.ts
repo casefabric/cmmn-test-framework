@@ -36,15 +36,15 @@ export default class TestTaskFilterAPI extends TestCase {
         // - Filtering on taskName == 'Read response' && caseName == 'helloworld' should return 2 tasks.
         //
         // Note, the 'Read response' task only becomes active after completing the first task, which will be done in a single method.
-        
+
         const firstTask1 = 'Receive Greeting and Send response';
         const firstTask2 = 'SendResponse';
         const readResponseTask = 'Read response';
 
-        const definition1Filter = { caseName: 'HelloWorld'};
-        const definition2Filter = { caseName: 'helloworld2'};
-        const sendResponseFilter = { taskName: firstTask1};
-        const readResponseFilter = { taskName: readResponseTask};
+        const definition1Filter = { caseName: 'HelloWorld' };
+        const definition2Filter = { caseName: 'helloworld2' };
+        const sendResponseFilter = { taskName: firstTask1 };
+        const readResponseFilter = { taskName: readResponseTask };
         const casePlusTaskFilter = Object.assign({}, definition1Filter, readResponseFilter);
 
         const initialCase1TaskCount = await this.assertTaskCount(definition1Filter);
@@ -65,8 +65,9 @@ export default class TestTaskFilterAPI extends TestCase {
         await this.assertTaskCount(casePlusTaskFilter, casePlusTaskCount + 2);
     }
 
-    async assertTaskCount(filter: TaskFilter, expectedCount: number = -1) {  
-        filter.tenant = tenant;      
+    async assertTaskCount(filter: TaskFilter, expectedCount: number = -1) {
+        filter.tenant = tenant;
+        filter.numberOfResults = 10_000;
         const filteredTasks = await TaskService.getTasks(user, filter);
         console.log(`Found ${filteredTasks.length} for filter ${JSON.stringify(filter)}`);
         if (expectedCount >= 0 && filteredTasks.length !== expectedCount) {
@@ -81,13 +82,13 @@ export default class TestTaskFilterAPI extends TestCase {
                 Message: 'Hello there'
             }
         };
-        
+
         const startCase1 = { tenant, definition, inputs, debug: true };
         const caseStarted = await CaseService.startCase(user, startCase1);
         const caseInstance = await CaseService.getCase(user, caseStarted);
         const tasks = await TaskService.getCaseTasks(user, caseInstance);
         const firstTask = tasks.find(task => task.taskName === firstTaskName);
-        if (! firstTask) {
+        if (!firstTask) {
             throw new Error(`Expected to find a task named '${firstTaskName}' but we found only tasks ${tasks.map(task => `'${task.taskName}'`).join(',')}`);
         }
 

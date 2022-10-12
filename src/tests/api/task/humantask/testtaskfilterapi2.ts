@@ -38,15 +38,15 @@ export default class TestTaskFilterAPI2 extends TestCase {
         // - Filtering on taskName == 'Read response' && taskState == 'Assigned;Unassigned' should return 6 tasks.
         //
         // Note, the 'Read response' task only becomes active after completing the first task, which will be done in a single method.
-        
+
         const firstTask1 = 'Receive Greeting and Send response';
         const firstTask2 = 'SendResponse';
         const readResponseTask = 'Read response';
 
-        const activeTasksFilter = { taskState: 'Assigned;Unassigned'};
-        const completedTasksFilter = { taskState: 'Completed'};
-        const sendResponseFilter = { taskName: firstTask1};
-        const readResponseFilter = { taskName: readResponseTask};
+        const activeTasksFilter = { taskState: 'Assigned;Unassigned' };
+        const completedTasksFilter = { taskState: 'Completed' };
+        const sendResponseFilter = { taskName: firstTask1 };
+        const readResponseFilter = { taskName: readResponseTask };
         const activeReadResponseTaskFilter = Object.assign({}, activeTasksFilter, readResponseFilter);
 
         const initialActiveTaskCount = await this.assertTaskCount(activeTasksFilter);
@@ -88,8 +88,9 @@ export default class TestTaskFilterAPI2 extends TestCase {
         await this.assertTaskCount(activeReadResponseTaskFilter, initialActiveReadResponseCount + 2);
     }
 
-    async assertTaskCount(filter: TaskFilter, expectedCount: number = -1) {  
-        // filter.tenant = tenant;      
+    async assertTaskCount(filter: TaskFilter, expectedCount: number = -1) {
+        // filter.tenant = tenant;
+        filter.numberOfResults = 10_000;
         const filteredTasks = await TaskService.getTasks(user, filter);
         console.log(`Found ${filteredTasks.length} for filter ${JSON.stringify(filter)}`);
         filteredTasks.forEach((task, index) => console.log(`${index}:\t${task.caseInstanceId} - ${task.taskName} - ${task.taskState}`))
@@ -105,7 +106,7 @@ export default class TestTaskFilterAPI2 extends TestCase {
                 Message: 'Hello there'
             }
         };
-        
+
         const startCase1 = { tenant, definition, inputs, debug: true };
         const caseStarted = await CaseService.startCase(user, startCase1);
         this.caseIds.push(caseStarted.id);
@@ -113,7 +114,7 @@ export default class TestTaskFilterAPI2 extends TestCase {
         console.log(`Case ${caseInstance.id} has plan items:\n- ${caseInstance.planitems.map(item => item.name).join(`\n- `)}`)
         if (claimTask) {
             const taskId = caseInstance.planitems.find(item => item.name === firstTaskName)?.id;
-            if (! taskId) {
+            if (!taskId) {
                 throw new Error(`Could not find task ${firstTaskName} inside case ${caseInstance.id}??? Found following plan items \n- ${caseInstance.planitems.map(item => item.name).join(`\n- `)}`)
             }
             await TaskService.claimTask(user, taskId);
@@ -125,7 +126,7 @@ export default class TestTaskFilterAPI2 extends TestCase {
     async claimTask(caseInstance: string, firstTaskName: string) {
         const tasks = await TaskService.getCaseTasks(user, caseInstance);
         const firstTask = tasks.find(task => task.taskName === firstTaskName);
-        if (! firstTask) {
+        if (!firstTask) {
             throw new Error(`Expected to find a task named '${firstTaskName}' but we found only tasks ${tasks.map(task => `'${task.taskName}'`).join(',')}`);
         }
 
@@ -142,7 +143,7 @@ export default class TestTaskFilterAPI2 extends TestCase {
     async completeTask(caseInstance: string, firstTaskName: string) {
         const tasks = await TaskService.getCaseTasks(user, caseInstance);
         const firstTask = tasks.find(task => task.taskName === firstTaskName);
-        if (! firstTask) {
+        if (!firstTask) {
             throw new Error(`Expected to find a task named '${firstTaskName}' but we found only tasks ${tasks.map(task => `'${task.taskName}'`).join(',')}`);
         }
 
