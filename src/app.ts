@@ -4,6 +4,11 @@ import Config from './config';
 import NextVersion from './nextversion/nextversion';
 import TestAnonymousStartCase from './tests/api/anonymous/testanonymousstartcase';
 import TestNoAnonymousStartCase from './tests/api/anonymous/testnoanonymousstartcase';
+import TestArchiveCase from './tests/api/archiving/testarchivecase';
+import TestCreateTenantWithContent from './tests/api/archiving/testcreatenantwithcontent';
+import TestDeleteCase from './tests/api/archiving/testdeletecase';
+import TestDeleteTenant from './tests/api/archiving/testdeletetenant';
+import TestDeleteTenantWithContent from './tests/api/archiving/testdeletetenantwithcontent';
 import TestFootballBusinessIdentifiers from './tests/api/businessidentifiers/footballbusinessidentifiers/testfootballbusinessidentifiers';
 import TestBusinessIdentifiers from './tests/api/businessidentifiers/testbusinessidentifiers';
 import TestHelloWorldBusinessIdentifiers from './tests/api/businessidentifiers/testhelloworldbusinessidentifiers';
@@ -178,6 +183,11 @@ const AllTestCases = new TestClasses([
     , TestCaseTeamTaskAuthorizations
     , TestCaseTeamAuthorizations
     , TestEventAuthorization
+    , TestArchiveCase
+    , TestDeleteCase
+    , TestDeleteTenant
+    , TestCreateTenantWithContent // This test does not run by default as it creates more content
+    , TestDeleteTenantWithContent // This test also creates the same tenant 'abcde', with one case.
     , TestIncidentManagement
     , TestTravelRequest
     , TestInvalidStartCase

@@ -1,0 +1,23 @@
+<CMMNDI>
+    <CMMNDiagram>
+        <CMMNShape cmmnElementRef="cm__MuzRn_0">
+            <Bounds x="20" y="20" width="800" height="500"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ct__MuzRn_0">
+            <Bounds x="150" y="120" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ct__MuzRn_1">
+            <Bounds x="150" y="290" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ue__MuzRn_0">
+            <Bounds x="500" y="120" width="32" height="32"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ct__MuzRn_2">
+            <Bounds x="440" y="280" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_MuzRn_14">
+            <Bounds x="504" y="270" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNEdge sourceCMMNElementRef="pi_ue__MuzRn_0" targetCMMNElementRef="_MuzRn_14"/>
+    </CMMNDiagram>
+</CMMNDI>

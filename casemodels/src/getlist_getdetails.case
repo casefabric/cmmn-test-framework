@@ -150,4 +150,5 @@
             <planItem id="pi_ue__Sp9aR_0" name="Try Again" definitionRef="ue__Sp9aR_0"/>
         </stage>
     </casePlanModel>
+    <input id="_Sp9aR_34" name="HTTPConfig" bindingRef="_Sp9aR_1"/>
 </case>
