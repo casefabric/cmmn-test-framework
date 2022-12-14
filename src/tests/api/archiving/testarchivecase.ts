@@ -1,99 +1,84 @@
 'use strict';
 
-import { assertCasePlan, ServerSideProcessing, SomeTime } from '@cafienne/typescript-client';
-import Case from '@cafienne/typescript-client/cmmn/case';
+import { assertPlanItem } from '@cafienne/typescript-client';
 import State from '@cafienne/typescript-client/cmmn/state';
 import CaseService from '@cafienne/typescript-client/service/case/caseservice';
 import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
 import StartCase from '@cafienne/typescript-client/service/case/startcase';
-import TestCase from '@cafienne/typescript-client/test/testcase';
-import User from '@cafienne/typescript-client/user';
-import ArchiveService from '../../../framework/archiving/archiveservice';
+import StorageService from '../../../framework/archiving/storageservice';
+import CaseHierarchy from '../../../nextversion/casehierarchy';
+import LineReader from '../../../nextversion/linereader';
+import { TestCaseExtension } from '../../../nextversion/nextversion';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
 
-//*/
-const definition = 'complexcase.xml';
-/*/
-const definition = 'helloworld.xml';
-//*/
+const helloworld = 'helloworld.xml';
+const complexcase = 'complexcase.xml';
+export default class TestArchiveCase extends TestCaseExtension {
+  // lineReaderEnabled = true;
 
-export default class TestArchiveCase extends TestCase {
   async onPrepareTest() {
     await worldwideTenant.create();
-    await RepositoryService.validateAndDeploy(user, definition, tenant);
+    await RepositoryService.validateAndDeploy(user, helloworld, tenant);
+    await RepositoryService.validateAndDeploy(user, complexcase, tenant);
   }
 
   async run() {
-    // await ArchiveService.restoreCase(user, 'ed0d977b_c2a3_4eac_a609_72fa1c475732');
-    // return;
+    await this.test(helloworld);
+    await this.test(complexcase);
+  }
 
-    const inputs = {
-      Greeting: {
-        Message: 'Hello there',
-        From: user.id
-      }
-    };
+  async test(definition: string) {
     const startCase = { tenant, definition, debug: true } as StartCase;
 
     const caseInstance = await CaseService.startCase(user, startCase).then(id => CaseService.getCase(user, id));
+    const caseHierarchy = CaseHierarchy.from(user, caseInstance);
+    await caseHierarchy.load();
 
-    // print('', JSON.stringify(caseInstance, undefined, 2))
-    // return;
-   
-    await checkCaseAvailability(user, caseInstance);
+    this.readLine(`Press enter to start test loop on ${definition} with case hierarchy\n ${caseHierarchy}`);
 
+    // The process task deep down in complexcase needs time to fail. We should await that.
+    caseHierarchy.findProcessTask('GetList')?.assertState(State.Failed);
 
+    while (true) {
+      const line = this.readLine("Type p and press Enter to print event hierarchy. Press enter to archive the case ");
+      if (line.indexOf('p') >= 0) {
+        await caseHierarchy.loadEventHierarchy();
+        console.log("Events: " + caseHierarchy.printEvents());
+      } else {
+        break;
+      }
+    }
 
-    await SomeTime(1000, 'Giving engine time to fill QueryDB');
+    await StorageService.archiveCase(user, caseInstance);
 
-    console.log(">>>>>>>> DELETING Case " + caseInstance.id);
-
-    await ArchiveService.archiveCase(user, caseInstance);
+    // await caseHierarchy.mustBeArchived();
+    await caseHierarchy.assertArchived();
+    await caseHierarchy.loadEventHierarchy();
+    if (!caseHierarchy.hasArchivedHierarchy()) {
+      throw new Error('The case is not fully archived')
+    } else {
+      console.log("Events: " + caseHierarchy.printEvents());
+      this.readLine("Case is fully archived; press enter to continue assertion tests");
+    }    
 
     // Note: yet to decide whether we support retrieving the case to find out it is in state "Archived" or not.
-    //  Assumption: it is not possible. Second, commented statement below assumes it _is possible.
+    //  Assumption: it is not possible. Second (commented) statement below assumes it _is possible.
     await CaseService.getCase(user, caseInstance, 404);
     // await CaseService.getCase(user, caseInstance).then(caseInstance => print('', JSON.stringify(caseInstance, undefined, 2)));
 
-    
-    await SomeTime(10000, 'Giving engine time to archive the case');
 
-
+    // Now validate that it is not possible to create a new case instance with the same id as the archived case has.
     startCase.caseInstanceId = caseInstance.id;
     await CaseService.startCase(user, startCase, 400);
 
     await CaseService.getDiscretionaryItems(user, caseInstance, 404);
 
-    await ArchiveService.restoreCase(user, caseInstance);
+    await StorageService.restoreCase(user, caseInstance);
+
+    await caseHierarchy.assertRestored();
   }
-}
-
-async function checkCaseAvailability(user: User, caseId: string|Case, indent: string = '') {
-  print(indent, `=== Checking active state of case ${caseId}`)
-  const caseInstance = await assertCasePlan(user, caseId, State.Active) as Case;
-  print(indent, ` case "${caseInstance.caseName}" has ${caseInstance.planitems.length} plan items`)
-
-  const caseTasks = caseInstance.planitems.filter(item => item.type === 'CaseTask');
-
-  print(indent, ` found ${caseTasks.length} sub cases`)
-
-  for (const subCase of caseTasks) {
-    await checkCaseAvailability(user, subCase.id, indent + '  ')
-  }
-  // await caseTasks.forEach(async subCase => await checkCaseAvailability(user, subCase.id, indent + ' '));
-
-
-  const processTasks = caseInstance.planitems.filter(item => item.type === 'ProcessTask');
-  print(indent, ` found ${processTasks.length} sub processes ${processTasks.map(p => p.id).join(', ')}`)
-  // processTasks.forEach(subCase => checkCaseAvailability(user, subCase.id));
-
-  return caseInstance;
-}
-
-function print(indent: string, msg: string) {
-  console.log(indent + msg)
 }

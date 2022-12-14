@@ -7,9 +7,9 @@ import Tenant from "@cafienne/typescript-client/tenant/tenant";
 import User from "@cafienne/typescript-client/user";
 
 /**
- * Connection to the /registration APIs of Cafienne
+ * Connection to the /storage APIs of Cafienne
  */
-export default class ArchiveService {
+export default class StorageService {
     /**
      * Deletes the case on behalf of the user. User must be a tenant owner.
      * @param user

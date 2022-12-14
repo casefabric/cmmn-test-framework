@@ -1,13 +1,14 @@
 'use strict';
 
-import { assertCasePlan, SomeTime } from '@cafienne/typescript-client';
+import { assertCasePlan, PollUntilSuccess, SomeTime } from '@cafienne/typescript-client';
 import Case from '@cafienne/typescript-client/cmmn/case';
 import State from '@cafienne/typescript-client/cmmn/state';
 import CaseService from '@cafienne/typescript-client/service/case/caseservice';
 import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
 import TestCase from '@cafienne/typescript-client/test/testcase';
 import User from '@cafienne/typescript-client/user';
-import ArchiveService from '../../../framework/archiving/archiveservice';
+import StorageService from '../../../framework/archiving/storageservice';
+import CaseHierarchy from '../../../nextversion/casehierarchy';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 
 const worldwideTenant = new WorldWideTestTenant();
@@ -20,7 +21,7 @@ export default class TestDeleteCase extends TestCase {
   async onPrepareTest() {
     await worldwideTenant.create();
     await RepositoryService.validateAndDeploy(user, definition, tenant);
-}
+  }
 
   async run() {
 
@@ -33,39 +34,26 @@ export default class TestDeleteCase extends TestCase {
     const startCase = { tenant, definition, debug: true };
 
     const caseInstance = await CaseService.startCase(user, startCase).then(id => CaseService.getCase(user, id));
-   
-    await checkCaseAvailability(user, caseInstance);
+    const caseHierarchy = CaseHierarchy.from(user, caseInstance);
+    await caseHierarchy.load();
 
-    await SomeTime(1000, 'Giving engine time to fill QueryDB');
+    // The process task deep down in complexcase needs time to fail. We should await that.
+    caseHierarchy.findProcessTask('GetList')?.assertState(State.Failed);
 
     console.log(">>>>>>>> DELETING Case " + caseInstance.id);
 
-    await ArchiveService.deleteCase(user, caseInstance);
+    await StorageService.deleteCase(user, caseInstance);
 
     await CaseService.getDiscretionaryItems(user, caseInstance, 404);
+
+    await PollUntilSuccess(async () => {
+      // Now verify that our case hierarchy has no events left in the event journal.
+      await caseHierarchy.loadEventHierarchy();
+      console.log("\n\nTotal event count: " + caseHierarchy.totalEventCount);
+      if (caseHierarchy.totalEventCount > 0) {
+        throw new Error(`Did not expect to find any events in the case, but found ${caseHierarchy.totalEventCount}:\n${caseHierarchy.printEvents()}`)
+      }
+
+    });
   }
-}
-
-async function checkCaseAvailability(user: User, caseId: string|Case, indent: string = '') {
-  print(indent, `=== Checking active state of case ${caseId}`)
-  const caseInstance = await assertCasePlan(user, caseId, State.Active) as Case;
-  print(indent, ` case "${caseInstance.caseName}" has ${caseInstance.planitems.length} plan items`)
-
-  const caseTasks = caseInstance.planitems.filter(item => item.type === 'CaseTask');
-
-  print(indent, ` found ${caseTasks.length} sub cases`)
-
-  for (const subCase of caseTasks) {
-    await checkCaseAvailability(user, subCase.id, indent + '  ')
-  }
-  // await caseTasks.forEach(async subCase => await checkCaseAvailability(user, subCase.id, indent + ' '));
-
-
-  const processTasks = caseInstance.planitems.filter(item => item.type === 'ProcessTask');
-  print(indent, ` found ${processTasks.length} sub processes ${processTasks.map(p => p.id).join(', ')}`)
-  // processTasks.forEach(subCase => checkCaseAvailability(user, subCase.id));
-}
-
-function print(indent: string, msg: string) {
-  console.log(indent + msg)
 }

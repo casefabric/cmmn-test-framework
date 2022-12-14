@@ -5,7 +5,6 @@ import NextVersion from './nextversion/nextversion';
 import TestAnonymousStartCase from './tests/api/anonymous/testanonymousstartcase';
 import TestNoAnonymousStartCase from './tests/api/anonymous/testnoanonymousstartcase';
 import TestArchiveCase from './tests/api/archiving/testarchivecase';
-import TestCreateTenantWithContent from './tests/api/archiving/testcreatenantwithcontent';
 import TestDeleteCase from './tests/api/archiving/testdeletecase';
 import TestDeleteTenant from './tests/api/archiving/testdeletetenant';
 import TestDeleteTenantWithContent from './tests/api/archiving/testdeletetenantwithcontent';
@@ -186,8 +185,7 @@ const AllTestCases = new TestClasses([
     , TestArchiveCase
     , TestDeleteCase
     , TestDeleteTenant
-    , TestCreateTenantWithContent // This test does not run by default as it creates more content
-    , TestDeleteTenantWithContent // This test also creates the same tenant 'abcde', with one case.
+    , TestDeleteTenantWithContent
     , TestIncidentManagement
     , TestTravelRequest
     , TestInvalidStartCase

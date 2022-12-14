@@ -3,7 +3,7 @@
 import { SomeTime } from '@cafienne/typescript-client';
 import TenantService from '@cafienne/typescript-client/service/tenant/tenantservice';
 import TestCase from '@cafienne/typescript-client/test/testcase';
-import ArchiveService from '../../../framework/archiving/archiveservice';
+import StorageService from '../../../framework/archiving/storageservice';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 
 
@@ -22,12 +22,12 @@ export default class TestDeleteTenant extends TestCase {
     console.log(`  Succesfully created tenant ${tenant}`);
     console.log(`>>>>>>>> DELETING TENANT ${tenant}`);
 
-    await ArchiveService.deleteTenant(user, tenant);
+    await StorageService.deleteTenant(user, tenant);
 
     await SomeTime(2000, "Awaiting engine to clean all data on tenant " + tenant);
 
     // Check that we cannot again delete the tenant
-    await ArchiveService.deleteTenant(user, tenant, 404);
+    await StorageService.deleteTenant(user, tenant, 404);
 
     await SomeTime(1000, "Check existence of tenant " + tenant);
 
@@ -39,7 +39,7 @@ export default class TestDeleteTenant extends TestCase {
     await TenantService.getTenantOwners(user, tenant).then(owners => console.log(`Found ${owners.length} tenant owners`));
 
     console.log(`>>>>>>>> DELETING TENANT ${tenant} AGAIN`);
-    await ArchiveService.deleteTenant(user, tenant);
+    await StorageService.deleteTenant(user, tenant);
 
     await SomeTime(1000, `Giving engine some time before checking existence of tenant ${tenant}`);
 
