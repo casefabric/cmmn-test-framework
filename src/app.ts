@@ -126,7 +126,7 @@ class TestResults {
     }
 
     toString() {
-        return this.list.map(test => `  - ${test}\n`).join('');
+        return this.list.map((test, index) => ` ${index < 9 ? '0' + (index + 1): index + 1} - ${test}\n`).join('');
     }
 }
 
@@ -248,7 +248,7 @@ async function runTests(testDeclarations: Array<any>, onlyDefaults: boolean) {
             result.finished();
             results.addTest(result);
         } catch (error) {
-            const resultString = results.list.length == 0 ? '' : `  Succesful tests:\n${results.toString()}\n`;
+            const resultString = results.list.length == 0 ? '' : `  Successful tests:\n${results.toString()}\n`;
             throw new TestError(error, `\n\nTest ${i + 1} "${test.name}" failed.\n${resultString}\nTest ${i + 1} "${test.name}" failed.\n${error.constructor.name}: ${error.message}\n`);
         }
     }
@@ -269,7 +269,8 @@ function main() {
 
     runTests(testDeclarations, runDefaultTests).then(results => {
         const endTime = new Date();
-        console.log(`\n=========\n\nTesting completed in ${endTime.getTime() - startTime.getTime()} milliseconds at ${endTime}\nResults:\n${results.toString()}`);
+        console.log(`\n========= Started ${testDeclarations.length} tests at at ${startTime}\n\n${results.toString()}`);
+        console.log(`========= Completed ${testDeclarations.length} test cases in ${((endTime.getTime() - startTime.getTime()) / 1000)} seconds at ${endTime}`);
         process.exit(0)
     }).catch(e => {
         console.error(e);
