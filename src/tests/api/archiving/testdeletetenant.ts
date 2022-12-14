@@ -9,6 +9,7 @@ import WorldWideTestTenant from '../../worldwidetesttenant';
 
 
 export default class TestDeleteTenant extends TestCase {
+  isDefaultTest = false;
 
   async run() {
     const tenant = "abcde";

@@ -18,6 +18,7 @@ const user = worldwideTenant.sender;
 const helloworld = 'helloworld.xml';
 const complexcase = 'complexcase.xml';
 export default class TestArchiveCase extends TestCaseExtension {
+  isDefaultTest = false;
   // lineReaderEnabled = true;
 
   async onPrepareTest() {

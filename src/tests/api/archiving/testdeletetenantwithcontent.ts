@@ -17,6 +17,7 @@ const definition = 'complexcase.xml';
 
 
 export default class TestDeleteTenantWithContent extends TestCaseExtension {
+  isDefaultTest = false;
   // lineReaderEnabled = true;
 
   async onPrepareTest() {

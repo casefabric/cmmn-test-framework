@@ -18,6 +18,8 @@ const definition = 'complexcase.xml';
 
 
 export default class TestDeleteCase extends TestCase {
+  isDefaultTest = false;
+
   async onPrepareTest() {
     await worldwideTenant.create();
     await RepositoryService.validateAndDeploy(user, definition, tenant);
