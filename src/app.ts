@@ -4,6 +4,10 @@ import Config from './config';
 import NextVersion from './nextversion/nextversion';
 import TestAnonymousStartCase from './tests/api/anonymous/testanonymousstartcase';
 import TestNoAnonymousStartCase from './tests/api/anonymous/testnoanonymousstartcase';
+import TestArchiveCase from './tests/api/archiving/testarchivecase';
+import TestDeleteCase from './tests/api/archiving/testdeletecase';
+import TestDeleteTenant from './tests/api/archiving/testdeletetenant';
+import TestDeleteTenantWithContent from './tests/api/archiving/testdeletetenantwithcontent';
 import TestFootballBusinessIdentifiers from './tests/api/businessidentifiers/footballbusinessidentifiers/testfootballbusinessidentifiers';
 import TestBusinessIdentifiers from './tests/api/businessidentifiers/testbusinessidentifiers';
 import TestHelloWorldBusinessIdentifiers from './tests/api/businessidentifiers/testhelloworldbusinessidentifiers';
@@ -126,7 +130,7 @@ class TestResults {
     }
 
     toString() {
-        return this.list.map(test => `  - ${test}\n`).join('');
+        return this.list.map((test, index) => ` ${index < 9 ? '0' + (index + 1): index + 1} - ${test}\n`).join('');
     }
 }
 
@@ -178,6 +182,10 @@ const AllTestCases = new TestClasses([
     , TestCaseTeamTaskAuthorizations
     , TestCaseTeamAuthorizations
     , TestEventAuthorization
+    , TestArchiveCase
+    , TestDeleteCase
+    , TestDeleteTenant
+    , TestDeleteTenantWithContent
     , TestIncidentManagement
     , TestTravelRequest
     , TestInvalidStartCase
@@ -248,7 +256,7 @@ async function runTests(testDeclarations: Array<any>, onlyDefaults: boolean) {
             result.finished();
             results.addTest(result);
         } catch (error) {
-            const resultString = results.list.length == 0 ? '' : `  Succesful tests:\n${results.toString()}\n`;
+            const resultString = results.list.length == 0 ? '' : `  Successful tests:\n${results.toString()}\n`;
             throw new TestError(error, `\n\nTest ${i + 1} "${test.name}" failed.\n${resultString}\nTest ${i + 1} "${test.name}" failed.\n${error.constructor.name}: ${error.message}\n`);
         }
     }
@@ -269,7 +277,8 @@ function main() {
 
     runTests(testDeclarations, runDefaultTests).then(results => {
         const endTime = new Date();
-        console.log(`\n=========\n\nTesting completed in ${endTime.getTime() - startTime.getTime()} milliseconds at ${endTime}\nResults:\n${results.toString()}`);
+        console.log(`\n========= Started ${testDeclarations.length} tests at at ${startTime}\n\n${results.toString()}`);
+        console.log(`========= Completed ${testDeclarations.length} test cases in ${((endTime.getTime() - startTime.getTime()) / 1000)} seconds at ${endTime}`);
         process.exit(0)
     }).catch(e => {
         console.error(e);

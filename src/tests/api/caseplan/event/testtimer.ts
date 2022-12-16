@@ -1,16 +1,11 @@
 'use strict';
 
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import TaskService from '@cafienne/typescript-client/service/task/taskservice';
-import TestCase from '@cafienne/typescript-client/test/testcase';
-import WorldWideTestTenant from '../../../worldwidetesttenant';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import Comparison from '@cafienne/typescript-client/test/comparison';
-import User from '@cafienne/typescript-client/user';
-import Task from '@cafienne/typescript-client/cmmn/task';
-import Case from '@cafienne/typescript-client/cmmn/case';
 import { PollUntilSuccess } from '@cafienne/typescript-client';
 import State from '@cafienne/typescript-client/cmmn/state';
+import CaseService from '@cafienne/typescript-client/service/case/caseservice';
+import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
+import TestCase from '@cafienne/typescript-client/test/testcase';
+import WorldWideTestTenant from '../../../worldwidetesttenant';
 
 const definition = 'timer.xml';
 
@@ -43,7 +38,7 @@ export default class TestTimer extends TestCase {
 
             console.log(`Task ${task?.name} is in state ${task?.currentState}`)
             console.log(`Timer ${timer?.name} is in state ${timer?.currentState}`)
-   
+
             if (timer?.currentState !== 'Completed') {
                 throw new Error('Timer did not yet complete');
             }
@@ -51,6 +46,6 @@ export default class TestTimer extends TestCase {
             if (task?.currentState === State.Available.toString()) {
                 throw new Error('Task should be active')
             }
-        });        
+        });
     }
 }
