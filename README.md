@@ -54,7 +54,7 @@ In there, search for `oidc` and change it in the below
                     token-url = "http://localhost:2377/token"
                     key-url = "http://localhost:2377/keys"
                     authorization-url = "http://localhost:2377/auth"
-                    issuer = "Cafienne Test Framework"
+                    issuer = "http://localhost:8080"
                 }
         }
     }
@@ -103,7 +103,7 @@ var Config = {
         // URL of token service
         url: 'http://localhost:2377/token',
         // Issuer can be configured. The issuer must equal what is configure inside the Cafienne Engine
-        issuer: 'Cafienne Test Framework',
+        issuer: 'http://localhost:8080',
         // Whether or not to show the tokens requested and updated in the user
         log: true
     },
