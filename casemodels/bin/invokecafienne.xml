@@ -1,0 +1,94 @@
+<definitions>
+    <caseFileItemDefinition name="http" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="http.cfid">
+        <property name="port" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
+    </caseFileItemDefinition>
+    <caseFileItemDefinition name="items" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="items.cfid"/>
+    <case id="invokecafienne.case" name="invokecafienne" expressionLanguage="spel">
+        <caseFileModel>
+            <caseFileItem id="_EkelP_1" name="http" multiplicity="ExactlyOne" definitionRef="http.cfid"/>
+            <caseFileItem id="_EkelP_10" name="items" multiplicity="ZeroOrMore" definitionRef="items.cfid"/>
+        </caseFileModel>
+        <casePlanModel id="cm__EkelP_0" name="invokecafienne" autoComplete="true">
+            <planItem id="pi_pt__EkelP_0" name="Invoke Cafienne" definitionRef="pt__EkelP_0">
+                <entryCriterion id="_EkelP_11" name="EntryCriterion_0" sentryRef="crit__EkelP_0"/>
+            </planItem>
+            <sentry id="crit__EkelP_0">
+                <caseFileItemOnPart id="_EkelP_12" sourceRef="_EkelP_1">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </sentry>
+            <processTask id="pt__EkelP_0" name="Invoke Cafienne" isBlocking="true" processRef="invokecafienne.process">
+                <inputs id="_EkelP_7" name="http" bindingRef="_EkelP_1"/>
+                <inputs id="_EkelP_9" name="caseId"/>
+                <outputs id="_EkelP_18" name="items" bindingRef="_EkelP_10"/>
+                <parameterMapping id="_EkelP_3" sourceRef="_EkelP_9" targetRef="_ZUs0_caseId">
+                    <transformation id="_EkelP_8">
+                        <body>
+                            <![CDATA[case.id]]>
+                        </body>
+                    </transformation>
+                </parameterMapping>
+                <parameterMapping id="_EkelP_2" sourceRef="_EkelP_7" targetRef="_26Ke_baseURL">
+                    <transformation id="_EkelP_15">
+                        <body>
+                            <![CDATA[http.baseURL]]>
+                        </body>
+                    </transformation>
+                </parameterMapping>
+                <parameterMapping id="_EkelP_4" sourceRef="_oCRq_responsePayload" targetRef="_EkelP_18"/>
+                <parameterMapping id="_EkelP_14" sourceRef="_EkelP_7" targetRef="_MHwW_caseLastModified">
+                    <transformation id="_EkelP_16">
+                        <body>
+                            <![CDATA[http.caseLastModified]]>
+                        </body>
+                    </transformation>
+                </parameterMapping>
+            </processTask>
+        </casePlanModel>
+        <input id="_EkelP_13" name="http" bindingRef="_EkelP_1"/>
+        <textAnnotation id="_EkelP_17">
+            <text>
+                <![CDATA[The sub process invokes Cafienne to get the case itself. Note: this only works when the CaseLastModified header is also given ... Otherwise the case is not yet in the projection and cannot be found.]]>
+            </text>
+        </textAnnotation>
+    </case>
+    <process name="invokecafienne" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified" id="invokecafienne.process">
+        <input id="_26Ke_baseURL" name="baseURL"/>
+        <input id="_ZUs0_caseId" name="caseId"/>
+        <input id="_MHwW_caseLastModified" name="caseLastModified"/>
+        <output id="_oCRq_responsePayload" name="responsePayload"/>
+        <output id="_kcO2_exception" name="exception"/>
+        <extensionElements>
+            <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.http.HTTPCallDefinition">
+                <url>${baseURL}/cases/${caseId}/planitems</url>
+                <method>GET</method>
+                <http-headers>
+                    <http-header name="Authorization">Bearer ${user.token}</http-header>
+                    <http-header name="Case-Last-Modified">${caseLastModified}</http-header>
+                </http-headers>
+                <parameterMapping sourceRef="exception" targetRef="exception"/>
+                <parameterMapping sourceRef="responsePayload" targetRef="responsePayload"/>
+            </cafienne:implementation>
+        </extensionElements>
+    </process>
+    <CMMNDI>
+        <CMMNDiagram>
+            <CMMNShape cmmnElementRef="cm__EkelP_0">
+                <Bounds x="20" y="20" width="620" height="370"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_pt__EkelP_0">
+                <Bounds x="230" y="70" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_EkelP_11">
+                <Bounds x="224" y="90" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_EkelP_1">
+                <Bounds x="90" y="80" width="25" height="40"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_EkelP_17">
+                <Bounds x="120" y="180" width="370" height="140"/>
+            </CMMNShape>
+            <CMMNEdge sourceCMMNElementRef="_EkelP_1" targetCMMNElementRef="_EkelP_11"/>
+        </CMMNDiagram>
+    </CMMNDI>
+</definitions>

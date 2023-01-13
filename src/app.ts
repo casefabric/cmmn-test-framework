@@ -27,6 +27,7 @@ import TestTaskOutputOperations from './tests/api/casefile/testtaskoutputoperati
 import TestTimer from './tests/api/caseplan/event/testtimer';
 import TestEntryCriteriaOnCaseInputParameters from './tests/api/caseplan/stage/testentrycriteriaoncaseinputparameters';
 import TestStage from './tests/api/caseplan/stage/teststage';
+import TestAuthenticationFlow from './tests/api/caseplan/task/testauthenticationflow';
 import TestProcessTask from './tests/api/caseplan/task/testprocesstask';
 import TestCasePlanAPI from './tests/api/caseplan/testcaseplanapi';
 import TestCasePlanHistoryAPI from './tests/api/caseplan/testcaseplanhistoryapi';
@@ -175,6 +176,7 @@ const AllTestCases = new TestClasses([
     , TestTaskExpressions
     , TestStageTaskExpressions
     , TestProcessTask
+    , TestAuthenticationFlow
     , TestCaseTeamAPI
     , TestCaseTeam
     , TestCaseTeamTenantRoleMembers
