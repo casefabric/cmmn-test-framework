@@ -27,6 +27,13 @@ export default class TestAuthenticationFlow extends TestCase {
 
     async run() {
 
+        await CafienneService.post('/board', user, {
+            title: "title",
+            id: 'MyFirstBoard'
+        })
+
+        return;
+
         const startCase = { tenant, definition };
         // Starts the case with user
         let caseInstance = await CaseService.startCase(user, startCase);

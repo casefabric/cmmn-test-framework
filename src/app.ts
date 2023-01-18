@@ -8,6 +8,7 @@ import TestArchiveCase from './tests/api/archiving/testarchivecase';
 import TestDeleteCase from './tests/api/archiving/testdeletecase';
 import TestDeleteTenant from './tests/api/archiving/testdeletetenant';
 import TestDeleteTenantWithContent from './tests/api/archiving/testdeletetenantwithcontent';
+import TestBoardAPI from './tests/api/board/testboardapi';
 import TestFootballBusinessIdentifiers from './tests/api/businessidentifiers/footballbusinessidentifiers/testfootballbusinessidentifiers';
 import TestBusinessIdentifiers from './tests/api/businessidentifiers/testbusinessidentifiers';
 import TestHelloWorldBusinessIdentifiers from './tests/api/businessidentifiers/testhelloworldbusinessidentifiers';
@@ -215,6 +216,7 @@ const AllTestCases = new TestClasses([
     , TestSubCaseMigration
     , TestRecovery
     , TestCompatibility
+    , TestBoardAPI
 ]);
 
 
