@@ -1,14 +1,52 @@
-# This docker-compose file launches the Token Generator
+# This compose will work with docker 1.13.1+
 #
 # To run, call:
 #   $ docker-compose up
 #
-version: '3.1'
+version: "3.1"
 services:
-  cafienne-test-token-service:
+  # supporting containers
+  ctf-mailcatcher:
+    image: schickling/mailcatcher:latest
+    labels:
+      component: mta
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://mailcatcher:1080"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    networks:
+      - dev
+    expose:
+      - 1025
+      - 1080
+    ports:
+      - "1081:1080"
+    hostname: ctf-mailcatcher
+    container_name: ctf-mailcatcher
+
+  ctf-idp:
+    image: quay.io/dexidp/dex:v2.23.0
+    command: ["serve", "/dex.yaml"]
+    networks:
+      - dev
+    expose:
+      - 5556
+      - 5558
+    ports:
+      - "5556:5556"
+      - "5558:5558"
+    hostname: ctf-idp
+    container_name: ctf-idp
+    volumes:
+      - ./config/dex/dex.yaml:/dex.yaml
+      - ./config/dex/web/:/web/
+      - ./run/dex/:/var/dex/
+
+  ctf-fake-idp:
     image: spectare/oidc-token-test-service:latest
     labels:
-      component: idp-test-service-for-cafienne
+      component: ctf-fake-idp
     networks: 
       - dev
     expose:
@@ -18,8 +56,89 @@ services:
     environment:
       BIND: 0.0.0.0
       PORT: 2377
-    hostname: cafienne-test-token-service
-    container_name: cafienne-test-token-service
+      EXPOSED_HOST: http://localhost:2377
+    hostname: ctf-fake-idp
+    container_name: ctf-fake-idp
+
+  ctf-cafienne-ide:
+    image: cafienne/ide:latest
+    labels:
+      component: cafienne-ide
+    networks:
+      - dev
+    expose:
+      - 2081
+    ports:
+      - "9081:2081"
+    hostname: ctf-ide
+    container_name: ctf-ide
+    environment:
+      BACKEND_API_URL: ${BACKEND_API_URL:-http://ctf-cafienne-engine:2027}
+    volumes:
+      - ../casemodels/bin:/usr/src/app/repository_deploy
+      - ../casemodels/src:/usr/src/app/repository
+
+  ctf-cafienne-ui:
+    image: cafienne/cafienne-ui:latest
+    labels:
+      component: ctf-cafienne-ui
+    networks:
+      - dev
+    ports:
+      - "4317:80"
+    expose:
+      - 4317
+    hostname: ctf-cafienne-ui
+    container_name: ctf-cafienne-ui
+    environment:
+      OIDC_URI: http://localhost:5556/dex
+      OIDC_CLIENT_ID: cafienne-ui
+      CAFIENNE_URI: http://localhost:2027
+
+  ctf-cafienne-ui-fake-idp:
+    image: cafienne/cafienne-ui:latest
+    labels:
+      component: ctf-cafienne-ui-fake-idp
+    networks:
+      - dev
+    ports:
+      - "5317:80"
+    expose:
+      - 5317
+    hostname: ctf-cafienne-ui-fake-idp
+    container_name: ctf-cafienne-ui-fake-idp
+    environment:
+      OIDC_URI: http://localhost:2377
+      OIDC_CLIENT_ID: cafienne-ui
+      CAFIENNE_URI: http://localhost:2027
+
+  ctf-cafienne-engine:
+    image: cafienne/engine:latest
+    labels:
+      component: cafienne-engine
+    networks:
+      - dev
+    expose:
+      - 2027
+    ports:
+      - "2027:2027"
+    hostname: ctf-cafienne-engine
+    container_name: ctf-cafienne-engine
+    healthcheck:
+      test: ["CMD", "curl", "-sS", "-o", "/dev/null", "http://cafienne:2027/status"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+    volumes:
+      - ./run/cafienne/journal:/opt/cafienne/journal
+      - ./run/cafienne/logs:/opt/cafienne/logs
+      - ./run/cafienne/definitions:/opt/cafienne/definitions
+      - ./config/cafienne:/opt/cafienne/conf
+      - ./config/cafienne:/opt/cafienne/bootstrap
+
+volumes:
+  dex:
+    driver: local
 networks:
-  dev: 
+  dev:
     driver: bridge
