@@ -14,12 +14,15 @@ export default class TestBoardAPI extends TestCase {
     }
 
     async run() {
+        let boardId = 'MySecondBoard4';
 
         await BoardService.createBoard(user, {
             title: "title",
-            id: 'MySecondBoard'
+            id: boardId
         })
 
-        // console.log(`\nCase ID: ${caseInstance.id}\n`);
+        await BoardService.getBoard(user, boardId);
+
+        await BoardService.getBoards(user);
     }
 }
