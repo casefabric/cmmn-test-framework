@@ -29,6 +29,7 @@ import TestEntryCriteriaOnCaseInputParameters from './tests/api/caseplan/stage/t
 import TestStage from './tests/api/caseplan/stage/teststage';
 import TestAuthenticationFlow from './tests/api/caseplan/task/testauthenticationflow';
 import TestProcessTask from './tests/api/caseplan/task/testprocesstask';
+import TestTaskWithSpaces from './tests/api/caseplan/task/testtaskwithspaces';
 import TestCasePlanAPI from './tests/api/caseplan/testcaseplanapi';
 import TestCasePlanHistoryAPI from './tests/api/caseplan/testcaseplanhistoryapi';
 import TestEventAuthorization from './tests/api/caseplan/testeventauthorization';
@@ -158,6 +159,7 @@ const AllTestCases = new TestClasses([
     , TestTaskFilterAPI
     , TestTaskFilterAPI2
     , TestTaskCountAPI
+    , TestTaskWithSpaces
     , TestDebugMode
     , TestDocumentationAPI
     , TestRepositoryAPI
