@@ -1,0 +1,54 @@
+<definitions>
+    <caseFileItemDefinition name="Greeting" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="greeting.cfid">
+        <property name="Message" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+            </extensionElements>
+        </property>
+        <property name="To" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+            </extensionElements>
+        </property>
+        <property name="From" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    </caseFileItemDefinition>
+    <case id="casemetspatie.case" name="casemetspatie" expressionLanguage="spel">
+        <caseFileModel>
+            <caseFileItem id="_hDTXE_2" name="Greeting" multiplicity="ExactlyOne" definitionRef="greeting.cfid"/>
+        </caseFileModel>
+        <casePlanModel id="cm__hDTXE_0" name="casemetspatie" autoComplete="true">
+            <planItem id="pi_ht__hDTXE_0" name="Taak Met Eind Spatie " definitionRef="ht__hDTXE_0"/>
+            <planItem id="pi_ht__hDTXE_1" name=" Taak Met Begin Spatie" definitionRef="ht__hDTXE_1">
+                <entryCriterion id="_hDTXE_4" name="EntryCriterion_0" sentryRef="crit__hDTXE_0"/>
+            </planItem>
+            <sentry id="crit__hDTXE_0">
+                <caseFileItemOnPart id="_hDTXE_5" sourceRef="_hDTXE_2">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </sentry>
+            <humanTask id="ht__hDTXE_0" name="Taak Met Eind Spatie " isBlocking="true"/>
+            <humanTask id="ht__hDTXE_1" name=" Taak Met Begin Spatie" isBlocking="true"/>
+        </casePlanModel>
+        <input id="_hDTXE_3" name="Greeting" bindingRef="_hDTXE_2"/>
+    </case>
+    <CMMNDI>
+        <CMMNDiagram>
+            <CMMNShape cmmnElementRef="cm__hDTXE_0">
+                <Bounds x="20" y="20" width="800" height="500"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__hDTXE_0">
+                <Bounds x="200" y="110" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__hDTXE_1">
+                <Bounds x="200" y="300" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_hDTXE_2">
+                <Bounds x="60" y="310" width="25" height="40"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_hDTXE_4">
+                <Bounds x="194" y="320" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNEdge sourceCMMNElementRef="_hDTXE_2" targetCMMNElementRef="_hDTXE_4"/>
+        </CMMNDiagram>
+    </CMMNDI>
+</definitions>

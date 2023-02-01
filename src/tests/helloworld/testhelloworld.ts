@@ -77,6 +77,7 @@ export default class TestHelloworld extends TestCase {
 
         await assertCasePlan(sender, caseInstance, State.Completed);
 
-        console.log(`\n\nCase ID: ${freshCaseInstance.id}\n\nCase Team:${JSON.stringify(freshCaseInstance.team, undefined, 2)}`);
+        console.log(`\nCase Team:${JSON.stringify(freshCaseInstance.team, undefined, 2)}`);
+        console.log(`\nCase ID: ${freshCaseInstance.id}\n`);
     }
 }
