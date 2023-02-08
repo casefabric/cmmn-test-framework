@@ -3,6 +3,7 @@
 import TestCase from '@cafienne/typescript-client/test/testcase';
 import BoardService from '../../../framework/board/boardservice';
 import WorldWideTestTenant from '../../worldwidetesttenant';
+import {getRawInput} from "readline-sync";
 
 
 const worldwideTenant = new WorldWideTestTenant();
@@ -24,5 +25,12 @@ export default class TestBoardAPI extends TestCase {
         await BoardService.getBoard(user, boardId);
 
         await BoardService.getBoards(user);
+
+        await BoardService.addTeam(user, {
+            boardId: boardId,
+            team: [{ subject: user.id, roles: ['BOARD_MANAGER', 'APPROVE']}]
+        });
+
+        await BoardService.getTeamForBoard(user, boardId);
     }
 }

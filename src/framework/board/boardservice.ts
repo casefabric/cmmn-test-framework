@@ -4,6 +4,7 @@ import logger from "@cafienne/typescript-client/logger";
 import CafienneService from "@cafienne/typescript-client/service/cafienneservice";
 import User from "@cafienne/typescript-client/user";
 import BoardRequestDetails from "./boardrequestdetails";
+import TeamRequestDetails from "./teamrequestdetails";
 
 /**
  * Connection to the /board APIs of Cafienne
@@ -34,5 +35,16 @@ export default class BoardService {
         return checkResponse(response, errorMsg, expectedStatusCode);
     }
 
+    static async addTeam(user: User, team: TeamRequestDetails, expectedStatusCode: number = 202, errorMsg = `AddTeam is not expected to succeed for user ${user} on board ${team.boardId}`) {
+        if (Config.PlatformService.log) logger.debug(`Adding team on board ${team.boardId}`);
+        const response = await CafienneService.post(`/board/${team.boardId}/team`, user, team.team);
+        return checkResponse(response, errorMsg, expectedStatusCode);
+    }
+
+    static async getTeamForBoard(user: User, boardId: string, expectedStatusCode: number = 200, errorMsg = `Get team on board ${boardId} did not succeed`) {
+        if (Config.PlatformService.log) logger.debug(`Creating board ${boardId}`);
+        const response = await CafienneService.get(`/board/${boardId}/team`, user);
+        return checkResponse(response, errorMsg, expectedStatusCode);
+    }
 
 }
