@@ -5,10 +5,9 @@ import State from '@cafienne/typescript-client/cmmn/state';
 import CaseService from '@cafienne/typescript-client/service/case/caseservice';
 import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
 import StartCase from '@cafienne/typescript-client/service/case/startcase';
-import StorageService from '../../../framework/archiving/storageservice';
-import CaseHierarchy from '../../../nextversion/casehierarchy';
-import LineReader from '../../../nextversion/linereader';
-import { TestCaseExtension } from '../../../nextversion/nextversion';
+import StorageService from '@cafienne/typescript-client/service/storage/storageservice';
+import CaseHierarchy from '@cafienne/typescript-client/test/casehierarchy';
+import TestCase from '@cafienne/typescript-client/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 
 const worldwideTenant = new WorldWideTestTenant();
@@ -17,7 +16,7 @@ const user = worldwideTenant.sender;
 
 const helloworld = 'helloworld.xml';
 const complexcase = 'complexcase.xml';
-export default class TestArchiveCase extends TestCaseExtension {
+export default class TestArchiveCase extends TestCase {
   isDefaultTest = false;
   // lineReaderEnabled = true;
 
