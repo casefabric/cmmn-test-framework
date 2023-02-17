@@ -33,7 +33,7 @@ export default class TestAuthenticationFlow extends TestCase {
 
 
         const baseURL = Config.CafienneService.url.endsWith('/') ? Config.CafienneService.url.substring(0, Config.CafienneService.url.length - 1) : Config.CafienneService.url;
-        const caseLastModified = CafienneService.getHeaders(user).get("Case-Last-Modified");
+        const caseLastModified = CafienneService.getHeaders(user)["Case-Last-Modified"];
 
         const http = {
             baseURL,

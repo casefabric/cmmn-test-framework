@@ -4,10 +4,10 @@ import { SomeTime } from '@cafienne/typescript-client';
 import State from '@cafienne/typescript-client/cmmn/state';
 import CaseService from '@cafienne/typescript-client/service/case/caseservice';
 import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
+import StorageService from '@cafienne/typescript-client/service/storage/storageservice';
 import TenantService from '@cafienne/typescript-client/service/tenant/tenantservice';
-import StorageService from '../../../framework/archiving/storageservice';
-import CaseHierarchy from '../../../nextversion/casehierarchy';
-import { TestCaseExtension } from '../../../nextversion/nextversion';
+import CaseHierarchy from '@cafienne/typescript-client/test/casehierarchy';
+import TestCase from '@cafienne/typescript-client/test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 
 const tenant = "TestTenantWithContent";
@@ -16,7 +16,7 @@ const user = wrapper.sender;
 const definition = 'complexcase.xml';
 
 
-export default class TestDeleteTenantWithContent extends TestCaseExtension {
+export default class TestDeleteTenantWithContent extends TestCase {
   isDefaultTest = false;
   // lineReaderEnabled = true;
 

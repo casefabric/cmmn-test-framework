@@ -1,12 +1,10 @@
 'use strict';
 
 import { SomeTime } from '@cafienne/typescript-client';
+import StorageService from '@cafienne/typescript-client/service/storage/storageservice';
 import TenantService from '@cafienne/typescript-client/service/tenant/tenantservice';
 import TestCase from '@cafienne/typescript-client/test/testcase';
-import StorageService from '../../../framework/archiving/storageservice';
 import WorldWideTestTenant from '../../worldwidetesttenant';
-
-
 
 export default class TestDeleteTenant extends TestCase {
   isDefaultTest = false;
