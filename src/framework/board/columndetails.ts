@@ -1,8 +1,8 @@
 
 /**
- * Wrapper for the CreateBoard command 
+ * Wrapper for the ColumnDetails api  
  */
-export default interface BoardRequestDetails {
+export default interface ColumnDetails {
     /**
      * Title of the board to create
      */
@@ -12,8 +12,6 @@ export default interface BoardRequestDetails {
      * If not specified, the server will create one.
      */
     id?: string;
-    /**
-     * Optional form that the board can use to start a flow
-     */
+
     form?: object;
 }
