@@ -9,6 +9,7 @@ import TestDeleteCase from './tests/api/archiving/testdeletecase';
 import TestDeleteTenant from './tests/api/archiving/testdeletetenant';
 import TestDeleteTenantWithContent from './tests/api/archiving/testdeletetenantwithcontent';
 import TestBoardAPI from './tests/api/board/testboardapi';
+import TestBoardFlowAPI from './tests/api/board/testboardflowapi';
 import TestFootballBusinessIdentifiers from './tests/api/businessidentifiers/footballbusinessidentifiers/testfootballbusinessidentifiers';
 import TestBusinessIdentifiers from './tests/api/businessidentifiers/testbusinessidentifiers';
 import TestHelloWorldBusinessIdentifiers from './tests/api/businessidentifiers/testhelloworldbusinessidentifiers';
@@ -217,6 +218,7 @@ const AllTestCases = new TestClasses([
     , TestRecovery
     , TestCompatibility
     , TestBoardAPI
+    , TestBoardFlowAPI
 ]);
 
 

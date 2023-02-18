@@ -41,20 +41,21 @@ export default class BoardService {
         return checkResponse(response, errorMsg, expectedStatusCode);
     }
 
-    static async addColumn(user: User, boardId: string, column: ColumnDetails, expectedStatusCode: number = 202, errorMsg = `AddColumn is not expected to succeed for user ${user} on board ${column}`): Promise<ColumnDetails> {
+    static async addColumn(user: User, board: string | BoardRequestDetails, column: ColumnDetails, expectedStatusCode: number = 202, errorMsg = `AddColumn is not expected to succeed for user ${user} on board ${column}`): Promise<ColumnDetails> {
         if (Config.PlatformService.log) logger.debug(`Adding column ${column}`);
-        const response = await CafienneService.post(`/board/${boardId}/columns`, user, column);
+
+        const response = await CafienneService.post(`/board/${boardId(board)}/columns`, user, column);
         return checkJSONResponse(response, errorMsg, expectedStatusCode).then(object => {
             column.id = object.columnId;
             return column;
         });
     }
 
-    static async updateColumn(user: User, boardId: string, column: ColumnDetails, expectedStatusCode: number = 202, errorMsg = `UpdateColumn is not expected to succeed for user ${user} on board ${column}`) {
+    static async updateColumn(user: User, board: string | BoardRequestDetails, column: ColumnDetails, expectedStatusCode: number = 202, errorMsg = `UpdateColumn is not expected to succeed for user ${user} on board ${column}`) {
         if (Config.PlatformService.log) logger.debug(`Updating column ${column.id}`);
         const postMaterial = Object.assign({}, column);
         delete postMaterial.id;
-        const response = await CafienneService.post(`/board/${boardId}/columns/${column.id}`, user, postMaterial);
+        const response = await CafienneService.post(`/board/${boardId(board)}/columns/${column.id}`, user, postMaterial);
         return checkResponse(response, errorMsg, expectedStatusCode);
     }
 
@@ -82,4 +83,9 @@ export default class BoardService {
         return checkResponse(response, errorMsg, expectedStatusCode);
     }
 
+}
+
+const boardId = (b: string|BoardRequestDetails): string => {
+    if (typeof(b) === 'string') return b;
+    else return b.id || '';
 }
