@@ -25,8 +25,23 @@ export default class BoardFlowService {
         });
     }
 
+    static async claimFlowTask(user: User, board: BoardRequestDetails|string, flowId: string, taskId: string, expectedStatusCode: number = 202, errorMsg = `StartFlow is not expected to succeed for user ${user} on board ${board}`) {
+        if (Config.PlatformService.log) logger.debug(`Claiming task in flow in board ${board}`);
+        const response = await CafienneService.put(`/board/${boardId(board)}/flow/${flowId}/tasks/${taskId}/claim`, user);
+        return checkResponse(response, errorMsg, expectedStatusCode);
+    }
+
+    static async saveFlowTask(user: User, board: BoardRequestDetails|string, flowId: string, taskId: string, subject: string, output: any, expectedStatusCode: number = 202, errorMsg = `StartFlow is not expected to succeed for user ${user} on board ${board}`) {
+        if (Config.PlatformService.log) logger.debug(`Saving task in flow in board ${board}`);
+        const postMaterial = {
+            subject, data: output
+        }
+        const response = await CafienneService.put(`/board/${boardId(board)}/flow/${flowId}/tasks/${taskId}`, user, postMaterial);
+        return checkResponse(response, errorMsg, expectedStatusCode);
+    }
+
     static async completeFlowTask(user: User, board: BoardRequestDetails|string, flowId: string, taskId: string, subject: string, output: any, expectedStatusCode: number = 202, errorMsg = `StartFlow is not expected to succeed for user ${user} on board ${board}`) {
-        if (Config.PlatformService.log) logger.debug(`Starting flow in board ${board}`);
+        if (Config.PlatformService.log) logger.debug(`Completing task in flow in board ${board}`);
         const postMaterial = {
             subject, data: output
         }
