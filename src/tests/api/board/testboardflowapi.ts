@@ -39,7 +39,14 @@ export default class TestBoardFlowAPI extends TestCase {
             form: board.form,
         }
 
+        const column2: ColumnDetails = {
+            title: 'SecondColumn',
+            form: board.form,
+        }
+
         await BoardService.addColumn(user, board, column);
+
+        await BoardService.addColumn(user, board, column2);
 
         const flow = await BoardFlowService.startFlow(user, board, { subject: 'MyFirstFlow', data: { input: "een getal"}});
         const flow2 = await BoardFlowService.startFlow(user, board, { subject: 'MySecondFlow', data: { somethingElse: false}});
@@ -47,8 +54,13 @@ export default class TestBoardFlowAPI extends TestCase {
         await SomeTime(1000)
 
         
-        await BoardService.getBoard(user, ''+board.id);
+        const boardResponse = await BoardService.getBoard(user, ''+board.id);
+        const task = boardResponse.columns[0].tasks.find((task: any) => task.flowId === flow.id);
 
+        await BoardFlowService.completeFlowTask(user, board, task.flowId, task.id, "MyFirstFlowWithChangedSubject", { input: "een ander getal"});
+
+        await SomeTime(1000)
+        await BoardService.getBoard(user, ''+board.id);
 
         console.log("Board ID: " + board.id)
         console.log("\n\nFlow id: " + flow.id)

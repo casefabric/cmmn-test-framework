@@ -62,7 +62,7 @@ export default class BoardService {
     static async getBoard(user: User, boardid: string, expectedStatusCode: number = 200, errorMsg = `GetBoard ${boardid} is not expected to succeed for user ${user}`) {
         if (Config.PlatformService.log) logger.debug(`Getting board ${boardid}`);
         const response = await CafienneService.get(`/board/${boardid}`, user);
-        return checkResponse(response, errorMsg, expectedStatusCode);
+        return checkJSONResponse(response, errorMsg, expectedStatusCode);
     }
 
     static async getBoards(user: User, expectedStatusCode: number = 200, errorMsg = `GetBoards is not expected to succeed for user ${user}`) {

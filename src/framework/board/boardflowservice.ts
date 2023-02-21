@@ -1,4 +1,4 @@
-import { checkJSONResponse } from "@cafienne/typescript-client";
+import { checkJSONResponse, checkResponse } from "@cafienne/typescript-client";
 import Config from "@cafienne/typescript-client/config";
 import logger from "@cafienne/typescript-client/logger";
 import CafienneService from "@cafienne/typescript-client/service/cafienneservice";
@@ -23,6 +23,15 @@ export default class BoardFlowService {
             postMaterial.id = object.flowId;
             return postMaterial;
         });
+    }
+
+    static async completeFlowTask(user: User, board: BoardRequestDetails|string, flowId: string, taskId: string, subject: string, output: any, expectedStatusCode: number = 202, errorMsg = `StartFlow is not expected to succeed for user ${user} on board ${board}`) {
+        if (Config.PlatformService.log) logger.debug(`Starting flow in board ${board}`);
+        const postMaterial = {
+            subject, data: output
+        }
+        const response = await CafienneService.post(`/board/${boardId(board)}/flow/${flowId}/tasks/${taskId}`, user, postMaterial);
+        return checkResponse(response, errorMsg, expectedStatusCode);
     }
 
 }
