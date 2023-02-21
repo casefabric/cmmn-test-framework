@@ -42,9 +42,18 @@ export default class TestBoardFlowAPI extends TestCase {
         await BoardService.addColumn(user, board, column);
 
         const flow = await BoardFlowService.startFlow(user, board, { subject: 'MyFirstFlow', data: { input: "een getal"}});
+        const flow2 = await BoardFlowService.startFlow(user, board, { subject: 'MySecondFlow', data: { somethingElse: false}});
+
+        await SomeTime(1000)
+
+        
+        await BoardService.getBoard(user, ''+board.id);
+
 
         console.log("Board ID: " + board.id)
         console.log("\n\nFlow id: " + flow.id)
+        console.log("\nFlow2: " + flow2.id)
+
 
     }
 }
