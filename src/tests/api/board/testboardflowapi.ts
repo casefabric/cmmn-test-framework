@@ -62,6 +62,11 @@ export default class TestBoardFlowAPI extends TestCase {
         await BoardFlowService.completeFlowTask(user, board, task.flowId, task.id, "MyFirstFlowWithOriginalSubject", { input: "een getal"});
 
         await SomeTime(1000)
+        const boardResponse2 = await BoardService.getBoard(user, ''+board.id);
+        const task2 = boardResponse2.columns[1].tasks.find((task: any) => task.flowId === flow.id);
+        await BoardFlowService.completeFlowTask(user, board, task2.flowId, task2.id, "MyFirstFlow", { input: "Completing the first flow!"});
+
+        await SomeTime(2000)
         await BoardService.getBoard(user, ''+board.id);
 
         console.log("Board ID: " + board.id)
