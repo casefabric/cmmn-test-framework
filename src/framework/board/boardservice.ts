@@ -1,9 +1,10 @@
 import { checkJSONResponse, checkResponse } from "@cafienne/typescript-client";
 import Config from "@cafienne/typescript-client/config";
 import logger from "@cafienne/typescript-client/logger";
-import CafienneService from "@cafienne/typescript-client/service/cafienneservice";
 import User from "@cafienne/typescript-client/user";
+import BoardFlowService from "./boardflowservice";
 import BoardRequestDetails from "./boardrequestdetails";
+import CafienneService from "./cafienneservice";
 import ColumnDetails from "./columndetails";
 import TeamRequestDetails from "./teamrequestdetails";
 
@@ -61,7 +62,7 @@ export default class BoardService {
 
     static async getBoard(user: User, boardid: string, expectedStatusCode: number = 200, errorMsg = `GetBoard ${boardid} is not expected to succeed for user ${user}`) {
         if (Config.PlatformService.log) logger.debug(`Getting board ${boardid}`);
-        const response = await CafienneService.get(`/board/${boardid}`, user);
+        const response = await CafienneService.get(`/board/${boardid}`, user, undefined, BoardFlowService.BOARD_LAST_MODIFIED);
         return checkJSONResponse(response, errorMsg, expectedStatusCode);
     }
 
