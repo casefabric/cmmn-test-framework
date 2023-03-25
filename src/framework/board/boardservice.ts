@@ -6,7 +6,7 @@ import BoardFlowService from "./boardflowservice";
 import BoardRequestDetails from "./boardrequestdetails";
 import CafienneService from "./cafienneservice";
 import ColumnDetails from "./columndetails";
-import TeamRequestDetails from "./teamrequestdetails";
+import TeamRequestDetails, { TeamMember } from "./teamrequestdetails";
 
 /**
  * Connection to the /board APIs of Cafienne
@@ -52,7 +52,7 @@ export default class BoardService {
         });
     }
 
-    static async updateColumn(user: User, board: string | BoardRequestDetails, column: ColumnDetails, expectedStatusCode: number = 202, errorMsg = `UpdateColumn is not expected to succeed for user ${user} on board ${column}`) {
+    static async updateColumn(user: User, board: string | BoardRequestDetails, column: ColumnDetails, expectedStatusCode: number = 202, errorMsg = `UpdateColumn is not expected to succeed for user ${user} on column ${column}`) {
         if (Config.PlatformService.log) logger.debug(`Updating column ${column.id}`);
         const postMaterial = Object.assign({}, column);
         delete postMaterial.id;
@@ -72,9 +72,39 @@ export default class BoardService {
         return checkResponse(response, errorMsg, expectedStatusCode);
     }
 
-    static async addTeam(user: User, team: TeamRequestDetails, expectedStatusCode: number = 202, errorMsg = `AddTeam is not expected to succeed for user ${user} on board ${team.boardId}`) {
-        if (Config.PlatformService.log) logger.debug(`Adding team on board ${team.boardId}`);
-        const response = await CafienneService.post(`/board/${team.boardId}/team`, user, team.team);
+    static async addTeam(user: User, board: string | BoardRequestDetails, team: TeamRequestDetails, expectedStatusCode: number = 202, errorMsg = `AddTeam is not expected to succeed for user ${user} on board ${board}`) {
+        if (Config.PlatformService.log) logger.debug(`Adding team on board ${boardId(board)}`);
+        const response = await CafienneService.post(`/board/${boardId(board)}/team`, user, team);
+        return checkResponse(response, errorMsg, expectedStatusCode);
+    }
+
+    static async addTeamMember(user: User, board: string | BoardRequestDetails, member: TeamMember, expectedStatusCode: number = 202, errorMsg = `addTeamMember is not expected to succeed for user ${user} on board ${board}`) {
+        if (Config.PlatformService.log) logger.debug(`Adding team member to board ${boardId(board)}`);
+        const response = await CafienneService.post(`/board/${boardId(board)}/team/members`, user, member);
+        return checkResponse(response, errorMsg, expectedStatusCode);
+    }
+
+    static async replaceTeamMember(user: User, board: string | BoardRequestDetails, member: TeamMember, expectedStatusCode: number = 202, errorMsg = `replaceTeamMember is not expected to succeed for user ${user} on board ${board}`) {
+        if (Config.PlatformService.log) logger.debug(`Replacing team member to board ${boardId(board)}`);
+        const response = await CafienneService.post(`/board/${boardId(board)}/team/members/${member}`, user, member);
+        return checkResponse(response, errorMsg, expectedStatusCode);
+    }
+
+    static async removeTeamMember(user: User, board: string | BoardRequestDetails, member: TeamMember|string, expectedStatusCode: number = 202, errorMsg = `removeTeamMember is not expected to succeed for user ${user} on board ${board}`) {
+        if (Config.PlatformService.log) logger.debug(`Removing team member to board ${boardId(board)}`);
+        const response = await CafienneService.delete(`/board/${boardId(board)}/team/members/${member}`, user);
+        return checkResponse(response, errorMsg, expectedStatusCode);
+    }
+
+    static async addBoardRole(user: User, board: string | BoardRequestDetails, role: string, expectedStatusCode: number = 202, errorMsg = `addBoardRole is not expected to succeed for user ${user} on board ${board}`) {
+        if (Config.PlatformService.log) logger.debug(`Adding role ${role} to board ${boardId(board)}`);
+        const response = await CafienneService.put(`/board/${boardId(board)}/team/roles/${role}`, user);
+        return checkResponse(response, errorMsg, expectedStatusCode);
+    }
+
+    static async removeBoardRole(user: User, board: string | BoardRequestDetails, role: string, expectedStatusCode: number = 202, errorMsg = `removeBoardRole is not expected to succeed for user ${user} on board ${board}`) {
+        if (Config.PlatformService.log) logger.debug(`Removing role ${role} to board ${boardId(board)}`);
+        const response = await CafienneService.delete(`/board/${boardId(board)}/team/roles/${role}`, user);
         return checkResponse(response, errorMsg, expectedStatusCode);
     }
 

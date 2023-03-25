@@ -53,8 +53,7 @@ export default class BoardFlowService {
     static get BOARD_LAST_MODIFIED(): any {
         return {
             "Board-Last-Modified": header
-        }
-;
+        };
     }
 }
 
@@ -66,7 +65,6 @@ async function updateLastModified(response: CafienneResponse) {
         const readAndUpdateHeader = (headerName: string) => {
             const headerValue = response.headers.get(headerName);
             if (headerValue) {
-                console.log("SETTING HEADER VALUE TO " + headerValue);
                 header = headerValue
             }
         }

@@ -26,14 +26,6 @@ export default class TestBoardFlowAPI extends TestCase {
 
         // await SomeTime(5000)
 
-        board.form = {
-            schema: {
-            },
-            uiSchema: {
-            }
-        };
-        await BoardService.updateBoard(user, board);
-
         const column: ColumnDetails = {
             title: 'FirstColumn',
             form: board.form,
@@ -41,12 +33,12 @@ export default class TestBoardFlowAPI extends TestCase {
 
         const column2: ColumnDetails = {
             title: 'SecondColumn',
-            form: board.form,
         }
 
         await BoardService.addColumn(user, board, column);
 
         await BoardService.addColumn(user, board, column2);
+        // await BoardService.getBoard(user, ''+board.id);
 
         const flow = await BoardFlowService.startFlow(user, board, { subject: 'MyFirstFlow', data: { input: "een getal"}});
         const flow2 = await BoardFlowService.startFlow(user, board, { subject: 'MySecondFlow', data: { somethingElse: false}});
