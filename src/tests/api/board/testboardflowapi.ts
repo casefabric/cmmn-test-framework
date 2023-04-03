@@ -1,10 +1,10 @@
 'use strict';
 
-import { SomeTime } from '@cafienne/typescript-client';
 import TestCase from '@cafienne/typescript-client/test/testcase';
+import BoardDefinition from '../../../framework/board/boarddefinition';
 import BoardFlowService from '../../../framework/board/boardflowservice';
 import BoardService from '../../../framework/board/boardservice';
-import ColumnDetails from '../../../framework/board/columndetails';
+import ColumnDefinition from '../../../framework/board/columndefinition';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 
 
@@ -18,54 +18,43 @@ export default class TestBoardFlowAPI extends TestCase {
     }
 
     async run() {
-        const board = await BoardService.createBoard(user, {
-            title: "Board to Test Flow API",
-        })
+        const board = await BoardService.createBoard(user, new BoardDefinition("Board to Test Flow API"));
 
         console.log("Created board " + JSON.stringify(board, undefined, 2))
 
         // await SomeTime(5000)
 
-        const column: ColumnDetails = {
-            title: 'FirstColumn',
-            form: board.form,
-        }
-
-        const column2: ColumnDetails = {
-            title: 'SecondColumn',
-        }
+        const column: ColumnDefinition = new ColumnDefinition('FirstColumn', board.form);
+        const column2: ColumnDefinition = new ColumnDefinition('SecondColumn');
 
         await BoardService.addColumn(user, board, column);
 
         await BoardService.addColumn(user, board, column2);
-        // await BoardService.getBoard(user, ''+board.id);
 
         const flow = await BoardFlowService.startFlow(user, board, { subject: 'MyFirstFlow', data: { input: "een getal"}});
         const flow2 = await BoardFlowService.startFlow(user, board, { subject: 'MySecondFlow', data: { somethingElse: false}});
-
-        // await SomeTime(2000)
-
         
-        const boardResponse = await BoardService.getBoard(user, ''+board.id);
-        const task = boardResponse.columns[0].tasks.find((task: any) => task.flowId === flow.id);
+        const taskInFirstColumn = await BoardService.getBoard(user, board).then(board => board.getFlowTask(flow.id));
 
-        await BoardFlowService.claimFlowTask(user, board, task.flowId, task.id);
-        await BoardService.getBoard(user, ''+board.id);
-        await BoardFlowService.saveFlowTask(user, board, task.flowId, task.id, "MyFirstFlowWithChangedSubject", { input: "een ander getal"});
-        await BoardFlowService.completeFlowTask(user, board, task.flowId, task.id, "MyFirstFlowWithOriginalSubject", { input: "een getal"});
+        await BoardFlowService.claimFlowTask(user, board, taskInFirstColumn.flowId, taskInFirstColumn.id);
+        await BoardService.getBoard(user, board);
+        await BoardFlowService.saveFlowTask(user, board, taskInFirstColumn.flowId, taskInFirstColumn.id, "MyFirstFlowWithChangedSubject", { input: "een ander getal"});
+        await BoardFlowService.completeFlowTask(user, board, taskInFirstColumn.flowId, taskInFirstColumn.id, "MyFirstFlowWithOriginalSubject", { input: "een getal"});
 
-        // await SomeTime(1000)
-        const boardResponse2 = await BoardService.getBoard(user, ''+board.id);
-        const task2 = boardResponse2.columns[1].tasks.find((task: any) => task.flowId === flow.id);
-        await BoardFlowService.completeFlowTask(user, board, task2.flowId, task2.id, "MyFirstFlow", { input: "Completing the first flow!"});
+        const taskInSecondColumn = await BoardService.getBoard(user, board).then(board => board.getFlowTask(flow.id));
 
-        // await SomeTime(2000)
-        await BoardService.getBoard(user, ''+board.id);
+        await BoardFlowService.completeFlowTask(user, board, taskInSecondColumn.flowId, taskInSecondColumn.id, "MyFirstFlow", { input: "Completing the first flow!"});
 
-        console.log("Board ID: " + board.id)
-        console.log("\n\nFlow id: " + flow.id)
-        console.log("\nFlow2: " + flow2.id)
+        await BoardService.getBoard(user, board);
 
+        const taskNoLongerAvailable = await BoardService.getBoard(user, board).then(board => board.getFlowTask(flow.id));
+        if (taskNoLongerAvailable) {
+            // It is available?!
+            throw new Error("Did not expect the task to be available after it went through all columns of the board");
+        }
 
+        console.log("\nBoard ID: " + board.id)
+        console.log("\nFlow1: " + flow.id)
+        console.log("Flow2: " + flow2.id)
     }
 }

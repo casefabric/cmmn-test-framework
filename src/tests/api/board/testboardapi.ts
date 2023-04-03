@@ -1,16 +1,16 @@
 'use strict';
 
 import TestCase from '@cafienne/typescript-client/test/testcase';
+import BoardDefinition from '../../../framework/board/boarddefinition';
 import BoardService from '../../../framework/board/boardservice';
+import { TeamMember } from '../../../framework/board/boardteam';
+import ColumnDefinition from '../../../framework/board/columndefinition';
 import WorldWideTestTenant from '../../worldwidetesttenant';
-import {getRawInput} from "readline-sync";
-import ColumnDetails from '../../../framework/board/columndetails';
-import BoardRequestDetails from '../../../framework/board/boardrequestdetails';
-import { SomeTime } from '@cafienne/typescript-client';
 
 
 const worldwideTenant = new WorldWideTestTenant();
 const user = worldwideTenant.sender;
+const receiver = worldwideTenant.receiver;
 
 export default class TestBoardAPI extends TestCase {
     isDefaultTest: boolean = false;
@@ -20,16 +20,11 @@ export default class TestBoardAPI extends TestCase {
 
     async run() {
         const guid = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-        const boardId = `board-${guid}`;
+        const boardId = `board_${guid}`;
  
-        const board = await BoardService.createBoard(user, {
-            title: "title",
-            id: boardId
-        })
+        const board = await BoardService.createBoard(user, new BoardDefinition("title", undefined, boardId));
 
         console.log("Created board " + JSON.stringify(board, undefined, 2))
-
-        // await SomeTime(5000)
 
         board.form = {
             schema: {
@@ -40,15 +35,9 @@ export default class TestBoardAPI extends TestCase {
         board.title = "new title";
         await BoardService.updateBoard(user, board);
 
-        const column: ColumnDetails = {
-            title: 'FirstColumn',
-            form: {
-                "noSchema": null
-            }
-        }
-
+        const column: ColumnDefinition = new ColumnDefinition('FirstColumn', { "noSchema": null });        
         const firstColumn = await BoardService.addColumn(user, boardId, column);
-        // await SomeTime(1000)
+
         firstColumn.form = board.form;
         await BoardService.updateColumn(user, boardId, firstColumn);
 
@@ -59,15 +48,12 @@ export default class TestBoardAPI extends TestCase {
         
         await BoardService.addBoardRole(user, board, 'BOARD_MANAGER');
         await BoardService.addBoardRole(user, board, 'APPROVE');
+        const member = new TeamMember(receiver, ['BOARD_MANAGER', 'APPROVE']);
 
-        console.log("\nCreated board " + board.id)
+        await BoardService.addTeamMember(user, board, member);
 
-        await BoardService.addTeamMember(user, board, {
-            userId: "receiver",
-            name: '',
-            roles: ['BOARD_MANAGER', 'APPROVE']
-        })
+        await BoardService.getBoard(user, boardId);
 
-        await BoardService.getTeamForBoard(user, boardId);
+        console.log("\nFinished test on BoardAPI - Board id is " + board.id)
     }
 }
