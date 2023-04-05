@@ -1,5 +1,6 @@
 'use strict';
 
+import Comparison from '@cafienne/typescript-client/test/comparison';
 import TestCase from '@cafienne/typescript-client/test/testcase';
 import User from '@cafienne/typescript-client/user';
 import BoardDefinition from '../../../framework/board/boarddefinition';
@@ -13,7 +14,7 @@ const worldwideTenant = new WorldWideTestTenant();
 const user = worldwideTenant.sender;
 const receiver = worldwideTenant.receiver;
 
-export const boardPrinter = async (user: User, board: BoardDefinition|string, prefix: string = "Board: ") => {
+export const boardPrinter = async (user: User, board: BoardDefinition | string, prefix: string = "Board: ") => {
     await BoardService.getBoard(user, board).then(board => {
         console.log(`${prefix}${JSON.stringify(board, undefined, 2)}`);
     })
@@ -28,7 +29,7 @@ export default class TestBoardAPI extends TestCase {
     async run() {
         const guid = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
         const boardId = `board_${guid}`;
- 
+
         const board = await BoardService.createBoard(user, new BoardDefinition("title", undefined, boardId));
 
         await boardPrinter(user, board, 'Created board ');
@@ -42,17 +43,47 @@ export default class TestBoardAPI extends TestCase {
         board.title = "new title";
         await BoardService.updateBoard(user, board);
 
-        const column: ColumnDefinition = new ColumnDefinition('FirstColumn', { "noSchema": null });        
-        const firstColumn = await BoardService.addColumn(user, boardId, column);
+        // Add a first columns
+        const firstColumnTitle = 'FirstColumn';
+        const firstColumnForm = {
+            "noSchema": null
+        }
+        const column: ColumnDefinition = new ColumnDefinition(firstColumnTitle, firstColumnForm);
+        await BoardService.addColumn(user, boardId, column);
+        // Validate that the new column is found, with the expected values.
+        await BoardService.getBoard(user, boardId).then(board => {
+            if (board.columns.length !== 1) {
+                throw new Error(`Expected to find 1 column in the board but found ${board.columns.length} instead`);
+            }
+            const firstColumn = board.columns[0];
+            if (firstColumn.title !== firstColumnTitle) {
+                throw new Error(`Expected the first column to have title '${firstColumnTitle}' but found ${firstColumn.title}`)
+            }
+            if (!Comparison.sameJSON(firstColumnForm, firstColumn.form)) {
+                console.log(`Expecting first column form as ${JSON.stringify(firstColumnForm, undefined, 2)}\nFound first column form to be ${JSON.stringify(firstColumn.form, undefined, 2)}`);
+                throw new Error('Setting form of first column did not lead to the expected result (see logs above)');
+            }
+        });
 
-        firstColumn.form = board.form;
-        await BoardService.updateColumn(user, boardId, firstColumn);
-
-        await BoardService.getBoard(user, boardId);
+        // Update the form
+        column.form = board.form;
+        await BoardService.updateColumn(user, boardId, column);
+        // Validate the form update
+        await BoardService.getBoard(user, boardId).then(board => {
+            if (board.columns.length !== 1) {
+                throw new Error(`Expected to find 1 column in the board but found ${board.columns.length} instead`);
+            }
+            const firstColumn = board.columns[0];
+            const expectedForm = board.form;
+            if (!Comparison.sameJSON(expectedForm, firstColumn.form)) {
+                console.log(`Expecting first column form as ${JSON.stringify(expectedForm, undefined, 2)}\nFound first column form to be ${JSON.stringify(firstColumn.form, undefined, 2)}`);
+                throw new Error('Setting form of first column did not lead to the expected result (see logs above)');
+            }
+        });
 
         // await BoardService.getBoards(user);
 
-        
+
         await BoardService.addBoardRole(user, board, 'BOARD_MANAGER');
         await BoardService.addBoardRole(user, board, 'APPROVE');
         const member = new TeamMember(receiver, ['BOARD_MANAGER', 'APPROVE']);
