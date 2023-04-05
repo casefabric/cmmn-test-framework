@@ -1,5 +1,7 @@
 'use strict';
 
+import { SomeTime } from '@cafienne/typescript-client';
+import Comparison from '@cafienne/typescript-client/test/comparison';
 import TestCase from '@cafienne/typescript-client/test/testcase';
 import BoardDefinition from '../../../framework/board/boarddefinition';
 import BoardFlowService from '../../../framework/board/boardflowservice';
@@ -37,8 +39,23 @@ export default class TestBoardFlowAPI extends TestCase {
         const taskInFirstColumn = await BoardService.getBoard(user, board).then(board => board.getFlowTask(flow.id));
 
         await BoardFlowService.claimFlowTask(user, board, taskInFirstColumn.flowId, taskInFirstColumn.id);
-        await BoardService.getBoard(user, board);
-        await BoardFlowService.saveFlowTask(user, board, taskInFirstColumn.flowId, taskInFirstColumn.id, "MyFirstFlowWithChangedSubject", { input: "een ander getal"});
+        const claimedTask = await BoardService.getBoard(user, board).then(board => board.getFlowTask(flow.id));
+        if (claimedTask.claimedBy !== user.id) {
+            throw new Error(`Expected to find '${user}' as the assignee of the task, but found '${claimedTask.claimedBy}'`);
+        }
+        
+        const changedSubject = 'MyFirstFlowWithChangedSubject';
+        const changedData = { input: "een ander getal"};
+        await BoardFlowService.saveFlowTask(user, board, taskInFirstColumn.flowId, taskInFirstColumn.id, changedSubject, changedData);
+        const savedTask = await BoardService.getBoard(user, board).then(board => board.getFlowTask(flow.id));
+        if (savedTask.subject !== changedSubject) {
+            throw new Error(`Expected to find '${changedSubject}' as the subject of the task, but found '${savedTask.subject}'`);
+        }
+        if (! Comparison.sameJSON(changedData, savedTask.data)) {
+            console.log(`Expecting task data ${JSON.stringify(changedData, undefined, 2)}\nFound task data ${JSON.stringify(savedTask.data, undefined, 2)}`);
+            throw new Error('Saving task data did not lead to the expected result (see logs above)');
+        }
+
         await BoardFlowService.completeFlowTask(user, board, taskInFirstColumn.flowId, taskInFirstColumn.id, "MyFirstFlowWithOriginalSubject", { input: "een getal"});
 
         const taskInSecondColumn = await BoardService.getBoard(user, board).then(board => board.getFlowTask(flow.id));
