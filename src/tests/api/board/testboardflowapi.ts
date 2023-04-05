@@ -8,6 +8,7 @@ import BoardFlowService from '../../../framework/board/boardflowservice';
 import BoardService from '../../../framework/board/boardservice';
 import ColumnDefinition from '../../../framework/board/columndefinition';
 import WorldWideTestTenant from '../../worldwidetesttenant';
+import { boardPrinter } from './testboardapi';
 
 
 const worldwideTenant = new WorldWideTestTenant();
@@ -20,13 +21,20 @@ export default class TestBoardFlowAPI extends TestCase {
     }
 
     async run() {
-        const board = await BoardService.createBoard(user, new BoardDefinition("Board to Test Flow API"));
+        const form = {
+            schema: {
+            },
+            uiSchema: {
+            }
+        };
 
-        console.log("Created board " + JSON.stringify(board, undefined, 2))
+        const board = await BoardService.createBoard(user, new BoardDefinition("Board to Test Flow API", form));
+
+        await boardPrinter(user, board, "Created board ");
 
         // await SomeTime(5000)
 
-        const column: ColumnDefinition = new ColumnDefinition('FirstColumn', board.form);
+        const column: ColumnDefinition = new ColumnDefinition('FirstColumn', form);
         const column2: ColumnDefinition = new ColumnDefinition('SecondColumn');
 
         await BoardService.addColumn(user, board, column);
@@ -69,6 +77,8 @@ export default class TestBoardFlowAPI extends TestCase {
             // It is available?!
             throw new Error("Did not expect the task to be available after it went through all columns of the board");
         }
+
+        await boardPrinter(user, board);
 
         console.log("\nBoard ID: " + board.id)
         console.log("\nFlow1: " + flow.id)

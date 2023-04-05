@@ -1,6 +1,7 @@
 'use strict';
 
 import TestCase from '@cafienne/typescript-client/test/testcase';
+import User from '@cafienne/typescript-client/user';
 import BoardDefinition from '../../../framework/board/boarddefinition';
 import BoardService from '../../../framework/board/boardservice';
 import { TeamMember } from '../../../framework/board/boardteam';
@@ -11,6 +12,12 @@ import WorldWideTestTenant from '../../worldwidetesttenant';
 const worldwideTenant = new WorldWideTestTenant();
 const user = worldwideTenant.sender;
 const receiver = worldwideTenant.receiver;
+
+export const boardPrinter = async (user: User, board: BoardDefinition|string, prefix: string = "Board: ") => {
+    await BoardService.getBoard(user, board).then(board => {
+        console.log(`${prefix}${JSON.stringify(board, undefined, 2)}`);
+    })
+}
 
 export default class TestBoardAPI extends TestCase {
     isDefaultTest: boolean = false;
@@ -24,7 +31,7 @@ export default class TestBoardAPI extends TestCase {
  
         const board = await BoardService.createBoard(user, new BoardDefinition("title", undefined, boardId));
 
-        console.log("Created board " + JSON.stringify(board, undefined, 2))
+        await boardPrinter(user, board, 'Created board ');
 
         board.form = {
             schema: {
