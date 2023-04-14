@@ -12,6 +12,7 @@ import TestDeleteTenantWithContent from './tests/api/archiving/testdeletetenantw
 import TestBoardAPI from './tests/api/board/testboardapi';
 import TestBoardFlowAPI from './tests/api/board/testboardflowapi';
 import TestBoardTeamAPI from './tests/api/board/testboardteamapi';
+import TestFlowAuthorization from './tests/api/board/testflowauthorization';
 import TestFootballBusinessIdentifiers from './tests/api/businessidentifiers/footballbusinessidentifiers/testfootballbusinessidentifiers';
 import TestBusinessIdentifiers from './tests/api/businessidentifiers/testbusinessidentifiers';
 import TestHelloWorldBusinessIdentifiers from './tests/api/businessidentifiers/testhelloworldbusinessidentifiers';
@@ -223,6 +224,7 @@ const AllTestCases = new TestClasses([
     , TestBoardAPI
     , TestBoardTeamAPI
     , TestBoardFlowAPI
+    , TestFlowAuthorization
 ]);
 
 

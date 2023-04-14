@@ -13,6 +13,9 @@ import WorldWideTestTenant from '../../worldwidetesttenant';
 const worldwideTenant = new WorldWideTestTenant();
 const user = worldwideTenant.sender;
 const receiver = worldwideTenant.receiver;
+const roleRequest = 'REQUEST';
+const roleApprove = 'APPROVE';
+const roleUnassigned = 'UnassignedRole';
 
 export const boardPrinter = async (user: User, board: BoardDefinition | string, prefix: string = "Board: ") => {
     await BoardService.getBoard(user, board).then(board => {
@@ -67,6 +70,7 @@ export default class TestBoardAPI extends TestCase {
 
         // Update the form
         column.form = board.form;
+        column.role = roleRequest;
         await BoardService.updateColumn(user, boardId, column);
         // Validate the form update
         await BoardService.getBoard(user, boardId).then(board => {
@@ -79,14 +83,18 @@ export default class TestBoardAPI extends TestCase {
                 console.log(`Expecting first column form as ${JSON.stringify(expectedForm, undefined, 2)}\nFound first column form to be ${JSON.stringify(firstColumn.form, undefined, 2)}`);
                 throw new Error('Setting form of first column did not lead to the expected result (see logs above)');
             }
+
+            if (firstColumn.role !== roleRequest) {
+                throw new Error(`Expected`)
+            }
         });
 
         // await BoardService.getBoards(user);
 
 
-        await BoardService.addBoardRole(user, board, 'BOARD_MANAGER');
-        await BoardService.addBoardRole(user, board, 'APPROVE');
-        const member = new TeamMember(receiver, ['BOARD_MANAGER', 'APPROVE']);
+        await BoardService.addBoardRole(user, board, roleRequest);
+        await BoardService.addBoardRole(user, board, roleApprove);
+        const member = new TeamMember(receiver, [roleRequest, roleApprove]);
 
         await BoardService.addTeamMember(user, board, member);
 

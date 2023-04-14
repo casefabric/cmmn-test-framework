@@ -3,7 +3,7 @@
 import TestCase from '@cafienne/typescript-client/test/testcase';
 import BoardDefinition from '../../../framework/board/boarddefinition';
 import BoardService from '../../../framework/board/boardservice';
-import { TeamMember } from '../../../framework/board/boardteam';
+import { BoardManager, TeamMember } from '../../../framework/board/boardteam';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 import { boardPrinter } from './testboardapi';
 
@@ -19,7 +19,7 @@ export default class TestBoardTeamAPI extends TestCase {
     }
 
     async run() {
-        const roleBoardManager = 'BOARD_MANAGER';
+        const roleRequest = 'REQUEST';
         const roleApprove = 'APPROVE';
         const roleUnassigned = 'UnassignedRole';
 
@@ -34,7 +34,7 @@ export default class TestBoardTeamAPI extends TestCase {
             }
         });
 
-        await BoardService.addBoardRole(sender, board, roleBoardManager);
+        await BoardService.addBoardRole(sender, board, roleRequest);
         await BoardService.addBoardRole(sender, board, roleApprove);
         await BoardService.getBoard(sender, board).then(board => {
             if (board.team.roles.length !== 2) {
@@ -43,14 +43,14 @@ export default class TestBoardTeamAPI extends TestCase {
         });
 
 
-        await BoardService.removeBoardRole(sender, board, roleBoardManager);
+        await BoardService.removeBoardRole(sender, board, roleRequest);
         await BoardService.getBoard(sender, board).then(board => {
-            if (board.team.roles.includes(roleBoardManager)) {
+            if (board.team.roles.includes(roleRequest)) {
                 throw new Error(`Expected role board manager to be removed, but it is still present`);
             }
         });
 
-        await BoardService.addBoardRole(sender, board, roleBoardManager);
+        await BoardService.addBoardRole(sender, board, roleRequest);
         await BoardService.addBoardRole(sender, board, roleUnassigned);
 
         await boardPrinter(sender, board);
@@ -58,7 +58,7 @@ export default class TestBoardTeamAPI extends TestCase {
         // Receiver should not have access to the board before being added to the team
         await BoardService.getBoard(receiver, board, 404);
 
-        const member = new TeamMember(receiver, [roleBoardManager, roleApprove]);
+        const member = new TeamMember(receiver, [roleRequest, roleApprove]);
 
         await BoardService.addTeamMember(sender, board, member);
 
@@ -93,6 +93,16 @@ export default class TestBoardTeamAPI extends TestCase {
 
         // And, if no longer member, receiver should no longer have access to the board
         await BoardService.getBoard(receiver, board, 404);
+
+        // Check that we can add receiver as a board manager 
+        const boardManager = new BoardManager(receiver)
+        await BoardService.addTeamMember(sender, board, boardManager);
+
+        // Receiver now should be able to remove another board manager
+        await BoardService.removeTeamMember(receiver, board, new TeamMember(sender));
+
+        // Sender should no longer have access to the board
+        await BoardService.getBoard(sender, board, 404);
 
         console.log("\nFinished test on BoardAPI - Board: " + board)
     }

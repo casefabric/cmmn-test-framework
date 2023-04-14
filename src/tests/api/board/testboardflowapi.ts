@@ -12,7 +12,8 @@ import { boardPrinter } from './testboardapi';
 
 
 const worldwideTenant = new WorldWideTestTenant();
-const user = worldwideTenant.sender;
+const sender = worldwideTenant.sender;
+const receiver = worldwideTenant.receiver;
 
 export default class TestBoardFlowAPI extends TestCase {
     isDefaultTest: boolean = false;
@@ -28,34 +29,37 @@ export default class TestBoardFlowAPI extends TestCase {
             }
         };
 
-        const board = await BoardService.createBoard(user, new BoardDefinition("Board to Test Flow API", form));
+        const board = await BoardService.createBoard(sender, new BoardDefinition("Board to Test Flow API", form));
 
-        await boardPrinter(user, board, "Created board ");
+        await boardPrinter(sender, board, "Created board ");
 
         // await SomeTime(5000)
 
         const column: ColumnDefinition = new ColumnDefinition('FirstColumn', form);
         const column2: ColumnDefinition = new ColumnDefinition('SecondColumn');
 
-        await BoardService.addColumn(user, board, column);
+        await BoardService.addColumn(sender, board, column);
 
-        await BoardService.addColumn(user, board, column2);
+        await BoardService.addColumn(sender, board, column2);
 
-        const flow = await BoardFlowService.startFlow(user, board, { subject: 'MyFirstFlow', data: { input: "een getal"}});
-        const flow2 = await BoardFlowService.startFlow(user, board, { subject: 'MySecondFlow', data: { somethingElse: false}});
+        const flow = await BoardFlowService.startFlow(sender, board, { subject: 'MyFirstFlow', data: { input: "een getal"}});
+        const flow2 = await BoardFlowService.startFlow(sender, board, { subject: 'MySecondFlow', data: { somethingElse: false}});
         
-        const taskInFirstColumn = await BoardService.getBoard(user, board).then(board => board.getFlowTask(flow.id));
+        const taskInFirstColumn = await BoardService.getBoard(sender, board).then(board => board.getFlowTask(flow.id));
 
-        await BoardFlowService.claimFlowTask(user, board, taskInFirstColumn.flowId, taskInFirstColumn.id);
-        const claimedTask = await BoardService.getBoard(user, board).then(board => board.getFlowTask(flow.id));
-        if (claimedTask.claimedBy !== user.id) {
-            throw new Error(`Expected to find '${user}' as the assignee of the task, but found '${claimedTask.claimedBy}'`);
+        console.log("\nFlow id: " + flow.id)
+        await BoardFlowService.claimFlowTask(receiver, board, taskInFirstColumn.flowId, taskInFirstColumn.id, 404);
+
+        await BoardFlowService.claimFlowTask(sender, board, taskInFirstColumn.flowId, taskInFirstColumn.id);
+        const claimedTask = await BoardService.getBoard(sender, board).then(board => board.getFlowTask(flow.id));
+        if (claimedTask.claimedBy !== sender.id) {
+            throw new Error(`Expected to find '${sender}' as the assignee of the task, but found '${claimedTask.claimedBy}'`);
         }
         
         const changedSubject = 'MyFirstFlowWithChangedSubject';
         const changedData = { input: "een ander getal"};
-        await BoardFlowService.saveFlowTask(user, board, taskInFirstColumn.flowId, taskInFirstColumn.id, changedSubject, changedData);
-        const savedTask = await BoardService.getBoard(user, board).then(board => board.getFlowTask(flow.id));
+        await BoardFlowService.saveFlowTask(sender, board, taskInFirstColumn.flowId, taskInFirstColumn.id, changedSubject, changedData);
+        const savedTask = await BoardService.getBoard(sender, board).then(board => board.getFlowTask(flow.id));
         if (savedTask.subject !== changedSubject) {
             throw new Error(`Expected to find '${changedSubject}' as the subject of the task, but found '${savedTask.subject}'`);
         }
@@ -64,21 +68,21 @@ export default class TestBoardFlowAPI extends TestCase {
             throw new Error('Saving task data did not lead to the expected result (see logs above)');
         }
 
-        await BoardFlowService.completeFlowTask(user, board, taskInFirstColumn.flowId, taskInFirstColumn.id, "MyFirstFlowWithOriginalSubject", { input: "een getal"});
+        await BoardFlowService.completeFlowTask(sender, board, taskInFirstColumn.flowId, taskInFirstColumn.id, "MyFirstFlowWithOriginalSubject", { input: "een getal"});
 
-        const taskInSecondColumn = await BoardService.getBoard(user, board).then(board => board.getFlowTask(flow.id));
+        const taskInSecondColumn = await BoardService.getBoard(sender, board).then(board => board.getFlowTask(flow.id));
 
-        await BoardFlowService.completeFlowTask(user, board, taskInSecondColumn.flowId, taskInSecondColumn.id, "MyFirstFlow", { input: "Completing the first flow!"});
+        await BoardFlowService.completeFlowTask(sender, board, taskInSecondColumn.flowId, taskInSecondColumn.id, "MyFirstFlow", { input: "Completing the first flow!"});
 
-        await BoardService.getBoard(user, board);
+        await BoardService.getBoard(sender, board);
 
-        const taskNoLongerAvailable = await BoardService.getBoard(user, board).then(board => board.getFlowTask(flow.id));
+        const taskNoLongerAvailable = await BoardService.getBoard(sender, board).then(board => board.getFlowTask(flow.id));
         if (taskNoLongerAvailable) {
             // It is available?!
             throw new Error("Did not expect the task to be available after it went through all columns of the board");
         }
 
-        await boardPrinter(user, board);
+        await boardPrinter(sender, board);
 
         console.log("\nBoard ID: " + board.id)
         console.log("\nFlow1: " + flow.id)
