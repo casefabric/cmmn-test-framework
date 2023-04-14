@@ -4,6 +4,7 @@ import Config from './config';
 import NextVersion from './nextversion/nextversion';
 import TestAnonymousStartCase from './tests/api/anonymous/testanonymousstartcase';
 import TestNoAnonymousStartCase from './tests/api/anonymous/testnoanonymousstartcase';
+import DeleteSingleTenant from './tests/api/archiving/deletesingletenant';
 import TestArchiveCase from './tests/api/archiving/testarchivecase';
 import TestDeleteCase from './tests/api/archiving/testdeletecase';
 import TestDeleteTenant from './tests/api/archiving/testdeletetenant';
@@ -196,6 +197,7 @@ const AllTestCases = new TestClasses([
     , TestDeleteCase
     , TestDeleteHelloworld
     , TestDeleteTenant
+    , DeleteSingleTenant
     , TestDeleteTenantWithContent
     , TestIncidentManagement
     , TestTravelRequest
