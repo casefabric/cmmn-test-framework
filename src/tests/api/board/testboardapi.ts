@@ -51,8 +51,8 @@ export default class TestBoardAPI extends TestCase {
         const firstColumnForm = {
             "noSchema": null
         }
-        const column: ColumnDefinition = new ColumnDefinition(firstColumnTitle, firstColumnForm);
-        await BoardService.addColumn(user, boardId, column);
+        const column = await BoardService.addColumn(user, boardId, new ColumnDefinition(firstColumnTitle, firstColumnForm));
+
         // Validate that the new column is found, with the expected values.
         await BoardService.getBoard(user, boardId).then(board => {
             if (board.columns.length !== 1) {
@@ -69,7 +69,19 @@ export default class TestBoardAPI extends TestCase {
         });
 
         // Adding the column again should result in 400 BadRequest
-        await BoardService.addColumn(user, boardId, column, 400);
+        await BoardService.addColumn(user, board, column, 400);
+
+        // Add 3 more columns, and then remove 1
+        const column2 = await BoardService.addColumn(user, board, new ColumnDefinition("column2"));
+        const column3 = await BoardService.addColumn(user, board, new ColumnDefinition("column3"));
+        const column4 = await BoardService.addColumn(user, board, new ColumnDefinition("column4"));
+        await assertColumnCount(user, board, 4);
+        await BoardService.removeColumn(user, board, column2);
+        await assertColumnCount(user, board, 3);
+        await BoardService.removeColumn(user, board, column4);
+        await assertColumnCount(user, board, 2);
+        await BoardService.removeColumn(user, board, column3);
+        await assertColumnCount(user, board, 1);
 
         // Update the form
         column.form = board.form;
@@ -94,7 +106,6 @@ export default class TestBoardAPI extends TestCase {
 
         // await BoardService.getBoards(user);
 
-
         await BoardService.addBoardRole(user, board, roleRequest);
         await BoardService.addBoardRole(user, board, roleApprove);
         const member = new TeamMember(receiver, [roleRequest, roleApprove]);
@@ -105,4 +116,13 @@ export default class TestBoardAPI extends TestCase {
 
         console.log("\nFinished test on BoardAPI - Board id is " + board.id)
     }
+}
+
+export async function assertColumnCount(user: User, board: BoardDefinition|string, expectedCount: number): Promise<BoardDefinition> {
+    return BoardService.getBoard(user, board).then(board => {
+        if (board.columns.length != expectedCount) {
+            throw new Error(`Expecting board to have ${expectedCount} columns, but found ${board.columns.length} instead`);
+        }
+        return board;
+    })
 }
