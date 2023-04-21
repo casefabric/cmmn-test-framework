@@ -68,6 +68,9 @@ export default class TestBoardAPI extends TestCase {
             }
         });
 
+        // Adding the column again should result in 400 BadRequest
+        await BoardService.addColumn(user, boardId, column, 400);
+
         // Update the form
         column.form = board.form;
         column.role = roleRequest;
