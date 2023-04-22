@@ -11,7 +11,7 @@ import WorldWideTestTenant from '../../worldwidetesttenant';
 
 
 const worldwideTenant = new WorldWideTestTenant();
-const user = worldwideTenant.sender;
+const sender = worldwideTenant.sender;
 const receiver = worldwideTenant.receiver;
 const roleRequest = 'REQUEST';
 const roleApprove = 'APPROVE';
@@ -33,9 +33,9 @@ export default class TestBoardAPI extends TestCase {
         const guid = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
         const boardId = `board_${guid}`;
 
-        const board = await BoardService.createBoard(user, new BoardDefinition("title", undefined, boardId));
+        const board = await BoardService.createBoard(sender, new BoardDefinition("title", undefined, boardId));
 
-        await boardPrinter(user, board, 'Created board ');
+        await boardPrinter(sender, board, 'Created board ');
 
         board.form = {
             schema: {
@@ -44,17 +44,17 @@ export default class TestBoardAPI extends TestCase {
             }
         };
         board.title = "new title";
-        await BoardService.updateBoard(user, board);
+        await BoardService.updateBoard(sender, board);
 
         // Add a first columns
         const firstColumnTitle = 'FirstColumn';
         const firstColumnForm = {
             "noSchema": null
         }
-        const column = await BoardService.addColumn(user, boardId, new ColumnDefinition(firstColumnTitle, firstColumnForm));
+        const column = await BoardService.addColumn(sender, boardId, new ColumnDefinition(firstColumnTitle, firstColumnForm));
 
         // Validate that the new column is found, with the expected values.
-        await BoardService.getBoard(user, boardId).then(board => {
+        await BoardService.getBoard(sender, boardId).then(board => {
             if (board.columns.length !== 1) {
                 throw new Error(`Expected to find 1 column in the board but found ${board.columns.length} instead`);
             }
@@ -69,26 +69,26 @@ export default class TestBoardAPI extends TestCase {
         });
 
         // Adding the column again should result in 400 BadRequest
-        await BoardService.addColumn(user, board, column, 400);
+        await BoardService.addColumn(sender, board, column, 400);
 
         // Add 3 more columns, and then remove 1
-        const column2 = await BoardService.addColumn(user, board, new ColumnDefinition("column2"));
-        const column3 = await BoardService.addColumn(user, board, new ColumnDefinition("column3"));
-        const column4 = await BoardService.addColumn(user, board, new ColumnDefinition("column4"));
-        await assertColumnCount(user, board, 4);
-        await BoardService.removeColumn(user, board, column2);
-        await assertColumnCount(user, board, 3);
-        await BoardService.removeColumn(user, board, column4);
-        await assertColumnCount(user, board, 2);
-        await BoardService.removeColumn(user, board, column3);
-        await assertColumnCount(user, board, 1);
+        const column2 = await BoardService.addColumn(sender, board, new ColumnDefinition("column2"));
+        const column3 = await BoardService.addColumn(sender, board, new ColumnDefinition("column3"));
+        const column4 = await BoardService.addColumn(sender, board, new ColumnDefinition("column4"));
+        await assertColumnCount(sender, board, 4);
+        await BoardService.removeColumn(sender, board, column2);
+        await assertColumnCount(sender, board, 3);
+        await BoardService.removeColumn(sender, board, column4);
+        await assertColumnCount(sender, board, 2);
+        await BoardService.removeColumn(sender, board, column3);
+        await assertColumnCount(sender, board, 1);
 
         // Update the form
         column.form = board.form;
         column.role = roleRequest;
-        await BoardService.updateColumn(user, boardId, column);
+        await BoardService.updateColumn(sender, boardId, column);
         // Validate the form update
-        await BoardService.getBoard(user, boardId).then(board => {
+        await BoardService.getBoard(sender, boardId).then(board => {
             if (board.columns.length !== 1) {
                 throw new Error(`Expected to find 1 column in the board but found ${board.columns.length} instead`);
             }
@@ -104,15 +104,32 @@ export default class TestBoardAPI extends TestCase {
             }
         });
 
-        // await BoardService.getBoards(user);
+        await BoardService.getBoards(sender).then(list => {
+            if (! list.find(b => b.id === board.id)) {
+                throw new Error(`Expected to find the board for sender, but it is not present`)
+            }
+        });
 
-        await BoardService.addBoardRole(user, board, roleRequest);
-        await BoardService.addBoardRole(user, board, roleApprove);
+        await BoardService.getBoards(receiver).then(list => {
+            if (list.find(b => b.id === board.id)) {
+                throw new Error(`Did not expect to find the board for receiver, but it is present`)
+            }
+        });
+
+
+        await BoardService.addBoardRole(sender, board, roleRequest);
+        await BoardService.addBoardRole(sender, board, roleApprove);
         const member = new TeamMember(receiver, [roleRequest, roleApprove]);
 
-        await BoardService.addTeamMember(user, board, member);
+        await BoardService.addTeamMember(sender, board, member);
 
-        await BoardService.getBoard(user, boardId);
+        await BoardService.getBoard(sender, boardId);
+
+        await BoardService.getBoards(receiver).then(list => {
+            if (! list.find(b => b.id === board.id)) {
+                throw new Error(`Expected to find the board for receiver, but it is not present`)
+            }
+        });
 
         console.log("\nFinished test on BoardAPI - Board id is " + board.id)
     }
