@@ -81,6 +81,19 @@ export default class TestBoardFlowAPI extends TestCase {
             // It is available?!
             throw new Error("Did not expect the task to be available after it went through all columns of the board");
         }
+        await boardPrinter(sender, board);
+
+        const flow2Task = await BoardService.getBoard(sender, board).then(board => board.getFlowTask(flow2.id));
+
+        await BoardFlowService.cancelFlow(sender, board, flow2.id);
+
+        await boardPrinter(sender, board);
+
+        await BoardService.getBoard(sender, board).then(board => board.getFlowTask(flow2.id)).then(task => {
+            if (task) {
+                throw new Error("Did not expect to find any task for the second flow, as that was canceled")
+            }
+        })
 
         await boardPrinter(sender, board);
 

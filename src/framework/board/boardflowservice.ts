@@ -25,6 +25,12 @@ export default class BoardFlowService {
         });
     }
 
+    static async cancelFlow(user: User, board: BoardDefinition|string, flowId: string, expectedStatusCode: number = 202, errorMsg = `CancelFlow is not expected to succeed for user ${user} on board ${board}`) {
+        if (Config.PlatformService.log) logger.debug(`Canceling flow in board ${board}`);
+        const response = await CafienneService.delete(`/boards/${board}/flows/${flowId}`, user);
+        return checkResponse(response, errorMsg, expectedStatusCode);
+    }
+
     static async claimFlowTask(user: User, board: BoardDefinition|string, flow: string|Flow, taskId: string, expectedStatusCode: number = 202, errorMsg = `ClaimFlowTask is not expected to succeed for user ${user} on board ${board}`) {
         if (Config.PlatformService.log) logger.debug(`Claiming task in flow ${flow} in board ${board}`);
         const response = await CafienneService.put(`/boards/${board}/flows/${flow}/tasks/${taskId}/claim`, user);
