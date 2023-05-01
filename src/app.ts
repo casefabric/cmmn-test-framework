@@ -82,6 +82,7 @@ import TestIncidentManagement from './tests/incidentmanagement/incidentmanagemen
 import TestTravelRequest from './tests/travelrequest/testtravelrequest';
 import TestDeleteHelloworld from './tests/api/archiving/testdeletehelloworld';
 import TestArchiveHelloworld from './tests/api/archiving/testarchivehelloworld';
+import TestBoardFlowUpdateDefinition from './tests/api/board/testboardflowupdatedefinition';
 
 function findTestsFromCommandLineArguments(): Array<string> {
     const time = process.argv[2];
@@ -139,7 +140,7 @@ class TestResults {
     }
 
     toString() {
-        return this.list.map((test, index) => ` ${index < 9 ? '0' + (index + 1): index + 1} - ${test}\n`).join('');
+        return this.list.map((test, index) => ` ${index < 9 ? '0' + (index + 1) : index + 1} - ${test}\n`).join('');
     }
 }
 
@@ -225,6 +226,7 @@ const AllTestCases = new TestClasses([
     , TestBoardTeamAPI
     , TestBoardFlowAPI
     , TestFlowAuthorization
+    , TestBoardFlowUpdateDefinition
 ]);
 
 
