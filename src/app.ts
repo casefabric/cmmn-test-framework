@@ -83,6 +83,7 @@ import TestTravelRequest from './tests/travelrequest/testtravelrequest';
 import TestDeleteHelloworld from './tests/api/archiving/testdeletehelloworld';
 import TestArchiveHelloworld from './tests/api/archiving/testarchivehelloworld';
 import TestBoardFlowUpdateDefinition from './tests/api/board/testboardflowupdatedefinition';
+import TestCaseTeamMigration from './tests/api/case/migration/testcaseteammigration';
 
 function findTestsFromCommandLineArguments(): Array<string> {
     const time = process.argv[2];
@@ -220,6 +221,7 @@ const AllTestCases = new TestClasses([
     , TestProcessTaskMigration
     , TestCaseMigration
     , TestSubCaseMigration
+    , TestCaseTeamMigration
     , TestRecovery
     , TestCompatibility
     , TestBoardAPI
