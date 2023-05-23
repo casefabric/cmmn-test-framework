@@ -1,3 +1,5 @@
 build*
 node_modules*
 docker/run*
+.metals*
+.vscode*
