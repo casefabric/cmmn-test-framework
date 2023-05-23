@@ -75,6 +75,7 @@ import TestCompatibility from './tests/compatibility/testcompatibility';
 import TestHelloworld from './tests/helloworld/testhelloworld';
 import TestIncidentManagement from './tests/incidentmanagement/incidentmanagement';
 import TestTravelRequest from './tests/travelrequest/testtravelrequest';
+import TestDeleteHelloworld from './tests/api/archiving/testdeletehelloworld';
 
 function findTestsFromCommandLineArguments(): Array<string> {
     const time = process.argv[2];
@@ -188,6 +189,7 @@ const AllTestCases = new TestClasses([
     , TestEventAuthorization
     , TestArchiveCase
     , TestDeleteCase
+    , TestDeleteHelloworld
     , TestDeleteTenant
     , TestDeleteTenantWithContent
     , TestIncidentManagement
