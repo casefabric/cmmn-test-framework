@@ -4,13 +4,13 @@
   "description": "A javascript based test framework for CMMN case models",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node ./build/app.js",
     "build": "tsc",
     "dev": "ts-node-dev --transpile-only ./src/app.ts",
     "prod": "tsc && node ./build/app.js"
   },
   "author": "",
-  "license": "MPLv2",
+  "license": "MPL-2.0",
   "dependencies": {
     "@cafienne/typescript-client": "^0.7.1",
     "express": "^4.17.1",

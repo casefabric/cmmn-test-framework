@@ -101,7 +101,7 @@ class TestClasses {
     }
 
     static getTestClass(name: string) {
-        const t = TestClasses.testList.find(t => t.name === name.toLowerCase());
+        const t = TestClasses.testList.find(t => (t.name === name.toLowerCase() || t.name === `test${name}`.toLowerCase()));
         if (!t) {
             throw new Error(`Cannot find a test '${name}'`);
         }
