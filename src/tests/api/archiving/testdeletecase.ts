@@ -1,6 +1,6 @@
 'use strict';
 
-import { PollUntilSuccess } from '@cafienne/typescript-client';
+import { PollUntilSuccess, SomeTime } from '@cafienne/typescript-client';
 import State from '@cafienne/typescript-client/cmmn/state';
 import CaseService from '@cafienne/typescript-client/service/case/caseservice';
 import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
@@ -43,6 +43,8 @@ export default class TestDeleteCase extends TestCase {
     console.log(">>>>>>>> DELETING Case " + caseInstance.id);
 
     await StorageService.deleteCase(user, caseInstance);
+
+    await SomeTime(1000);
 
     await CaseService.getDiscretionaryItems(user, caseInstance, 404);
 

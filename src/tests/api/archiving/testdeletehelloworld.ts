@@ -41,7 +41,7 @@ export default class TestDeleteHelloworld extends TestCase {
 
     await StorageService.deleteCase(user, caseInstance);
 
-    // await SomeTime(1000);
+    await SomeTime(1000);
 
     await CaseService.getDiscretionaryItems(user, caseInstance, 404);
 
