@@ -77,6 +77,7 @@ import TestIncidentManagement from './tests/incidentmanagement/incidentmanagemen
 import TestTravelRequest from './tests/travelrequest/testtravelrequest';
 import TestDeleteHelloworld from './tests/api/archiving/testdeletehelloworld';
 import TestArchiveHelloworld from './tests/api/archiving/testarchivehelloworld';
+import TestFourEyes from './tests/api/task/humantask/testfoureyes';
 
 function findTestsFromCommandLineArguments(): Array<string> {
     const time = process.argv[2];
@@ -162,6 +163,7 @@ const AllTestCases = new TestClasses([
     , TestTaskFilterAPI2
     , TestTaskCountAPI
     , TestTaskWithSpaces
+    , TestFourEyes
     , TestDebugMode
     , TestDocumentationAPI
     , TestRepositoryAPI
