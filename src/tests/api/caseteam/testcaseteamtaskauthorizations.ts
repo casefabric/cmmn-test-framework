@@ -219,9 +219,9 @@ export default class TestCaseTeamTaskAuthorizations extends TestCase {
         // Check receiver's roles in the team
         await assertCaseTeamUser(sender, caseInstance, new CaseTeamUser(receiver, [approverRole, paRole, requestorRole]));
 
-        // Sender can complete the task assigned to receiver
+        // Sender can complete the task assigned to receiver, but then assignee is changed to sender
         await TaskService.completeTask(sender, requestTask);
-        await assertTask(sender, requestTask, 'Complete', TaskState.Completed, receiver, receiver);
+        await assertTask(sender, requestTask, 'Complete', TaskState.Completed, sender, sender);
 
         // Again, sender removes the employee from the team
         await CaseTeamService.removeUser(sender, caseInstance, employee);
@@ -263,7 +263,7 @@ export default class TestCaseTeamTaskAuthorizations extends TestCase {
         // Neither employee nor receiver should not be able to complete the task which is assigned to sender
         await TaskService.completeTask(employee, assistTask, {}, 401, 'Employee should not be able to complete the task which is assigned to sender');
         await TaskService.completeTask(receiver, assistTask, {}, 401, 'Receiver should not be able to complete the task which is assigned to sender');
-        await assertTask(sender, assistTask, 'Complete', TaskState.Assigned, sender, sender);
+        await assertTask(sender, assistTask, 'Claim', TaskState.Assigned, sender, sender);
 
         // Sender revokes the task
         await TaskService.revokeTask(sender, assistTask);
@@ -271,10 +271,10 @@ export default class TestCaseTeamTaskAuthorizations extends TestCase {
 
         // Finally, employee can complete the Assist task b/e employee has the appropriate role 
         await TaskService.completeTask(employee, assistTask);
-        await assertTask(sender, assistTask, 'Complete', TaskState.Completed, User.NONE, User.NONE);
+        await assertTask(sender, assistTask, 'Complete', TaskState.Completed, employee, employee);
 
         // Receiver can also complete the Task Without Role task eventhough receiver is not case owner
         await TaskService.completeTask(receiver, taskWithoutRole, {});
-        await assertTask(receiver, assistTask, 'Complete', TaskState.Completed, User.NONE, User.NONE);
+        await assertTask(receiver, taskWithoutRole, 'Complete', TaskState.Completed, receiver, receiver);
     }
 }
