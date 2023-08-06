@@ -10,7 +10,7 @@ const Config = {
     },
     CafienneService: {
         // URL of backend engine
-        url: 'http://localhost:2027/',
+        url: 'http://0.0.0.0:2027/',
         log: {
             // Whether or not to log HTTP call information (user, url, method type, headers)
             url: true, // URL includes call number, method type and user id
@@ -30,7 +30,7 @@ const Config = {
     },
     TokenService: {
         // URL of token service
-        url: 'http://localhost:2377/token',
+        url: 'http://0.0.0.0:2377/token',
         // Issuer can be configured. The issuer must equal what is configure inside the Cafienne Engine
         issuer: 'http://localhost:8080',
         // Whether or not to show the tokens requested and updated in the user
