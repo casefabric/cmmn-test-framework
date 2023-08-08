@@ -58,10 +58,8 @@ export default class TestCaseTeamMigration extends TestCase {
             throw new Error('Expected to find sub case named "migration_subcase", but could not find it');
         }
 
-        await TaskService.getCaseTasks(sender, case_before).then(async tasks => {
-            // Now complete the task in case, to trigger the subcase
-            await TaskService.completeTask(sender, findTask(tasks, 'HumanTask'));
-        });
+        // Now complete the task in case, to trigger the subcase
+        await TaskService.getCaseTasks(sender, case_before).then(async tasks => await TaskService.completeTask(sender, findTask(tasks, 'HumanTask')));
 
         const newCaseTeam = new CaseTeam([
             new CaseOwner(sender, ["role1", "role3_v1"]),

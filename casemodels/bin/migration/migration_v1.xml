@@ -32,7 +32,7 @@
             <caseFileItem id="_0UEh7_2" name="Output" multiplicity="ExactlyOne" definitionRef="root.cfid"/>
         </caseFileModel>
         <casePlanModel id="cm__0UEh7_0" name="migration_subcase" autoComplete="true">
-            <planItem id="pi_ht__0UEh7_0" name="HumanTask_0" definitionRef="ht__0UEh7_0">
+            <planItem id="pi_ht__0UEh7_0" name="Task1" definitionRef="ht__0UEh7_0">
                 <itemControl id="_0UEh7_4">
                     <repetitionRule id="_0UEh7_5">
                         <condition id="_0UEh7_6">
@@ -43,7 +43,9 @@
                     </repetitionRule>
                 </itemControl>
             </planItem>
-            <humanTask id="ht__0UEh7_0" name="HumanTask_0" isBlocking="true"/>
+            <planItem id="pi_ht__0UEh7_1" name="Task2" definitionRef="ht__0UEh7_1"/>
+            <humanTask id="ht__0UEh7_0" name="Task1" isBlocking="true"/>
+            <humanTask id="ht__0UEh7_1" name="Task2" isBlocking="true"/>
         </casePlanModel>
         <caseRoles>
             <role id="_0UEh7_7" name="role1"/>
@@ -73,6 +75,9 @@
             </CMMNShape>
             <CMMNShape cmmnElementRef="pi_ht__0UEh7_0">
                 <Bounds x="200" y="140" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__0UEh7_1">
+                <Bounds x="426" y="140" width="140" height="80"/>
             </CMMNShape>
         </CMMNDiagram>
     </CMMNDI>

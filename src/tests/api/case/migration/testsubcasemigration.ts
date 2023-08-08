@@ -1,16 +1,16 @@
 'use strict';
 
-import TaskService from '@cafienne/typescript-client/service/task/taskservice';
-import TestCase from '@cafienne/typescript-client/test/testcase';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
+import { PollUntilSuccess, SomeTime } from '@cafienne/typescript-client';
+import Case from '@cafienne/typescript-client/cmmn/case';
 import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
+import CaseTeamUser, { CaseOwner } from "@cafienne/typescript-client/cmmn/team/caseteamuser";
 import CaseMigrationService, { DefinitionMigration } from '@cafienne/typescript-client/service/case/casemigrationservice';
-import WorldWideTestTenant from '../../../worldwidetesttenant';
+import CaseService from '@cafienne/typescript-client/service/case/caseservice';
+import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
+import TaskService from '@cafienne/typescript-client/service/task/taskservice';
 import { findTask } from '@cafienne/typescript-client/test/caseassertions/task';
-import { CaseOwner } from '@cafienne/typescript-client/cmmn/team/caseteamuser';
-import CaseTeamUser from "@cafienne/typescript-client/cmmn/team/caseteamuser";
-import CaseTeamService from '@cafienne/typescript-client/service/case/caseteamservice';
+import TestCase from '@cafienne/typescript-client/test/testcase';
+import WorldWideTestTenant from '../../../worldwidetesttenant';
 
 const base_definition = 'migration/migration_v0.xml';
 const definitionMigrated = 'migration/migration_v1.xml';
@@ -52,27 +52,37 @@ export default class TestSubCaseMigration extends TestCase {
 
         // Now start running the script
 
-        const case1_before = await CaseService.startCase(user, startCase).then(instance => CaseService.getCase(user, instance));
-        // const case2_before = await caseService.startCase(user, startCase).then(instance => caseService.getCase(user, instance));
+        const mainCase_before = await CaseService.startCase(user, startCase).then(instance => CaseService.getCase(user, instance));
+        const mainCaseId = mainCase_before.id;
+        const subCaseId = mainCase_before.planitems.find(item => item.name === 'migration_subcase')?.id;
+        if (!subCaseId) {
+            throw new Error('Expected to find sub case named "migration_subcase", but could not find it');
+        }
 
-        const case1Tasks_before = await TaskService.getCaseTasks(user, case1_before);
-        // const case2Tasks_before = await taskService.getCaseTasks(user, case2_before);
-        const case1FirstTask = findTask(case1Tasks_before, firstTaskName);
-        // const case2FirstTask = findTask(case2Tasks_before, firstTaskName);
+        // Now complete the task in case, to trigger the subcase
+        await TaskService.getCaseTasks(user, mainCase_before).then(async tasks => await TaskService.completeTask(user, findTask(tasks, 'HumanTask')));
 
-        const case1Team_before = await CaseTeamService.getCaseTeam(user, case1_before);
-        // const case2Team_before = await caseTeamService.getCaseTeam(user, case2_before);
+        const subCase_before = await PollUntilSuccess(async () => CaseService.getCase(user, subCaseId)) as Case;
+        const subcaseTasks_before = await TaskService.getCaseTasks(user, subCaseId);
 
-        // await SomeTime(5000, `\nPausing 5 sec before migration of case ${case1_before.id}\n`);
+        // await SomeTime(5000, `\nPausing 5 sec before migration of case ${migration_subcase_before.id}\n`);
 
-        // Now complete the task in case 1
-        await TaskService.completeTask(user, case1FirstTask, taskOutput);
+        // Try to migrate the definition of the subcase, this should not be allowed, as this can only be done on main cases.
+        await CaseMigrationService.migrateDefinition(user, subCase_before, migratedDefinition, 400);
 
-        // Migrate caseInstance1, and then complete the task in case1
-        const case1_after = await CaseMigrationService.migrateDefinition(user, case1_before, migratedDefinition).then(() => CaseService.getCase(user, case1_before));
+        // Migrate the main case, and then check that the sub case has additional tasks
+        await CaseMigrationService.migrateDefinition(user, mainCase_before, migratedDefinition);
+        const mainCase_after = await CaseService.getCase(user, mainCaseId);
 
-        console.log(`Case ID: ${case1_after.id}\n`);
+        await SomeTime(1000);
 
-        console.log(`Sub Case ID: ${case1_after.planitems.find(item => item.name === 'migration_subcase')?.id}\n`);
+        const subcaseTasks_after = await TaskService.getCaseTasks(user, subCaseId);
+        if (subcaseTasks_before.length + 1 !== subcaseTasks_after.length) {
+            throw new Error(`Expected to find an additional task in the sub case after migration, but found ${subcaseTasks_after.length}`);
+        }
+
+        console.log(`Case ID: ${mainCaseId}\n`);
+
+        console.log(`Sub Case ID: ${subCaseId}\n`);
     }
 }

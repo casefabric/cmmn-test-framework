@@ -6,5 +6,8 @@
         <CMMNShape cmmnElementRef="pi_ht__0UEh7_0">
             <Bounds x="200" y="140" width="140" height="80"/>
         </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ht__0UEh7_1">
+            <Bounds x="426" y="140" width="140" height="80"/>
+        </CMMNShape>
     </CMMNDiagram>
 </CMMNDI>
