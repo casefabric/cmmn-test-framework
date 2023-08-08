@@ -78,7 +78,7 @@ export default class TestCaseTeamMigration extends TestCase {
         console.log(`\nCase ID: ${caseId}\n`);
         console.log(`Sub Case ID: ${subCaseId}\n`);
 
-        assertCaseTeam(sender, caseId, newCaseTeam);
+        await assertCaseTeam(sender, caseId, newCaseTeam);
 
         // Also sub case team must have been updated, but let's poll it as sub case migration is asynchronous and may need little more time
         await PollUntilSuccess(async () => {
