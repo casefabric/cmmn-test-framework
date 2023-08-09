@@ -13,6 +13,8 @@ import CaseTeamUser from "@cafienne/typescript-client/cmmn/team/caseteamuser";
 import CaseTeamService from '@cafienne/typescript-client/service/case/caseteamservice';
 import { ExtendedCaseMigrationService, ExtendedDefinitionMigration } from '../../../../nextversion/nextversion';
 import { PollUntilSuccess, ServerSideProcessing, SomeTime, assertCaseTeam, assertCaseTeamUser } from '@cafienne/typescript-client';
+import User from '@cafienne/typescript-client/user';
+import Comparison from '@cafienne/typescript-client/test/comparison';
 
 const base_definition = 'migration/migration_v0.xml';
 const definitionMigrated = 'migration/migration_v1.xml';
@@ -72,18 +74,32 @@ export default class TestCaseTeamMigration extends TestCase {
         // Migrate caseInstance1, and then complete the task in case
         await ExtendedCaseMigrationService.migrateDefinition(sender, case_before, migratedDefinition);
 
-
-        const caseTeam_after = await CaseTeamService.getCaseTeam(sender, case_before);
-        console.log("New Case Team after migration: ", caseTeam_after);
+        // Check that the case team is updated as well; 1 new member, and some roles dropped.
+        await checkCaseTeam(sender, caseId, newCaseTeam);
         console.log(`\nCase ID: ${caseId}\n`);
         console.log(`Sub Case ID: ${subCaseId}\n`);
 
-        // Also sub case team must have been updated, but let's poll it as sub case migration is asynchronous and may need little more time
-        await PollUntilSuccess(async () => {
-            await assertCaseTeam(sender, subCaseId, newCaseTeam);
-        });
+        // Also sub case team must have been updated with the same members.
+        await checkCaseTeam(sender, caseId, newCaseTeam);
 
         console.log(`\nCase ID: ${caseId}\n`);
         console.log(`Sub Case ID: ${subCaseId}\n`);
     }
+}
+
+async function checkCaseTeam(user: User, caseId: string, expectedTeam: CaseTeam): Promise<CaseTeam> {
+    return await PollUntilSuccess(async () => {
+        const currentCaseTeam = await CaseTeamService.getCaseTeam(sender, caseId);
+        const findMember = (expectedMember: CaseTeamUser) => {
+            const member = currentCaseTeam.users.find(user => user.userId === expectedMember.userId);
+            if (!member) {
+                throw new Error(`Cannot find case team user ${expectedMember.userId}`);
+            }
+            if (! Comparison.sameArray(member.caseRoles, expectedMember.caseRoles)) {
+                throw new Error(`Case team user ${member.userId} does not have the expected roles`);
+            }
+        }
+        expectedTeam.users.forEach(user => findMember(user));
+        return currentCaseTeam;
+    }, 'Awaiting case team to match the updated definition');
 }
