@@ -79,6 +79,7 @@ import TestDeleteHelloworld from './tests/api/archiving/testdeletehelloworld';
 import TestArchiveHelloworld from './tests/api/archiving/testarchivehelloworld';
 import TestFourEyes from './tests/api/task/humantask/testfoureyes';
 import TestCaseTeamMigration from './tests/api/case/migration/testcaseteammigration';
+import TestEntryCriteriaOnRecovery from './tests/api/caseplan/sentry/testentrycriteriaonrecovery';
 
 function findTestsFromCommandLineArguments(): Array<string> {
     const time = process.argv[2];
@@ -153,6 +154,7 @@ const AllTestCases = new TestClasses([
     , TestTaskOutputOperations
     , TestTaskBindingRefinement
     , TestEntryCriteriaOnCaseInputParameters
+    , TestEntryCriteriaOnRecovery
     , TestStage
     , TestTimer
     , TestUsersCaseAPI
