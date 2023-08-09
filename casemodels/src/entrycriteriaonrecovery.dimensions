@@ -1,0 +1,24 @@
+<CMMNDI>
+    <CMMNDiagram>
+        <CMMNShape cmmnElementRef="cm__La4ud_0">
+            <Bounds x="20" y="20" width="800" height="500"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ht__La4ud_0">
+            <Bounds x="152" y="102" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ht__La4ud_1">
+            <Bounds x="152" y="224" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ht__La4ud_2">
+            <Bounds x="374" y="158" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_La4ud_3">
+            <Bounds x="368" y="190" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_La4ud_6">
+            <Bounds x="382" y="288" width="280" height="158"/>
+        </CMMNShape>
+        <CMMNEdge sourceCMMNElementRef="pi_ht__La4ud_0" targetCMMNElementRef="_La4ud_3"/>
+        <CMMNEdge sourceCMMNElementRef="pi_ht__La4ud_1" targetCMMNElementRef="_La4ud_3"/>
+    </CMMNDiagram>
+</CMMNDI>

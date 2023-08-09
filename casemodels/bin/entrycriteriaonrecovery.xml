@@ -1,0 +1,60 @@
+<definitions>
+    <caseFileItemDefinition name="unspecified" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="unspecified.cfid"/>
+    <case id="entrycriteriaonrecovery.case" name="entrycriteriaonrecovery" expressionLanguage="spel">
+        <caseFileModel>
+            <caseFileItem id="_La4ud_7" name="unspecified" multiplicity="ExactlyOne" definitionRef="unspecified.cfid"/>
+        </caseFileModel>
+        <casePlanModel id="cm__La4ud_0" name="entrycriteriaonrecovery" autoComplete="true">
+            <planItem id="pi_ht__La4ud_0" name="Task1" definitionRef="ht__La4ud_0"/>
+            <planItem id="pi_ht__La4ud_1" name="Task2" definitionRef="ht__La4ud_1"/>
+            <planItem id="pi_ht__La4ud_2" name="Task3" definitionRef="ht__La4ud_2">
+                <entryCriterion id="_La4ud_3" name="EntryCriterion_0" sentryRef="crit__La4ud_0"/>
+            </planItem>
+            <sentry id="crit__La4ud_0">
+                <planItemOnPart id="_La4ud_4" sourceRef="pi_ht__La4ud_0">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+                <planItemOnPart id="_La4ud_5" sourceRef="pi_ht__La4ud_1">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <humanTask id="ht__La4ud_0" name="Task1" isBlocking="true"/>
+            <humanTask id="ht__La4ud_1" name="Task2" isBlocking="true"/>
+            <humanTask id="ht__La4ud_2" name="Task3" isBlocking="true"/>
+        </casePlanModel>
+        <textAnnotation id="_La4ud_6">
+            <text>
+                <![CDATA[This case can be used to test that recovery also puts the sentry network back in the proper state.
+
+This can be done by completing the first task, then invoking force-recovery on the case, and then completing second task.
+
+When then completing second task, the third task should become active.
+]]>
+            </text>
+        </textAnnotation>
+    </case>
+    <CMMNDI>
+        <CMMNDiagram>
+            <CMMNShape cmmnElementRef="cm__La4ud_0">
+                <Bounds x="20" y="20" width="800" height="500"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__La4ud_0">
+                <Bounds x="152" y="102" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__La4ud_1">
+                <Bounds x="152" y="224" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__La4ud_2">
+                <Bounds x="374" y="158" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_La4ud_3">
+                <Bounds x="368" y="190" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_La4ud_6">
+                <Bounds x="382" y="288" width="280" height="158"/>
+            </CMMNShape>
+            <CMMNEdge sourceCMMNElementRef="pi_ht__La4ud_0" targetCMMNElementRef="_La4ud_3"/>
+            <CMMNEdge sourceCMMNElementRef="pi_ht__La4ud_1" targetCMMNElementRef="_La4ud_3"/>
+        </CMMNDiagram>
+    </CMMNDI>
+</definitions>
