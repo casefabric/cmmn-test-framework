@@ -35,7 +35,7 @@ export default class TestProcessTaskMigration extends TestCase {
 
         // Starts the case with user
         const caseInstance = await CaseService.startCase(user, startCase).then(id => CaseService.getCase(user, id));
-
+        this.addIdentifier(caseInstance);
 
         // When the case starts, GetCasesList & GetFirstCase tasks will be in available state
         await assertPlanItem(user, caseInstance, 'GetList', 0, State.Available);

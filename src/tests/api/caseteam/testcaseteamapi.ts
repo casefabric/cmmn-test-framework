@@ -55,6 +55,7 @@ export default class TestCaseTeamAPI extends TestCase {
         caseTeam.tenantRoles[0].caseRoles = []; // Change roles of requestor to be empty instead of having wrong roles
         const caseInstance = await CaseService.startCase(sender, startCase);
         this.casesCreated.push(caseInstance);
+        this.addIdentifier(caseInstance);
 
         // It should not be possible to start a case without case owners in the team
         const t2 = new CaseTeam([
@@ -182,6 +183,7 @@ export default class TestCaseTeamAPI extends TestCase {
         const startCase = { tenant, definition, debug: true, caseTeam };
         const caseInstance = await CaseService.startCase(ownerWhoRemoves, startCase);
         this.casesCreated.push(caseInstance);
+        this.addIdentifier(caseInstance);
 
         // ownerToRemove can perform get case and get team
         await CaseService.getCase(ownerToRemove, caseInstance);

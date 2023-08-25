@@ -50,6 +50,7 @@ export default class TestConsentGroupAPI extends TestCase {
         await ConsentGroupService.createGroup(tenantUser, tenant, group, 401);
         // Now it should be possible to create a group
         await ConsentGroupService.createGroup(tenantAndGroupOwner, tenant, group);
+        this.addIdentifier(group);
         // But it should not be possible to create the same group again.
         await ConsentGroupService.createGroup(tenantAndGroupOwner, tenant, group, 400);
     }

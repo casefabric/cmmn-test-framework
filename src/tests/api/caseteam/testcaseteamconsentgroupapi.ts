@@ -67,6 +67,7 @@ export default class TestCaseTeamConsentGroupAPI extends TestCase {
         // It should be possible to start a case with the valid role names
         caseTeamMoonGroup.mappings = [validMappingTesterIsPA, validMappingUserIsRequestor];
         const caseInstance = await CaseService.startCase(universe.boy, startCase, undefined, 'It should be possible to start a case with the valid role names');
+        this.addIdentifier(caseInstance);
 
         await CaseTeamService.getCaseTeam(universe.boy, caseInstance).then(team => console.log(JSON.stringify(team, undefined, 2)));
 

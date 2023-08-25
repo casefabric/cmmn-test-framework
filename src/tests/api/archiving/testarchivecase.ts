@@ -35,6 +35,7 @@ export default class TestArchiveCase extends TestCase {
     const startCase = { tenant, definition, debug: true } as StartCase;
 
     const caseInstance = await CaseService.startCase(user, startCase).then(id => CaseService.getCase(user, id));
+    this.addIdentifier(caseInstance);
     const caseHierarchy = CaseHierarchy.from(user, caseInstance);
     await caseHierarchy.load();
 

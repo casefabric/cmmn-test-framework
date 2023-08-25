@@ -88,6 +88,7 @@ Starting another case instance of incident management to test Invalid status.
 
         // Starts the case with raiser
         const caseInstance = await CaseService.startCase(raiser, startCase);
+        this.addIdentifier(caseInstance);
 
         // Get case tasks
         const tasks = await TaskService.getCaseTasks(raiser, caseInstance);

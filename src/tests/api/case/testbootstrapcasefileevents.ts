@@ -32,6 +32,7 @@ export default class TestBootstrapCaseFileEvents extends TestCase {
         const startCase = { tenant, definition, inputs, debug: true };
         // Sender starts the parent case
         const caseInstance = await CaseService.startCase(sender, startCase);
+        this.addIdentifier(caseInstance);
 
         console.log(`Main case id: ${caseInstance.id}`);
     }

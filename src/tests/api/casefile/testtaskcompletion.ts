@@ -33,6 +33,7 @@ export default class TestTaskCompletion extends TestCase {
         
         const startCase = { tenant, definition, inputs, caseTeam, debug: true };
         const caseInstance = await CaseService.startCase(user, startCase);
+        this.addIdentifier(caseInstance);
 
         const taskName = 'Receive Greeting and Send response';
         const tasks = await TaskService.getCaseTasks(user, caseInstance);

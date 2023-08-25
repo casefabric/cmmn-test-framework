@@ -32,8 +32,8 @@ export default class TestStageTaskExpressions extends TestCase {
             }
         }
         const startCase = { tenant, definition, inputs };
-        const caseId = await CaseService.startCase(user, startCase);
-        const caseInstance = await CaseService.getCase(user, caseId);
+        const caseInstance = await CaseService.startCase(user, startCase).then(async id => CaseService.getCase(user, id));
+        this.addIdentifier(caseInstance);
 
         const tasks = await TaskService.getCaseTasks(user, caseInstance);
         const assignees = tasks.map(task => task.assignee);

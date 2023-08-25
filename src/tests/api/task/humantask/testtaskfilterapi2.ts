@@ -108,9 +108,9 @@ export default class TestTaskFilterAPI2 extends TestCase {
         };
 
         const startCase1 = { tenant, definition, inputs, debug: true };
-        const caseStarted = await CaseService.startCase(user, startCase1);
-        this.caseIds.push(caseStarted.id);
-        const caseInstance = await CaseService.getCase(user, caseStarted);
+        const caseInstance = await CaseService.startCase(user, startCase1).then(async id => CaseService.getCase(user, id));
+        this.addIdentifier(caseInstance);
+        this.caseIds.push(caseInstance.id);
         console.log(`Case ${caseInstance.id} has plan items:\n- ${caseInstance.planitems.map(item => item.name).join(`\n- `)}`)
         if (claimTask) {
             const taskId = caseInstance.planitems.find(item => item.name === firstTaskName)?.id;

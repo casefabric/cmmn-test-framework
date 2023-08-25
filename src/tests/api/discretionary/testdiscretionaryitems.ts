@@ -22,8 +22,8 @@ export default class TestDiscretionaryItems extends TestCase {
     async run() {
         const startCase = { tenant, definition };
 
-        let caseInstance = await CaseService.startCase(user, startCase);
-        caseInstance = await CaseService.getCase(user, caseInstance);
+        const caseInstance = await CaseService.startCase(user, startCase).then(async id => CaseService.getCase(user, id));
+        this.addIdentifier(caseInstance);
 
         // console.log("Plan items first is: ", caseInstance.planitems)
 
@@ -45,8 +45,9 @@ export default class TestDiscretionaryItems extends TestCase {
         const plannedItem = await CaseService.planDiscretionaryItem(user, caseInstance, newItem);
         console.log("Planned item: " + plannedItem)
 
-        caseInstance = await CaseService.getCase(user, caseInstance);
-        // console.log("Plan items now is: ", caseInstance.planitems)
+        await CaseService.getCase(user, caseInstance).then(caseInstance => {
+            // console.log("Plan items now is: ", caseInstance.planitems)
+        });
 
         const newSetOfTasks = await TaskService.getCaseTasks(user, caseInstance);
         console.log("Old number of tasks: " + numTasksBeforePlanning + ", new number after planning: " + newSetOfTasks.length)

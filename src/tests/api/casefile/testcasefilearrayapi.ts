@@ -56,6 +56,7 @@ export default class TestCaseFileArrayAPI extends TestCase {
     async createEmptyCase(): Promise<Case> {
         const startCase = { tenant, definition };
         const caseInstance = await CaseService.startCase(user, startCase);
+        this.addIdentifier(caseInstance);
         return caseInstance;
     }
 

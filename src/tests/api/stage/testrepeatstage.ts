@@ -67,7 +67,7 @@ export default class TestRepeatStage extends TestCase {
 
         const startCase = { tenant, definition, inputs };
         const caseInstance = await CaseService.startCase(user, startCase);
-
+        this.addIdentifier(caseInstance);
 
         // Let the Status stage repeat for 3 times
         for(let i = 0; i < 3; i++) {

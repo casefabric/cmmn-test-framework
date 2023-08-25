@@ -31,6 +31,7 @@ export default class TestDefinitionInStartCase extends TestCase {
 
         // Starting a by sender case would not result in failure
         const caseInstance = await CaseService.startCase(sender, startCase);
+        this.addIdentifier(caseInstance);
 
         // Receiver can perform get case
         await CaseService.getCase(receiver, caseInstance)

@@ -59,6 +59,7 @@ export default class TestCalculation extends TestCase {
         }
         const startCase = { tenant, definition, inputs };
         const caseInstance = await CaseService.startCase(user, startCase);
+        this.addIdentifier(caseInstance);
         this.casesCreated.push(caseInstance);
 
         const calculationTask = 'CalculationTask';

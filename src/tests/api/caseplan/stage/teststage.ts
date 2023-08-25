@@ -14,19 +14,19 @@ const definition = 'stagetest.xml';
 
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
-const sender = worldwideTenant.sender;
+const user = worldwideTenant.sender;
 
 export default class TestStage extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(sender, definition, tenant);
+        await RepositoryService.validateAndDeploy(user, definition, tenant);
     }
 
     async run() {
         const inputs = {
             Greeting: {
                 Message: 'Hello there',
-                From: sender.id
+                From: user.id
             }
         };
         const startCase = { tenant, definition, inputs, debug: true };
@@ -41,8 +41,8 @@ export default class TestStage extends TestCase {
             }
         };
 
-        let caseInstance = await CaseService.startCase(sender, startCase);
-        caseInstance = await CaseService.getCase(sender, caseInstance);
+        const caseInstance = await CaseService.startCase(user, startCase).then(async id => CaseService.getCase(user, id));
+        this.addIdentifier(caseInstance);
         // return;
 
         const taskName = 'SendResponse';
@@ -51,7 +51,7 @@ export default class TestStage extends TestCase {
             throw new Error('Cannot find plan item ' + taskName);
         }
 
-        const tasks = await TaskService.getCaseTasks(sender, caseInstance);
+        const tasks = await TaskService.getCaseTasks(user, caseInstance);
         const sendResponseTask = tasks.find(task => task.taskName === taskName);
         if (!sendResponseTask) {
             throw new Error('Cannot find task ' + taskName);
@@ -71,7 +71,7 @@ export default class TestStage extends TestCase {
 
 async function getTasksThenClaimAndCompleteNextTask(caseId: Case | string, taskOutput: object) {
     const taskName = 'SendResponse';
-    const nextTasks = await TaskService.getCaseTasks(sender, caseId);
+    const nextTasks = await TaskService.getCaseTasks(user, caseId);
     // nextTasks.forEach(t => delete t.taskModel);
     const nextTask = nextTasks.find(task => task.taskName === taskName && task.taskState === 'Unassigned');
     if (!nextTask) {
@@ -79,9 +79,9 @@ async function getTasksThenClaimAndCompleteNextTask(caseId: Case | string, taskO
         console.log(tasks)
         throw new Error(`Expecting a new task '${taskName}'' in unassigned state`);
     }
-    await TaskService.claimTask(sender, nextTask);
-    await TaskService.completeTask(sender, nextTask, taskOutput);
-    await TaskService.getCaseTasks(sender, caseId).then(tasks => {
+    await TaskService.claimTask(user, nextTask);
+    await TaskService.completeTask(user, nextTask, taskOutput);
+    await TaskService.getCaseTasks(user, caseId).then(tasks => {
         const freshInformationOnNextTask = tasks.find(t => t.id === nextTask.id);
         console.log("NExt task is now: " + freshInformationOnNextTask?.summary());
         if (freshInformationOnNextTask?.taskState !== 'Completed') {
@@ -92,7 +92,7 @@ async function getTasksThenClaimAndCompleteNextTask(caseId: Case | string, taskO
 }
 
 async function assertTask(task: Task, action: string, expectedState: string = '', expectedAssignee?: User, expectedOwner?: User) {
-    await TaskService.getTask(sender, task).then(task => {
+    await TaskService.getTask(user, task).then(task => {
         console.log(`Task after ${action}:\tstate = ${task.taskState},\tassignee = '${task.assignee}',\towner = '${task.owner}' `);
         if (task.taskState !== expectedState) {
             throw new Error(`Task ${task.taskName} is not in state '${expectedState}' but in state '${task.taskState}'`);

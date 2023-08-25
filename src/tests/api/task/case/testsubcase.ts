@@ -41,6 +41,7 @@ export default class TestSubCase extends TestCase {
 
         // Sender starts the parent case
         const caseInstance = await CaseService.startCase(sender, startCase);
+        this.addIdentifier(caseInstance);
 
         // Sender creates Greet case file item
         await CaseFileService.createCaseFileItem(sender, caseInstance, 'Greet', inputs.Greet);
@@ -48,7 +49,8 @@ export default class TestSubCase extends TestCase {
         // Retrieve subcase 
         const parentCaseInstance = await CaseService.getCase(sender, caseInstance);
         const subCase = parentCaseInstance.planitems.find(item => item.name === 'call helloworld') as PlanItem;
-        
+        this.addIdentifier(subCase.id);
+
         // Sender is the owner of the parent case and receiver doesn't exist in the parent case
         await assertCaseTeamUser(sender, caseInstance, new CaseOwner(sender, []));
         await assertCaseTeamUser(sender, caseInstance, new CaseTeamUser(receiver, []), false);

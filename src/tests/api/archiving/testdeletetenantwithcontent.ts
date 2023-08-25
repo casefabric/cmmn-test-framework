@@ -23,6 +23,7 @@ export default class TestDeleteTenantWithContent extends TestCase {
   async onPrepareTest() {
     await wrapper.create();
     await RepositoryService.validateAndDeploy(user, definition, tenant);
+    this.addIdentifier(tenant);
   }
 
   async createCases(): Promise<Array<CaseHierarchy>> {
@@ -62,6 +63,7 @@ export default class TestDeleteTenantWithContent extends TestCase {
 
     while (count-- > 0) {
       const caseInstance = await CaseService.startCase(user, startCase).then(id => CaseService.getCase(user, id));
+      this.addIdentifier(caseInstance);
       cases.push(CaseHierarchy.from(user, caseInstance));
     }
 

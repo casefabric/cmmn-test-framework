@@ -57,7 +57,7 @@ export default class TestRecovery extends TestCase {
             console.log(`User ${user.id} has no cases to recover`);
             return;
         }
-
+        this.addIdentifier(caseId);
         await DebugService.forceRecovery(user, caseId);
 
         await CaseService.getDiscretionaryItems(user, caseId).then(items => {

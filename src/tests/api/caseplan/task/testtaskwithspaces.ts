@@ -27,6 +27,7 @@ export default class TestTaskWithSpaces extends TestCase {
         const startCase = { tenant, definition, inputs };
 
         const caseInstance = await CaseService.startCase(user, startCase).then(id => CaseService.getCase(user, id));
+        this.addIdentifier(caseInstance);
         console.log(`\n\nCase ID: ${caseInstance.id}\n`);
 
         const itemNames = caseInstance.planitems.map(item => item.name);
