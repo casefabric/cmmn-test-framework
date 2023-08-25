@@ -55,7 +55,6 @@ export default class TestDeleteCase extends TestCase {
       if (caseHierarchy.totalEventCount > 0) {
         throw new Error(`Did not expect to find any events in the case, but found ${caseHierarchy.totalEventCount}:\n${caseHierarchy.printEvents()}`)
       }
-
     });
   }
 }

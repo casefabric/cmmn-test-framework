@@ -117,15 +117,20 @@ class TestResult {
     name: string;
     started: Date = new Date();
     ended: Date = new Date();
+    summary: string = '';
     constructor(public test: TestCase) {
         this.name = test.name;
     }
-    finished() {
+    
+    finished(test: TestCase) {
+        if (test.identifiers.length) {
+            this.summary = `  ---  [ ${test.identifiers.join(' | ')} ]` 
+        }
         this.ended = new Date();
     }
 
     toString() {
-        return `${this.name} (${(this.ended.getTime() - this.started.getTime())} ms)`;
+        return `${this.name} (${(this.ended.getTime() - this.started.getTime())} ms) ${this.summary}`;
     }
 }
 
@@ -267,7 +272,7 @@ async function runTests(testDeclarations: Array<any>, onlyDefaults: boolean) {
 ####################################################################
                         `);
             const closeDone = await test.onCloseTest();
-            result.finished();
+            result.finished(test);
             results.addTest(result);
         } catch (error) {
             const resultString = results.list.length == 0 ? '' : `  Successful tests:\n${results.toString()}\n`;
