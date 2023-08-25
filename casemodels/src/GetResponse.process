@@ -6,7 +6,7 @@
     <output id="_1Eym_errorCode" name="errorCode"/>
     <output id="_urBb_errorMessage" name="errorPayload"/>
     <output id="_enkJ_responseMessage" name="responseMessage"/>
-    <extensionElements>
+    <extensionElements mustUnderstand="false">
         <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.http.HTTPCallDefinition">
             <url>http://localhost:${port}/get/code/${getResponseCode}</url>
             <method>POST</method>

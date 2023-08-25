@@ -15,7 +15,7 @@
     <input id="toAddress" name="toAddress"/>
     <input id="taskId" name="taskId"/>
     <input id="caseId" name="caseId"/>
-    <extensionElements>
+    <extensionElements mustUnderstand="false">
         <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.mail.MailDefinition">
             <subject>Travel Approval request</subject>
             <from>travelrequest@email.org</from>
@@ -177,6 +177,8 @@ Hidden text
                     </tr>
                 </table>
             </body></html>]]>
-        </mail-body>
+        </mail-body>undefined
+    
+    
     </cafienne:implementation>
-</extensionElements></process>
+</extensionElements>undefinedundefinedundefined</process>

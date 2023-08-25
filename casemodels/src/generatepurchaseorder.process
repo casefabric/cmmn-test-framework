@@ -7,7 +7,7 @@
     <input id="travelrequest" name="travelrequest"/>
     <input id="approval" name="approval"/>
     <output id="travelorder" name="travelorder"/>
-    <extensionElements>
+    <extensionElements mustUnderstand="false">
         <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.report.PDFReportDefinition">
             <reportData name="travelrequest"/>
             <parameterMapping sourceRef="pdfReportData" targetRef="travelorder"/>

@@ -4,7 +4,7 @@
     <output id="_4Yse_responseCode" name="responseCode"/>
     <output id="_hFGE_responseMessage" name="responseMessage"/>
     <output id="_KXWf_exception" name="exception"/>
-    <extensionElements>
+    <extensionElements mustUnderstand="false">
         <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.http.HTTPCallDefinition">
             <url>http://localhost:${port / 0}/getListWebService</url>
             <method>GET</method>

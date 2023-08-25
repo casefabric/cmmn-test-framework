@@ -6,7 +6,7 @@
     </documentation>
     <input id="_XjWa_incident_type" name="incident_type"/>
     <output id="_Y9cq_specialist" name="specialist"/>
-    <extensionElements>
+    <extensionElements mustUnderstand="false">
         <cafienne:implementation xmlns:cafienne="org.cafienne" async="false" class="org.cafienne.processtask.implementation.http.HTTPCallDefinition">
             <url>http://localhost:17384/usermappings/${incident_type}</url>
             <method>GET</method>

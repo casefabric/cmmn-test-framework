@@ -1,5 +1,5 @@
 <humantask>
-    <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" description="" name="work_on_incident_for_training">
+    <cafienne:implementation name="work_on_incident_for_training" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition">
         <input id="_oPCY_Task_Incident2" name="Task_Incident2"/>
         <input id="_gVmw_Incident_Response2" name="Incident_Response2"/>
         <input id="_pXcJ_Assignee" name="Assignee"/>

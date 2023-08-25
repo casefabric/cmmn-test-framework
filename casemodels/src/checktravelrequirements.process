@@ -3,7 +3,7 @@
     <input id="travellers" name="travellers"/>
     <output id="theaterDestination" name="theaterDestination"/>
     <output id="travellers_requirements" name="traveller_requirements"/>
-    <extensionElements>
+    <extensionElements mustUnderstand="false">
         <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.http.HTTPCallDefinition">
             <url>http://demo1776471.mockable.io/travelrequirements</url>
             <method>POST</method>

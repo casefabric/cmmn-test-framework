@@ -14,7 +14,7 @@
     <input id="fromAddress" name="fromAddress"/>
     <input id="toName" name="toName"/>
     <input id="toAddress" name="toAddress"/>
-    <extensionElements>
+    <extensionElements mustUnderstand="false">
         <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.mail.MailDefinition">
             <subject>Your Travel request has been ${approvalStatus}</subject>
             <from>${fromAddress}</from>
@@ -113,14 +113,30 @@ Hidden text
                             </p>
                                                                             <p style="font-size: 16px; font-weight: 400; line-height: 24px; color: #333333;">
                                 Your Travel request to ${destinationCity} in ${destinationCountry} on ${departureDate}
+                                                                                
+                                                                        
+                                                                                
+                                                                                
                                                                                 <br/> has been
+                                                                                
+                                                                        
+                                                                                
+                                                                                
                                                                                 <b>${approvalStatus}</b>
                                                                             </p>
                                                                             <br/>
                                                                             <br/>
                             Kind regards,
+                                                                            
+                                                                    
+                                                                            
+                                                                            
                                                                             <br/>
                             ${fromName}
+                                                                        
+                                                                
+                                                                        
+                                                                        
                                                                         </td>
                                                                     </tr>
                                                                 </table>
@@ -163,6 +179,8 @@ Hidden text
                     </tr>
                 </table>
             </body></html>]]>
-        </mail-body>
+        </mail-body>undefined
+    
+    
     </cafienne:implementation>
-</extensionElements></process>
+</extensionElements>undefinedundefinedundefined</process>
