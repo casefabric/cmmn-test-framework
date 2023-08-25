@@ -28,6 +28,7 @@ import TestTaskOutputOperations from '../tests/api/casefile/testtaskoutputoperat
 import TestTimer from '../tests/api/caseplan/event/testtimer';
 import TestEntryCriteriaOnRecovery from '../tests/api/caseplan/sentry/testentrycriteriaonrecovery';
 import TestEntryCriteriaOnCaseInputParameters from '../tests/api/caseplan/stage/testentrycriteriaoncaseinputparameters';
+import TestFaultBubbling from '../tests/api/caseplan/stage/testfaultbubbling';
 import TestStage from '../tests/api/caseplan/stage/teststage';
 import TestAuthenticationFlow from '../tests/api/caseplan/task/testauthenticationflow';
 import TestProcessTask from '../tests/api/caseplan/task/testprocesstask';
@@ -175,6 +176,7 @@ const AllTestCases = new TestClasses([
     , TestEntryCriteriaOnCaseInputParameters
     , TestEntryCriteriaOnRecovery
     , TestStage
+    , TestFaultBubbling
     , TestTimer
     , TestUsersCaseAPI
     , TestDiscretionaryItems
