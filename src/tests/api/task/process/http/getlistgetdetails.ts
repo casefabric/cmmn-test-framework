@@ -48,6 +48,7 @@ export default class TestGetListGetDetails extends TestCase {
 
         // Starts the case with user
         let caseInstance = await CaseService.startCase(user, startCase);
+        this.addIdentifier(caseInstance);
 
         await ServerSideProcessing();
 

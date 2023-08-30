@@ -85,8 +85,8 @@
             </extensionElements>
         </humanTask>
         <milestone id="ms__O4sf3_0" name="grandchild is done"/>
-        <userEvent id="ue__O4sf3_0" name="Check Grandchild"/>
         <milestone id="ms__O4sf3_1" name="item2 is done"/>
+        <userEvent id="ue__O4sf3_0" name="Check Grandchild"/>
         <userEvent id="ue__O4sf3_1" name="Check Item2"/>
         <stage id="_O4sf3_23" name="Event Repeater" autoComplete="true">
             <planItem id="pi_ue__O4sf3_0" name="Check Grandchild" definitionRef="ue__O4sf3_0"/>

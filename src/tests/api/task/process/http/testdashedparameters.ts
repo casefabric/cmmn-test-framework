@@ -66,6 +66,7 @@ export default class TestDashedParameters extends TestCase {
         const startCase = { tenant, definition, inputs, caseInstanceId };
 
         const caseInstance = await CaseService.startCase(user, startCase).then(id => CaseService.getCase(user, id));
+        this.addIdentifier(caseInstance);
 
         await CasePlanService.raiseEvent(user, caseInstance, this.triggerTaskEvent);
 

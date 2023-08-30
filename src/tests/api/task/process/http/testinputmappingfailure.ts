@@ -51,6 +51,7 @@ export default class TestInputMappingFailure extends TestCase {
 
         // Starts the case with user
         const caseInstance = await CaseService.startCase(user, startCase).then(id => CaseService.getCase(user, id));
+        this.addIdentifier(caseInstance);
 
         await CasePlanService.raiseEvent(user, caseInstance, this.triggerTaskEvent);
 

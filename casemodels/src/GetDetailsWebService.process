@@ -2,14 +2,14 @@
     <input id="httpPort" name="httpPort"/>
     <input id="detailsId" name="detailsId"/>
     <output id="details" name="details"/>
-    <extensionElements>
+    <extensionElements mustUnderstand="false">
         <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.http.HTTPCallDefinition">
             <url>http://localhost:${httpPort}/details/${detailsId}</url>
             <method>GET</method>
             <http-headers>
                 <http-header name="Accept">application/json</http-header>
             </http-headers>
-            <parameterMapping sourceRef="responsePayload" targetRef="details"></parameterMapping>
+            <parameterMapping sourceRef="responsePayload" targetRef="details"/>
         </cafienne:implementation>
     </extensionElements>
 </process>

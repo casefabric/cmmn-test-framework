@@ -54,6 +54,7 @@ export default class TestCompatibility extends TestCase {
     }
 
     async runFlow(rootCaseId: string, runCompatibility: boolean) {
+        this.addIdentifier(rootCaseId);
         // If we can find the case to be existing, then we will check compatibility.
         //  Otherwise just create the instance.
         try {
@@ -98,6 +99,7 @@ export default class TestCompatibility extends TestCase {
         if (!subCase) {
             throw new Error('Cannot find the sub case');
         }
+        this.addIdentifier(subCase.id);
 
         return await assertCasePlan(sender, subCase.id);
     }

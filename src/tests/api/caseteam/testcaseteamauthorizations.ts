@@ -79,6 +79,7 @@ export default class TestCaseTeamAuthorizations extends TestCase {
 
         // It should not be possible to start a case without mappings
         const caseInstance = await CaseService.startCase(universe.boy, startCase);
+        this.addIdentifier(caseInstance);
 
         // This test validates the base query extension on case team membership
         await this.validateCaseQueryAccess(caseInstance);

@@ -28,10 +28,9 @@ export default class TestArraySubCase extends TestCase {
         const startCase = { tenant, definition, inputs };
 
         // Start the parent case
-        const caseId = await CaseService.startCase(user, startCase);
-
+        const caseInstance = await CaseService.startCase(user, startCase).then(async id => CaseService.getCase(user, id));
+        this.addIdentifier(caseInstance);
         // Retrieve subcase 
-        const caseInstance = await CaseService.getCase(user, caseId);
         const subCasePlanItem = caseInstance.planitems.find(item => item.name === 'simpleinoutcase') as PlanItem;
 
         await assertPlanItem(user, caseInstance, subCasePlanItem.name, subCasePlanItem.index, State.Active);

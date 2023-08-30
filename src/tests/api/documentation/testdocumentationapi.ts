@@ -27,8 +27,8 @@ export default class TestDocumentationAPI extends TestCase {
     async run() {
         const startCase = { tenant, definition };
 
-        const caseInstance = await CaseService.startCase(user, startCase);
-        await CaseService.getCase(user, caseInstance);
+        const caseInstance = await CaseService.startCase(user, startCase).then(async id => CaseService.getCase(user, id));
+        this.addIdentifier(caseInstance);
         
         const planItems = await CasePlanService.getPlanItems(user, caseInstance);
         console.log('Plan item summary:\n' + planItems.map(p => `- ${p.type}[${p.name}] ${p.id}`).join('\n'));

@@ -29,8 +29,8 @@ export default class TestAuthenticationFlow extends TestCase {
 
         const startCase = { tenant, definition };
         // Starts the case with user
-        let caseInstance = await CaseService.startCase(user, startCase);
-
+        const caseInstance = await CaseService.startCase(user, startCase);
+        this.addIdentifier(caseInstance);
 
         const baseURL = (Config.CafienneService.url.endsWith('/') ? Config.CafienneService.url.substring(0, Config.CafienneService.url.length - 1) : Config.CafienneService.url).replace('0.0.0.0', 'localhost');
         const caseLastModified = CafienneService.getHeaders(user)["Case-Last-Modified"];
@@ -39,7 +39,6 @@ export default class TestAuthenticationFlow extends TestCase {
             baseURL,
             caseLastModified
         }
-
 
         await CaseFileService.createCaseFileItem(user, caseInstance, 'http', http);
 

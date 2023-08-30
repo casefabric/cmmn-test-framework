@@ -29,6 +29,10 @@ export default class TestEntryCriteriaOnCaseInputParameters extends TestCase {
         const case1 = await this.testWithTwoChildrenInStartCase();
         const case2 = await this.testAddingTwoChildren_in_one_shot();   
         const case3 = await this.testAddingTwoChildren_one_at_a_time();   
+        this.addIdentifier(case1);
+        this.addIdentifier(case2);
+        this.addIdentifier(case3);
+
 /*/
         const case1 = await this.testAddingTwoChildren_in_one_shot();   
         const case2 = case1;

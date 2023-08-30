@@ -13,7 +13,7 @@
     <input id="toName" name="toName"/>
     <input id="toAddress" name="toAddress"/>
     <input id="filename" name="filename"/>
-    <extensionElements>
+    <extensionElements mustUnderstand="false">
         <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.mail.MailDefinition">
             <subject>Your Travel approval document</subject>
             <from>travelrequest@email.org</from>
@@ -111,11 +111,23 @@ div[style*="margin: 16px 0;"] { margin: 0 !important; }
                                                                         <td align="left" style="font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding-top: 15px;">
                                                                             <p style="font-size: 18px; font-weight: 800; line-height: 24px; color: #333333;"> Hello ${toName},</p>
                                                                             <p style="font-size: 16px; font-weight: 400; line-height: 24px; color: #333333;"> This is your Travel approval document for your trip to ${destinationCity} in ${destinationCountry} on ${departureDate}
+                                                                                
+                                                                        
+                                                                                
+                                                                                
                                                                                 <br/>
                                                                             </p>
                                                                             <br/>
                                                                             <br/> Kind regards,
+                                                                            
+                                                                    
+                                                                            
+                                                                            
                                                                             <br/> ${fromName}
+                                                                        
+                                                                
+                                                                        
+                                                                        
                                                                         </td>
                                                                     </tr>
                                                                 </table>
@@ -158,6 +170,8 @@ div[style*="margin: 16px 0;"] { margin: 0 !important; }
                 </table>
             </body></html>
 			]]>
-        </mail-body>
+        </mail-body>undefined
+    
+    
     </cafienne:implementation>
-</extensionElements></process>
+</extensionElements>undefinedundefinedundefined</process>

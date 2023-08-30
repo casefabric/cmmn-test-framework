@@ -34,6 +34,7 @@ export default class TestDeleteCase extends TestCase {
     const startCase = { tenant, definition, debug: true };
 
     const caseInstance = await CaseService.startCase(user, startCase).then(id => CaseService.getCase(user, id));
+    this.addIdentifier(caseInstance);
     const caseHierarchy = CaseHierarchy.from(user, caseInstance);
     await caseHierarchy.load();
 
@@ -55,7 +56,6 @@ export default class TestDeleteCase extends TestCase {
       if (caseHierarchy.totalEventCount > 0) {
         throw new Error(`Did not expect to find any events in the case, but found ${caseHierarchy.totalEventCount}:\n${caseHierarchy.printEvents()}`)
       }
-
     });
   }
 }

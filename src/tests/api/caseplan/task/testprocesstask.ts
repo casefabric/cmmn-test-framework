@@ -48,10 +48,8 @@ export default class TestProcessTask extends TestCase {
         const startCase = { tenant, definition, inputs };
 
         // Starts the case with user
-        let caseInstance = await CaseService.startCase(user, startCase);
-
-        // Get case details
-        caseInstance = await CaseService.getCase(user, caseInstance);
+        const caseInstance = await CaseService.startCase(user, startCase).then(async id => CaseService.getCase(user, id));
+        this.addIdentifier(caseInstance);
 
         const okServiceInput = {
             code: 200,

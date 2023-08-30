@@ -38,10 +38,10 @@ export default class TestTaskCountAPI extends TestCase {
         const numSendResponseTasksBefore = (await this.getTasks('SendResponse')).length;
 
         // Start 3 cases and claim 1 task. Should lead to 5 unclaimed tasks (3 times "Task that is always started", and 2 times "SendResponse") and 1 claimed "SendResponse" task
-        await CaseService.startCase(user, startCase);
-        await CaseService.startCase(user, startCase);
-        const caseStarted = await CaseService.startCase(user, startCase);
-        const caseInstance = await CaseService.getCase(user, caseStarted);
+        await CaseService.startCase(user, startCase).then(id => this.addIdentifier(id));
+        await CaseService.startCase(user, startCase).then(id => this.addIdentifier(id));
+        const caseInstance = await CaseService.startCase(user, startCase).then(async id => CaseService.getCase(user, id));
+        this.addIdentifier(caseInstance);
 
         await this.getTasks('SendResponse', numSendResponseTasksBefore + 3);
 

@@ -7,7 +7,7 @@
             <Bounds x="360" y="150" width="140" height="80"/>
         </CMMNShape>
         <CMMNShape cmmnElementRef="_fl0cb_3">
-            <Bounds x="185.359375" y="168" width="25" height="40"/>
+            <Bounds x="185" y="168" width="25" height="40"/>
         </CMMNShape>
         <CMMNShape cmmnElementRef="_fl0cb_5">
             <Bounds x="354" y="180" width="12" height="20"/>

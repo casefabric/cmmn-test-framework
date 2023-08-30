@@ -5,7 +5,7 @@
         </text>
     </documentation>
     <input id="_GYhw_incident_status" name="incident_status"/>
-    <extensionElements>
+    <extensionElements mustUnderstand="false">
         <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.http.HTTPCallDefinition" async="false">
             <url>http://localhost:17384/notifycustomer/${incident_status}</url>
             <method>GET</method>

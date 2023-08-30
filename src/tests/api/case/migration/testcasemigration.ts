@@ -62,6 +62,8 @@ export default class TestCaseMigration extends TestCase {
 
         const case1_before = await CaseService.startCase(user, startCase).then(instance => CaseService.getCase(user, instance));
         const case2_before = await CaseService.startCase(user, startCase).then(instance => CaseService.getCase(user, instance));
+        this.addIdentifier(case1_before);
+        this.addIdentifier(case2_before);
 
         const case1Tasks_before = await TaskService.getCaseTasks(user, case1_before);
         const case2Tasks_before = await TaskService.getCaseTasks(user, case2_before);

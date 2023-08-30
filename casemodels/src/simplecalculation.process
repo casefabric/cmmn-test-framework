@@ -7,7 +7,7 @@
     <output id="_QBe0_out4" name="out4"/>
     <output id="_p93u_out5" name="out5"/>
     <output id="_8TPL_out6" name="out6"/>
-    <extensionElements>
+    <extensionElements mustUnderstand="false">
         <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.calculation.CalculationDefinition">
             <map output="mappedMessage">
                 <input source="filterOnlyWithMessage" as="in2"/>

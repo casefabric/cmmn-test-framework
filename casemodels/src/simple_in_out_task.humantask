@@ -7,6 +7,5 @@
         </documentation>
         <input id="_dk8c_In" name="In"/>
         <output id="_46Gh_Out" name="Out"/>
-        <task-model/>
     </cafienne:implementation>
 </humantask>

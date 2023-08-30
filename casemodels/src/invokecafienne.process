@@ -4,7 +4,7 @@
     <input id="_MHwW_caseLastModified" name="caseLastModified"/>
     <output id="_oCRq_responsePayload" name="responsePayload"/>
     <output id="_kcO2_exception" name="exception"/>
-    <extensionElements>
+    <extensionElements mustUnderstand="false">
         <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.http.HTTPCallDefinition">
             <url>${baseURL}/cases/${caseId}/planitems</url>
             <method>GET</method>

@@ -44,6 +44,7 @@ export default class TestNoAnonymousStartCase extends TestCase {
 
         if (expectedStatusCode === 200) {
             console.log(`\nCase id\t${caseInstance.id}`);
+            this.addIdentifier(caseInstance);
 
             await CaseService.getCase(suzy, caseInstance).then(caze => {
                 console.log(`Case is created by user '${caze.createdBy}'`);

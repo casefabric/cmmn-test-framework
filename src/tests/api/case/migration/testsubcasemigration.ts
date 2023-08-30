@@ -53,11 +53,13 @@ export default class TestSubCaseMigration extends TestCase {
         // Now start running the script
 
         const mainCase_before = await CaseService.startCase(user, startCase).then(instance => CaseService.getCase(user, instance));
+        this.addIdentifier(mainCase_before);
         const mainCaseId = mainCase_before.id;
         const subCaseId = mainCase_before.planitems.find(item => item.name === 'migration_subcase')?.id;
         if (!subCaseId) {
             throw new Error('Expected to find sub case named "migration_subcase", but could not find it');
         }
+        this.addIdentifier(subCaseId);
 
         // Now complete the task in case, to trigger the subcase
         await TaskService.getCaseTasks(user, mainCase_before).then(async tasks => await TaskService.completeTask(user, findTask(tasks, 'HumanTask')));

@@ -28,7 +28,7 @@ export default class TestTimer extends TestCase {
         const startCase = { tenant, definition, inputs, debug: true };
 
         const caseInstance = await CaseService.startCase(user, startCase);
-
+        this.addIdentifier(caseInstance);
 
         await PollUntilSuccess(async () => {
             console.log(`Retrieving case ${caseInstance.id} again`)

@@ -1,5 +1,5 @@
 <humantask>
-    <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" name="ManuallySetApprover" description="">
+    <cafienne:implementation name="ManuallySetApprover" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition">
         <input id="TravelRequest_1" name="TravelRequest"/>
         <input id="DueDate_1" name="DueDate"/>
         <output id="Project_1" name="Project"/>

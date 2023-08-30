@@ -32,8 +32,9 @@ export default class TestCasePlanHistoryAPI extends TestCase {
         };
 
         const startCase = { tenant, definition, inputs };
-        const caseInstance = await CaseService.startCase(user, startCase);
-        const planItems = await (await CaseService.getCase(user, caseInstance)).planitems;
+        const caseInstance = await CaseService.startCase(user, startCase).then(async id => CaseService.getCase(user, id));
+        this.addIdentifier(caseInstance);
+        const planItems = caseInstance.planitems;
 
         const planHistory = await CaseHistoryService.getCasePlanHistory(user, caseInstance);
         if (planHistory.length !== planItems.length) {

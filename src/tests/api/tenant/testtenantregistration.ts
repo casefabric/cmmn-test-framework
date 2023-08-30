@@ -74,6 +74,8 @@ export default class TestTenantRegistration extends TestCase {
         tenantOwner3.enabled = true;
         await PlatformService.createTenant(platformAdmin, tenant1);
 
+        this.addIdentifier(tenant1);
+
         // Creating tenant again should fail because tenant already exists
         await PlatformService.createTenant(platformAdmin, tenant1, 400, 'Creating tenant again should fail because tenant already exists');
         // Getting tenant owners as platformOwner should fail.

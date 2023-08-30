@@ -1,20 +1,18 @@
 'use strict';
 
-import TaskService from '@cafienne/typescript-client/service/task/taskservice';
-import TestCase from '@cafienne/typescript-client/test/testcase';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
+import { PollUntilSuccess } from '@cafienne/typescript-client';
 import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
+import CaseTeamUser, { CaseOwner } from "@cafienne/typescript-client/cmmn/team/caseteamuser";
 import CaseMigrationService, { DefinitionMigration } from '@cafienne/typescript-client/service/case/casemigrationservice';
-import WorldWideTestTenant from '../../../worldwidetesttenant';
-import { findTask } from '@cafienne/typescript-client/test/caseassertions/task';
-import { CaseOwner } from '@cafienne/typescript-client/cmmn/team/caseteamuser';
-import CaseTeamUser from "@cafienne/typescript-client/cmmn/team/caseteamuser";
+import CaseService from '@cafienne/typescript-client/service/case/caseservice';
 import CaseTeamService from '@cafienne/typescript-client/service/case/caseteamservice';
-import { ExtendedCaseMigrationService, ExtendedDefinitionMigration } from '../../../../nextversion/nextversion';
-import { PollUntilSuccess, ServerSideProcessing, SomeTime, assertCaseTeam, assertCaseTeamUser } from '@cafienne/typescript-client';
-import User from '@cafienne/typescript-client/user';
+import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
+import TaskService from '@cafienne/typescript-client/service/task/taskservice';
+import { findTask } from '@cafienne/typescript-client/test/caseassertions/task';
 import Comparison from '@cafienne/typescript-client/test/comparison';
+import TestCase from '@cafienne/typescript-client/test/testcase';
+import User from '@cafienne/typescript-client/user';
+import WorldWideTestTenant from '../../../worldwidetesttenant';
 
 const base_definition = 'migration/migration_v0.xml';
 const definitionMigrated = 'migration/migration_v1.xml';
@@ -55,6 +53,7 @@ export default class TestCaseTeamMigration extends TestCase {
 
         const case_before = await CaseService.startCase(sender, startCase).then(instance => CaseService.getCase(sender, instance));
         const caseId = case_before.id;
+        this.addIdentifier(caseId);
         const subCaseId = case_before.planitems.find(item => item.name === 'migration_subcase')?.id;
         if (!subCaseId) {
             throw new Error('Expected to find sub case named "migration_subcase", but could not find it');
@@ -69,10 +68,10 @@ export default class TestCaseTeamMigration extends TestCase {
             new CaseTeamUser(worldwideTenant.employee, ["role3_v1"])
         ]);
 
-        const migratedDefinition = new ExtendedDefinitionMigration(definitionMigrated, newCaseTeam);
+        const migratedDefinition = new DefinitionMigration(definitionMigrated, newCaseTeam);
 
         // Migrate caseInstance1, and then complete the task in case
-        await ExtendedCaseMigrationService.migrateDefinition(sender, case_before, migratedDefinition);
+        await CaseMigrationService.migrateDefinition(sender, case_before, migratedDefinition);
 
         // Check that the case team is updated as well; 1 new member, and some roles dropped.
         await checkCaseTeam(sender, caseId, newCaseTeam);

@@ -30,6 +30,7 @@ export default class TestTaskBindingRefinement extends TestCase {
         const startCase = { tenant, definition, inputs };
         const caseId = await CaseService.startCase(user, startCase) as Case
         const caseInstance = await CaseService.getCase(user, caseId);
+        this.addIdentifier(caseInstance);
 
         const getPlanItem = (planItemId: string) => caseInstance.planitems.find(item => item.id === planItemId);
         const tasks = await TaskService.getCaseTasks(user, caseInstance);

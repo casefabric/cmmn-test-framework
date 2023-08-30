@@ -48,8 +48,8 @@ export default class TestTaskAPI extends TestCase {
         const sendersTaskCountBeforeStartCase = await this.getUnassignedTasks(sender);
         const receiversTaskCountBeforeStartCase = await this.getUnassignedTasks(receiver);
 
-        const caseStarted = await CaseService.startCase(sender, startCase);
-        const caseInstance = await CaseService.getCase(sender, caseStarted);
+        const caseInstance = await CaseService.startCase(sender, startCase).then(async id => CaseService.getCase(sender, id));
+        this.addIdentifier(caseInstance);
 
         await CaseService.getCase(receiver, caseInstance, 404);
 

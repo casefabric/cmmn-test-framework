@@ -36,6 +36,7 @@ export default class TestEventAuthorization extends TestCase {
         const startCase = { tenant, definition, caseTeam };
 
         const caseInstance = await CaseService.startCase(caseOwner, startCase).then(id => CaseService.getCase(caseOwner, id));
+        this.addIdentifier(caseInstance);
 
         await this.runPlainUserEventTests(caseInstance);
 

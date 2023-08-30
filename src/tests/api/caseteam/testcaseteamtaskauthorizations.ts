@@ -39,6 +39,7 @@ export default class TestCaseTeamTaskAuthorizations extends TestCase {
         ]);
         const startCase = { tenant, definition, debug: true, caseTeam };
         const caseInstance = await CaseService.startCase(sender, startCase);
+        this.addIdentifier(caseInstance);
 
         // Get case tasks should be possible for sender
         const tasks = await TaskService.getCaseTasks(sender, caseInstance);

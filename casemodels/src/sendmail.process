@@ -8,7 +8,7 @@
     <input id="_xw21_attachments" name="attachments"/>
     <input id="_L0Yl_replyTo" name="replyTo"/>
     <input id="_MqzT_invite" name="invite"/>
-    <extensionElements>
+    <extensionElements mustUnderstand="false">
         <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.mail.MailDefinition">
             <mail-body type="text/html">
                 <![CDATA[

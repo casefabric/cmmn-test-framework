@@ -47,6 +47,7 @@ export default class TestHelloWorldBusinessIdentifiers extends TestCase {
         const caseTeam = new CaseTeam([new CaseOwner(employee), new CaseTeamUser(sender), new CaseTeamUser(receiver)]);
         const startCase = { tenant, definition, inputs, caseTeam, debug: true };
         const caseInstance = await CaseService.startCase(sender, startCase);
+        this.addIdentifier(caseInstance);
 
         // Initial input has no message in it, so there should not be any additional values
         await messageFilter.assertExtraMatches(0);

@@ -44,8 +44,6 @@
                 <standardEvent>occur</standardEvent>
             </planItemOnPart>
         </sentry>
-        <userEvent id="ue__czPo6_0" name="Get Error"/>
-        <userEvent id="ue__czPo6_1" name="Get OK"/>
         <processTask id="pt__czPo6_0" name="Get Error Response" isBlocking="true" processRef="GetResponse.process">
             <inputs id="_czPo6_43" name="HTTPConfig" bindingRef="_czPo6_0"/>
             <inputs id="_czPo6_44" name="ServiceInput" bindingRef="_czPo6_1"/>
@@ -113,6 +111,8 @@
             </parameterMapping>
         </processTask>
         <milestone id="ms__czPo6_0" name="Case Closed"/>
+        <userEvent id="ue__czPo6_0" name="Get Error"/>
+        <userEvent id="ue__czPo6_1" name="Get OK"/>
         <userEvent id="ue__czPo6_2" name="Close Case"/>
     </casePlanModel>
     <input id="_czPo6_37" name="HTTPConfig" bindingRef="_czPo6_0"/>

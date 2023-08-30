@@ -141,9 +141,6 @@
                 </cafienne:implementation>
             </extensionElements>
         </humanTask>
-        <stage id="_caNNT_23" name="Repeating Stage" autoComplete="true">
-            <planItem id="pi_ht__caNNT_5" name="Stage Indexed Input" definitionRef="ht__caNNT_5"/>
-        </stage>
         <humanTask id="ht__caNNT_5" name="Stage Indexed Input" isBlocking="true">
             <inputs id="_caNNT_49" name="CaseInput" bindingRef="_caNNT_44">
                 <bindingRefinement id="_caNNT_50">
@@ -158,6 +155,9 @@
                 </cafienne:implementation>
             </extensionElements>
         </humanTask>
+        <stage id="_caNNT_23" name="Repeating Stage" autoComplete="true">
+            <planItem id="pi_ht__caNNT_5" name="Stage Indexed Input" definitionRef="ht__caNNT_5"/>
+        </stage>
     </casePlanModel>
     <input id="_caNNT_5" name="CaseInput" bindingRef="_caNNT_44"/>
 </case>

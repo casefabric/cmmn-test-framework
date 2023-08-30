@@ -23,6 +23,7 @@ export default class TestCaseFileExpressions extends TestCase {
     async run() {
         const startCase = { tenant, definition };
         const caseInstance = await CaseService.startCase(user, startCase);
+        this.addIdentifier(caseInstance);
 
         await CaseFileService.createCaseFileItem(user, caseInstance, 'Item1', {});
 

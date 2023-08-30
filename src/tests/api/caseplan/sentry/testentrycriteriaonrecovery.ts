@@ -25,6 +25,7 @@ export default class TestEntryCriteriaOnRecovery extends TestCase {
         const startCase = { tenant, definition };
 
         const caseInstance = await CaseService.startCase(user, startCase).then(id => CaseService.getCase(user, id));
+        this.addIdentifier(caseInstance);
         const task1 = await assertPlanItem(user, caseInstance, 'Task1', 0, State.Active);
         const task2 = await assertPlanItem(user, caseInstance, 'Task2', 0, State.Active);
         const task3 = await assertPlanItem(user, caseInstance, 'Task3', 0, State.Available);

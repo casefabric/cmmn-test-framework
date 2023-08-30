@@ -16,6 +16,7 @@ export default class TestDeleteTenant extends TestCase {
 
     console.log(`Creating tenant ${tenant}`);
     await wrapper.create();
+    this.addIdentifier(tenant);
     await TenantService.getTenantOwners(user, tenant).then(owners => console.log(`Found ${owners.length} tenant owners`));
 
     console.log(`  Succesfully created tenant ${tenant}`);

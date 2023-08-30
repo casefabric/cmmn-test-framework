@@ -107,31 +107,15 @@
                 </cafienne:implementation>
             </extensionElements>
         </humanTask>
-        <humanTask id="ht__ZCK2p_2" name="Continuously  Terminated  Task" isBlocking="true">
-            <documentation textFormat="text/plain">
-                <text>
-                    <![CDATA[Continuously 
-Terminated 
-Task]]>
-                </text>
-            </documentation>
-        </humanTask>
-        <humanTask id="ht__ZCK2p_1" name="Continuously Repeated Task" isBlocking="true">
-            <documentation textFormat="text/plain">
-                <text>
-                    <![CDATA[Continuously
-Repeated
-Task]]>
-                </text>
-            </documentation>
-        </humanTask>
+        <humanTask id="ht__ZCK2p_2" name="Continuously Terminated Task" isBlocking="true"/>
+        <humanTask id="ht__ZCK2p_1" name="Continuously Repeated Task" isBlocking="true"/>
         <milestone id="ms__ZCK2p_0" name="Left"/>
         <milestone id="ms__ZCK2p_1" name="Right"/>
         <stage id="_ZCK2p_0" name="Stage" autoComplete="true">
             <planItem id="pi_ht__ZCK2p_0" name="SendResponse" definitionRef="ht__ZCK2p_0"/>
         </stage>
         <stage id="_ZCK2p_30" name="Stage (Termination Should Kill One Task)" autoComplete="true">
-            <planItem id="pi_ht__ZCK2p_2" name="Continuously  Terminated  Task" definitionRef="ht__ZCK2p_2">
+            <planItem id="pi_ht__ZCK2p_2" name="Continuously Terminated Task" definitionRef="ht__ZCK2p_2">
                 <documentation textFormat="text/plain">
                     <text>
                         <![CDATA[Continuously 

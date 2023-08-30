@@ -22,6 +22,7 @@ export default class TestTaskExpressions extends TestCase {
     async run() {
         const startCase = { tenant, definition };
         const caseInstance = await CaseService.startCase(user, startCase);
+        this.addIdentifier(caseInstance);
 
         const taskName = 'Task map output properties';
         const taskOutput = {

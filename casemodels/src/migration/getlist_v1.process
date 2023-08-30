@@ -6,7 +6,7 @@
     <output id="detailsIdentifiers" name="detailsIdentifiers"/>
     <output id="headerContentLength" name="headerContentType"/>
     <output id="_dTMD_exception" name="exception"/>
-    <extensionElements>
+    <extensionElements mustUnderstand="false">
         <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.http.HTTPCallDefinition">
             <url>http://localhost:${httpPort}/getListWebService</url>
             <method>GET</method>

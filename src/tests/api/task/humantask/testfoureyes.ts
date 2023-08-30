@@ -28,6 +28,7 @@ export default class TestFourEyes extends TestCase {
         
         const startCase = { tenant, definition, inputs, caseTeam, debug: true };
         const caseInstance = await CaseService.startCase(sender, startCase).then(id => CaseService.getCase(sender, id));
+        this.addIdentifier(caseInstance);
 
         const tasks = caseInstance.planitems.filter(item => item.type === 'HumanTask');
         const taskFinder = (name: string) => {
