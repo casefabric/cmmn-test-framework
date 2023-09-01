@@ -80,6 +80,7 @@ import TestArchiveHelloworld from './tests/api/archiving/testarchivehelloworld';
 import TestFourEyes from './tests/api/task/humantask/testfoureyes';
 import TestCaseTeamMigration from './tests/api/case/migration/testcaseteammigration';
 import TestEntryCriteriaOnRecovery from './tests/api/caseplan/sentry/testentrycriteriaonrecovery';
+import TestDynamicForm from './tests/api/task/humantask/testdynamicform';
 
 function findTestsFromCommandLineArguments(): Array<string> {
     const time = process.argv[2];
@@ -171,6 +172,7 @@ const AllTestCases = new TestClasses([
     , TestTaskFilterAPI2
     , TestTaskCountAPI
     , TestTaskWithSpaces
+    , TestDynamicForm
     , TestFourEyes
     , TestDebugMode
     , TestDocumentationAPI

@@ -1,0 +1,40 @@
+<case id="dynamictaskmodel.case" name="dynamictaskmodel" expressionLanguage="spel" guid="_vO140">
+    <caseFileModel>
+        <caseFileItem id="_vO140_1" name="Greeting" multiplicity="ExactlyOne" definitionRef="greeting.cfid"/>
+    </caseFileModel>
+    <casePlanModel id="cm__vO140_0" name="dynamictaskmodel" autoComplete="true">
+        <planItem id="pi_ht__vO140_0" name="Task With Dynamic Form" definitionRef="ht__vO140_0"/>
+        <planItem id="pi_ht__vO140_1" name="Second Task Has Different Form" definitionRef="ht__vO140_1"/>
+        <humanTask id="ht__vO140_0" name="Task With Dynamic Form" isBlocking="true">
+            <inputs id="_vO140_7" name="Greeting" bindingRef="_vO140_1"/>
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="taskwithdynamicform.humantask">
+                    <parameterMapping id="_vO140_3" sourceRef="_vO140_7" targetRef="_whor_Greeting"/>
+                    <parameterMapping id="_vO140_4" sourceRef="_vO140_7" targetRef="_dk8n_Input">
+                        <transformation id="_vO140_8">
+                            <body>
+                                <![CDATA[map("title", Greeting.To, "type", "string")]]>
+                            </body>
+                        </transformation>
+                    </parameterMapping>
+                </cafienne:implementation>
+            </extensionElements>
+        </humanTask>
+        <humanTask id="ht__vO140_1" name="Second Task Has Different Form" isBlocking="true">
+            <inputs id="_vO140_14" name="Greeting" bindingRef="_vO140_1"/>
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="taskwithdynamicform.humantask">
+                    <parameterMapping id="_vO140_10" sourceRef="_vO140_14" targetRef="_whor_Greeting"/>
+                    <parameterMapping id="_vO140_11" sourceRef="_vO140_14" targetRef="_dk8n_Input">
+                        <transformation id="_vO140_15">
+                            <body>
+                                <![CDATA[map("title", Greeting.From, "type", "boolean")]]>
+                            </body>
+                        </transformation>
+                    </parameterMapping>
+                </cafienne:implementation>
+            </extensionElements>
+        </humanTask>
+    </casePlanModel>
+    <input id="_vO140_2" name="Greeting" bindingRef="_vO140_1"/>
+</case>
