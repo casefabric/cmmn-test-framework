@@ -1,0 +1,27 @@
+<humantask>
+    <cafienne:implementation name="taskwithdynamicform" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition">
+        <input id="_whor_Greeting" name="Greeting"/>
+        <input id="_dk8n_Input" name="Input"/>
+        <output id="_YG22_Response" name="Response"/>
+        <task-model>{
+	"schema" : {
+		"title" : "${task.name}",
+		"type" : "object",
+		"properties" : {
+			"Greeting" : {
+				"title" : "Dear ${Greeting.To}",
+				"type" : "object",
+				"properties" : {
+					"Message" : {
+                      	"title": "A message from ${Greeting.From}",
+						"type" : "string"
+					},
+                  	"Input" : ${Input}
+				}
+			}
+		}
+	}
+}
+</task-model>
+    </cafienne:implementation>
+</humantask>
