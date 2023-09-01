@@ -1,19 +1,18 @@
 'use strict';
 
-import TaskService from '@cafienne/typescript-client/service/task/taskservice';
-import TestCase from '@cafienne/typescript-client/test/testcase';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import Case from '@cafienne/typescript-client/cmmn/case';
-import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import CaseMigrationService, { DefinitionMigration } from '@cafienne/typescript-client/service/case/casemigrationservice';
+import Case from '../../../../cmmn/case';
+import CaseTeam from '../../../../cmmn/team/caseteam';
+import CaseTeamUser, { CaseOwner } from "../../../../cmmn/team/caseteamuser";
+import CaseFileService from '../../../../service/case/casefileservice';
+import CaseMigrationService, { DefinitionMigration } from '../../../../service/case/casemigrationservice';
+import CasePlanService from '../../../../service/case/caseplanservice';
+import CaseService from '../../../../service/case/caseservice';
+import CaseTeamService from '../../../../service/case/caseteamservice';
+import RepositoryService from '../../../../service/case/repositoryservice';
+import TaskService from '../../../../service/task/taskservice';
+import { findTask } from '../../../../test/caseassertions/task';
+import TestCase from '../../../../test/testcase';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
-import { findTask } from '@cafienne/typescript-client/test/caseassertions/task';
-import CaseFileService from '@cafienne/typescript-client/service/case/casefileservice';
-import { CaseOwner } from '@cafienne/typescript-client/cmmn/team/caseteamuser';
-import CaseTeamUser from "@cafienne/typescript-client/cmmn/team/caseteamuser";
-import CaseTeamService from '@cafienne/typescript-client/service/case/caseteamservice';
-import CasePlanService from '@cafienne/typescript-client/service/case/caseplanservice';
 
 const base_definition = 'helloworld_base.xml';
 const definitionMigrated = 'helloworld_migrated.xml';

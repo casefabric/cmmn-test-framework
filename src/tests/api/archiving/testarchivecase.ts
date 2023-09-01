@@ -1,13 +1,12 @@
 'use strict';
 
-import { assertPlanItem } from '@cafienne/typescript-client';
-import State from '@cafienne/typescript-client/cmmn/state';
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import StartCase from '@cafienne/typescript-client/service/case/startcase';
-import StorageService from '@cafienne/typescript-client/service/storage/storageservice';
-import CaseHierarchy from '@cafienne/typescript-client/test/casehierarchy';
-import TestCase from '@cafienne/typescript-client/test/testcase';
+import State from '../../../cmmn/state';
+import CaseService from '../../../service/case/caseservice';
+import RepositoryService from '../../../service/case/repositoryservice';
+import StartCase from '../../../service/case/startcase';
+import StorageService from '../../../service/storage/storageservice';
+import CaseHierarchy from '../../../test/casehierarchy';
+import TestCase from '../../../test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 
 const worldwideTenant = new WorldWideTestTenant();

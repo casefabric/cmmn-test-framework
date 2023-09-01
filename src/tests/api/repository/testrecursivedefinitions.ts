@@ -1,10 +1,8 @@
-import TestCase from "@cafienne/typescript-client/test/testcase";
-import RepositoryService, { readLocalXMLDocument } from "@cafienne/typescript-client/service/case/repositoryservice";
+import DeployCase from "../../../service/case/command/repository/deploycase";
+import RepositoryService, { readLocalXMLDocument } from "../../../service/case/repositoryservice";
+import Comparison from "../../../test/comparison";
+import TestCase from "../../../test/testcase";
 import WorldWideTestTenant from "../../worldwidetesttenant";
-import TenantService from "@cafienne/typescript-client/service/tenant/tenantservice";
-import TenantUser from "@cafienne/typescript-client/tenant/tenantuser";
-import DeployCase from "@cafienne/typescript-client/service/case/command/repository/deploycase";
-import Comparison from "@cafienne/typescript-client/test/comparison";
 
 const wwtt = new WorldWideTestTenant('For-repository-testing');
 const tenant = wwtt.name;

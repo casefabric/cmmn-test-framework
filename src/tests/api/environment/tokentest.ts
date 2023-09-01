@@ -1,8 +1,8 @@
-import TestCase from "@cafienne/typescript-client/test/testcase";
-import User from "@cafienne/typescript-client/user";
-import PlatformService from "@cafienne/typescript-client/service/platform/platformservice";
-import TokenService, { dateAsSeconds } from "@cafienne/typescript-client/service/platform/tokenservice";
 import Config from "../../../config";
+import PlatformService from "../../../service/platform/platformservice";
+import TokenService, { dateAsSeconds } from "../../../service/platform/tokenservice";
+import TestCase from "../../../test/testcase";
+import User from "../../../user";
 
 const user = new User('admin')
 

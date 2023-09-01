@@ -1,12 +1,12 @@
 'use strict';
 
-import CaseTeam from "@cafienne/typescript-client/cmmn/team/caseteam";
-import CaseTeamUser, { CaseOwner } from "@cafienne/typescript-client/cmmn/team/caseteamuser";
-import CaseService from "@cafienne/typescript-client/service/case/caseservice";
-import RepositoryService from "@cafienne/typescript-client/service/case/repositoryservice";
-import TaskService from "@cafienne/typescript-client/service/task/taskservice";
-import TestCase from "@cafienne/typescript-client/test/testcase";
-import User from "@cafienne/typescript-client/user";
+import CaseTeam from "../../../../cmmn/team/caseteam";
+import CaseTeamUser, { CaseOwner } from "../../../../cmmn/team/caseteamuser";
+import CaseService from "../../../../service/case/caseservice";
+import RepositoryService from "../../../../service/case/repositoryservice";
+import TaskService from "../../../../service/task/taskservice";
+import TestCase from "../../../../test/testcase";
+import User from "../../../../user";
 import WorldWideTestTenant from "../../../worldwidetesttenant";
 import ClubData from "./clubdata";
 import FiltersData from "./filtersdata";

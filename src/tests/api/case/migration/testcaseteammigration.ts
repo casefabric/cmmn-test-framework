@@ -1,17 +1,17 @@
 'use strict';
 
-import { PollUntilSuccess } from '@cafienne/typescript-client';
-import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
-import CaseTeamUser, { CaseOwner } from "@cafienne/typescript-client/cmmn/team/caseteamuser";
-import CaseMigrationService, { DefinitionMigration } from '@cafienne/typescript-client/service/case/casemigrationservice';
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import CaseTeamService from '@cafienne/typescript-client/service/case/caseteamservice';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import TaskService from '@cafienne/typescript-client/service/task/taskservice';
-import { findTask } from '@cafienne/typescript-client/test/caseassertions/task';
-import Comparison from '@cafienne/typescript-client/test/comparison';
-import TestCase from '@cafienne/typescript-client/test/testcase';
-import User from '@cafienne/typescript-client/user';
+import CaseTeam from '../../../../cmmn/team/caseteam';
+import CaseTeamUser, { CaseOwner } from "../../../../cmmn/team/caseteamuser";
+import CaseMigrationService, { DefinitionMigration } from '../../../../service/case/casemigrationservice';
+import CaseService from '../../../../service/case/caseservice';
+import CaseTeamService from '../../../../service/case/caseteamservice';
+import RepositoryService from '../../../../service/case/repositoryservice';
+import TaskService from '../../../../service/task/taskservice';
+import { findTask } from '../../../../test/caseassertions/task';
+import Comparison from '../../../../test/comparison';
+import TestCase from '../../../../test/testcase';
+import { PollUntilSuccess } from '../../../../test/time';
+import User from '../../../../user';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
 
 const base_definition = 'migration/migration_v0.xml';

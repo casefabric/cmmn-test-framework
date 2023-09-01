@@ -1,17 +1,14 @@
 'use strict';
 
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import TaskService from '@cafienne/typescript-client/service/task/taskservice';
-import TestCase from '@cafienne/typescript-client/test/testcase';
+import CaseTeam from '../../../../cmmn/team/caseteam';
+import CaseTeamUser, { CaseOwner } from "../../../../cmmn/team/caseteamuser";
+import CaseService from '../../../../service/case/caseservice';
+import CaseTeamService from '../../../../service/case/caseteamservice';
+import RepositoryService from '../../../../service/case/repositoryservice';
+import TaskService from '../../../../service/task/taskservice';
+import TestCase from '../../../../test/testcase';
+import User from '../../../../user';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
-import { CaseOwner } from '@cafienne/typescript-client/cmmn/team/caseteamuser';
-import CaseTeamUser from "@cafienne/typescript-client/cmmn/team/caseteamuser";
-import CaseTeamService from '@cafienne/typescript-client/service/case/caseteamservice';
-import Case from '@cafienne/typescript-client/cmmn/case';
-import User from '@cafienne/typescript-client/user';
-
 const definition = 'helloworld.xml';
 
 const guid = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);

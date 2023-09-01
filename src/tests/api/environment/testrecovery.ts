@@ -1,16 +1,14 @@
-import CaseService from "@cafienne/typescript-client/service/case/caseservice";
-import DebugService from "@cafienne/typescript-client/service/case/debugservice";
-import RepositoryService from "@cafienne/typescript-client/service/case/repositoryservice";
-import TaskService from "@cafienne/typescript-client/service/task/taskservice";
-import TenantService from "@cafienne/typescript-client/service/tenant/tenantservice";
-import TestCase from "@cafienne/typescript-client/test/testcase";
+import CaseTeam from "../../../cmmn/team/caseteam";
+import CaseTeamUser, { CaseOwner } from "../../../cmmn/team/caseteamuser";
+import CaseMigrationService, { DefinitionMigration } from "../../../service/case/casemigrationservice";
+import CaseService from "../../../service/case/caseservice";
+import DebugService from "../../../service/case/debugservice";
+import RepositoryService from "../../../service/case/repositoryservice";
+import TaskService from "../../../service/task/taskservice";
+import TenantService from "../../../service/tenant/tenantservice";
+import { findTask } from "../../../test/caseassertions/task";
+import TestCase from "../../../test/testcase";
 import WorldWideTestTenant from "../../worldwidetesttenant";
-import CaseTeam from "@cafienne/typescript-client/cmmn/team/caseteam";
-import { CaseOwner, DefinitionMigration, findTask } from "@cafienne/typescript-client";
-import CaseTeamUser from "@cafienne/typescript-client/cmmn/team/caseteamuser";
-import CaseTeamService from "@cafienne/typescript-client/service/case/caseteamservice";
-import CasePlanService from "@cafienne/typescript-client/service/case/caseplanservice";
-import CaseMigrationService from "@cafienne/typescript-client/service/case/casemigrationservice";
 
 const worldwideTenant = new WorldWideTestTenant();
 const definition = 'helloworld.xml';

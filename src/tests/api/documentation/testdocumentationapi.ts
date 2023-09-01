@@ -1,16 +1,14 @@
 'use strict';
 
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import TestCase from '@cafienne/typescript-client/test/testcase';
-
+import Case from '../../../cmmn/case';
+import CaseFileItemDocumentation from '../../../cmmn/casefileitemdocumentation';
+import PlanItem from '../../../cmmn/planitem';
+import CaseFileService from '../../../service/case/casefileservice';
+import CasePlanService from '../../../service/case/caseplanservice';
+import CaseService from '../../../service/case/caseservice';
+import RepositoryService from '../../../service/case/repositoryservice';
+import TestCase from '../../../test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import CasePlanService from '@cafienne/typescript-client/service/case/caseplanservice';
-import PlanItem from '@cafienne/typescript-client/cmmn/planitem';
-import Case from '@cafienne/typescript-client/cmmn/case';
-import CaseFileService from '@cafienne/typescript-client/service/case/casefileservice';
-import { assert } from 'console';
-import CaseFileItemDocumentation from '@cafienne/typescript-client/cmmn/casefileitemdocumentation';
 
 const definition = 'documentation_case.xml';
 

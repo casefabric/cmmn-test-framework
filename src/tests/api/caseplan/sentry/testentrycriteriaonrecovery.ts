@@ -1,13 +1,13 @@
 'use strict';
 
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import TestCase from '@cafienne/typescript-client/test/testcase';
+import { assertPlanItem } from '../../../..';
+import State from '../../../../cmmn/state';
+import CaseService from '../../../../service/case/caseservice';
+import DebugService from '../../../../service/case/debugservice';
+import RepositoryService from '../../../../service/case/repositoryservice';
+import TaskService from '../../../../service/task/taskservice';
+import TestCase from '../../../../test/testcase';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
-import { assertPlanItem } from '@cafienne/typescript-client';
-import State from '@cafienne/typescript-client/cmmn/state';
-import TaskService from '@cafienne/typescript-client/service/task/taskservice';
-import DebugService from '@cafienne/typescript-client/service/case/debugservice';
 
 const definition = 'entrycriteriaonrecovery.xml';
 

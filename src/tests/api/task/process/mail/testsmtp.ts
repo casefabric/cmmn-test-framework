@@ -1,12 +1,12 @@
 'use strict';
 
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import TestCase from '@cafienne/typescript-client/test/testcase';
+import State from '../../../../../cmmn/state';
+import CaseService from '../../../../../service/case/caseservice';
+import DebugService from '../../../../../service/case/debugservice';
+import RepositoryService from '../../../../../service/case/repositoryservice';
+import { assertPlanItem } from '../../../../../test/caseassertions/plan';
+import TestCase from '../../../../../test/testcase';
 import WorldWideTestTenant from '../../../../worldwidetesttenant';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import { assertPlanItem } from '@cafienne/typescript-client/test/caseassertions/plan';
-import DebugService from '@cafienne/typescript-client/service/case/debugservice';
-import State from '@cafienne/typescript-client/cmmn/state';
 
 const definition = 'smtptest.xml';
 

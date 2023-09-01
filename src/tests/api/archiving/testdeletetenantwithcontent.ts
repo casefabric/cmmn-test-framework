@@ -1,13 +1,13 @@
 'use strict';
 
-import { SomeTime } from '@cafienne/typescript-client';
-import State from '@cafienne/typescript-client/cmmn/state';
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import StorageService from '@cafienne/typescript-client/service/storage/storageservice';
-import TenantService from '@cafienne/typescript-client/service/tenant/tenantservice';
-import CaseHierarchy from '@cafienne/typescript-client/test/casehierarchy';
-import TestCase from '@cafienne/typescript-client/test/testcase';
+import State from '../../../cmmn/state';
+import CaseService from '../../../service/case/caseservice';
+import RepositoryService from '../../../service/case/repositoryservice';
+import StorageService from '../../../service/storage/storageservice';
+import TenantService from '../../../service/tenant/tenantservice';
+import CaseHierarchy from '../../../test/casehierarchy';
+import TestCase from '../../../test/testcase';
+import { SomeTime } from '../../../test/time';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 
 const tenant = "TestTenantWithContent";

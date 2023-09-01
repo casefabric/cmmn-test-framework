@@ -1,10 +1,10 @@
 'use strict';
 
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import DebugService from '@cafienne/typescript-client/service/case/debugservice';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import PlatformService from '@cafienne/typescript-client/service/platform/platformservice';
-import TestCase from '@cafienne/typescript-client/test/testcase';
+import CaseService from '../../../service/case/caseservice';
+import DebugService from '../../../service/case/debugservice';
+import RepositoryService from '../../../service/case/repositoryservice';
+import PlatformService from '../../../service/platform/platformservice';
+import TestCase from '../../../test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 
 const definition = 'helloworld.xml';

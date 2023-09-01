@@ -1,14 +1,14 @@
 'use strict';
 
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import TaskService from '@cafienne/typescript-client/service/task/taskservice';
-import TestCase from '@cafienne/typescript-client/test/testcase';
+import PlanItem from '../../../cmmn/planitem';
+import CasePlanService from '../../../service/case/caseplanservice';
+import CaseService from '../../../service/case/caseservice';
+import RepositoryService from '../../../service/case/repositoryservice';
+import TaskService from '../../../service/task/taskservice';
+import assertCaseFileContent from '../../../test/caseassertions/file';
+import { verifyTaskInput } from '../../../test/caseassertions/task';
+import TestCase from '../../../test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import assertCaseFileContent from '@cafienne/typescript-client/test/caseassertions/file';
-import { verifyTaskInput } from '@cafienne/typescript-client/test/caseassertions/task';
-import CasePlanService from '@cafienne/typescript-client/service/case/caseplanservice';
-import PlanItem from '@cafienne/typescript-client/cmmn/planitem';
 
 const definition = 'repeat_with_mapping.xml';
 

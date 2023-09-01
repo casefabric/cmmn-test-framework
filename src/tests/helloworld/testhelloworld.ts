@@ -1,17 +1,16 @@
 'use strict';
 
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import TaskService from '@cafienne/typescript-client/service/task/taskservice';
-import TestCase from '@cafienne/typescript-client/test/testcase';
+import State from '../../cmmn/state';
+import TaskState from '../../cmmn/taskstate';
+import CaseTeam from '../../cmmn/team/caseteam';
+import CaseTeamUser, { CaseOwner } from "../../cmmn/team/caseteamuser";
+import CaseService from '../../service/case/caseservice';
+import RepositoryService from '../../service/case/repositoryservice';
+import TaskService from '../../service/task/taskservice';
+import { assertCasePlan } from '../../test/caseassertions/plan';
+import { assertTask, findTask, verifyTaskInput } from '../../test/caseassertions/task';
+import TestCase from '../../test/testcase';
 import WorldWideTestTenant from '../worldwidetesttenant';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import { assertCasePlan } from '@cafienne/typescript-client/test/caseassertions/plan';
-import { assertTask, verifyTaskInput, findTask } from '@cafienne/typescript-client/test/caseassertions/task';
-import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
-import { CaseOwner } from '@cafienne/typescript-client/cmmn/team/caseteamuser';
-import CaseTeamUser from "@cafienne/typescript-client/cmmn/team/caseteamuser";
-import TaskState from '@cafienne/typescript-client/cmmn/taskstate';
-import State from '@cafienne/typescript-client/cmmn/state';
 
 const definition = 'helloworld.xml';
 

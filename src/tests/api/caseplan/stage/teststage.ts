@@ -1,14 +1,14 @@
 'use strict';
 
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import TaskService from '@cafienne/typescript-client/service/task/taskservice';
-import TestCase from '@cafienne/typescript-client/test/testcase';
+import Case from '../../../../cmmn/case';
+import Task from '../../../../cmmn/task';
+import CaseService from '../../../../service/case/caseservice';
+import RepositoryService from '../../../../service/case/repositoryservice';
+import TaskService from '../../../../service/task/taskservice';
+import Comparison from '../../../../test/comparison';
+import TestCase from '../../../../test/testcase';
+import User from '../../../../user';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import Comparison from '@cafienne/typescript-client/test/comparison';
-import User from '@cafienne/typescript-client/user';
-import Task from '@cafienne/typescript-client/cmmn/task';
-import Case from '@cafienne/typescript-client/cmmn/case';
 
 const definition = 'stagetest.xml';
 

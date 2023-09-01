@@ -1,10 +1,10 @@
 'use strict';
 
-import { PollUntilSuccess } from '@cafienne/typescript-client';
-import State from '@cafienne/typescript-client/cmmn/state';
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import TestCase from '@cafienne/typescript-client/test/testcase';
+import State from '../../../../cmmn/state';
+import CaseService from '../../../../service/case/caseservice';
+import RepositoryService from '../../../../service/case/repositoryservice';
+import TestCase from '../../../../test/testcase';
+import { PollUntilSuccess } from '../../../../test/time';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
 
 const definition = 'timer.xml';

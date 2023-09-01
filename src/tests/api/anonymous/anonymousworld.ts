@@ -1,7 +1,7 @@
-import User from "@cafienne/typescript-client/user";
-import TenantUser from "@cafienne/typescript-client/tenant/tenantuser";
-import Tenant from "@cafienne/typescript-client/tenant/tenant";
-import PlatformService from "@cafienne/typescript-client/service/platform/platformservice";
+import PlatformService from "../../../service/platform/platformservice";
+import Tenant from "../../../tenant/tenant";
+import TenantUser from "../../../tenant/tenantuser";
+import User from "../../../user";
 
 /**
  * Simple test tenant to avoid duplicate code

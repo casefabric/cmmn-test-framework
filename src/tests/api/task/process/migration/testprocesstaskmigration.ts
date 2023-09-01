@@ -1,14 +1,14 @@
 'use strict';
 
-import State from '@cafienne/typescript-client/cmmn/state';
-import Transition from '@cafienne/typescript-client/cmmn/transition';
-import CaseFileService from '@cafienne/typescript-client/service/case/casefileservice';
-import CaseMigrationService, { DefinitionMigration } from '@cafienne/typescript-client/service/case/casemigrationservice';
-import CasePlanService from '@cafienne/typescript-client/service/case/caseplanservice';
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import { assertPlanItem } from '@cafienne/typescript-client/test/caseassertions/plan';
-import TestCase from '@cafienne/typescript-client/test/testcase';
+import State from '../../../../../cmmn/state';
+import Transition from '../../../../../cmmn/transition';
+import CaseFileService from '../../../../../service/case/casefileservice';
+import CaseMigrationService, { DefinitionMigration } from '../../../../../service/case/casemigrationservice';
+import CasePlanService from '../../../../../service/case/caseplanservice';
+import CaseService from '../../../../../service/case/caseservice';
+import RepositoryService from '../../../../../service/case/repositoryservice';
+import { assertPlanItem } from '../../../../../test/caseassertions/plan';
+import TestCase from '../../../../../test/testcase';
 import WorldWideTestTenant from '../../../../worldwidetesttenant';
 
 const definition = 'migration/getlist.xml';

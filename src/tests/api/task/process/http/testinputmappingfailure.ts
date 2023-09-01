@@ -1,16 +1,16 @@
 'use strict';
 
-import { SomeTime } from '@cafienne/typescript-client';
-import State from '@cafienne/typescript-client/cmmn/state';
-import Transition from '@cafienne/typescript-client/cmmn/transition';
-import GetMock from '@cafienne/typescript-client/mock/getmock';
-import MockServer from '@cafienne/typescript-client/mock/mockserver';
-import CaseMigrationService, { DefinitionMigration } from '@cafienne/typescript-client/service/case/casemigrationservice';
-import CasePlanService from '@cafienne/typescript-client/service/case/caseplanservice';
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import { assertPlanItem } from '@cafienne/typescript-client/test/caseassertions/plan';
-import TestCase from '@cafienne/typescript-client/test/testcase';
+import State from '../../../../../cmmn/state';
+import Transition from '../../../../../cmmn/transition';
+import GetMock from '../../../../../mock/getmock';
+import MockServer from '../../../../../mock/mockserver';
+import CaseMigrationService, { DefinitionMigration } from '../../../../../service/case/casemigrationservice';
+import CasePlanService from '../../../../../service/case/caseplanservice';
+import CaseService from '../../../../../service/case/caseservice';
+import RepositoryService from '../../../../../service/case/repositoryservice';
+import { assertPlanItem } from '../../../../../test/caseassertions/plan';
+import TestCase from '../../../../../test/testcase';
+import { SomeTime } from '../../../../../test/time';
 import WorldWideTestTenant from '../../../../worldwidetesttenant';
 
 const definition = 'migration/getlist.xml';

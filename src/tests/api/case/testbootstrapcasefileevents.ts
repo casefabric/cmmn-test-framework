@@ -1,10 +1,9 @@
 'use strict';
 
-import RepositoryService from "@cafienne/typescript-client/service/case/repositoryservice";
-import CaseService from "@cafienne/typescript-client/service/case/caseservice";
+import CaseService from "../../../service/case/caseservice";
+import RepositoryService from "../../../service/case/repositoryservice";
+import TestCase from "../../../test/testcase";
 import WorldWideTestTenant from "../../worldwidetesttenant";
-import TestCase from "@cafienne/typescript-client/test/testcase";
-import Case from "@cafienne/typescript-client/cmmn/case";
 
 const worldwideTenant = new WorldWideTestTenant();
 

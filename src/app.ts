@@ -1,17 +1,19 @@
-import CafienneConfig from '@cafienne/typescript-client/config';
-import TestCase from '@cafienne/typescript-client/test/testcase';
 import Config from './config';
 import NextVersion from './nextversion/nextversion';
+import TestCase from './test/testcase';
 import TestAnonymousStartCase from './tests/api/anonymous/testanonymousstartcase';
 import TestNoAnonymousStartCase from './tests/api/anonymous/testnoanonymousstartcase';
 import TestArchiveCase from './tests/api/archiving/testarchivecase';
+import TestArchiveHelloworld from './tests/api/archiving/testarchivehelloworld';
 import TestDeleteCase from './tests/api/archiving/testdeletecase';
+import TestDeleteHelloworld from './tests/api/archiving/testdeletehelloworld';
 import TestDeleteTenant from './tests/api/archiving/testdeletetenant';
 import TestDeleteTenantWithContent from './tests/api/archiving/testdeletetenantwithcontent';
 import TestFootballBusinessIdentifiers from './tests/api/businessidentifiers/footballbusinessidentifiers/testfootballbusinessidentifiers';
 import TestBusinessIdentifiers from './tests/api/businessidentifiers/testbusinessidentifiers';
 import TestHelloWorldBusinessIdentifiers from './tests/api/businessidentifiers/testhelloworldbusinessidentifiers';
 import TestCaseMigration from './tests/api/case/migration/testcasemigration';
+import TestCaseTeamMigration from './tests/api/case/migration/testcaseteammigration';
 import TestSubCaseMigration from './tests/api/case/migration/testsubcasemigration';
 import TestBootstrapCaseFileEvents from './tests/api/case/testbootstrapcasefileevents';
 import TestDefinitionInStartCase from './tests/api/case/testdefinitioninstartcase';
@@ -25,6 +27,7 @@ import TestTaskBindingRefinement from './tests/api/casefile/testtaskbindingrefin
 import TestTaskCompletion from './tests/api/casefile/testtaskcompletion';
 import TestTaskOutputOperations from './tests/api/casefile/testtaskoutputoperations';
 import TestTimer from './tests/api/caseplan/event/testtimer';
+import TestEntryCriteriaOnRecovery from './tests/api/caseplan/sentry/testentrycriteriaonrecovery';
 import TestEntryCriteriaOnCaseInputParameters from './tests/api/caseplan/stage/testentrycriteriaoncaseinputparameters';
 import TestStage from './tests/api/caseplan/stage/teststage';
 import TestAuthenticationFlow from './tests/api/caseplan/task/testauthenticationflow';
@@ -58,6 +61,8 @@ import TestRepositoryAPI from './tests/api/repository/testrepositoryapi';
 import TestRepeatStage from './tests/api/stage/testrepeatstage';
 import TestArraySubCase from './tests/api/task/case/testarraysubcase';
 import TestSubCase from './tests/api/task/case/testsubcase';
+import TestDynamicForm from './tests/api/task/humantask/testdynamicform';
+import TestFourEyes from './tests/api/task/humantask/testfoureyes';
 import TestTaskAPI from './tests/api/task/humantask/testtaskapi';
 import TestTaskCountAPI from './tests/api/task/humantask/testtaskcountapi';
 import TestTaskFilterAPI from './tests/api/task/humantask/testtaskfilterapi';
@@ -75,12 +80,6 @@ import TestCompatibility from './tests/compatibility/testcompatibility';
 import TestHelloworld from './tests/helloworld/testhelloworld';
 import TestIncidentManagement from './tests/incidentmanagement/incidentmanagement';
 import TestTravelRequest from './tests/travelrequest/testtravelrequest';
-import TestDeleteHelloworld from './tests/api/archiving/testdeletehelloworld';
-import TestArchiveHelloworld from './tests/api/archiving/testarchivehelloworld';
-import TestFourEyes from './tests/api/task/humantask/testfoureyes';
-import TestCaseTeamMigration from './tests/api/case/migration/testcaseteammigration';
-import TestEntryCriteriaOnRecovery from './tests/api/caseplan/sentry/testentrycriteriaonrecovery';
-import TestDynamicForm from './tests/api/task/humantask/testdynamicform';
 
 function findTestsFromCommandLineArguments(): Array<string> {
     const time = process.argv[2];
@@ -285,7 +284,6 @@ async function runTests(testDeclarations: Array<any>, onlyDefaults: boolean) {
 }
 
 function main() {
-    Object.assign(CafienneConfig, Config);
     NextVersion.enable();
 
     const commandLineTestNames = findTestsFromCommandLineArguments();

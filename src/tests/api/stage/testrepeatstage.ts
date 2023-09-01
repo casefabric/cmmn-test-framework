@@ -1,17 +1,16 @@
 'use strict';
 
-import RepositoryService from "@cafienne/typescript-client/service/case/repositoryservice";
-import CaseService from "@cafienne/typescript-client/service/case/caseservice";
+import State from "../../../cmmn/state";
+import Transition from "../../../cmmn/transition";
+import GetMock from "../../../mock/getmock";
+import MockServer from "../../../mock/mockserver";
+import CasePlanService from "../../../service/case/caseplanservice";
+import CaseService from "../../../service/case/caseservice";
+import RepositoryService from "../../../service/case/repositoryservice";
+import { assertPlanItem } from "../../../test/caseassertions/plan";
+import TestCase from "../../../test/testcase";
+import { ServerSideProcessing, SomeTime } from "../../../test/time";
 import WorldWideTestTenant from "../../worldwidetesttenant";
-import MockServer from "@cafienne/typescript-client/mock/mockserver";
-import GetMock from "@cafienne/typescript-client/mock/getmock";
-import TestCase from "@cafienne/typescript-client/test/testcase";
-import Case from "@cafienne/typescript-client/cmmn/case";
-import { assertPlanItem } from "@cafienne/typescript-client/test/caseassertions/plan";
-import CasePlanService from "@cafienne/typescript-client/service/case/caseplanservice";
-import { ServerSideProcessing, SomeTime } from "@cafienne/typescript-client/test/time";
-import State from "@cafienne/typescript-client/cmmn/state";
-import Transition from "@cafienne/typescript-client/cmmn/transition";
 
 const worldwideTenant = new WorldWideTestTenant();
 

@@ -1,15 +1,14 @@
 'use strict';
 
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import TestCase from '@cafienne/typescript-client/test/testcase';
+import CaseTeam from '../../../cmmn/team/caseteam';
+import CaseTeamUser, { CaseOwner } from "../../../cmmn/team/caseteamuser";
+import CaseService from '../../../service/case/caseservice';
+import CaseTeamService from '../../../service/case/caseteamservice';
+import RepositoryService from '../../../service/case/repositoryservice';
+import StartCase from '../../../service/case/startcase';
+import { assertCaseTeam } from '../../../test/caseassertions/team';
+import TestCase from '../../../test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import CaseTeamService from '@cafienne/typescript-client/service/case/caseteamservice';
-import { CaseOwner } from '@cafienne/typescript-client/cmmn/team/caseteamuser';
-import CaseTeamUser from "@cafienne/typescript-client/cmmn/team/caseteamuser";
-import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
-import { assertCaseTeam } from '@cafienne/typescript-client/test/caseassertions/team';
-import StartCase from '@cafienne/typescript-client/service/case/startcase';
 
 const worldwideTenant = new WorldWideTestTenant('wwtt-4');
 const definition = 'caseteam.xml';

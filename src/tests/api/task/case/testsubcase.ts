@@ -1,16 +1,16 @@
 'use strict';
 
-import PlanItem from "@cafienne/typescript-client/cmmn/planitem";
-import State from "@cafienne/typescript-client/cmmn/state";
-import CaseTeamUser, { CaseOwner } from "@cafienne/typescript-client/cmmn/team/caseteamuser";
-import CaseFileService from "@cafienne/typescript-client/service/case/casefileservice";
-import CaseService from "@cafienne/typescript-client/service/case/caseservice";
-import RepositoryService from "@cafienne/typescript-client/service/case/repositoryservice";
-import TaskService from "@cafienne/typescript-client/service/task/taskservice";
-import { assertCasePlan, assertPlanItem } from "@cafienne/typescript-client/test/caseassertions/plan";
-import { findTask } from "@cafienne/typescript-client/test/caseassertions/task";
-import { assertCaseTeamUser } from "@cafienne/typescript-client/test/caseassertions/team";
-import TestCase from "@cafienne/typescript-client/test/testcase";
+import PlanItem from "../../../../cmmn/planitem";
+import State from "../../../../cmmn/state";
+import CaseTeamUser, { CaseOwner } from "../../../../cmmn/team/caseteamuser";
+import CaseFileService from "../../../../service/case/casefileservice";
+import CaseService from "../../../../service/case/caseservice";
+import RepositoryService from "../../../../service/case/repositoryservice";
+import TaskService from "../../../../service/task/taskservice";
+import { assertCasePlan, assertPlanItem } from "../../../../test/caseassertions/plan";
+import { findTask } from "../../../../test/caseassertions/task";
+import { assertCaseTeamUser } from "../../../../test/caseassertions/team";
+import TestCase from "../../../../test/testcase";
 import WorldWideTestTenant from "../../../worldwidetesttenant";
 
 const worldwideTenant = new WorldWideTestTenant();

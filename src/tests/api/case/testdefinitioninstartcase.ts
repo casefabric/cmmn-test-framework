@@ -1,10 +1,10 @@
 'use strict';
 
-import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
-import { CaseOwner } from '@cafienne/typescript-client/cmmn/team/caseteamuser';
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import { readLocalFile } from '@cafienne/typescript-client/service/case/repositoryservice';
-import TestCase from '@cafienne/typescript-client/test/testcase';
+import CaseTeam from '../../../cmmn/team/caseteam';
+import { CaseOwner } from '../../../cmmn/team/caseteamuser';
+import CaseService from '../../../service/case/caseservice';
+import { readLocalFile } from '../../../service/case/repositoryservice';
+import TestCase from '../../../test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 
 const definition = 'caseteam.xml';
