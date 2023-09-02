@@ -1,5 +1,6 @@
 import Config from './config';
 import NextVersion from './nextversion/nextversion';
+import CafienneService from './service/cafienneservice';
 import TestCase from './test/testcase';
 import TestAnonymousStartCase from './tests/api/anonymous/testanonymousstartcase';
 import TestNoAnonymousStartCase from './tests/api/anonymous/testnoanonymousstartcase';
@@ -118,6 +119,8 @@ class TestResult {
     started: Date = new Date();
     ended: Date = new Date();
     summary: string = '';
+    error: unknown = undefined;
+
     constructor(public test: TestCase) {
         this.name = test.name;
     }
@@ -128,9 +131,21 @@ class TestResult {
         }
         this.ended = new Date();
     }
+    
+    failed(test: TestCase, error: unknown) {
+        this.error = error;
+        if (test.identifiers.length) {
+            this.summary = `  ---  [ ${test.identifiers.join(' | ')} ]` 
+        }
+        this.ended = new Date();
+    }
 
     toString() {
-        return `${this.name} (${(this.ended.getTime() - this.started.getTime())} ms) ${this.summary}`;
+        if (this.error) {
+            return `${this.name} ${this.summary} failed after ${(this.ended.getTime() - this.started.getTime())} ms`;
+        } else {
+            return `${this.name} (${(this.ended.getTime() - this.started.getTime())} ms) ${this.summary}`;
+        }
     }
 }
 
@@ -276,8 +291,15 @@ async function runTests(testDeclarations: Array<any>, onlyDefaults: boolean) {
             result.finished(test);
             results.addTest(result);
         } catch (error) {
+            result.failed(test, error);
             const resultString = results.list.length == 0 ? '' : `  Successful tests:\n${results.toString()}\n`;
-            throw new TestError(error, `\n\nTest ${i + 1} "${test.name}" failed.\n${resultString}\nTest ${i + 1} "${test.name}" failed.\n${error.constructor.name}: ${error.message}\n`);
+            if (error instanceof Error) {
+                throw new TestError(error, `\nTest ${i + 1} "${test.name}" failed.\n${resultString}\nTest ${i + 1} ${result}\n${error.constructor.name}: ${error.message}\n`);    
+            } else if (error) {
+                throw new TestError(error, `\nTest ${i + 1} "${test.name}" failed.\n${resultString}\nTest ${i + 1} ${result}\n${error.constructor.name}: ${error}\n`);    
+            } else {
+                throw new TestError(error, `\nTest ${i + 1} "${test.name}" failed.\n${resultString}\nTest ${i + 1} ${result}\n${error}\n`);                    
+            }
         }
     }
     return results;
@@ -297,7 +319,7 @@ function main() {
     runTests(testDeclarations, runDefaultTests).then(results => {
         const endTime = new Date();
         console.log(`\n========= Started ${testDeclarations.length} tests at at ${startTime}\n\n${results.toString()}`);
-        console.log(`========= Completed ${testDeclarations.length} test cases in ${((endTime.getTime() - startTime.getTime()) / 1000)} seconds at ${endTime}`);
+        console.log(`========= Completed ${testDeclarations.length} test cases and ${CafienneService.calls} API calls in ${((endTime.getTime() - startTime.getTime()) / 1000)} seconds at ${endTime}`);
         process.exit(0)
     }).catch(e => {
         console.error(e);
@@ -308,12 +330,16 @@ function main() {
 try {
     main();
 } catch (error) {
-    console.log(error.message);
+    if (error instanceof Error) {
+        console.log(error.message);
+    } else {
+        console.log('Ran into some unknown failure', error);
+    }
     process.exit(-1);
 }
 
 class TestError extends Error {
-    constructor(public error: Error, message: string) {
+    constructor(public error: unknown, message: string) {
         super(message);
     }
 }
