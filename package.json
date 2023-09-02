@@ -1,13 +1,17 @@
 {
-  "name": "cmmn-test-framework",
-  "version": "1.0.0",
+  "name": "@cafienne/typescript-client",
+  "version": "0.8.2",
   "description": "A javascript based test framework for CMMN case models",
   "main": "index.js",
   "scripts": {
-    "test": "node ./build/app.js",
-    "build": "tsc",
+    "test": "node ./dist/app.js",
+    "build": "tsc & shx cp package.json ./dist & shx cp README.md ./dist",
+    "clean": "rm -rf ./dist",
     "dev": "ts-node-dev --transpile-only ./src/app.ts",
-    "prod": "tsc && node ./build/app.js"
+    "publishLocal": "npm run clean & npm run build & cd ./dist & npm pack",
+    "publishRemote": "npm run clean & npm run build & cd ./dist & npm publish --access public",
+    "prod": "npm run build & node ./dist/app.js",
+    "prepare": "npm run build"
   },
   "author": "",
   "license": "MPL-2.0",
@@ -27,6 +31,7 @@
     "@types/node": "^13.5.0",
     "@types/readline-sync": "^1.4.4",
     "@types/server-destroy": "1.0.1",
-    "@types/xmldom": "^0.1.31"
+    "@types/xmldom": "^0.1.31",
+    "shx": "^0.3.4"
   }
 }
