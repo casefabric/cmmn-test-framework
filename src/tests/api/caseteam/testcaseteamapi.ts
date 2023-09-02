@@ -1,20 +1,19 @@
 'use strict';
 
 import Case from '../../../cmmn/case';
+import Definitions from '../../../cmmn/definitions/definitions';
 import CaseTeam from '../../../cmmn/team/caseteam';
 import CaseTeamTenantRole from '../../../cmmn/team/caseteamtenantrole';
 import CaseTeamUser, { CaseOwner } from '../../../cmmn/team/caseteamuser';
 import CaseFileService from '../../../service/case/casefileservice';
 import CaseService from '../../../service/case/caseservice';
 import CaseTeamService from '../../../service/case/caseteamservice';
-import RepositoryService from '../../../service/case/repositoryservice';
 import { assertCaseTeam, assertCaseTeamUser } from '../../../test/caseassertions/team';
 import TestCase from '../../../test/testcase';
 import User from '../../../user';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 
-const definition = 'caseteam.xml';
-
+const definition = Definitions.CaseTeam;
 const worldwideTenant = new WorldWideTestTenant('wwtt-2');
 const tenant = worldwideTenant.name;
 const sender = worldwideTenant.sender;
@@ -32,7 +31,7 @@ export default class TestCaseTeamAPI extends TestCase {
 
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(sender, definition, tenant);
+        await definition.deploy(sender, tenant);
     }
 
     async run() {

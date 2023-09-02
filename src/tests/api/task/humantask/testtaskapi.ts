@@ -1,19 +1,18 @@
 'use strict';
 
+import Definitions from '../../../../cmmn/definitions/definitions';
 import CaseTeam from '../../../../cmmn/team/caseteam';
 import CaseTeamUser, { CaseOwner } from "../../../../cmmn/team/caseteamuser";
 import CaseService from '../../../../service/case/caseservice';
 import CaseTeamService from '../../../../service/case/caseteamservice';
-import RepositoryService from '../../../../service/case/repositoryservice';
 import TaskService from '../../../../service/task/taskservice';
 import TestCase from '../../../../test/testcase';
 import User from '../../../../user';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
-const definition = 'helloworld.xml';
 
+const definition = Definitions.HelloWorld;
 const guid = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 const tenantName = 'temp_task_tenant' + guid;
-
 const worldwideTenant = new WorldWideTestTenant(tenantName);
 const tenant = worldwideTenant.name;
 const sender = worldwideTenant.sender;
@@ -22,7 +21,7 @@ const receiver = worldwideTenant.receiver;
 export default class TestTaskAPI extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(sender, definition, tenant);
+        await definition.deploy(sender, tenant);
     }
 
     async run() {

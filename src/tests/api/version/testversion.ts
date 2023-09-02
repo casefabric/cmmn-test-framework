@@ -1,14 +1,13 @@
 'use strict';
 
+import Definitions from '../../../cmmn/definitions/definitions';
 import CaseService from '../../../service/case/caseservice';
 import DebugService from '../../../service/case/debugservice';
-import RepositoryService from '../../../service/case/repositoryservice';
 import PlatformService from '../../../service/platform/platformservice';
 import TestCase from '../../../test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 
-const definition = 'helloworld.xml';
-
+const definition = Definitions.HelloWorld;
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
@@ -16,7 +15,7 @@ const user = worldwideTenant.sender;
 export default class TestVersion extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(user, definition, tenant);
+        await definition.deploy(user, tenant);
     }
 
     async run() {

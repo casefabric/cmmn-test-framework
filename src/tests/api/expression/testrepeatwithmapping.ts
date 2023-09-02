@@ -1,17 +1,16 @@
 'use strict';
 
+import Definitions from '../../../cmmn/definitions/definitions';
 import PlanItem from '../../../cmmn/planitem';
 import CasePlanService from '../../../service/case/caseplanservice';
 import CaseService from '../../../service/case/caseservice';
-import RepositoryService from '../../../service/case/repositoryservice';
 import TaskService from '../../../service/task/taskservice';
 import assertCaseFileContent from '../../../test/caseassertions/file';
 import { verifyTaskInput } from '../../../test/caseassertions/task';
 import TestCase from '../../../test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 
-const definition = 'repeat_with_mapping.xml';
-
+const definition = Definitions.RepeatWithMapping;
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
@@ -19,7 +18,7 @@ const user = worldwideTenant.sender;
 export default class TestRepeatWithMapping extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(user, definition, tenant);
+        await definition.deploy(user, tenant);
     }
 
     async run() {

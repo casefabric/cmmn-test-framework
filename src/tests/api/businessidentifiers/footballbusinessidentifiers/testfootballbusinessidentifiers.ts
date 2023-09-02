@@ -1,9 +1,9 @@
 'use strict';
 
+import Definitions from "../../../../cmmn/definitions/definitions";
 import CaseTeam from "../../../../cmmn/team/caseteam";
 import CaseTeamUser, { CaseOwner } from "../../../../cmmn/team/caseteamuser";
 import CaseService from "../../../../service/case/caseservice";
-import RepositoryService from "../../../../service/case/repositoryservice";
 import TaskService from "../../../../service/task/taskservice";
 import TestCase from "../../../../test/testcase";
 import User from "../../../../user";
@@ -12,9 +12,8 @@ import ClubData from "./clubdata";
 import FiltersData from "./filtersdata";
 import PlayerData from "./playerdata";
 
-const footballStatsDefinition = 'footballstats.xml';
-const footballClubStatsDefinition = 'footballclubstats.xml';
-
+const footballStatsDefinition = Definitions.FootballStats;
+const footballClubStatsDefinition = Definitions.FootballClubStats;
 
 export default class TestFootballBusinessIdentifiers extends TestCase {
     footballTenant = new WorldWideTestTenant(this.tenant);
@@ -29,10 +28,10 @@ export default class TestFootballBusinessIdentifiers extends TestCase {
         await this.footballTenant.create();
 
         // Validate and deploy footballstats model
-        await RepositoryService.validateAndDeploy(this.user1, footballStatsDefinition, this.tenant);
+        await footballStatsDefinition.deploy(this.user1, this.tenant);
 
         // Validate and deploy footballclubstats model
-        await RepositoryService.validateAndDeploy(this.user1, footballClubStatsDefinition, this.tenant);
+        await footballClubStatsDefinition.deploy(this.user1, this.tenant);
     }
 
     async run() {

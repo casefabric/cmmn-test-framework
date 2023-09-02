@@ -1,16 +1,15 @@
 'use strict';
 
 import Case from '../../../cmmn/case';
+import Definitions from '../../../cmmn/definitions/definitions';
 import Task from '../../../cmmn/task';
 import CaseService from '../../../service/case/caseservice';
-import RepositoryService from '../../../service/case/repositoryservice';
 import TaskService from '../../../service/task/taskservice';
 import Comparison from '../../../test/comparison';
 import TestCase from '../../../test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 
-const definition = 'taskbindingrefinement.xml';
-
+const definition = Definitions.TaskBindingRefinement;
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
@@ -19,7 +18,7 @@ export default class TestTaskBindingRefinement extends TestCase {
 
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(user, definition, tenant);
+        await definition.deploy(user, tenant);
     }
 
     async run() {

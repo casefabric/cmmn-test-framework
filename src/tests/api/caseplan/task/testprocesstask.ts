@@ -1,5 +1,6 @@
 'use strict';
 
+import Definitions from '../../../../cmmn/definitions/definitions';
 import State from '../../../../cmmn/state';
 import Transition from '../../../../cmmn/transition';
 import MockServer from '../../../../mock/mockserver';
@@ -13,8 +14,7 @@ import { assertPlanItem } from '../../../../test/caseassertions/plan';
 import TestCase from '../../../../test/testcase';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
 
-const definition = 'processtasktest.xml';
-
+const definition = Definitions.ProcessTaskTest;
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
@@ -35,7 +35,7 @@ export default class TestProcessTask extends TestCase {
     async onPrepareTest() {
         await mock.start();
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(user, definition, tenant);
+        await definition.deploy(user, tenant);
     }
 
     async run() {

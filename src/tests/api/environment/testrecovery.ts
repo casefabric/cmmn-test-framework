@@ -1,25 +1,24 @@
+import Definitions from "../../../cmmn/definitions/definitions";
 import CaseTeam from "../../../cmmn/team/caseteam";
 import CaseTeamUser, { CaseOwner } from "../../../cmmn/team/caseteamuser";
 import CaseMigrationService, { DefinitionMigration } from "../../../service/case/casemigrationservice";
 import CaseService from "../../../service/case/caseservice";
 import DebugService from "../../../service/case/debugservice";
-import RepositoryService from "../../../service/case/repositoryservice";
 import TaskService from "../../../service/task/taskservice";
 import TenantService from "../../../service/tenant/tenantservice";
 import { findTask } from "../../../test/caseassertions/task";
 import TestCase from "../../../test/testcase";
 import WorldWideTestTenant from "../../worldwidetesttenant";
 
+const definition = Definitions.HelloWorld;
 const worldwideTenant = new WorldWideTestTenant();
-const definition = 'helloworld.xml';
-
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
 
 export default class TestRecovery extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(user, definition, tenant);
+        await definition.deploy(user, tenant);
     }
 
     /**

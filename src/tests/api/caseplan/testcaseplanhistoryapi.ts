@@ -1,16 +1,15 @@
 'use strict';
 
 import Case from '../../../cmmn/case';
+import Definitions from '../../../cmmn/definitions/definitions';
 import PlanItem from '../../../cmmn/planitem';
 import CaseHistoryService from '../../../service/case/casehistoryservice';
 import CaseService from '../../../service/case/caseservice';
-import RepositoryService from '../../../service/case/repositoryservice';
 import TaskService from '../../../service/task/taskservice';
 import TestCase from '../../../test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 
-const definition = 'helloworld.xml';
-
+const definition = Definitions.HelloWorld;
 const worldwideTenant = new WorldWideTestTenant();
 const user = worldwideTenant.sender;
 const tenant = worldwideTenant.name;
@@ -18,7 +17,7 @@ const tenant = worldwideTenant.name;
 export default class TestCasePlanHistoryAPI extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(user, definition, tenant);
+        await definition.deploy(user, tenant);
     }
 
     async run() {

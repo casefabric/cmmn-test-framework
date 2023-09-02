@@ -1,25 +1,23 @@
 'use strict';
 
+import Definitions from '../../../../cmmn/definitions/definitions';
 import CaseService from '../../../../service/case/caseservice';
-import RepositoryService from '../../../../service/case/repositoryservice';
 import TaskFilter from '../../../../service/task/taskfilter';
 import TaskService from '../../../../service/task/taskservice';
 import TestCase from '../../../../test/testcase';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
 
-const definition1 = 'helloworld.xml';
-const definition2 = 'helloworld2.xml';
-
+const definition1 = Definitions.HelloWorld;
+const definition2 = Definitions.HelloWorld2;
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
-const receiver = worldwideTenant.receiver;
 
 export default class TestTaskFilterAPI2 extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(user, definition1, tenant);
-        await RepositoryService.validateAndDeploy(user, definition2, tenant);
+        await definition1.deploy(user, tenant);
+        await definition2.deploy(user, tenant);
     }
 
     caseIds: string[] = [];
@@ -99,7 +97,7 @@ export default class TestTaskFilterAPI2 extends TestCase {
         return filteredTasks.length;
     }
 
-    async createCase(definition: string, firstTaskName: string, claimTask: boolean = false) {
+    async createCase(definition: Definitions, firstTaskName: string, claimTask: boolean = false) {
         const inputs = {
             Greeting: {
                 Message: 'Hello there'

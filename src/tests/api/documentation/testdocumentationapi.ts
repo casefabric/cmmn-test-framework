@@ -2,16 +2,15 @@
 
 import Case from '../../../cmmn/case';
 import CaseFileItemDocumentation from '../../../cmmn/casefileitemdocumentation';
+import Definitions from '../../../cmmn/definitions/definitions';
 import PlanItem from '../../../cmmn/planitem';
 import CaseFileService from '../../../service/case/casefileservice';
 import CasePlanService from '../../../service/case/caseplanservice';
 import CaseService from '../../../service/case/caseservice';
-import RepositoryService from '../../../service/case/repositoryservice';
 import TestCase from '../../../test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 
-const definition = 'documentation_case.xml';
-
+const definition = Definitions.Documentation;
 const worldwideTenant = new WorldWideTestTenant();
 const user = worldwideTenant.sender;
 const tenant = worldwideTenant.name;
@@ -19,7 +18,7 @@ const tenant = worldwideTenant.name;
 export default class TestDocumentationAPI extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(user, definition, tenant);
+        await definition.deploy(user, tenant);
     }
 
     async run() {

@@ -1,5 +1,6 @@
 'use strict';
 
+import Definitions from '../../cmmn/definitions/definitions';
 import CaseTeam from '../../cmmn/team/caseteam';
 import CaseTeamUser, { CaseOwner } from "../../cmmn/team/caseteamuser";
 import CaseService from '../../service/case/caseservice';
@@ -11,8 +12,7 @@ import TenantUser from '../../tenant/tenantuser';
 import TestCase from '../../test/testcase';
 import WorldWideTestTenant from '../worldwidetesttenant';
 
-const definition = 'travelrequest.xml';
-
+const definition = Definitions.TravelRequest;
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const requestor = new TenantUser('requestor', ['Requestor'], 'Hank', 'requestor@requestors.com');
@@ -28,14 +28,13 @@ export default class TestTravelRequest extends TestCase {
             await TenantService.setTenantUser(platformOwner, worldwideTenant.tenant, approver);
             await TenantService.setTenantUser(platformOwner, worldwideTenant.tenant, lana);            
         } catch (e) {
-            if (e.message.indexOf('already exists') < 0) {
+            if (e instanceof Error && e.message.indexOf('already exists') < 0) {
                 console.log(e);
                 throw e;
             }
         }
 
-        await RepositoryService.validateAndDeploy(platformOwner, definition, tenant);
-
+        await definition.deploy(platformOwner, tenant);
         await requestor.login();
         await approver.login();
     }

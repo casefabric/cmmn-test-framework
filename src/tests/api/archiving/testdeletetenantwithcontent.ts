@@ -1,8 +1,8 @@
 'use strict';
 
+import Definitions from '../../../cmmn/definitions/definitions';
 import State from '../../../cmmn/state';
 import CaseService from '../../../service/case/caseservice';
-import RepositoryService from '../../../service/case/repositoryservice';
 import StorageService from '../../../service/storage/storageservice';
 import TenantService from '../../../service/tenant/tenantservice';
 import CaseHierarchy from '../../../test/casehierarchy';
@@ -13,8 +13,7 @@ import WorldWideTestTenant from '../../worldwidetesttenant';
 const tenant = "TestTenantWithContent";
 const wrapper = new WorldWideTestTenant(tenant);
 const user = wrapper.sender;
-const definition = 'complexcase.xml';
-
+const definition = Definitions.ComplexCase;
 
 export default class TestDeleteTenantWithContent extends TestCase {
   isDefaultTest = false;
@@ -22,7 +21,7 @@ export default class TestDeleteTenantWithContent extends TestCase {
 
   async onPrepareTest() {
     await wrapper.create();
-    await RepositoryService.validateAndDeploy(user, definition, tenant);
+    await definition.deploy(user, tenant);
     this.addIdentifier(tenant);
   }
 
@@ -57,8 +56,9 @@ export default class TestDeleteTenantWithContent extends TestCase {
         this.readLine("Confirm that we create " + count +" cases of type " + file)
       }
 
-      await RepositoryService.validateAndDeploy(user, file, tenant);
-      startCase.definition = file;
+      const definition = new Definitions(file);
+      await definition.deploy(user, tenant);
+      startCase.definition = definition;
     }
 
     while (count-- > 0) {

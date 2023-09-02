@@ -1,20 +1,19 @@
 'use strict';
 
+import Definitions from "../../../cmmn/definitions/definitions";
 import State from "../../../cmmn/state";
 import Transition from "../../../cmmn/transition";
 import GetMock from "../../../mock/getmock";
 import MockServer from "../../../mock/mockserver";
 import CasePlanService from "../../../service/case/caseplanservice";
 import CaseService from "../../../service/case/caseservice";
-import RepositoryService from "../../../service/case/repositoryservice";
 import { assertPlanItem } from "../../../test/caseassertions/plan";
 import TestCase from "../../../test/testcase";
 import { ServerSideProcessing, SomeTime } from "../../../test/time";
 import WorldWideTestTenant from "../../worldwidetesttenant";
 
+const definition = Definitions.RepeatStageTest;
 const worldwideTenant = new WorldWideTestTenant();
-
-const definition = 'repeatstagetest.xml';
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
 
@@ -54,7 +53,7 @@ export default class TestRepeatStage extends TestCase {
         console.log("\n\n============Started mock server. Now creating tenant\n\n");
         await worldwideTenant.create();
         // Deploy the case model
-        await RepositoryService.validateAndDeploy(user, definition, tenant);
+        await definition.deploy(user, tenant);
     }
 
     async run() {

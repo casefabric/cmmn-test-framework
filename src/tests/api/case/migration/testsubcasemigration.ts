@@ -1,19 +1,19 @@
 'use strict';
 
 import Case from '../../../../cmmn/case';
+import Definitions from '../../../../cmmn/definitions/definitions';
 import CaseTeam from '../../../../cmmn/team/caseteam';
 import CaseTeamUser, { CaseOwner } from "../../../../cmmn/team/caseteamuser";
 import CaseMigrationService, { DefinitionMigration } from '../../../../service/case/casemigrationservice';
 import CaseService from '../../../../service/case/caseservice';
-import RepositoryService from '../../../../service/case/repositoryservice';
 import TaskService from '../../../../service/task/taskservice';
 import { findTask } from '../../../../test/caseassertions/task';
 import TestCase from '../../../../test/testcase';
 import { PollUntilSuccess, SomeTime } from '../../../../test/time';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
 
-const base_definition = 'migration/migration_v0.xml';
-const definitionMigrated = 'migration/migration_v1.xml';
+const base_definition = Definitions.Migration_v0;
+const definitionMigrated = Definitions.Migration_v1;
 
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
@@ -22,8 +22,8 @@ const user = worldwideTenant.sender;
 export default class TestSubCaseMigration extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(user, base_definition, tenant);
-        await RepositoryService.validateAndDeploy(user, definitionMigrated, tenant);
+        await base_definition.deploy(user, tenant);
+        await definitionMigrated.deploy(user, tenant);
     }
 
     async run() {

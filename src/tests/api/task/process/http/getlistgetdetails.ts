@@ -1,5 +1,6 @@
 'use strict';
 
+import Definitions from '../../../../../cmmn/definitions/definitions';
 import State from '../../../../../cmmn/state';
 import Transition from '../../../../../cmmn/transition';
 import GetMock from '../../../../../mock/getmock';
@@ -7,14 +8,12 @@ import MockServer from '../../../../../mock/mockserver';
 import CaseFileService from '../../../../../service/case/casefileservice';
 import CasePlanService from '../../../../../service/case/caseplanservice';
 import CaseService from '../../../../../service/case/caseservice';
-import RepositoryService from '../../../../../service/case/repositoryservice';
 import { assertPlanItem } from '../../../../../test/caseassertions/plan';
 import TestCase from '../../../../../test/testcase';
 import { ServerSideProcessing } from '../../../../../test/time';
 import WorldWideTestTenant from '../../../../worldwidetesttenant';
 
-const definition = 'getlist_getdetails.xml';
-
+const definition = Definitions.GetListGetDetails;
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
@@ -36,7 +35,7 @@ new GetMock(mock, '/details/:detailsKey', call => {
 export default class TestGetListGetDetails extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(user, definition, tenant);
+        await definition.deploy(user, tenant);
     }
 
     async run() {

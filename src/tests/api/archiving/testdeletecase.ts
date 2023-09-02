@@ -1,8 +1,8 @@
 'use strict';
 
+import Definitions from '../../../cmmn/definitions/definitions';
 import State from '../../../cmmn/state';
 import CaseService from '../../../service/case/caseservice';
-import RepositoryService from '../../../service/case/repositoryservice';
 import StorageService from '../../../service/storage/storageservice';
 import CaseHierarchy from '../../../test/casehierarchy';
 import TestCase from '../../../test/testcase';
@@ -12,15 +12,14 @@ import WorldWideTestTenant from '../../worldwidetesttenant';
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
-const definition = 'complexcase.xml';
-
+const definition = Definitions.ComplexCase;
 
 export default class TestDeleteCase extends TestCase {
   isDefaultTest = false;
 
   async onPrepareTest() {
     await worldwideTenant.create();
-    await RepositoryService.validateAndDeploy(user, definition, tenant);
+    await definition.deploy(user, tenant);
   }
 
   async run() {

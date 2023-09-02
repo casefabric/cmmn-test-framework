@@ -1,19 +1,18 @@
 'use strict';
 
+import Definitions from '../../../cmmn/definitions/definitions';
 import Task from '../../../cmmn/task';
 import CaseTeam from '../../../cmmn/team/caseteam';
 import CaseTeamTenantRole from '../../../cmmn/team/caseteamtenantrole';
 import CaseTeamUser, { CaseOwner } from '../../../cmmn/team/caseteamuser';
 import CaseService from '../../../service/case/caseservice';
 import CaseTeamService from '../../../service/case/caseteamservice';
-import RepositoryService from '../../../service/case/repositoryservice';
 import TaskService from '../../../service/task/taskservice';
 import TestCase from '../../../test/testcase';
 import User from '../../../user';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 
-const definition = 'caseteam.xml';
-
+const definition = Definitions.CaseTeam;
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const sender = worldwideTenant.sender;
@@ -27,7 +26,7 @@ const participantRole = 'CaseParticipant';
 export default class TestCaseTeamTenantRoleMembers extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(sender, definition, tenant);
+        await definition.deploy(sender, tenant);
     }
 
     async run() {

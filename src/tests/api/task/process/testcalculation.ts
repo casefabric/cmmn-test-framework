@@ -1,18 +1,17 @@
 'use strict';
 
 import Case from '../../../../cmmn/case';
+import Definitions from '../../../../cmmn/definitions/definitions';
 import State from '../../../../cmmn/state';
 import CaseFileService from '../../../../service/case/casefileservice';
 import CaseService from '../../../../service/case/caseservice';
 import DebugService from '../../../../service/case/debugservice';
-import RepositoryService from '../../../../service/case/repositoryservice';
 import assertCaseFileContent from '../../../../test/caseassertions/file';
 import { assertPlanItem } from '../../../../test/caseassertions/plan';
 import TestCase from '../../../../test/testcase';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
 
-const definition = 'calculation.xml';
-
+const definition = Definitions.Calculation;
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
@@ -22,7 +21,7 @@ export default class TestCalculation extends TestCase {
 
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(user, definition, tenant);
+        await definition.deploy(user, tenant);
     }
 
     async run() {

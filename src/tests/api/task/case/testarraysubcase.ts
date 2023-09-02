@@ -1,26 +1,26 @@
 'use strict';
 
+import Definitions from "../../../../cmmn/definitions/definitions";
 import PlanItem from "../../../../cmmn/planitem";
 import State from "../../../../cmmn/state";
 import CaseFileService from "../../../../service/case/casefileservice";
 import CasePlanService from "../../../../service/case/caseplanservice";
 import CaseService from "../../../../service/case/caseservice";
-import RepositoryService from "../../../../service/case/repositoryservice";
 import TaskService from "../../../../service/task/taskservice";
 import { assertCasePlan, assertPlanItem } from "../../../../test/caseassertions/plan";
 import Comparison from "../../../../test/comparison";
 import TestCase from "../../../../test/testcase";
 import WorldWideTestTenant from "../../../worldwidetesttenant";
 
+const definition = Definitions.SubCaseWithArrayOutput;
 const worldwideTenant = new WorldWideTestTenant();
-const definition = 'subcasewitharrayoutput.xml';
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
 
 export default class TestArraySubCase extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(user, definition, tenant);
+        await definition.deploy(user, tenant);
     }
 
     async run() {

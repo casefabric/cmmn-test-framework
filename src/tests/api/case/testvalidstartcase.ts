@@ -1,16 +1,16 @@
 'use strict';
 
+import Definitions from '../../../cmmn/definitions/definitions';
 import CaseTeam from '../../../cmmn/team/caseteam';
 import { CaseOwner } from '../../../cmmn/team/caseteamuser';
 import CaseService from '../../../service/case/caseservice';
-import RepositoryService, { readLocalXMLDocument } from '../../../service/case/repositoryservice';
+import { readLocalXMLDocument } from '../../../service/case/repositoryservice';
 import { assertCaseTeam } from '../../../test/caseassertions/team';
 import Comparison from '../../../test/comparison';
 import TestCase from '../../../test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 
-const definition = 'caseteam.xml';
-
+const definition = Definitions.CaseTeam;
 const worldwideTenant = new WorldWideTestTenant('wwtt-4');
 const tenant = worldwideTenant.name;
 const sender = worldwideTenant.sender;
@@ -19,7 +19,7 @@ const receiver = worldwideTenant.receiver;
 export default class TestValidStartCase extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(sender, definition, tenant);
+        await definition.deploy(sender, tenant);
     }
 
     async run() {

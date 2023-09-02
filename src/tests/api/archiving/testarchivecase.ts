@@ -1,8 +1,8 @@
 'use strict';
 
+import Definitions from '../../../cmmn/definitions/definitions';
 import State from '../../../cmmn/state';
 import CaseService from '../../../service/case/caseservice';
-import RepositoryService from '../../../service/case/repositoryservice';
 import StartCase from '../../../service/case/startcase';
 import StorageService from '../../../service/storage/storageservice';
 import CaseHierarchy from '../../../test/casehierarchy';
@@ -13,16 +13,17 @@ const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
 
-const helloworld = 'helloworld.xml';
-const complexcase = 'complexcase.xml';
+const helloworld = Definitions.HelloWorld;
+const complexcase = Definitions.ComplexCase;
+
 export default class TestArchiveCase extends TestCase {
   isDefaultTest = false;
   // lineReaderEnabled = true;
 
   async onPrepareTest() {
     await worldwideTenant.create();
-    await RepositoryService.validateAndDeploy(user, helloworld, tenant);
-    await RepositoryService.validateAndDeploy(user, complexcase, tenant);
+    await helloworld.deploy(user, tenant);
+    await complexcase.deploy(user, tenant);
   }
 
   async run() {
@@ -30,7 +31,7 @@ export default class TestArchiveCase extends TestCase {
     await this.test(complexcase);
   }
 
-  async test(definition: string) {
+  async test(definition: Definitions) {
     const startCase = { tenant, definition, debug: true } as StartCase;
 
     const caseInstance = await CaseService.startCase(user, startCase).then(id => CaseService.getCase(user, id));

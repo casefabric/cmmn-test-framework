@@ -1,16 +1,15 @@
 'use strict';
 
+import Definitions from '../../../../cmmn/definitions/definitions';
 import Task from '../../../../cmmn/task';
 import Transition from '../../../../cmmn/transition';
 import CasePlanService from '../../../../service/case/caseplanservice';
 import CaseService from '../../../../service/case/caseservice';
-import RepositoryService from '../../../../service/case/repositoryservice';
 import TaskService, { TaskCount } from '../../../../service/task/taskservice';
 import TestCase from '../../../../test/testcase';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
 
-const definition = 'helloworld2.xml';
-
+const definition = Definitions.HelloWorld2;
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
@@ -18,7 +17,7 @@ const user = worldwideTenant.sender;
 export default class TestTaskCountAPI extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(user, definition, tenant);
+        await definition.deploy(user, tenant);
     }
 
     async run() {

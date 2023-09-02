@@ -1,21 +1,19 @@
 'use strict';
 
+import Definitions from "../../../cmmn/definitions/definitions";
 import CaseService from "../../../service/case/caseservice";
-import RepositoryService from "../../../service/case/repositoryservice";
 import TestCase from "../../../test/testcase";
 import WorldWideTestTenant from "../../worldwidetesttenant";
 
+const definition = Definitions.BootstrapCaseFileEvents;
 const worldwideTenant = new WorldWideTestTenant();
-
-const definition = 'bootstrap-casefile-events.xml';
 const tenant = worldwideTenant.name;
 const sender = worldwideTenant.sender;
-const receiver = worldwideTenant.receiver;
 
 export default class TestBootstrapCaseFileEvents extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(sender, definition, tenant);
+        await definition.deploy(sender, tenant);
     }
 
     async run() {

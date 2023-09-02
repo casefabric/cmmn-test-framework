@@ -2,19 +2,19 @@
 
 import { assertSameGroup } from '../../..';
 import Case from '../../../cmmn/case';
+import Definitions from '../../../cmmn/definitions/definitions';
 import CaseTeam from '../../../cmmn/team/caseteam';
 import CaseTeamGroup, { GroupRoleMapping, GroupRoleMappingWithCaseOwnership } from '../../../cmmn/team/caseteamgroup';
 import CaseTeamTenantRole from '../../../cmmn/team/caseteamtenantrole';
 import CaseTeamUser, { CaseOwner } from '../../../cmmn/team/caseteamuser';
 import CaseService from '../../../service/case/caseservice';
 import CaseTeamService from '../../../service/case/caseteamservice';
-import RepositoryService from '../../../service/case/repositoryservice';
 import TestCase from '../../../test/testcase';
 import User from '../../../user';
 import MultiTenantSetup from '../../multitenantsetup';
 
 // Case definition with the roles
-const definition = 'caseteam.xml';
+const definition = Definitions.CaseTeam;
 const caseRoleRequestor = 'Requestor';
 const caseRoleApprover = 'Approver';
 const caseRolePA = 'PersonalAssistant';
@@ -54,7 +54,7 @@ const startCase = { tenant, definition, caseTeam };
 export default class TestCaseTeamConsentGroupAPI extends TestCase {
     async onPrepareTest() {
         await universe.create();
-        await RepositoryService.validateAndDeploy(universe.boy, definition, tenant);
+        await definition.deploy(universe.boy, tenant);
     }
 
     async run() {

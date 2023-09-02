@@ -1,15 +1,15 @@
 'use strict';
 
+import Definitions from '../../../cmmn/definitions/definitions';
 import PlanItem from '../../../cmmn/planitem';
 import Transition from '../../../cmmn/transition';
 import CaseHistoryService from '../../../service/case/casehistoryservice';
 import CasePlanService from '../../../service/case/caseplanservice';
 import CaseService from '../../../service/case/caseservice';
-import RepositoryService from '../../../service/case/repositoryservice';
 import TestCase from '../../../test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 
-const definition = 'eventlistener.xml';
+const definition = Definitions.EventListener;
 
 const worldwideTenant = new WorldWideTestTenant();
 const user = worldwideTenant.sender;
@@ -18,7 +18,7 @@ const tenant = worldwideTenant.name;
 export default class TestCasePlanAPI extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(user, definition, tenant);
+        await definition.deploy(user, tenant);
     }
 
     async run() {

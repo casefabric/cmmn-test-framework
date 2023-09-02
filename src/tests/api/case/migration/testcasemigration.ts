@@ -1,6 +1,7 @@
 'use strict';
 
 import Case from '../../../../cmmn/case';
+import Definitions from '../../../../cmmn/definitions/definitions';
 import CaseTeam from '../../../../cmmn/team/caseteam';
 import CaseTeamUser, { CaseOwner } from "../../../../cmmn/team/caseteamuser";
 import CaseFileService from '../../../../service/case/casefileservice';
@@ -8,15 +9,13 @@ import CaseMigrationService, { DefinitionMigration } from '../../../../service/c
 import CasePlanService from '../../../../service/case/caseplanservice';
 import CaseService from '../../../../service/case/caseservice';
 import CaseTeamService from '../../../../service/case/caseteamservice';
-import RepositoryService from '../../../../service/case/repositoryservice';
 import TaskService from '../../../../service/task/taskservice';
 import { findTask } from '../../../../test/caseassertions/task';
 import TestCase from '../../../../test/testcase';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
 
-const base_definition = 'helloworld_base.xml';
-const definitionMigrated = 'helloworld_migrated.xml';
-
+const base_definition = Definitions.Migration_HelloworldBase;
+const definitionMigrated = Definitions.Migration_HelloworldMigrated;
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
@@ -24,8 +23,8 @@ const user = worldwideTenant.sender;
 export default class TestCaseMigration extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(user, base_definition, tenant);
-        await RepositoryService.validateAndDeploy(user, definitionMigrated, tenant);
+        await base_definition.deploy(user, tenant);
+        await definitionMigrated.deploy(user, tenant);
     }
 
     async run() {

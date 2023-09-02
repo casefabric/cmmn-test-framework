@@ -1,5 +1,6 @@
 'use strict';
 
+import Definitions from '../../cmmn/definitions/definitions';
 import State from '../../cmmn/state';
 import TaskState from '../../cmmn/taskstate';
 import CaseTeam from '../../cmmn/team/caseteam';
@@ -7,7 +8,6 @@ import CaseTeamUser, { CaseOwner } from "../../cmmn/team/caseteamuser";
 import GetMock from '../../mock/getmock';
 import MockServer from '../../mock/mockserver';
 import CaseService from '../../service/case/caseservice';
-import RepositoryService from '../../service/case/repositoryservice';
 import TaskService from '../../service/task/taskservice';
 import { assertPlanItem } from '../../test/caseassertions/plan';
 import { assertTask, findTask, verifyTaskInput } from '../../test/caseassertions/task';
@@ -16,8 +16,7 @@ import { ServerSideProcessing } from '../../test/time';
 import WorldWideTestTenant from '../worldwidetesttenant';
 import IncidentContent from './incidentmanagementcontent';
 
-const definition = 'IncidentManagementForTraining.xml';
-
+const definition = Definitions.IncidentManagementForTraining;
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const raiser = worldwideTenant.sender;
@@ -59,7 +58,7 @@ export default class TestIncidentManagement extends TestCase {
     async onPrepareTest() {
         await mockServer.start();
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(raiser, definition, tenant);
+        await definition.deploy(raiser, tenant);
     }
 
     async run() {

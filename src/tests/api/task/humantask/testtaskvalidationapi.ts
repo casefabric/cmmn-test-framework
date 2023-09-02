@@ -1,11 +1,11 @@
 'use strict';
 
+import Definitions from '../../../../cmmn/definitions/definitions';
 import State from '../../../../cmmn/state';
 import GetMock from '../../../../mock/getmock';
 import MockServer from '../../../../mock/mockserver';
 import PostMock from '../../../../mock/postmock';
 import CaseService from '../../../../service/case/caseservice';
-import RepositoryService from '../../../../service/case/repositoryservice';
 import TaskService from '../../../../service/task/taskservice';
 import { assertPlanItem } from '../../../../test/caseassertions/plan';
 import Comparison from '../../../../test/comparison';
@@ -14,8 +14,7 @@ import { ServerSideProcessing } from '../../../../test/time';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
 import TaskContent from './taskcontent';
 
-const definition = 'taskoutputvalidation.xml';
-
+const definition = Definitions.TaskOutputValidation;
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const pete = worldwideTenant.sender;
@@ -56,7 +55,7 @@ export default class TestTaskValidationAPI extends TestCase {
         console.log("\n\n============Started mock server. Now creating tenant\n\n");
         await worldwideTenant.create();
         // Deploy the case model
-        await RepositoryService.validateAndDeploy(pete, definition, tenant);
+        await definition.deploy(pete, tenant);
     }
 
     async run() {

@@ -1,5 +1,6 @@
 'use strict';
 
+import Definitions from '../../cmmn/definitions/definitions';
 import PlanItem from '../../cmmn/planitem';
 import State from '../../cmmn/state';
 import TaskState from '../../cmmn/taskstate';
@@ -18,8 +19,7 @@ import TestCase from '../../test/testcase';
 import { SomeTime } from '../../test/time';
 import WorldWideTestTenant from '../worldwidetesttenant';
 
-const definition = 'compatibility.xml';
-
+const definition = Definitions.Compatibility;
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const employee = worldwideTenant.employee;
@@ -43,7 +43,7 @@ export default class TestCompatibility extends TestCase {
 
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(sender, definition, tenant);
+        await definition.deploy(sender, tenant);
     }
 
     async run() {

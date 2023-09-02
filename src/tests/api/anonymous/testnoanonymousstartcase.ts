@@ -1,13 +1,13 @@
 'use strict';
 
+import Definitions from '../../../cmmn/definitions/definitions';
 import RequestService from '../../../service/anonymous/requestservice';
 import CaseService from '../../../service/case/caseservice';
-import RepositoryService from '../../../service/case/repositoryservice';
 import TenantUser, { TenantOwner } from '../../../tenant/tenantuser';
 import TestCase from '../../../test/testcase';
 import AnonymousWorld from './anonymousworld';
 
-const definition = 'helloworld.xml';
+const definition = Definitions.HelloWorld;
 
 const suzy = new TenantOwner('suzy', ['Receiver'], 'receiver', 'receiver@receivers.com')
 const lana = new TenantUser('lana', ['Sender'], 'sender', 'sender@senders.com');
@@ -29,7 +29,7 @@ export default class TestNoAnonymousStartCase extends TestCase {
     async onPrepareTest() {
         await anonymousWorld.create();
         await anonymousWorldWithoutLana.create();
-        await RepositoryService.validateAndDeploy(suzy, definition, tenant);
+        await definition.deploy(suzy, tenant);
     }
 
     async run() {
