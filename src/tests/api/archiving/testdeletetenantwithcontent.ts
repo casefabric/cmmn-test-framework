@@ -5,7 +5,7 @@ import State from '../../../cmmn/state';
 import CaseService from '../../../service/case/caseservice';
 import StorageService from '../../../service/storage/storageservice';
 import TenantService from '../../../service/tenant/tenantservice';
-import CaseHierarchy from '../../../test/casehierarchy';
+import CaseEvents from '../../../service/storage/caseevents';
 import TestCase from '../../../test/testcase';
 import { SomeTime } from '../../../test/time';
 import WorldWideTestTenant from '../../worldwidetesttenant';
@@ -25,9 +25,9 @@ export default class TestDeleteTenantWithContent extends TestCase {
     this.addIdentifier(tenant);
   }
 
-  async createCases(): Promise<Array<CaseHierarchy>> {
+  async createCases(): Promise<Array<CaseEvents>> {
     const rootCases = await CaseService.getCases(user, { tenant, numberOfResults: 10000 }).then(cases => cases.filter(c => !c.parentCaseId));
-    const cases = rootCases.map(caseInstance => CaseHierarchy.from(user, caseInstance));
+    const cases = rootCases.map(caseInstance => CaseEvents.from(user, caseInstance));
 
     const inputs = {
       Greeting: {
@@ -64,7 +64,7 @@ export default class TestDeleteTenantWithContent extends TestCase {
     while (count-- > 0) {
       const caseInstance = await CaseService.startCase(user, startCase).then(id => CaseService.getCase(user, id));
       this.addIdentifier(caseInstance);
-      cases.push(CaseHierarchy.from(user, caseInstance));
+      cases.push(CaseEvents.from(user, caseInstance));
     }
 
     return cases;

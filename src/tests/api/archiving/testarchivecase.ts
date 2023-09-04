@@ -5,7 +5,7 @@ import State from '../../../cmmn/state';
 import CaseService from '../../../service/case/caseservice';
 import StartCase from '../../../service/case/startcase';
 import StorageService from '../../../service/storage/storageservice';
-import CaseHierarchy from '../../../test/casehierarchy';
+import CaseEvents from '../../../service/storage/caseevents';
 import TestCase from '../../../test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 
@@ -36,7 +36,7 @@ export default class TestArchiveCase extends TestCase {
 
     const caseInstance = await CaseService.startCase(user, startCase).then(id => CaseService.getCase(user, id));
     this.addIdentifier(caseInstance);
-    const caseHierarchy = CaseHierarchy.from(user, caseInstance);
+    const caseHierarchy = CaseEvents.from(user, caseInstance);
     await caseHierarchy.load();
 
     this.readLine(`Press enter to start test loop on ${definition} with case hierarchy\n ${caseHierarchy}`);

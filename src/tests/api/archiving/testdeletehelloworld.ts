@@ -3,7 +3,7 @@
 import Definitions from '../../../cmmn/definitions/definitions';
 import CaseService from '../../../service/case/caseservice';
 import StorageService from '../../../service/storage/storageservice';
-import CaseHierarchy from '../../../test/casehierarchy';
+import CaseEvents from '../../../service/storage/caseevents';
 import TestCase from '../../../test/testcase';
 import { PollUntilSuccess, SomeTime } from '../../../test/time';
 import WorldWideTestTenant from '../../worldwidetesttenant';
@@ -26,7 +26,7 @@ export default class TestDeleteHelloworld extends TestCase {
     const startCase = { tenant, definition, debug: true };
     const caseInstance = await CaseService.startCase(user, startCase).then(id => CaseService.getCase(user, id));
     this.addIdentifier(caseInstance);
-    const caseHierarchy = CaseHierarchy.from(user, caseInstance);
+    const caseHierarchy = CaseEvents.from(user, caseInstance);
     await caseHierarchy.load();
 
     console.log(">>>>>>>> DELETING Case " + caseInstance.id);

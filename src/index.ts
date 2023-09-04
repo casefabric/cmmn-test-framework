@@ -54,7 +54,7 @@ export * from "./tenant/consentgroupmembership";
 export * from "./tenant/tenant";
 export * from "./tenant/tenantuser";
 export * from "./tenant/userinformation";
-export * from "./test/casehierarchy";
+export * from "./service/storage/caseevents";
 export * from "./test/comparison";
 export * from "./test/linereader";
 export * from "./test/testcase";
