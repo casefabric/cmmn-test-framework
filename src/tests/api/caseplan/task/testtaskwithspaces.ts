@@ -1,12 +1,11 @@
 'use strict';
 
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import TestCase from '@cafienne/typescript-client/test/testcase';
+import Definitions from '../../../../cmmn/definitions/definitions';
+import CaseService from '../../../../service/case/caseservice';
+import TestCase from '../../../../test/testcase';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
 
-const definition = 'casemetspatie.xml';
-
+const definition = Definitions.CaseWithSpace;
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
@@ -14,7 +13,7 @@ const user = worldwideTenant.sender;
 export default class TestTaskWithSpaces extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(user, definition, tenant);
+        await definition.deploy(user, tenant);
     }
 
     async run() {

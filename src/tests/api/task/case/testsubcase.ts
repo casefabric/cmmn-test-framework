@@ -1,20 +1,20 @@
 'use strict';
 
-import PlanItem from "@cafienne/typescript-client/cmmn/planitem";
-import State from "@cafienne/typescript-client/cmmn/state";
-import CaseTeamUser, { CaseOwner } from "@cafienne/typescript-client/cmmn/team/caseteamuser";
-import CaseFileService from "@cafienne/typescript-client/service/case/casefileservice";
-import CaseService from "@cafienne/typescript-client/service/case/caseservice";
-import RepositoryService from "@cafienne/typescript-client/service/case/repositoryservice";
-import TaskService from "@cafienne/typescript-client/service/task/taskservice";
-import { assertCasePlan, assertPlanItem } from "@cafienne/typescript-client/test/caseassertions/plan";
-import { findTask } from "@cafienne/typescript-client/test/caseassertions/task";
-import { assertCaseTeamUser } from "@cafienne/typescript-client/test/caseassertions/team";
-import TestCase from "@cafienne/typescript-client/test/testcase";
+import Definitions from "../../../../cmmn/definitions/definitions";
+import PlanItem from "../../../../cmmn/planitem";
+import State from "../../../../cmmn/state";
+import CaseTeamUser, { CaseOwner } from "../../../../cmmn/team/caseteamuser";
+import CaseFileService from "../../../../service/case/casefileservice";
+import CaseService from "../../../../service/case/caseservice";
+import TaskService from "../../../../service/task/taskservice";
+import { assertCasePlan, assertPlanItem } from "../../../../test/caseassertions/plan";
+import { findTask } from "../../../../test/caseassertions/task";
+import { assertCaseTeamUser } from "../../../../test/caseassertions/team";
+import TestCase from "../../../../test/testcase";
 import WorldWideTestTenant from "../../../worldwidetesttenant";
 
+const definition = Definitions.SubCaseTest;
 const worldwideTenant = new WorldWideTestTenant();
-const definition = 'subcasetest.xml';
 const tenant = worldwideTenant.name;
 const sender = worldwideTenant.sender;
 const receiver = worldwideTenant.receiver;
@@ -22,7 +22,7 @@ const receiver = worldwideTenant.receiver;
 export default class TestSubCase extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(sender, definition, tenant);
+        await definition.deploy(sender, tenant);
     }
 
     async run() {

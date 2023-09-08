@@ -1,21 +1,19 @@
 'use strict';
 
-import RepositoryService from "@cafienne/typescript-client/service/case/repositoryservice";
-import CaseService from "@cafienne/typescript-client/service/case/caseservice";
+import Definitions from "../../../cmmn/definitions/definitions";
+import State from "../../../cmmn/state";
+import Transition from "../../../cmmn/transition";
+import GetMock from "../../../mock/getmock";
+import MockServer from "../../../mock/mockserver";
+import CasePlanService from "../../../service/case/caseplanservice";
+import CaseService from "../../../service/case/caseservice";
+import { assertPlanItem } from "../../../test/caseassertions/plan";
+import TestCase from "../../../test/testcase";
+import { ServerSideProcessing, SomeTime } from "../../../test/time";
 import WorldWideTestTenant from "../../worldwidetesttenant";
-import MockServer from "@cafienne/typescript-client/mock/mockserver";
-import GetMock from "@cafienne/typescript-client/mock/getmock";
-import TestCase from "@cafienne/typescript-client/test/testcase";
-import Case from "@cafienne/typescript-client/cmmn/case";
-import { assertPlanItem } from "@cafienne/typescript-client/test/caseassertions/plan";
-import CasePlanService from "@cafienne/typescript-client/service/case/caseplanservice";
-import { ServerSideProcessing, SomeTime } from "@cafienne/typescript-client/test/time";
-import State from "@cafienne/typescript-client/cmmn/state";
-import Transition from "@cafienne/typescript-client/cmmn/transition";
 
+const definition = Definitions.RepeatStageTest;
 const worldwideTenant = new WorldWideTestTenant();
-
-const definition = 'repeatstagetest.xml';
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
 
@@ -55,7 +53,7 @@ export default class TestRepeatStage extends TestCase {
         console.log("\n\n============Started mock server. Now creating tenant\n\n");
         await worldwideTenant.create();
         // Deploy the case model
-        await RepositoryService.validateAndDeploy(user, definition, tenant);
+        await definition.deploy(user, tenant);
     }
 
     async run() {

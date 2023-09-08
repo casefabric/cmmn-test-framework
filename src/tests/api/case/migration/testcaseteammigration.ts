@@ -1,22 +1,21 @@
 'use strict';
 
-import { PollUntilSuccess } from '@cafienne/typescript-client';
-import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
-import CaseTeamUser, { CaseOwner } from "@cafienne/typescript-client/cmmn/team/caseteamuser";
-import CaseMigrationService, { DefinitionMigration } from '@cafienne/typescript-client/service/case/casemigrationservice';
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import CaseTeamService from '@cafienne/typescript-client/service/case/caseteamservice';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import TaskService from '@cafienne/typescript-client/service/task/taskservice';
-import { findTask } from '@cafienne/typescript-client/test/caseassertions/task';
-import Comparison from '@cafienne/typescript-client/test/comparison';
-import TestCase from '@cafienne/typescript-client/test/testcase';
-import User from '@cafienne/typescript-client/user';
+import Definitions from '../../../../cmmn/definitions/definitions';
+import CaseTeam from '../../../../cmmn/team/caseteam';
+import CaseTeamUser, { CaseOwner } from "../../../../cmmn/team/caseteamuser";
+import CaseMigrationService, { DefinitionMigration } from '../../../../service/case/casemigrationservice';
+import CaseService from '../../../../service/case/caseservice';
+import CaseTeamService from '../../../../service/case/caseteamservice';
+import TaskService from '../../../../service/task/taskservice';
+import { findTask } from '../../../../test/caseassertions/task';
+import Comparison from '../../../../test/comparison';
+import TestCase from '../../../../test/testcase';
+import { PollUntilSuccess } from '../../../../test/time';
+import User from '../../../../user';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
 
-const base_definition = 'migration/migration_v0.xml';
-const definitionMigrated = 'migration/migration_v1.xml';
-
+const base_definition = Definitions.Migration_v0;
+const definitionMigrated = Definitions.Migration_v1;
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const sender = worldwideTenant.sender;
@@ -24,8 +23,8 @@ const sender = worldwideTenant.sender;
 export default class TestCaseTeamMigration extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(sender, base_definition, tenant);
-        await RepositoryService.validateAndDeploy(sender, definitionMigrated, tenant);
+        await base_definition.deploy(sender, tenant);
+        await definitionMigrated.deploy(sender, tenant);
     }
 
     async run() {

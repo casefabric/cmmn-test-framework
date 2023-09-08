@@ -1,20 +1,19 @@
 'use strict';
 
-import State from '@cafienne/typescript-client/cmmn/state';
-import Transition from '@cafienne/typescript-client/cmmn/transition';
-import GetMock from '@cafienne/typescript-client/mock/getmock';
-import MockServer from '@cafienne/typescript-client/mock/mockserver';
-import CaseFileService from '@cafienne/typescript-client/service/case/casefileservice';
-import CasePlanService from '@cafienne/typescript-client/service/case/caseplanservice';
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import { assertPlanItem } from '@cafienne/typescript-client/test/caseassertions/plan';
-import TestCase from '@cafienne/typescript-client/test/testcase';
-import { ServerSideProcessing } from '@cafienne/typescript-client/test/time';
+import Definitions from '../../../../../cmmn/definitions/definitions';
+import State from '../../../../../cmmn/state';
+import Transition from '../../../../../cmmn/transition';
+import GetMock from '../../../../../mock/getmock';
+import MockServer from '../../../../../mock/mockserver';
+import CaseFileService from '../../../../../service/case/casefileservice';
+import CasePlanService from '../../../../../service/case/caseplanservice';
+import CaseService from '../../../../../service/case/caseservice';
+import { assertPlanItem } from '../../../../../test/caseassertions/plan';
+import TestCase from '../../../../../test/testcase';
+import { ServerSideProcessing } from '../../../../../test/time';
 import WorldWideTestTenant from '../../../../worldwidetesttenant';
 
-const definition = 'getlist_getdetails.xml';
-
+const definition = Definitions.GetListGetDetails;
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
@@ -36,7 +35,7 @@ new GetMock(mock, '/details/:detailsKey', call => {
 export default class TestGetListGetDetails extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(user, definition, tenant);
+        await definition.deploy(user, tenant);
     }
 
     async run() {

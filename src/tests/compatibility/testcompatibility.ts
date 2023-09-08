@@ -1,25 +1,25 @@
 'use strict';
 
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import TaskService from '@cafienne/typescript-client/service/task/taskservice';
-import CaseFileService from '@cafienne/typescript-client/service/case/casefileservice';
-import CasePlanService from '@cafienne/typescript-client/service/case/caseplanservice';
-import CaseTeamService from '@cafienne/typescript-client/service/case/caseteamservice';
-import DebugService from '@cafienne/typescript-client/service/case/debugservice';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import { assertCasePlan } from '@cafienne/typescript-client/test/caseassertions/plan';
-import { assertTask, verifyTaskInput, findTask } from '@cafienne/typescript-client/test/caseassertions/task';
-import TestCase from '@cafienne/typescript-client/test/testcase';
-import { SomeTime } from '@cafienne/typescript-client/test/time';
+import Definitions from '../../cmmn/definitions/definitions';
+import PlanItem from '../../cmmn/planitem';
+import State from '../../cmmn/state';
+import TaskState from '../../cmmn/taskstate';
+import CaseTeam from '../../cmmn/team/caseteam';
+import CaseTeamUser, { CaseOwner } from '../../cmmn/team/caseteamuser';
+import CaseFileService from '../../service/case/casefileservice';
+import CasePlanService from '../../service/case/caseplanservice';
+import CaseService from '../../service/case/caseservice';
+import CaseTeamService from '../../service/case/caseteamservice';
+import DebugService from '../../service/case/debugservice';
+import RepositoryService from '../../service/case/repositoryservice';
+import TaskService from '../../service/task/taskservice';
+import { assertCasePlan } from '../../test/caseassertions/plan';
+import { assertTask, findTask, verifyTaskInput } from '../../test/caseassertions/task';
+import TestCase from '../../test/testcase';
+import { SomeTime } from '../../test/time';
 import WorldWideTestTenant from '../worldwidetesttenant';
-import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
-import CaseTeamUser, { CaseOwner } from '@cafienne/typescript-client/cmmn/team/caseteamuser';
-import PlanItem from '@cafienne/typescript-client/cmmn/planitem';
-import TaskState from '@cafienne/typescript-client/cmmn/taskstate';
-import State from '@cafienne/typescript-client/cmmn/state';
 
-const definition = 'compatibility.xml';
-
+const definition = Definitions.Compatibility;
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const employee = worldwideTenant.employee;
@@ -43,7 +43,7 @@ export default class TestCompatibility extends TestCase {
 
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(sender, definition, tenant);
+        await definition.deploy(sender, tenant);
     }
 
     async run() {

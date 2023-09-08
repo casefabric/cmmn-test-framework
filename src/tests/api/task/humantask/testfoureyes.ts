@@ -1,14 +1,14 @@
 'use strict';
 
-import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
-import CaseTeamUser, { CaseOwner } from "@cafienne/typescript-client/cmmn/team/caseteamuser";
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import TestCase from '@cafienne/typescript-client/test/testcase';
+import Definitions from '../../../../cmmn/definitions/definitions';
+import CaseTeam from '../../../../cmmn/team/caseteam';
+import CaseTeamUser, { CaseOwner } from "../../../../cmmn/team/caseteamuser";
+import CaseService from '../../../../service/case/caseservice';
+import TaskService from '../../../../service/task/taskservice';
+import TestCase from '../../../../test/testcase';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
-import TaskService from '@cafienne/typescript-client/service/task/taskservice';
 
-const definition = 'four_eyes.xml';
+const definition = Definitions.FourEyes;
 
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
@@ -19,7 +19,7 @@ const employee = worldwideTenant.employee;
 export default class TestFourEyes extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(sender, definition, tenant);
+        await definition.deploy(sender, tenant);
     }
 
     async run() {

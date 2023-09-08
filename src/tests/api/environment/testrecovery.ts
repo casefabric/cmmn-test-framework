@@ -1,27 +1,24 @@
-import CaseService from "@cafienne/typescript-client/service/case/caseservice";
-import DebugService from "@cafienne/typescript-client/service/case/debugservice";
-import RepositoryService from "@cafienne/typescript-client/service/case/repositoryservice";
-import TaskService from "@cafienne/typescript-client/service/task/taskservice";
-import TenantService from "@cafienne/typescript-client/service/tenant/tenantservice";
-import TestCase from "@cafienne/typescript-client/test/testcase";
+import Definitions from "../../../cmmn/definitions/definitions";
+import CaseTeam from "../../../cmmn/team/caseteam";
+import CaseTeamUser, { CaseOwner } from "../../../cmmn/team/caseteamuser";
+import CaseMigrationService, { DefinitionMigration } from "../../../service/case/casemigrationservice";
+import CaseService from "../../../service/case/caseservice";
+import DebugService from "../../../service/case/debugservice";
+import TaskService from "../../../service/task/taskservice";
+import TenantService from "../../../service/tenant/tenantservice";
+import { findTask } from "../../../test/caseassertions/task";
+import TestCase from "../../../test/testcase";
 import WorldWideTestTenant from "../../worldwidetesttenant";
-import CaseTeam from "@cafienne/typescript-client/cmmn/team/caseteam";
-import { CaseOwner, DefinitionMigration, findTask } from "@cafienne/typescript-client";
-import CaseTeamUser from "@cafienne/typescript-client/cmmn/team/caseteamuser";
-import CaseTeamService from "@cafienne/typescript-client/service/case/caseteamservice";
-import CasePlanService from "@cafienne/typescript-client/service/case/caseplanservice";
-import CaseMigrationService from "@cafienne/typescript-client/service/case/casemigrationservice";
 
+const definition = Definitions.HelloWorld;
 const worldwideTenant = new WorldWideTestTenant();
-const definition = 'helloworld.xml';
-
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
 
 export default class TestRecovery extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(user, definition, tenant);
+        await definition.deploy(user, tenant);
     }
 
     /**

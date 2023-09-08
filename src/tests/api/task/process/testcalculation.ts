@@ -1,18 +1,17 @@
 'use strict';
 
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import TestCase from '@cafienne/typescript-client/test/testcase';
+import Case from '../../../../cmmn/case';
+import Definitions from '../../../../cmmn/definitions/definitions';
+import State from '../../../../cmmn/state';
+import CaseFileService from '../../../../service/case/casefileservice';
+import CaseService from '../../../../service/case/caseservice';
+import DebugService from '../../../../service/case/debugservice';
+import assertCaseFileContent from '../../../../test/caseassertions/file';
+import { assertPlanItem } from '../../../../test/caseassertions/plan';
+import TestCase from '../../../../test/testcase';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import { assertPlanItem } from '@cafienne/typescript-client/test/caseassertions/plan';
-import assertCaseFileContent from '@cafienne/typescript-client/test/caseassertions/file';
-import DebugService from '@cafienne/typescript-client/service/case/debugservice';
-import CaseFileService from '@cafienne/typescript-client/service/case/casefileservice';
-import State from '@cafienne/typescript-client/cmmn/state';
-import Case from '@cafienne/typescript-client/cmmn/case';
 
-const definition = 'calculation.xml';
-
+const definition = Definitions.Calculation;
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
@@ -22,7 +21,7 @@ export default class TestCalculation extends TestCase {
 
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(user, definition, tenant);
+        await definition.deploy(user, tenant);
     }
 
     async run() {

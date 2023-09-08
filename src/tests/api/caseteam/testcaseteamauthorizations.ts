@@ -1,22 +1,22 @@
 'use strict';
 
-import Case from '@cafienne/typescript-client/cmmn/case';
-import PlanItem from '@cafienne/typescript-client/cmmn/planitem';
-import State from '@cafienne/typescript-client/cmmn/state';
-import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
-import CaseTeamGroup, { GroupRoleMapping } from '@cafienne/typescript-client/cmmn/team/caseteamgroup';
-import CaseTeamTenantRole from '@cafienne/typescript-client/cmmn/team/caseteamtenantrole';
-import CaseTeamUser, { CaseOwner } from '@cafienne/typescript-client/cmmn/team/caseteamuser';
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import TaskService from '@cafienne/typescript-client/service/task/taskservice';
-import { assertPlanItem } from '@cafienne/typescript-client/test/caseassertions/plan';
-import TestCase from '@cafienne/typescript-client/test/testcase';
-import User from '@cafienne/typescript-client/user';
+import Case from '../../../cmmn/case';
+import Definitions from '../../../cmmn/definitions/definitions';
+import PlanItem from '../../../cmmn/planitem';
+import State from '../../../cmmn/state';
+import CaseTeam from '../../../cmmn/team/caseteam';
+import CaseTeamGroup, { GroupRoleMapping } from '../../../cmmn/team/caseteamgroup';
+import CaseTeamTenantRole from '../../../cmmn/team/caseteamtenantrole';
+import CaseTeamUser, { CaseOwner } from '../../../cmmn/team/caseteamuser';
+import CaseService from '../../../service/case/caseservice';
+import TaskService from '../../../service/task/taskservice';
+import { assertPlanItem } from '../../../test/caseassertions/plan';
+import TestCase from '../../../test/testcase';
+import User from '../../../user';
 import MultiTenantSetup from '../../multitenantsetup';
 
 // Case definition with the roles
-const definition = 'caseteam.xml';
+const definition = Definitions.CaseTeam;
 const caseRoleRequestor = 'Requestor';
 const caseRoleApprover = 'Approver';
 const caseRolePersonalAssistant = 'PersonalAssistant';
@@ -70,7 +70,7 @@ const caseTeamMembers = [...familyCaseMembers, ...moonGroupCaseMembers, ...marsG
 export default class TestCaseTeamAuthorizations extends TestCase {
     async onPrepareTest() {
         await universe.create();
-        await RepositoryService.validateAndDeploy(universe.boy, definition, tenant);
+        await definition.deploy(universe.boy, tenant);
     }
 
     async run() {

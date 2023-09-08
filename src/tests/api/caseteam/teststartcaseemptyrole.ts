@@ -1,18 +1,17 @@
 'use strict';
 
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import TestCase from '@cafienne/typescript-client/test/testcase';
+import Definitions from '../../../cmmn/definitions/definitions';
+import CaseTeam from '../../../cmmn/team/caseteam';
+import CaseTeamUser, { CaseOwner } from "../../../cmmn/team/caseteamuser";
+import CaseService from '../../../service/case/caseservice';
+import CaseTeamService from '../../../service/case/caseteamservice';
+import StartCase from '../../../service/case/startcase';
+import { assertCaseTeam } from '../../../test/caseassertions/team';
+import TestCase from '../../../test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import CaseTeamService from '@cafienne/typescript-client/service/case/caseteamservice';
-import { CaseOwner } from '@cafienne/typescript-client/cmmn/team/caseteamuser';
-import CaseTeamUser from "@cafienne/typescript-client/cmmn/team/caseteamuser";
-import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
-import { assertCaseTeam } from '@cafienne/typescript-client/test/caseassertions/team';
-import StartCase from '@cafienne/typescript-client/service/case/startcase';
 
+const definition = Definitions.CaseTeam;
 const worldwideTenant = new WorldWideTestTenant('wwtt-4');
-const definition = 'caseteam.xml';
 const tenant = worldwideTenant.name;
 const sender = worldwideTenant.sender;
 const receiver = worldwideTenant.receiver;
@@ -23,7 +22,7 @@ const emptyRole = "";
 export default class TestStartCaseEmptyRole extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(sender, definition, tenant);
+        await definition.deploy(sender, tenant);
     }
 
     startCase: StartCase = { tenant, definition, debug: true };

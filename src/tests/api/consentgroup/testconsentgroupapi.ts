@@ -1,9 +1,9 @@
-import ConsentGroup from "@cafienne/typescript-client/service/consentgroup/consentgroup";
-import ConsentGroupMember, { ConsentGroupOwner } from "@cafienne/typescript-client/service/consentgroup/consentgroupmember";
-import ConsentGroupService from "@cafienne/typescript-client/service/consentgroup/consentgroupservice";
-import TestCase from "@cafienne/typescript-client/test/testcase";
-import { SomeTime } from "@cafienne/typescript-client/test/time";
-import assertSameGroup, { assertMemberHasNoRoles, assertMemberRole } from "@cafienne/typescript-client/test/userassertions/consentgroup";
+import ConsentGroup from "../../../service/consentgroup/consentgroup";
+import ConsentGroupMember, { ConsentGroupOwner } from "../../../service/consentgroup/consentgroupmember";
+import ConsentGroupService from "../../../service/consentgroup/consentgroupservice";
+import TestCase from "../../../test/testcase";
+import { SomeTime } from "../../../test/time";
+import assertSameGroup, { assertMemberHasNoRoles, assertMemberRole } from "../../../test/userassertions/consentgroup";
 import WorldWideTestTenant from "../../worldwidetesttenant";
 
 const worldwideTenant = new WorldWideTestTenant();

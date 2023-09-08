@@ -1,9 +1,9 @@
-import User from "@cafienne/typescript-client/user";
-import TenantUser, { TenantOwner } from "@cafienne/typescript-client/tenant/tenantuser";
-import Tenant from "@cafienne/typescript-client/tenant/tenant";
-import PlatformService from "@cafienne/typescript-client/service/platform/platformservice";
-import ConsentGroup from "@cafienne/typescript-client/service/consentgroup/consentgroup";
-import ConsentGroupService from "@cafienne/typescript-client/service/consentgroup/consentgroupservice";
+import User from "../user";
+import TenantUser, { TenantOwner } from "../tenant/tenantuser";
+import Tenant from "../tenant/tenant";
+import PlatformService from "../service/platform/platformservice";
+import ConsentGroup from "../service/consentgroup/consentgroup";
+import ConsentGroupService from "../service/consentgroup/consentgroupservice";
 
 /**
  * Somewhat complexer tenant setup, along with consent groups

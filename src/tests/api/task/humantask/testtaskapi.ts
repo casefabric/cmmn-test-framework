@@ -1,22 +1,18 @@
 'use strict';
 
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import TaskService from '@cafienne/typescript-client/service/task/taskservice';
-import TestCase from '@cafienne/typescript-client/test/testcase';
+import Definitions from '../../../../cmmn/definitions/definitions';
+import CaseTeam from '../../../../cmmn/team/caseteam';
+import CaseTeamUser, { CaseOwner } from "../../../../cmmn/team/caseteamuser";
+import CaseService from '../../../../service/case/caseservice';
+import CaseTeamService from '../../../../service/case/caseteamservice';
+import TaskService from '../../../../service/task/taskservice';
+import TestCase from '../../../../test/testcase';
+import User from '../../../../user';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
-import { CaseOwner } from '@cafienne/typescript-client/cmmn/team/caseteamuser';
-import CaseTeamUser from "@cafienne/typescript-client/cmmn/team/caseteamuser";
-import CaseTeamService from '@cafienne/typescript-client/service/case/caseteamservice';
-import Case from '@cafienne/typescript-client/cmmn/case';
-import User from '@cafienne/typescript-client/user';
 
-const definition = 'helloworld.xml';
-
+const definition = Definitions.HelloWorld;
 const guid = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 const tenantName = 'temp_task_tenant' + guid;
-
 const worldwideTenant = new WorldWideTestTenant(tenantName);
 const tenant = worldwideTenant.name;
 const sender = worldwideTenant.sender;
@@ -25,7 +21,7 @@ const receiver = worldwideTenant.receiver;
 export default class TestTaskAPI extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(sender, definition, tenant);
+        await definition.deploy(sender, tenant);
     }
 
     async run() {

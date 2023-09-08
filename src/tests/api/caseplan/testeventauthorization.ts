@@ -1,20 +1,19 @@
 'use strict';
 
-import Case from '@cafienne/typescript-client/cmmn/case';
-import State from '@cafienne/typescript-client/cmmn/state';
-import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
-import CaseTeamUser, { CaseOwner } from "@cafienne/typescript-client/cmmn/team/caseteamuser";
-import CaseHistoryService from '@cafienne/typescript-client/service/case/casehistoryservice';
-import CasePlanService from '@cafienne/typescript-client/service/case/caseplanservice';
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import { assertPlanItem } from '@cafienne/typescript-client/test/caseassertions/plan';
-import TestCase from '@cafienne/typescript-client/test/testcase';
+import Case from '../../../cmmn/case';
+import Definitions from '../../../cmmn/definitions/definitions';
+import State from '../../../cmmn/state';
+import CaseTeam from '../../../cmmn/team/caseteam';
+import CaseTeamUser, { CaseOwner } from "../../../cmmn/team/caseteamuser";
+import CaseHistoryService from '../../../service/case/casehistoryservice';
+import CasePlanService from '../../../service/case/caseplanservice';
+import CaseService from '../../../service/case/caseservice';
+import { assertPlanItem } from '../../../test/caseassertions/plan';
+import TestCase from '../../../test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 
 
-const definition = 'eventlistener.xml';
-
+const definition = Definitions.EventListener;
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const caseOwner = worldwideTenant.sender;
@@ -24,7 +23,7 @@ const caseMember = worldwideTenant.receiver;
 export default class TestEventAuthorization extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(caseOwner, definition, tenant);
+        await definition.deploy(caseOwner, tenant);
     }
 
     async run() {

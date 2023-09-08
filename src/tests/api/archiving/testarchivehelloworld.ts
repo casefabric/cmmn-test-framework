@@ -1,8 +1,9 @@
 'use strict';
 
+import Definitions from '../../../cmmn/definitions/definitions';
 import TestArchiveCase from './testarchivecase';
 
-const helloworld = 'helloworld.xml';
+const helloworld = Definitions.HelloWorld;
 
 export default class TestArchiveHelloworld extends TestArchiveCase {
 

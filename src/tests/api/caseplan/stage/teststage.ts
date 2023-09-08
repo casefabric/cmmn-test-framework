@@ -1,17 +1,16 @@
 'use strict';
 
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import TaskService from '@cafienne/typescript-client/service/task/taskservice';
-import TestCase from '@cafienne/typescript-client/test/testcase';
+import Case from '../../../../cmmn/case';
+import Definitions from '../../../../cmmn/definitions/definitions';
+import Task from '../../../../cmmn/task';
+import CaseService from '../../../../service/case/caseservice';
+import TaskService from '../../../../service/task/taskservice';
+import Comparison from '../../../../test/comparison';
+import TestCase from '../../../../test/testcase';
+import User from '../../../../user';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import Comparison from '@cafienne/typescript-client/test/comparison';
-import User from '@cafienne/typescript-client/user';
-import Task from '@cafienne/typescript-client/cmmn/task';
-import Case from '@cafienne/typescript-client/cmmn/case';
 
-const definition = 'stagetest.xml';
-
+const definition = Definitions.StageTest;
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
@@ -19,7 +18,7 @@ const user = worldwideTenant.sender;
 export default class TestStage extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(user, definition, tenant);
+        await definition.deploy(user, tenant);
     }
 
     async run() {

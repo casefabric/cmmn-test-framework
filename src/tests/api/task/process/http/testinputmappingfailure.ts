@@ -1,21 +1,20 @@
 'use strict';
 
-import { SomeTime } from '@cafienne/typescript-client';
-import State from '@cafienne/typescript-client/cmmn/state';
-import Transition from '@cafienne/typescript-client/cmmn/transition';
-import GetMock from '@cafienne/typescript-client/mock/getmock';
-import MockServer from '@cafienne/typescript-client/mock/mockserver';
-import CaseMigrationService, { DefinitionMigration } from '@cafienne/typescript-client/service/case/casemigrationservice';
-import CasePlanService from '@cafienne/typescript-client/service/case/caseplanservice';
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import { assertPlanItem } from '@cafienne/typescript-client/test/caseassertions/plan';
-import TestCase from '@cafienne/typescript-client/test/testcase';
+import Definitions from '../../../../../cmmn/definitions/definitions';
+import State from '../../../../../cmmn/state';
+import Transition from '../../../../../cmmn/transition';
+import GetMock from '../../../../../mock/getmock';
+import MockServer from '../../../../../mock/mockserver';
+import CaseMigrationService, { DefinitionMigration } from '../../../../../service/case/casemigrationservice';
+import CasePlanService from '../../../../../service/case/caseplanservice';
+import CaseService from '../../../../../service/case/caseservice';
+import { assertPlanItem } from '../../../../../test/caseassertions/plan';
+import TestCase from '../../../../../test/testcase';
+import { SomeTime } from '../../../../../test/time';
 import WorldWideTestTenant from '../../../../worldwidetesttenant';
 
-const definition = 'migration/getlist.xml';
-const newDefinition = 'migration/getlist_v1.xml';
-
+const definition = Definitions.Migration_GetList;
+const newDefinition = Definitions.Migration_GetList_v1;
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
@@ -34,8 +33,8 @@ export default class TestInputMappingFailure extends TestCase {
 
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(user, definition, tenant);
-        await RepositoryService.validateAndDeploy(user, newDefinition, tenant);
+        await definition.deploy(user, tenant);
+        await newDefinition.deploy(user, tenant);
         // Start mock service straight away
         await mock.start();
     }

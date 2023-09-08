@@ -1,12 +1,12 @@
 'use strict';
 
-import Definitions from '@cafienne/typescript-client/cmmn/definitions/definitions';
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import TaskService from '@cafienne/typescript-client/service/task/taskservice';
-import { findTask } from '@cafienne/typescript-client/test/caseassertions/task';
-import TestCase from '@cafienne/typescript-client/test/testcase';
+import Definitions from '../../../../cmmn/definitions/definitions';
+import CaseService from '../../../../service/case/caseservice';
+import TaskService from '../../../../service/task/taskservice';
+import { findTask } from '../../../../test/caseassertions/task';
+import Comparison from '../../../../test/comparison';
+import TestCase from '../../../../test/testcase';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
-import Comparison from '@cafienne/typescript-client/test/comparison';
 
 const definition = new Definitions('dynamictaskmodel.xml');
 

@@ -1,14 +1,14 @@
 'use strict';
 
-import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
-import { CaseOwner } from '@cafienne/typescript-client/cmmn/team/caseteamuser';
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import { readLocalFile } from '@cafienne/typescript-client/service/case/repositoryservice';
-import TestCase from '@cafienne/typescript-client/test/testcase';
+import Definitions from '../../../cmmn/definitions/definitions';
+import CaseTeam from '../../../cmmn/team/caseteam';
+import { CaseOwner } from '../../../cmmn/team/caseteamuser';
+import CaseService from '../../../service/case/caseservice';
+import { readLocalFile } from '../../../service/case/repositoryservice';
+import TestCase from '../../../test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 
-const definition = 'caseteam.xml';
-
+const definition = Definitions.CaseTeam;
 const worldwideTenant = new WorldWideTestTenant('wwtt-4');
 const tenant = worldwideTenant.name;
 const sender = worldwideTenant.sender;
@@ -19,7 +19,8 @@ export default class TestDefinitionInStartCase extends TestCase {
 
     async onPrepareTest() {
         await worldwideTenant.create();
-        // await RepositoryService.validateAndDeploy(sender, definition, tenant);
+        // This test case is not supposed to deploy the definition, as that goes in the StartCase command.
+        // await definition.deploy(sender, tenant);
     }
 
     async run() {

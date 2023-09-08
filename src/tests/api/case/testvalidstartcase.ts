@@ -1,16 +1,16 @@
 'use strict';
 
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import TestCase from '@cafienne/typescript-client/test/testcase';
+import Definitions from '../../../cmmn/definitions/definitions';
+import CaseTeam from '../../../cmmn/team/caseteam';
+import { CaseOwner } from '../../../cmmn/team/caseteamuser';
+import CaseService from '../../../service/case/caseservice';
+import { readLocalXMLDocument } from '../../../service/case/repositoryservice';
+import { assertCaseTeam } from '../../../test/caseassertions/team';
+import Comparison from '../../../test/comparison';
+import TestCase from '../../../test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
-import RepositoryService, { readLocalXMLDocument } from '@cafienne/typescript-client/service/case/repositoryservice';
-import { CaseOwner } from '@cafienne/typescript-client/cmmn/team/caseteamuser';
-import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
-import { assertCaseTeam } from '@cafienne/typescript-client/test/caseassertions/team';
-import Comparison from '@cafienne/typescript-client/test/comparison';
 
-const definition = 'caseteam.xml';
-
+const definition = Definitions.CaseTeam;
 const worldwideTenant = new WorldWideTestTenant('wwtt-4');
 const tenant = worldwideTenant.name;
 const sender = worldwideTenant.sender;
@@ -19,7 +19,7 @@ const receiver = worldwideTenant.receiver;
 export default class TestValidStartCase extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(sender, definition, tenant);
+        await definition.deploy(sender, tenant);
     }
 
     async run() {

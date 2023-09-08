@@ -1,23 +1,21 @@
 'use strict';
 
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import TestCase from '@cafienne/typescript-client/test/testcase';
+import Definitions from '../../../cmmn/definitions/definitions';
+import TaskState from '../../../cmmn/taskstate';
+import CaseTeam from '../../../cmmn/team/caseteam';
+import CaseTeamUser, { CaseOwner } from "../../../cmmn/team/caseteamuser";
+import CaseService from '../../../service/case/caseservice';
+import CaseTeamService from '../../../service/case/caseteamservice';
+import TaskService from '../../../service/task/taskservice';
+import TenantUser from '../../../tenant/tenantuser';
+import { assertTask, findTask } from '../../../test/caseassertions/task';
+import { assertCaseTeamUser } from '../../../test/caseassertions/team';
+import TestCase from '../../../test/testcase';
+import User from '../../../user';
 import WorldWideTestTenant from '../../worldwidetesttenant';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import { CaseOwner } from '@cafienne/typescript-client/cmmn/team/caseteamuser';
-import CaseTeamUser from "@cafienne/typescript-client/cmmn/team/caseteamuser";
-import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
-import { findTask, assertTask } from '@cafienne/typescript-client/test/caseassertions/task';
-import { assertCaseTeamUser } from '@cafienne/typescript-client/test/caseassertions/team';
-import TaskService from '@cafienne/typescript-client/service/task/taskservice';
-import User from '@cafienne/typescript-client/user';
-import CaseTeamService from '@cafienne/typescript-client/service/case/caseteamservice';
-import TenantUser from '@cafienne/typescript-client/tenant/tenantuser';
-import TaskState from '@cafienne/typescript-client/cmmn/taskstate';
 
+const definition = Definitions.CaseTeam;
 const worldwideTenant = new WorldWideTestTenant('wwtt-3');
-
-const definition = 'caseteam.xml';
 const tenant = worldwideTenant.name;
 const sender = worldwideTenant.sender;
 const receiver = worldwideTenant.receiver;
@@ -29,7 +27,7 @@ const paRole = "PersonalAssistant";
 export default class TestCaseTeamTaskAuthorizations extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(sender, definition, tenant);
+        await definition.deploy(sender, tenant);
     }
 
     async run() {

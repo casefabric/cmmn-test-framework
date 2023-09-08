@@ -1,11 +1,11 @@
 'use strict';
 
-import TestCase from '@cafienne/typescript-client/test/testcase';
+import logger from '../../../logger';
+import CaseIdentifierService from '../../../service/identifier/caseidentifierservice';
+import IdentifierFilter from '../../../service/identifier/identifierfilter';
+import TestCase from '../../../test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
-import CaseIdentifierService from '@cafienne/typescript-client/service/identifier/caseidentifierservice';
-import IdentifierFilter from '@cafienne/typescript-client/service/identifier/identifierfilter';
 import TestFootballBusinessIdentifiers from './footballbusinessidentifiers/testfootballbusinessidentifiers';
-import logger from '@cafienne/typescript-client/logger';
 
 const worldwideTenant = new WorldWideTestTenant('inactive-tenant-' + Math.random().toString(36).substring(2, 15));
 const user = worldwideTenant.sender;

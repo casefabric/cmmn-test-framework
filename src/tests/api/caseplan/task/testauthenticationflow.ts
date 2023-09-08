@@ -1,19 +1,16 @@
 'use strict';
 
-import State from '@cafienne/typescript-client/cmmn/state';
-import Transition from '@cafienne/typescript-client/cmmn/transition';
-import Config from '@cafienne/typescript-client/config';
-import CafienneService from '@cafienne/typescript-client/service/cafienneservice';
-import CaseFileService from '@cafienne/typescript-client/service/case/casefileservice';
-import CasePlanService from '@cafienne/typescript-client/service/case/caseplanservice';
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import assertCaseFileContent from '@cafienne/typescript-client/test/caseassertions/file';
-import { assertPlanItem } from '@cafienne/typescript-client/test/caseassertions/plan';
-import TestCase from '@cafienne/typescript-client/test/testcase';
+import Definitions from '../../../../cmmn/definitions/definitions';
+import State from '../../../../cmmn/state';
+import Config from '../../../../config';
+import CafienneService from '../../../../service/cafienneservice';
+import CaseFileService from '../../../../service/case/casefileservice';
+import CaseService from '../../../../service/case/caseservice';
+import { assertPlanItem } from '../../../../test/caseassertions/plan';
+import TestCase from '../../../../test/testcase';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
 
-const definition = 'invokecafienne.xml';
+const definition = Definitions.InvokeCafienne;
 
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
@@ -22,7 +19,7 @@ const user = worldwideTenant.sender;
 export default class TestAuthenticationFlow extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(user, definition, tenant);
+        await definition.deploy(user, tenant);
     }
 
     async run() {

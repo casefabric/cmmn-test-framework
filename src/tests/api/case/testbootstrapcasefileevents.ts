@@ -1,22 +1,19 @@
 'use strict';
 
-import RepositoryService from "@cafienne/typescript-client/service/case/repositoryservice";
-import CaseService from "@cafienne/typescript-client/service/case/caseservice";
+import Definitions from "../../../cmmn/definitions/definitions";
+import CaseService from "../../../service/case/caseservice";
+import TestCase from "../../../test/testcase";
 import WorldWideTestTenant from "../../worldwidetesttenant";
-import TestCase from "@cafienne/typescript-client/test/testcase";
-import Case from "@cafienne/typescript-client/cmmn/case";
 
+const definition = Definitions.BootstrapCaseFileEvents;
 const worldwideTenant = new WorldWideTestTenant();
-
-const definition = 'bootstrap-casefile-events.xml';
 const tenant = worldwideTenant.name;
 const sender = worldwideTenant.sender;
-const receiver = worldwideTenant.receiver;
 
 export default class TestBootstrapCaseFileEvents extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(sender, definition, tenant);
+        await definition.deploy(sender, tenant);
     }
 
     async run() {

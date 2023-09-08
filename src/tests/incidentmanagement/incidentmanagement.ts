@@ -1,24 +1,22 @@
 'use strict';
 
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import TaskService from '@cafienne/typescript-client/service/task/taskservice';
-import TestCase from '@cafienne/typescript-client/test/testcase';
+import Definitions from '../../cmmn/definitions/definitions';
+import State from '../../cmmn/state';
+import TaskState from '../../cmmn/taskstate';
+import CaseTeam from '../../cmmn/team/caseteam';
+import CaseTeamUser, { CaseOwner } from "../../cmmn/team/caseteamuser";
+import GetMock from '../../mock/getmock';
+import MockServer from '../../mock/mockserver';
+import CaseService from '../../service/case/caseservice';
+import TaskService from '../../service/task/taskservice';
+import { assertPlanItem } from '../../test/caseassertions/plan';
+import { assertTask, findTask, verifyTaskInput } from '../../test/caseassertions/task';
+import TestCase from '../../test/testcase';
+import { ServerSideProcessing } from '../../test/time';
 import WorldWideTestTenant from '../worldwidetesttenant';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import { ServerSideProcessing } from '@cafienne/typescript-client/test/time';
-import { assertPlanItem} from '@cafienne/typescript-client/test/caseassertions/plan'
-import { assertTask, verifyTaskInput, findTask } from '@cafienne/typescript-client/test/caseassertions/task'
 import IncidentContent from './incidentmanagementcontent';
-import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
-import { CaseOwner } from '@cafienne/typescript-client/cmmn/team/caseteamuser';
-import CaseTeamUser from "@cafienne/typescript-client/cmmn/team/caseteamuser";
-import MockServer from '@cafienne/typescript-client/mock/mockserver';
-import GetMock from '@cafienne/typescript-client/mock/getmock';
-import TaskState from '@cafienne/typescript-client/cmmn/taskstate';
-import State from '@cafienne/typescript-client/cmmn/state';
 
-const definition = 'IncidentManagementForTraining.xml';
-
+const definition = Definitions.IncidentManagementForTraining;
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const raiser = worldwideTenant.sender;
@@ -60,7 +58,7 @@ export default class TestIncidentManagement extends TestCase {
     async onPrepareTest() {
         await mockServer.start();
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(raiser, definition, tenant);
+        await definition.deploy(raiser, tenant);
     }
 
     async run() {

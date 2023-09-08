@@ -1,10 +1,10 @@
-import User from "@cafienne/typescript-client/user";
-import TenantService from "@cafienne/typescript-client/service/tenant/tenantservice";
-import Tenant from "@cafienne/typescript-client/tenant/tenant";
-import TenantUser, { TenantOwner } from "@cafienne/typescript-client/tenant/tenantuser";
-import TestCase from "@cafienne/typescript-client/test/testcase";
-import Comparison from "@cafienne/typescript-client/test/comparison";
-import PlatformService from "@cafienne/typescript-client/service/platform/platformservice";
+import PlatformService from "../../../service/platform/platformservice";
+import TenantService from "../../../service/tenant/tenantservice";
+import Tenant from "../../../tenant/tenant";
+import TenantUser, { TenantOwner } from "../../../tenant/tenantuser";
+import Comparison from "../../../test/comparison";
+import TestCase from "../../../test/testcase";
+import User from "../../../user";
 
 const platformAdmin = new User('admin');
 

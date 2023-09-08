@@ -1,20 +1,19 @@
 'use strict';
 
-import CaseTeam from "@cafienne/typescript-client/cmmn/team/caseteam";
-import CaseTeamUser, { CaseOwner } from "@cafienne/typescript-client/cmmn/team/caseteamuser";
-import CaseService from "@cafienne/typescript-client/service/case/caseservice";
-import RepositoryService from "@cafienne/typescript-client/service/case/repositoryservice";
-import TaskService from "@cafienne/typescript-client/service/task/taskservice";
-import TestCase from "@cafienne/typescript-client/test/testcase";
-import User from "@cafienne/typescript-client/user";
+import Definitions from "../../../../cmmn/definitions/definitions";
+import CaseTeam from "../../../../cmmn/team/caseteam";
+import CaseTeamUser, { CaseOwner } from "../../../../cmmn/team/caseteamuser";
+import CaseService from "../../../../service/case/caseservice";
+import TaskService from "../../../../service/task/taskservice";
+import TestCase from "../../../../test/testcase";
+import User from "../../../../user";
 import WorldWideTestTenant from "../../../worldwidetesttenant";
 import ClubData from "./clubdata";
 import FiltersData from "./filtersdata";
 import PlayerData from "./playerdata";
 
-const footballStatsDefinition = 'footballstats.xml';
-const footballClubStatsDefinition = 'footballclubstats.xml';
-
+const footballStatsDefinition = Definitions.FootballStats;
+const footballClubStatsDefinition = Definitions.FootballClubStats;
 
 export default class TestFootballBusinessIdentifiers extends TestCase {
     footballTenant = new WorldWideTestTenant(this.tenant);
@@ -29,10 +28,10 @@ export default class TestFootballBusinessIdentifiers extends TestCase {
         await this.footballTenant.create();
 
         // Validate and deploy footballstats model
-        await RepositoryService.validateAndDeploy(this.user1, footballStatsDefinition, this.tenant);
+        await footballStatsDefinition.deploy(this.user1, this.tenant);
 
         // Validate and deploy footballclubstats model
-        await RepositoryService.validateAndDeploy(this.user1, footballClubStatsDefinition, this.tenant);
+        await footballClubStatsDefinition.deploy(this.user1, this.tenant);
     }
 
     async run() {

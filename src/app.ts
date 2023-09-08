@@ -1,17 +1,20 @@
-import CafienneConfig from '@cafienne/typescript-client/config';
-import TestCase from '@cafienne/typescript-client/test/testcase';
 import Config from './config';
 import NextVersion from './nextversion/nextversion';
+import CafienneService from './service/cafienneservice';
+import TestCase from './test/testcase';
 import TestAnonymousStartCase from './tests/api/anonymous/testanonymousstartcase';
 import TestNoAnonymousStartCase from './tests/api/anonymous/testnoanonymousstartcase';
 import TestArchiveCase from './tests/api/archiving/testarchivecase';
+import TestArchiveHelloworld from './tests/api/archiving/testarchivehelloworld';
 import TestDeleteCase from './tests/api/archiving/testdeletecase';
+import TestDeleteHelloworld from './tests/api/archiving/testdeletehelloworld';
 import TestDeleteTenant from './tests/api/archiving/testdeletetenant';
 import TestDeleteTenantWithContent from './tests/api/archiving/testdeletetenantwithcontent';
 import TestFootballBusinessIdentifiers from './tests/api/businessidentifiers/footballbusinessidentifiers/testfootballbusinessidentifiers';
 import TestBusinessIdentifiers from './tests/api/businessidentifiers/testbusinessidentifiers';
 import TestHelloWorldBusinessIdentifiers from './tests/api/businessidentifiers/testhelloworldbusinessidentifiers';
 import TestCaseMigration from './tests/api/case/migration/testcasemigration';
+import TestCaseTeamMigration from './tests/api/case/migration/testcaseteammigration';
 import TestSubCaseMigration from './tests/api/case/migration/testsubcasemigration';
 import TestBootstrapCaseFileEvents from './tests/api/case/testbootstrapcasefileevents';
 import TestDefinitionInStartCase from './tests/api/case/testdefinitioninstartcase';
@@ -25,6 +28,7 @@ import TestTaskBindingRefinement from './tests/api/casefile/testtaskbindingrefin
 import TestTaskCompletion from './tests/api/casefile/testtaskcompletion';
 import TestTaskOutputOperations from './tests/api/casefile/testtaskoutputoperations';
 import TestTimer from './tests/api/caseplan/event/testtimer';
+import TestEntryCriteriaOnRecovery from './tests/api/caseplan/sentry/testentrycriteriaonrecovery';
 import TestEntryCriteriaOnCaseInputParameters from './tests/api/caseplan/stage/testentrycriteriaoncaseinputparameters';
 import TestStage from './tests/api/caseplan/stage/teststage';
 import TestAuthenticationFlow from './tests/api/caseplan/task/testauthenticationflow';
@@ -58,6 +62,8 @@ import TestRepositoryAPI from './tests/api/repository/testrepositoryapi';
 import TestRepeatStage from './tests/api/stage/testrepeatstage';
 import TestArraySubCase from './tests/api/task/case/testarraysubcase';
 import TestSubCase from './tests/api/task/case/testsubcase';
+import TestDynamicForm from './tests/api/task/humantask/testdynamicform';
+import TestFourEyes from './tests/api/task/humantask/testfoureyes';
 import TestTaskAPI from './tests/api/task/humantask/testtaskapi';
 import TestTaskCountAPI from './tests/api/task/humantask/testtaskcountapi';
 import TestTaskFilterAPI from './tests/api/task/humantask/testtaskfilterapi';
@@ -75,12 +81,6 @@ import TestCompatibility from './tests/compatibility/testcompatibility';
 import TestHelloworld from './tests/helloworld/testhelloworld';
 import TestIncidentManagement from './tests/incidentmanagement/incidentmanagement';
 import TestTravelRequest from './tests/travelrequest/testtravelrequest';
-import TestDeleteHelloworld from './tests/api/archiving/testdeletehelloworld';
-import TestArchiveHelloworld from './tests/api/archiving/testarchivehelloworld';
-import TestFourEyes from './tests/api/task/humantask/testfoureyes';
-import TestCaseTeamMigration from './tests/api/case/migration/testcaseteammigration';
-import TestEntryCriteriaOnRecovery from './tests/api/caseplan/sentry/testentrycriteriaonrecovery';
-import TestDynamicForm from './tests/api/task/humantask/testdynamicform';
 
 function findTestsFromCommandLineArguments(): Array<string> {
     const time = process.argv[2];
@@ -119,6 +119,8 @@ class TestResult {
     started: Date = new Date();
     ended: Date = new Date();
     summary: string = '';
+    error: unknown = undefined;
+
     constructor(public test: TestCase) {
         this.name = test.name;
     }
@@ -129,9 +131,21 @@ class TestResult {
         }
         this.ended = new Date();
     }
+    
+    failed(test: TestCase, error: unknown) {
+        this.error = error;
+        if (test.identifiers.length) {
+            this.summary = `  ---  [ ${test.identifiers.join(' | ')} ]` 
+        }
+        this.ended = new Date();
+    }
 
     toString() {
-        return `${this.name} (${(this.ended.getTime() - this.started.getTime())} ms) ${this.summary}`;
+        if (this.error) {
+            return `${this.name} ${this.summary} failed after ${(this.ended.getTime() - this.started.getTime())} ms`;
+        } else {
+            return `${this.name} (${(this.ended.getTime() - this.started.getTime())} ms) ${this.summary}`;
+        }
     }
 }
 
@@ -277,15 +291,21 @@ async function runTests(testDeclarations: Array<any>, onlyDefaults: boolean) {
             result.finished(test);
             results.addTest(result);
         } catch (error) {
+            result.failed(test, error);
             const resultString = results.list.length == 0 ? '' : `  Successful tests:\n${results.toString()}\n`;
-            throw new TestError(error, `\n\nTest ${i + 1} "${test.name}" failed.\n${resultString}\nTest ${i + 1} "${test.name}" failed.\n${error.constructor.name}: ${error.message}\n`);
+            if (error instanceof Error) {
+                throw new TestError(error, `\nTest ${i + 1} "${test.name}" failed.\n${resultString}\nTest ${i + 1} ${result}\n${error.constructor.name}: ${error.message}\n`);    
+            } else if (error) {
+                throw new TestError(error, `\nTest ${i + 1} "${test.name}" failed.\n${resultString}\nTest ${i + 1} ${result}\n${error.constructor.name}: ${error}\n`);    
+            } else {
+                throw new TestError(error, `\nTest ${i + 1} "${test.name}" failed.\n${resultString}\nTest ${i + 1} ${result}\n${error}\n`);                    
+            }
         }
     }
     return results;
 }
 
 function main() {
-    Object.assign(CafienneConfig, Config);
     NextVersion.enable();
 
     const commandLineTestNames = findTestsFromCommandLineArguments();
@@ -299,7 +319,7 @@ function main() {
     runTests(testDeclarations, runDefaultTests).then(results => {
         const endTime = new Date();
         console.log(`\n========= Started ${testDeclarations.length} tests at at ${startTime}\n\n${results.toString()}`);
-        console.log(`========= Completed ${testDeclarations.length} test cases in ${((endTime.getTime() - startTime.getTime()) / 1000)} seconds at ${endTime}`);
+        console.log(`========= Completed ${testDeclarations.length} test cases and ${CafienneService.calls} API calls in ${((endTime.getTime() - startTime.getTime()) / 1000)} seconds at ${endTime}`);
         process.exit(0)
     }).catch(e => {
         console.error(e);
@@ -310,12 +330,16 @@ function main() {
 try {
     main();
 } catch (error) {
-    console.log(error.message);
+    if (error instanceof Error) {
+        console.log(error.message);
+    } else {
+        console.log('Ran into some unknown failure', error);
+    }
     process.exit(-1);
 }
 
 class TestError extends Error {
-    constructor(public error: Error, message: string) {
+    constructor(public error: unknown, message: string) {
         super(message);
     }
 }

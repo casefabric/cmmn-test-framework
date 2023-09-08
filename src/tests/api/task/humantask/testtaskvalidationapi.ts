@@ -1,21 +1,20 @@
 'use strict';
 
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import TaskService from '@cafienne/typescript-client/service/task/taskservice';
-import TestCase from '@cafienne/typescript-client/test/testcase';
+import Definitions from '../../../../cmmn/definitions/definitions';
+import State from '../../../../cmmn/state';
+import GetMock from '../../../../mock/getmock';
+import MockServer from '../../../../mock/mockserver';
+import PostMock from '../../../../mock/postmock';
+import CaseService from '../../../../service/case/caseservice';
+import TaskService from '../../../../service/task/taskservice';
+import { assertPlanItem } from '../../../../test/caseassertions/plan';
+import Comparison from '../../../../test/comparison';
+import TestCase from '../../../../test/testcase';
+import { ServerSideProcessing } from '../../../../test/time';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
-import { ServerSideProcessing } from '@cafienne/typescript-client/test/time';
 import TaskContent from './taskcontent';
-import Comparison from '@cafienne/typescript-client/test/comparison';
-import { assertPlanItem } from '@cafienne/typescript-client/test/caseassertions/plan'
-import MockServer from '@cafienne/typescript-client/mock/mockserver';
-import GetMock from '@cafienne/typescript-client/mock/getmock';
-import PostMock from '@cafienne/typescript-client/mock/postmock';
-import State from '@cafienne/typescript-client/cmmn/state';
 
-const definition = 'taskoutputvalidation.xml';
-
+const definition = Definitions.TaskOutputValidation;
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const pete = worldwideTenant.sender;
@@ -56,7 +55,7 @@ export default class TestTaskValidationAPI extends TestCase {
         console.log("\n\n============Started mock server. Now creating tenant\n\n");
         await worldwideTenant.create();
         // Deploy the case model
-        await RepositoryService.validateAndDeploy(pete, definition, tenant);
+        await definition.deploy(pete, tenant);
     }
 
     async run() {

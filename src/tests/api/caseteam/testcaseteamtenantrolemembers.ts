@@ -1,19 +1,18 @@
 'use strict';
 
-import Task from '@cafienne/typescript-client/cmmn/task';
-import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
-import CaseTeamUser, { CaseOwner } from '@cafienne/typescript-client/cmmn/team/caseteamuser';
-import CaseTeamTenantRole from '@cafienne/typescript-client/cmmn/team/caseteamtenantrole';
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import CaseTeamService from '@cafienne/typescript-client/service/case/caseteamservice';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import TaskService from '@cafienne/typescript-client/service/task/taskservice';
-import TestCase from '@cafienne/typescript-client/test/testcase';
-import User from '@cafienne/typescript-client/user';
+import Definitions from '../../../cmmn/definitions/definitions';
+import Task from '../../../cmmn/task';
+import CaseTeam from '../../../cmmn/team/caseteam';
+import CaseTeamTenantRole from '../../../cmmn/team/caseteamtenantrole';
+import CaseTeamUser, { CaseOwner } from '../../../cmmn/team/caseteamuser';
+import CaseService from '../../../service/case/caseservice';
+import CaseTeamService from '../../../service/case/caseteamservice';
+import TaskService from '../../../service/task/taskservice';
+import TestCase from '../../../test/testcase';
+import User from '../../../user';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 
-const definition = 'caseteam.xml';
-
+const definition = Definitions.CaseTeam;
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const sender = worldwideTenant.sender;
@@ -27,7 +26,7 @@ const participantRole = 'CaseParticipant';
 export default class TestCaseTeamTenantRoleMembers extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(sender, definition, tenant);
+        await definition.deploy(sender, tenant);
     }
 
     async run() {

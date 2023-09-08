@@ -1,15 +1,13 @@
 'use strict';
 
-import CaseFileService from '@cafienne/typescript-client/service/case/casefileservice';
-import CasePlanService from '@cafienne/typescript-client/service/case/caseplanservice';
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import TestCase from '@cafienne/typescript-client/test/testcase';
+import Definitions from '../../../cmmn/definitions/definitions';
+import CaseFileService from '../../../service/case/casefileservice';
+import CasePlanService from '../../../service/case/caseplanservice';
+import CaseService from '../../../service/case/caseservice';
+import TestCase from '../../../test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 
-
-const definition = 'expressions.xml';
-
+const definition = Definitions.Expressions;
 const worldwideTenant = new WorldWideTestTenant();
 const user = worldwideTenant.sender;
 const tenant = worldwideTenant.name;
@@ -17,7 +15,7 @@ const tenant = worldwideTenant.name;
 export default class TestCaseFileExpressions extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(user, definition, tenant);
+        await definition.deploy(user, tenant);
     }
 
     async run() {

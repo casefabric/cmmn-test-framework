@@ -1,38 +1,29 @@
 'use strict';
 
-import { PollUntilSuccess, SomeTime } from '@cafienne/typescript-client';
-import State from '@cafienne/typescript-client/cmmn/state';
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import StorageService from '@cafienne/typescript-client/service/storage/storageservice';
-import CaseHierarchy from '@cafienne/typescript-client/test/casehierarchy';
-import TestCase from '@cafienne/typescript-client/test/testcase';
+import Definitions from '../../../cmmn/definitions/definitions';
+import CaseService from '../../../service/case/caseservice';
+import StorageService from '../../../service/storage/storageservice';
+import CaseHierarchy from '../../../test/casehierarchy';
+import TestCase from '../../../test/testcase';
+import { PollUntilSuccess, SomeTime } from '../../../test/time';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
-const definition = 'helloworld.xml';
-
+const definition = Definitions.HelloWorld;
 
 export default class TestDeleteHelloworld extends TestCase {
   isDefaultTest = false;
 
   async onPrepareTest() {
     await worldwideTenant.create();
-    await RepositoryService.validateAndDeploy(user, definition, tenant);
+    await definition.deploy(user, tenant);
   }
 
   async run() {
 
-    const inputs = {
-      Greeting: {
-        Message: 'Hello there',
-        From: user.id
-      }
-    };
     const startCase = { tenant, definition, debug: true };
-
     const caseInstance = await CaseService.startCase(user, startCase).then(id => CaseService.getCase(user, id));
     this.addIdentifier(caseInstance);
     const caseHierarchy = CaseHierarchy.from(user, caseInstance);

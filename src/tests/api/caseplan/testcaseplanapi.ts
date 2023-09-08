@@ -1,16 +1,15 @@
 'use strict';
 
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import TestCase from '@cafienne/typescript-client/test/testcase';
-
+import Definitions from '../../../cmmn/definitions/definitions';
+import PlanItem from '../../../cmmn/planitem';
+import Transition from '../../../cmmn/transition';
+import CaseHistoryService from '../../../service/case/casehistoryservice';
+import CasePlanService from '../../../service/case/caseplanservice';
+import CaseService from '../../../service/case/caseservice';
+import TestCase from '../../../test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import CasePlanService from '@cafienne/typescript-client/service/case/caseplanservice';
-import PlanItem from '@cafienne/typescript-client/cmmn/planitem';
-import CaseHistoryService from '@cafienne/typescript-client/service/case/casehistoryservice';
-import Transition from '@cafienne/typescript-client/cmmn/transition';
 
-const definition = 'eventlistener.xml';
+const definition = Definitions.EventListener;
 
 const worldwideTenant = new WorldWideTestTenant();
 const user = worldwideTenant.sender;
@@ -19,7 +18,7 @@ const tenant = worldwideTenant.name;
 export default class TestCasePlanAPI extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(user, definition, tenant);
+        await definition.deploy(user, tenant);
     }
 
     async run() {

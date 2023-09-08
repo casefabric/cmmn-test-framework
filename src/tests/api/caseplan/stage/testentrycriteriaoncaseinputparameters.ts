@@ -1,17 +1,16 @@
 'use strict';
 
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import TestCase from '@cafienne/typescript-client/test/testcase';
+import Case from '../../../../cmmn/case';
+import Definitions from '../../../../cmmn/definitions/definitions';
+import CaseTeam from '../../../../cmmn/team/caseteam';
+import CaseTeamUser, { CaseOwner } from "../../../../cmmn/team/caseteamuser";
+import CaseFileService from '../../../../service/case/casefileservice';
+import CaseService from '../../../../service/case/caseservice';
+import RepositoryService from '../../../../service/case/repositoryservice';
+import TestCase from '../../../../test/testcase';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import CaseTeam from '@cafienne/typescript-client/cmmn/team/caseteam';
-import { CaseOwner } from '@cafienne/typescript-client/cmmn/team/caseteamuser';
-import CaseTeamUser from "@cafienne/typescript-client/cmmn/team/caseteamuser";
-import Case from '@cafienne/typescript-client/cmmn/case';
-import CaseFileService from '@cafienne/typescript-client/service/case/casefileservice';
 
-const definition = 'entrycriteriaoncaseinputparameters.xml';
-
+const definition = Definitions.EntryCriteriaOnCaseInputParameters;
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const employee = worldwideTenant.employee;
@@ -21,7 +20,7 @@ const receiver = worldwideTenant.receiver;
 export default class TestEntryCriteriaOnCaseInputParameters extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(sender, definition, tenant);
+        await definition.deploy(sender, tenant);
     }
 
     async run() {

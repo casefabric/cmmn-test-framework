@@ -1,19 +1,18 @@
 'use strict';
 
-import State from '@cafienne/typescript-client/cmmn/state';
-import Transition from '@cafienne/typescript-client/cmmn/transition';
-import CaseFileService from '@cafienne/typescript-client/service/case/casefileservice';
-import CaseMigrationService, { DefinitionMigration } from '@cafienne/typescript-client/service/case/casemigrationservice';
-import CasePlanService from '@cafienne/typescript-client/service/case/caseplanservice';
-import CaseService from '@cafienne/typescript-client/service/case/caseservice';
-import RepositoryService from '@cafienne/typescript-client/service/case/repositoryservice';
-import { assertPlanItem } from '@cafienne/typescript-client/test/caseassertions/plan';
-import TestCase from '@cafienne/typescript-client/test/testcase';
+import Definitions from '../../../../../cmmn/definitions/definitions';
+import State from '../../../../../cmmn/state';
+import Transition from '../../../../../cmmn/transition';
+import CaseFileService from '../../../../../service/case/casefileservice';
+import CaseMigrationService, { DefinitionMigration } from '../../../../../service/case/casemigrationservice';
+import CasePlanService from '../../../../../service/case/caseplanservice';
+import CaseService from '../../../../../service/case/caseservice';
+import { assertPlanItem } from '../../../../../test/caseassertions/plan';
+import TestCase from '../../../../../test/testcase';
 import WorldWideTestTenant from '../../../../worldwidetesttenant';
 
-const definition = 'migration/getlist.xml';
-const newDefinition = 'migration/getlist_v1.xml';
-
+const definition = Definitions.Migration_GetList;
+const newDefinition = Definitions.Migration_GetList_v1;
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
@@ -22,8 +21,8 @@ const user = worldwideTenant.sender;
 export default class TestProcessTaskMigration extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
-        await RepositoryService.validateAndDeploy(user, definition, tenant);
-        await RepositoryService.validateAndDeploy(user, newDefinition, tenant);
+        await definition.deploy(user, tenant);
+        await newDefinition.deploy(user, tenant);
     }
 
     async run() {
