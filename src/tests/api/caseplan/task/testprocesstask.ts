@@ -3,12 +3,10 @@
 import Definitions from '../../../../cmmn/definitions/definitions';
 import State from '../../../../cmmn/state';
 import Transition from '../../../../cmmn/transition';
-import MockServer from '../../../../mock/mockserver';
-import PostMock from '../../../../mock/postmock';
+import DynamicResponseMock from '../../../../nextversion/dynamicresponsemock';
 import CaseFileService from '../../../../service/case/casefileservice';
 import CasePlanService from '../../../../service/case/caseplanservice';
 import CaseService from '../../../../service/case/caseservice';
-import RepositoryService from '../../../../service/case/repositoryservice';
 import assertCaseFileContent from '../../../../test/caseassertions/file';
 import { assertPlanItem } from '../../../../test/caseassertions/plan';
 import TestCase from '../../../../test/testcase';
@@ -20,16 +18,7 @@ const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
 
 const mockPort = 18083;
-const mock = new MockServer(mockPort);
-new PostMock(mock, '/get/code/:code', call => {
-    const code = Number(call.req.params['code']);
-    call.onContent((body: string) => {
-        console.log(`Returning ${code} with ${body}`);
-        call.res.status(code).write(body);
-        call.res.end();
-    })
-    // call.fail(400, 'Bullls')
-})
+const mock = new DynamicResponseMock(mockPort);
 
 export default class TestProcessTask extends TestCase {
     async onPrepareTest() {
