@@ -50,4 +50,38 @@ export default class Case extends CMMNBaseClass {
     toString() {
         return this.id;
     }
+
+    printPlan(): string {
+        class Wrapper {
+            stage?: Wrapper;
+            children: Array<Wrapper> = [];
+            constructor(public item: PlanItem) { }
+            print(indent = ''): string {
+                const item = this.item;
+                const string = `${indent}- ${item.type}[${item.name}.${item.index}] | state = ${item.currentState} | transition = ${item.transition} | id = ${item.id}\n`;
+                return string + this.children.map(child => child.print(indent + ' ')).join('');
+            }
+        }
+        const stages = this.planitems.filter(item => item.type === 'Stage' || item.type === 'CasePlan').map(item => new Wrapper(item));
+        const wrappers = this.planitems.filter(item => item.type !== 'Stage' && item.type !== 'CasePlan').map(item => {
+            const wrapper = new Wrapper(item);
+            if (item.stageId) {
+                wrapper.stage = stages.find(stage => stage.item.id === item.stageId);
+                wrapper.stage?.children.push(wrapper);
+            }
+            return wrapper;
+        });
+        stages.forEach(wrapper => {
+            if (wrapper.item.type === 'Stage') {
+                wrapper.stage = stages.find(stage => stage.item.id === wrapper.item.stageId);
+                wrapper.stage?.children.push(wrapper);
+            }
+        });
+        const cp = stages.find(wrapper => wrapper.item.type === 'CasePlan');
+        if (cp) {
+            return cp.print();
+        } else {
+            return 'Cannot print the plan items of the case as it does not contain a case plan';
+        }
+    }
 }
