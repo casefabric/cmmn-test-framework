@@ -1,5 +1,4 @@
 import Config from './config';
-import NextVersion from './nextversion/nextversion';
 import CafienneService from './service/cafienneservice';
 import TestCase from './test/testcase';
 import TestAnonymousStartCase from './tests/api/anonymous/testanonymousstartcase';
@@ -306,8 +305,6 @@ async function runTests(testDeclarations: Array<any>, onlyDefaults: boolean) {
 }
 
 function main() {
-    NextVersion.enable();
-
     const commandLineTestNames = findTestsFromCommandLineArguments();
     const commandLineTestClasses = commandLineTestNames.map(TestClasses.getTestClass)
     const runDefaultTests = commandLineTestClasses.length > 0 ? false : true;
