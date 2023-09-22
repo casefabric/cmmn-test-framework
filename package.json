@@ -5,13 +5,13 @@
   "main": "index.js",
   "scripts": {
     "test": "node ./dist/app.js",
-    "build": "tsc & shx cp package.json ./dist & shx cp README.md ./dist",
+    "build": "tsc",
     "clean": "rm -rf ./dist",
     "dev": "ts-node-dev --transpile-only ./src/app.ts",
-    "publishLocal": "npm run clean & npm run build & cd ./dist & npm pack",
-    "publishRemote": "npm run clean & npm run build & cd ./dist & npm publish --access public",
-    "prod": "npm run build & node ./dist/app.js",
-    "prepare": "npm run build"
+    "prepare-publish": "npm run clean & npm run build & shx cp package.json ./dist & shx cp README.md ./dist",
+    "publishLocal": "npm run prepare-publish & cd ./dist & npm pack",
+    "publishRemote": "npm run prepare-publish & cd ./dist & npm publish --access public",
+    "prod": "npm run build & node ./dist/app.js"
   },
   "author": "",
   "license": "MPL-2.0",
