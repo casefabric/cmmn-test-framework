@@ -1,4 +1,9 @@
 <case id="caseteam.case" name="caseteam" expressionLanguage="spel" guid="_Crena">
+    <documentation textFormat="text/plain">
+        <text>
+            <![CDATA[Show authorization structure]]>
+        </text>
+    </documentation>
     <caseFileModel>
         <caseFileItem id="_jAVt1_3" name="Root" multiplicity="ExactlyOne" definitionRef="root.cfid"/>
     </caseFileModel>

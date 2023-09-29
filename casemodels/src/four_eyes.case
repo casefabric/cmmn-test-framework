@@ -1,4 +1,9 @@
 <case id="four_eyes.case" name="four_eyes" expressionLanguage="spel" guid="_mlHqQ">
+    <documentation textFormat="text/plain">
+        <text>
+            <![CDATA[Test 4-eyes & rendez-vous principles]]>
+        </text>
+    </documentation>
     <caseFileModel>
         <caseFileItem id="_mlHqQ_11" name="file" multiplicity="ExactlyOne" definitionRef="unspecified.cfid"/>
     </caseFileModel>
