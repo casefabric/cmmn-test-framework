@@ -30,6 +30,7 @@ import TestEntryCriteriaOnRecovery from '../tests/api/caseplan/sentry/testentryc
 import TestClassicFaultHandling from '../tests/api/caseplan/stage/testclassicfaulthandling';
 import TestEntryCriteriaOnCaseInputParameters from '../tests/api/caseplan/stage/testentrycriteriaoncaseinputparameters';
 import TestFaultBubbling from '../tests/api/caseplan/stage/testfaultbubbling';
+import TestModelBasedReactivate from '../tests/api/caseplan/stage/testmodelbasedreactivate';
 import TestStage from '../tests/api/caseplan/stage/teststage';
 import TestAuthenticationFlow from '../tests/api/caseplan/task/testauthenticationflow';
 import TestProcessTask from '../tests/api/caseplan/task/testprocesstask';
@@ -179,6 +180,7 @@ const AllTestCases = new TestClasses([
     , TestStage
     , TestFaultBubbling
     , TestClassicFaultHandling
+    , TestModelBasedReactivate
     , TestTimer
     , TestUsersCaseAPI
     , TestDiscretionaryItems
