@@ -11,12 +11,12 @@ import TaskService from '../../../service/task/taskservice';
 import { assertTask, assertTaskCount, findTask } from '../../../test/caseassertions/task';
 import { assertCaseTeamTenantRole, assertCaseTeamUser } from '../../../test/caseassertions/team';
 import TestCase from '../../../test/testcase';
+import Util from '../../../test/util';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 
 const definition = Definitions.CaseTeam;
-const tenantName = Math.random().toString(36).substring(7);
-const worldwideTenant = new WorldWideTestTenant(tenantName);
-const tenant = worldwideTenant.name;
+const tenant = Util.generateId();
+const worldwideTenant = new WorldWideTestTenant(tenant);
 const sender = worldwideTenant.sender;
 const receiver = worldwideTenant.receiver;
 const employee = worldwideTenant.employee;

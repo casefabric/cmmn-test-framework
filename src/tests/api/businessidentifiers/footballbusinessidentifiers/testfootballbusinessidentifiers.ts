@@ -6,6 +6,7 @@ import CaseTeamUser, { CaseOwner } from "../../../../cmmn/team/caseteamuser";
 import CaseService from "../../../../service/case/caseservice";
 import TaskService from "../../../../service/task/taskservice";
 import TestCase from "../../../../test/testcase";
+import Util from "../../../../test/util";
 import User from "../../../../user";
 import WorldWideTestTenant from "../../../worldwidetesttenant";
 import ClubData from "./clubdata";
@@ -20,7 +21,7 @@ export default class TestFootballBusinessIdentifiers extends TestCase {
     user1 = this.footballTenant.sender;
     user2 = this.footballTenant.receiver;
 
-    constructor(public tenant: string = 'football' + Math.random().toString(36).substring(2, 15)) {
+    constructor(public tenant: string = Util.generateId('football')) {
         super();
     }
 
