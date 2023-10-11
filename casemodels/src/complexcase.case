@@ -37,5 +37,8 @@
         <caseTask id="ct__MuzRn_2" name="HelloWorld the second" isBlocking="true" caseRef="helloworld.case"/>
         <userEvent id="ue__MuzRn_0" name="Trigger Second Hello World"/>
     </casePlanModel>
+    <caseRoles>
+        <role id="_MuzRn_11" name="role"/>
+    </caseRoles>
     <input id="_MuzRn_7" name="Greeting" bindingRef="_MuzRn_10"/>
 </case>

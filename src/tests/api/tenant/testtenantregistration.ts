@@ -4,13 +4,12 @@ import Tenant from "../../../tenant/tenant";
 import TenantUser, { TenantOwner } from "../../../tenant/tenantuser";
 import Comparison from "../../../test/comparison";
 import TestCase from "../../../test/testcase";
+import Util from "../../../test/util";
 import User from "../../../user";
 
 const platformAdmin = new User('admin');
 
-const guid = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-const tenantName = 'test_tenant' + guid;
-
+const tenantName = Util.generateId('test_tenant');
 const tenantOwner1 = new TenantOwner('tenant-owner1');
 const tenantOwner2 = new TenantOwner('tenant-owner2');
 const tenantOwner3 = new TenantOwner('tenant-owner3');

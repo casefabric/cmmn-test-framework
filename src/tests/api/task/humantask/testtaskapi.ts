@@ -7,14 +7,13 @@ import CaseService from '../../../../service/case/caseservice';
 import CaseTeamService from '../../../../service/case/caseteamservice';
 import TaskService from '../../../../service/task/taskservice';
 import TestCase from '../../../../test/testcase';
+import Util from '../../../../test/util';
 import User from '../../../../user';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
 
 const definition = Definitions.HelloWorld;
-const guid = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-const tenantName = 'temp_task_tenant' + guid;
-const worldwideTenant = new WorldWideTestTenant(tenantName);
-const tenant = worldwideTenant.name;
+const tenant = Util.generateId('temp_task_tenant');
+const worldwideTenant = new WorldWideTestTenant(tenant);
 const sender = worldwideTenant.sender;
 const receiver = worldwideTenant.receiver;
 

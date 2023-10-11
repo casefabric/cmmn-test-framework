@@ -10,10 +10,11 @@ import CafienneResponse from '../../../service/response';
 import TenantService from '../../../service/tenant/tenantservice';
 import TestCase from '../../../test/testcase';
 import { SomeTime } from '../../../test/time';
+import Util from '../../../test/util';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 
 const definition = Definitions.CaseTeam;
-const tenant = Math.random().toString(36).substring(7);
+const tenant = Util.generateId();
 const worldwideTenant = new WorldWideTestTenant(tenant);
 const user = worldwideTenant.sender;
 

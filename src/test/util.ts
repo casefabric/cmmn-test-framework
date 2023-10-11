@@ -11,11 +11,32 @@ export default class Util {
     }
 
     /**
-     * Generate a random id
+     * Generate a random string
      * @returns 
      */
-     static get randomString(): string {
-        return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    static get randomString(): string {
+        // toString(36) generates numbers [0...9] and letters [a...z]
+        // Substring(2, 14) removes "0." prefix at the beginning, resulting in a string of length 11.
+        return Math.random().toString(36).substring(2, 14) + Math.random().toString(36).substring(2, 14);
+    }
+
+    /**
+     * Generate an id with specified pre- and postfix and inbetween a guid of the specified length, defaulting to 11
+     * Note: there is no limit to length, it keeps generating strings until length is reached...
+     */
+    static generateId(prefix: string = '', length: number = 11, postfix: string = ''): string {
+        let id = Util.randomString;
+        while (id.length < length) id = id + Util.randomString;
+        return prefix + id.substring(0, length) + postfix;
+    }
+
+    /**
+     * Generate amount of ids with the prefix, length and postfix.
+     */
+    static generateIds(amount: number, prefix: string = '', length: number = 11, postfix: string = ''): Array<string> {
+        const ids: Array<string> = [];
+        while (amount--) ids.push(Util.generateId(prefix, length, postfix));
+        return ids;
     }
 
     /**

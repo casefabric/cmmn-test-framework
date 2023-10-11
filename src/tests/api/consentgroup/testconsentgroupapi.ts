@@ -4,6 +4,7 @@ import ConsentGroupService from "../../../service/consentgroup/consentgroupservi
 import TestCase from "../../../test/testcase";
 import { SomeTime } from "../../../test/time";
 import assertSameGroup, { assertMemberHasNoRoles, assertMemberRole } from "../../../test/userassertions/consentgroup";
+import Util from "../../../test/util";
 import WorldWideTestTenant from "../../worldwidetesttenant";
 
 const worldwideTenant = new WorldWideTestTenant();
@@ -12,8 +13,7 @@ const tenantAndGroupOwner = worldwideTenant.sender;
 const tenantOwner = worldwideTenant.receiver;
 const tenantUser = worldwideTenant.employee;
 
-const guid = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-const groupId = `consent-group-${guid}`;
+const groupId = Util.generateId('consent-group-');
 
 const owner = new ConsentGroupOwner(tenantAndGroupOwner.id, ['OwnerRole', 'GroupRole']); // Sender
 const member = new ConsentGroupMember(tenantUser.id, []); // Employee
@@ -37,7 +37,7 @@ export default class TestConsentGroupAPI extends TestCase {
 
     async tryCreateGroup() {
         // Check that it is not possible to add a member if the group does not yet exist
-        await ConsentGroupService.setGroupMember(tenantOwner, `not-existing-group-${guid}`, member, 404);
+        await ConsentGroupService.setGroupMember(tenantOwner, Util.generateId('not-existing-group-'), member, 404);
         // Check that a consent group must have at least one member
         await ConsentGroupService.createGroup(tenantOwner, tenant, group, 400);
         // Add a member

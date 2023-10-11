@@ -4,10 +4,11 @@ import logger from '../../../logger';
 import CaseIdentifierService from '../../../service/identifier/caseidentifierservice';
 import IdentifierFilter from '../../../service/identifier/identifierfilter';
 import TestCase from '../../../test/testcase';
+import Util from '../../../test/util';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 import TestFootballBusinessIdentifiers from './footballbusinessidentifiers/testfootballbusinessidentifiers';
 
-const worldwideTenant = new WorldWideTestTenant('inactive-tenant-' + Math.random().toString(36).substring(2, 15));
+const worldwideTenant = new WorldWideTestTenant(Util.generateId('inactive-tenant-'));
 const user = worldwideTenant.sender;
 
 export default class TestBusinessIdentifiers extends TestCase {

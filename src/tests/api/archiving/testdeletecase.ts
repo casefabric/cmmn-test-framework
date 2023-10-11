@@ -4,7 +4,7 @@ import Definitions from '../../../cmmn/definitions/definitions';
 import State from '../../../cmmn/state';
 import CaseService from '../../../service/case/caseservice';
 import StorageService from '../../../service/storage/storageservice';
-import CaseHierarchy from '../../../test/casehierarchy';
+import CaseEvents from '../../../service/storage/caseevents';
 import TestCase from '../../../test/testcase';
 import { PollUntilSuccess, SomeTime } from '../../../test/time';
 import WorldWideTestTenant from '../../worldwidetesttenant';
@@ -34,7 +34,7 @@ export default class TestDeleteCase extends TestCase {
 
     const caseInstance = await CaseService.startCase(user, startCase).then(id => CaseService.getCase(user, id));
     this.addIdentifier(caseInstance);
-    const caseHierarchy = CaseHierarchy.from(user, caseInstance);
+    const caseHierarchy = CaseEvents.from(user, caseInstance);
     await caseHierarchy.load();
 
     // The process task deep down in complexcase needs time to fail. We should await that.
