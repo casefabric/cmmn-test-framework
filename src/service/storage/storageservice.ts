@@ -2,6 +2,7 @@ import Case from "../../cmmn/case";
 import Config from "../../config";
 import logger from "../../logger";
 import Tenant from "../../tenant/tenant";
+import WorldWideTestTenant from "../../tests/worldwidetesttenant";
 import User from "../../user";
 import CafienneService from "../cafienneservice";
 import { checkResponse } from "../response";
@@ -55,6 +56,9 @@ export default class StorageService {
      static async deleteTenant(user: User, tenant: Tenant | string, expectedStatusCode: number = 202, errorMsg = `DeleteTenant is not expected to succeed for user ${user} on tenant ${tenant}`) {
         if (Config.PlatformService.log) logger.debug(`Deleting Tenant ${tenant}`);
         const response = await CafienneService.delete(`/storage/tenant/${tenant}`, user);
+        if (response.ok) {
+            WorldWideTestTenant.reset(tenant);
+        }
         return checkResponse(response, errorMsg, expectedStatusCode);
     }
 

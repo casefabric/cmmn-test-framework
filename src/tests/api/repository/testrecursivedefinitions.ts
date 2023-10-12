@@ -4,13 +4,13 @@ import Comparison from "../../../test/comparison";
 import TestCase from "../../../test/testcase";
 import WorldWideTestTenant from "../../worldwidetesttenant";
 
-const wwtt = new WorldWideTestTenant('For-repository-testing');
-const tenant = wwtt.name;
-const tenantOwner = wwtt.sender;
+const worldwideTenant = new WorldWideTestTenant('For-repository-testing');
+const tenant = worldwideTenant.name;
+const tenantOwner = worldwideTenant.sender;
 
 export default class TestRecursiveDefinitions extends TestCase {
     async onPrepareTest() {
-        await wwtt.create();
+        await worldwideTenant.create();
     }
 
     async run() {

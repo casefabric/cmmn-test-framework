@@ -22,8 +22,8 @@ import Util from '../../../test/util';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 
 const tenant = Util.generateId('TestTenantWithContent_');
-const wrapper = new WorldWideTestTenant(tenant);
-const user = wrapper.sender;
+const worldwideTenant = new WorldWideTestTenant(tenant);
+const user = worldwideTenant.sender;
 const definition = Definitions.ComplexCase;
 
 export default class TestDeleteTenantWithContent extends TestCase {
@@ -38,7 +38,7 @@ export default class TestDeleteTenantWithContent extends TestCase {
   private groupTemplate = new ConsentGroup([this.groupOwner]);
 
   async onPrepareTest() {
-    await wrapper.create();
+    await worldwideTenant.create();
     await definition.deploy(user, tenant);
     this.addIdentifier(tenant);
   }

@@ -11,11 +11,11 @@ export default class TestDeleteTenant extends TestCase {
 
   async run() {
     const tenant = "abcde";
-    const wrapper = new WorldWideTestTenant(tenant);
-    const user = wrapper.sender;
+    const worldwideTenant = new WorldWideTestTenant(tenant);
+    const user = worldwideTenant.sender;
 
     console.log(`Creating tenant ${tenant}`);
-    await wrapper.create();
+    await worldwideTenant.create();
     this.addIdentifier(tenant);
     await TenantService.getTenantOwners(user, tenant).then(owners => console.log(`Found ${owners.length} tenant owners`));
 
@@ -35,7 +35,7 @@ export default class TestDeleteTenant extends TestCase {
     await TenantService.getTenantOwners(user, tenant, 404, 'It should not be possible to retrieve tenant owners when the tenant is deleted');
 
     await SomeTime(1000, `Trying to create the same tenant "${tenant}" again `);
-    await wrapper.create();
+    await worldwideTenant.create();
     await TenantService.getTenantOwners(user, tenant).then(owners => console.log(`Found ${owners.length} tenant owners`));
 
     console.log(`>>>>>>>> DELETING TENANT ${tenant} AGAIN`);
