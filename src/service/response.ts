@@ -1,4 +1,6 @@
 import { DOMParser } from 'xmldom';
+import AsyncError from '../infra/asyncerror';
+import Trace from '../infra/trace';
 
 export default class CafienneResponse {
     private json_prop?: any;
@@ -97,7 +99,7 @@ export default class CafienneResponse {
  * @param errorMsg 
  * @param expectedStatusCode 
  */
-export async function checkResponse(response: CafienneResponse, errorMsg: string, expectedStatusCode: number): Promise<CafienneResponse> {
+export async function checkResponse(response: CafienneResponse, errorMsg: string, expectedStatusCode: number, trace: Trace = new Trace()): Promise<CafienneResponse> {
     if (response.status !== expectedStatusCode) {
         const responseText = await response.text();
         if (expectedStatusCode >= 200 && expectedStatusCode < 300) {
@@ -108,7 +110,7 @@ export async function checkResponse(response: CafienneResponse, errorMsg: string
         if (!errorMsg) {
             errorMsg = `Expected status ${expectedStatusCode} instead of ${response.status} ${response.statusText}: ${responseText}`;
         }
-        throw new Error(errorMsg);
+        throw new AsyncError(trace, errorMsg);
     }
     return response;
 }
@@ -120,8 +122,8 @@ export async function checkResponse(response: CafienneResponse, errorMsg: string
  * @param errorMsg 
  * @param expectedStatusCode 
  */
-export async function checkJSONResponse(response: CafienneResponse, errorMsg: string = '', expectedStatusCode: number, returnType?: Function | Array<Function>): Promise<any> {
-    await checkResponse(response, errorMsg, expectedStatusCode);
+export async function checkJSONResponse(response: CafienneResponse, errorMsg: string = '', expectedStatusCode: number, returnType?: Function | Array<Function>, trace: Trace = new Trace()): Promise<any> {
+    await checkResponse(response, errorMsg, expectedStatusCode, trace);
     if (response.ok) {
         const json = await response.json();
         if (returnType) {
@@ -132,7 +134,7 @@ export async function checkJSONResponse(response: CafienneResponse, errorMsg: st
                     if (! errorMsg) {
                         errorMsg = 'Return type must have at least 1 element';
                     }
-                    throw new Error(errorMsg);
+                    throw new AsyncError(trace, errorMsg);
                 }
                 const constructorCall = returnType[0] as any;
                 if (json instanceof Array) {
@@ -142,7 +144,7 @@ export async function checkJSONResponse(response: CafienneResponse, errorMsg: st
                     if (! errorMsg) {
                         errorMsg = `Expected a json array with objects of type ${constructorCall.name}, but the response was not an array: ${JSON.stringify(json, undefined, 2)}`;
                     }
-                    throw new Error(errorMsg);
+                    throw new AsyncError(trace, errorMsg);
                 }
             } else if (returnType !== undefined) {
                 const constructorCall = returnType as any;
