@@ -140,11 +140,13 @@ export default class TestDeleteTenantWithContent extends TestCase {
       const caseTeam = await CaseTeamService.getCaseTeam(user, caseId);
       const groupsInCase = caseTeam.groups.map(group => group.groupId);
       await Promise.all(groupsInCase.map(async groupId => await CaseTeamService.removeGroup(user, caseId, groupId)));
-      await CaseService.getCase(user, caseId).then(caseInstance => {
-        if (caseInstance.team.groups.length > 0) {
-          throw new Error(`Groups are expected to vanish from the team in case ${caseId}`)
-        }
-      })
+      await PollUntilSuccess(async () => {
+        await CaseService.getCase(user, caseId).then(caseInstance => {
+          if (caseInstance.team.groups.length > 0) {
+            throw new Error(`Groups are expected to vanish from the team in case ${caseId}`)
+          }
+        })  
+      });
     }
 
     await Promise.all(this.otherCases.map(async caseId => await groupRemover(caseId)));
