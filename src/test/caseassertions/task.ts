@@ -1,11 +1,14 @@
-import Config from '../../config';
 import Task from '../../cmmn/task';
+import TaskState from '../../cmmn/taskstate';
+import Config from '../../config';
+import AsyncError from '../../infra/asyncerror';
+import StackTraceError from '../../infra/stacktraceerror';
+import Trace from '../../infra/trace';
 import logger from '../../logger';
 import TaskService from '../../service/task/taskservice';
 import User from '../../user';
 import Comparison from '../comparison';
 import { PollUntilSuccess } from '../time';
-import TaskState from '../../cmmn/taskstate';
 
 
 
@@ -18,23 +21,23 @@ import TaskState from '../../cmmn/taskstate';
  * @param expectedAssignee 
  * @param expectedOwner 
  */
-export async function assertTask(user: User, task: Task | string, action: string, expectedState: TaskState, expectedAssignee?: User, expectedOwner?: User, expectedLastModifiedBy?: User): Promise<Task> {
+export async function assertTask(user: User, task: Task | string, action: string, expectedState: TaskState, expectedAssignee?: User, expectedOwner?: User, expectedLastModifiedBy?: User, trace: Trace = new Trace()): Promise<Task> {
     return await PollUntilSuccess(async function() {
          return await TaskService.getTask(user, task).then(task => {
             if (Config.TestCase.log) {
                 logger.info(`Task after ${action}: state=${task.taskState}, assignee='${task.assignee}', owner='${task.owner}', modifiedBy='${task.modifiedBy}' `);
             }
             if (! expectedState.is(task.taskState)) {
-                throw new Error(`Task ${task.taskName} is not in state '${expectedState}' but in state '${task.taskState}'`);
+                throw new AsyncError(trace, `Task ${task.taskName} is not in state '${expectedState}' but in state '${task.taskState}'`);
             }
             if (expectedAssignee && task.assignee !== expectedAssignee.id) {
-                throw new Error(`Task ${task.taskName} is not assigned to '${expectedAssignee}' but to user '${task.assignee}'`);
+                throw new AsyncError(trace, `Task ${task.taskName} is not assigned to '${expectedAssignee}' but to user '${task.assignee}'`);
             }
             if (expectedOwner && task.owner !== expectedOwner.id) {
-                throw new Error(`Task ${task.taskName} is not owned by '${expectedOwner}' but by '${task.owner}'`);
+                throw new AsyncError(trace, `Task ${task.taskName} is not owned by '${expectedOwner}' but by '${task.owner}'`);
             }
             if (expectedLastModifiedBy && task.modifiedBy !== expectedLastModifiedBy.id) {
-                throw new Error(`Task ${task.taskName} is not last modified by '${expectedLastModifiedBy}' but by '${task.modifiedBy}'`);
+                throw new AsyncError(trace, `Task ${task.taskName} is not last modified by '${expectedLastModifiedBy}' but by '${task.modifiedBy}'`);
             }
             return task;
         });
@@ -48,7 +51,7 @@ export async function assertTask(user: User, task: Task | string, action: string
  */
 export function verifyTaskInput(task: Task, taskInput: any) {
     if (!Comparison.sameJSON(task.input, taskInput)) {
-        throw new Error(`Input for task ${task.taskName} is not expected;\nFound:    ${JSON.stringify(task.input)}\nExpected: ${JSON.stringify(taskInput)}`);
+        throw new StackTraceError(`Input for task ${task.taskName} is not expected;\nFound:    ${JSON.stringify(task.input)}\nExpected: ${JSON.stringify(taskInput)}`);
     }
 }
 
@@ -61,7 +64,7 @@ export function verifyTaskInput(task: Task, taskInput: any) {
 export function findTask(tasks: Task[], taskName: string): Task {
     const task = tasks.find(task => task.taskName === taskName);
     if (!task) {
-        throw new Error(`Cannot find task ${taskName}`);
+        throw new StackTraceError(`Cannot find task ${taskName}`);
     }
     return task;
 }
@@ -75,6 +78,6 @@ export function findTask(tasks: Task[], taskName: string): Task {
 export function assertTaskCount(tasks: Task[], state: string, expectedCount: Number) {
     const actualCount = tasks.filter(t => t.taskState === state).length
     if (actualCount != expectedCount) {
-        throw new Error('Number of ' + state + ' tasks expected to be ' + expectedCount + '; but found ' + actualCount)
+        throw new StackTraceError('Number of ' + state + ' tasks expected to be ' + expectedCount + '; but found ' + actualCount)
     }
 }
