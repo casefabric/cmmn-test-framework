@@ -5,6 +5,7 @@ import { checkJSONResponse, checkResponse } from "../response";
 import PlanItem from "../../cmmn/planitem";
 import CMMNDocumentation from "../../cmmn/cmmndocumentation";
 import Transition from "../../cmmn/transition";
+import Trace from "../../infra/trace";
 
 export default class CasePlanService {
     /**
@@ -12,9 +13,9 @@ export default class CasePlanService {
      * @param Case 
      * @param user 
      */
-    static async getPlanItems(user: User, caseId: Case | string, expectedStatusCode: number = 200, msg = `GetPlanItems is not expected to succeed for user ${user} in case ${caseId}`): Promise<Array<PlanItem>> {
+    static async getPlanItems(user: User, caseId: Case | string, expectedStatusCode: number = 200, msg = `GetPlanItems is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()): Promise<Array<PlanItem>> {
         const response = await CafienneService.get(`/cases/${caseId}/planitems`, user);
-        return checkJSONResponse(response, msg, expectedStatusCode, [PlanItem]);
+        return checkJSONResponse(response, msg, expectedStatusCode, [PlanItem], trace);
     }
 
     /**
@@ -23,9 +24,9 @@ export default class CasePlanService {
      * @param user 
      * @param planItemId
      */
-    static async getPlanItem(user: User, caseId: Case | string, planItemId: string, expectedStatusCode: number = 200, msg = `GetPlanItem is not expected to succeed for user ${user} in case ${caseId}`): Promise<PlanItem> {
+    static async getPlanItem(user: User, caseId: Case | string, planItemId: string, expectedStatusCode: number = 200, msg = `GetPlanItem is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()): Promise<PlanItem> {
         const response = await CafienneService.get(`/cases/${caseId}/planitems/${planItemId}`, user);
-        return checkJSONResponse(response, msg, expectedStatusCode, PlanItem);
+        return checkJSONResponse(response, msg, expectedStatusCode, PlanItem, trace);
     }
 
     /**
@@ -34,9 +35,9 @@ export default class CasePlanService {
      * @param user 
      * @param planItemId
      */
-    static async getPlanItemDocumentation(user: User, caseId: Case | string, planItemId: string, expectedStatusCode: number = 200, msg = `GetPlanItem is not expected to succeed for user ${user} in case ${caseId}`): Promise<CMMNDocumentation> {
+    static async getPlanItemDocumentation(user: User, caseId: Case | string, planItemId: string, expectedStatusCode: number = 200, msg = `GetPlanItem is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()): Promise<CMMNDocumentation> {
         const response = await CafienneService.get(`/cases/${caseId}/documentation/planitems/${planItemId}`, user);
-        return checkJSONResponse(response, msg, expectedStatusCode, CMMNDocumentation);
+        return checkJSONResponse(response, msg, expectedStatusCode, CMMNDocumentation, trace);
     }
 
     /**
@@ -45,9 +46,9 @@ export default class CasePlanService {
      * @param user 
      * @param planItemId
      */
-    static async makePlanItemTransition(user: User, caseId: Case | string, planItemId: string, transition: Transition, expectedStatusCode: number = 200, msg = `MakePlanItemTransition is not expected to succeed for user ${user} in case ${caseId}`) {
+    static async makePlanItemTransition(user: User, caseId: Case | string, planItemId: string, transition: Transition, expectedStatusCode: number = 200, msg = `MakePlanItemTransition is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()) {
         const response = await CafienneService.post(`/cases/${caseId}/planitems/${planItemId}/${transition}`, user);
-        return checkResponse(response, msg, expectedStatusCode);
+        return checkResponse(response, msg, expectedStatusCode, trace);
     }
 
     /**
@@ -56,8 +57,8 @@ export default class CasePlanService {
      * @param user 
      * @param eventName
      */
-    static async raiseEvent(user: User, caseId: Case | string, eventName: string, expectedStatusCode: number = 200, msg = `RaiseEvent is not expected to succeed for user ${user} in case ${caseId} on event ${eventName}`) {
+    static async raiseEvent(user: User, caseId: Case | string, eventName: string, expectedStatusCode: number = 200, msg = `RaiseEvent is not expected to succeed for user ${user} in case ${caseId} on event ${eventName}`, trace: Trace = new Trace()) {
         const response = await CafienneService.post(`/cases/${caseId}/planitems/${eventName}/Occur`, user);
-        return checkResponse(response, msg, expectedStatusCode);
+        return checkResponse(response, msg, expectedStatusCode, trace);
     }
 }

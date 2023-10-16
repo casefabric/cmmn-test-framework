@@ -1,5 +1,7 @@
 import fetch from 'isomorphic-fetch';
 import Config from '../../config';
+import AsyncError from '../../infra/asyncerror';
+import Trace from '../../infra/trace';
 import logger from '../../logger';
 import User from '../../user';
 
@@ -11,7 +13,7 @@ export default class TokenService {
      * @param issuedAt
      * @param expiresAt 
      */
-    static async getToken(user: User, issuer:string = Config.TokenService.issuer, issuedAt: Date = new Date(), expiresAt?: Date): Promise<string> {
+    static async getToken(user: User, issuer:string = Config.TokenService.issuer, issuedAt: Date = new Date(), expiresAt?: Date, trace: Trace = new Trace()): Promise<string> {
         if (! expiresAt) {
             expiresAt = new Date();
             expiresAt.setDate(expiresAt.getDate() + 2);
@@ -23,10 +25,10 @@ export default class TokenService {
 
         const claims = { iss, sub, iat, exp };
 
-        return this.fetchToken(claims);
+        return this.fetchToken(claims, trace);
     }
 
-    static async fetchToken(claims: object) {
+    static async fetchToken(claims: object, trace: Trace = new Trace()) {
         const object = {
             method: 'POST',
             body: JSON.stringify(claims)
@@ -38,7 +40,7 @@ export default class TokenService {
         const response = await fetch(Config.TokenService.url, object);
         const token = await response.text();
         if (!response.ok) {
-            throw new Error('Failure in fetching token: ' + response.status + ' ' + response.statusText + '\n' + token);
+            throw new AsyncError(trace, 'Failure in fetching token: ' + response.status + ' ' + response.statusText + '\n' + token);
         }
         return token;
     }

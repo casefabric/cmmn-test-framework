@@ -1,6 +1,7 @@
 import Case from "../../cmmn/case";
 import PlanItem from "../../cmmn/planitem";
 import State from "../../cmmn/state";
+import Trace from '../../infra/trace';
 import { assertCasePlan } from "../../test/caseassertions/plan";
 import { PollUntilSuccess } from "../../test/time";
 import User from "../../user";
@@ -25,14 +26,14 @@ export default class CaseEvents extends PlanItemEvents {
         super(user, item, parentCase);
     }
 
-    async load() {
+    async load(trace: Trace = new Trace()) {
         // reset state of children.
         this.cases = [];
         this.processes = [];
         if (this.state.is(State.Available)) {
             return; // no need to load more details, as the plan item is not yet active
         }
-        const caseInstance = await assertCasePlan(this.user, this.id, this.state) as Case;
+        const caseInstance = await assertCasePlan(this.user, this.id, this.state, trace) as Case;
 
         // Add sub cases
         const caseTasks = caseInstance.planitems.filter(item => item.type === 'CaseTask');
@@ -94,11 +95,11 @@ export default class CaseEvents extends PlanItemEvents {
         return `${super.printEvents(indent)}${list.length ? `\n${list.join('\n')}` : ''}`;
     }
 
-    async loadEventHierarchy(): Promise<void> {
-        await super.loadEvents();
+    async loadEventHierarchy(user: User = this.user, trace: Trace = new Trace()): Promise<void> {
+        await super.loadEvents(user, trace);
         const promises: Array<Promise<any>> = [];
-        this.cases.forEach(subCase => promises.push(subCase.loadEventHierarchy()));
-        this.processes.forEach(subProcess => promises.push(subProcess.loadEvents()));
+        this.cases.forEach(subCase => promises.push(subCase.loadEventHierarchy(user, trace)));
+        this.processes.forEach(subProcess => promises.push(subProcess.loadEvents(undefined, trace)));
         await Promise.all(promises);
     }
 
@@ -118,10 +119,10 @@ export default class CaseEvents extends PlanItemEvents {
         return this.hasArchiveEvent('CaseArchived');
     }
 
-    async assertRestored() {
+    async assertRestored(trace: Trace = new Trace()) {
         return await PollUntilSuccess(async () => {
             console.log("Checking that we're restored ...")
-            await CaseService.getDiscretionaryItems(this.user, this.id);
+            await CaseService.getDiscretionaryItems(this.user, this.id, undefined, undefined, trace);
         })
     }
 

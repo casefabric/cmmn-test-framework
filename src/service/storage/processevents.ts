@@ -1,5 +1,6 @@
 import PlanItem from "../../cmmn/planitem";
 import State from "../../cmmn/state";
+import Trace from "../../infra/trace";
 import { assertPlanItem } from "../../test/caseassertions/plan";
 import CaseEvents from "./caseevents";
 import PlanItemEvents from "./planitemevents";
@@ -13,7 +14,7 @@ export default class ProcessEvents extends PlanItemEvents {
         return this.hasArchiveEvent('ProcessArchived');
     }
 
-    async assertState(state: State) {
-        return assertPlanItem(this.user, this.parentCase.id, this.id, undefined, state);
+    async assertState(state: State, trace: Trace = new Trace()) {
+        return assertPlanItem(this.user, this.parentCase.id, this.id, undefined, state, trace);
     }
 }

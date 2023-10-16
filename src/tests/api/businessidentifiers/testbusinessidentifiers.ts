@@ -1,5 +1,6 @@
 'use strict';
 
+import Trace from '../../../infra/trace';
 import logger from '../../../logger';
 import CaseIdentifierService from '../../../service/identifier/caseidentifierservice';
 import IdentifierFilter from '../../../service/identifier/identifierfilter';
@@ -60,8 +61,8 @@ export default class TestBusinessIdentifiers extends TestCase {
         });
     }
 
-    async printList(filter?: IdentifierFilter) {
-        const list = await CaseIdentifierService.getIdentifiers(user, filter);
+    async printList(filter?: IdentifierFilter, trace: Trace = new Trace()) {
+        const list = await CaseIdentifierService.getIdentifiers(user, filter, undefined, undefined, trace);
         this.lists.push(list);
         logger.debug(`List: ${JSON.stringify(list, undefined, 2)}`);
     }

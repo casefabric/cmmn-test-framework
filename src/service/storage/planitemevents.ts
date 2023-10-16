@@ -1,5 +1,7 @@
 import PlanItem from "../../cmmn/planitem";
 import State from "../../cmmn/state";
+import AsyncError from "../../infra/asyncerror";
+import Trace from "../../infra/trace";
 import { PollUntilSuccess } from "../../test/time";
 import User from "../../user";
 import ActorEvents from "./actorevents";
@@ -13,18 +15,18 @@ export default class PlanItemEvents extends ActorEvents {
         this.state = State.of(item.currentState);
     }
 
-    async mustBeArchived(user: User = this.user) {
+    async mustBeArchived(user: User = this.user, trace: Trace = new Trace()) {
         await this.loadEvents(user);
         if (!this.isArchived()) {
             console.log("Found unexpected events: " + JSON.stringify(this.events, undefined, 2));
-            throw new Error(`${this.type} ${this.id} is not found in archived state`);
+            throw new AsyncError(trace, `${this.type} ${this.id} is not found in archived state`);
         }
     }
 
-    async assertArchived() {
+    async assertArchived(user: User = this.user, trace: Trace = new Trace()) {
         return await PollUntilSuccess(async () => {
             console.log("Checking that we're archived ...")
-            await this.mustBeArchived();
+            await this.mustBeArchived(user, trace);
         })
     }
 
