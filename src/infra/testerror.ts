@@ -1,6 +1,7 @@
+import StackTraceError from "./stacktraceerror";
 
-export default class TestError extends Error {
+export default class TestError extends StackTraceError {
     constructor(public error: unknown, message: string) {
-        super(`${message}\n${error}`);
+        super(error, message, '\n');
     }
 }

@@ -1,4 +1,5 @@
 import TestCase from "../test/testcase";
+import StackTraceError from "./stacktraceerror";
 
 export default class TestRunner {
     name: string = this.testClass.name;
@@ -18,7 +19,7 @@ export default class TestRunner {
             const constructor: any = this.testClass;
             this.test = new constructor();
         } catch (e) {
-            throw new Error(`Unknown failure while running constructor of ${this.name}:\n${e}`);
+            throw new StackTraceError(e, `Unknown failure while running constructor of ${this.name}:\n`)
         }
     }
 
