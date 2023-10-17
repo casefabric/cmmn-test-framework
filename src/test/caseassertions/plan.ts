@@ -41,8 +41,12 @@ export async function assertPlanItem(user: User, caseId: Case | string, planItem
             return item;
         }
 
-        const currentMsg = !matchers.length ? 'not (yet) found in the case plan' : `in state ${matchers[matchers.length - 1].currentState}`;
-        throw new AsyncError(trace, `Did not find the plan item '${planItemIdentifier}.${planItemIndex}' in state ${expectedState}`);
+        const itemDescription: string = planItemIndex < 0 ? planItemIdentifier : `${planItemIdentifier}.${planItemIndex}`;
+        if (expectedState && matchers.length) { // If we have matchers, it means the item is found, but not in the correct state.
+            throw new AsyncError(trace, `Did not find the plan item '${itemDescription}' in state ${expectedState}`);
+        } else {
+            throw new AsyncError(trace, `Did not find the plan item '${itemDescription}' in the case plan`);
+        }
     });
 }
 
