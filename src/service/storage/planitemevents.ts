@@ -15,14 +15,6 @@ export default class PlanItemEvents extends ActorEvents {
         this.state = State.of(item.currentState);
     }
 
-    async mustBeArchived(user: User = this.user, trace: Trace = new Trace()) {
-        await this.loadEvents(user);
-        if (!this.isArchived()) {
-            console.log("Found unexpected events: " + JSON.stringify(this.events, undefined, 2));
-            throw new AsyncError(trace, `${this.type} ${this.id} is not found in archived state`);
-        }
-    }
-
     async assertArchived(user: User = this.user, trace: Trace = new Trace()) {
         return await PollUntilSuccess(async () => {
             console.log("Checking that we're archived ...")

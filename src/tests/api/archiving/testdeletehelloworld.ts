@@ -22,8 +22,7 @@ export default class TestDeleteHelloworld extends TestCase {
   }
 
   async run() {
-
-    const startCase = { tenant, definition, debug: true };
+    const startCase = { tenant, definition, debug: true }; // Also generate a DebugEvent and ensure it get's deleted as well
     const caseInstance = await CaseService.startCase(user, startCase).then(id => CaseService.getCase(user, id));
     this.addIdentifier(caseInstance);
     const caseHierarchy = CaseEvents.from(user, caseInstance);
@@ -37,14 +36,6 @@ export default class TestDeleteHelloworld extends TestCase {
 
     await CaseService.getDiscretionaryItems(user, caseInstance, 404);
 
-    await PollUntilSuccess(async () => {
-      // Now verify that our case hierarchy has no events left in the event journal.
-      await caseHierarchy.loadEventHierarchy();
-      console.log("\n\nTotal event count: " + caseHierarchy.totalEventCount);
-      if (caseHierarchy.totalEventCount > 0) {
-        throw new Error(`Did not expect to find any events in the case, but found ${caseHierarchy.totalEventCount}:\n${caseHierarchy.printEvents()}`)
-      }
-
-    });
+    await caseHierarchy.assertDeleted();
   }
 }
