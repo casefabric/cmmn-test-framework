@@ -1,11 +1,13 @@
-import User from '../../user';
-import CaseService from '../../service/case/caseservice';
 import Case from '../../cmmn/case';
-import { PollUntilSuccess, SomeTime } from '../time';
 import PlanItem from '../../cmmn/planitem';
-import Config from '../../config';
-import logger from '../../logger';
 import State from '../../cmmn/state';
+import Config from '../../config';
+import AsyncError from '../../infra/asyncerror';
+import Trace from '../../infra/trace';
+import logger from '../../logger';
+import CaseService from '../../service/case/caseservice';
+import User from '../../user';
+import { PollUntilSuccess } from '../time';
 
 /**
  * Retrieves the plan items of the case and asserts that the plan item has the expected state.
@@ -21,7 +23,7 @@ import State from '../../cmmn/state';
  * @returns {Promise<PlanItem>} the plan item if it is found
  * @throws {Error} if the plan item is not found after so many attempts
  */
-export async function assertPlanItem(user: User, caseId: Case | string, planItemIdentifier: string, planItemIndex: number = -1, expectedState?: State): Promise<PlanItem> {
+export async function assertPlanItem(user: User, caseId: Case | string, planItemIdentifier: string, planItemIndex: number = -1, expectedState?: State, trace: Trace = new Trace()): Promise<PlanItem> {
     return await PollUntilSuccess(async () => {
         const freshCase = await CaseService.getCase(user, caseId);
         if (Config.TestCase.log) {
@@ -39,8 +41,12 @@ export async function assertPlanItem(user: User, caseId: Case | string, planItem
             return item;
         }
 
-        const currentMsg = !matchers.length ? 'not (yet) found in the case plan' : `in state ${matchers[matchers.length - 1].currentState}`;
-        throw new Error(`Did not find the plan item '${planItemIdentifier}.${planItemIndex}' in state ${expectedState}`);
+        const itemDescription: string = planItemIndex < 0 ? planItemIdentifier : `${planItemIdentifier}.${planItemIndex}`;
+        if (expectedState && matchers.length) { // If we have matchers, it means the item is found, but not in the correct state.
+            throw new AsyncError(trace, `Did not find the plan item '${itemDescription}' in state ${expectedState}`);
+        } else {
+            throw new AsyncError(trace, `Did not find the plan item '${itemDescription}' in the case plan`);
+        }
     });
 }
 
@@ -50,7 +56,7 @@ export async function assertPlanItem(user: User, caseId: Case | string, planItem
  * @param user 
  * @param expectedState 
  */
-export async function assertCasePlan(user: User, caseId: Case | string, expectedState?: State): Promise<Case> {
+export async function assertCasePlan(user: User, caseId: Case | string, expectedState?: State, trace: Trace = new Trace()): Promise<Case> {
     return await PollUntilSuccess(async () => {
         const tryGetCase = async () => {
             try {
@@ -65,6 +71,6 @@ export async function assertCasePlan(user: User, caseId: Case | string, expected
         if (freshCase && (!expectedState || State.of(freshCase.state).is(expectedState))) {
             return freshCase;
         }
-        throw new Error(`Did not find the case ${caseId} in state ${expectedState}`);
+        throw new AsyncError(trace, `Did not find the case ${caseId} in state ${expectedState}`);
     });
 }

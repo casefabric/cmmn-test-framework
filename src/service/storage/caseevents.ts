@@ -1,8 +1,10 @@
 import Case from "../../cmmn/case";
 import PlanItem from "../../cmmn/planitem";
 import State from "../../cmmn/state";
+import AsyncError from "../../infra/asyncerror";
+import Trace from '../../infra/trace';
 import { assertCasePlan } from "../../test/caseassertions/plan";
-import { PollUntilSuccess } from "../../test/time";
+import { PollUntilSuccess, SomeTime } from "../../test/time";
 import User from "../../user";
 import CaseService from "../case/caseservice";
 import ActorEvents from "./actorevents";
@@ -25,14 +27,14 @@ export default class CaseEvents extends PlanItemEvents {
         super(user, item, parentCase);
     }
 
-    async load() {
+    async load(trace: Trace = new Trace()) {
         // reset state of children.
         this.cases = [];
         this.processes = [];
         if (this.state.is(State.Available)) {
             return; // no need to load more details, as the plan item is not yet active
         }
-        const caseInstance = await assertCasePlan(this.user, this.id, this.state) as Case;
+        const caseInstance = await assertCasePlan(this.user, this.id, this.state, trace) as Case;
 
         // Add sub cases
         const caseTasks = caseInstance.planitems.filter(item => item.type === 'CaseTask');
@@ -50,7 +52,7 @@ export default class CaseEvents extends PlanItemEvents {
         return subCaseHierarchy;
     }
 
-    findItem(name: string, type?: string): ActorEvents|undefined {
+    findItem(name: string, type?: string): ActorEvents | undefined {
         const matches = (task: ActorEvents) => task.name === name && (!type || task.type === type);
 
         // Check if we ourselves match.
@@ -64,12 +66,12 @@ export default class CaseEvents extends PlanItemEvents {
         for (const subCase of this.cases) {
             const task = subCase.findItem(name, type);
             if (task) return task;
-        } 
+        }
     }
 
-    findProcessTask(name: string): ProcessEvents|undefined {
+    findProcessTask(name: string): ProcessEvents | undefined {
         const task = this.findItem(name, 'Process');
-        console.log("Foudn task named " + name +": " + task?.constructor.name)
+        console.log("Found task named " + name + ": " + task?.constructor.name)
         if (task && task instanceof ProcessEvents) return task;
         return undefined;
     }
@@ -88,17 +90,16 @@ export default class CaseEvents extends PlanItemEvents {
     }
 
     printEvents(indent: string = ''): string {
-        console.log("PRINTING EVENTs OF CASE ")
         const list: Array<string> = this.cases.map(c => c.printEvents(indent + ' '));
         list.push(...this.processes.map(p => p.printEvents(indent + ' ')));
         return `${super.printEvents(indent)}${list.length ? `\n${list.join('\n')}` : ''}`;
     }
 
-    async loadEventHierarchy(): Promise<void> {
-        await super.loadEvents();
+    async loadEventHierarchy(user: User = this.user, trace: Trace = new Trace()): Promise<void> {
+        await super.loadEvents(user, trace);
         const promises: Array<Promise<any>> = [];
-        this.cases.forEach(subCase => promises.push(subCase.loadEventHierarchy()));
-        this.processes.forEach(subProcess => promises.push(subProcess.loadEvents()));
+        this.cases.forEach(subCase => promises.push(subCase.loadEventHierarchy(user, trace)));
+        this.processes.forEach(subProcess => promises.push(subProcess.loadEvents(user, trace)));
         await Promise.all(promises);
     }
 
@@ -118,11 +119,25 @@ export default class CaseEvents extends PlanItemEvents {
         return this.hasArchiveEvent('CaseArchived');
     }
 
-    async assertRestored() {
+    async assertArchivedHierarchy(user: User = this.user, trace: Trace = new Trace()): Promise<any> {
+        await PollUntilSuccess(async () => {
+            await this.loadEventHierarchy(user, trace);
+            if (!this.hasArchivedHierarchy()) {
+                throw new AsyncError(trace, 'The case is not fully archived');
+            }
+        });
+    }
+
+    async assertRestored(user: User = this.user, trace: Trace = new Trace()) {
         return await PollUntilSuccess(async () => {
-            console.log("Checking that we're restored ...")
-            await CaseService.getDiscretionaryItems(this.user, this.id);
-        })
+            console.log(`Checking that case ${this.id} is restored ...`)
+            await CaseService.getDiscretionaryItems(user, this.id, undefined, undefined, trace);
+            await CaseService.getCase(user, this.id, undefined, undefined, trace);
+        });
+    }
+
+    async assertDeleted(user: User = this.user, trace: Trace = new Trace()) {
+        return super.assertDeleted(user, trace, async () => await this.loadEventHierarchy(user, trace));
     }
 
     toString(): string {

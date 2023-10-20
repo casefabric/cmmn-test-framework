@@ -1,8 +1,9 @@
-import User from "../../user";
 import Case from "../../cmmn/case";
+import PlanItemHistory from "../../cmmn/planitemhistory";
+import Trace from "../../infra/trace";
+import User from "../../user";
 import CafienneService from "../cafienneservice";
 import { checkJSONResponse } from "../response";
-import PlanItemHistory from "../../cmmn/planitemhistory";
 
 export default class CaseHistoryService {
     /**
@@ -10,9 +11,9 @@ export default class CaseHistoryService {
      * @param Case 
      * @param user 
      */
-    static async getCasePlanHistory(user: User, caseId: Case | string, expectedStatusCode: number = 200, msg = `GetCasePlanHistory is not expected to succeed for user ${user} in case ${caseId}`): Promise<Array<PlanItemHistory>> {
+    static async getCasePlanHistory(user: User, caseId: Case | string, expectedStatusCode: number = 200, msg = `GetCasePlanHistory is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()): Promise<Array<PlanItemHistory>> {
         const response = await CafienneService.get(`/cases/${caseId}/history/planitems`, user);
-        return checkJSONResponse(response, msg, expectedStatusCode, [PlanItemHistory]);
+        return checkJSONResponse(response, msg, expectedStatusCode, [PlanItemHistory], trace);
     }
 
     /**
@@ -21,8 +22,8 @@ export default class CaseHistoryService {
      * @param user 
      * @param planItemId
      */
-    static async getPlanItemHistory(user: User, caseId: Case | string, planItemId: string, expectedStatusCode: number = 200, msg = `GetPlanItemHistory is not expected to succeed for user ${user} in case ${caseId}`): Promise<Array<PlanItemHistory>> {
+    static async getPlanItemHistory(user: User, caseId: Case | string, planItemId: string, expectedStatusCode: number = 200, msg = `GetPlanItemHistory is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()): Promise<Array<PlanItemHistory>> {
         const response = await CafienneService.get(`/cases/${caseId}/history/planitems/${planItemId}`, user);
-        return checkJSONResponse(response, msg, expectedStatusCode, [PlanItemHistory]);
+        return checkJSONResponse(response, msg, expectedStatusCode, [PlanItemHistory], trace);
     }
 }

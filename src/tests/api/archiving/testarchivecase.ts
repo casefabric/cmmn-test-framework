@@ -4,8 +4,8 @@ import Definitions from '../../../cmmn/definitions/definitions';
 import State from '../../../cmmn/state';
 import CaseService from '../../../service/case/caseservice';
 import StartCase from '../../../service/case/startcase';
-import StorageService from '../../../service/storage/storageservice';
 import CaseEvents from '../../../service/storage/caseevents';
+import StorageService from '../../../service/storage/storageservice';
 import TestCase from '../../../test/testcase';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 
@@ -18,6 +18,7 @@ const complexcase = Definitions.ComplexCase;
 
 export default class TestArchiveCase extends TestCase {
   isDefaultTest = false;
+  isParallelTest: boolean = false;
   // lineReaderEnabled = true;
 
   async onPrepareTest() {
@@ -56,30 +57,26 @@ export default class TestArchiveCase extends TestCase {
 
     await StorageService.archiveCase(user, caseInstance);
 
-    // await caseHierarchy.mustBeArchived();
     await caseHierarchy.assertArchived();
-    await caseHierarchy.loadEventHierarchy();
-    if (!caseHierarchy.hasArchivedHierarchy()) {
-      throw new Error('The case is not fully archived')
-    } else {
-      console.log("Events: " + caseHierarchy.printEvents());
-      this.readLine("Case is fully archived; press enter to continue assertion tests");
-    }    
+    await caseHierarchy.assertArchivedHierarchy();
 
-    // Note: yet to decide whether we support retrieving the case to find out it is in state "Archived" or not.
-    //  Assumption: it is not possible. Second (commented) statement below assumes it _is possible.
+    console.log("Events: " + caseHierarchy.printEvents());
+    this.readLine("Case is fully archived; press enter to continue assertion tests");
+
+    // Getting the case should not be possible, as it is archived (this tests query database removal)
     await CaseService.getCase(user, caseInstance, 404);
-    // await CaseService.getCase(user, caseInstance).then(caseInstance => print('', JSON.stringify(caseInstance, undefined, 2)));
 
+    // Also not possible to get the discretionary items should not be possible (this checks Case ModelActor removed from memory)
+    await CaseService.getDiscretionaryItems(user, caseInstance, 404);
 
     // Now validate that it is not possible to create a new case instance with the same id as the archived case has.
     startCase.caseInstanceId = caseInstance.id;
     await CaseService.startCase(user, startCase, 400);
 
-    await CaseService.getDiscretionaryItems(user, caseInstance, 404);
-
+    // Now restore the case.
     await StorageService.restoreCase(user, caseInstance);
 
+    // This asserts that the discretionary items of the case can be retrieved and that the query database is filled again
     await caseHierarchy.assertRestored();
   }
 }

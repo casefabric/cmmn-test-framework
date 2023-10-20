@@ -9,6 +9,8 @@ import Comparison from '../../test/comparison';
 import logger from '../../logger';
 import Tenant from '../../tenant/tenant';
 import Definitions from '../../cmmn/definitions/definitions';
+import Trace from '../../infra/trace';
+import AsyncError from '../../infra/asyncerror';
 
 const FileSystem = fs;
 
@@ -18,7 +20,7 @@ export default class RepositoryService {
      * @param command 
      * @param user 
      */
-    static async deployCase(user: User, command: DeployCase, expectedStatusCode: number = 204, msg = `Deployment of case ${command.modelName} failed`) {
+    static async deployCase(user: User, command: DeployCase, expectedStatusCode: number = 204, msg = `Deployment of case ${command.modelName} failed`, trace: Trace = new Trace()) {
         if (!user) {
             throw new Error('User must be specified');
         }
@@ -26,7 +28,7 @@ export default class RepositoryService {
         // Hmmm... Duplicate '/repository/repository/' is needed currently...
         const url = `/repository/deploy/${command.modelName}?${tenantQueryParameter}`;
         const response = await CafienneService.postXML(url, user, command.definition);
-        return checkResponse(response, msg, expectedStatusCode);
+        return checkResponse(response, msg, expectedStatusCode, trace);
     }
 
     /**
@@ -47,10 +49,10 @@ export default class RepositoryService {
      * @param tenant 
      * @param user 
      */
-    static async listCaseDefinitions(user: User, tenant?: string | Tenant, expectedStatusCode: number = 200, msg = `ListCaseDefinitions is not expected to succeed for member ${user}`) {
+    static async listCaseDefinitions(user: User, tenant?: string | Tenant, expectedStatusCode: number = 200, msg = `ListCaseDefinitions is not expected to succeed for member ${user}`, trace: Trace = new Trace()) {
         const tenantQueryParameter = tenant ? '?tenant=' + getTenantName(tenant) : '';
         const response = await CafienneService.get(`/repository/list${tenantQueryParameter}`, user);
-        const json = checkResponse(response, msg, expectedStatusCode);
+        const json = checkResponse(response, msg, expectedStatusCode, trace);
 
         if (Config.RepositoryService.log) {
             logger.debug('Cases deployed in the server: ' + JSON.stringify(json, undefined, 2))
@@ -62,7 +64,7 @@ export default class RepositoryService {
      * Invokes the validation API
      * @param source 
      */
-    static async validateCaseDefinition(user: User, source: Document | string | Definitions, expectedStatusCode: number = 200) {
+    static async validateCaseDefinition(user: User, source: Document | string | Definitions, expectedStatusCode: number = 200, trace: Trace = new Trace()) {
         const url = `/repository/validate`;
         const xml = readLocalXMLDocument(source);
         const response = await CafienneService.postXML(url, user, xml);
@@ -70,10 +72,10 @@ export default class RepositoryService {
         if (status !== expectedStatusCode) {
             if (response.ok) {
                 const responseText = await response.text();
-                throw new Error(`Expected status ${expectedStatusCode} instead of ${status} ${response.statusText}: ${responseText}`);
+                throw new AsyncError(trace, `Expected status ${expectedStatusCode} instead of ${status} ${response.statusText}: ${responseText}`);
             } else {
                 const messages = <Array<string>>await response.json();
-                throw new Error(`Validation failed: ${response.statusText}\n${messages.join('\n')}`);
+                throw new AsyncError(trace, `Validation failed: ${response.statusText}\n${messages.join('\n')}`);
             }
         } else {
             if (response.ok) {
@@ -91,7 +93,7 @@ export default class RepositoryService {
      * @param user User that deploys the case definition.
      * @param tenant Tenant in which the definition is deployed.
      */
-    static async validateAndDeploy(user: User, fileName: string, tenant: string | Tenant) {
+    static async validateAndDeploy(user: User, fileName: string, tenant: string | Tenant, trace: Trace = new Trace()) {
         const tenantName = tenant instanceof Tenant ? tenant.name : tenant;
         const definition = readLocalXMLDocument(fileName);
         const modelName = fileName;
@@ -104,8 +106,8 @@ export default class RepositoryService {
             return;
         }
 
-        await this.validateCaseDefinition(user, definition);
-        await this.deployCase(user, { definition, modelName, tenant: tenantName })
+        await this.validateCaseDefinition(user, definition, undefined, trace);
+        await this.deployCase(user, { definition, modelName, tenant: tenantName }, undefined, undefined, trace);
     }
 }
 

@@ -1,17 +1,18 @@
+import Case from '../../cmmn/case';
+import DiscretionaryItem from '../../cmmn/discretionaryitem';
+import CaseTeam from '../../cmmn/team/caseteam';
+import Trace from '../../infra/trace';
 import User from '../../user';
 import CafienneService from '../cafienneservice';
-import Case from '../../cmmn/case';
+import { checkJSONResponse, checkResponse } from '../response';
 import CaseFilter from './casefilter';
+import { CaseStatistics } from './response/casestatistics';
+import { DiscretionaryItemsResponse } from './response/discretionaryitemsresponse';
 import StartCase from './startcase';
 import StatisticsFilter from './statisticsfilter';
-import DiscretionaryItem from '../../cmmn/discretionaryitem';
-import { checkJSONResponse, checkResponse } from '../response';
-import { DiscretionaryItemsResponse } from './response/discretionaryitemsresponse';
-import { CaseStatistics } from './response/casestatistics';
-import CaseTeam from '../../cmmn/team/caseteam';
 
 export default class CaseService {
-    static async startCase(user: User, command: StartCase, expectedStatusCode: number = 200, msg = `StartCase is not expected to succeed for user ${user ? user.id : 'anonymous'}`): Promise<Case> {
+    static async startCase(user: User, command: StartCase, expectedStatusCode: number = 200, msg = `StartCase is not expected to succeed for user ${user ? user.id : 'anonymous'}`, trace: Trace = new Trace()): Promise<Case> {
         if (!user) {
             // throw new Error("User must be specified");
         }
@@ -28,7 +29,7 @@ export default class CaseService {
             debug
         }
         const response = await CafienneService.post(url, user, request);
-        const json = await checkJSONResponse(response, msg, expectedStatusCode, Case);
+        const json = await checkJSONResponse(response, msg, expectedStatusCode, Case, trace);
 
         // Hack: copy "StartCaseResponse.caseInstanceId" to "Case.id" in the json prior to instantiating Case.
         // TODO: consider whether it is better to work with a "StartCaseResponse" object instead
@@ -44,13 +45,13 @@ export default class CaseService {
      * @param caseId 
      * @param user 
      */
-    static async getCase(user: User, caseId: Case | string, expectedStatusCode: number = 200, msg = `GetCase is not expected to succeed for user ${user} in case ${caseId}`): Promise<Case> {
+    static async getCase(user: User, caseId: Case | string, expectedStatusCode: number = 200, msg = `GetCase is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()): Promise<Case> {
         const convertCaseTeamFormat = (json: any) => {
             if (json.team && !(json.team.members || json.team.users || json.team.tenantRoles || json.team.groups)) json.team = new CaseTeam(json.team);
             return json;
         }
         const response = await CafienneService.get(`/cases/${caseId}`, user);
-        return checkJSONResponse(response, msg, expectedStatusCode, Case).then(convertCaseTeamFormat);
+        return checkJSONResponse(response, msg, expectedStatusCode, Case, trace).then(convertCaseTeamFormat);
     }
 
     /**
@@ -67,9 +68,9 @@ export default class CaseService {
      * @param filter 
      * @param user 
      */
-    static async getCases(user: User, filter?: CaseFilter, expectedStatusCode: number = 200, msg = `GetCases is not expected to succeed for user ${user}`): Promise<Array<Case>> {
+    static async getCases(user: User, filter?: CaseFilter, expectedStatusCode: number = 200, msg = `GetCases is not expected to succeed for user ${user}`, trace: Trace = new Trace()): Promise<Array<Case>> {
         const response = await CafienneService.get('/cases', user, filter);
-        return checkJSONResponse(response, msg, expectedStatusCode, [Case]);
+        return checkJSONResponse(response, msg, expectedStatusCode, [Case], trace);
     }
 
     /**
@@ -77,9 +78,9 @@ export default class CaseService {
      * @param Case 
      * @param user 
      */
-    static async getDiscretionaryItems(user: User, caseId: Case | string, expectedStatusCode: number = 200, msg = `GetDiscretionaryItems is not expected to succeed for user ${user} in case ${caseId}`): Promise<DiscretionaryItemsResponse> {
+    static async getDiscretionaryItems(user: User, caseId: Case | string, expectedStatusCode: number = 200, msg = `GetDiscretionaryItems is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()): Promise<DiscretionaryItemsResponse> {
         const response = await CafienneService.get(`/cases/${caseId}/discretionaryitems`, user)
-        return await checkJSONResponse(response, msg, expectedStatusCode, DiscretionaryItemsResponse);
+        return await checkJSONResponse(response, msg, expectedStatusCode, DiscretionaryItemsResponse, trace);
     }
 
     /**
@@ -90,11 +91,11 @@ export default class CaseService {
      * @param planItemId Optional id for the plan item resulting of the planning. If not specified, server will generate one.
      * @returns The id of the newly planned item
      */
-    static async planDiscretionaryItem(user: User, caseId: Case | string, item: DiscretionaryItem, planItemId?: string, expectedStatusCode: number = 200, msg = `PlanDiscretionaryItem is not expected to succeed for user ${user} in case ${caseId}`): Promise<string> {
+    static async planDiscretionaryItem(user: User, caseId: Case | string, item: DiscretionaryItem, planItemId?: string, expectedStatusCode: number = 200, msg = `PlanDiscretionaryItem is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()): Promise<string> {
         const itemToPlan = { name: item.name, parentId: item.parentId, definitionId: item.definitionId, planItemId }
 
         const response = await CafienneService.post(`/cases/${caseId}/discretionaryitems/plan`, user, itemToPlan);
-        const json = await checkJSONResponse(response, msg, expectedStatusCode);
+        const json = await checkJSONResponse(response, msg, expectedStatusCode, Object, trace);
         return json.planItemId;
     }
 
@@ -103,9 +104,9 @@ export default class CaseService {
      * @param user 
      * @param filter 
      */
-    static async getCaseStatistics(user: User, filter?: StatisticsFilter, expectedStatusCode: number = 200, msg = `GetCaseStatistics is not expected to succeed for user ${user}`): Promise<Array<CaseStatistics>> {
+    static async getCaseStatistics(user: User, filter?: StatisticsFilter, expectedStatusCode: number = 200, msg = `GetCaseStatistics is not expected to succeed for user ${user}`, trace: Trace = new Trace()): Promise<Array<CaseStatistics>> {
         const response = await CafienneService.get('/cases/stats', user, filter);
-        return checkJSONResponse(response, msg, expectedStatusCode, [CaseStatistics]);
+        return checkJSONResponse(response, msg, expectedStatusCode, [CaseStatistics], trace);
     }
 
     /**
@@ -114,8 +115,8 @@ export default class CaseService {
      * @param user 
      * @param debugEnabled 
      */
-    static async changeDebugMode(user: User, caseId: Case | string, debugEnabled: boolean, expectedStatusCode: number = 200, msg = `ChangeDebugMode is not expected to succeed for user ${user} in case ${caseId}`) {
+    static async changeDebugMode(user: User, caseId: Case | string, debugEnabled: boolean, expectedStatusCode: number = 200, msg = `ChangeDebugMode is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()) {
         const response = await CafienneService.put(`/cases/${caseId}/debug/${debugEnabled}`, user);
-        return checkResponse(response, msg, expectedStatusCode);
+        return checkResponse(response, msg, expectedStatusCode, trace);
     }
 }

@@ -1,3 +1,5 @@
+import AsyncError from "../../infra/asyncerror";
+import Trace from "../../infra/trace";
 import { PollUntilSuccess } from "../../test/time";
 import User from "../../user";
 import DebugService from "../case/debugservice";
@@ -13,18 +15,32 @@ export default class ActorEvents {
         this.type = this.constructor.name.split('Events')[0];
     }
 
-    async mustBeArchived(user: User = this.user) {
-        await this.loadEvents(user);
+    toString() {
+        return `${this.type} ${this.id}`;
+    }
+
+    async mustBeArchived(user: User = this.user, trace: Trace = new Trace()) {
+        await this.loadEvents(user, trace);
         if (!this.isArchived()) {
             console.log("Found unexpected events: " + JSON.stringify(this.events, undefined, 2));
-            throw new Error(`${this.type} ${this.id} is not found in archived state`);
+            throw new AsyncError(trace, `${this} is not found in archived state`);
         }
     }
 
-    async assertArchived() {
+    async assertArchived(user: User = this.user, trace: Trace = new Trace()) {
         return await PollUntilSuccess(async () => {
-            console.log("Checking that we're archived ...")
-            await this.mustBeArchived();
+            console.log(`Checking that ${this} is archived ...`)
+            await this.mustBeArchived(user, trace);
+        })
+    }
+
+    async assertDeleted(user: User = this.user, trace: Trace = new Trace(), loader: Function = async () => await this.loadEvents(user, trace)) {
+        return await PollUntilSuccess(async () => {
+            console.log(`Checking that ${this} is deleted ...`)
+            await loader();
+            if (this.totalEventCount > 0) {
+              throw new AsyncError(trace, `Did not expect to find any events in ${this}, but found ${this.totalEventCount}:\n${this.printEvents()}`)
+            }
         })
     }
 
@@ -47,11 +63,11 @@ export default class ActorEvents {
         throw new Error(`This method must be implemented in ${this.constructor.name}`);
     }
 
-    async loadEvents(user: User = this.user) {
+    async loadEvents(user: User = this.user, trace: Trace = new Trace()) {
         const response: any = await DebugService.getEvents(this.id, user).then(data => (data.asJSON() as any));
         if (!response.body) {
             console.log('Expected a response with a body, but received something else', response);
-            throw new Error('Expected a response with a body, but received something else');
+            throw new AsyncError(trace, 'Expected a response with a body, but received something else');
         }
         this.events = [];
         this.events.push(...response.body)

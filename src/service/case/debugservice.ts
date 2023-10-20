@@ -1,4 +1,4 @@
-import Tenant from '../../tenant/tenant';
+import Trace from '../../infra/trace';
 import User from '../../user';
 import CafienneService from '../cafienneservice';
 import { checkJSONResponse } from '../response';
@@ -14,9 +14,9 @@ export default class DebugService {
         return json;
     }
 
-    static async getParsedEvents(model: string, user?: User) {
+    static async getParsedEvents(model: string, user?: User, trace: Trace = new Trace()) {
         const response = await this.getEvents(model, user);
-        return checkJSONResponse(response, 'Expecting model events', 200, [Object]);
+        return checkJSONResponse(response, 'Expecting model events', 200, [Object], trace);
     }
 
     static async forceRecovery(user: User, modelId: string) {

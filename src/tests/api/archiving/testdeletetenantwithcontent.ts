@@ -22,8 +22,8 @@ import Util from '../../../test/util';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 
 const tenant = Util.generateId('TestTenantWithContent_');
-const wrapper = new WorldWideTestTenant(tenant);
-const user = wrapper.sender;
+const worldwideTenant = new WorldWideTestTenant(tenant);
+const user = worldwideTenant.sender;
 const definition = Definitions.ComplexCase;
 
 export default class TestDeleteTenantWithContent extends TestCase {
@@ -38,7 +38,7 @@ export default class TestDeleteTenantWithContent extends TestCase {
   private groupTemplate = new ConsentGroup([this.groupOwner]);
 
   async onPrepareTest() {
-    await wrapper.create();
+    await worldwideTenant.create();
     await definition.deploy(user, tenant);
     this.addIdentifier(tenant);
   }
@@ -83,25 +83,13 @@ export default class TestDeleteTenantWithContent extends TestCase {
     }, `Check existence of consent group ${this.tenantGroups[2]}`);
 
     // Now verify that our case hierarchy has no events left in the event journal.
-    await caseHierarchy.loadEventHierarchy();
-    console.log("Total event count of first case in the tenant (expecting 0 events): " + caseHierarchy.totalEventCount);
-    if (caseHierarchy.totalEventCount > 0) {
-      throw new Error(`Did not expect to find any events in the case, but found ${caseHierarchy.totalEventCount}:\n${caseHierarchy.printEvents()}`)
-    }
+    await caseHierarchy.assertDeleted();
 
     const tenantStorage = new TenantEvents(user, tenant);
-    await tenantStorage.loadEvents();
-    console.log("Total event count of the tenant (expecting 0 events): " + tenantStorage.totalEventCount);
-    if (tenantStorage.totalEventCount > 0) {
-      throw new Error(`Did not expect to find any events in the tenant, but found ${tenantStorage.totalEventCount}:\n${tenantStorage.printEvents()}`)
-    }
+    await tenantStorage.assertDeleted();
 
     const groupStorage = new ConsentGroupEvents(user, this.tenantGroups[0]);
-    await groupStorage.loadEvents();
-    console.log("Total event count of the first group in the tenant (expecting 0 events): " + groupStorage.totalEventCount);
-    if (tenantStorage.totalEventCount > 0) {
-      throw new Error(`Did not expect to find any events in the group, but found ${groupStorage.totalEventCount}:\n${groupStorage.printEvents()}`)
-    }
+    await groupStorage.assertDeleted();
   }
 
   async createOtherTenants() {

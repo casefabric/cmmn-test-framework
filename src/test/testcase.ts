@@ -14,6 +14,11 @@ export default class TestCase {
     protected lineReaderEnabled = false;
     public name: string = this.constructor.name
     public isDefaultTest = true;
+    public isParallelTest = true;
+
+    get isSequentialTest() {
+        return !this.isParallelTest;
+    }
 
     /**
      * Identifiers will be printed in the test summary if any.

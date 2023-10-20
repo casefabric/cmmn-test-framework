@@ -3,6 +3,7 @@ import CafienneService from '../cafienneservice';
 import Tenant from '../../tenant/tenant';
 import TenantUser from '../../tenant/tenantuser';
 import { checkResponse, checkJSONResponse } from '../response';
+import Trace from '../../infra/trace';
 
 
 /**
@@ -15,9 +16,9 @@ export default class TenantService {
      * @param tenant 
      * @param expectedStatusCode 
      */
-    static async getTenantOwners(user: User, tenant: Tenant | string, expectedStatusCode: number = 200,  msg = `GetTenantOwners is not expected to succeed for user ${user} in tenant ${tenant}`) {
+    static async getTenantOwners(user: User, tenant: Tenant | string, expectedStatusCode: number = 200,  msg = `GetTenantOwners is not expected to succeed for user ${user} in tenant ${tenant}`, trace: Trace = new Trace()) {
         const response = await CafienneService.get(`/tenant/${tenant}/owners`, user);
-        return checkJSONResponse(response, msg, expectedStatusCode);
+        return checkJSONResponse(response, msg, expectedStatusCode, undefined, trace);
     }
 
     /**
@@ -26,9 +27,9 @@ export default class TenantService {
      * @param tenant 
      * @param expectedStatusCode 
      */
-    static async getTenantUsers(user: User, tenant: Tenant | string, expectedStatusCode: number = 200,  msg = `GetTenantUsers is not expected to succeed for user ${user} in tenant ${tenant}`) {
+    static async getTenantUsers(user: User, tenant: Tenant | string, expectedStatusCode: number = 200,  msg = `GetTenantUsers is not expected to succeed for user ${user} in tenant ${tenant}`, trace: Trace = new Trace()) {
         const response = await CafienneService.get(`/tenant/${tenant}/users`, user);
-        return checkJSONResponse(response, msg, expectedStatusCode, [TenantUser]);
+        return checkJSONResponse(response, msg, expectedStatusCode, [TenantUser], trace);
     }
 
     /**
@@ -37,9 +38,9 @@ export default class TenantService {
      * @param tenant 
      * @param expectedStatusCode 
      */
-    static async getDisabledUserAccounts(user: User, tenant: Tenant | string, expectedStatusCode: number = 200,  msg = `GettingDisabledAccounts is not expected to succeed for user ${user} in tenant ${tenant}`) {
+    static async getDisabledUserAccounts(user: User, tenant: Tenant | string, expectedStatusCode: number = 200,  msg = `GettingDisabledAccounts is not expected to succeed for user ${user} in tenant ${tenant}`, trace: Trace = new Trace()) {
         const response = await CafienneService.get(`/tenant/${tenant}/disabled-accounts`, user);
-        return checkJSONResponse(response, msg, expectedStatusCode, [TenantUser]);
+        return checkJSONResponse(response, msg, expectedStatusCode, [TenantUser], trace);
     }
 
     /**
@@ -49,9 +50,9 @@ export default class TenantService {
      * @param tenantUserId 
      * @param expectedStatusCode 
      */
-    static async getTenantUser(user: User, tenant: Tenant | string, tenantUserId: TenantUser | string, expectedStatusCode: number = 200,  msg = `GetTenantUser(${tenantUserId}) is not expected to succeed for user ${user} in tenant ${tenant}`) {
+    static async getTenantUser(user: User, tenant: Tenant | string, tenantUserId: TenantUser | string, expectedStatusCode: number = 200,  msg = `GetTenantUser(${tenantUserId}) is not expected to succeed for user ${user} in tenant ${tenant}`, trace: Trace = new Trace()) {
         const response = await CafienneService.get(`/tenant/${tenant}/users/${tenantUserId}`, user);
-        return checkJSONResponse(response, msg, expectedStatusCode, TenantUser);
+        return checkJSONResponse(response, msg, expectedStatusCode, TenantUser, trace);
     }
 
     /**
@@ -61,10 +62,10 @@ export default class TenantService {
      * @param newTenantUser 
      * @param expectedStatusCode 
      */
-    static async setTenantUser(user: User, tenant: Tenant | string, newTenantUser: TenantUser, expectedStatusCode: number = 204,  msg = `SetTenantUser is not expected to succeed for user ${user} in tenant ${tenant}`) {
+    static async setTenantUser(user: User, tenant: Tenant | string, newTenantUser: TenantUser, expectedStatusCode: number = 204,  msg = `SetTenantUser is not expected to succeed for user ${user} in tenant ${tenant}`, trace: Trace = new Trace()) {
         const userToSet = newTenantUser.toJson ? newTenantUser.toJson() : newTenantUser;
         const response = await CafienneService.post(`/tenant/${tenant}/users`, user, userToSet);
-        return checkResponse(response, msg, expectedStatusCode);
+        return checkResponse(response, msg, expectedStatusCode, trace);
     }
 
     /**
@@ -74,9 +75,9 @@ export default class TenantService {
      * @param newTenantUser 
      * @param expectedStatusCode 
      */
-     static async removeTenantUser(user: User, tenant: Tenant | string, tenantUser: TenantUser | string, expectedStatusCode: number = 204,  msg = `RemoveTenantUser is not expected to succeed for user ${user} in tenant ${tenant}`) {
+     static async removeTenantUser(user: User, tenant: Tenant | string, tenantUser: TenantUser | string, expectedStatusCode: number = 204,  msg = `RemoveTenantUser is not expected to succeed for user ${user} in tenant ${tenant}`, trace: Trace = new Trace()) {
         const response = await CafienneService.delete(`/tenant/${tenant}/users/${tenantUser}`, user);
-        return checkResponse(response, msg, expectedStatusCode);
+        return checkResponse(response, msg, expectedStatusCode, trace);
     }
 
     /**
@@ -85,8 +86,8 @@ export default class TenantService {
      * @param tenant 
      * @param expectedStatusCode 
      */
-    static async replaceTenant(user: User, tenant: Tenant, expectedStatusCode: number = 204,  msg = `ReplaceTenant is not expected to succeed for user ${user} in tenant ${tenant}`) {
+    static async replaceTenant(user: User, tenant: Tenant, expectedStatusCode: number = 204,  msg = `ReplaceTenant is not expected to succeed for user ${user} in tenant ${tenant}`, trace: Trace = new Trace()) {
         const response = await CafienneService.post(`/tenant/${tenant}`, user, tenant.toJson());
-        return checkResponse(response, msg, expectedStatusCode);
+        return checkResponse(response, msg, expectedStatusCode, trace);
     }
 }

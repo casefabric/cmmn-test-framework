@@ -5,15 +5,17 @@ import CaseTeamTenantRole from '../../cmmn/team/caseteamtenantrole';
 import CaseTeamService from '../../service/case/caseteamservice';
 import User from '../../user';
 import CaseTeamGroup from '../../cmmn/team/caseteamgroup';
+import Trace from '../../infra/trace';
+import AsyncError from '../../infra/asyncerror';
 
 function findMember(team: CaseTeam, expectedMember: CaseTeamUser) {
     return team.users.find(member => member.userId === expectedMember.userId);
 }
 
-function hasUser(team: CaseTeam, expectedMember: CaseTeamUser, expectNoDifferences: boolean = true) {
+function hasUser(team: CaseTeam, expectedMember: CaseTeamUser, expectNoDifferences: boolean = true, trace: Trace) {
     const differs = (msg: string) => {
         if (expectNoDifferences) {
-            throw new Error(msg);
+            throw new AsyncError(trace, msg);
         }
     }
 
@@ -48,14 +50,14 @@ function hasUser(team: CaseTeam, expectedMember: CaseTeamUser, expectNoDifferenc
     }
 
     if (! expectNoDifferences) {
-        throw new Error(`Member ${expectedMember} is unexpectedly present in the team`);
+        throw new AsyncError(trace, `Member ${expectedMember} is unexpectedly present in the team`);
     }
 }
 
-function hasTenantRole(team: CaseTeam, expectedTenantRole: CaseTeamTenantRole, expectNoDifferences: boolean = true) {
+function hasTenantRole(team: CaseTeam, expectedTenantRole: CaseTeamTenantRole, expectNoDifferences: boolean = true, trace: Trace) {
     const differs = (msg: string) => {
         if (expectNoDifferences) {
-            throw new Error(msg);
+            throw new AsyncError(trace, msg);
         }
     }
 
@@ -90,11 +92,11 @@ function hasTenantRole(team: CaseTeam, expectedTenantRole: CaseTeamTenantRole, e
     }
 
     if (! expectNoDifferences) {
-        throw new Error(`Tenant role ${expectedTenantRole} is unexpectedly present in the team`);
+        throw new AsyncError(trace, `Tenant role ${expectedTenantRole} is unexpectedly present in the team`);
     }
 }
 
-async function verifyTeam(actualTeam: CaseTeam, expectedTeam: CaseTeam) {
+async function verifyTeam(actualTeam: CaseTeam, expectedTeam: CaseTeam, trace: Trace) {
     const missingMembers = expectedTeam.users.filter(member => !findMember(actualTeam, member));
     const tooManyMembers = actualTeam.users.filter(member => !findMember(expectedTeam, member));
 
@@ -111,7 +113,7 @@ async function verifyTeam(actualTeam: CaseTeam, expectedTeam: CaseTeam) {
         throw new Error(`Expecting Case Team to contain ${expectedTeam.users.length} members, but found ${actualTeam.users.length}, with unexpected members ${membersPrinter(tooManyMembers)}`);
     }
 
-    expectedTeam.users.forEach(expectedMember => hasUser(actualTeam, expectedMember));
+    expectedTeam.users.forEach(expectedMember => hasUser(actualTeam, expectedMember, undefined, trace));
 }
 
 /**
@@ -121,8 +123,8 @@ async function verifyTeam(actualTeam: CaseTeam, expectedTeam: CaseTeam) {
  * @param user 
  * @param expectedTeam 
  */
-export async function assertCaseTeam(user: User, caseId: Case | string, expectedTeam: CaseTeam) {
-    CaseTeamService.getCaseTeam(user, caseId).then(team => verifyTeam(team, expectedTeam));
+export async function assertCaseTeam(user: User, caseId: Case | string, expectedTeam: CaseTeam, trace: Trace = new Trace()) {
+    CaseTeamService.getCaseTeam(user, caseId, undefined, undefined, trace).then(team => verifyTeam(team, expectedTeam, trace));
 }
 
 /**
@@ -132,10 +134,10 @@ export async function assertCaseTeam(user: User, caseId: Case | string, expected
  * @param user User that retrieves the case team
  * @param expectNoDifferences Defaults to true, but can be set to false and then checks that the member may NOT be present in the team
  */
-export async function assertCaseTeamUser(user: User, caseId: Case | string, member: CaseTeamUser, expectNoDifferences: boolean = true) {
+export async function assertCaseTeamUser(user: User, caseId: Case | string, member: CaseTeamUser, expectNoDifferences: boolean = true, trace: Trace = new Trace()) {
     // Get case team via getCaseTeam
-    const actualCaseTeam = await CaseTeamService.getCaseTeam(user, caseId);
-    hasUser(actualCaseTeam, member, expectNoDifferences);
+    const actualCaseTeam = await CaseTeamService.getCaseTeam(user, caseId, undefined, undefined, trace);
+    hasUser(actualCaseTeam, member, expectNoDifferences, trace);
 }
 
 /**
@@ -145,10 +147,10 @@ export async function assertCaseTeamUser(user: User, caseId: Case | string, memb
  * @param user User that retrieves the case team
  * @param expectNoDifferences Defaults to true, but can be set to false and then checks that the member may NOT be present in the team
  */
- export async function assertCaseTeamTenantRole(user: User, caseId: Case | string, member: CaseTeamTenantRole, expectNoDifferences: boolean = true) {
+ export async function assertCaseTeamTenantRole(user: User, caseId: Case | string, member: CaseTeamTenantRole, expectNoDifferences: boolean = true, trace: Trace = new Trace()) {
     // Get case team via getCaseTeam
-    const actualCaseTeam = await CaseTeamService.getCaseTeam(user, caseId);
-    hasTenantRole(actualCaseTeam, member, expectNoDifferences);
+    const actualCaseTeam = await CaseTeamService.getCaseTeam(user, caseId, undefined, undefined, trace);
+    hasTenantRole(actualCaseTeam, member, expectNoDifferences, trace);
 }
 
 /**
@@ -158,19 +160,19 @@ export async function assertCaseTeamUser(user: User, caseId: Case | string, memb
  * @param user User that retrieves the case team
  * @param expectNoDifferences Defaults to true, but can be set to false and then checks that the member may NOT be present in the team
  */
- export async function assertSameGroup(user: User, caseId: Case | string, member: CaseTeamGroup, expectNoDifferences: boolean = true): Promise<void> {
+ export async function assertSameGroup(user: User, caseId: Case | string, member: CaseTeamGroup, expectNoDifferences: boolean = true, trace: Trace = new Trace()): Promise<void> {
     // Get case team via getCaseTeam
-    const actualCaseTeam = await CaseTeamService.getCaseTeam(user, caseId);
-    hasGroup(actualCaseTeam, member, expectNoDifferences);
+    const actualCaseTeam = await CaseTeamService.getCaseTeam(user, caseId, undefined, undefined, trace);
+    hasGroup(actualCaseTeam, member, expectNoDifferences, trace);
 }
 
-function hasGroup(team: CaseTeam, expectedMember: CaseTeamGroup, expectNoDifferences: boolean = true) {
+function hasGroup(team: CaseTeam, expectedMember: CaseTeamGroup, expectNoDifferences: boolean = true, trace: Trace) {
     let foundDifferences = false;
 
     const differs = (msg: string) => {
         foundDifferences = true;
         if (expectNoDifferences) {
-            throw new Error(msg);
+            throw new AsyncError(trace, msg);
         }
     }
 
@@ -233,6 +235,6 @@ function hasGroup(team: CaseTeam, expectedMember: CaseTeamGroup, expectNoDiffere
     });
 
     if (! expectNoDifferences && ! foundDifferences) {
-        throw new Error(`Case Team Group ${expectedMember} is unexpectedly present in the team`);
+        throw new AsyncError(trace, `Case Team Group ${expectedMember} is unexpectedly present in the team`);
     }
 }

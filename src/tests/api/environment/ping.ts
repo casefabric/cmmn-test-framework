@@ -4,12 +4,16 @@ import { SomeTime } from "../../../test/time";
 import User from "../../../user";
 
 export default class PingTestEnvironment extends TestCase {
+    public isParallelTest: boolean = false;
+
     async run() {
         await pingTestEnvironment();
     }
 }
 
 export class PingTokenService extends TestCase {
+    public isParallelTest: boolean = false;
+
     async run() {
         await pingTokenService();
     }

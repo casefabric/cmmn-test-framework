@@ -1,4 +1,5 @@
 import Config from '../../config';
+import Trace from '../../infra/trace';
 import logger from '../../logger';
 import Tenant from '../../tenant/tenant';
 import User from '../../user';
@@ -20,21 +21,20 @@ export default class ConsentGroupService {
      * @param expectedStatusCode 
      * @returns 
      */
-    static async createGroup(user: User, tenant: Tenant | string, group: ConsentGroup, expectedStatusCode: number = 200) {
+    static async createGroup(user: User, tenant: Tenant | string, group: ConsentGroup, expectedStatusCode: number = 200, msg = `CreateConsentGroup is not expected to succeed for user ${user.id} in ${tenant}`, trace: Trace = new Trace()) {
         const response = await CafienneService.post(`/tenant/${tenant}/consent-groups`, user, group.toJson());
         if (response.status === 400 && expectedStatusCode === 200) {
-            const msg = await response.text();
-            if (msg === 'Consent group already exists' || msg.indexOf('Failure while handling message CreateConsentGroup') >= 0) {
+            const responseText = await response.text();
+            if (responseText === 'Consent group already exists' || responseText.indexOf('Failure while handling message CreateConsentGroup') >= 0) {
                 // Tenant already exists is ok.
                 if (Config.PlatformService.log) logger.debug(`Consent group ${group} already exists.'`)
                 return response;
             }
         }
-        const msg = `CreateConsentGroup is not expected to succeed for user ${user.id} in ${tenant}`;
-        return checkJSONResponse(response, msg, expectedStatusCode).then(json => {
+        return checkJSONResponse(response, msg, expectedStatusCode, undefined, trace).then(json => {
             // After getting a succesful response we silently set the group id if not available
             //  (typical use case: the server generated it instead the client passing it)
-            if (! group.id && json.groupId) {
+            if (!group.id && json.groupId) {
                 group.id = json.groupId;
             }
         });
@@ -46,10 +46,9 @@ export default class ConsentGroupService {
      * @param groupId 
      * @param expectedStatusCode 
      */
-     static async getGroup(user: User, groupId: ConsentGroup | string, expectedStatusCode: number = 200): Promise<ConsentGroup> {
+    static async getGroup(user: User, groupId: ConsentGroup | string, expectedStatusCode: number = 200, msg = `GetGroup is not expected to succeed for user ${user.id} in group ${groupId}`, trace: Trace = new Trace()): Promise<ConsentGroup> {
         const response = await CafienneService.get(`/consent-group/${groupId}`, user);
-        const msg = `GetGroup is not expected to succeed for user ${user.id} in group ${groupId}`;
-        return checkJSONResponse(response, msg, expectedStatusCode, ConsentGroup);
+        return checkJSONResponse(response, msg, expectedStatusCode, ConsentGroup, trace);
     }
 
     /**
@@ -60,10 +59,9 @@ export default class ConsentGroupService {
      * @param expectedStatusCode 
      * @returns 
      */
-     static async replaceGroup(user: User, group: ConsentGroup, expectedStatusCode: number = 202) {
+    static async replaceGroup(user: User, group: ConsentGroup, expectedStatusCode: number = 202, msg = `ReplaceConsentGroup is not expected to succeed for user ${user.id} in ${group}`, trace: Trace = new Trace()) {
         const response = await CafienneService.post(`/consent-group/${group}`, user, group.toJson());
-        const msg = `ReplaceConsentGroup is not expected to succeed for user ${user.id} in ${group}`;
-        return checkResponse(response, msg, expectedStatusCode);
+        return checkResponse(response, msg, expectedStatusCode, trace);
     }
 
     /**
@@ -73,10 +71,9 @@ export default class ConsentGroupService {
      * @param userId User or Id of the user to retrieve the information for 
      * @param expectedStatusCode 
      */
-    static async getGroupMember(user: User, groupId: ConsentGroup | string, userId: User | string, expectedStatusCode: number = 200): Promise<ConsentGroupMember> {
+    static async getGroupMember(user: User, groupId: ConsentGroup | string, userId: User | string, expectedStatusCode: number = 200, msg = `GetGroupMember(${userId}) is not expected to succeed for user ${user.id} in group ${groupId}`, trace: Trace = new Trace()): Promise<ConsentGroupMember> {
         const response = await CafienneService.get(`/consent-group/${groupId}/members/${userId}`, user);
-        const msg = `GetGroupMember(${userId}) is not expected to succeed for user ${user.id} in group ${groupId}`;
-        return checkJSONResponse(response, msg, expectedStatusCode, ConsentGroupMember);
+        return checkJSONResponse(response, msg, expectedStatusCode, ConsentGroupMember, trace);
     }
 
     /**
@@ -86,10 +83,9 @@ export default class ConsentGroupService {
      * @param newUser The new user information that will be updated
      * @param expectedStatusCode 
      */
-    static async setGroupMember(user: User, groupId: ConsentGroup | string, newUser: ConsentGroupMember, expectedStatusCode: number = 202) {
+    static async setGroupMember(user: User, groupId: ConsentGroup | string, newUser: ConsentGroupMember, expectedStatusCode: number = 202, msg = `SetGroupMember is not expected to succeed for user ${user.id} in consent group ${groupId}`, trace: Trace = new Trace()) {
         const response = await CafienneService.post(`/consent-group/${groupId}/members`, user, newUser.toJson());
-        const msg = `SetGroupMember is not expected to succeed for user ${user.id} in consent group ${groupId}`;
-        return checkResponse(response, msg, expectedStatusCode);
+        return checkResponse(response, msg, expectedStatusCode, trace);
     }
 
     /**
@@ -100,9 +96,8 @@ export default class ConsentGroupService {
      * @param expectedStatusCode 
      * @returns 
      */
-    static async removeGroupMember(user: User, groupId: ConsentGroup | string, userId: User | string, expectedStatusCode: number = 202) {
+    static async removeGroupMember(user: User, groupId: ConsentGroup | string, userId: User | string, expectedStatusCode: number = 202, msg = `RemoveGroupMember ${userId} from group ${groupId} is not expected to succeed for user ${user.id}`, trace: Trace = new Trace()) {
         const response = await CafienneService.delete(`/consent-group/${groupId}/members/${userId}`, user);
-        const msg = `RemoveGroupMember ${userId} from group ${groupId} is not expected to succeed for user ${user.id}`;
-        return checkResponse(response, msg, expectedStatusCode);
+        return checkResponse(response, msg, expectedStatusCode, trace);
     }
 }

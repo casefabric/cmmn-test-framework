@@ -5,15 +5,17 @@ import CaseService from '../../../../service/case/caseservice';
 import TaskFilter from '../../../../service/task/taskfilter';
 import TaskService from '../../../../service/task/taskservice';
 import TestCase from '../../../../test/testcase';
+import Util from '../../../../test/util';
 import WorldWideTestTenant from '../../../worldwidetesttenant';
 
 const definition1 = Definitions.HelloWorld;
 const definition2 = Definitions.HelloWorld2;
-const worldwideTenant = new WorldWideTestTenant();
+const worldwideTenant = new WorldWideTestTenant(Util.generateId('task-filter-tenant-'));
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
 
 export default class TestTaskFilterAPI extends TestCase {
+    public isParallelTest: boolean = false;
     async onPrepareTest() {
         await worldwideTenant.create();
         await definition1.deploy(user, tenant);
