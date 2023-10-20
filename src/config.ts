@@ -32,7 +32,7 @@ const Config = {
         // URL of token service
         url: 'http://0.0.0.0:2377/token',
         // Issuer can be configured. The issuer must equal what is configure inside the Cafienne Engine
-        issuer: 'http://localhost:8080',
+        issuer: 'http://localhost:2377',
         // Whether or not to show the tokens requested and updated in the user
         log: true
     },
