@@ -18,6 +18,7 @@ const complexcase = Definitions.ComplexCase;
 
 export default class TestArchiveCase extends TestCase {
   isDefaultTest = false;
+  isParallelTest: boolean = false;
   // lineReaderEnabled = true;
 
   async onPrepareTest() {
