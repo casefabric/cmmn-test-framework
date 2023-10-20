@@ -54,6 +54,8 @@ const Config = {
     TestCase: {
         // Whether or not to show log messages on the console (e.g. wait time messages for server side processing)
         log: true,
+        // Whether to run tests in parallel or sequentially (TestCase instances with 'isParallelTest = false' always run sequentially)
+        runSequential: false,
         polltimeout: 20_000
     }
 }

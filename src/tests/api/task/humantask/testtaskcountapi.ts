@@ -15,6 +15,8 @@ const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
 
 export default class TestTaskCountAPI extends TestCase {
+    public isParallelTest: boolean = false;
+
     async onPrepareTest() {
         await worldwideTenant.create();
         await definition.deploy(user, tenant);

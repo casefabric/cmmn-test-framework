@@ -1,3 +1,4 @@
+import Config from "../config";
 import CafienneService from "../service/cafienneservice";
 import TestClasses from "./testclasses";
 import TestError from "./testerror";
@@ -24,14 +25,18 @@ export default class TestBatch {
     async execute() {
         this.startTime = new Date();
         console.log(`=========\n\nStarting ${this.runners.length} test cases at ${this.startTime}\n`);
-        for (let i = 0; i < this.runners.length; i++) {
-            const run = this.runners[i];
-            await run.execute();
 
-            if (run.error) {
-                break;
-            }
+        if (Config.TestCase.runSequential) {
+            await this.runSequentialTests(this.runners);
+        } else {
+            // First run the sequential tests
+            await this.runSequentialTests(this.runners.filter(run => run.test.isSequentialTest));
+            // Now run the parallel tests
+            const promises: Array<Promise<void>> = this.runners.filter(run => run.test.isParallelTest).map(run => run.execute());
+            await Promise.all(promises);
         }
+
+
         this.endTime = new Date();
 
         const failedTest = this.runners.find(test => test.error)
@@ -42,7 +47,18 @@ export default class TestBatch {
         }
         return this;
     }
-    
+
+    async runSequentialTests(sequentialTests: Array<TestRunner>) {
+        for (let i = 0; i < sequentialTests.length; i++) {
+            const run = sequentialTests[i];
+            await run.execute();
+
+            if (run.error) {
+                break;
+            }
+        }
+    }
+
     resultPrinter() {
         return this.runners.filter(run => run.completed).map(result => result.toString()).join('\n');
     }
