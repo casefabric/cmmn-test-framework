@@ -8,10 +8,11 @@ import TaskService from "../../../service/task/taskservice";
 import TenantService from "../../../service/tenant/tenantservice";
 import { findTask } from "../../../test/caseassertions/task";
 import TestCase from "../../../test/testcase";
+import Util from "../../../test/util";
 import WorldWideTestTenant from "../../worldwidetesttenant";
 
 const definition = Definitions.HelloWorld;
-const worldwideTenant = new WorldWideTestTenant();
+const worldwideTenant = new WorldWideTestTenant(Util.generateId('recoverable-tenant'));
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
 
@@ -25,9 +26,9 @@ export default class TestRecovery extends TestCase {
      * @override
      */
     async run() {
-        // await this.runTenantRecovery();
+        await this.runTenantRecovery();
 
-        // await this.runCaseRecovery();
+        await this.runCaseRecovery();
 
         await this.runMigratedCaseRecovery();
     }
@@ -63,7 +64,7 @@ export default class TestRecovery extends TestCase {
     }
 
     async getRandomCaseId() {
-        const cases = await CaseService.getCases(user);
+        const cases = await CaseService.getCases(user, { tenant });
         if (cases.length > 0) {
             return cases[0].id;
         } else {
