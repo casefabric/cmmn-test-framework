@@ -54,6 +54,7 @@ export default class TestBatch {
             await run.execute();
 
             if (run.error) {
+                this.throwFailureReport(run);
                 break;
             }
         }
