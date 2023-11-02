@@ -26,17 +26,15 @@ export default class TestBatch {
         this.startTime = new Date();
         console.log(`=========\n\nStarting ${this.runners.length} test cases at ${this.startTime}\n`);
 
-        if (Config.TestCase.runSequential) {
+        const numParallelTests = Config.TestCase.parallellism;
+        if (numParallelTests <= 1) {
             await this.runSequentialTests(this.runners);
         } else {
             // First run the sequential tests
             await this.runSequentialTests(this.runners.filter(run => run.test.isSequentialTest));
-            // Now run the parallel tests
-            const promises: Array<Promise<void>> = this.runners.filter(run => run.test.isParallelTest).map(run => run.execute());
-            await Promise.all(promises);
+            // Split up the parallel tests in batches that must be run sequentially
+            await this.runParallelTests(numParallelTests, this.runners.filter(run => run.test.isParallelTest));
         }
-
-
         this.endTime = new Date();
 
         const failedTest = this.runners.find(test => test.error)
@@ -60,18 +58,41 @@ export default class TestBatch {
         }
     }
 
+    async runParallelTests(numParallelTests: number, parallelTests: Array<TestRunner>) {
+        // Split up the parallel tests in batches that must be run sequentially
+        const batches: Array<Array<TestRunner>> = [];
+        while (parallelTests.length) batches.push(parallelTests.splice(0, numParallelTests));
+
+        const batchRunner = async (batch: Array<TestRunner>) => {
+            const promises: Array<Promise<void>> = batch.map(run => run.execute());
+            await Promise.all(promises);    
+        }
+
+        for (let i = 0; i < batches.length; i++) {
+            const batch = batches[i];
+            try {
+                await batchRunner(batch);
+            } catch (e) {
+                return;
+            }
+        }
+    }
+
     resultPrinter() {
-        return this.runners.filter(run => run.completed).map(result => result.toString()).join('\n');
+        const completedTests = this.runners.filter(run => run.completed);
+        return completedTests.map(result => result.toString()).join('\n') + 
+        `\n\n========= Completed ${completedTests.length} test cases and ${CafienneService.calls} API calls in ${((this.endTime.getTime() - this.startTime.getTime()) / 1000)} seconds at ${this.endTime}\n`;
     }
 
     throwFailureReport(run: TestRunner) {
+        const completedTests = this.runners.filter(run => run.completed);
+
         const resultString = this.runners.length == 0 ? '' : `  Successful tests:\n${this.resultPrinter()}\n`;
-        const msg = `\nTest ${run.testNumber} "${run.name}" failed.\n${resultString}${run}\n`;
+        const msg = `\nTest ${run.testNumber} "${run.name}" failed.\n${resultString}${run}\nTest ${run.testNumber} "${run.name}" failed.\n`;
         throw new TestError(run.error, msg);
     }
 
     createReport() {
         this.report = (`\n========= Started ${this.runners.length} tests at at ${this.startTime}\n\n${this.resultPrinter()}`);
-        this.report += (`\n\n========= Completed ${this.runners.length} test cases and ${CafienneService.calls} API calls in ${((this.endTime.getTime() - this.startTime.getTime()) / 1000)} seconds at ${this.endTime}\n`);
     }
 }
