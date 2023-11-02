@@ -3,6 +3,7 @@ import CaseTeam from './team/caseteam';
 import CaseFile from './casefile';
 import CaseTeamUser from "./team/caseteamuser";
 import CMMNBaseClass from './cmmnbaseclass';
+import Path from '../service/case/path';
 
 /**
  * Wrapper for json response of Cafienne Service for a single case instance.
@@ -47,7 +48,61 @@ export default class Case extends CMMNBaseClass {
         public file: CaseFile
     ) { super(); }
 
+    get plan(): PlanItem {
+        const caseplan = this.planitems.find(item => item.type === 'CasePlan');
+        if (!caseplan) {
+            throw new Error(`Could not find case plan among the ${this.planitems.length} items in the case`);
+        }
+        return caseplan;
+    }
+
     toString() {
         return this.id;
+    }
+
+    /**
+     * Returns the plan item matching the path, or throws an error
+     * @param path - The path to resolve on the plan item structure of the case
+     */
+    findItem(path: Path | string): PlanItem {
+        const item = Path.from(path).resolve(this);
+        if (! item) {
+            throw new Error(`Expected a plan item ${path} to be present in the case, but it cannot be found`);
+        }
+        return item;
+    }
+
+    printPlan(): string {
+        class Wrapper {
+            stage?: Wrapper;
+            children: Array<Wrapper> = [];
+            constructor(public item: PlanItem) { }
+            print(indent = ''): string {
+                const item = this.item;
+                const string = `${indent}- ${item.type}[${item.name}.${item.index}] | state = ${item.currentState} | transition = ${item.transition} | id = ${item.id}\n`;
+                return string + this.children.map(child => child.print(indent + ' ')).join('');
+            }
+        }
+        const stages = this.planitems.filter(item => item.type === 'Stage' || item.type === 'CasePlan').map(item => new Wrapper(item));
+        const wrappers = this.planitems.filter(item => item.type !== 'Stage' && item.type !== 'CasePlan').map(item => {
+            const wrapper = new Wrapper(item);
+            if (item.stageId) {
+                wrapper.stage = stages.find(stage => stage.item.id === item.stageId);
+                wrapper.stage?.children.push(wrapper);
+            }
+            return wrapper;
+        });
+        stages.forEach(wrapper => {
+            if (wrapper.item.type === 'Stage') {
+                wrapper.stage = stages.find(stage => stage.item.id === wrapper.item.stageId);
+                wrapper.stage?.children.push(wrapper);
+            }
+        });
+        const cp = stages.find(wrapper => wrapper.item.type === 'CasePlan');
+        if (cp) {
+            return cp.print();
+        } else {
+            return 'Cannot print the plan items of the case as it does not contain a case plan';
+        }
     }
 }

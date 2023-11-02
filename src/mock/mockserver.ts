@@ -13,30 +13,84 @@ import enableDestroy from 'server-destroy';
  * Also currently it allows to start/stop the Express service, but there is no state cleanup for it (and no testcase using it either).
  */
 export default class MockServer {
-    express = express();
-    server!: Server;
     mocks: Array<MockURL> = [];
+    private expressWrapper: ExpressWrapper;
     constructor(public port: number) {
+        this.expressWrapper = getExpressWrapper(port);
     }
+
+    /**
+     * Returns express() on which URL listeners can be registered.
+     */
+    get express() {
+        return this.expressWrapper.express;
+    }
+
+    /**
+     * Open the port (if not yet done), and register our mocks
+     */
     async start() {
+        this.expressWrapper.start();
+        this.mocks.forEach(mock => mock.register());
+    }
+
+    /**
+     * Stop the mock server
+     */
+    async stop() {
+        this.expressWrapper.stop();
+    }
+}
+
+function getExpressWrapper(port: number): ExpressWrapper {
+    const wrapper = expressWrappers.find(wrapper => wrapper.port === port) || new ExpressWrapper(port);
+    if (expressWrappers.indexOf(wrapper) < 0) {
+        expressWrappers.push(wrapper);
+    }
+    return wrapper;
+}
+
+function removeExpressWrapper(wrapper: ExpressWrapper) {
+    if (expressWrappers.indexOf(wrapper) >= 0) {
+        expressWrappers.splice(expressWrappers.indexOf(wrapper), 1);
+    }
+}
+
+const expressWrappers: Array<ExpressWrapper> = [];
+
+class ExpressWrapper {
+    public express = express();
+    public server!: Server;
+    private isStarted: boolean = false;
+
+    constructor(public port: number) {}
+
+    start() {
+        if (this.isStarted) {
+            // No need to start again that's already done.
+            return;
+        }
         this.server = this.express.listen(this.port, () => {
             if (Config.MockService.registration) {
                 logger.info("Started Mock Server on port " + this.port);
             }
         });
-        this.mocks.forEach(mock => mock.register());
+        this.isStarted = true;
         enableDestroy(this.server);
     }
-    async stop() {
+
+    stop() {
         if (Config.MockService.registration) {
             logger.info("Stopping Mock server on port " + this.port);
         }
-
+        const port = this.port;
         this.server.destroy(function(err) {
             if (err) {
-                return logger.info('shutdown failed' + err.message);
+                logger.info(`Failure while shutting down mock server on port ${port}: ${err.message}`);
+            } else {
+                logger.info(`Mock server on port ${port} is stopped`);
             }
-            logger.info('Mock server is stopped');
         });
+        removeExpressWrapper(this);
     }
 }

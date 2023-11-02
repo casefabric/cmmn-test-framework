@@ -1,9 +1,8 @@
-import { Response, Request, } from 'express';
-import Config from '../config';
-import MockServer from './mockserver';
+import { Request, Response, } from 'express';
 import { OutgoingHttpHeaders } from 'http';
-import { timingSafeEqual } from 'crypto';
+import Config from '../config';
 import logger from '../logger';
+import MockServer from './mockserver';
 
 export default class MockURL {
     private calls = new CallHistory();

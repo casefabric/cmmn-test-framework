@@ -1,19 +1,9 @@
-import Config from './config';
+import CommandLineParser from './commandlineparser';
 import TestBatch from './infra/testbatch';
 
-function findTestsFromCommandLineArguments(): Array<string> {
-    const time = process.argv[2];
-    if (time && !isNaN(Number(time))) {
-        console.log('Setting CQRS wait time to ' + time)
-        Config.CafienneService.cqrsWaitTime = Number(time);
-        return process.argv.slice(3);
-    } else {
-        return process.argv.slice(2);
-    }
-}
-
 try {
-    const commandLineTestNames = findTestsFromCommandLineArguments();
+    const args = new CommandLineParser();
+    const commandLineTestNames = args.testNames;
     new TestBatch(commandLineTestNames).execute().then(batch => {
         batch.print();
         process.exit(0)
