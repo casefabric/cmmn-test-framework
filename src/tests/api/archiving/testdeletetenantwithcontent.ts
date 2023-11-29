@@ -17,7 +17,7 @@ import StorageService from '../../../service/storage/storageservice';
 import TenantEvents from '../../../service/storage/tenantevents';
 import TenantService from '../../../service/tenant/tenantservice';
 import TestCase from '../../../test/testcase';
-import { PollUntilSuccess, SomeTime } from '../../../test/time';
+import { PollUntilSuccess } from '../../../test/time';
 import Util from '../../../test/util';
 import WorldWideTestTenant from '../../worldwidetesttenant';
 
@@ -112,7 +112,10 @@ export default class TestDeleteTenantWithContent extends TestCase {
       const caseTeam = new CaseTeam([new CaseOwner(user)], [new CaseTeamGroup(this.tenantGroups[groupId], [new GroupRoleMapping('OwnerRole', ['role'])])]);
       if (additionalGroupId > -1) caseTeam.groups.push(new CaseTeamGroup(this.tenantGroups[additionalGroupId], [new GroupRoleMapping('OwnerRole', ['role'])]))
       const promises: Array<Promise<any>> = [];
-      while (numCases --) promises.push(CaseService.startCase(user, { tenant, definition, caseTeam }).then(id => CaseService.getCase(user, id)).then(cs => this.otherCases.push(cs)));
+      while (numCases --) promises.push(CaseService.startCase(user, { tenant, definition, caseTeam }).then(id => CaseService.getCase(user, id)).then(cs => {
+        this.otherCases.push(cs);
+        console.log("Other cases now contains " + this.otherCases.length + " elements")
+      }));
       await Promise.all(promises);
     }
 
@@ -137,7 +140,13 @@ export default class TestDeleteTenantWithContent extends TestCase {
       });
     }
 
-    await Promise.all(this.otherCases.map(async caseId => await groupRemover(caseId)));
+    const allCasesInOtherTenants: Array<Case> = [];
+    await Promise.all(this.otherTenants.map(async tenant => {
+      allCasesInOtherTenants.push(...(await CaseService.getCases(user, { tenant })));
+    }))
+
+
+    await Promise.all(allCasesInOtherTenants.map(async caseId => await groupRemover(caseId)));
   }
 
   async createTenantCases() {
