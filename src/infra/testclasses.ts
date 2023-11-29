@@ -4,6 +4,7 @@ import TestNoAnonymousStartCase from '../tests/api/anonymous/testnoanonymousstar
 import TestArchiveCase from '../tests/api/archiving/testarchivecase';
 import TestArchiveHelloworld from '../tests/api/archiving/testarchivehelloworld';
 import TestDeleteCase from '../tests/api/archiving/testdeletecase';
+import TestDeleteCaseAuthorization from '../tests/api/archiving/testdeletecaseauthorization';
 import TestDeleteHelloworld from '../tests/api/archiving/testdeletehelloworld';
 import TestDeleteTenant from '../tests/api/archiving/testdeletetenant';
 import TestDeleteTenantWithContent from '../tests/api/archiving/testdeletetenantwithcontent';
@@ -155,7 +156,7 @@ export default class TestClasses {
     }
 
     static get storageTests() {
-        return [TestArchiveHelloworld, TestArchiveCase, TestDeleteCase, TestDeleteHelloworld, TestDeleteTenant, TestDeleteTenantWithContent];
+        return [TestArchiveHelloworld, TestArchiveCase, TestDeleteCase, TestDeleteHelloworld, TestDeleteTenant, TestDeleteTenantWithContent, TestDeleteCaseAuthorization];
     }
 }
 
@@ -215,6 +216,7 @@ const AllTestCases = new TestClasses([
     , TestArchiveHelloworld
     , TestArchiveCase
     , TestDeleteCase
+    , TestDeleteCaseAuthorization
     , TestDeleteHelloworld
     , TestDeleteTenant
     , TestDeleteTenantWithContent
