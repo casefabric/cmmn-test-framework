@@ -1,0 +1,38 @@
+<CMMNDI>
+    <CMMNDiagram xmlns:ns1="org.cafienne" ns1:labels="full">
+        <CMMNShape cmmnElementRef="cm__VeUFO_0">
+            <Bounds x="20" y="20" width="640" height="360"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_pt__VeUFO_0">
+            <Bounds x="180" y="80" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_VeUFO_6">
+            <Bounds x="80" y="90" width="25" height="40"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_VeUFO_9">
+            <Bounds x="174" y="110" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi__VeUFO_11">
+            <Bounds x="140" y="210" width="220" height="120"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_VeUFO_15">
+            <Bounds x="194" y="200" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_VeUFO_17">
+            <Bounds x="274" y="200" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ue__VeUFO_0">
+            <Bounds x="220" y="250" width="32" height="32"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_VeUFO_19">
+            <Bounds x="234" y="150" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_VeUFO_22">
+            <Bounds x="400" y="70" width="230" height="290"/>
+        </CMMNShape>
+        <CMMNEdge label="create" sourceCMMNElementRef="_VeUFO_6" targetCMMNElementRef="_VeUFO_9"/>
+        <CMMNEdge label="fault" sourceCMMNElementRef="pi_pt__VeUFO_0" targetCMMNElementRef="_VeUFO_15"/>
+        <CMMNEdge label="complete" sourceCMMNElementRef="pi_pt__VeUFO_0" targetCMMNElementRef="_VeUFO_17"/>
+        <CMMNEdge label="occur" sourceCMMNElementRef="pi_ue__VeUFO_0" targetCMMNElementRef="_VeUFO_19"/>
+    </CMMNDiagram>
+</CMMNDI>

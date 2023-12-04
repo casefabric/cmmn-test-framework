@@ -27,7 +27,11 @@ import TestTaskCompletion from '../tests/api/casefile/testtaskcompletion';
 import TestTaskOutputOperations from '../tests/api/casefile/testtaskoutputoperations';
 import TestTimer from '../tests/api/caseplan/event/testtimer';
 import TestEntryCriteriaOnRecovery from '../tests/api/caseplan/sentry/testentrycriteriaonrecovery';
+import TestClassicFaultHandling from '../tests/api/caseplan/stage/testclassicfaulthandling';
 import TestEntryCriteriaOnCaseInputParameters from '../tests/api/caseplan/stage/testentrycriteriaoncaseinputparameters';
+import TestFaultBubbling from '../tests/api/caseplan/stage/testfaultbubbling';
+import TestModelBasedReactivate from '../tests/api/caseplan/stage/testmodelbasedreactivate';
+import TestNoFaultBubbling from '../tests/api/caseplan/stage/testnofaultbubbling';
 import TestStage from '../tests/api/caseplan/stage/teststage';
 import TestAuthenticationFlow from '../tests/api/caseplan/task/testauthenticationflow';
 import TestProcessTask from '../tests/api/caseplan/task/testprocesstask';
@@ -175,6 +179,10 @@ const AllTestCases = new TestClasses([
     , TestEntryCriteriaOnCaseInputParameters
     , TestEntryCriteriaOnRecovery
     , TestStage
+    , TestFaultBubbling
+    , TestClassicFaultHandling
+    , TestModelBasedReactivate
+    , TestNoFaultBubbling
     , TestTimer
     , TestUsersCaseAPI
     , TestDiscretionaryItems

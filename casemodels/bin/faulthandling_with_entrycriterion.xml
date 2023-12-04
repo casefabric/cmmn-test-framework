@@ -1,0 +1,140 @@
+<definitions>
+    <caseFileItemDefinition name="data" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="data.cfid"/>
+    <case id="faulthandling_with_entrycriterion.case" name="faulthandling_with_entrycriterion" expressionLanguage="spel">
+        <caseFileModel>
+            <caseFileItem id="_VeUFO_6" name="data" multiplicity="ExactlyOne" definitionRef="data.cfid"/>
+        </caseFileModel>
+        <casePlanModel id="cm__VeUFO_0" name="faulthandling_with_entrycriterion" autoComplete="true">
+            <planItem id="pi_pt__VeUFO_0" name="Repeating Call" definitionRef="pt__VeUFO_0">
+                <entryCriterion id="_VeUFO_9" name="EntryCriterion_0" sentryRef="crit__VeUFO_0"/>
+                <entryCriterion id="_VeUFO_19" name="EntryCriterion_2" sentryRef="crit__VeUFO_3"/>
+                <itemControl id="_VeUFO_0">
+                    <repetitionRule id="_VeUFO_7">
+                        <condition id="_VeUFO_8">
+                            <body>
+                                <![CDATA[true]]>
+                            </body>
+                        </condition>
+                    </repetitionRule>
+                </itemControl>
+            </planItem>
+            <planItem id="pi__VeUFO_11" name="Failure Handling" definitionRef="_VeUFO_11">
+                <entryCriterion id="_VeUFO_15" name="EntryCriterion_1" sentryRef="crit__VeUFO_1"/>
+                <exitCriterion id="_VeUFO_17" name="ExitCriterion_0" sentryRef="crit__VeUFO_2"/>
+                <itemControl id="_VeUFO_12">
+                    <repetitionRule id="_VeUFO_13">
+                        <condition id="_VeUFO_14">
+                            <body>
+                                <![CDATA[true]]>
+                            </body>
+                        </condition>
+                    </repetitionRule>
+                </itemControl>
+            </planItem>
+            <sentry id="crit__VeUFO_0">
+                <caseFileItemOnPart id="_VeUFO_10" sourceRef="_VeUFO_6">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </sentry>
+            <sentry id="crit__VeUFO_1">
+                <planItemOnPart id="_VeUFO_16" sourceRef="pi_pt__VeUFO_0">
+                    <standardEvent>fault</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <sentry id="crit__VeUFO_2">
+                <planItemOnPart id="_VeUFO_18" sourceRef="pi_pt__VeUFO_0">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <sentry id="crit__VeUFO_3">
+                <planItemOnPart id="_VeUFO_20" sourceRef="pi_ue__VeUFO_0">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <processTask id="pt__VeUFO_0" name="Repeating Call" isBlocking="true" processRef="GetResponse2.process">
+                <inputs id="_VeUFO_23" name="data" bindingRef="_VeUFO_6"/>
+                <parameterMapping id="_VeUFO_1" sourceRef="_VeUFO_23" targetRef="_FcAX_data"/>
+            </processTask>
+            <userEvent id="ue__VeUFO_0" name="Try Again"/>
+            <stage id="_VeUFO_11" name="Failure Handling" autoComplete="true">
+                <planItem id="pi_ue__VeUFO_0" name="Try Again" definitionRef="ue__VeUFO_0"/>
+            </stage>
+        </casePlanModel>
+        <input id="_VeUFO_21" name="data" bindingRef="_VeUFO_6"/>
+        <textAnnotation id="_VeUFO_22">
+            <text>
+                <![CDATA[Classic style of fault handling:
+
+Each time a call fail:
+1. a new fault handler instance is created,
+2. which retries and (through that mechanism)
+3. creates and starts a new instance of the failing task.
+
+This  means that afterwards older instances will still be in Failed state, and also the surrounding case plan (depending on the engine settings)]]>
+            </text>
+        </textAnnotation>
+    </case>
+    <process name="GetResponse2" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified" id="GetResponse2.process">
+        <input id="_FcAX_data" name="input"/>
+        <output id="_BPrj_jsonPayload" name="validPayload"/>
+        <output id="_2Eym_errorCode" name="errorCode"/>
+        <output id="_vrBb_errorMessage" name="errorPayload"/>
+        <output id="_fnkJ_responseMessage" name="responseMessage"/>
+        <extensionElements mustUnderstand="false">
+            <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.http.HTTPCallDefinition">
+                <url>http://localhost:${input.port}/get/code/${input.responseCode}</url>
+                <method>POST</method>
+                <post-content>${input.payload}</post-content>
+                <http-headers>
+                    <http-header name="Accept">application/json</http-header>
+                </http-headers>
+                <parameterMapping sourceRef="responseMessage" targetRef="responseMessage"/>
+                <failure>
+                    <parameterMapping sourceRef="responseCode" targetRef="errorCode"/>
+                    <parameterMapping sourceRef="responsePayload" targetRef="errorPayload"/>
+                </failure>
+                <success>
+                    <parameterMapping sourceRef="responsePayload" targetRef="validPayload"/>
+                </success>
+            </cafienne:implementation>
+        </extensionElements>
+    </process>
+    <CMMNDI>
+        <CMMNDiagram>
+            <CMMNShape cmmnElementRef="cm__VeUFO_0">
+                <Bounds x="20" y="20" width="640" height="360"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_pt__VeUFO_0">
+                <Bounds x="180" y="80" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_VeUFO_6">
+                <Bounds x="80" y="90" width="25" height="40"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_VeUFO_9">
+                <Bounds x="174" y="110" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi__VeUFO_11">
+                <Bounds x="140" y="210" width="220" height="120"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_VeUFO_15">
+                <Bounds x="194" y="200" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_VeUFO_17">
+                <Bounds x="274" y="200" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ue__VeUFO_0">
+                <Bounds x="220" y="250" width="32" height="32"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_VeUFO_19">
+                <Bounds x="234" y="150" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_VeUFO_22">
+                <Bounds x="400" y="70" width="230" height="290"/>
+            </CMMNShape>
+            <CMMNEdge label="create" sourceCMMNElementRef="_VeUFO_6" targetCMMNElementRef="_VeUFO_9"/>
+            <CMMNEdge label="fault" sourceCMMNElementRef="pi_pt__VeUFO_0" targetCMMNElementRef="_VeUFO_15"/>
+            <CMMNEdge label="complete" sourceCMMNElementRef="pi_pt__VeUFO_0" targetCMMNElementRef="_VeUFO_17"/>
+            <CMMNEdge label="occur" sourceCMMNElementRef="pi_ue__VeUFO_0" targetCMMNElementRef="_VeUFO_19"/>
+        </CMMNDiagram>
+    </CMMNDI>
+</definitions>

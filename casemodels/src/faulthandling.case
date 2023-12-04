@@ -1,0 +1,33 @@
+<case id="faulthandling.case" name="faulthandling" expressionLanguage="spel" guid="_VWuW0">
+    <caseFileModel>
+        <caseFileItem id="_VWuW0_11" name="data" multiplicity="ExactlyOne" definitionRef="data.cfid"/>
+    </caseFileModel>
+    <casePlanModel id="cm__VWuW0_0" name="faulthandling" autoComplete="true">
+        <planItem id="pi_ct__VWuW0_0" name="faulthandling_subcase" definitionRef="ct__VWuW0_0"/>
+        <planItem id="pi_ms__VWuW0_0" name="Required Milestone" definitionRef="ms__VWuW0_0">
+            <entryCriterion id="_VWuW0_4" name="EntryCriterion_0" sentryRef="crit__VWuW0_0"/>
+            <itemControl id="_VWuW0_1">
+                <requiredRule id="_VWuW0_2">
+                    <condition id="_VWuW0_3">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </requiredRule>
+            </itemControl>
+        </planItem>
+        <planItem id="pi_ue__VWuW0_0" name="Trigger Milestone" definitionRef="ue__VWuW0_0"/>
+        <sentry id="crit__VWuW0_0">
+            <planItemOnPart id="_VWuW0_5" sourceRef="pi_ue__VWuW0_0">
+                <standardEvent>occur</standardEvent>
+            </planItemOnPart>
+        </sentry>
+        <caseTask id="ct__VWuW0_0" name="faulthandling_subcase" isBlocking="true" caseRef="faulthandling_subcase.case">
+            <inputs id="_VWuW0_9" name="data" bindingRef="_VWuW0_11"/>
+            <parameterMapping id="_VWuW0_7" sourceRef="_VWuW0_9" targetRef="_y2XPO_3"/>
+        </caseTask>
+        <milestone id="ms__VWuW0_0" name="Required Milestone"/>
+        <userEvent id="ue__VWuW0_0" name="Trigger Milestone"/>
+    </casePlanModel>
+    <input id="_VWuW0_12" name="data" bindingRef="_VWuW0_11"/>
+</case>

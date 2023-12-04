@@ -1,0 +1,54 @@
+<CMMNDI>
+    <CMMNDiagram xmlns:ns1="org.cafienne" ns1:labels="full">
+        <CMMNShape cmmnElementRef="cm__y2XPO_0">
+            <Bounds x="20" y="20" width="800" height="500"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi__y2XPO_0">
+            <Bounds x="60" y="70" width="680" height="160"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi__y2XPO_4">
+            <Bounds x="60" y="270" width="680" height="210"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_pt__y2XPO_0">
+            <Bounds x="130" y="110" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_pt__y2XPO_1">
+            <Bounds x="150" y="320" width="140" height="90"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ht__y2XPO_0">
+            <Bounds x="410" y="110" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi__y2XPO_21">
+            <Bounds x="420" y="310" width="300" height="150"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_y2XPO_31">
+            <Bounds x="414" y="350" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ue__y2XPO_0">
+            <Bounds x="480" y="370" width="32" height="32"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_y2XPO_35">
+            <Bounds x="414" y="330" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ms__y2XPO_0">
+            <Bounds x="596" y="370" width="100" height="40"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi__y2XPO_29">
+            <Bounds x="450" y="340" width="100" height="100"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_y2XPO_38">
+            <Bounds x="544" y="380" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_y2XPO_33">
+            <Bounds x="284" y="380" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_y2XPO_25">
+            <Bounds x="284" y="380" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNEdge label="fault" sourceCMMNElementRef="pi_pt__y2XPO_1" targetCMMNElementRef="_y2XPO_31"/>
+        <CMMNEdge label="complete" sourceCMMNElementRef="pi_pt__y2XPO_1" targetCMMNElementRef="_y2XPO_35"/>
+        <CMMNEdge label="occur" sourceCMMNElementRef="pi_ms__y2XPO_0" targetCMMNElementRef="_y2XPO_38"/>
+        <CMMNEdge label="occur" sourceCMMNElementRef="pi_ue__y2XPO_0" targetCMMNElementRef="_y2XPO_33"/>
+        <CMMNEdge label="occur" sourceCMMNElementRef="pi_ue__y2XPO_0" targetCMMNElementRef="_y2XPO_25"/>
+    </CMMNDiagram>
+</CMMNDI>

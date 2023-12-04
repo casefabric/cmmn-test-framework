@@ -1,0 +1,223 @@
+<definitions>
+    <caseFileItemDefinition name="Greeting" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="greeting.cfid">
+        <property name="Message" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+            </extensionElements>
+        </property>
+        <property name="To" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+            </extensionElements>
+        </property>
+        <property name="From" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    </caseFileItemDefinition>
+    <case id="sendmail.case" name="Case To Send Mail" expressionLanguage="spel">
+        <documentation textFormat="text/plain">
+            <text>
+                <![CDATA[Send an email to someone]]>
+            </text>
+        </documentation>
+        <caseFileModel>
+            <caseFileItem id="_FcceR_0" name="Greeting" multiplicity="ExactlyOne" definitionRef="greeting.cfid"/>
+        </caseFileModel>
+        <casePlanModel id="cm__FcceR_0" name="CasePlan" autoComplete="true">
+            <planItem id="pi__FcceR_12" name="Send Mail From Stage" definitionRef="_FcceR_12"/>
+            <planItem id="pi__FcceR_14" name="Send Mail With Error Handling" definitionRef="_FcceR_14"/>
+            <processTask id="pt__FcceR_0" name="send mail" isBlocking="true" processRef="sendmail.process">
+                <inputs id="_FcceR_37" name="Greeting" bindingRef="_FcceR_0"/>
+                <inputs id="_FcceR_41" name="subject"/>
+                <parameterMapping id="_FcceR_3" sourceRef="_FcceR_37" targetRef="_WgV5_to">
+                    <transformation id="_FcceR_38">
+                        <body>
+                            <![CDATA[Greeting.To]]>
+                        </body>
+                    </transformation>
+                </parameterMapping>
+                <parameterMapping id="_FcceR_6" sourceRef="_FcceR_37" targetRef="_00Uj_from">
+                    <transformation id="_FcceR_48">
+                        <body>
+                            <![CDATA[Greeting.From]]>
+                        </body>
+                    </transformation>
+                </parameterMapping>
+                <parameterMapping id="_FcceR_7" sourceRef="_FcceR_41" targetRef="_cNdN_subject">
+                    <transformation id="_FcceR_40">
+                        <body>
+                            <![CDATA["You've got mail"]]>
+                        </body>
+                    </transformation>
+                </parameterMapping>
+                <parameterMapping id="_FcceR_8" sourceRef="_FcceR_37" targetRef="_FbvG_body">
+                    <transformation id="_FcceR_39">
+                        <body>
+                            <![CDATA[Greeting.Message]]>
+                        </body>
+                    </transformation>
+                </parameterMapping>
+            </processTask>
+            <processTask id="pt__FcceR_1" name="send mail with fault handling" isBlocking="true" processRef="sendmail.process">
+                <inputs id="_FcceR_43" name="Greeting" bindingRef="_FcceR_0"/>
+                <inputs id="_FcceR_47" name="subject"/>
+                <parameterMapping id="_FcceR_17" sourceRef="_FcceR_43" targetRef="_WgV5_to">
+                    <transformation id="_FcceR_44">
+                        <body>
+                            <![CDATA[Greeting.To]]>
+                        </body>
+                    </transformation>
+                </parameterMapping>
+                <parameterMapping id="_FcceR_20" sourceRef="_FcceR_43" targetRef="_00Uj_from">
+                    <transformation id="_FcceR_49">
+                        <body>
+                            <![CDATA[Greeting.From]]>
+                        </body>
+                    </transformation>
+                </parameterMapping>
+                <parameterMapping id="_FcceR_21" sourceRef="_FcceR_47" targetRef="_cNdN_subject">
+                    <transformation id="_FcceR_46">
+                        <body>
+                            <![CDATA["You've got another mail"]]>
+                        </body>
+                    </transformation>
+                </parameterMapping>
+                <parameterMapping id="_FcceR_22" sourceRef="_FcceR_43" targetRef="_FbvG_body">
+                    <transformation id="_FcceR_45">
+                        <body>
+                            <![CDATA[Greeting.Message]]>
+                        </body>
+                    </transformation>
+                </parameterMapping>
+            </processTask>
+            <userEvent id="ue__FcceR_0" name="Try to send mail again"/>
+            <stage id="_FcceR_12" name="Send Mail From Stage" autoComplete="true">
+                <planItem id="pi_pt__FcceR_0" name="send mail" definitionRef="pt__FcceR_0"/>
+            </stage>
+            <stage id="_FcceR_14" name="Send Mail With Error Handling" autoComplete="true">
+                <planItem id="pi_pt__FcceR_1" name="send mail with fault handling" definitionRef="pt__FcceR_1">
+                    <entryCriterion id="_FcceR_36" name="EntryCriterion_2" sentryRef="crit__FcceR_3"/>
+                    <extensionElements mustUnderstand="false">
+                        <reactivateCriterion xmlns="org.cafienne" id="_t1FbK_14" name="ReactivateCriterion_0" sentryRef="crit__t1FbK_0"/>
+                    </extensionElements>
+                    <itemControl id="_FcceR_16">
+                        <repetitionRule id="_FcceR_34">
+                            <condition id="_FcceR_35">
+                                <body>
+                                    <![CDATA[true]]>
+                                </body>
+                            </condition>
+                        </repetitionRule>
+                    </itemControl>
+                </planItem>
+                <planItem id="pi__FcceR_26" name="Mail Send Failure" definitionRef="_FcceR_26">
+                    <entryCriterion id="_FcceR_28" name="EntryCriterion_0" sentryRef="crit__FcceR_0"/>
+                    <exitCriterion id="_FcceR_50" name="ExitCriterion_0" sentryRef="crit__FcceR_2"/>
+                    <itemControl id="_FcceR_27">
+                        <repetitionRule id="_FcceR_30">
+                            <condition id="_FcceR_31">
+                                <body>
+                                    <![CDATA[true]]>
+                                </body>
+                            </condition>
+                        </repetitionRule>
+                    </itemControl>
+                </planItem>
+                <sentry id="crit__FcceR_0">
+                    <planItemOnPart id="_FcceR_29" sourceRef="pi_pt__FcceR_1">
+                        <standardEvent>fault</standardEvent>
+                    </planItemOnPart>
+                </sentry>
+                <sentry id="crit__FcceR_2">
+                    <planItemOnPart id="_FcceR_51" sourceRef="pi_pt__FcceR_1">
+                        <standardEvent>complete</standardEvent>
+                    </planItemOnPart>
+                </sentry>
+                <sentry id="crit__FcceR_3">
+                    <caseFileItemOnPart id="_FcceR_52" sourceRef="_FcceR_0">
+                        <standardEvent>create</standardEvent>
+                    </caseFileItemOnPart>
+                </sentry>
+                <sentry id="crit__t1FbK_0">
+                    <planItemOnPart id="_t1FbK_15" sourceRef="pi_ue__FcceR_0">
+                        <standardEvent>occur</standardEvent>
+                    </planItemOnPart>
+                </sentry>
+            </stage>
+            <stage id="_FcceR_26" name="Mail Send Failure" autoComplete="true">
+                <planItem id="pi_ue__FcceR_0" name="Try to send mail again" definitionRef="ue__FcceR_0"/>
+            </stage>
+        </casePlanModel>
+        <input id="_FcceR_1" name="Greeting" bindingRef="_FcceR_0"/>
+        <textAnnotation id="_t1FbK_13">
+            <text>
+                <![CDATA[This case model is for manual testing, as it requires stopping and starting the mail server (hat cannot easily be done from the typescript test code)]]>
+            </text>
+        </textAnnotation>
+    </case>
+    <process id="sendmail.process" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified" name="sendmail">
+        <input id="_WgV5_to" name="to"/>
+        <input id="_7a2I_cc" name="cc"/>
+        <input id="_Au7H_bcc" name="bcc"/>
+        <input id="_00Uj_from" name="from"/>
+        <input id="_cNdN_subject" name="subject"/>
+        <input id="_FbvG_body" name="body"/>
+        <input id="_xw21_attachments" name="attachments"/>
+        <input id="_L0Yl_replyTo" name="replyTo"/>
+        <input id="_MqzT_invite" name="invite"/>
+        <extensionElements mustUnderstand="false">
+            <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.mail.MailDefinition">
+                <mail-body type="text/html">
+                    <![CDATA[
+<html><h1>THIS IS A BIG HEADLINE</h1><body>${body}</body></html>
+]]>
+                </mail-body>
+            </cafienne:implementation>
+        </extensionElements>
+    </process>
+    <CMMNDI>
+        <CMMNDiagram>
+            <CMMNShape cmmnElementRef="cm__FcceR_0">
+                <Bounds x="20" y="20" width="800" height="500"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_pt__FcceR_0">
+                <Bounds x="160" y="140" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi__FcceR_12">
+                <Bounds x="80" y="100" width="320" height="170"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi__FcceR_14">
+                <Bounds x="60" y="290" width="660" height="220"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_pt__FcceR_1">
+                <Bounds x="180" y="350" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi__FcceR_26">
+                <Bounds x="420" y="330" width="220" height="110"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_FcceR_28">
+                <Bounds x="414" y="380" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ue__FcceR_0">
+                <Bounds x="510" y="370" width="32" height="32"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_FcceR_50">
+                <Bounds x="414" y="360" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_FcceR_36">
+                <Bounds x="174" y="380" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_FcceR_0">
+                <Bounds x="90" y="370" width="25" height="40"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_t1FbK_13">
+                <Bounds x="460" y="120" width="220" height="110"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_t1FbK_14">
+                <Bounds x="314" y="400" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNEdge label="fault" sourceCMMNElementRef="pi_pt__FcceR_1" targetCMMNElementRef="_FcceR_28"/>
+            <CMMNEdge label="complete" sourceCMMNElementRef="pi_pt__FcceR_1" targetCMMNElementRef="_FcceR_50"/>
+            <CMMNEdge label="create" sourceCMMNElementRef="_FcceR_0" targetCMMNElementRef="_FcceR_36"/>
+            <CMMNEdge sourceCMMNElementRef="pi_ue__FcceR_0" targetCMMNElementRef="_t1FbK_14"/>
+        </CMMNDiagram>
+    </CMMNDI>
+</definitions>

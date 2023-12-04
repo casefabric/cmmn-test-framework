@@ -34,7 +34,7 @@ export default class CaseEvents extends PlanItemEvents {
         if (this.state.is(State.Available)) {
             return; // no need to load more details, as the plan item is not yet active
         }
-        const caseInstance = await assertCasePlan(this.user, this.id, this.state, trace) as Case;
+        const caseInstance = await assertCasePlan(this.user, this.id, undefined, trace) as Case;
 
         // Add sub cases
         const caseTasks = caseInstance.planitems.filter(item => item.type === 'CaseTask');

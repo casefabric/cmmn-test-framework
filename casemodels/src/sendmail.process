@@ -1,4 +1,4 @@
-<process name="sendmail" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
+<process id="sendmail.process" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified" name="sendmail">
     <input id="_WgV5_to" name="to"/>
     <input id="_7a2I_cc" name="cc"/>
     <input id="_Au7H_bcc" name="bcc"/>

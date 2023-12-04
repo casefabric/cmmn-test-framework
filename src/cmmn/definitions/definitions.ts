@@ -16,6 +16,9 @@ export default class Definitions {
     public static readonly EntryCriteriaOnRecovery = new Definitions('entrycriteriaonrecovery.xml');
     public static readonly EventListener = new Definitions('eventlistener.xml');
     public static readonly Expressions = new Definitions('expressions.xml');
+    public static readonly FaultHandlingParentCase = new Definitions('faulthandling.xml');
+    public static readonly FaultHandlingSubCase = new Definitions('faulthandling_subcase.xml');
+    public static readonly FaultHandlingWithEntryCriterion = new Definitions('faulthandling_with_entrycriterion.xml');
     public static readonly FootballClubStats = new Definitions('footballclubstats.xml');
     public static readonly FootballStats = new Definitions('footballstats.xml');
     public static readonly FourEyes = new Definitions('four_eyes.xml');
