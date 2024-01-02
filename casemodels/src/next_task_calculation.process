@@ -1,0 +1,10 @@
+<process name="NextTaskCalculation" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
+    <output id="_uJl8_out1" name="out1"/>
+    <extensionElements mustUnderstand="false">
+        <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.calculation.CalculationDefinition">
+            <step output="out1">
+                <expression>T(java.lang.Math).round(T(java.lang.Math).random()*1)+1</expression>
+            </step>
+        </cafienne:implementation>
+    </extensionElements>
+</process>

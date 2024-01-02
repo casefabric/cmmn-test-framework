@@ -33,6 +33,8 @@ export default class Definitions {
     public static readonly Migration_v1 = new Definitions('migration/migration_v1.xml');
     public static readonly Migration_HelloworldBase = new Definitions('helloworld_base.xml');
     public static readonly Migration_HelloworldMigrated = new Definitions('helloworld_migrated.xml');
+    public static readonly Migration_RepeatingTask_v0 = new Definitions('migration/repeating_task_v0.xml');
+    public static readonly Migration_RepeatingTask_v1 = new Definitions('migration/repeating_task_v1.xml');
     public static readonly Planning = new Definitions('planning.xml');
     public static readonly ProcessTaskTest = new Definitions('processtasktest.xml');
     public static readonly RepeatStageTest = new Definitions('repeatstagetest.xml');

@@ -54,7 +54,7 @@ export default class TestCaseMigration extends TestCase {
             }
         };
 
-        const migratedDefinition = new DefinitionMigration("helloworld_migrated.xml");
+        const migratedDefinition = new DefinitionMigration(definitionMigrated);
 
         // Now start running the script
 
