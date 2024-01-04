@@ -54,6 +54,8 @@
                 </repetitionRule>
             </itemControl>
         </planItem>
+        <planItem id="pi__aa5iX_6" name="Test Reactivation" definitionRef="_aa5iX_6"/>
+        <planItem id="pi_ue__aa5iX_0" name="Reactivate Stage" definitionRef="ue__aa5iX_0"/>
         <sentry id="crit__aa5iX_0">
             <caseFileItemOnPart id="_aa5iX_3" sourceRef="_aa5iX_0">
                 <standardEvent>create</standardEvent>
@@ -108,6 +110,29 @@
             <outputs id="_aa5iX_37" name="Next" bindingRef="_aa5iX_38"/>
             <parameterMapping id="_aa5iX_34" sourceRef="_uJl8_out1" targetRef="_aa5iX_37"/>
         </processTask>
+        <stage id="_aa5iX_6" name="Test Reactivation" autoComplete="true">
+            <planItem id="pi_ms__aa5iX_0" name="Milestone" definitionRef="ms__aa5iX_0">
+                <entryCriterion id="_aa5iX_40" name="EntryCriterion_6" sentryRef="crit__aa5iX_6"/>
+                <itemControl id="_aa5iX_9">
+                    <requiredRule id="_aa5iX_36">
+                        <condition id="_aa5iX_39">
+                            <body>
+                                <![CDATA[true]]>
+                            </body>
+                        </condition>
+                    </requiredRule>
+                </itemControl>
+            </planItem>
+            <planItem id="pi_ue__aa5iX_1" name="Achieve Milestone" definitionRef="ue__aa5iX_1"/>
+            <sentry id="crit__aa5iX_6">
+                <planItemOnPart id="_aa5iX_41" sourceRef="pi_ue__aa5iX_1">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </sentry>
+        </stage>
+        <userEvent id="ue__aa5iX_0" name="Reactivate Stage"/>
+        <milestone id="ms__aa5iX_0" name="Milestone"/>
+        <userEvent id="ue__aa5iX_1" name="Achieve Milestone"/>
     </casePlanModel>
     <input id="_aa5iX_35" name="Unspecified" bindingRef="_aa5iX_0"/>
 </case>

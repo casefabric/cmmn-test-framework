@@ -13,6 +13,7 @@ import TestBusinessIdentifiers from '../tests/api/businessidentifiers/testbusine
 import TestHelloWorldBusinessIdentifiers from '../tests/api/businessidentifiers/testhelloworldbusinessidentifiers';
 import TestCaseMigration from '../tests/api/case/migration/testcasemigration';
 import TestCaseTeamMigration from '../tests/api/case/migration/testcaseteammigration';
+import TestReactivationMigration from '../tests/api/case/migration/testreactivationmigration';
 import TestRepetitionMigration from '../tests/api/case/migration/testrepetitionmigration';
 import TestSubCaseMigration from '../tests/api/case/migration/testsubcasemigration';
 import TestBootstrapCaseFileEvents from '../tests/api/case/testbootstrapcasefileevents';
@@ -249,6 +250,7 @@ const AllTestCases = new TestClasses([
     , TestCaseMigration
     , TestSubCaseMigration
     , TestCaseTeamMigration
+    , TestReactivationMigration
     , TestRepetitionMigration
     , TestRecovery
     , TestCompatibility
