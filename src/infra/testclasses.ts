@@ -111,29 +111,6 @@ export default class TestClasses {
      * Note that '*' gives a collection of all test classes and 'storage' gives the archival & deletion testcases (they are not default).
      * This enables to run both storage and other classes in one 
      */
-    static map(list: Array<string>): Array<Function> {
-        if (! list.length) {
-            return this.all;
-        } else {
-            const result: Array<Function> = [];
-            list.forEach(name => {
-                if (name === '*') {
-                    result.push(...this.all);
-                } else if (name === 'storage') {
-                    result.push(...this.storageTests);
-                } else {
-                    result.push(this.getTestClass(name));
-                }
-            });
-            return result;    
-        }
-    }
-
-    /**
-     * Map the list of string to a series of constructors of corresponding test classes.
-     * Note that '*' gives a collection of all test classes and 'storage' gives the archival & deletion testcases (they are not default).
-     * This enables to run both storage and other classes in one 
-     */
     static createTestRunners(list: Array<string>): Array<TestRunner> {
         const runners: Array<TestRunner> = [];
         if (! list.length) {
@@ -146,6 +123,9 @@ export default class TestClasses {
                 } else if (name === 'storage') {
                     // This is a named test, but the TestRunners are not default test. So override checking the isDefaultTest option.
                     runners.push(...this.storageTests.map(c => new TestRunner(c, true)));
+                } else if (name === 'migration') {
+                    // This is a named test, but the TestRunners are not default test. So override checking the isDefaultTest option.
+                    runners.push(...this.migrationTests.map(c => new TestRunner(c, true)));
                 } else {
                     // This is a named test, but the TestRunners are not default test. So override checking the isDefaultTest option.
                     runners.push(new TestRunner(this.getTestClass(name), true));
@@ -159,6 +139,15 @@ export default class TestClasses {
 
     static get all() {
         return AllTestCases.list;
+    }
+
+    static get migrationTests() {
+        return [TestProcessTaskMigration
+            , TestCaseMigration
+            , TestSubCaseMigration
+            , TestCaseTeamMigration
+            , TestReactivationMigration
+            , TestRepetitionMigration];
     }
 
     static get storageTests() {
