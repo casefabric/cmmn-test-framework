@@ -82,7 +82,7 @@ export default class TestCaseFileArrayAPI extends TestCase {
         await CaseFileService.createCaseFileItem(user, caseInstance, path, ChildArray);
 
         // Force the case to be removed from memory and then recovered. This causes cafienne engine issue https://github.com/cafienne/cafienne-engine/issues/235
-        await DebugService.forceRecovery(user, caseInstance.id);
+        await DebugService.forceRecovery(user, caseInstance);
 
         await CaseFileService.updateCaseFileItem(user, caseInstance, path, ChildArray);
 

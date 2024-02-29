@@ -150,7 +150,7 @@ export default class TestCompatibility extends TestCase {
         // Delete the greeting, should include that business identifier is removed
         await CaseFileService.deleteCaseFileItem(sender, caseInstance, 'Greeting');
 
-        await DebugService.forceRecovery(sender, caseInstance.id);
+        await DebugService.forceRecovery(sender, caseInstance);
         await DebugService.forceRecovery(sender, rootCaseId);
 
         await SomeTime(1000, 'Forcefully removed the cases from memory')

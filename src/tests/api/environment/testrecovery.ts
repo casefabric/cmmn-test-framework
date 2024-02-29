@@ -97,7 +97,7 @@ export default class TestRecovery extends TestCase {
         await TaskService.completeTask(user, case1FirstTask, taskOutput);
 
         // Remove case from memory
-        await DebugService.forceRecovery(user, case1_before.id);
+        await DebugService.forceRecovery(user, case1_before);
 
         // Reload it by getting the discretionary items
         await CaseService.getDiscretionaryItems(user, case1_before);
