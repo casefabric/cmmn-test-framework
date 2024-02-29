@@ -8,6 +8,11 @@ import TenantService from "../service/tenant/tenantservice";
  * Simple test tenant to avoid duplicate code
  */
 export default class WorldWideTestTenant {
+//*/
+    static defaultTenantName = 'World-Wide-Test-Tenant';
+/*/
+    static defaultTenantName = 'world';
+//*/
     private wrapper: TenantWrapper;
     get sender() {
         return this.wrapper.sender;
@@ -22,7 +27,7 @@ export default class WorldWideTestTenant {
         return this.wrapper.tenant;
     }
 
-    constructor(public readonly name: string = 'World-Wide-Test-Tenant', public platformAdmin: User = new User('admin')) {
+    constructor(public readonly name: string = WorldWideTestTenant.defaultTenantName, public platformAdmin: User = new User('admin')) {
         this.wrapper = TenantWrapper.get(name, platformAdmin);
     }
 
@@ -64,9 +69,28 @@ class TenantWrapper {
         }
     }
 
-    sender = new TenantOwner('sending-user', ['Sender'], 'sender', 'sender@senders.com');
-    receiver = new TenantOwner('receiving-user', ['Receiver'], 'receiver', 'receiver@receivers.com');
-    employee = new TenantUser('employee', ['Employee'], 'another employee', 'without any email address');
+    get senderId() {
+        if (this.name === 'world') {
+            return 'CgRzdXp5EgVsb2NhbA'; // suzy
+        }
+        return 'sending-user';
+    }
+    get receiverId() {
+        if (this.name === 'world') {
+            return 'CgRsYW5hEgVsb2NhbA'; // lana
+        }
+        return 'receiving-user';
+    }
+    get employeeId() {
+        if (this.name === 'world') {
+            return 'CgRoYW5rEgVsb2NhbA'; // hank
+        }
+        return 'employee';
+    }
+
+    sender = new TenantOwner(this.senderId, ['Sender'], 'sender', 'sender@senders.com');
+    receiver = new TenantOwner(this.receiverId, ['Receiver'], 'receiver', 'receiver@receivers.com');
+    employee = new TenantUser(this.employeeId, ['Employee'], 'another employee', 'without any email address');
     tenant: Tenant = new Tenant(this.name, [this.sender, this.receiver, this.employee]);
     private created: boolean = false;
     private creating: boolean = false;
@@ -86,7 +110,6 @@ class TenantWrapper {
         if (this.created) {
             if (!this.sender.token) {
                 await this.sender.login();
-
             }
             await TenantService.getTenantOwners(this.sender, this.tenant);
         } else if (this.creating) {

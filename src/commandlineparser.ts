@@ -8,6 +8,7 @@ export default class CommandLineParser {
         this.parseTimeout();
         this.parseLogging();
         this.parseParallellism();
+        this.parseTenant();
     }
 
     private parseTimeout() {
@@ -37,6 +38,10 @@ export default class CommandLineParser {
                 fillLoggingConfiguration(NoLoggingConfig);
                 break;
         }
+    }
+
+    private parseTenant() {
+        WorldWideTestTenant.defaultTenantName = this.readValue('in', 'tenant', 'World-Wide-Test-Tenant', 'world');
     }
 
     private parseParallellism() {
