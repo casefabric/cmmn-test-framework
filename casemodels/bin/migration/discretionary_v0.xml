@@ -1,0 +1,39 @@
+<definitions>
+    <caseFileItemDefinition name="root" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="root.cfid">
+        <property name="Outcome" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
+    </caseFileItemDefinition>
+    <case id="migration/discretionary_v0.case" name="migration/discretionary_v0" expressionLanguage="spel">
+        <caseFileModel>
+            <caseFileItem id="_CcFyv_4" name="Root" multiplicity="ExactlyOne" definitionRef="root.cfid"/>
+        </caseFileModel>
+        <casePlanModel id="cm__CcFyv_0" name="migration/discretionary_v0" autoComplete="true">
+            <planItem id="pi_ht__CcFyv_1" name="Task2" definitionRef="ht__CcFyv_1"/>
+            <planningTable id="_CcFyv_3">
+                <discretionaryItem id="pi_ht__CcFyv_2" name="Task3" definitionRef="ht__CcFyv_2"/>
+                <discretionaryItem id="pi_ht__CcFyv_0" name="Task1" definitionRef="ht__CcFyv_0"/>
+            </planningTable>
+            <humanTask id="ht__CcFyv_0" name="Task1" isBlocking="true"/>
+            <humanTask id="ht__CcFyv_1" name="Task2" isBlocking="true"/>
+            <humanTask id="ht__CcFyv_2" name="Task3" isBlocking="true"/>
+        </casePlanModel>
+    </case>
+    <CMMNDI>
+        <CMMNDiagram>
+            <CMMNShape cmmnElementRef="cm__CcFyv_0">
+                <Bounds x="20" y="20" width="800" height="500"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__CcFyv_0">
+                <Bounds x="120" y="80" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__CcFyv_1">
+                <Bounds x="120" y="220" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__CcFyv_2">
+                <Bounds x="120" y="350" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_CcFyv_3">
+                <Bounds x="300" y="33" width="24" height="16"/>
+            </CMMNShape>
+        </CMMNDiagram>
+    </CMMNDI>
+</definitions>

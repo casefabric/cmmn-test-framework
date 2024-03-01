@@ -13,6 +13,7 @@ import TestBusinessIdentifiers from '../tests/api/businessidentifiers/testbusine
 import TestHelloWorldBusinessIdentifiers from '../tests/api/businessidentifiers/testhelloworldbusinessidentifiers';
 import TestCaseMigration from '../tests/api/case/migration/testcasemigration';
 import TestCaseTeamMigration from '../tests/api/case/migration/testcaseteammigration';
+import TestDiscretionaryMigration from '../tests/api/case/migration/testdiscretionarymigration';
 import TestReactivationMigration from '../tests/api/case/migration/testreactivationmigration';
 import TestRepetitionMigration from '../tests/api/case/migration/testrepetitionmigration';
 import TestSubCaseMigration from '../tests/api/case/migration/testsubcasemigration';
@@ -148,6 +149,7 @@ const MigrationTests: Array<Function> = [
     , TestCaseTeamMigration
     , TestReactivationMigration
     , TestRepetitionMigration
+    , TestDiscretionaryMigration
 ];
 
 const AllTests: Array<Function> = [
