@@ -41,7 +41,7 @@ export default class TestDebugMode extends TestCase {
         caseInstance = await CaseService.getCase(user, caseInstance);
 
         // TODO: we can also query the events to see if they are indeed present.
-        await DebugService.getEvents(caseInstance.id).then(response => {
+        await DebugService.getEvents(caseInstance).then(response => {
             if (response.status === 401 || response.status === 200) {
                 // This is the right status messages
             } else {

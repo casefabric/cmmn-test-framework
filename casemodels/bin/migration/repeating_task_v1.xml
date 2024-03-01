@@ -1,0 +1,233 @@
+<definitions>
+    <caseFileItemDefinition name="unspecified" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="unspecified.cfid"/>
+    <case id="migration/repeating_task_v1.case" name="migration/repeating_task_v1" expressionLanguage="spel">
+        <caseFileModel>
+            <caseFileItem id="_n9caK_1" name="Unspecified" multiplicity="ExactlyOne" definitionRef="unspecified.cfid"/>
+            <caseFileItem id="_n9caK_2" name="Next" multiplicity="ExactlyOne" definitionRef="unspecified.cfid"/>
+        </caseFileModel>
+        <casePlanModel id="cm__n9caK_0" name="migration/repeating_task_v1" autoComplete="true">
+            <planItem id="pi_ht__n9caK_0" name="New Task" definitionRef="ht__n9caK_0"/>
+            <planItem id="pi_pt__n9caK_0" name="Define Next Task" definitionRef="pt__n9caK_0">
+                <entryCriterion id="_n9caK_4" name="EntryCriterion_0" sentryRef="crit__n9caK_0"/>
+                <entryCriterion id="_n9caK_29" name="EntryCriterion_5" sentryRef="crit__n9caK_5"/>
+                <itemControl id="_n9caK_3">
+                    <repetitionRule id="_n9caK_6">
+                        <condition id="_n9caK_7">
+                            <body>
+                                <![CDATA[true]]>
+                            </body>
+                        </condition>
+                    </repetitionRule>
+                </itemControl>
+            </planItem>
+            <planItem id="pi_ht__n9caK_1" name="Task1" definitionRef="ht__n9caK_1">
+                <entryCriterion id="_n9caK_11" name="EntryCriterion_1" sentryRef="crit__n9caK_1"/>
+                <itemControl id="_n9caK_8">
+                    <repetitionRule id="_n9caK_9">
+                        <condition id="_n9caK_10">
+                            <body>
+                                <![CDATA[true]]>
+                            </body>
+                        </condition>
+                    </repetitionRule>
+                </itemControl>
+            </planItem>
+            <planItem id="pi_ht__n9caK_2" name="Task2" definitionRef="ht__n9caK_2">
+                <entryCriterion id="_n9caK_18" name="EntryCriterion_2" sentryRef="crit__n9caK_2"/>
+                <itemControl id="_n9caK_15">
+                    <repetitionRule id="_n9caK_16">
+                        <condition id="_n9caK_17">
+                            <body>
+                                <![CDATA[true]]>
+                            </body>
+                        </condition>
+                    </repetitionRule>
+                </itemControl>
+            </planItem>
+            <planItem id="pi_pt__n9caK_1" name="Read Output" definitionRef="pt__n9caK_1">
+                <entryCriterion id="_n9caK_25" name="EntryCriterion_3" sentryRef="crit__n9caK_3"/>
+                <entryCriterion id="_n9caK_27" name="EntryCriterion_4" sentryRef="crit__n9caK_4"/>
+                <itemControl id="_n9caK_22">
+                    <repetitionRule id="_n9caK_23">
+                        <condition id="_n9caK_24">
+                            <body>
+                                <![CDATA[true]]>
+                            </body>
+                        </condition>
+                    </repetitionRule>
+                </itemControl>
+            </planItem>
+            <planItem id="pi__aa5iX_6" name="Test Reactivation" definitionRef="_aa5iX_6">
+                <extensionElements mustUnderstand="false">
+                    <reactivateCriterion xmlns="org.cafienne" id="_n9caK_35" name="ReactivateCriterion_0" sentryRef="crit__n9caK_6"/>
+                </extensionElements>
+            </planItem>
+            <planItem id="pi_ue__aa5iX_0" name="Reactivate Stage" definitionRef="ue__aa5iX_0"/>
+            <sentry id="crit__n9caK_0">
+                <caseFileItemOnPart id="_n9caK_5" sourceRef="_n9caK_1">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </sentry>
+            <sentry id="crit__n9caK_1">
+                <ifPart id="_n9caK_13" contextRef="_n9caK_2">
+                    <condition id="_n9caK_14">
+                        <body>
+                            <![CDATA[Next == 1]]>
+                        </body>
+                    </condition>
+                </ifPart>
+                <planItemOnPart id="_n9caK_12" sourceRef="pi_pt__n9caK_0">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <sentry id="crit__n9caK_2">
+                <ifPart id="_n9caK_20" contextRef="_n9caK_2">
+                    <condition id="_n9caK_21">
+                        <body>
+                            <![CDATA[Next == 2]]>
+                        </body>
+                    </condition>
+                </ifPart>
+                <planItemOnPart id="_n9caK_19" sourceRef="pi_pt__n9caK_0">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <sentry id="crit__n9caK_3">
+                <planItemOnPart id="_n9caK_26" sourceRef="pi_ht__n9caK_1">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <sentry id="crit__n9caK_4">
+                <planItemOnPart id="_n9caK_28" sourceRef="pi_ht__n9caK_2">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <sentry id="crit__n9caK_5">
+                <planItemOnPart id="_n9caK_30" sourceRef="pi_pt__n9caK_1">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <sentry id="crit__n9caK_6">
+                <planItemOnPart id="_n9caK_37" sourceRef="pi_ue__aa5iX_0">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <humanTask id="ht__n9caK_0" name="New Task" isBlocking="true"/>
+            <humanTask id="ht__n9caK_1" name="Task1" isBlocking="true"/>
+            <humanTask id="ht__n9caK_2" name="Task2" isBlocking="true"/>
+            <processTask id="pt__n9caK_0" name="Define Next Task" isBlocking="true" processRef="next_task_calculation.process">
+                <outputs id="_n9caK_36" name="Next" bindingRef="_n9caK_2"/>
+                <parameterMapping id="_n9caK_31" sourceRef="_uJl8_out1" targetRef="_n9caK_36"/>
+            </processTask>
+            <processTask id="pt__n9caK_1" name="Read Output" isBlocking="true" processRef="next_task_calculation.process">
+                <outputs id="_n9caK_34" name="Next" bindingRef="_n9caK_2"/>
+                <parameterMapping id="_n9caK_32" sourceRef="_uJl8_out1" targetRef="_n9caK_34"/>
+            </processTask>
+            <milestone id="ms__aa5iX_0" name="Milestone"/>
+            <userEvent id="ue__aa5iX_0" name="Reactivate Stage"/>
+            <userEvent id="ue__aa5iX_1" name="Achieve Milestone"/>
+            <stage id="_aa5iX_6" name="Test Reactivation" autoComplete="true">
+                <planItem id="pi_ms__aa5iX_0" name="Milestone" definitionRef="ms__aa5iX_0">
+                    <entryCriterion id="_aa5iX_40" name="EntryCriterion_6" sentryRef="crit__aa5iX_6"/>
+                    <itemControl id="_aa5iX_9">
+                        <requiredRule id="_aa5iX_36">
+                            <condition id="_aa5iX_39">
+                                <body>
+                                    <![CDATA[true]]>
+                                </body>
+                            </condition>
+                        </requiredRule>
+                    </itemControl>
+                </planItem>
+                <planItem id="pi_ue__aa5iX_1" name="Achieve Milestone" definitionRef="ue__aa5iX_1"/>
+                <sentry id="crit__aa5iX_6">
+                    <planItemOnPart id="_aa5iX_41" sourceRef="pi_ue__aa5iX_1">
+                        <standardEvent>occur</standardEvent>
+                    </planItemOnPart>
+                </sentry>
+            </stage>
+        </casePlanModel>
+    </case>
+    <process name="NextTaskCalculation" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified" id="next_task_calculation.process">
+        <output id="_uJl8_out1" name="out1"/>
+        <extensionElements mustUnderstand="false">
+            <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.calculation.CalculationDefinition">
+                <step output="out1">
+                    <expression>T(java.lang.Math).round(T(java.lang.Math).random()*1)+1</expression>
+                </step>
+            </cafienne:implementation>
+        </extensionElements>
+    </process>
+    <CMMNDI>
+        <CMMNDiagram>
+            <CMMNShape cmmnElementRef="cm__n9caK_0">
+                <Bounds x="20" y="20" width="800" height="650"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__n9caK_0">
+                <Bounds x="380" y="370" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_n9caK_1">
+                <Bounds x="70" y="130" width="25" height="40"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_pt__n9caK_0">
+                <Bounds x="160" y="120" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_n9caK_4">
+                <Bounds x="154" y="150" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__n9caK_1">
+                <Bounds x="400" y="70" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_n9caK_11">
+                <Bounds x="394" y="90" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__n9caK_2">
+                <Bounds x="400" y="230" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_n9caK_18">
+                <Bounds x="394" y="260" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_pt__n9caK_1">
+                <Bounds x="640" y="140" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_n9caK_25">
+                <Bounds x="634" y="160" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_n9caK_27">
+                <Bounds x="634" y="190" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_n9caK_29">
+                <Bounds x="214" y="190" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi__aa5iX_6">
+                <Bounds x="80" y="490" width="310" height="130"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ue__aa5iX_0">
+                <Bounds x="650" y="520" width="32" height="32"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ms__aa5iX_0">
+                <Bounds x="260" y="530" width="100" height="40"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ue__aa5iX_1">
+                <Bounds x="140" y="530" width="32" height="32"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_aa5iX_40">
+                <Bounds x="254" y="540" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_n9caK_35">
+                <Bounds x="384" y="530" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNEdge sourceCMMNElementRef="_n9caK_1" targetCMMNElementRef="_n9caK_4"/>
+            <CMMNEdge sourceCMMNElementRef="pi_pt__n9caK_0" targetCMMNElementRef="_n9caK_11"/>
+            <CMMNEdge sourceCMMNElementRef="pi_pt__n9caK_0" targetCMMNElementRef="_n9caK_18"/>
+            <CMMNEdge sourceCMMNElementRef="pi_ht__n9caK_1" targetCMMNElementRef="_n9caK_25"/>
+            <CMMNEdge sourceCMMNElementRef="pi_ht__n9caK_2" targetCMMNElementRef="_n9caK_27"/>
+            <CMMNEdge sourceCMMNElementRef="pi_pt__n9caK_1" targetCMMNElementRef="_n9caK_29">
+                <waypoint x="710" y="350"/>
+                <waypoint x="220" y="350"/>
+            </CMMNEdge>
+            <CMMNEdge sourceCMMNElementRef="pi_ue__aa5iX_1" targetCMMNElementRef="_aa5iX_40"/>
+            <CMMNEdge sourceCMMNElementRef="pi_ue__aa5iX_0" targetCMMNElementRef="_n9caK_35"/>
+        </CMMNDiagram>
+    </CMMNDI>
+</definitions>

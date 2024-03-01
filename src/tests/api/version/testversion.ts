@@ -34,7 +34,7 @@ export default class TestVersion extends TestCase {
         // Compare engine version from engine versus the one that the case instance thinks it has. They MUST be the same ;)
         const caseDefinitionApplied = firstEventBatch.find((event: any) => event.type === 'CaseDefinitionApplied');
         const v1 = JSON.stringify(engineVersion, undefined, 2);
-        const v2 = JSON.stringify(caseDefinitionApplied.content.engineVersion, undefined, 2);
+        const v2 = JSON.stringify(caseDefinitionApplied?.content.engineVersion, undefined, 2);
         if (v1 !== v2) {
             throw new Error(`Unexpected mismatch between engine's version of version and case instance's version of it:\nEngine version: ${v1}\nCase Instance Version: ${v2} `);
         }
@@ -45,7 +45,7 @@ export default class TestVersion extends TestCase {
         const secondEventBatch = (await DebugService.getParsedEvents(caseInstance.id, user)).filter((event: any) => event.type !== 'DebugEvent');
 
         // Force recovery, so that the engine version state is removed from the case instance and set again, and tested against the actual engine version.
-        await DebugService.forceRecovery(user, caseInstance.id);
+        await DebugService.forceRecovery(user, caseInstance);
 
         // Now again get the discretionaries, that will recover the case instance. Then check that there are as many new events as previously, and also check
         //  there is no EngineVersionChanged event either.

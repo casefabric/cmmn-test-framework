@@ -13,6 +13,9 @@ import TestBusinessIdentifiers from '../tests/api/businessidentifiers/testbusine
 import TestHelloWorldBusinessIdentifiers from '../tests/api/businessidentifiers/testhelloworldbusinessidentifiers';
 import TestCaseMigration from '../tests/api/case/migration/testcasemigration';
 import TestCaseTeamMigration from '../tests/api/case/migration/testcaseteammigration';
+import TestDiscretionaryMigration from '../tests/api/case/migration/testdiscretionarymigration';
+import TestReactivationMigration from '../tests/api/case/migration/testreactivationmigration';
+import TestRepetitionMigration from '../tests/api/case/migration/testrepetitionmigration';
 import TestSubCaseMigration from '../tests/api/case/migration/testsubcasemigration';
 import TestBootstrapCaseFileEvents from '../tests/api/case/testbootstrapcasefileevents';
 import TestDefinitionInStartCase from '../tests/api/case/testdefinitioninstartcase';
@@ -86,45 +89,12 @@ import TestTravelRequest from '../tests/travelrequest/testtravelrequest';
 import TestRunner from './testrunner';
 
 export default class TestClasses {
-    private testsByName: any = new Object();
-    private static testList: Array<any> = [];
-
-    constructor(public list: Array<Function>) {
-        list.forEach(f => {
-            this.testsByName[f.name] = f;
-            TestClasses.testList.push({ name: f.name.toLowerCase(), test: f });
-        });
-    }
-
     static getTestClass(name: string): Function {
-        const t = TestClasses.testList.find(t => (t.name === name.toLowerCase() || t.name === `test${name}`.toLowerCase()));
+        const t = AllTests.find(t => (t.name.toLowerCase() === name.toLowerCase() || t.name.toLowerCase() === `test${name}`.toLowerCase()));
         if (!t) {
             throw new Error(`Cannot find a test '${name}'`);
         }
-        return t.test;
-    }
-
-    /**
-     * Map the list of string to a series of constructors of corresponding test classes.
-     * Note that '*' gives a collection of all test classes and 'storage' gives the archival & deletion testcases (they are not default).
-     * This enables to run both storage and other classes in one 
-     */
-    static map(list: Array<string>): Array<Function> {
-        if (! list.length) {
-            return this.all;
-        } else {
-            const result: Array<Function> = [];
-            list.forEach(name => {
-                if (name === '*') {
-                    result.push(...this.all);
-                } else if (name === 'storage') {
-                    result.push(...this.storageTests);
-                } else {
-                    result.push(this.getTestClass(name));
-                }
-            });
-            return result;    
-        }
+        return t;
     }
 
     /**
@@ -134,37 +104,55 @@ export default class TestClasses {
      */
     static createTestRunners(list: Array<string>): Array<TestRunner> {
         const runners: Array<TestRunner> = [];
-        if (! list.length) {
-            runners.push(...this.all.map(c => new TestRunner(c, false)).filter(runner => runner.needsRunning()));
+        const addRunner = (test: Function, needsRunning: boolean) => runners.push(new TestRunner(test, needsRunning));
+        const addExplicitRunner = (test: Function) => addRunner(test, true);
+        const addDefaultRunner = (test: Function) => addRunner(test, false);
+
+        if (!list.length) {
+            AllTests.forEach(addDefaultRunner);
         } else {
             list.forEach(name => {
                 if (name === '*') {
-                    // TestRunners should only do the default ones, not the isDefaultTest = false
-                    runners.push(...this.all.map(c => new TestRunner(c, false)).filter(runner => runner.needsRunning()));
+                    AllTests.forEach(addDefaultRunner);
                 } else if (name === 'storage') {
-                    // This is a named test, but the TestRunners are not default test. So override checking the isDefaultTest option.
-                    runners.push(...this.storageTests.map(c => new TestRunner(c, true)));
+                    StorageTests.forEach(addExplicitRunner);
+                } else if (name === 'migration') {
+                    MigrationTests.forEach(addExplicitRunner);
                 } else {
-                    // This is a named test, but the TestRunners are not default test. So override checking the isDefaultTest option.
-                    runners.push(new TestRunner(this.getTestClass(name), true));
+                    addExplicitRunner(this.getTestClass(name));
                 }
             });
         }
+        // Filter out the tests that do not to be ran.
+        const actualRunners = runners.filter(run => run.needsRunning());
         // Give each runner the right test number, starting from 1 as that is more "human-intuitive"
-        runners.forEach((run, index) => run.testNumber = index + 1);
-        return runners;
-    }
-
-    static get all() {
-        return AllTestCases.list;
-    }
-
-    static get storageTests() {
-        return [TestArchiveHelloworld, TestArchiveCase, TestDeleteCase, TestDeleteHelloworld, TestDeleteTenant, TestDeleteTenantWithContent, TestDeleteCaseAuthorization];
+        actualRunners.forEach((run, index) => run.testNumber = index + 1);
+        return actualRunners;
     }
 }
 
-const AllTestCases = new TestClasses([
+const StorageTests: Array<Function> = [
+    TestArchiveHelloworld,
+    TestArchiveCase,
+    TestDeleteCase,
+    TestDeleteHelloworld,
+    TestDeleteTenant,
+    TestDeleteTenantWithContent,
+    TestDeleteCaseAuthorization
+];
+
+const MigrationTests: Array<Function> = [
+    TestProcessTaskMigration
+    , TestProcessTaskMigration
+    , TestCaseMigration
+    , TestSubCaseMigration
+    , TestCaseTeamMigration
+    , TestReactivationMigration
+    , TestRepetitionMigration
+    , TestDiscretionaryMigration
+];
+
+const AllTests: Array<Function> = [
     PingTokenService
     , PingTestEnvironment
     , TestResponseType
@@ -244,10 +232,8 @@ const AllTestCases = new TestClasses([
     , TestGetListGetDetails
     , TestDashedParameters
     , TestInputMappingFailure
-    , TestProcessTaskMigration
-    , TestCaseMigration
-    , TestSubCaseMigration
-    , TestCaseTeamMigration
+    , ...StorageTests
+    , ...MigrationTests
     , TestRecovery
     , TestCompatibility
-]);
+];

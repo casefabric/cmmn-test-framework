@@ -33,7 +33,7 @@ export default class TestEntryCriteriaOnRecovery extends TestCase {
         await TaskService.completeTask(user, task1);
 
         // Take the case out of memory
-        await DebugService.forceRecovery(user, caseInstance.id);
+        await DebugService.forceRecovery(user, caseInstance);
 
         // Bring the case back into memory
         await CaseService.getCase(user, caseInstance);
