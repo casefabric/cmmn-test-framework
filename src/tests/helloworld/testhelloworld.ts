@@ -10,7 +10,7 @@ import TaskService from '../../service/task/taskservice';
 import { assertCasePlan } from '../../test/caseassertions/plan';
 import { assertTask, findTask, verifyTaskInput } from '../../test/caseassertions/task';
 import TestCase from '../../test/testcase';
-import WorldWideTestTenant from '../worldwidetesttenant';
+import WorldWideTestTenant from '../setup/worldwidetesttenant';
 
 const definition = Definitions.HelloWorld;
 const worldwideTenant = new WorldWideTestTenant();

@@ -11,7 +11,7 @@ import { assertPlanItem } from '../../../../test/caseassertions/plan';
 import Comparison from '../../../../test/comparison';
 import TestCase from '../../../../test/testcase';
 import { ServerSideProcessing } from '../../../../test/time';
-import WorldWideTestTenant from '../../../worldwidetesttenant';
+import WorldWideTestTenant from '../../../setup/worldwidetesttenant';
 import TaskContent from './taskcontent';
 
 const definition = Definitions.TaskOutputValidation;

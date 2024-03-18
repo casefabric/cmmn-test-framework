@@ -10,7 +10,7 @@ import CaseService from '../../../../service/case/caseservice';
 import assertCaseFileContent from '../../../../test/caseassertions/file';
 import { assertPlanItem } from '../../../../test/caseassertions/plan';
 import TestCase from '../../../../test/testcase';
-import WorldWideTestTenant from '../../../worldwidetesttenant';
+import WorldWideTestTenant from '../../../setup/worldwidetesttenant';
 
 const definition = Definitions.ProcessTaskTest;
 const worldwideTenant = new WorldWideTestTenant();

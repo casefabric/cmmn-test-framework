@@ -5,7 +5,7 @@ import State from '../../../../cmmn/state';
 import CaseService from '../../../../service/case/caseservice';
 import TestCase from '../../../../test/testcase';
 import { PollUntilSuccess } from '../../../../test/time';
-import WorldWideTestTenant from '../../../worldwidetesttenant';
+import WorldWideTestTenant from '../../../setup/worldwidetesttenant';
 
 const definition = Definitions.Timer;
 const worldwideTenant = new WorldWideTestTenant();

@@ -8,7 +8,7 @@ import TaskService from '../../../../service/task/taskservice';
 import Comparison from '../../../../test/comparison';
 import TestCase from '../../../../test/testcase';
 import User from '../../../../user';
-import WorldWideTestTenant from '../../../worldwidetesttenant';
+import WorldWideTestTenant from '../../../setup/worldwidetesttenant';
 
 const definition = Definitions.StageTest;
 const worldwideTenant = new WorldWideTestTenant();

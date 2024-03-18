@@ -3,7 +3,7 @@ import Config from "../../config";
 import Trace from "../../infra/trace";
 import logger from "../../logger";
 import Tenant from "../../tenant/tenant";
-import WorldWideTestTenant from "../../tests/worldwidetesttenant";
+import WorldWideTestTenant from "../../tests/setup/worldwidetesttenant";
 import User from "../../user";
 import CafienneService from "../cafienneservice";
 import { checkResponse } from "../response";

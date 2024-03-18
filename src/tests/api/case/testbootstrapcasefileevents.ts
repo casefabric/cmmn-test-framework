@@ -3,7 +3,7 @@
 import Definitions from "../../../cmmn/definitions/definitions";
 import CaseService from "../../../service/case/caseservice";
 import TestCase from "../../../test/testcase";
-import WorldWideTestTenant from "../../worldwidetesttenant";
+import WorldWideTestTenant from "../../setup/worldwidetesttenant";
 
 const definition = Definitions.BootstrapCaseFileEvents;
 const worldwideTenant = new WorldWideTestTenant();

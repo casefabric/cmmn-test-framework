@@ -13,7 +13,7 @@ import { assertPlanItem } from '../../test/caseassertions/plan';
 import { assertTask, findTask, verifyTaskInput } from '../../test/caseassertions/task';
 import TestCase from '../../test/testcase';
 import { ServerSideProcessing } from '../../test/time';
-import WorldWideTestTenant from '../worldwidetesttenant';
+import WorldWideTestTenant from '../setup/worldwidetesttenant';
 import IncidentContent from './incidentmanagementcontent';
 
 const definition = Definitions.IncidentManagementForTraining;

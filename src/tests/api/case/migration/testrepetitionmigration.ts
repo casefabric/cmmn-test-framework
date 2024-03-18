@@ -8,7 +8,7 @@ import DebugService from '../../../../service/case/debugservice';
 import TaskService from '../../../../service/task/taskservice';
 import TestCase from '../../../../test/testcase';
 import { SomeTime } from '../../../../test/time';
-import WorldWideTestTenant from '../../../worldwidetesttenant';
+import WorldWideTestTenant from '../../../setup/worldwidetesttenant';
 
 const base_definition = Definitions.Migration_RepeatingTask_v0;
 const definitionMigrated = Definitions.Migration_RepeatingTask_v1;

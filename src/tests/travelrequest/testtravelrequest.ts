@@ -10,7 +10,7 @@ import TaskService from '../../service/task/taskservice';
 import TenantService from '../../service/tenant/tenantservice';
 import TenantUser from '../../tenant/tenantuser';
 import TestCase from '../../test/testcase';
-import WorldWideTestTenant from '../worldwidetesttenant';
+import WorldWideTestTenant from '../setup/worldwidetesttenant';
 
 const definition = Definitions.TravelRequest;
 const worldwideTenant = new WorldWideTestTenant();

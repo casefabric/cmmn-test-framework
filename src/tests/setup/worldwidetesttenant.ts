@@ -1,8 +1,8 @@
-import User from "../user";
-import TenantUser, { TenantOwner } from "../tenant/tenantuser";
-import Tenant from "../tenant/tenant";
-import PlatformService from "../service/platform/platformservice";
-import TenantService from "../service/tenant/tenantservice";
+import User from "../../user";
+import TenantUser, { TenantOwner } from "../../tenant/tenantuser";
+import Tenant from "../../tenant/tenant";
+import PlatformService from "../../service/platform/platformservice";
+import TenantService from "../../service/tenant/tenantservice";
 
 /**
  * Simple test tenant to avoid duplicate code

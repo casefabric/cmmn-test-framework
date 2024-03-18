@@ -10,7 +10,7 @@ import CaseService from '../../../service/case/caseservice';
 import StatisticsFilter from '../../../service/case/statisticsfilter';
 import TestCase from '../../../test/testcase';
 import User from '../../../user';
-import WorldWideTestTenant from '../../worldwidetesttenant';
+import WorldWideTestTenant from '../../setup/worldwidetesttenant';
 
 const helloworldDefinition = Definitions.HelloWorld;
 const caseTeamDefinition = Definitions.CaseTeam;

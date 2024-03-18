@@ -1,5 +1,5 @@
 import Config, { MinimalLoggingConfig, NoLoggingConfig } from './config';
-import WorldWideTestTenant from './tests/worldwidetesttenant';
+import WorldWideTestTenant from './tests/setup/worldwidetesttenant';
 
 export default class CommandLineParser {
     configArguments: Array<string> = process.argv.slice(2);

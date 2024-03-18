@@ -8,7 +8,7 @@ import CaseFileService from '../../../../service/case/casefileservice';
 import CaseService from '../../../../service/case/caseservice';
 import RepositoryService from '../../../../service/case/repositoryservice';
 import TestCase from '../../../../test/testcase';
-import WorldWideTestTenant from '../../../worldwidetesttenant';
+import WorldWideTestTenant from '../../../setup/worldwidetesttenant';
 
 const definition = Definitions.EntryCriteriaOnCaseInputParameters;
 const worldwideTenant = new WorldWideTestTenant();

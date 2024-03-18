@@ -12,7 +12,7 @@ import CaseTeamService from '../../../../service/case/caseteamservice';
 import TaskService from '../../../../service/task/taskservice';
 import { findTask } from '../../../../test/caseassertions/task';
 import TestCase from '../../../../test/testcase';
-import WorldWideTestTenant from '../../../worldwidetesttenant';
+import WorldWideTestTenant from '../../../setup/worldwidetesttenant';
 
 const base_definition = Definitions.Migration_HelloworldBase;
 const definitionMigrated = Definitions.Migration_HelloworldMigrated;

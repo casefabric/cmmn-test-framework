@@ -7,7 +7,7 @@ import CaseEvents from '../../../service/storage/caseevents';
 import StorageService from '../../../service/storage/storageservice';
 import TestCase from '../../../test/testcase';
 import { SomeTime } from '../../../test/time';
-import WorldWideTestTenant from '../../worldwidetesttenant';
+import WorldWideTestTenant from '../../setup/worldwidetesttenant';
 
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;

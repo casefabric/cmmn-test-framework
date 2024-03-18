@@ -12,7 +12,7 @@ import { assertTask, assertTaskCount, findTask } from '../../../test/caseasserti
 import { assertCaseTeamTenantRole, assertCaseTeamUser } from '../../../test/caseassertions/team';
 import TestCase from '../../../test/testcase';
 import Util from '../../../test/util';
-import WorldWideTestTenant from '../../worldwidetesttenant';
+import WorldWideTestTenant from '../../setup/worldwidetesttenant';
 
 const definition = Definitions.CaseTeam;
 const tenant = Util.generateId();

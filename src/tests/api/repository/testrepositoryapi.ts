@@ -3,7 +3,7 @@ import RepositoryService, { readLocalXMLDocument } from "../../../service/case/r
 import TenantService from "../../../service/tenant/tenantservice";
 import TenantUser from "../../../tenant/tenantuser";
 import TestCase from "../../../test/testcase";
-import WorldWideTestTenant from "../../worldwidetesttenant";
+import WorldWideTestTenant from "../../setup/worldwidetesttenant";
 
 const repositoryTenant = new WorldWideTestTenant('For-repository-testing');
 const repositoryTenant2 = new WorldWideTestTenant('For-repository-testing-2');

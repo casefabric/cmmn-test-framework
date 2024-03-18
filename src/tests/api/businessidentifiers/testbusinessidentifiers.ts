@@ -6,7 +6,7 @@ import CaseIdentifierService from '../../../service/identifier/caseidentifierser
 import IdentifierFilter from '../../../service/identifier/identifierfilter';
 import TestCase from '../../../test/testcase';
 import Util from '../../../test/util';
-import WorldWideTestTenant from '../../worldwidetesttenant';
+import WorldWideTestTenant from '../../setup/worldwidetesttenant';
 import TestFootballBusinessIdentifiers from './footballbusinessidentifiers/testfootballbusinessidentifiers';
 
 const worldwideTenant = new WorldWideTestTenant(Util.generateId('inactive-tenant-'));

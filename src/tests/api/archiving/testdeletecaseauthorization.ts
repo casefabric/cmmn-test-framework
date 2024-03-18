@@ -16,7 +16,7 @@ import Tenant from '../../../tenant/tenant';
 import TenantUser, { TenantOwner } from '../../../tenant/tenantuser';
 import TestCase from '../../../test/testcase';
 import Util from '../../../test/util';
-import WorldWideTestTenant from '../../worldwidetesttenant';
+import WorldWideTestTenant from '../../setup/worldwidetesttenant';
 
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;

@@ -10,7 +10,7 @@ import TaskService from '../../../../service/task/taskservice';
 import { findTask } from '../../../../test/caseassertions/task';
 import TestCase from '../../../../test/testcase';
 import { PollUntilSuccess, SomeTime } from '../../../../test/time';
-import WorldWideTestTenant from '../../../worldwidetesttenant';
+import WorldWideTestTenant from '../../../setup/worldwidetesttenant';
 
 const base_definition = Definitions.Migration_v0;
 const definitionMigrated = Definitions.Migration_v1;
