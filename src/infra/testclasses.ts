@@ -49,6 +49,7 @@ import TestCaseTeamConsentGroupAPI from '../tests/api/caseteam/testcaseteamconse
 import TestCaseTeamTaskAuthorizations from '../tests/api/caseteam/testcaseteamtaskauthorizations';
 import TestCaseTeamTenantRoleMembers from '../tests/api/caseteam/testcaseteamtenantrolemembers';
 import TestStartCaseEmptyRole from '../tests/api/caseteam/teststartcaseemptyrole';
+import TestTenantGroupMembership from '../tests/api/caseteam/testtenantgroupmembership';
 import TestConsentGroupAPI from '../tests/api/consentgroup/testconsentgroupapi';
 import TestDebugMode from '../tests/api/debug/testdebugmode';
 import TestDiscretionaryItems from '../tests/api/discretionary/testdiscretionaryitems';
@@ -221,6 +222,7 @@ const AllTests: Array<Function> = [
     , TestInvalidStartCase
     , TestValidStartCase
     , TestStartCaseEmptyRole
+    , TestTenantGroupMembership
     , TestSubCase
     , TestArraySubCase
     , TestRepeatStage
