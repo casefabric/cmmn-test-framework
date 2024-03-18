@@ -10,7 +10,7 @@ import CaseService from "../../../../service/case/caseservice";
 import TaskService from "../../../../service/task/taskservice";
 import CaseAssertions from "../../../../test/caseassertions/caseassertions";
 import TestCase from "../../../../test/testcase";
-import WorldWideTestTenant from "../../../worldwidetesttenant";
+import WorldWideTestTenant from "../../../setup/worldwidetesttenant";
 import SimpleDataMock from "./simpledatamock";
 
 const definition = Definitions.FaultHandlingSubCase;

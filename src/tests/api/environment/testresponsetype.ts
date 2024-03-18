@@ -7,7 +7,7 @@ import Config from '../../../config';
 import CafienneService, { printHeaders } from '../../../service/cafienneservice';
 import CaseService from '../../../service/case/caseservice';
 import TestCase from '../../../test/testcase';
-import WorldWideTestTenant from '../../worldwidetesttenant';
+import WorldWideTestTenant from '../../setup/worldwidetesttenant';
 
 const definition = Definitions.CaseTeam;
 const worldwideTenant = new WorldWideTestTenant('wwtt-2');

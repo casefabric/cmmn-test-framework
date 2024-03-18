@@ -7,7 +7,7 @@ import CaseService from '../../../service/case/caseservice';
 import assertCaseFileContent from '../../../test/caseassertions/file';
 import TestCase from '../../../test/testcase';
 import Util from '../../../test/util';
-import WorldWideTestTenant from '../../worldwidetesttenant';
+import WorldWideTestTenant from '../../setup/worldwidetesttenant';
 
 const definition = Definitions.CaseFile;
 const worldwideTenant = new WorldWideTestTenant();

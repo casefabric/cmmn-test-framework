@@ -6,7 +6,7 @@ import CaseService from '../../../../../service/case/caseservice';
 import DebugService from '../../../../../service/case/debugservice';
 import { assertPlanItem } from '../../../../../test/caseassertions/plan';
 import TestCase from '../../../../../test/testcase';
-import WorldWideTestTenant from '../../../../worldwidetesttenant';
+import WorldWideTestTenant from '../../../../setup/worldwidetesttenant';
 
 const definition = Definitions.SMTPTest;
 const worldwideTenant = new WorldWideTestTenant();

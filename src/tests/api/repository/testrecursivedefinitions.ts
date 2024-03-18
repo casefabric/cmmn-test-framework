@@ -2,7 +2,7 @@ import DeployCase from "../../../service/case/command/repository/deploycase";
 import RepositoryService, { readLocalXMLDocument } from "../../../service/case/repositoryservice";
 import Comparison from "../../../test/comparison";
 import TestCase from "../../../test/testcase";
-import WorldWideTestTenant from "../../worldwidetesttenant";
+import WorldWideTestTenant from "../../setup/worldwidetesttenant";
 
 const worldwideTenant = new WorldWideTestTenant('For-repository-testing');
 const tenant = worldwideTenant.name;

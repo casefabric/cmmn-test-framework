@@ -5,7 +5,7 @@ import CaseService from '../../../service/case/caseservice';
 import TaskService from '../../../service/task/taskservice';
 import assertCaseFileContent from '../../../test/caseassertions/file';
 import TestCase from '../../../test/testcase';
-import WorldWideTestTenant from '../../worldwidetesttenant';
+import WorldWideTestTenant from '../../setup/worldwidetesttenant';
 
 const definition = Definitions.Expressions;
 const worldwideTenant = new WorldWideTestTenant();

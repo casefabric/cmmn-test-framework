@@ -9,7 +9,7 @@ import CasePlanService from '../../../../../service/case/caseplanservice';
 import CaseService from '../../../../../service/case/caseservice';
 import { assertPlanItem } from '../../../../../test/caseassertions/plan';
 import TestCase from '../../../../../test/testcase';
-import WorldWideTestTenant from '../../../../worldwidetesttenant';
+import WorldWideTestTenant from '../../../../setup/worldwidetesttenant';
 
 const definition = Definitions.Migration_GetList;
 const newDefinition = Definitions.Migration_GetList_v1;

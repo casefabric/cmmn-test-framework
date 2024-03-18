@@ -7,7 +7,7 @@ import CaseMigrationService, { DefinitionMigration } from '../../../../service/c
 import CasePlanService from '../../../../service/case/caseplanservice';
 import CaseService from '../../../../service/case/caseservice';
 import TestCase from '../../../../test/testcase';
-import WorldWideTestTenant from '../../../worldwidetesttenant';
+import WorldWideTestTenant from '../../../setup/worldwidetesttenant';
 
 const base_definition = Definitions.Migration_RepeatingTask_v0;
 const definitionMigrated = Definitions.Migration_RepeatingTask_v1;

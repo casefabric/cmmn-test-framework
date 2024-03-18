@@ -8,7 +8,7 @@ import CaseService from "../../../../service/case/caseservice";
 import Path from "../../../../service/case/path";
 import CaseAssertions from "../../../../test/caseassertions/caseassertions";
 import TestCase from "../../../../test/testcase";
-import WorldWideTestTenant from "../../../worldwidetesttenant";
+import WorldWideTestTenant from "../../../setup/worldwidetesttenant";
 import SimpleDataMock from "./simpledatamock";
 
 const definition = Definitions.FaultHandlingWithEntryCriterion;

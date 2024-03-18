@@ -8,7 +8,7 @@ import { CaseOwner } from '../../../cmmn/team/caseteamuser';
 import CaseService from '../../../service/case/caseservice';
 import TaskService from '../../../service/task/taskservice';
 import TestCase from '../../../test/testcase';
-import WorldWideTestTenant from '../../worldwidetesttenant';
+import WorldWideTestTenant from '../../setup/worldwidetesttenant';
 
 const definition = Definitions.TaskOutputOperations;
 const worldwideTenant = new WorldWideTestTenant();

@@ -6,7 +6,7 @@ import TaskFilter from '../../../../service/task/taskfilter';
 import TaskService from '../../../../service/task/taskservice';
 import TestCase from '../../../../test/testcase';
 import Util from '../../../../test/util';
-import WorldWideTestTenant from '../../../worldwidetesttenant';
+import WorldWideTestTenant from '../../../setup/worldwidetesttenant';
 
 const definition1 = Definitions.HelloWorld;
 const definition2 = Definitions.HelloWorld2;

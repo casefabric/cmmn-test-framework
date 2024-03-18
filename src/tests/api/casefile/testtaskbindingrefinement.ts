@@ -7,7 +7,7 @@ import CaseService from '../../../service/case/caseservice';
 import TaskService from '../../../service/task/taskservice';
 import Comparison from '../../../test/comparison';
 import TestCase from '../../../test/testcase';
-import WorldWideTestTenant from '../../worldwidetesttenant';
+import WorldWideTestTenant from '../../setup/worldwidetesttenant';
 
 const definition = Definitions.TaskBindingRefinement;
 const worldwideTenant = new WorldWideTestTenant();

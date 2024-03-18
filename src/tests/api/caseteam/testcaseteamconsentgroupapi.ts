@@ -11,7 +11,7 @@ import CaseService from '../../../service/case/caseservice';
 import CaseTeamService from '../../../service/case/caseteamservice';
 import TestCase from '../../../test/testcase';
 import User from '../../../user';
-import MultiTenantSetup from '../../multitenantsetup';
+import MultiTenantSetup from '../../setup/multitenantsetup';
 
 // Case definition with the roles
 const definition = Definitions.CaseTeam;

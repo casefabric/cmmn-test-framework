@@ -11,7 +11,7 @@ import CaseTeamService from '../../../service/case/caseteamservice';
 import { assertCaseTeam, assertCaseTeamUser } from '../../../test/caseassertions/team';
 import TestCase from '../../../test/testcase';
 import User from '../../../user';
-import WorldWideTestTenant from '../../worldwidetesttenant';
+import WorldWideTestTenant from '../../setup/worldwidetesttenant';
 
 const definition = Definitions.CaseTeam;
 const worldwideTenant = new WorldWideTestTenant('wwtt-2');

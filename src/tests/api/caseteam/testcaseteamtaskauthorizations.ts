@@ -12,7 +12,7 @@ import { assertTask, findTask } from '../../../test/caseassertions/task';
 import { assertCaseTeamUser } from '../../../test/caseassertions/team';
 import TestCase from '../../../test/testcase';
 import User from '../../../user';
-import WorldWideTestTenant from '../../worldwidetesttenant';
+import WorldWideTestTenant from '../../setup/worldwidetesttenant';
 
 const definition = Definitions.CaseTeam;
 const worldwideTenant = new WorldWideTestTenant('wwtt-3');

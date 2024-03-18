@@ -8,7 +8,7 @@ import TaskService from '../../../service/task/taskservice';
 import assertCaseFileContent from '../../../test/caseassertions/file';
 import { verifyTaskInput } from '../../../test/caseassertions/task';
 import TestCase from '../../../test/testcase';
-import WorldWideTestTenant from '../../worldwidetesttenant';
+import WorldWideTestTenant from '../../setup/worldwidetesttenant';
 
 const definition = Definitions.RepeatWithMapping;
 const worldwideTenant = new WorldWideTestTenant();

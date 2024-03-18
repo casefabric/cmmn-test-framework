@@ -5,7 +5,7 @@ import CaseService from '../../../service/case/caseservice';
 import DebugService from '../../../service/case/debugservice';
 import PlatformService from '../../../service/platform/platformservice';
 import TestCase from '../../../test/testcase';
-import WorldWideTestTenant from '../../worldwidetesttenant';
+import WorldWideTestTenant from '../../setup/worldwidetesttenant';
 
 const definition = Definitions.HelloWorld;
 const worldwideTenant = new WorldWideTestTenant();

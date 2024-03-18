@@ -4,7 +4,7 @@ import StorageService from '../../../service/storage/storageservice';
 import TenantEvents from '../../../service/storage/tenantevents';
 import TenantService from '../../../service/tenant/tenantservice';
 import TestCase from '../../../test/testcase';
-import WorldWideTestTenant from '../../worldwidetesttenant';
+import WorldWideTestTenant from '../../setup/worldwidetesttenant';
 
 export default class TestDeleteTenant extends TestCase {
   isDefaultTest = false;

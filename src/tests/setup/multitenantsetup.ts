@@ -1,9 +1,9 @@
-import User from "../user";
-import TenantUser, { TenantOwner } from "../tenant/tenantuser";
-import Tenant from "../tenant/tenant";
-import PlatformService from "../service/platform/platformservice";
-import ConsentGroup from "../service/consentgroup/consentgroup";
-import ConsentGroupService from "../service/consentgroup/consentgroupservice";
+import User from "../../user";
+import TenantUser, { TenantOwner } from "../../tenant/tenantuser";
+import Tenant from "../../tenant/tenant";
+import PlatformService from "../../service/platform/platformservice";
+import ConsentGroup from "../../service/consentgroup/consentgroup";
+import ConsentGroupService from "../../service/consentgroup/consentgroupservice";
 
 /**
  * Somewhat complexer tenant setup, along with consent groups

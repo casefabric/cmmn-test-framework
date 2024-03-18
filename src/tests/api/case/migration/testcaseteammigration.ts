@@ -12,7 +12,7 @@ import Comparison from '../../../../test/comparison';
 import TestCase from '../../../../test/testcase';
 import { PollUntilSuccess } from '../../../../test/time';
 import User from '../../../../user';
-import WorldWideTestTenant from '../../../worldwidetesttenant';
+import WorldWideTestTenant from '../../../setup/worldwidetesttenant';
 
 const base_definition = Definitions.Migration_v0;
 const definitionMigrated = Definitions.Migration_v1;

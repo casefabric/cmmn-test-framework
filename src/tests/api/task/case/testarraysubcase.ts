@@ -10,7 +10,7 @@ import TaskService from "../../../../service/task/taskservice";
 import { assertCasePlan, assertPlanItem } from "../../../../test/caseassertions/plan";
 import Comparison from "../../../../test/comparison";
 import TestCase from "../../../../test/testcase";
-import WorldWideTestTenant from "../../../worldwidetesttenant";
+import WorldWideTestTenant from "../../../setup/worldwidetesttenant";
 
 const definition = Definitions.SubCaseWithArrayOutput;
 const worldwideTenant = new WorldWideTestTenant();

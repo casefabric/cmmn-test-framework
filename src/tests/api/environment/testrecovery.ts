@@ -9,7 +9,7 @@ import TenantService from "../../../service/tenant/tenantservice";
 import { findTask } from "../../../test/caseassertions/task";
 import TestCase from "../../../test/testcase";
 import Util from "../../../test/util";
-import WorldWideTestTenant from "../../worldwidetesttenant";
+import WorldWideTestTenant from "../../setup/worldwidetesttenant";
 
 const definition = Definitions.HelloWorld;
 const worldwideTenant = new WorldWideTestTenant(Util.generateId('recoverable-tenant'));

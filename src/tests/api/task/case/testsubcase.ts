@@ -11,7 +11,7 @@ import { assertCasePlan, assertPlanItem } from "../../../../test/caseassertions/
 import { findTask } from "../../../../test/caseassertions/task";
 import { assertCaseTeamUser } from "../../../../test/caseassertions/team";
 import TestCase from "../../../../test/testcase";
-import WorldWideTestTenant from "../../../worldwidetesttenant";
+import WorldWideTestTenant from "../../../setup/worldwidetesttenant";
 
 const definition = Definitions.SubCaseTest;
 const worldwideTenant = new WorldWideTestTenant();

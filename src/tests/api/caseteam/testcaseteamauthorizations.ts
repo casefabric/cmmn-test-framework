@@ -13,7 +13,7 @@ import TaskService from '../../../service/task/taskservice';
 import { assertPlanItem } from '../../../test/caseassertions/plan';
 import TestCase from '../../../test/testcase';
 import User from '../../../user';
-import MultiTenantSetup from '../../multitenantsetup';
+import MultiTenantSetup from '../../setup/multitenantsetup';
 
 // Case definition with the roles
 const definition = Definitions.CaseTeam;

@@ -8,7 +8,7 @@ import TaskService from "../../../../service/task/taskservice";
 import TestCase from "../../../../test/testcase";
 import Util from "../../../../test/util";
 import User from "../../../../user";
-import WorldWideTestTenant from "../../../worldwidetesttenant";
+import WorldWideTestTenant from "../../../setup/worldwidetesttenant";
 import ClubData from "./clubdata";
 import FiltersData from "./filtersdata";
 import PlayerData from "./playerdata";

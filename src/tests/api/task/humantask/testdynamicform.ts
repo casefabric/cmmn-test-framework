@@ -6,7 +6,7 @@ import TaskService from '../../../../service/task/taskservice';
 import { findTask } from '../../../../test/caseassertions/task';
 import Comparison from '../../../../test/comparison';
 import TestCase from '../../../../test/testcase';
-import WorldWideTestTenant from '../../../worldwidetesttenant';
+import WorldWideTestTenant from '../../../setup/worldwidetesttenant';
 
 const definition = new Definitions('dynamictaskmodel.xml');
 

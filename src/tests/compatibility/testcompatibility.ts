@@ -17,7 +17,7 @@ import { assertCasePlan } from '../../test/caseassertions/plan';
 import { assertTask, findTask, verifyTaskInput } from '../../test/caseassertions/task';
 import TestCase from '../../test/testcase';
 import { SomeTime } from '../../test/time';
-import WorldWideTestTenant from '../worldwidetesttenant';
+import WorldWideTestTenant from '../setup/worldwidetesttenant';
 
 const definition = Definitions.Compatibility;
 const worldwideTenant = new WorldWideTestTenant();
