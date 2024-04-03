@@ -21,6 +21,7 @@ export default class TestCaseFileArrayAPI extends TestCase {
     }
 
     async run() {
+        await this.replaceChildArray();
         await this.createChildArray();
         await this.runRootArray();
     }
@@ -92,6 +93,41 @@ export default class TestCaseFileArrayAPI extends TestCase {
         const newChildren: Array<any> = ChildArray;
         newChildren[1] = null;
         await assertCaseFileContent(user, caseInstance, path, newChildren);
+
+        const replaceCaseFile = Object.assign({}, initialCaseFile);
+        (replaceCaseFile.RootCaseFileItem as any).ChildArray = [];
+        await CaseFileService.replaceCaseFile(user, caseInstance, replaceCaseFile);
+
+        return caseInstance;
+    }
+
+    async replaceChildArray() {
+        this.logTestName("createChildArray");
+        const caseInstance = await this.createEmptyCase();
+        const initialCaseFile = { RootCaseFileItem: {}};
+
+        await CaseFileService.createCaseFile(user, caseInstance, initialCaseFile);
+        await assertCaseFileContent(user, caseInstance, '', initialCaseFile);
+
+        const ChildArray  = [{
+            ChildName: "child0",
+            ChildAge: 0
+        }, {
+            ChildName: "child1",
+            ChildAge: 1
+        }, {
+            ChildName: "child2",
+            ChildAge: 2
+        }];
+
+        const path = 'RootCaseFileItem/ChildArray';
+
+        await CaseFileService.createCaseFileItem(user, caseInstance, path, ChildArray);
+
+        // Now replace the case file. This causes cafienne engine issue https://github.com/cafienne/cafienne-engine/issues/428
+        const replaceCaseFile = Object.assign({}, initialCaseFile);
+        (replaceCaseFile.RootCaseFileItem as any).ChildArray = [];
+        await CaseFileService.replaceCaseFile(user, caseInstance, replaceCaseFile);
 
         return caseInstance;
     }
