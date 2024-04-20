@@ -17,6 +17,7 @@ export * from "./cmmn/team/caseteamgroup";
 export * from "./cmmn/team/caseteamtenantrole";
 export * from "./cmmn/team/caseteamuser";
 export * from "./cmmn/transition";
+export * from "./mock/dynamicresponsemock";
 export * from "./mock/getmock";
 export * from "./mock/mockserver";
 export * from "./mock/mockurl";

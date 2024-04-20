@@ -1,4 +1,4 @@
-import DynamicResponseMock from "../../../../nextversion/dynamicresponsemock";
+import DynamicResponseMock from "../../../../mock/dynamicresponsemock";
 
 export default class SimpleDataMock extends DynamicResponseMock {    
     constructor(public port: number = 2491) {

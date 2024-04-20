@@ -1,5 +1,5 @@
-import MockServer from "../mock/mockserver";
-import PostMock from "../mock/postmock";
+import MockServer from "./mockserver";
+import PostMock from "./postmock";
 
 export default class DynamicResponseMock extends MockServer {
     mock: PostMock;
