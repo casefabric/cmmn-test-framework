@@ -18,6 +18,16 @@
         <CMMNShape cmmnElementRef="_8RCIX_14">
             <Bounds x="394" y="190" width="12" height="20"/>
         </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ue__8RCIX_1">
+            <Bounds x="400" y="270" width="32" height="32"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_pt__8RCIX_0">
+            <Bounds x="490" y="250" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_8RCIX_27">
+            <Bounds x="484" y="280" width="12" height="20"/>
+        </CMMNShape>
         <CMMNEdge sourceCMMNElementRef="pi_ue__8RCIX_0" targetCMMNElementRef="_8RCIX_14"/>
+        <CMMNEdge sourceCMMNElementRef="pi_ue__8RCIX_1" targetCMMNElementRef="_8RCIX_27"/>
     </CMMNDiagram>
 </CMMNDI>
