@@ -143,24 +143,34 @@ export default class Comparison {
      * @param array2 
      */
     static sameArray(array1?: Array<any>, array2?: Array<any>) {
-        if (array1 === array2) {
+        return this.containsArray(array1, array2) && this.containsArray(array2, array1);
+    }
+
+    /**
+     * Checks whether the main array contains all elements of the sub array.
+     * Based on == comparison of array elements.
+     * @param main 
+     * @param sub 
+     */
+    static containsArray(main?: Array<any>, sub?: Array<any>) {
+        if (main === sub) {
             return true;
         }
-        if (array1 && !array2) {
+        if (main && !sub) {
             return false;
         }
-        if (array2 && !array1) {
+        if (sub && !main) {
             return false;
         }
-        const a1 = array1 ? array1 : [];
-        const a2 = array2 ? array2 : [];
+        const left = main ? main : [];
+        const right = sub ? sub : [];
 
-        if (a1.length != a2.length) {
+        if (left.length < right.length) {
             return false;
         }
 
-        for (let i = 0; i < a1.length; i++) {
-            if (!a2.includes(a1[i])) {
+        for (let i = 0; i < right.length; i++) {
+            if (!left.includes(right[i])) {
                 return false;
             }
         }

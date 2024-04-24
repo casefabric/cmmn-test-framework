@@ -32,8 +32,17 @@
             <planItem id="pi__8RCIX_12" name="Stage" definitionRef="_8RCIX_12">
                 <exitCriterion id="_8RCIX_14" name="ExitCriterion_0" sentryRef="crit__8RCIX_0"/>
             </planItem>
+            <planItem id="pi_ue__8RCIX_1" name="Fail ProcessTask" definitionRef="ue__8RCIX_1"/>
+            <planItem id="pi_pt__8RCIX_0" name="DynamicResponse" definitionRef="pt__8RCIX_0">
+                <entryCriterion id="_8RCIX_27" name="EntryCriterion_0" sentryRef="crit__8RCIX_1"/>
+            </planItem>
             <sentry id="crit__8RCIX_0">
                 <planItemOnPart id="_8RCIX_15" sourceRef="pi_ue__8RCIX_0">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <sentry id="crit__8RCIX_1">
+                <planItemOnPart id="_8RCIX_28" sourceRef="pi_ue__8RCIX_1">
                     <standardEvent>occur</standardEvent>
                 </planItemOnPart>
             </sentry>
@@ -49,7 +58,6 @@
                         </documentation>
                         <input id="_dk8c_In" name="In"/>
                         <output id="_46Gh_Out" name="Out"/>
-                        <task-model/>
                         <parameterMapping id="_8RCIX_7" sourceRef="_8RCIX_10" targetRef="_dk8c_In"/>
                         <parameterMapping id="_8RCIX_8" sourceRef="_46Gh_Out" targetRef="_8RCIX_11"/>
                     </cafienne:implementation>
@@ -75,6 +83,39 @@
                 </planItem>
                 <planItem id="pi_ue__8RCIX_0" name="Complete Case" definitionRef="ue__8RCIX_0"/>
             </stage>
+            <userEvent id="ue__8RCIX_1" name="Fail ProcessTask"/>
+            <processTask id="pt__8RCIX_0" name="DynamicResponse" isBlocking="true" processRef="DynamicResponse.process">
+                <inputs id="_8RCIX_30" name="in" bindingRef="_8RCIX_5"/>
+                <outputs id="_8RCIX_34" name="out" bindingRef="_8RCIX_6"/>
+                <outputs id="_8RCIX_35" name="out.1" bindingRef="_8RCIX_6"/>
+                <outputs id="_8RCIX_36" name="out.2" bindingRef="_8RCIX_6"/>
+                <outputs id="_8RCIX_37" name="out.3" bindingRef="_8RCIX_6"/>
+                <parameterMapping id="_8RCIX_20" sourceRef="_8RCIX_30" targetRef="_iTqT_port">
+                    <transformation id="_8RCIX_31">
+                        <body>
+                            <![CDATA[in.port]]>
+                        </body>
+                    </transformation>
+                </parameterMapping>
+                <parameterMapping id="_8RCIX_21" sourceRef="_8RCIX_30" targetRef="_oy7X_responseCode">
+                    <transformation id="_8RCIX_32">
+                        <body>
+                            <![CDATA[in.responseCode]]>
+                        </body>
+                    </transformation>
+                </parameterMapping>
+                <parameterMapping id="_8RCIX_22" sourceRef="_8RCIX_30" targetRef="_ixBL_payload">
+                    <transformation id="_8RCIX_33">
+                        <body>
+                            <![CDATA[in.payload]]>
+                        </body>
+                    </transformation>
+                </parameterMapping>
+                <parameterMapping id="_8RCIX_23" sourceRef="_GfE1_validPayload" targetRef="_8RCIX_34"/>
+                <parameterMapping id="_8RCIX_24" sourceRef="_DpFm_errorCode" targetRef="_8RCIX_35"/>
+                <parameterMapping id="_8RCIX_25" sourceRef="_r3ws_errorPayload" targetRef="_8RCIX_36"/>
+                <parameterMapping id="_8RCIX_26" sourceRef="_3d7a_responseMessage" targetRef="_8RCIX_37"/>
+            </processTask>
         </casePlanModel>
         <input id="_8RCIX_3" name="in" bindingRef="_8RCIX_5"/>
         <output id="_8RCIX_4" name="out" bindingRef="_8RCIX_6"/>
@@ -86,6 +127,33 @@ When invoking Complete Case event, whole array should be given back in the outpu
             </text>
         </textAnnotation>
     </case>
+    <process name="DynamicResponse" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified" id="DynamicResponse.process">
+        <input id="_iTqT_port" name="port"/>
+        <input id="_oy7X_responseCode" name="responseCode"/>
+        <input id="_ixBL_payload" name="payload"/>
+        <output id="_GfE1_validPayload" name="validPayload"/>
+        <output id="_DpFm_errorCode" name="errorCode"/>
+        <output id="_r3ws_errorPayload" name="errorPayload"/>
+        <output id="_3d7a_responseMessage" name="responseMessage"/>
+        <extensionElements mustUnderstand="false">
+            <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.http.HTTPCallDefinition">
+                <url>http://localhost:${port}/get/code/${responseCode}</url>
+                <method>POST</method>
+                <post-content>${payload}</post-content>
+                <http-headers>
+                    <http-header name="Accept">application/json</http-header>
+                </http-headers>
+                <parameterMapping sourceRef="responseMessage" targetRef="responseMessage"/>
+                <failure>
+                    <parameterMapping sourceRef="responseCode" targetRef="errorCode"/>
+                    <parameterMapping sourceRef="responsePayload" targetRef="errorPayload"/>
+                </failure>
+                <success>
+                    <parameterMapping sourceRef="responsePayload" targetRef="validPayload"/>
+                </success>
+            </cafienne:implementation>
+        </extensionElements>
+    </process>
     <CMMNDI>
         <CMMNDiagram>
             <CMMNShape cmmnElementRef="cm__fl0cb_0">
@@ -95,7 +163,7 @@ When invoking Complete Case event, whole array should be given back in the outpu
                 <Bounds x="360" y="150" width="140" height="80"/>
             </CMMNShape>
             <CMMNShape cmmnElementRef="_fl0cb_3">
-                <Bounds x="185.359375" y="168" width="25" height="40"/>
+                <Bounds x="185" y="168" width="25" height="40"/>
             </CMMNShape>
             <CMMNShape cmmnElementRef="_fl0cb_5">
                 <Bounds x="354" y="180" width="12" height="20"/>
@@ -119,7 +187,17 @@ When invoking Complete Case event, whole array should be given back in the outpu
             <CMMNShape cmmnElementRef="_8RCIX_14">
                 <Bounds x="394" y="190" width="12" height="20"/>
             </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ue__8RCIX_1">
+                <Bounds x="400" y="270" width="32" height="32"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_pt__8RCIX_0">
+                <Bounds x="490" y="250" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_8RCIX_27">
+                <Bounds x="484" y="280" width="12" height="20"/>
+            </CMMNShape>
             <CMMNEdge sourceCMMNElementRef="pi_ue__8RCIX_0" targetCMMNElementRef="_8RCIX_14"/>
+            <CMMNEdge sourceCMMNElementRef="pi_ue__8RCIX_1" targetCMMNElementRef="_8RCIX_27"/>
         </CMMNDiagram>
     </CMMNDI>
 </definitions>
