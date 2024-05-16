@@ -4,6 +4,7 @@
         <caseFileModel>
             <caseFileItem id="_fl0cb_3" name="in" multiplicity="ExactlyOne" definitionRef="unspecified.cfid"/>
             <caseFileItem id="_fl0cb_4" name="out" multiplicity="ZeroOrMore" definitionRef="unspecified.cfid"/>
+            <caseFileItem id="_fl0cb_19" name="random" multiplicity="ExactlyOne" definitionRef="unspecified.cfid"/>
         </caseFileModel>
         <casePlanModel id="cm__fl0cb_0" name="subcasewitharrayoutput" autoComplete="true">
             <planItem id="pi_ct__fl0cb_0" name="simpleinoutcase" definitionRef="ct__fl0cb_0">
@@ -17,8 +18,16 @@
             <caseTask id="ct__fl0cb_0" name="simpleinoutcase" isBlocking="true" caseRef="simpleinoutcase.case">
                 <inputs id="_fl0cb_8" name="in" bindingRef="_fl0cb_3"/>
                 <outputs id="_fl0cb_9" name="out" bindingRef="_fl0cb_4"/>
+                <outputs id="_fl0cb_18" name="random" bindingRef="_fl0cb_19"/>
                 <parameterMapping id="_fl0cb_1" sourceRef="_fl0cb_8" targetRef="_8RCIX_3"/>
                 <parameterMapping id="_fl0cb_2" sourceRef="_8RCIX_4" targetRef="_fl0cb_9"/>
+                <parameterMapping id="_fl0cb_15" sourceRef="_8RCIX_4" targetRef="_fl0cb_18">
+                    <transformation id="_fl0cb_17">
+                        <body>
+                            <![CDATA[map("response", out.get(0).getValue() > 0 ? true : false)]]>
+                        </body>
+                    </transformation>
+                </parameterMapping>
             </caseTask>
         </casePlanModel>
         <input id="_fl0cb_10" name="in" bindingRef="_fl0cb_3"/>
