@@ -4,36 +4,13 @@
         <caseFileItem id="_8RCIX_6" name="out" multiplicity="ZeroOrMore" definitionRef="unspecified.cfid"/>
     </caseFileModel>
     <casePlanModel id="cm__8RCIX_0" name="simpleinoutcase" autoComplete="true">
-        <planItem id="pi__8RCIX_12" name="Stage" definitionRef="_8RCIX_12">
-            <exitCriterion id="_8RCIX_14" name="ExitCriterion_0" sentryRef="crit__8RCIX_0"/>
-        </planItem>
-        <planItem id="pi_ue__8RCIX_1" name="Fail ProcessTask" definitionRef="ue__8RCIX_1"/>
-        <planItem id="pi_pt__8RCIX_0" name="DynamicResponse" definitionRef="pt__8RCIX_0">
-            <entryCriterion id="_8RCIX_27" name="EntryCriterion_0" sentryRef="crit__8RCIX_1"/>
-        </planItem>
-        <sentry id="crit__8RCIX_0">
-            <planItemOnPart id="_8RCIX_15" sourceRef="pi_ue__8RCIX_0">
-                <standardEvent>occur</standardEvent>
-            </planItemOnPart>
-        </sentry>
-        <sentry id="crit__8RCIX_1">
-            <planItemOnPart id="_8RCIX_28" sourceRef="pi_ue__8RCIX_1">
-                <standardEvent>occur</standardEvent>
-            </planItemOnPart>
-        </sentry>
-        <humanTask id="ht__8RCIX_0" name="Task" isBlocking="true">
-            <inputs id="_8RCIX_10" name="in" bindingRef="_8RCIX_5"/>
-            <outputs id="_8RCIX_11" name="out" bindingRef="_8RCIX_6"/>
-            <extensionElements mustUnderstand="false">
-                <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="simple_in_out_task.humantask">
-                    <parameterMapping id="_8RCIX_7" sourceRef="_8RCIX_10" targetRef="_dk8c_In"/>
-                    <parameterMapping id="_8RCIX_8" sourceRef="_46Gh_Out" targetRef="_8RCIX_11"/>
-                </cafienne:implementation>
-            </extensionElements>
-        </humanTask>
-        <userEvent id="ue__8RCIX_0" name="Complete Case"/>
-        <stage id="_8RCIX_12" name="Stage" autoComplete="true">
-            <planItem id="pi_ht__8RCIX_0" name="Task" definitionRef="ht__8RCIX_0">
+        <stage id="pi__8RCIX_12" name="Stage" autoComplete="true">
+            <exitCriterion id="_8RCIX_14" name="ExitCriterion_0">
+                <planItemOnPart id="_8RCIX_15" sourceRef="pi_ue__8RCIX_0">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </exitCriterion>
+            <humanTask id="pi_ht__8RCIX_0" name="Task" isBlocking="true">
                 <documentation textFormat="text/plain">
                     <text>
                         <![CDATA[Repeatable Task]]>
@@ -48,11 +25,24 @@
                         </condition>
                     </repetitionRule>
                 </itemControl>
-            </planItem>
-            <planItem id="pi_ue__8RCIX_0" name="Complete Case" definitionRef="ue__8RCIX_0"/>
+                <inputs id="_8RCIX_10" name="in" bindingRef="_8RCIX_5"/>
+                <outputs id="_8RCIX_11" name="out" bindingRef="_8RCIX_6"/>
+                <extensionElements mustUnderstand="false">
+                    <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="simple_in_out_task.humantask">
+                        <parameterMapping id="_8RCIX_7" sourceRef="_8RCIX_10" targetRef="_dk8c_In"/>
+                        <parameterMapping id="_8RCIX_8" sourceRef="_46Gh_Out" targetRef="_8RCIX_11"/>
+                    </cafienne:implementation>
+                </extensionElements>
+            </humanTask>
+            <userEvent id="pi_ue__8RCIX_0" name="Complete Case"/>
         </stage>
-        <userEvent id="ue__8RCIX_1" name="Fail ProcessTask"/>
-        <processTask id="pt__8RCIX_0" name="DynamicResponse" isBlocking="true" processRef="DynamicResponse.process">
+        <userEvent id="pi_ue__8RCIX_1" name="Fail ProcessTask"/>
+        <processTask id="pi_pt__8RCIX_0" name="DynamicResponse" isBlocking="true" processRef="DynamicResponse.process">
+            <entryCriterion id="_8RCIX_27" name="EntryCriterion_0">
+                <planItemOnPart id="_8RCIX_28" sourceRef="pi_ue__8RCIX_1">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </entryCriterion>
             <inputs id="_8RCIX_30" name="in" bindingRef="_8RCIX_5"/>
             <outputs id="_8RCIX_34" name="out" bindingRef="_8RCIX_6"/>
             <outputs id="_8RCIX_35" name="out.1" bindingRef="_8RCIX_6"/>
@@ -85,6 +75,7 @@
             <parameterMapping id="_8RCIX_26" sourceRef="_3d7a_responseMessage" targetRef="_8RCIX_37"/>
         </processTask>
     </casePlanModel>
+    <caseRoles/>
     <input id="_8RCIX_3" name="in" bindingRef="_8RCIX_5"/>
     <output id="_8RCIX_4" name="out" bindingRef="_8RCIX_6"/>
     <textAnnotation id="_8RCIX_17">

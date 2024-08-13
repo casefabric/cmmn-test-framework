@@ -3,9 +3,7 @@
         <caseFileItem id="_vO140_1" name="Greeting" multiplicity="ExactlyOne" definitionRef="greeting.cfid"/>
     </caseFileModel>
     <casePlanModel id="cm__vO140_0" name="dynamictaskmodel" autoComplete="true">
-        <planItem id="pi_ht__vO140_0" name="Task With Dynamic Form" definitionRef="ht__vO140_0"/>
-        <planItem id="pi_ht__vO140_1" name="Second Task Has Different Form" definitionRef="ht__vO140_1"/>
-        <humanTask id="ht__vO140_0" name="Task With Dynamic Form" isBlocking="true">
+        <humanTask id="pi_ht__vO140_0" name="Task With Dynamic Form" isBlocking="true">
             <inputs id="_vO140_7" name="Greeting" bindingRef="_vO140_1"/>
             <extensionElements mustUnderstand="false">
                 <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="taskwithdynamicform.humantask">
@@ -20,7 +18,7 @@
                 </cafienne:implementation>
             </extensionElements>
         </humanTask>
-        <humanTask id="ht__vO140_1" name="Second Task Has Different Form" isBlocking="true">
+        <humanTask id="pi_ht__vO140_1" name="Second Task Has Different Form" isBlocking="true">
             <inputs id="_vO140_14" name="Greeting" bindingRef="_vO140_1"/>
             <extensionElements mustUnderstand="false">
                 <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="taskwithdynamicform.humantask">
@@ -36,5 +34,6 @@
             </extensionElements>
         </humanTask>
     </casePlanModel>
+    <caseRoles/>
     <input id="_vO140_2" name="Greeting" bindingRef="_vO140_1"/>
 </case>

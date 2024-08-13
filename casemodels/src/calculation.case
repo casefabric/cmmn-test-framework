@@ -14,8 +14,7 @@
         <caseFileItem id="_ZlziS_20" name="Output6" multiplicity="ExactlyOne" definitionRef="unspecified.cfid"/>
     </caseFileModel>
     <casePlanModel id="cm__ZlziS_0" name="calculation" autoComplete="true">
-        <planItem id="pi_pt__ZlziS_0" name="CalculationTask" definitionRef="pt__ZlziS_0"/>
-        <processTask id="pt__ZlziS_0" name="CalculationTask" isBlocking="true" processRef="simplecalculation.process">
+        <processTask id="pi_pt__ZlziS_0" name="CalculationTask" isBlocking="true" processRef="simplecalculation.process">
             <inputs id="_ZlziS_9" name="input1" bindingRef="_ZlziS_1"/>
             <inputs id="_ZlziS_10" name="input2" bindingRef="_ZlziS_2">
                 <bindingRefinement id="_ZlziS_25">
@@ -40,5 +39,6 @@
             <parameterMapping id="_ZlziS_26" sourceRef="_8TPL_out6" targetRef="_ZlziS_28"/>
         </processTask>
     </casePlanModel>
+    <caseRoles/>
     <input id="_ZlziS_12" name="Root" bindingRef="_ZlziS_0"/>
 </case>

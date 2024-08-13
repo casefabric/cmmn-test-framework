@@ -4,15 +4,12 @@
         <caseFileItem id="_EkelP_10" name="items" multiplicity="ZeroOrMore" definitionRef="items.cfid"/>
     </caseFileModel>
     <casePlanModel id="cm__EkelP_0" name="invokecafienne" autoComplete="true">
-        <planItem id="pi_pt__EkelP_0" name="Invoke Cafienne" definitionRef="pt__EkelP_0">
-            <entryCriterion id="_EkelP_11" name="EntryCriterion_0" sentryRef="crit__EkelP_0"/>
-        </planItem>
-        <sentry id="crit__EkelP_0">
-            <caseFileItemOnPart id="_EkelP_12" sourceRef="_EkelP_1">
-                <standardEvent>create</standardEvent>
-            </caseFileItemOnPart>
-        </sentry>
-        <processTask id="pt__EkelP_0" name="Invoke Cafienne" isBlocking="true" processRef="invokecafienne.process">
+        <processTask id="pi_pt__EkelP_0" name="Invoke Cafienne" isBlocking="true" processRef="invokecafienne.process">
+            <entryCriterion id="_EkelP_11" name="EntryCriterion_0">
+                <caseFileItemOnPart id="_EkelP_12" sourceRef="_EkelP_1">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </entryCriterion>
             <inputs id="_EkelP_7" name="http" bindingRef="_EkelP_1"/>
             <inputs id="_EkelP_9" name="caseId"/>
             <outputs id="_EkelP_18" name="items" bindingRef="_EkelP_10"/>
@@ -40,6 +37,7 @@
             </parameterMapping>
         </processTask>
     </casePlanModel>
+    <caseRoles/>
     <input id="_EkelP_13" name="http" bindingRef="_EkelP_1"/>
     <textAnnotation id="_EkelP_17">
         <text>

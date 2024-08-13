@@ -8,43 +8,14 @@
         <caseFileItem id="_czPo6_33" name="ResponseMessage" multiplicity="ExactlyOne" definitionRef="unspecified.cfid"/>
     </caseFileModel>
     <casePlanModel id="cm__czPo6_0" name="processtasktest" autoComplete="true">
-        <planItem id="pi_ue__czPo6_0" name="Get Error" definitionRef="ue__czPo6_0"/>
-        <planItem id="pi_ue__czPo6_1" name="Get OK" definitionRef="ue__czPo6_1"/>
-        <planItem id="pi_pt__czPo6_0" name="Get Error Response" definitionRef="pt__czPo6_0">
-            <entryCriterion id="_czPo6_11" name="EntryCriterion_0" sentryRef="crit__czPo6_0"/>
-        </planItem>
-        <planItem id="pi_pt__czPo6_1" name="Get Object Response" definitionRef="pt__czPo6_1">
-            <entryCriterion id="_czPo6_20" name="EntryCriterion_1" sentryRef="crit__czPo6_1"/>
-        </planItem>
-        <planItem id="pi_ms__czPo6_0" name="Case Closed" definitionRef="ms__czPo6_0">
-            <entryCriterion id="_czPo6_41" name="EntryCriterion_2" sentryRef="crit__czPo6_2"/>
-            <itemControl id="_czPo6_38">
-                <requiredRule id="_czPo6_39">
-                    <condition id="_czPo6_40">
-                        <body>
-                            <![CDATA[true]]>
-                        </body>
-                    </condition>
-                </requiredRule>
-            </itemControl>
-        </planItem>
-        <planItem id="pi_ue__czPo6_2" name="Close Case" definitionRef="ue__czPo6_2"/>
-        <sentry id="crit__czPo6_0">
-            <planItemOnPart id="_czPo6_12" sourceRef="pi_ue__czPo6_0">
-                <standardEvent>occur</standardEvent>
-            </planItemOnPart>
-        </sentry>
-        <sentry id="crit__czPo6_1">
-            <planItemOnPart id="_czPo6_21" sourceRef="pi_ue__czPo6_1">
-                <standardEvent>occur</standardEvent>
-            </planItemOnPart>
-        </sentry>
-        <sentry id="crit__czPo6_2">
-            <planItemOnPart id="_czPo6_42" sourceRef="pi_ue__czPo6_2">
-                <standardEvent>occur</standardEvent>
-            </planItemOnPart>
-        </sentry>
-        <processTask id="pt__czPo6_0" name="Get Error Response" isBlocking="true" processRef="GetResponse.process">
+        <userEvent id="pi_ue__czPo6_0" name="Get Error"/>
+        <userEvent id="pi_ue__czPo6_1" name="Get OK"/>
+        <processTask id="pi_pt__czPo6_0" name="Get Error Response" isBlocking="true" processRef="GetResponse.process">
+            <entryCriterion id="_czPo6_11" name="EntryCriterion_0">
+                <planItemOnPart id="_czPo6_12" sourceRef="pi_ue__czPo6_0">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </entryCriterion>
             <inputs id="_czPo6_43" name="HTTPConfig" bindingRef="_czPo6_0"/>
             <inputs id="_czPo6_44" name="ServiceInput" bindingRef="_czPo6_1"/>
             <outputs id="_czPo6_45" name="SuccessObject" bindingRef="_czPo6_31"/>
@@ -77,7 +48,12 @@
                 </transformation>
             </parameterMapping>
         </processTask>
-        <processTask id="pt__czPo6_1" name="Get Object Response" isBlocking="true" processRef="GetResponse.process">
+        <processTask id="pi_pt__czPo6_1" name="Get Object Response" isBlocking="true" processRef="GetResponse.process">
+            <entryCriterion id="_czPo6_20" name="EntryCriterion_1">
+                <planItemOnPart id="_czPo6_21" sourceRef="pi_ue__czPo6_1">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </entryCriterion>
             <inputs id="_czPo6_23" name="ServiceInput" bindingRef="_czPo6_1"/>
             <inputs id="_czPo6_27" name="HTTPConfig" bindingRef="_czPo6_0"/>
             <outputs id="_czPo6_29" name="SuccessObject" bindingRef="_czPo6_31"/>
@@ -110,10 +86,24 @@
                 </transformation>
             </parameterMapping>
         </processTask>
-        <milestone id="ms__czPo6_0" name="Case Closed"/>
-        <userEvent id="ue__czPo6_0" name="Get Error"/>
-        <userEvent id="ue__czPo6_1" name="Get OK"/>
-        <userEvent id="ue__czPo6_2" name="Close Case"/>
+        <milestone id="pi_ms__czPo6_0" name="Case Closed">
+            <entryCriterion id="_czPo6_41" name="EntryCriterion_2">
+                <planItemOnPart id="_czPo6_42" sourceRef="pi_ue__czPo6_2">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </entryCriterion>
+            <itemControl id="_czPo6_38">
+                <requiredRule id="_czPo6_39">
+                    <condition id="_czPo6_40">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </requiredRule>
+            </itemControl>
+        </milestone>
+        <userEvent id="pi_ue__czPo6_2" name="Close Case"/>
     </casePlanModel>
+    <caseRoles/>
     <input id="_czPo6_37" name="HTTPConfig" bindingRef="_czPo6_0"/>
 </case>

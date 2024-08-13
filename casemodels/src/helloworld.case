@@ -9,23 +9,13 @@
         <caseFileItem id="cfi_csVQy_1" name="Response" multiplicity="ExactlyOne" definitionRef="response.cfid"/>
     </caseFileModel>
     <casePlanModel id="cm_HelloWorld.case_HelloWorld_0" name="HelloWorld" autoComplete="true">
-        <planItem id="cm_csVQy_167" name="Receive Greeting and Send response" definitionRef="pid_cm_csVQy_167">
+        <humanTask id="cm_csVQy_167" name="Receive Greeting and Send response" isBlocking="true">
             <documentation textFormat="text/plain">
                 <text>
                     <![CDATA[Receive Greeting
 and Send response]]>
                 </text>
             </documentation>
-        </planItem>
-        <planItem id="cm_cs3hg_196" name="Read response" definitionRef="pid_cm_cs3hg_196">
-            <entryCriterion id="_nTPPc_0" name="EntryCriterion_0" sentryRef="cm_cs3hg_198"/>
-        </planItem>
-        <sentry id="cm_cs3hg_198">
-            <planItemOnPart id="ref_id_cm_csVQy_167" sourceRef="cm_csVQy_167">
-                <standardEvent>complete</standardEvent>
-            </planItemOnPart>
-        </sentry>
-        <humanTask id="pid_cm_csVQy_167" name="Receive Greeting and Send response" isBlocking="true">
             <inputs id="inTP_cm_cs2F1_174_1" name="Greeting" bindingRef="cfi_csVQy_0"/>
             <outputs id="outTP_cm_cs2F1_174_1" name="Response" bindingRef="cfi_csVQy_1"/>
             <extensionElements mustUnderstand="false">
@@ -49,7 +39,12 @@ and Send response]]>
                 </cafienne:implementation>
             </extensionElements>
         </humanTask>
-        <humanTask id="pid_cm_cs3hg_196" name="Read response" isBlocking="true">
+        <humanTask id="cm_cs3hg_196" name="Read response" isBlocking="true">
+            <entryCriterion id="_nTPPc_0" name="EntryCriterion_0">
+                <planItemOnPart id="ref_id_cm_csVQy_167" sourceRef="cm_csVQy_167">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+            </entryCriterion>
             <inputs id="inTP_cm_cs3hg_196_0" name="Response" bindingRef="cfi_csVQy_1"/>
             <extensionElements mustUnderstand="false">
                 <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="readresponse.humantask">
@@ -73,13 +68,7 @@ and Send response]]>
         </humanTask>
     </casePlanModel>
     <caseRoles>
-        <role id="role_csT3f_0" name="ADMIN">
-            <documentation textFormat="text/plain">
-                <text>
-                    <![CDATA[admin of the world]]>
-                </text>
-            </documentation>
-        </role>
+        <role/>
     </caseRoles>
     <input id="csVQy_inCPs_0" name="Greeting" bindingRef="cfi_csVQy_0"/>
     <extensionElements mustUnderstand="false">

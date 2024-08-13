@@ -9,7 +9,7 @@
         <caseFileItem id="cfi_csVQy_1" name="Response" multiplicity="ExactlyOne" definitionRef="response.cfid"/>
     </caseFileModel>
     <casePlanModel id="cm_HelloWorld.case_HelloWorld_0" name="HelloWorld_Migrated" autoComplete="true">
-        <planItem id="cm_csVQy_167" name="Receive Greeting and Send response" definitionRef="pid_cm_csVQy_167">
+        <humanTask id="cm_csVQy_167" name="Receive Greeting and Send response" isBlocking="true">
             <documentation textFormat="text/plain">
                 <text>
                     <![CDATA[Receive Greeting
@@ -32,34 +32,6 @@ and Send response]]>
                     </condition>
                 </requiredRule>
             </itemControl>
-        </planItem>
-        <planItem id="cm_cs3hg_196" name="Read response" definitionRef="pid_cm_cs3hg_196">
-            <entryCriterion id="_nTPPc_0" name="EntryCriterion_0" sentryRef="crit__nTPPc_1"/>
-            <itemControl id="_nTPPc_2">
-                <repetitionRule id="_nTPPc_18">
-                    <condition id="_nTPPc_19">
-                        <body>
-                            <![CDATA[true]]>
-                        </body>
-                    </condition>
-                </repetitionRule>
-            </itemControl>
-        </planItem>
-        <planItem id="pi_ht__nTPPc_0" name="New Task!" definitionRef="ht__nTPPc_0"/>
-        <planItem id="pi_ht__nTPPc_1" name="Task that can go" definitionRef="ht__nTPPc_1">
-            <entryCriterion id="_nTPPc_20" name="EntryCriterion_1" sentryRef="crit__nTPPc_0"/>
-        </planItem>
-        <sentry id="crit__nTPPc_0">
-            <planItemOnPart id="_nTPPc_21" sourceRef="cm_csVQy_167">
-                <standardEvent>complete</standardEvent>
-            </planItemOnPart>
-        </sentry>
-        <sentry id="crit__nTPPc_1">
-            <planItemOnPart id="_nTPPc_22" sourceRef="cm_csVQy_167">
-                <standardEvent>complete</standardEvent>
-            </planItemOnPart>
-        </sentry>
-        <humanTask id="pid_cm_csVQy_167" name="Receive Greeting and Send response" isBlocking="true">
             <inputs id="inTP_cm_cs2F1_174_1" name="Greeting" bindingRef="cfi_csVQy_0"/>
             <outputs id="outTP_cm_cs2F1_174_1" name="Response" bindingRef="cfi_csVQy_1"/>
             <extensionElements mustUnderstand="false">
@@ -89,7 +61,21 @@ and Send response]]>
                 </cafienne:implementation>
             </extensionElements>
         </humanTask>
-        <humanTask id="pid_cm_cs3hg_196" name="Read response" isBlocking="true">
+        <humanTask id="cm_cs3hg_196" name="Read response" isBlocking="true">
+            <entryCriterion id="_nTPPc_0" name="EntryCriterion_0">
+                <planItemOnPart id="_nTPPc_22" sourceRef="cm_csVQy_167">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+            </entryCriterion>
+            <itemControl id="_nTPPc_2">
+                <repetitionRule id="_nTPPc_18">
+                    <condition id="_nTPPc_19">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
             <inputs id="inTP_cm_cs3hg_196_0" name="Response" bindingRef="cfi_csVQy_1"/>
             <extensionElements mustUnderstand="false">
                 <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="readresponse.humantask">
@@ -111,24 +97,17 @@ and Send response]]>
                 </cafienne:implementation>
             </extensionElements>
         </humanTask>
-        <humanTask id="ht__nTPPc_0" name="New Task!" isBlocking="true"/>
-        <humanTask id="ht__nTPPc_1" name="Task that can go" isBlocking="true"/>
+        <humanTask id="pi_ht__nTPPc_0" name="New Task!" isBlocking="true"/>
+        <humanTask id="pi_ht__nTPPc_1" name="Task that can go" isBlocking="true">
+            <entryCriterion id="_nTPPc_20" name="EntryCriterion_1">
+                <planItemOnPart id="_nTPPc_21" sourceRef="cm_csVQy_167">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+            </entryCriterion>
+        </humanTask>
     </casePlanModel>
     <caseRoles>
-        <role id="role_csT3f_0" name="ADMIN">
-            <documentation textFormat="text/plain">
-                <text>
-                    <![CDATA[admin of the world]]>
-                </text>
-            </documentation>
-        </role>
-        <role id="_nTPPc_6" name="With a decent name">
-            <documentation textFormat="text/plain">
-                <text>
-                    <![CDATA[for whomsoever wants it]]>
-                </text>
-            </documentation>
-        </role>
+        <role/>
     </caseRoles>
     <input id="csVQy_inCPs_0" name="Greeting" bindingRef="cfi_csVQy_0"/>
     <extensionElements mustUnderstand="false">

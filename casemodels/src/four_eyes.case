@@ -8,7 +8,7 @@
         <caseFileItem id="_mlHqQ_11" name="file" multiplicity="ExactlyOne" definitionRef="unspecified.cfid"/>
     </caseFileModel>
     <casePlanModel id="cm__mlHqQ_0" name="four_eyes" autoComplete="true">
-        <planItem id="pi_ht__mlHqQ_0" name="Task1" definitionRef="ht__mlHqQ_0">
+        <humanTask id="pi_ht__mlHqQ_0" name="Task1" isBlocking="true">
             <extensionElements mustUnderstand="false">
                 <four_eyes xmlns="org.cafienne">
                     <task taskRef="pi_ht__mlHqQ_2" taskName="Task3"/>
@@ -17,15 +17,15 @@
                     <task taskRef="pi_ht__mlHqQ_1" taskName="Task2"/>
                 </rendez_vous>
             </extensionElements>
-        </planItem>
-        <planItem id="pi_ht__mlHqQ_1" name="Task2" definitionRef="ht__mlHqQ_1">
+        </humanTask>
+        <humanTask id="pi_ht__mlHqQ_1" name="Task2" isBlocking="true">
             <extensionElements mustUnderstand="false">
                 <rendez_vous xmlns="org.cafienne">
                     <task taskRef="pi_ht__mlHqQ_0" taskName="Task1"/>
                 </rendez_vous>
             </extensionElements>
-        </planItem>
-        <planItem id="pi_ht__mlHqQ_2" name="Task3" definitionRef="ht__mlHqQ_2">
+        </humanTask>
+        <humanTask id="pi_ht__mlHqQ_2" name="Task3" isBlocking="true">
             <extensionElements mustUnderstand="false">
                 <four_eyes xmlns="org.cafienne">
                     <task taskRef="pi_ht__mlHqQ_0" taskName="Task1"/>
@@ -33,29 +33,25 @@
                     <task taskRef="pi_ht__mlHqQ_3" taskName="Task4"/>
                 </four_eyes>
             </extensionElements>
-        </planItem>
-        <planItem id="pi_ht__mlHqQ_3" name="Task4" definitionRef="ht__mlHqQ_3">
+        </humanTask>
+        <humanTask id="pi_ht__mlHqQ_3" name="Task4" isBlocking="true">
             <extensionElements mustUnderstand="false">
                 <four_eyes xmlns="org.cafienne">
                     <task taskRef="pi_ht__mlHqQ_4" taskName="Task5"/>
                     <task taskRef="pi_ht__mlHqQ_2" taskName="Task3"/>
                 </four_eyes>
             </extensionElements>
-        </planItem>
-        <planItem id="pi_ht__mlHqQ_4" name="Task5" definitionRef="ht__mlHqQ_4">
+        </humanTask>
+        <humanTask id="pi_ht__mlHqQ_4" name="Task5" isBlocking="true">
             <extensionElements mustUnderstand="false">
                 <four_eyes xmlns="org.cafienne">
                     <task taskRef="pi_ht__mlHqQ_2" taskName="Task3"/>
                     <task taskRef="pi_ht__mlHqQ_3" taskName="Task4"/>
                 </four_eyes>
             </extensionElements>
-        </planItem>
-        <humanTask id="ht__mlHqQ_0" name="Task1" isBlocking="true"/>
-        <humanTask id="ht__mlHqQ_1" name="Task2" isBlocking="true"/>
-        <humanTask id="ht__mlHqQ_2" name="Task3" isBlocking="true"/>
-        <humanTask id="ht__mlHqQ_3" name="Task4" isBlocking="true"/>
-        <humanTask id="ht__mlHqQ_4" name="Task5" isBlocking="true"/>
+        </humanTask>
     </casePlanModel>
+    <caseRoles/>
     <textAnnotation id="_mlHqQ_47">
         <text>
             <![CDATA[RendezVous between Task1 and Task2]]>

@@ -7,8 +7,12 @@
         </caseFileItem>
     </caseFileModel>
     <casePlanModel id="cm__cl3EV_0" name="entrycriteriaoncaseinputparameters" autoComplete="true">
-        <planItem id="pi__cl3EV_2" name="Stage" definitionRef="_cl3EV_2">
-            <entryCriterion id="_cl3EV_4" name="EntryCriterion_0" sentryRef="crit__cl3EV_0"/>
+        <stage id="pi__cl3EV_2" name="Stage" autoComplete="true">
+            <entryCriterion id="_cl3EV_4" name="EntryCriterion_0">
+                <caseFileItemOnPart id="_cl3EV_5" sourceRef="_cl3EV_1">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </entryCriterion>
             <itemControl id="_cl3EV_3">
                 <repetitionRule id="_cl3EV_6">
                     <condition id="_cl3EV_7">
@@ -18,16 +22,9 @@
                     </condition>
                 </repetitionRule>
             </itemControl>
-        </planItem>
-        <sentry id="crit__cl3EV_0">
-            <caseFileItemOnPart id="_cl3EV_5" sourceRef="_cl3EV_1">
-                <standardEvent>create</standardEvent>
-            </caseFileItemOnPart>
-        </sentry>
-        <humanTask id="ht__cl3EV_0" name="Task" isBlocking="true"/>
-        <stage id="_cl3EV_2" name="Stage" autoComplete="true">
-            <planItem id="pi_ht__cl3EV_0" name="Task" definitionRef="ht__cl3EV_0"/>
+            <humanTask id="pi_ht__cl3EV_0" name="Task" isBlocking="true"/>
         </stage>
     </casePlanModel>
+    <caseRoles/>
     <input id="_cl3EV_17" name="Greeting" bindingRef="_cl3EV_0"/>
 </case>

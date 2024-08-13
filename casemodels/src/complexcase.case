@@ -3,18 +3,7 @@
         <caseFileItem id="_MuzRn_10" name="Greeting" multiplicity="ExactlyOne" definitionRef="greeting.cfid"/>
     </caseFileModel>
     <casePlanModel id="cm__MuzRn_0" name="Case with subcases and subprocesses" autoComplete="true">
-        <planItem id="pi_ct__MuzRn_0" name="HelloWorld" definitionRef="ct__MuzRn_0"/>
-        <planItem id="pi_ct__MuzRn_1" name="getlist_getdetails" definitionRef="ct__MuzRn_1"/>
-        <planItem id="pi_ue__MuzRn_0" name="Trigger Second Hello World" definitionRef="ue__MuzRn_0"/>
-        <planItem id="pi_ct__MuzRn_2" name="HelloWorld the second" definitionRef="ct__MuzRn_2">
-            <entryCriterion id="_MuzRn_14" name="EntryCriterion_0" sentryRef="crit__MuzRn_0"/>
-        </planItem>
-        <sentry id="crit__MuzRn_0">
-            <planItemOnPart id="_MuzRn_15" sourceRef="pi_ue__MuzRn_0">
-                <standardEvent>occur</standardEvent>
-            </planItemOnPart>
-        </sentry>
-        <caseTask id="ct__MuzRn_0" name="HelloWorld" isBlocking="true" caseRef="helloworld.case">
+        <caseTask id="pi_ct__MuzRn_0" name="HelloWorld" isBlocking="true" caseRef="helloworld.case">
             <inputs id="_MuzRn_9" name="Greeting" bindingRef="_MuzRn_10"/>
             <parameterMapping id="_MuzRn_1" sourceRef="_MuzRn_9" targetRef="csVQy_inCPs_0">
                 <transformation id="_MuzRn_8">
@@ -24,7 +13,7 @@
                 </transformation>
             </parameterMapping>
         </caseTask>
-        <caseTask id="ct__MuzRn_1" name="getlist_getdetails" isBlocking="true" caseRef="getlist_getdetails.case">
+        <caseTask id="pi_ct__MuzRn_1" name="getlist_getdetails" isBlocking="true" caseRef="getlist_getdetails.case">
             <inputs id="_MuzRn_12" name="HTTPConfig.1"/>
             <parameterMapping id="_MuzRn_3" sourceRef="_MuzRn_12" targetRef="_Sp9aR_34">
                 <transformation id="_MuzRn_5">
@@ -34,11 +23,17 @@
                 </transformation>
             </parameterMapping>
         </caseTask>
-        <caseTask id="ct__MuzRn_2" name="HelloWorld the second" isBlocking="true" caseRef="helloworld.case"/>
-        <userEvent id="ue__MuzRn_0" name="Trigger Second Hello World"/>
+        <userEvent id="pi_ue__MuzRn_0" name="Trigger Second Hello World"/>
+        <caseTask id="pi_ct__MuzRn_2" name="HelloWorld the second" isBlocking="true" caseRef="helloworld.case">
+            <entryCriterion id="_MuzRn_14" name="EntryCriterion_0">
+                <planItemOnPart id="_MuzRn_15" sourceRef="pi_ue__MuzRn_0">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </entryCriterion>
+        </caseTask>
     </casePlanModel>
     <caseRoles>
-        <role id="_MuzRn_11" name="role"/>
+        <role/>
     </caseRoles>
     <input id="_MuzRn_7" name="Greeting" bindingRef="_MuzRn_10"/>
 </case>

@@ -3,13 +3,11 @@
         <caseFileItem id="_CcFyv_4" name="Root" multiplicity="ExactlyOne" definitionRef="root.cfid"/>
     </caseFileModel>
     <casePlanModel id="cm__CcFyv_0" name="migration/discretionary_v0" autoComplete="true">
-        <planItem id="pi_ht__CcFyv_1" name="Task2" definitionRef="ht__CcFyv_1"/>
+        <humanTask id="pi_ht__CcFyv_1" name="Task2" isBlocking="true"/>
         <planningTable id="_CcFyv_3">
-            <discretionaryItem id="pi_ht__CcFyv_2" name="Task3" definitionRef="ht__CcFyv_2"/>
-            <discretionaryItem id="pi_ht__CcFyv_0" name="Task1" definitionRef="ht__CcFyv_0"/>
+            <humanTask id="pi_ht__CcFyv_2" name="Task3" isBlocking="true"/>
+            <humanTask id="pi_ht__CcFyv_0" name="Task1" isBlocking="true"/>
         </planningTable>
-        <humanTask id="ht__CcFyv_0" name="Task1" isBlocking="true"/>
-        <humanTask id="ht__CcFyv_1" name="Task2" isBlocking="true"/>
-        <humanTask id="ht__CcFyv_2" name="Task3" isBlocking="true"/>
     </casePlanModel>
+    <caseRoles/>
 </case>

@@ -3,12 +3,11 @@
         <caseFileItem id="_vxj5Z_4" name="root" multiplicity="ExactlyOne" definitionRef="root.cfid"/>
     </caseFileModel>
     <casePlanModel id="cm__vxj5Z_0" name="invalidrecursion" autoComplete="true">
-        <planItem id="pi__vxj5Z_2" name="Stage without entry criterion" definitionRef="_vxj5Z_2"/>
-        <caseTask id="ct__vxj5Z_0" name="invalidrecursion" isBlocking="true" caseRef="invalidrecursion.case"/>
-        <stage id="_vxj5Z_2" name="Stage without entry criterion" autoComplete="true">
-            <planItem id="pi_ct__vxj5Z_0" name="invalidrecursion" definitionRef="ct__vxj5Z_0"/>
+        <stage id="pi__vxj5Z_2" name="Stage without entry criterion" autoComplete="true">
+            <caseTask id="pi_ct__vxj5Z_0" name="invalidrecursion" isBlocking="true" caseRef="invalidrecursion.case"/>
         </stage>
     </casePlanModel>
+    <caseRoles/>
     <textAnnotation id="_vxj5Z_1">
         <text>
             <![CDATA[Direct recursive calls should not be allowed, as that blows up the engine]]>

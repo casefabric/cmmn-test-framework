@@ -3,15 +3,12 @@
         <caseFileItem id="_zpkst_0" name="content" multiplicity="ExactlyOne" definitionRef="unspecified.cfid"/>
     </caseFileModel>
     <casePlanModel id="cm__zpkst_0" name="smtptest" autoComplete="true">
-        <planItem id="pi_pt__zpkst_0" name="Send mail" definitionRef="pt__zpkst_0">
-            <entryCriterion id="_zpkst_15" name="EntryCriterion_0" sentryRef="crit__zpkst_0"/>
-        </planItem>
-        <sentry id="crit__zpkst_0">
-            <caseFileItemOnPart id="_zpkst_16" sourceRef="_zpkst_0">
-                <standardEvent>create</standardEvent>
-            </caseFileItemOnPart>
-        </sentry>
-        <processTask id="pt__zpkst_0" name="Send mail" isBlocking="true" processRef="sendmail.process">
+        <processTask id="pi_pt__zpkst_0" name="Send mail" isBlocking="true" processRef="sendmail.process">
+            <entryCriterion id="_zpkst_15" name="EntryCriterion_0">
+                <caseFileItemOnPart id="_zpkst_16" sourceRef="_zpkst_0">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </entryCriterion>
             <inputs id="_zpkst_8" name="content" bindingRef="_zpkst_0"/>
             <parameterMapping id="_zpkst_2" sourceRef="_zpkst_8" targetRef="_WgV5_to">
                 <transformation id="_zpkst_9">
@@ -78,5 +75,6 @@
             </parameterMapping>
         </processTask>
     </casePlanModel>
+    <caseRoles/>
     <input id="_zpkst_14" name="content" bindingRef="_zpkst_0"/>
 </case>

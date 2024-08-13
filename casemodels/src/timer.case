@@ -3,17 +3,7 @@
         <caseFileItem id="_GgFeT_5" name="duration" multiplicity="ExactlyOne" definitionRef="duration.cfid"/>
     </caseFileModel>
     <casePlanModel id="cm__GgFeT_0" name="timer" autoComplete="true">
-        <planItem id="pi_tmr__GgFeT_0" name="After duration" definitionRef="tmr__GgFeT_0"/>
-        <planItem id="pi_ht__GgFeT_0" name="Task" definitionRef="ht__GgFeT_0">
-            <entryCriterion id="_GgFeT_1" name="EntryCriterion_0" sentryRef="crit__GgFeT_0"/>
-        </planItem>
-        <sentry id="crit__GgFeT_0">
-            <planItemOnPart id="_GgFeT_4" sourceRef="pi_tmr__GgFeT_0">
-                <standardEvent>occur</standardEvent>
-            </planItemOnPart>
-        </sentry>
-        <humanTask id="ht__GgFeT_0" name="Task" isBlocking="true"/>
-        <timerEvent id="tmr__GgFeT_0" name="After duration">
+        <timerEvent id="pi_tmr__GgFeT_0" name="After duration">
             <timerExpression id="_GgFeT_3">
                 <body>
                     <![CDATA[case.file.duration.value]]>
@@ -23,6 +13,14 @@
                 <standardEvent></standardEvent>
             </planItemStartTrigger>
         </timerEvent>
+        <humanTask id="pi_ht__GgFeT_0" name="Task" isBlocking="true">
+            <entryCriterion id="_GgFeT_1" name="EntryCriterion_0">
+                <planItemOnPart id="_GgFeT_4" sourceRef="pi_tmr__GgFeT_0">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </entryCriterion>
+        </humanTask>
     </casePlanModel>
+    <caseRoles/>
     <input id="_GgFeT_2" name="duration" bindingRef="_GgFeT_5"/>
 </case>

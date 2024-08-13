@@ -4,14 +4,10 @@
         <caseFileItem id="_0UEh7_2" name="Output" multiplicity="ExactlyOne" definitionRef="root.cfid"/>
     </caseFileModel>
     <casePlanModel id="cm__0UEh7_0" name="migration_subcase" autoComplete="true">
-        <planItem id="pi_ht__0UEh7_0" name="HumanTask_0" definitionRef="ht__0UEh7_0"/>
-        <humanTask id="ht__0UEh7_0" name="HumanTask_0" isBlocking="true"/>
+        <humanTask id="pi_ht__0UEh7_0" name="HumanTask_0" isBlocking="true"/>
     </casePlanModel>
     <caseRoles>
-        <role id="_0UEh7_7" name="role1"/>
-        <role id="_0UEh7_8" name="role2"/>
-        <role id="_0UEh7_9" name="role3"/>
-        <role id="_0UEh7_10" name="role4"/>
+        <role/>
     </caseRoles>
     <input id="_0UEh7_1" name="Input" bindingRef="_0UEh7_0"/>
     <output id="_0UEh7_3" name="Output" bindingRef="_0UEh7_2"/>

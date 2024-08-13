@@ -15,9 +15,17 @@
         <caseFileItem id="_Sp9aR_27" name="Exception" multiplicity="ZeroOrMore" definitionRef="exception.cfid"/>
     </caseFileModel>
     <casePlanModel id="cm_casefile/getlist_getdetails.case_0" name="getlist_getdetails" autoComplete="true">
-        <planItem id="pi_pt__LQXO7_8" name="GetList" definitionRef="pt__LQXO7_8">
-            <entryCriterion id="_Sp9aR_11" name="EntryCriterion_1" sentryRef="crit__Sp9aR_0"/>
-            <entryCriterion id="_Sp9aR_24" name="EntryCriterion_3" sentryRef="crit__Sp9aR_2"/>
+        <processTask id="pi_pt__LQXO7_8" name="GetList" isBlocking="true" processRef="GetListWebService.process">
+            <entryCriterion id="_Sp9aR_11" name="EntryCriterion_1">
+                <caseFileItemOnPart id="_Sp9aR_12" sourceRef="_Sp9aR_1">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </entryCriterion>
+            <entryCriterion id="_Sp9aR_24" name="EntryCriterion_3">
+                <planItemOnPart id="_Sp9aR_16" sourceRef="pi_ue__Sp9aR_0">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </entryCriterion>
             <itemControl id="_Sp9aR_0">
                 <repetitionRule id="_Sp9aR_22">
                     <condition id="_Sp9aR_23">
@@ -27,66 +35,6 @@
                     </condition>
                 </repetitionRule>
             </itemControl>
-        </planItem>
-        <planItem id="pi_pt__LQXO7_24" name="GetDetails" definitionRef="pt__LQXO7_24">
-            <entryCriterion id="_LQXO7_1" name="EntryCriterion_0" sentryRef="crit__LQXO7_0"/>
-            <itemControl id="_LQXO7_32">
-                <repetitionRule id="_Sp9aR_3">
-                    <condition id="_Sp9aR_7">
-                        <body>
-                            <![CDATA[task.index < 3]]>
-                        </body>
-                    </condition>
-                </repetitionRule>
-                <requiredRule id="_Sp9aR_13">
-                    <condition id="_Sp9aR_14">
-                        <body>
-                            <![CDATA[true]]>
-                        </body>
-                    </condition>
-                </requiredRule>
-            </itemControl>
-        </planItem>
-        <planItem id="pi__Sp9aR_8" name="Fail handling" definitionRef="_Sp9aR_8">
-            <entryCriterion id="_Sp9aR_18" name="EntryCriterion_2" sentryRef="crit__Sp9aR_1"/>
-            <itemControl id="_Sp9aR_15">
-                <repetitionRule id="_Sp9aR_20">
-                    <condition id="_Sp9aR_21">
-                        <body>
-                            <![CDATA[true]]>
-                        </body>
-                    </condition>
-                </repetitionRule>
-            </itemControl>
-        </planItem>
-        <sentry id="crit__LQXO7_0">
-            <ifPart id="_LQXO7_8" contextRef="_LQXO7_7">
-                <condition id="_LQXO7_9">
-                    <body>
-                        <![CDATA[!DetailsKey.isEmpty()]]>
-                    </body>
-                </condition>
-            </ifPart>
-            <caseFileItemOnPart id="_LQXO7_0" sourceRef="_LQXO7_7">
-                <standardEvent>create</standardEvent>
-            </caseFileItemOnPart>
-        </sentry>
-        <sentry id="crit__Sp9aR_0">
-            <caseFileItemOnPart id="_Sp9aR_12" sourceRef="_Sp9aR_1">
-                <standardEvent>create</standardEvent>
-            </caseFileItemOnPart>
-        </sentry>
-        <sentry id="crit__Sp9aR_1">
-            <planItemOnPart id="_Sp9aR_19" sourceRef="pi_pt__LQXO7_8">
-                <standardEvent>fault</standardEvent>
-            </planItemOnPart>
-        </sentry>
-        <sentry id="crit__Sp9aR_2">
-            <planItemOnPart id="_Sp9aR_16" sourceRef="pi_ue__Sp9aR_0">
-                <standardEvent>occur</standardEvent>
-            </planItemOnPart>
-        </sentry>
-        <processTask id="pt__LQXO7_8" name="GetList" isBlocking="true" processRef="GetListWebService.process">
             <inputs id="_Sp9aR_5" name="HTTPConfig" bindingRef="_Sp9aR_1"/>
             <inputs id="_Sp9aR_33" name="HEADER"/>
             <outputs id="_LQXO7_14" name="responseCode"/>
@@ -120,7 +68,35 @@
                 </transformation>
             </parameterMapping>
         </processTask>
-        <processTask id="pt__LQXO7_24" name="GetDetails" isBlocking="true" processRef="GetDetailsWebService.process">
+        <processTask id="pi_pt__LQXO7_24" name="GetDetails" isBlocking="true" processRef="GetDetailsWebService.process">
+            <entryCriterion id="_LQXO7_1" name="EntryCriterion_0">
+                <ifPart id="_LQXO7_8" contextRef="_LQXO7_7">
+                    <condition id="_LQXO7_9">
+                        <body>
+                            <![CDATA[!DetailsKey.isEmpty()]]>
+                        </body>
+                    </condition>
+                </ifPart>
+                <caseFileItemOnPart id="_LQXO7_0" sourceRef="_LQXO7_7">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </entryCriterion>
+            <itemControl id="_LQXO7_32">
+                <repetitionRule id="_Sp9aR_3">
+                    <condition id="_Sp9aR_7">
+                        <body>
+                            <![CDATA[task.index < 3]]>
+                        </body>
+                    </condition>
+                </repetitionRule>
+                <requiredRule id="_Sp9aR_13">
+                    <condition id="_Sp9aR_14">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </requiredRule>
+            </itemControl>
             <inputs id="_LQXO7_28" name="detailsId" bindingRef="_LQXO7_7"/>
             <inputs id="_Sp9aR_10" name="HTTPConfig" bindingRef="_Sp9aR_1">
                 <bindingRefinement id="_Sp9aR_9">
@@ -140,15 +116,27 @@
             <parameterMapping id="_LQXO7_29" sourceRef="_LQXO7_28" targetRef="detailsId"/>
             <parameterMapping id="_LQXO7_31" sourceRef="details" targetRef="_LQXO7_30"/>
         </processTask>
-        <milestone id="ms__Sp9aR_0" name="GetList Failed"/>
-        <userEvent id="ue__Sp9aR_0" name="Try Again"/>
-        <stage id="_Sp9aR_8" name="Fail handling" autoComplete="true">
-            <planItem id="pi__Sp9aR_30" name="Mini Stage" definitionRef="_Sp9aR_30"/>
-            <planItem id="pi_ms__Sp9aR_0" name="GetList Failed" definitionRef="ms__Sp9aR_0"/>
-        </stage>
-        <stage id="_Sp9aR_30" name="Mini Stage" autoComplete="true">
-            <planItem id="pi_ue__Sp9aR_0" name="Try Again" definitionRef="ue__Sp9aR_0"/>
+        <stage id="pi__Sp9aR_8" name="Fail handling" autoComplete="true">
+            <entryCriterion id="_Sp9aR_18" name="EntryCriterion_2">
+                <planItemOnPart id="_Sp9aR_19" sourceRef="pi_pt__LQXO7_8">
+                    <standardEvent>fault</standardEvent>
+                </planItemOnPart>
+            </entryCriterion>
+            <itemControl id="_Sp9aR_15">
+                <repetitionRule id="_Sp9aR_20">
+                    <condition id="_Sp9aR_21">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
+            <stage id="pi__Sp9aR_30" name="Mini Stage" autoComplete="true">
+                <userEvent id="pi_ue__Sp9aR_0" name="Try Again"/>
+            </stage>
+            <milestone id="pi_ms__Sp9aR_0" name="GetList Failed"/>
         </stage>
     </casePlanModel>
+    <caseRoles/>
     <input id="_Sp9aR_34" name="HTTPConfig" bindingRef="_Sp9aR_1"/>
 </case>

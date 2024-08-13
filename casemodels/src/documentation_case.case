@@ -33,39 +33,35 @@
         </caseFileItem>
     </caseFileModel>
     <casePlanModel id="cm__jBxoP_0" name="documentation_case" autoComplete="true">
-        <planItem id="pi_ht__jBxoP_0" name="Documented Task" definitionRef="ht__jBxoP_0">
+        <humanTask id="pi_ht__jBxoP_0" name="Documented Task" isBlocking="true">
             <documentation textFormat="text/plain">
                 <text>
                     <![CDATA[Documented Task Documentation]]>
                 </text>
             </documentation>
-        </planItem>
-        <planItem id="pi_ht__jBxoP_1" name="Undocumented Task" definitionRef="ht__jBxoP_1"/>
-        <planItem id="pi_ht__jBxoP_2" name="Second Documented Task" definitionRef="ht__jBxoP_2">
+        </humanTask>
+        <humanTask id="pi_ht__jBxoP_1" name="Undocumented Task" isBlocking="true"/>
+        <humanTask id="pi_ht__jBxoP_2" name="Second Documented Task" isBlocking="true">
             <documentation textFormat="text/plain">
                 <text>
                     <![CDATA[Second Documented Task Documentation]]>
                 </text>
             </documentation>
-            <entryCriterion id="_jBxoP_9" name="EntryCriterion_0" sentryRef="crit__jBxoP_0"/>
-        </planItem>
-        <planItem id="pi__jBxoP_11" name="Documented Stage" definitionRef="_jBxoP_11">
+            <entryCriterion id="_jBxoP_9" name="EntryCriterion_0">
+                <planItemOnPart id="_jBxoP_10" sourceRef="pi_ht__jBxoP_0">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+            </entryCriterion>
+        </humanTask>
+        <stage id="pi__jBxoP_11" name="Documented Stage" autoComplete="true">
             <documentation textFormat="text/plain">
                 <text>
                     <![CDATA[Documented Stage Documentation]]>
                 </text>
             </documentation>
-        </planItem>
-        <sentry id="crit__jBxoP_0">
-            <planItemOnPart id="_jBxoP_10" sourceRef="pi_ht__jBxoP_0">
-                <standardEvent>complete</standardEvent>
-            </planItemOnPart>
-        </sentry>
-        <humanTask id="ht__jBxoP_0" name="Documented Task" isBlocking="true"/>
-        <humanTask id="ht__jBxoP_1" name="Undocumented Task" isBlocking="true"/>
-        <humanTask id="ht__jBxoP_2" name="Second Documented Task" isBlocking="true"/>
-        <stage id="_jBxoP_11" name="Documented Stage" autoComplete="true"/>
+        </stage>
     </casePlanModel>
+    <caseRoles/>
     <textAnnotation id="_jBxoP_7">
         <text>
             <![CDATA[Item1 is documented

@@ -7,8 +7,12 @@
         </caseFileItem>
     </caseFileModel>
     <casePlanModel id="cm__caNNT_0" name="taskbindingrefinement" autoComplete="true">
-        <planItem id="pi_ht__caNNT_0" name="Use Indexed Input" definitionRef="ht__caNNT_0">
-            <entryCriterion id="_caNNT_20" name="EntryCriterion_0" sentryRef="crit__caNNT_0"/>
+        <humanTask id="pi_ht__caNNT_0" name="Use Indexed Input" isBlocking="true">
+            <entryCriterion id="_caNNT_20" name="EntryCriterion_0">
+                <caseFileItemOnPart id="_caNNT_21" sourceRef="_caNNT_44">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </entryCriterion>
             <itemControl id="_caNNT_0">
                 <repetitionRule id="_caNNT_6">
                     <condition id="_caNNT_7">
@@ -18,66 +22,6 @@
                     </condition>
                 </repetitionRule>
             </itemControl>
-        </planItem>
-        <planItem id="pi_ht__caNNT_1" name="Use Current Input" definitionRef="ht__caNNT_1">
-            <entryCriterion id="_caNNT_22" name="EntryCriterion_1" sentryRef="crit__caNNT_1"/>
-            <itemControl id="_caNNT_8">
-                <repetitionRule id="_caNNT_18">
-                    <condition id="_caNNT_19">
-                        <body>
-                            <![CDATA[true]]>
-                        </body>
-                    </condition>
-                </repetitionRule>
-            </itemControl>
-        </planItem>
-        <planItem id="pi_ht__caNNT_2" name="Use List Input" definitionRef="ht__caNNT_2"/>
-        <planItem id="pi_ht__caNNT_3" name="Use Indexed Reference Input" definitionRef="ht__caNNT_3">
-            <entryCriterion id="_caNNT_30" name="EntryCriterion_2" sentryRef="crit__caNNT_2"/>
-            <itemControl id="_caNNT_27">
-                <repetitionRule id="_caNNT_28">
-                    <condition id="_caNNT_29">
-                        <body>
-                            <![CDATA[true]]>
-                        </body>
-                    </condition>
-                </repetitionRule>
-            </itemControl>
-        </planItem>
-        <planItem id="pi_ht__caNNT_4" name="Use Reference Input" definitionRef="ht__caNNT_4"/>
-        <planItem id="pi__caNNT_23" name="Repeating Stage" definitionRef="_caNNT_23">
-            <entryCriterion id="_caNNT_39" name="EntryCriterion_3" sentryRef="crit__caNNT_3"/>
-            <itemControl id="_caNNT_24">
-                <repetitionRule id="_caNNT_32">
-                    <condition id="_caNNT_34">
-                        <body>
-                            <![CDATA[true]]>
-                        </body>
-                    </condition>
-                </repetitionRule>
-            </itemControl>
-        </planItem>
-        <sentry id="crit__caNNT_0">
-            <caseFileItemOnPart id="_caNNT_21" sourceRef="_caNNT_44">
-                <standardEvent>create</standardEvent>
-            </caseFileItemOnPart>
-        </sentry>
-        <sentry id="crit__caNNT_1">
-            <caseFileItemOnPart id="_caNNT_31" sourceRef="_caNNT_44">
-                <standardEvent>create</standardEvent>
-            </caseFileItemOnPart>
-        </sentry>
-        <sentry id="crit__caNNT_2">
-            <caseFileItemOnPart id="_caNNT_35" sourceRef="_caNNT_44">
-                <standardEvent>create</standardEvent>
-            </caseFileItemOnPart>
-        </sentry>
-        <sentry id="crit__caNNT_3">
-            <caseFileItemOnPart id="_caNNT_40" sourceRef="_caNNT_44">
-                <standardEvent>create</standardEvent>
-            </caseFileItemOnPart>
-        </sentry>
-        <humanTask id="ht__caNNT_0" name="Use Indexed Input" isBlocking="true">
             <inputs id="_caNNT_13" name="CaseInput" bindingRef="_caNNT_44">
                 <bindingRefinement id="_caNNT_14">
                     <body>
@@ -91,7 +35,21 @@
                 </cafienne:implementation>
             </extensionElements>
         </humanTask>
-        <humanTask id="ht__caNNT_1" name="Use Current Input" isBlocking="true">
+        <humanTask id="pi_ht__caNNT_1" name="Use Current Input" isBlocking="true">
+            <entryCriterion id="_caNNT_22" name="EntryCriterion_1">
+                <caseFileItemOnPart id="_caNNT_31" sourceRef="_caNNT_44">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </entryCriterion>
+            <itemControl id="_caNNT_8">
+                <repetitionRule id="_caNNT_18">
+                    <condition id="_caNNT_19">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
             <inputs id="_caNNT_12" name="CaseInput" bindingRef="_caNNT_44"/>
             <extensionElements mustUnderstand="false">
                 <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="simple_in_out_task.humantask">
@@ -99,7 +57,7 @@
                 </cafienne:implementation>
             </extensionElements>
         </humanTask>
-        <humanTask id="ht__caNNT_2" name="Use List Input" isBlocking="true">
+        <humanTask id="pi_ht__caNNT_2" name="Use List Input" isBlocking="true">
             <inputs id="_caNNT_25" name="CaseInput" bindingRef="_caNNT_44">
                 <bindingRefinement id="_caNNT_26">
                     <body>
@@ -113,7 +71,21 @@
                 </cafienne:implementation>
             </extensionElements>
         </humanTask>
-        <humanTask id="ht__caNNT_3" name="Use Indexed Reference Input" isBlocking="true">
+        <humanTask id="pi_ht__caNNT_3" name="Use Indexed Reference Input" isBlocking="true">
+            <entryCriterion id="_caNNT_30" name="EntryCriterion_2">
+                <caseFileItemOnPart id="_caNNT_35" sourceRef="_caNNT_44">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </entryCriterion>
+            <itemControl id="_caNNT_27">
+                <repetitionRule id="_caNNT_28">
+                    <condition id="_caNNT_29">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
             <inputs id="_caNNT_41" name="CaseInput" bindingRef="_caNNT_44">
                 <bindingRefinement id="_caNNT_42">
                     <body>
@@ -127,7 +99,7 @@
                 </cafienne:implementation>
             </extensionElements>
         </humanTask>
-        <humanTask id="ht__caNNT_4" name="Use Reference Input" isBlocking="true">
+        <humanTask id="pi_ht__caNNT_4" name="Use Reference Input" isBlocking="true">
             <inputs id="_caNNT_36" name="CaseInput" bindingRef="_caNNT_44">
                 <bindingRefinement id="_caNNT_37">
                     <body>
@@ -141,23 +113,37 @@
                 </cafienne:implementation>
             </extensionElements>
         </humanTask>
-        <humanTask id="ht__caNNT_5" name="Stage Indexed Input" isBlocking="true">
-            <inputs id="_caNNT_49" name="CaseInput" bindingRef="_caNNT_44">
-                <bindingRefinement id="_caNNT_50">
-                    <body>
-                        <![CDATA[indexed]]>
-                    </body>
-                </bindingRefinement>
-            </inputs>
-            <extensionElements mustUnderstand="false">
-                <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="simple_in_out_task.humantask">
-                    <parameterMapping id="_caNNT_46" sourceRef="_caNNT_49" targetRef="_dk8c_In"/>
-                </cafienne:implementation>
-            </extensionElements>
-        </humanTask>
-        <stage id="_caNNT_23" name="Repeating Stage" autoComplete="true">
-            <planItem id="pi_ht__caNNT_5" name="Stage Indexed Input" definitionRef="ht__caNNT_5"/>
+        <stage id="pi__caNNT_23" name="Repeating Stage" autoComplete="true">
+            <entryCriterion id="_caNNT_39" name="EntryCriterion_3">
+                <caseFileItemOnPart id="_caNNT_40" sourceRef="_caNNT_44">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </entryCriterion>
+            <itemControl id="_caNNT_24">
+                <repetitionRule id="_caNNT_32">
+                    <condition id="_caNNT_34">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
+            <humanTask id="pi_ht__caNNT_5" name="Stage Indexed Input" isBlocking="true">
+                <inputs id="_caNNT_49" name="CaseInput" bindingRef="_caNNT_44">
+                    <bindingRefinement id="_caNNT_50">
+                        <body>
+                            <![CDATA[indexed]]>
+                        </body>
+                    </bindingRefinement>
+                </inputs>
+                <extensionElements mustUnderstand="false">
+                    <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="simple_in_out_task.humantask">
+                        <parameterMapping id="_caNNT_46" sourceRef="_caNNT_49" targetRef="_dk8c_In"/>
+                    </cafienne:implementation>
+                </extensionElements>
+            </humanTask>
         </stage>
     </casePlanModel>
+    <caseRoles/>
     <input id="_caNNT_5" name="CaseInput" bindingRef="_caNNT_44"/>
 </case>

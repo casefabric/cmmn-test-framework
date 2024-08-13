@@ -8,7 +8,7 @@
         <caseFileItem id="_jAVt1_3" name="Root" multiplicity="ExactlyOne" definitionRef="root.cfid"/>
     </caseFileModel>
     <casePlanModel id="cm__jAVt1_0" name="caseteam" autoComplete="true">
-        <planItem id="pi_ht__jAVt1_0" name="Approve" definitionRef="ht__jAVt1_0">
+        <humanTask id="pi_ht__jAVt1_0" name="Approve" isBlocking="true" performerRef="_jAVt1_1">
             <itemControl id="_Crena_0">
                 <repetitionRule id="_Crena_8">
                     <condition id="_Crena_9">
@@ -18,8 +18,8 @@
                     </condition>
                 </repetitionRule>
             </itemControl>
-        </planItem>
-        <planItem id="pi_ht__jAVt1_1" name="Request" definitionRef="ht__jAVt1_1">
+        </humanTask>
+        <humanTask id="pi_ht__jAVt1_1" name="Request" isBlocking="true" performerRef="_jAVt1_0">
             <itemControl id="_Crena_1">
                 <repetitionRule id="_Crena_6">
                     <condition id="_Crena_7">
@@ -29,8 +29,8 @@
                     </condition>
                 </repetitionRule>
             </itemControl>
-        </planItem>
-        <planItem id="pi_ht__jAVt1_2" name="Assist" definitionRef="ht__jAVt1_2">
+        </humanTask>
+        <humanTask id="pi_ht__jAVt1_2" name="Assist" isBlocking="true" performerRef="_jAVt1_2">
             <itemControl id="_Crena_2">
                 <repetitionRule id="_Crena_10">
                     <condition id="_Crena_11">
@@ -40,8 +40,8 @@
                     </condition>
                 </repetitionRule>
             </itemControl>
-        </planItem>
-        <planItem id="pi_ht__Crena_0" name="Arbitrary Task" definitionRef="ht__Crena_0">
+        </humanTask>
+        <humanTask id="pi_ht__Crena_0" name="Arbitrary Task" isBlocking="true" performerRef="_Crena_3">
             <itemControl id="_Crena_4">
                 <repetitionRule id="_Crena_14">
                     <condition id="_Crena_15">
@@ -51,8 +51,8 @@
                     </condition>
                 </repetitionRule>
             </itemControl>
-        </planItem>
-        <planItem id="pi_ht__Crena_1" name="Task Without Role" definitionRef="ht__Crena_1">
+        </humanTask>
+        <humanTask id="pi_ht__Crena_1" name="Task Without Role" isBlocking="true">
             <itemControl id="_Crena_5">
                 <repetitionRule id="_Crena_12">
                     <condition id="_Crena_13">
@@ -62,29 +62,9 @@
                     </condition>
                 </repetitionRule>
             </itemControl>
-        </planItem>
-        <humanTask id="ht__jAVt1_0" name="Approve" isBlocking="true" performerRef="_jAVt1_1"/>
-        <humanTask id="ht__jAVt1_1" name="Request" isBlocking="true" performerRef="_jAVt1_0"/>
-        <humanTask id="ht__jAVt1_2" name="Assist" isBlocking="true" performerRef="_jAVt1_2"/>
-        <humanTask id="ht__Crena_0" name="Arbitrary Task" isBlocking="true" performerRef="_Crena_3"/>
-        <humanTask id="ht__Crena_1" name="Task Without Role" isBlocking="true"/>
+        </humanTask>
     </casePlanModel>
     <caseRoles>
-        <role id="_jAVt1_0" name="Requestor"/>
-        <role id="_jAVt1_1" name="Approver"/>
-        <role id="_jAVt1_2" name="PersonalAssistant">
-            <documentation textFormat="text/plain">
-                <text>
-                    <![CDATA[Personal Assistant]]>
-                </text>
-            </documentation>
-        </role>
-        <role id="_Crena_3" name="CaseParticipant">
-            <documentation textFormat="text/plain">
-                <text>
-                    <![CDATA[Arbitrary role that is not a tenant role]]>
-                </text>
-            </documentation>
-        </role>
+        <role/>
     </caseRoles>
 </case>

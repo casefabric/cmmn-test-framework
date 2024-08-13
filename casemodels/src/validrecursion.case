@@ -1,16 +1,14 @@
 <case id="validrecursion.case" name="validrecursion" expressionLanguage="spel" guid="_HiuBi">
     <caseFileModel/>
     <casePlanModel id="cm__HiuBi_0" name="validrecursion" autoComplete="true">
-        <planItem id="pi_ht__HiuBi_0" name="HumanTask_0" definitionRef="ht__HiuBi_0"/>
-        <planItem id="pi_ct__HiuBi_0" name="validrecursion" definitionRef="ct__HiuBi_0">
-            <entryCriterion id="_HiuBi_2" name="EntryCriterion_0" sentryRef="crit__HiuBi_0"/>
-        </planItem>
-        <sentry id="crit__HiuBi_0">
-            <planItemOnPart id="_HiuBi_3" sourceRef="pi_ht__HiuBi_0">
-                <standardEvent>complete</standardEvent>
-            </planItemOnPart>
-        </sentry>
-        <humanTask id="ht__HiuBi_0" name="HumanTask_0" isBlocking="true"/>
-        <caseTask id="ct__HiuBi_0" name="validrecursion" isBlocking="true" caseRef="validrecursion.case"/>
+        <humanTask id="pi_ht__HiuBi_0" name="HumanTask_0" isBlocking="true"/>
+        <caseTask id="pi_ct__HiuBi_0" name="validrecursion" isBlocking="true" caseRef="validrecursion.case">
+            <entryCriterion id="_HiuBi_2" name="EntryCriterion_0">
+                <planItemOnPart id="_HiuBi_3" sourceRef="pi_ht__HiuBi_0">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+            </entryCriterion>
+        </caseTask>
     </casePlanModel>
+    <caseRoles/>
 </case>

@@ -7,9 +7,20 @@
         </caseFileItem>
     </caseFileModel>
     <casePlanModel id="cm__OgBIe_0" name="repeat_with_mapping" autoComplete="true">
-        <planItem id="pi_ht__OgBIe_0" name="Create Children" definitionRef="ht__OgBIe_0"/>
-        <planItem id="pi_ht__OgBIe_1" name="Edit GrandChild" definitionRef="ht__OgBIe_1">
-            <entryCriterion id="_OgBIe_11" name="EntryCriterion_0" sentryRef="crit__OgBIe_0"/>
+        <humanTask id="pi_ht__OgBIe_0" name="Create Children" isBlocking="true">
+            <outputs id="_OgBIe_18" name="Child" bindingRef="_OgBIe_3"/>
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="createfamily.humantask">
+                    <parameterMapping id="_OgBIe_8" sourceRef="_2Fqq_children" targetRef="_OgBIe_18"/>
+                </cafienne:implementation>
+            </extensionElements>
+        </humanTask>
+        <humanTask id="pi_ht__OgBIe_1" name="Edit GrandChild" isBlocking="true">
+            <entryCriterion id="_OgBIe_11" name="EntryCriterion_0">
+                <caseFileItemOnPart id="_OgBIe_12" sourceRef="_OgBIe_3">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </entryCriterion>
             <itemControl id="_OgBIe_1">
                 <repetitionRule id="_OgBIe_9">
                     <condition id="_OgBIe_10">
@@ -19,21 +30,6 @@
                     </condition>
                 </repetitionRule>
             </itemControl>
-        </planItem>
-        <sentry id="crit__OgBIe_0">
-            <caseFileItemOnPart id="_OgBIe_12" sourceRef="_OgBIe_3">
-                <standardEvent>create</standardEvent>
-            </caseFileItemOnPart>
-        </sentry>
-        <humanTask id="ht__OgBIe_0" name="Create Children" isBlocking="true">
-            <outputs id="_OgBIe_18" name="Child" bindingRef="_OgBIe_3"/>
-            <extensionElements mustUnderstand="false">
-                <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="createfamily.humantask">
-                    <parameterMapping id="_OgBIe_8" sourceRef="_2Fqq_children" targetRef="_OgBIe_18"/>
-                </cafienne:implementation>
-            </extensionElements>
-        </humanTask>
-        <humanTask id="ht__OgBIe_1" name="Edit GrandChild" isBlocking="true">
             <inputs id="_OgBIe_15" name="Child" bindingRef="_OgBIe_3"/>
             <extensionElements mustUnderstand="false">
                 <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="editgrandchild.humantask">
@@ -48,4 +44,5 @@
             </extensionElements>
         </humanTask>
     </casePlanModel>
+    <caseRoles/>
 </case>

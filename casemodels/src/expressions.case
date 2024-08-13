@@ -9,60 +9,7 @@
         <caseFileItem id="_O4sf3_10" name="Item2" multiplicity="ExactlyOne" definitionRef="unspecified.cfid"/>
     </caseFileModel>
     <casePlanModel id="cm__O4sf3_0" name="expressions" autoComplete="true">
-        <planItem id="pi_ht__O4sf3_0" name="Task map output properties" definitionRef="ht__O4sf3_0"/>
-        <planItem id="pi__O4sf3_23" name="Event Repeater" definitionRef="_O4sf3_23">
-            <itemControl id="_O4sf3_24">
-                <repetitionRule id="_O4sf3_25">
-                    <condition id="_O4sf3_26">
-                        <body>
-                            <![CDATA[true]]>
-                        </body>
-                    </condition>
-                </repetitionRule>
-            </itemControl>
-        </planItem>
-        <planItem id="pi_ms__O4sf3_0" name="grandchild is done" definitionRef="ms__O4sf3_0">
-            <entryCriterion id="_O4sf3_14" name="EntryCriterion_0" sentryRef="crit__O4sf3_0"/>
-        </planItem>
-        <planItem id="pi__O4sf3_27" name="Another Event Repeater" definitionRef="_O4sf3_27">
-            <itemControl id="_O4sf3_28">
-                <repetitionRule id="_O4sf3_29">
-                    <condition id="_O4sf3_30">
-                        <body>
-                            <![CDATA[true]]>
-                        </body>
-                    </condition>
-                </repetitionRule>
-            </itemControl>
-        </planItem>
-        <planItem id="pi_ms__O4sf3_1" name="item2 is done" definitionRef="ms__O4sf3_1">
-            <entryCriterion id="_O4sf3_19" name="EntryCriterion_1" sentryRef="crit__O4sf3_1"/>
-        </planItem>
-        <sentry id="crit__O4sf3_0">
-            <ifPart id="_O4sf3_16">
-                <condition id="_O4sf3_17">
-                    <body>
-                        <![CDATA[case.file.item1.grandchild.done == true]]>
-                    </body>
-                </condition>
-            </ifPart>
-            <planItemOnPart id="_O4sf3_15" sourceRef="pi_ue__O4sf3_0">
-                <standardEvent>occur</standardEvent>
-            </planItemOnPart>
-        </sentry>
-        <sentry id="crit__O4sf3_1">
-            <ifPart id="_O4sf3_21">
-                <condition id="_O4sf3_22">
-                    <body>
-                        <![CDATA[case.file.item2?.done == true]]>
-                    </body>
-                </condition>
-            </ifPart>
-            <planItemOnPart id="_O4sf3_20" sourceRef="pi_ue__O4sf3_1">
-                <standardEvent>occur</standardEvent>
-            </planItemOnPart>
-        </sentry>
-        <humanTask id="ht__O4sf3_0" name="Task map output properties" isBlocking="true">
+        <humanTask id="pi_ht__O4sf3_0" name="Task map output properties" isBlocking="true">
             <outputs id="_O4sf3_5" name="ChildItem" bindingRef="_O4sf3_3"/>
             <outputs id="_O4sf3_7" name="ChildItem.1" bindingRef="_O4sf3_3"/>
             <extensionElements mustUnderstand="false">
@@ -84,15 +31,58 @@
                 </cafienne:implementation>
             </extensionElements>
         </humanTask>
-        <milestone id="ms__O4sf3_0" name="grandchild is done"/>
-        <milestone id="ms__O4sf3_1" name="item2 is done"/>
-        <userEvent id="ue__O4sf3_0" name="Check Grandchild"/>
-        <userEvent id="ue__O4sf3_1" name="Check Item2"/>
-        <stage id="_O4sf3_23" name="Event Repeater" autoComplete="true">
-            <planItem id="pi_ue__O4sf3_0" name="Check Grandchild" definitionRef="ue__O4sf3_0"/>
+        <stage id="pi__O4sf3_23" name="Event Repeater" autoComplete="true">
+            <itemControl id="_O4sf3_24">
+                <repetitionRule id="_O4sf3_25">
+                    <condition id="_O4sf3_26">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
+            <userEvent id="pi_ue__O4sf3_0" name="Check Grandchild"/>
         </stage>
-        <stage id="_O4sf3_27" name="Another Event Repeater" autoComplete="true">
-            <planItem id="pi_ue__O4sf3_1" name="Check Item2" definitionRef="ue__O4sf3_1"/>
+        <milestone id="pi_ms__O4sf3_0" name="grandchild is done">
+            <entryCriterion id="_O4sf3_14" name="EntryCriterion_0">
+                <ifPart id="_O4sf3_16">
+                    <condition id="_O4sf3_17">
+                        <body>
+                            <![CDATA[case.file.item1.grandchild.done == true]]>
+                        </body>
+                    </condition>
+                </ifPart>
+                <planItemOnPart id="_O4sf3_15" sourceRef="pi_ue__O4sf3_0">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </entryCriterion>
+        </milestone>
+        <stage id="pi__O4sf3_27" name="Another Event Repeater" autoComplete="true">
+            <itemControl id="_O4sf3_28">
+                <repetitionRule id="_O4sf3_29">
+                    <condition id="_O4sf3_30">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
+            <userEvent id="pi_ue__O4sf3_1" name="Check Item2"/>
         </stage>
+        <milestone id="pi_ms__O4sf3_1" name="item2 is done">
+            <entryCriterion id="_O4sf3_19" name="EntryCriterion_1">
+                <ifPart id="_O4sf3_21">
+                    <condition id="_O4sf3_22">
+                        <body>
+                            <![CDATA[case.file.item2?.done == true]]>
+                        </body>
+                    </condition>
+                </ifPart>
+                <planItemOnPart id="_O4sf3_20" sourceRef="pi_ue__O4sf3_1">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </entryCriterion>
+        </milestone>
     </casePlanModel>
+    <caseRoles/>
 </case>

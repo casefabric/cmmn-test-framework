@@ -3,17 +3,15 @@
         <caseFileItem id="_hDTXE_2" name="Greeting" multiplicity="ExactlyOne" definitionRef="greeting.cfid"/>
     </caseFileModel>
     <casePlanModel id="cm__hDTXE_0" name="casemetspatie" autoComplete="true">
-        <planItem id="pi_ht__hDTXE_0" name="Taak Met Eind Spatie " definitionRef="ht__hDTXE_0"/>
-        <planItem id="pi_ht__hDTXE_1" name=" Taak Met Begin Spatie" definitionRef="ht__hDTXE_1">
-            <entryCriterion id="_hDTXE_4" name="EntryCriterion_0" sentryRef="crit__hDTXE_0"/>
-        </planItem>
-        <sentry id="crit__hDTXE_0">
-            <caseFileItemOnPart id="_hDTXE_5" sourceRef="_hDTXE_2">
-                <standardEvent>create</standardEvent>
-            </caseFileItemOnPart>
-        </sentry>
-        <humanTask id="ht__hDTXE_0" name="Taak Met Eind Spatie " isBlocking="true"/>
-        <humanTask id="ht__hDTXE_1" name=" Taak Met Begin Spatie" isBlocking="true"/>
+        <humanTask id="pi_ht__hDTXE_0" name="Taak Met Eind Spatie " isBlocking="true"/>
+        <humanTask id="pi_ht__hDTXE_1" name=" Taak Met Begin Spatie" isBlocking="true">
+            <entryCriterion id="_hDTXE_4" name="EntryCriterion_0">
+                <caseFileItemOnPart id="_hDTXE_5" sourceRef="_hDTXE_2">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </entryCriterion>
+        </humanTask>
     </casePlanModel>
+    <caseRoles/>
     <input id="_hDTXE_3" name="Greeting" bindingRef="_hDTXE_2"/>
 </case>

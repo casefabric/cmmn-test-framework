@@ -9,7 +9,7 @@
         <caseFileItem id="_v624r_6" name="TopArray" multiplicity="ZeroOrMore" definitionRef="rootcasefileitem.cfid"/>
     </caseFileModel>
     <casePlanModel id="cm__v624r_0" name="taskoutputoperations" autoComplete="true">
-        <planItem id="pi_ht__v624r_1" name="Replace TopItem" definitionRef="ht__v624r_1">
+        <humanTask id="pi_ht__v624r_1" name="Replace TopItem" isBlocking="true">
             <itemControl id="_v624r_9">
                 <repetitionRule id="_v624r_12">
                     <condition id="_v624r_13">
@@ -19,129 +19,6 @@
                     </condition>
                 </repetitionRule>
             </itemControl>
-        </planItem>
-        <planItem id="pi_ht__v624r_3" name="Add TopItem" definitionRef="ht__v624r_3">
-            <itemControl id="_v624r_19">
-                <repetitionRule id="_v624r_20">
-                    <condition id="_v624r_21">
-                        <body>
-                            <![CDATA[true]]>
-                        </body>
-                    </condition>
-                </repetitionRule>
-            </itemControl>
-        </planItem>
-        <planItem id="pi_ht__v624r_4" name="Update TopItem" definitionRef="ht__v624r_4">
-            <itemControl id="_v624r_22">
-                <repetitionRule id="_v624r_28">
-                    <condition id="_v624r_29">
-                        <body>
-                            <![CDATA[true]]>
-                        </body>
-                    </condition>
-                </repetitionRule>
-            </itemControl>
-        </planItem>
-        <planItem id="pi_ht__v624r_0" name="Replace TopArray" definitionRef="ht__v624r_0">
-            <itemControl id="_v624r_0">
-                <repetitionRule id="_v624r_67">
-                    <condition id="_v624r_68">
-                        <body>
-                            <![CDATA[true]]>
-                        </body>
-                    </condition>
-                </repetitionRule>
-            </itemControl>
-        </planItem>
-        <planItem id="pi_ht__v624r_2" name="Add TopArray" definitionRef="ht__v624r_2">
-            <itemControl id="_v624r_2">
-                <repetitionRule id="_v624r_65">
-                    <condition id="_v624r_66">
-                        <body>
-                            <![CDATA[true]]>
-                        </body>
-                    </condition>
-                </repetitionRule>
-            </itemControl>
-        </planItem>
-        <planItem id="pi_ht__v624r_5" name="Update TopArray" definitionRef="ht__v624r_5">
-            <itemControl id="_v624r_3">
-                <repetitionRule id="_v624r_63">
-                    <condition id="_v624r_64">
-                        <body>
-                            <![CDATA[true]]>
-                        </body>
-                    </condition>
-                </repetitionRule>
-            </itemControl>
-        </planItem>
-        <planItem id="pi_ht__v624r_6" name="Replace ChildArray" definitionRef="ht__v624r_6">
-            <itemControl id="_v624r_45">
-                <repetitionRule id="_v624r_57">
-                    <condition id="_v624r_58">
-                        <body>
-                            <![CDATA[true]]>
-                        </body>
-                    </condition>
-                </repetitionRule>
-            </itemControl>
-        </planItem>
-        <planItem id="pi_ht__v624r_7" name="Add ChildArray" definitionRef="ht__v624r_7">
-            <itemControl id="_v624r_46">
-                <repetitionRule id="_v624r_59">
-                    <condition id="_v624r_60">
-                        <body>
-                            <![CDATA[true]]>
-                        </body>
-                    </condition>
-                </repetitionRule>
-            </itemControl>
-        </planItem>
-        <planItem id="pi_ht__v624r_8" name="Update ChildArray" definitionRef="ht__v624r_8">
-            <itemControl id="_v624r_47">
-                <repetitionRule id="_v624r_61">
-                    <condition id="_v624r_62">
-                        <body>
-                            <![CDATA[true]]>
-                        </body>
-                    </condition>
-                </repetitionRule>
-            </itemControl>
-        </planItem>
-        <planItem id="pi_ht__v624r_9" name="Update ChildItem" definitionRef="ht__v624r_9">
-            <itemControl id="_v624r_48">
-                <repetitionRule id="_v624r_49">
-                    <condition id="_v624r_50">
-                        <body>
-                            <![CDATA[true]]>
-                        </body>
-                    </condition>
-                </repetitionRule>
-            </itemControl>
-        </planItem>
-        <planItem id="pi_ht__v624r_10" name="Add ChildItem" definitionRef="ht__v624r_10">
-            <itemControl id="_v624r_51">
-                <repetitionRule id="_v624r_52">
-                    <condition id="_v624r_53">
-                        <body>
-                            <![CDATA[true]]>
-                        </body>
-                    </condition>
-                </repetitionRule>
-            </itemControl>
-        </planItem>
-        <planItem id="pi_ht__v624r_11" name="Replace ChildItem" definitionRef="ht__v624r_11">
-            <itemControl id="_v624r_54">
-                <repetitionRule id="_v624r_55">
-                    <condition id="_v624r_56">
-                        <body>
-                            <![CDATA[true]]>
-                        </body>
-                    </condition>
-                </repetitionRule>
-            </itemControl>
-        </planItem>
-        <humanTask id="ht__v624r_1" name="Replace TopItem" isBlocking="true">
             <outputs id="_v624r_32" name="TopItem" bindingRef="_v624r_4">
                 <bindingRefinement id="_v624r_33">
                     <body>
@@ -155,7 +32,16 @@
                 </cafienne:implementation>
             </extensionElements>
         </humanTask>
-        <humanTask id="ht__v624r_3" name="Add TopItem" isBlocking="true">
+        <humanTask id="pi_ht__v624r_3" name="Add TopItem" isBlocking="true">
+            <itemControl id="_v624r_19">
+                <repetitionRule id="_v624r_20">
+                    <condition id="_v624r_21">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
             <outputs id="_v624r_35" name="TopItem" bindingRef="_v624r_4">
                 <bindingRefinement id="_v624r_36">
                     <body>
@@ -169,7 +55,16 @@
                 </cafienne:implementation>
             </extensionElements>
         </humanTask>
-        <humanTask id="ht__v624r_4" name="Update TopItem" isBlocking="true">
+        <humanTask id="pi_ht__v624r_4" name="Update TopItem" isBlocking="true">
+            <itemControl id="_v624r_22">
+                <repetitionRule id="_v624r_28">
+                    <condition id="_v624r_29">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
             <outputs id="_v624r_38" name="TopItem" bindingRef="_v624r_4">
                 <bindingRefinement id="_v624r_39">
                     <body>
@@ -183,7 +78,16 @@
                 </cafienne:implementation>
             </extensionElements>
         </humanTask>
-        <humanTask id="ht__v624r_0" name="Replace TopArray" isBlocking="true">
+        <humanTask id="pi_ht__v624r_0" name="Replace TopArray" isBlocking="true">
+            <itemControl id="_v624r_0">
+                <repetitionRule id="_v624r_67">
+                    <condition id="_v624r_68">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
             <outputs id="_v624r_31" name="TopArray" bindingRef="_v624r_6">
                 <bindingRefinement id="_v624r_34">
                     <body>
@@ -197,7 +101,16 @@
                 </cafienne:implementation>
             </extensionElements>
         </humanTask>
-        <humanTask id="ht__v624r_2" name="Add TopArray" isBlocking="true">
+        <humanTask id="pi_ht__v624r_2" name="Add TopArray" isBlocking="true">
+            <itemControl id="_v624r_2">
+                <repetitionRule id="_v624r_65">
+                    <condition id="_v624r_66">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
             <outputs id="_v624r_40" name="TopArray" bindingRef="_v624r_6">
                 <bindingRefinement id="_v624r_41">
                     <body>
@@ -211,7 +124,16 @@
                 </cafienne:implementation>
             </extensionElements>
         </humanTask>
-        <humanTask id="ht__v624r_5" name="Update TopArray" isBlocking="true">
+        <humanTask id="pi_ht__v624r_5" name="Update TopArray" isBlocking="true">
+            <itemControl id="_v624r_3">
+                <repetitionRule id="_v624r_63">
+                    <condition id="_v624r_64">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
             <outputs id="_v624r_43" name="TopArray" bindingRef="_v624r_6">
                 <bindingRefinement id="_v624r_44">
                     <body>
@@ -225,7 +147,16 @@
                 </cafienne:implementation>
             </extensionElements>
         </humanTask>
-        <humanTask id="ht__v624r_6" name="Replace ChildArray" isBlocking="true">
+        <humanTask id="pi_ht__v624r_6" name="Replace ChildArray" isBlocking="true">
+            <itemControl id="_v624r_45">
+                <repetitionRule id="_v624r_57">
+                    <condition id="_v624r_58">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
             <outputs id="_v624r_82" name="ChildArray" bindingRef="_v624r_7">
                 <bindingRefinement id="_v624r_83">
                     <body>
@@ -239,7 +170,16 @@
                 </cafienne:implementation>
             </extensionElements>
         </humanTask>
-        <humanTask id="ht__v624r_7" name="Add ChildArray" isBlocking="true">
+        <humanTask id="pi_ht__v624r_7" name="Add ChildArray" isBlocking="true">
+            <itemControl id="_v624r_46">
+                <repetitionRule id="_v624r_59">
+                    <condition id="_v624r_60">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
             <outputs id="_v624r_85" name="ChildArray" bindingRef="_v624r_7">
                 <bindingRefinement id="_v624r_86">
                     <body>
@@ -253,7 +193,16 @@
                 </cafienne:implementation>
             </extensionElements>
         </humanTask>
-        <humanTask id="ht__v624r_8" name="Update ChildArray" isBlocking="true">
+        <humanTask id="pi_ht__v624r_8" name="Update ChildArray" isBlocking="true">
+            <itemControl id="_v624r_47">
+                <repetitionRule id="_v624r_61">
+                    <condition id="_v624r_62">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
             <outputs id="_v624r_88" name="ChildArray" bindingRef="_v624r_7">
                 <bindingRefinement id="_v624r_89">
                     <body>
@@ -267,7 +216,16 @@
                 </cafienne:implementation>
             </extensionElements>
         </humanTask>
-        <humanTask id="ht__v624r_9" name="Update ChildItem" isBlocking="true">
+        <humanTask id="pi_ht__v624r_9" name="Update ChildItem" isBlocking="true">
+            <itemControl id="_v624r_48">
+                <repetitionRule id="_v624r_49">
+                    <condition id="_v624r_50">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
             <outputs id="_v624r_81" name="TopItem" bindingRef="_v624r_4">
                 <bindingRefinement id="_v624r_84">
                     <body>
@@ -281,7 +239,16 @@
                 </cafienne:implementation>
             </extensionElements>
         </humanTask>
-        <humanTask id="ht__v624r_10" name="Add ChildItem" isBlocking="true">
+        <humanTask id="pi_ht__v624r_10" name="Add ChildItem" isBlocking="true">
+            <itemControl id="_v624r_51">
+                <repetitionRule id="_v624r_52">
+                    <condition id="_v624r_53">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
             <outputs id="_v624r_94" name="ChildItem" bindingRef="_v624r_5">
                 <bindingRefinement id="_v624r_77">
                     <body>
@@ -295,7 +262,16 @@
                 </cafienne:implementation>
             </extensionElements>
         </humanTask>
-        <humanTask id="ht__v624r_11" name="Replace ChildItem" isBlocking="true">
+        <humanTask id="pi_ht__v624r_11" name="Replace ChildItem" isBlocking="true">
+            <itemControl id="_v624r_54">
+                <repetitionRule id="_v624r_55">
+                    <condition id="_v624r_56">
+                        <body>
+                            <![CDATA[true]]>
+                        </body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
             <outputs id="_v624r_91" name="ChildItem" bindingRef="_v624r_5">
                 <bindingRefinement id="_v624r_92">
                     <body>
@@ -310,6 +286,7 @@
             </extensionElements>
         </humanTask>
     </casePlanModel>
+    <caseRoles/>
     <input id="_v624r_23" name="TopItem" bindingRef="_v624r_4"/>
     <input id="_v624r_24" name="TopArray" bindingRef="_v624r_6"/>
 </case>

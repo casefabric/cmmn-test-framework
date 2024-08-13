@@ -3,23 +3,20 @@
         <caseFileItem id="_La4ud_7" name="unspecified" multiplicity="ExactlyOne" definitionRef="unspecified.cfid"/>
     </caseFileModel>
     <casePlanModel id="cm__La4ud_0" name="entrycriteriaonrecovery" autoComplete="true">
-        <planItem id="pi_ht__La4ud_0" name="Task1" definitionRef="ht__La4ud_0"/>
-        <planItem id="pi_ht__La4ud_1" name="Task2" definitionRef="ht__La4ud_1"/>
-        <planItem id="pi_ht__La4ud_2" name="Task3" definitionRef="ht__La4ud_2">
-            <entryCriterion id="_La4ud_3" name="EntryCriterion_0" sentryRef="crit__La4ud_0"/>
-        </planItem>
-        <sentry id="crit__La4ud_0">
-            <planItemOnPart id="_La4ud_4" sourceRef="pi_ht__La4ud_0">
-                <standardEvent>complete</standardEvent>
-            </planItemOnPart>
-            <planItemOnPart id="_La4ud_5" sourceRef="pi_ht__La4ud_1">
-                <standardEvent>complete</standardEvent>
-            </planItemOnPart>
-        </sentry>
-        <humanTask id="ht__La4ud_0" name="Task1" isBlocking="true"/>
-        <humanTask id="ht__La4ud_1" name="Task2" isBlocking="true"/>
-        <humanTask id="ht__La4ud_2" name="Task3" isBlocking="true"/>
+        <humanTask id="pi_ht__La4ud_0" name="Task1" isBlocking="true"/>
+        <humanTask id="pi_ht__La4ud_1" name="Task2" isBlocking="true"/>
+        <humanTask id="pi_ht__La4ud_2" name="Task3" isBlocking="true">
+            <entryCriterion id="_La4ud_3" name="EntryCriterion_0">
+                <planItemOnPart id="_La4ud_4" sourceRef="pi_ht__La4ud_0">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+                <planItemOnPart id="_La4ud_5" sourceRef="pi_ht__La4ud_1">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+            </entryCriterion>
+        </humanTask>
     </casePlanModel>
+    <caseRoles/>
     <textAnnotation id="_La4ud_6">
         <text>
             <![CDATA[This case can be used to test that recovery also puts the sentry network back in the proper state.
