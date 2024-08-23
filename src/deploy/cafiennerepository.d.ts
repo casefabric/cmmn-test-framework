@@ -1,0 +1,1 @@
+declare module '@cafienne/repository';

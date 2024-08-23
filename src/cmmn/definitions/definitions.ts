@@ -12,6 +12,7 @@ export default class Definitions {
     public static readonly Compatibility = new Definitions('compatibility.xml');
     public static readonly ComplexCase = new Definitions('complexcase.xml');
     public static readonly Documentation = new Definitions('documentation_case.xml');
+    public static readonly DynamicTaskModel = new Definitions('dynamictaskmodel.xml');
     public static readonly EntryCriteriaOnCaseInputParameters = new Definitions('entrycriteriaoncaseinputparameters.xml');
     public static readonly EntryCriteriaOnRecovery = new Definitions('entrycriteriaonrecovery.xml');
     public static readonly EventListener = new Definitions('eventlistener.xml');
@@ -42,6 +43,7 @@ export default class Definitions {
     public static readonly RepeatStageTest = new Definitions('repeatstagetest.xml');
     public static readonly RepeatWithMapping = new Definitions('repeat_with_mapping.xml');
     public static readonly SMTPTest = new Definitions('smtptest.xml');
+    public static readonly SendMail = new Definitions('sendmail.xml');
     public static readonly StageTaskExpressions = new Definitions('stagetaskexpressions.xml');
     public static readonly StageTest = new Definitions('stagetest.xml');
     public static readonly SubCaseTest = new Definitions('subcasetest.xml');
