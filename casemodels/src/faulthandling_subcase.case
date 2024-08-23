@@ -13,7 +13,11 @@
         <stage id="pi__y2XPO_4" name="Stage With Fault Handling" autoComplete="true">
             <processTask id="pi_pt__y2XPO_1" name="Call with Fault Handling" isBlocking="true" processRef="GetResponse2.process">
                 <extensionElements mustUnderstand="false">
-                    <reactivateCriterion xmlns="org.cafienne" id="_y2XPO_25" name="ReactivateCriterion_0"/>
+                    <reactivateCriterion xmlns="org.cafienne" id="_y2XPO_25" name="ReactivateCriterion_0">
+                        <planItemOnPart id="_y2XPO_26" sourceRef="pi_ue__y2XPO_0">
+                            <standardEvent>occur</standardEvent>
+                        </planItemOnPart>
+                    </reactivateCriterion>
                 </extensionElements>
                 <inputs id="_y2XPO_30" name="data" bindingRef="_y2XPO_2"/>
                 <parameterMapping id="_y2XPO_15" sourceRef="_y2XPO_30" targetRef="_FcAX_data"/>

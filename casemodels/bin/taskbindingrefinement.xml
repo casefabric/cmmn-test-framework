@@ -1,4 +1,4 @@
-<definitions>
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
     <caseFileItemDefinition name="root" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="root.cfid">
         <property name="Outcome" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
     </caseFileItemDefinition>
@@ -12,7 +12,7 @@
         </caseFileModel>
         <casePlanModel id="cm__caNNT_0" name="taskbindingrefinement" autoComplete="true">
             <planItem id="pi_ht__caNNT_0" name="Use Indexed Input" definitionRef="ht__caNNT_0">
-                <entryCriterion id="_caNNT_20" name="EntryCriterion_0" sentryRef="crit__caNNT_0"/>
+                <entryCriterion id="_caNNT_20" name="EntryCriterion_0" sentryRef="s__caNNT_20"/>
                 <itemControl id="_caNNT_0">
                     <repetitionRule id="_caNNT_6">
                         <condition id="_caNNT_7">
@@ -24,7 +24,7 @@
                 </itemControl>
             </planItem>
             <planItem id="pi_ht__caNNT_1" name="Use Current Input" definitionRef="ht__caNNT_1">
-                <entryCriterion id="_caNNT_22" name="EntryCriterion_1" sentryRef="crit__caNNT_1"/>
+                <entryCriterion id="_caNNT_22" name="EntryCriterion_1" sentryRef="s__caNNT_22"/>
                 <itemControl id="_caNNT_8">
                     <repetitionRule id="_caNNT_18">
                         <condition id="_caNNT_19">
@@ -37,7 +37,7 @@
             </planItem>
             <planItem id="pi_ht__caNNT_2" name="Use List Input" definitionRef="ht__caNNT_2"/>
             <planItem id="pi_ht__caNNT_3" name="Use Indexed Reference Input" definitionRef="ht__caNNT_3">
-                <entryCriterion id="_caNNT_30" name="EntryCriterion_2" sentryRef="crit__caNNT_2"/>
+                <entryCriterion id="_caNNT_30" name="EntryCriterion_2" sentryRef="s__caNNT_30"/>
                 <itemControl id="_caNNT_27">
                     <repetitionRule id="_caNNT_28">
                         <condition id="_caNNT_29">
@@ -50,7 +50,7 @@
             </planItem>
             <planItem id="pi_ht__caNNT_4" name="Use Reference Input" definitionRef="ht__caNNT_4"/>
             <planItem id="pi__caNNT_23" name="Repeating Stage" definitionRef="_caNNT_23">
-                <entryCriterion id="_caNNT_39" name="EntryCriterion_3" sentryRef="crit__caNNT_3"/>
+                <entryCriterion id="_caNNT_39" name="EntryCriterion_3" sentryRef="s__caNNT_39"/>
                 <itemControl id="_caNNT_24">
                     <repetitionRule id="_caNNT_32">
                         <condition id="_caNNT_34">
@@ -61,22 +61,22 @@
                     </repetitionRule>
                 </itemControl>
             </planItem>
-            <sentry id="crit__caNNT_0">
+            <sentry id="s__caNNT_20">
                 <caseFileItemOnPart id="_caNNT_21" sourceRef="_caNNT_44">
                     <standardEvent>create</standardEvent>
                 </caseFileItemOnPart>
             </sentry>
-            <sentry id="crit__caNNT_1">
+            <sentry id="s__caNNT_22">
                 <caseFileItemOnPart id="_caNNT_31" sourceRef="_caNNT_44">
                     <standardEvent>create</standardEvent>
                 </caseFileItemOnPart>
             </sentry>
-            <sentry id="crit__caNNT_2">
+            <sentry id="s__caNNT_30">
                 <caseFileItemOnPart id="_caNNT_35" sourceRef="_caNNT_44">
                     <standardEvent>create</standardEvent>
                 </caseFileItemOnPart>
             </sentry>
-            <sentry id="crit__caNNT_3">
+            <sentry id="s__caNNT_39">
                 <caseFileItemOnPart id="_caNNT_40" sourceRef="_caNNT_44">
                     <standardEvent>create</standardEvent>
                 </caseFileItemOnPart>
@@ -98,7 +98,6 @@
                         </documentation>
                         <input id="_dk8c_In" name="In"/>
                         <output id="_46Gh_Out" name="Out"/>
-                        <task-model/>
                         <parameterMapping id="_caNNT_1" sourceRef="_caNNT_13" targetRef="_dk8c_In"/>
                     </cafienne:implementation>
                 </extensionElements>
@@ -114,7 +113,6 @@
                         </documentation>
                         <input id="_dk8c_In" name="In"/>
                         <output id="_46Gh_Out" name="Out"/>
-                        <task-model/>
                         <parameterMapping id="_caNNT_9" sourceRef="_caNNT_12" targetRef="_dk8c_In"/>
                     </cafienne:implementation>
                 </extensionElements>
@@ -136,7 +134,6 @@
                         </documentation>
                         <input id="_dk8c_In" name="In"/>
                         <output id="_46Gh_Out" name="Out"/>
-                        <task-model/>
                         <parameterMapping id="_caNNT_16" sourceRef="_caNNT_25" targetRef="_dk8c_In"/>
                     </cafienne:implementation>
                 </extensionElements>
@@ -158,7 +155,6 @@
                         </documentation>
                         <input id="_dk8c_In" name="In"/>
                         <output id="_46Gh_Out" name="Out"/>
-                        <task-model/>
                         <parameterMapping id="_caNNT_38" sourceRef="_caNNT_41" targetRef="_dk8c_In"/>
                     </cafienne:implementation>
                 </extensionElements>
@@ -180,7 +176,6 @@
                         </documentation>
                         <input id="_dk8c_In" name="In"/>
                         <output id="_46Gh_Out" name="Out"/>
-                        <task-model/>
                         <parameterMapping id="_caNNT_33" sourceRef="_caNNT_36" targetRef="_dk8c_In"/>
                     </cafienne:implementation>
                 </extensionElements>
@@ -205,12 +200,12 @@
                         </documentation>
                         <input id="_dk8c_In" name="In"/>
                         <output id="_46Gh_Out" name="Out"/>
-                        <task-model/>
                         <parameterMapping id="_caNNT_46" sourceRef="_caNNT_49" targetRef="_dk8c_In"/>
                     </cafienne:implementation>
                 </extensionElements>
             </humanTask>
         </casePlanModel>
+        <caseRoles/>
         <input id="_caNNT_5" name="CaseInput" bindingRef="_caNNT_44"/>
     </case>
     <CMMNDI>

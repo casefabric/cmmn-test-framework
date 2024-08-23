@@ -1,4 +1,4 @@
-<definitions>
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
     <caseFileItemDefinition name="string" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="string.cfid"/>
     <caseFileItemDefinition name="details" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="details.cfid">
         <property name="description" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
@@ -26,8 +26,8 @@
         </caseFileModel>
         <casePlanModel id="cm_casefile/getlist_getdetails.case_0" name="getlist_getdetails" autoComplete="true">
             <planItem id="pi_pt__LQXO7_8" name="GetList" definitionRef="pt__LQXO7_8">
-                <entryCriterion id="_Sp9aR_11" name="EntryCriterion_1" sentryRef="crit__Sp9aR_0"/>
-                <entryCriterion id="_Sp9aR_24" name="EntryCriterion_3" sentryRef="crit__Sp9aR_2"/>
+                <entryCriterion id="_Sp9aR_11" name="EntryCriterion_1" sentryRef="s__Sp9aR_11"/>
+                <entryCriterion id="_Sp9aR_24" name="EntryCriterion_3" sentryRef="s__Sp9aR_24"/>
                 <itemControl id="_Sp9aR_0">
                     <repetitionRule id="_Sp9aR_22">
                         <condition id="_Sp9aR_23">
@@ -39,7 +39,7 @@
                 </itemControl>
             </planItem>
             <planItem id="pi_pt__LQXO7_24" name="GetDetails" definitionRef="pt__LQXO7_24">
-                <entryCriterion id="_LQXO7_1" name="EntryCriterion_0" sentryRef="crit__LQXO7_0"/>
+                <entryCriterion id="_LQXO7_1" name="EntryCriterion_0" sentryRef="s__LQXO7_1"/>
                 <itemControl id="_LQXO7_32">
                     <repetitionRule id="_Sp9aR_3">
                         <condition id="_Sp9aR_7">
@@ -58,7 +58,7 @@
                 </itemControl>
             </planItem>
             <planItem id="pi__Sp9aR_8" name="Fail handling" definitionRef="_Sp9aR_8">
-                <entryCriterion id="_Sp9aR_18" name="EntryCriterion_2" sentryRef="crit__Sp9aR_1"/>
+                <entryCriterion id="_Sp9aR_18" name="EntryCriterion_2" sentryRef="s__Sp9aR_18"/>
                 <itemControl id="_Sp9aR_15">
                     <repetitionRule id="_Sp9aR_20">
                         <condition id="_Sp9aR_21">
@@ -69,7 +69,17 @@
                     </repetitionRule>
                 </itemControl>
             </planItem>
-            <sentry id="crit__LQXO7_0">
+            <sentry id="s__Sp9aR_11">
+                <caseFileItemOnPart id="_Sp9aR_12" sourceRef="_Sp9aR_1">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </sentry>
+            <sentry id="s__Sp9aR_24">
+                <planItemOnPart id="_Sp9aR_16" sourceRef="pi_ue__Sp9aR_0">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <sentry id="s__LQXO7_1">
                 <ifPart id="_LQXO7_8" contextRef="_LQXO7_7">
                     <condition id="_LQXO7_9">
                         <body>
@@ -81,19 +91,9 @@
                     <standardEvent>create</standardEvent>
                 </caseFileItemOnPart>
             </sentry>
-            <sentry id="crit__Sp9aR_0">
-                <caseFileItemOnPart id="_Sp9aR_12" sourceRef="_Sp9aR_1">
-                    <standardEvent>create</standardEvent>
-                </caseFileItemOnPart>
-            </sentry>
-            <sentry id="crit__Sp9aR_1">
+            <sentry id="s__Sp9aR_18">
                 <planItemOnPart id="_Sp9aR_19" sourceRef="pi_pt__LQXO7_8">
                     <standardEvent>fault</standardEvent>
-                </planItemOnPart>
-            </sentry>
-            <sentry id="crit__Sp9aR_2">
-                <planItemOnPart id="_Sp9aR_16" sourceRef="pi_ue__Sp9aR_0">
-                    <standardEvent>occur</standardEvent>
                 </planItemOnPart>
             </sentry>
             <processTask id="pt__LQXO7_8" name="GetList" isBlocking="true" processRef="GetListWebService.process">
@@ -150,8 +150,6 @@
                 <parameterMapping id="_LQXO7_29" sourceRef="_LQXO7_28" targetRef="detailsId"/>
                 <parameterMapping id="_LQXO7_31" sourceRef="details" targetRef="_LQXO7_30"/>
             </processTask>
-            <milestone id="ms__Sp9aR_0" name="GetList Failed"/>
-            <userEvent id="ue__Sp9aR_0" name="Try Again"/>
             <stage id="_Sp9aR_8" name="Fail handling" autoComplete="true">
                 <planItem id="pi__Sp9aR_30" name="Mini Stage" definitionRef="_Sp9aR_30"/>
                 <planItem id="pi_ms__Sp9aR_0" name="GetList Failed" definitionRef="ms__Sp9aR_0"/>
@@ -159,7 +157,11 @@
             <stage id="_Sp9aR_30" name="Mini Stage" autoComplete="true">
                 <planItem id="pi_ue__Sp9aR_0" name="Try Again" definitionRef="ue__Sp9aR_0"/>
             </stage>
+            <userEvent id="ue__Sp9aR_0" name="Try Again"/>
+            <milestone id="ms__Sp9aR_0" name="GetList Failed"/>
         </casePlanModel>
+        <caseRoles/>
+        <input id="_Sp9aR_34" name="HTTPConfig" bindingRef="_Sp9aR_1"/>
     </case>
     <process id="GetListWebService.process" name="GetListWebService" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
         <input id="httpPort" name="httpPort"/>
@@ -171,7 +173,7 @@
         <output id="detailsIdentifiers" name="detailsIdentifiers"/>
         <output id="headerContentLength" name="headerContentLength"/>
         <output id="_dTMD_exception" name="exception"/>
-        <extensionElements>
+        <extensionElements mustUnderstand="false">
             <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.http.HTTPCallDefinition">
                 <url>http://localhost:${httpPort}/getListWebService</url>
                 <method>GET</method>
@@ -196,7 +198,7 @@
         <input id="httpPort" name="httpPort"/>
         <input id="detailsId" name="detailsId"/>
         <output id="details" name="details"/>
-        <extensionElements>
+        <extensionElements mustUnderstand="false">
             <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.http.HTTPCallDefinition">
                 <url>http://localhost:${httpPort}/details/${detailsId}</url>
                 <method>GET</method>

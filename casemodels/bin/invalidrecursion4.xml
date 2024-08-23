@@ -1,4 +1,4 @@
-<definitions>
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
     <caseFileItemDefinition name="root" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="root.cfid">
         <property name="Outcome" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
     </caseFileItemDefinition>
@@ -8,9 +8,9 @@
         </caseFileModel>
         <casePlanModel id="cm__2P2HC_0" name="invalidrecursion4" autoComplete="true">
             <planItem id="pi_ct__2P2HC_0" name="invalidrecursion4" definitionRef="ct__2P2HC_0">
-                <entryCriterion id="_2P2HC_1" name="EntryCriterion_0" sentryRef="crit__2P2HC_0"/>
+                <entryCriterion id="_2P2HC_1" name="EntryCriterion_0" sentryRef="s__2P2HC_1"/>
             </planItem>
-            <sentry id="crit__2P2HC_0">
+            <sentry id="s__2P2HC_1">
                 <ifPart id="_2P2HC_3" contextRef="_2P2HC_2">
                     <condition id="_2P2HC_4">
                         <body>
@@ -21,6 +21,7 @@
             </sentry>
             <caseTask id="ct__2P2HC_0" name="invalidrecursion4" isBlocking="true" caseRef="invalidrecursion4.case"/>
         </casePlanModel>
+        <caseRoles/>
         <textAnnotation id="_2P2HC_5">
             <text>
                 <![CDATA[The entry criterion only has an ifPart, hence might start immediately]]>

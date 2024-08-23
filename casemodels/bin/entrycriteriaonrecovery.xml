@@ -1,4 +1,4 @@
-<definitions>
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
     <caseFileItemDefinition name="unspecified" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="unspecified.cfid"/>
     <case id="entrycriteriaonrecovery.case" name="entrycriteriaonrecovery" expressionLanguage="spel">
         <caseFileModel>
@@ -8,9 +8,9 @@
             <planItem id="pi_ht__La4ud_0" name="Task1" definitionRef="ht__La4ud_0"/>
             <planItem id="pi_ht__La4ud_1" name="Task2" definitionRef="ht__La4ud_1"/>
             <planItem id="pi_ht__La4ud_2" name="Task3" definitionRef="ht__La4ud_2">
-                <entryCriterion id="_La4ud_3" name="EntryCriterion_0" sentryRef="crit__La4ud_0"/>
+                <entryCriterion id="_La4ud_3" name="EntryCriterion_0" sentryRef="s__La4ud_3"/>
             </planItem>
-            <sentry id="crit__La4ud_0">
+            <sentry id="s__La4ud_3">
                 <planItemOnPart id="_La4ud_4" sourceRef="pi_ht__La4ud_0">
                     <standardEvent>complete</standardEvent>
                 </planItemOnPart>
@@ -22,6 +22,7 @@
             <humanTask id="ht__La4ud_1" name="Task2" isBlocking="true"/>
             <humanTask id="ht__La4ud_2" name="Task3" isBlocking="true"/>
         </casePlanModel>
+        <caseRoles/>
         <textAnnotation id="_La4ud_6">
             <text>
                 <![CDATA[This case can be used to test that recovery also puts the sentry network back in the proper state.

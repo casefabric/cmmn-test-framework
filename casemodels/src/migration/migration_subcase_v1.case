@@ -18,7 +18,9 @@
         <humanTask id="pi_ht__0UEh7_1" name="Task2" isBlocking="true"/>
     </casePlanModel>
     <caseRoles>
-        <role/>
+        <role id="_0UEh7_7" name="role1"/>
+        <role id="_0UEh7_8" name="role2"/>
+        <role id="_0UEh7_9" name="role3_v1"/>
     </caseRoles>
     <input id="_0UEh7_1" name="Input" bindingRef="_0UEh7_0"/>
     <output id="_0UEh7_3" name="Output" bindingRef="_0UEh7_2"/>

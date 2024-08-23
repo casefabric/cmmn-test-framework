@@ -1,4 +1,4 @@
-<definitions>
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
     <caseFileItemDefinition name="Greeting" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="greeting.cfid">
         <property name="Message" type="http://www.omg.org/spec/CMMN/PropertyType/string">
             <extensionElements mustUnderstand="false">
@@ -23,8 +23,9 @@
             <caseFileItem id="_Htde2_3" name="Greeting" multiplicity="ExactlyOne" definitionRef="greeting.cfid"/>
         </caseFileModel>
         <casePlanModel id="cm__Htde2_0" name="compatibility" autoComplete="true">
+            <exitCriterion id="_Htde2_5" name="ExitCriterion_0" sentryRef="s__Htde2_5"/>
             <planItem id="pi_ms__Htde2_0" name="Test Closed" definitionRef="ms__Htde2_0">
-                <entryCriterion id="_Htde2_10" name="EntryCriterion_0" sentryRef="crit__Htde2_0"/>
+                <entryCriterion id="_Htde2_10" name="EntryCriterion_0" sentryRef="s__Htde2_10"/>
                 <itemControl id="_Htde2_7">
                     <requiredRule id="_Htde2_8">
                         <condition id="_Htde2_9">
@@ -47,23 +48,29 @@
                     </repetitionRule>
                 </itemControl>
             </planItem>
-            <sentry id="crit__Htde2_0">
-                <planItemOnPart id="_Htde2_11" sourceRef="pi_ue__Htde2_0">
-                    <standardEvent>occur</standardEvent>
-                </planItemOnPart>
-            </sentry>
-            <sentry id="crit__Htde2_2">
+            <sentry id="s__Htde2_5">
                 <planItemOnPart id="_Htde2_6" sourceRef="pi_ms__Htde2_0">
                     <standardEvent>occur</standardEvent>
                 </planItemOnPart>
             </sentry>
-            <exitCriterion id="_Htde2_5" name="ExitCriterion_0" sentryRef="crit__Htde2_2"/>
-            <caseTask id="ct__Htde2_0" name="HelloWorld" isBlocking="true" caseRef="helloworld.case">
-                <inputs id="_Htde2_12" name="Greeting" bindingRef="_Htde2_3"/>
-                <parameterMapping id="_Htde2_1" sourceRef="_Htde2_12" targetRef="csVQy_inCPs_0"/>
-            </caseTask>
+            <sentry id="s__Htde2_10">
+                <planItemOnPart id="_Htde2_11" sourceRef="pi_ue__Htde2_0">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </sentry>
             <milestone id="ms__Htde2_0" name="Test Closed"/>
             <userEvent id="ue__Htde2_0" name="Close Test"/>
+            <stage id="_Htde2_15" name="Repeating timed sub cases" autoComplete="true">
+                <planItem id="pi_tmr__Htde2_0" name="After 1 second" definitionRef="tmr__Htde2_0"/>
+                <planItem id="pi_ct__Htde2_0" name="HelloWorld" definitionRef="ct__Htde2_0">
+                    <entryCriterion id="_Htde2_13" name="EntryCriterion_1" sentryRef="s__Htde2_13"/>
+                </planItem>
+                <sentry id="s__Htde2_13">
+                    <planItemOnPart id="_Htde2_14" sourceRef="pi_tmr__Htde2_0">
+                        <standardEvent>occur</standardEvent>
+                    </planItemOnPart>
+                </sentry>
+            </stage>
             <timerEvent id="tmr__Htde2_0" name="After 1 second">
                 <timerExpression id="_Htde2_17">
                     <body>
@@ -74,18 +81,12 @@
                     <standardEvent/>
                 </planItemStartTrigger>
             </timerEvent>
-            <stage id="_Htde2_15" name="Repeating timed sub cases" autoComplete="true">
-                <planItem id="pi_tmr__Htde2_0" name="After 1 second" definitionRef="tmr__Htde2_0"/>
-                <planItem id="pi_ct__Htde2_0" name="HelloWorld" definitionRef="ct__Htde2_0">
-                    <entryCriterion id="_Htde2_13" name="EntryCriterion_1" sentryRef="crit__Htde2_1"/>
-                </planItem>
-                <sentry id="crit__Htde2_1">
-                    <planItemOnPart id="_Htde2_14" sourceRef="pi_tmr__Htde2_0">
-                        <standardEvent>occur</standardEvent>
-                    </planItemOnPart>
-                </sentry>
-            </stage>
+            <caseTask id="ct__Htde2_0" name="HelloWorld" isBlocking="true" caseRef="helloworld.case">
+                <inputs id="_Htde2_12" name="Greeting" bindingRef="_Htde2_3"/>
+                <parameterMapping id="_Htde2_1" sourceRef="_Htde2_12" targetRef="csVQy_inCPs_0"/>
+            </caseTask>
         </casePlanModel>
+        <caseRoles/>
         <input id="_Htde2_4" name="Greeting" bindingRef="_Htde2_3"/>
     </case>
     <case id="helloworld.case" name="HelloWorld" expressionLanguage="spel">
@@ -99,7 +100,7 @@
             <caseFileItem id="cfi_csVQy_1" name="Response" multiplicity="ExactlyOne" definitionRef="response.cfid"/>
         </caseFileModel>
         <casePlanModel id="cm_HelloWorld.case_HelloWorld_0" name="HelloWorld" autoComplete="true">
-            <planItem id="cm_csVQy_167" name="Receive Greeting and Send response" definitionRef="pid_cm_csVQy_167">
+            <planItem id="cm_csVQy_167" name="Receive Greeting and Send response" definitionRef="ht_cm_csVQy_167">
                 <documentation textFormat="text/plain">
                     <text>
                         <![CDATA[Receive Greeting
@@ -107,15 +108,15 @@ and Send response]]>
                     </text>
                 </documentation>
             </planItem>
-            <planItem id="cm_cs3hg_196" name="Read response" definitionRef="pid_cm_cs3hg_196">
-                <entryCriterion id="_nTPPc_0" name="EntryCriterion_0" sentryRef="cm_cs3hg_198"/>
+            <planItem id="cm_cs3hg_196" name="Read response" definitionRef="ht_cm_cs3hg_196">
+                <entryCriterion id="_nTPPc_0" name="EntryCriterion_0" sentryRef="s__nTPPc_0"/>
             </planItem>
-            <sentry id="cm_cs3hg_198">
+            <sentry id="s__nTPPc_0">
                 <planItemOnPart id="ref_id_cm_csVQy_167" sourceRef="cm_csVQy_167">
                     <standardEvent>complete</standardEvent>
                 </planItemOnPart>
             </sentry>
-            <humanTask id="pid_cm_csVQy_167" name="Receive Greeting and Send response" isBlocking="true">
+            <humanTask id="ht_cm_csVQy_167" name="Receive Greeting and Send response" isBlocking="true">
                 <inputs id="inTP_cm_cs2F1_174_1" name="Greeting" bindingRef="cfi_csVQy_0"/>
                 <outputs id="outTP_cm_cs2F1_174_1" name="Response" bindingRef="cfi_csVQy_1"/>
                 <extensionElements mustUnderstand="false">
@@ -208,7 +209,7 @@ and Send response]]>
                     </cafienne:implementation>
                 </extensionElements>
             </humanTask>
-            <humanTask id="pid_cm_cs3hg_196" name="Read response" isBlocking="true">
+            <humanTask id="ht_cm_cs3hg_196" name="Read response" isBlocking="true">
                 <inputs id="inTP_cm_cs3hg_196_0" name="Response" bindingRef="cfi_csVQy_1"/>
                 <extensionElements mustUnderstand="false">
                     <cafienne:implementation name="ReadRespose" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="readresponse.humantask">

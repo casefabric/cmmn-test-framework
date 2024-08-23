@@ -1,4 +1,13 @@
-<definitions>
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
+    <caseFileItemDefinition definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" name="incidentdetails" id="incidentdetails.cfid">
+        <property name="Title" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="Description" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="Type" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    </caseFileItemDefinition>
+    <caseFileItemDefinition definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" name="incident_response" id="incident_response.cfid">
+        <property name="Status" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    </caseFileItemDefinition>
+    <caseFileItemDefinition definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" name="Specialist" id="specialist.cfid"/>
     <case id="IncidentManagementForTraining.case" name="IncidentManagementForTraining" expressionLanguage="spel">
         <documentation textFormat="text/plain">
             <text>
@@ -13,21 +22,21 @@
         <casePlanModel id="cm__10q53_0" name="IncidentManagementForTraining" autoComplete="true">
             <planItem id="pi__10q53_0" name="Verify and Assign" definitionRef="_10q53_0"/>
             <planItem id="pi__10q53_13" name="In progress" definitionRef="_10q53_13">
-                <entryCriterion id="_10q53_50" name="EntryCriterion_5" sentryRef="crit__10q53_5"/>
+                <entryCriterion id="_10q53_50" name="EntryCriterion_5" sentryRef="s__10q53_50"/>
             </planItem>
             <planItem id="pi_ms__10q53_0" name="Invalid Status" definitionRef="ms__10q53_0">
-                <entryCriterion id="_10q53_26" name="EntryCriterion_1" sentryRef="crit__10q53_1"/>
+                <entryCriterion id="_10q53_26" name="EntryCriterion_1" sentryRef="s__10q53_26"/>
             </planItem>
             <planItem id="pi_ms__10q53_1" name="Complete" definitionRef="ms__10q53_1">
-                <entryCriterion id="_10q53_34" name="EntryCriterion_3" sentryRef="crit__10q53_3"/>
+                <entryCriterion id="_10q53_34" name="EntryCriterion_3" sentryRef="s__10q53_34"/>
             </planItem>
             <planItem id="pi_ms__10q53_2" name="Assigned" definitionRef="ms__10q53_2">
-                <entryCriterion id="_10q53_17" name="EntryCriterion_0" sentryRef="crit__10q53_0"/>
+                <entryCriterion id="_10q53_17" name="EntryCriterion_0" sentryRef="s__10q53_17"/>
             </planItem>
             <planItem id="pi_pt__10q53_1" name="Notify Customer" definitionRef="pt__10q53_1">
-                <entryCriterion id="_10q53_53" name="EntryCriterion_6" sentryRef="crit__10q53_6"/>
-                <entryCriterion id="_10q53_32" name="EntryCriterion_2" sentryRef="crit__10q53_2"/>
-                <entryCriterion id="_10q53_55" name="EntryCriterion_7" sentryRef="crit__10q53_7"/>
+                <entryCriterion id="_10q53_53" name="EntryCriterion_6" sentryRef="s__10q53_53"/>
+                <entryCriterion id="_10q53_32" name="EntryCriterion_2" sentryRef="s__10q53_32"/>
+                <entryCriterion id="_10q53_55" name="EntryCriterion_7" sentryRef="s__10q53_55"/>
                 <itemControl id="_10q53_36">
                     <repetitionRule id="_10q53_37">
                         <condition id="_10q53_61">
@@ -38,7 +47,12 @@
                     </repetitionRule>
                 </itemControl>
             </planItem>
-            <sentry id="crit__10q53_1">
+            <sentry id="s__10q53_50">
+                <planItemOnPart id="_10q53_51" sourceRef="pi_ms__10q53_2">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <sentry id="s__10q53_26">
                 <ifPart id="_10q53_24" contextRef="_10q53_11">
                     <condition id="_10q53_28">
                         <body>
@@ -50,12 +64,12 @@
                     <standardEvent>complete</standardEvent>
                 </planItemOnPart>
             </sentry>
-            <sentry id="crit__10q53_3">
+            <sentry id="s__10q53_34">
                 <planItemOnPart id="_10q53_35" sourceRef="pi__10q53_13">
                     <standardEvent>complete</standardEvent>
                 </planItemOnPart>
             </sentry>
-            <sentry id="crit__10q53_0">
+            <sentry id="s__10q53_17">
                 <ifPart id="_10q53_30" contextRef="_10q53_11">
                     <condition id="_10q53_49">
                         <body>
@@ -67,26 +81,39 @@
                     <standardEvent>complete</standardEvent>
                 </planItemOnPart>
             </sentry>
-            <sentry id="crit__10q53_5">
-                <planItemOnPart id="_10q53_51" sourceRef="pi_ms__10q53_2">
-                    <standardEvent>occur</standardEvent>
-                </planItemOnPart>
-            </sentry>
-            <sentry id="crit__10q53_6">
+            <sentry id="s__10q53_53">
                 <planItemOnPart id="_10q53_54" sourceRef="pi_ms__10q53_2">
                     <standardEvent>occur</standardEvent>
                 </planItemOnPart>
             </sentry>
-            <sentry id="crit__10q53_2">
+            <sentry id="s__10q53_32">
                 <planItemOnPart id="_10q53_33" sourceRef="pi_ms__10q53_0">
                     <standardEvent>occur</standardEvent>
                 </planItemOnPart>
             </sentry>
-            <sentry id="crit__10q53_7">
+            <sentry id="s__10q53_55">
                 <planItemOnPart id="_10q53_56" sourceRef="pi_ms__10q53_1">
                     <standardEvent>occur</standardEvent>
                 </planItemOnPart>
             </sentry>
+            <stage id="_10q53_0" name="Verify and Assign" autoComplete="true">
+                <planItem id="pi_ht__10q53_0" name="Verify Details" definitionRef="ht__10q53_0"/>
+                <planItem id="pi_pt__10q53_0" name="Assign Specialist" definitionRef="pt__10q53_0">
+                    <entryCriterion id="_10q53_44" name="EntryCriterion_4" sentryRef="s__10q53_44"/>
+                </planItem>
+                <sentry id="s__10q53_44">
+                    <ifPart id="_10q53_52" contextRef="_10q53_11">
+                        <condition id="_10q53_59">
+                            <body>
+                                <![CDATA[Incident_Response.Status != "Invalid"]]>
+                            </body>
+                        </condition>
+                    </ifPart>
+                    <planItemOnPart id="_10q53_45" sourceRef="pi_ht__10q53_0">
+                        <standardEvent>complete</standardEvent>
+                    </planItemOnPart>
+                </sentry>
+            </stage>
             <humanTask id="ht__10q53_0" name="Verify Details" isBlocking="true">
                 <inputs id="_10q53_5" name="Case_Incident" bindingRef="_10q53_3"/>
                 <outputs id="_10q53_7" name="Case_Incident" bindingRef="_10q53_3"/>
@@ -159,12 +186,27 @@
                     </cafienne:implementation>
                 </extensionElements>
             </humanTask>
+            <processTask id="pt__10q53_0" name="Assign Specialist" isBlocking="true" processRef="Assign_Specialist_for_training.process">
+                <inputs id="_10q53_46" name="Case_Incident" bindingRef="_10q53_3"/>
+                <outputs id="_10q53_40" name="specialist" bindingRef="_10q53_43"/>
+                <parameterMapping id="_10q53_39" sourceRef="_10q53_46" targetRef="_XjWa_incident_type">
+                    <transformation id="_10q53_42">
+                        <body>
+                            <![CDATA[Case_Incident.Type]]>
+                        </body>
+                    </transformation>
+                </parameterMapping>
+                <parameterMapping id="_10q53_41" sourceRef="_Y9cq_specialist" targetRef="_10q53_40"/>
+            </processTask>
+            <stage id="_10q53_13" name="In progress" autoComplete="true">
+                <planItem id="pi_ht__10q53_1" name="Work on Incident" definitionRef="ht__10q53_1"/>
+            </stage>
             <humanTask id="ht__10q53_1" name="Work on Incident" isBlocking="true">
                 <inputs id="_10q53_25" name="Case_Incident" bindingRef="_10q53_3"/>
                 <inputs id="_10q53_18" name="Incident_Response" bindingRef="_10q53_11"/>
                 <outputs id="_10q53_22" name="Incident_Response" bindingRef="_10q53_11"/>
                 <extensionElements mustUnderstand="false">
-                    <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" description="" name="work_on_incident_for_training" humanTaskRef="work_on_incident_for_training.humantask">
+                    <cafienne:implementation name="work_on_incident_for_training" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="work_on_incident_for_training.humantask">
                         <input id="_oPCY_Task_Incident2" name="Task_Incident2"/>
                         <input id="_gVmw_Incident_Response2" name="Incident_Response2"/>
                         <input id="_pXcJ_Assignee" name="Assignee"/>
@@ -235,18 +277,9 @@
                     </cafienne:implementation>
                 </extensionElements>
             </humanTask>
-            <processTask id="pt__10q53_0" name="Assign Specialist" isBlocking="true" processRef="Assign_Specialist_for_training.process">
-                <inputs id="_10q53_46" name="Case_Incident" bindingRef="_10q53_3"/>
-                <outputs id="_10q53_40" name="specialist" bindingRef="_10q53_43"/>
-                <parameterMapping id="_10q53_39" sourceRef="_10q53_46" targetRef="_XjWa_incident_type">
-                    <transformation id="_10q53_42">
-                        <body>
-                            <![CDATA[Case_Incident.Type]]>
-                        </body>
-                    </transformation>
-                </parameterMapping>
-                <parameterMapping id="_10q53_41" sourceRef="_Y9cq_specialist" targetRef="_10q53_40"/>
-            </processTask>
+            <milestone id="ms__10q53_0" name="Invalid Status"/>
+            <milestone id="ms__10q53_1" name="Complete"/>
+            <milestone id="ms__10q53_2" name="Assigned"/>
             <processTask id="pt__10q53_1" name="Notify Customer" isBlocking="true" processRef="Notify_customer_for_training.process">
                 <inputs id="_10q53_60" name="Incident_Response" bindingRef="_10q53_11"/>
                 <parameterMapping id="_10q53_48" sourceRef="_10q53_60" targetRef="_GYhw_incident_status">
@@ -257,31 +290,8 @@
                     </transformation>
                 </parameterMapping>
             </processTask>
-            <milestone id="ms__10q53_0" name="Invalid Status"/>
-            <milestone id="ms__10q53_1" name="Complete"/>
-            <milestone id="ms__10q53_2" name="Assigned"/>
-            <stage id="_10q53_0" name="Verify and Assign" autoComplete="true">
-                <planItem id="pi_ht__10q53_0" name="Verify Details" definitionRef="ht__10q53_0"/>
-                <planItem id="pi_pt__10q53_0" name="Assign Specialist" definitionRef="pt__10q53_0">
-                    <entryCriterion id="_10q53_44" name="EntryCriterion_4" sentryRef="crit__10q53_4"/>
-                </planItem>
-                <sentry id="crit__10q53_4">
-                    <ifPart id="_10q53_52" contextRef="_10q53_11">
-                        <condition id="_10q53_59">
-                            <body>
-                                <![CDATA[Incident_Response.Status != "Invalid"]]>
-                            </body>
-                        </condition>
-                    </ifPart>
-                    <planItemOnPart id="_10q53_45" sourceRef="pi_ht__10q53_0">
-                        <standardEvent>complete</standardEvent>
-                    </planItemOnPart>
-                </sentry>
-            </stage>
-            <stage id="_10q53_13" name="In progress" autoComplete="true">
-                <planItem id="pi_ht__10q53_1" name="Work on Incident" definitionRef="ht__10q53_1"/>
-            </stage>
         </casePlanModel>
+        <caseRoles/>
         <input id="_10q53_4" name="Case_Incident" bindingRef="_10q53_3"/>
         <extensionElements mustUnderstand="false">
             <cafienne:start-case-model xmlns:cafienne="org.cafienne">{
@@ -319,7 +329,7 @@
         </documentation>
         <input id="_XjWa_incident_type" name="incident_type"/>
         <output id="_Y9cq_specialist" name="specialist"/>
-        <extensionElements>
+        <extensionElements mustUnderstand="false">
             <cafienne:implementation xmlns:cafienne="org.cafienne" async="false" class="org.cafienne.processtask.implementation.http.HTTPCallDefinition">
                 <url>http://localhost:17384/usermappings/${incident_type}</url>
                 <method>GET</method>
@@ -337,7 +347,7 @@
             </text>
         </documentation>
         <input id="_GYhw_incident_status" name="incident_status"/>
-        <extensionElements>
+        <extensionElements mustUnderstand="false">
             <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.http.HTTPCallDefinition" async="false">
                 <url>http://localhost:17384/notifycustomer/${incident_status}</url>
                 <method>GET</method>
@@ -347,15 +357,6 @@
             </cafienne:implementation>
         </extensionElements>
     </process>
-    <caseFileItemDefinition definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" name="incidentdetails" id="incidentdetails.cfid">
-        <property name="Title" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
-        <property name="Description" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
-        <property name="Type" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
-    </caseFileItemDefinition>
-    <caseFileItemDefinition definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" name="incident_response" id="incident_response.cfid">
-        <property name="Status" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
-    </caseFileItemDefinition>
-    <caseFileItemDefinition definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" name="Specialist" id="specialist.cfid"/>
     <CMMNDI>
         <CMMNDiagram>
             <CMMNShape cmmnElementRef="cm__10q53_0">

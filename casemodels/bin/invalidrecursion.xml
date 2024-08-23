@@ -1,4 +1,4 @@
-<definitions>
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
     <caseFileItemDefinition name="root" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="root.cfid">
         <property name="Outcome" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
     </caseFileItemDefinition>
@@ -8,11 +8,12 @@
         </caseFileModel>
         <casePlanModel id="cm__vxj5Z_0" name="invalidrecursion" autoComplete="true">
             <planItem id="pi__vxj5Z_2" name="Stage without entry criterion" definitionRef="_vxj5Z_2"/>
-            <caseTask id="ct__vxj5Z_0" name="invalidrecursion" isBlocking="true" caseRef="invalidrecursion.case"/>
             <stage id="_vxj5Z_2" name="Stage without entry criterion" autoComplete="true">
                 <planItem id="pi_ct__vxj5Z_0" name="invalidrecursion" definitionRef="ct__vxj5Z_0"/>
             </stage>
+            <caseTask id="ct__vxj5Z_0" name="invalidrecursion" isBlocking="true" caseRef="invalidrecursion.case"/>
         </casePlanModel>
+        <caseRoles/>
         <textAnnotation id="_vxj5Z_1">
             <text>
                 <![CDATA[Direct recursive calls should not be allowed, as that blows up the engine]]>

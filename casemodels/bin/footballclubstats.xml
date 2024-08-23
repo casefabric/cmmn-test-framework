@@ -1,13 +1,31 @@
-<definitions>
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
+    <caseFileItemDefinition name="info" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="info.cfid">
+        <property name="clubname" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+            </extensionElements>
+        </property>
+        <property name="age" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
+        <property name="country" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+            </extensionElements>
+        </property>
+        <property name="name" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+            </extensionElements>
+        </property>
+    </caseFileItemDefinition>
     <case id="footballclubstats.case" name="footballclubstats" expressionLanguage="spel">
         <caseFileModel>
             <caseFileItem id="_DJ6eA_0" name="player" multiplicity="ExactlyOne" definitionRef="info.cfid"/>
         </caseFileModel>
         <casePlanModel id="cm__DJ6eA_0" name="footballclubstats" autoComplete="true">
             <planItem id="pi_ht__DJ6eA_0" name="Football club info" definitionRef="ht__DJ6eA_0">
-                <entryCriterion id="_DJ6eA_2" name="EntryCriterion_0" sentryRef="crit__DJ6eA_0"/>
+                <entryCriterion id="_DJ6eA_2" name="EntryCriterion_0" sentryRef="s__DJ6eA_2"/>
             </planItem>
-            <sentry id="crit__DJ6eA_0">
+            <sentry id="s__DJ6eA_2">
                 <caseFileItemOnPart id="_DJ6eA_3" sourceRef="_DJ6eA_0">
                     <standardEvent>create</standardEvent>
                 </caseFileItemOnPart>
@@ -15,7 +33,7 @@
             <humanTask id="ht__DJ6eA_0" name="Football club info" isBlocking="true">
                 <inputs id="_DJ6eA_4" name="info" bindingRef="_DJ6eA_0"/>
                 <extensionElements mustUnderstand="false">
-                    <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" name="football_club_info" description="" humanTaskRef="football_club_info.humantask">
+                    <cafienne:implementation name="football_club_info" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="football_club_info.humantask">
                         <input id="_wv7Z_info" name="info"/>
                         <task-model>{
 	"schema" : {
@@ -55,26 +73,9 @@
                 </extensionElements>
             </humanTask>
         </casePlanModel>
+        <caseRoles/>
         <input id="_DJ6eA_6" name="player" bindingRef="_DJ6eA_0"/>
     </case>
-    <caseFileItemDefinition name="info" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="info.cfid">
-        <property name="clubname" type="http://www.omg.org/spec/CMMN/PropertyType/string">
-            <extensionElements mustUnderstand="false">
-                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
-            </extensionElements>
-        </property>
-        <property name="age" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
-        <property name="country" type="http://www.omg.org/spec/CMMN/PropertyType/string">
-            <extensionElements mustUnderstand="false">
-                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
-            </extensionElements>
-        </property>
-        <property name="name" type="http://www.omg.org/spec/CMMN/PropertyType/string">
-            <extensionElements mustUnderstand="false">
-                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
-            </extensionElements>
-        </property>
-    </caseFileItemDefinition>
     <CMMNDI>
         <CMMNDiagram>
             <CMMNShape cmmnElementRef="cm__DJ6eA_0">

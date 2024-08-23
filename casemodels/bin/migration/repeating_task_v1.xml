@@ -1,4 +1,4 @@
-<definitions>
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
     <caseFileItemDefinition name="unspecified" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="unspecified.cfid"/>
     <case id="migration/repeating_task_v1.case" name="migration/repeating_task_v1" expressionLanguage="spel">
         <caseFileModel>
@@ -8,8 +8,8 @@
         <casePlanModel id="cm__n9caK_0" name="migration/repeating_task_v1" autoComplete="true">
             <planItem id="pi_ht__n9caK_0" name="New Task" definitionRef="ht__n9caK_0"/>
             <planItem id="pi_pt__n9caK_0" name="Define Next Task" definitionRef="pt__n9caK_0">
-                <entryCriterion id="_n9caK_4" name="EntryCriterion_0" sentryRef="crit__n9caK_0"/>
-                <entryCriterion id="_n9caK_29" name="EntryCriterion_5" sentryRef="crit__n9caK_5"/>
+                <entryCriterion id="_n9caK_4" name="EntryCriterion_0" sentryRef="s__n9caK_4"/>
+                <entryCriterion id="_n9caK_29" name="EntryCriterion_5" sentryRef="s__n9caK_29"/>
                 <itemControl id="_n9caK_3">
                     <repetitionRule id="_n9caK_6">
                         <condition id="_n9caK_7">
@@ -21,7 +21,7 @@
                 </itemControl>
             </planItem>
             <planItem id="pi_ht__n9caK_1" name="Task1" definitionRef="ht__n9caK_1">
-                <entryCriterion id="_n9caK_11" name="EntryCriterion_1" sentryRef="crit__n9caK_1"/>
+                <entryCriterion id="_n9caK_11" name="EntryCriterion_1" sentryRef="s__n9caK_11"/>
                 <itemControl id="_n9caK_8">
                     <repetitionRule id="_n9caK_9">
                         <condition id="_n9caK_10">
@@ -33,7 +33,7 @@
                 </itemControl>
             </planItem>
             <planItem id="pi_ht__n9caK_2" name="Task2" definitionRef="ht__n9caK_2">
-                <entryCriterion id="_n9caK_18" name="EntryCriterion_2" sentryRef="crit__n9caK_2"/>
+                <entryCriterion id="_n9caK_18" name="EntryCriterion_2" sentryRef="s__n9caK_18"/>
                 <itemControl id="_n9caK_15">
                     <repetitionRule id="_n9caK_16">
                         <condition id="_n9caK_17">
@@ -45,8 +45,8 @@
                 </itemControl>
             </planItem>
             <planItem id="pi_pt__n9caK_1" name="Read Output" definitionRef="pt__n9caK_1">
-                <entryCriterion id="_n9caK_25" name="EntryCriterion_3" sentryRef="crit__n9caK_3"/>
-                <entryCriterion id="_n9caK_27" name="EntryCriterion_4" sentryRef="crit__n9caK_4"/>
+                <entryCriterion id="_n9caK_25" name="EntryCriterion_3" sentryRef="s__n9caK_25"/>
+                <entryCriterion id="_n9caK_27" name="EntryCriterion_4" sentryRef="s__n9caK_27"/>
                 <itemControl id="_n9caK_22">
                     <repetitionRule id="_n9caK_23">
                         <condition id="_n9caK_24">
@@ -59,16 +59,21 @@
             </planItem>
             <planItem id="pi__aa5iX_6" name="Test Reactivation" definitionRef="_aa5iX_6">
                 <extensionElements mustUnderstand="false">
-                    <reactivateCriterion xmlns="org.cafienne" id="_n9caK_35" name="ReactivateCriterion_0" sentryRef="crit__n9caK_6"/>
+                    <reactivateCriterion xmlns="org.cafienne" id="_n9caK_35" name="ReactivateCriterion_0" sentryRef="s__n9caK_35"/>
                 </extensionElements>
             </planItem>
             <planItem id="pi_ue__aa5iX_0" name="Reactivate Stage" definitionRef="ue__aa5iX_0"/>
-            <sentry id="crit__n9caK_0">
+            <sentry id="s__n9caK_4">
                 <caseFileItemOnPart id="_n9caK_5" sourceRef="_n9caK_1">
                     <standardEvent>create</standardEvent>
                 </caseFileItemOnPart>
             </sentry>
-            <sentry id="crit__n9caK_1">
+            <sentry id="s__n9caK_29">
+                <planItemOnPart id="_n9caK_30" sourceRef="pi_pt__n9caK_1">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <sentry id="s__n9caK_11">
                 <ifPart id="_n9caK_13" contextRef="_n9caK_2">
                     <condition id="_n9caK_14">
                         <body>
@@ -80,7 +85,7 @@
                     <standardEvent>complete</standardEvent>
                 </planItemOnPart>
             </sentry>
-            <sentry id="crit__n9caK_2">
+            <sentry id="s__n9caK_18">
                 <ifPart id="_n9caK_20" contextRef="_n9caK_2">
                     <condition id="_n9caK_21">
                         <body>
@@ -92,43 +97,36 @@
                     <standardEvent>complete</standardEvent>
                 </planItemOnPart>
             </sentry>
-            <sentry id="crit__n9caK_3">
+            <sentry id="s__n9caK_25">
                 <planItemOnPart id="_n9caK_26" sourceRef="pi_ht__n9caK_1">
                     <standardEvent>complete</standardEvent>
                 </planItemOnPart>
             </sentry>
-            <sentry id="crit__n9caK_4">
+            <sentry id="s__n9caK_27">
                 <planItemOnPart id="_n9caK_28" sourceRef="pi_ht__n9caK_2">
                     <standardEvent>complete</standardEvent>
                 </planItemOnPart>
             </sentry>
-            <sentry id="crit__n9caK_5">
-                <planItemOnPart id="_n9caK_30" sourceRef="pi_pt__n9caK_1">
-                    <standardEvent>complete</standardEvent>
-                </planItemOnPart>
-            </sentry>
-            <sentry id="crit__n9caK_6">
+            <sentry id="s__n9caK_35">
                 <planItemOnPart id="_n9caK_37" sourceRef="pi_ue__aa5iX_0">
                     <standardEvent>occur</standardEvent>
                 </planItemOnPart>
             </sentry>
             <humanTask id="ht__n9caK_0" name="New Task" isBlocking="true"/>
-            <humanTask id="ht__n9caK_1" name="Task1" isBlocking="true"/>
-            <humanTask id="ht__n9caK_2" name="Task2" isBlocking="true"/>
             <processTask id="pt__n9caK_0" name="Define Next Task" isBlocking="true" processRef="next_task_calculation.process">
                 <outputs id="_n9caK_36" name="Next" bindingRef="_n9caK_2"/>
                 <parameterMapping id="_n9caK_31" sourceRef="_uJl8_out1" targetRef="_n9caK_36"/>
             </processTask>
+            <humanTask id="ht__n9caK_1" name="Task1" isBlocking="true"/>
+            <humanTask id="ht__n9caK_2" name="Task2" isBlocking="true"/>
             <processTask id="pt__n9caK_1" name="Read Output" isBlocking="true" processRef="next_task_calculation.process">
                 <outputs id="_n9caK_34" name="Next" bindingRef="_n9caK_2"/>
                 <parameterMapping id="_n9caK_32" sourceRef="_uJl8_out1" targetRef="_n9caK_34"/>
             </processTask>
-            <milestone id="ms__aa5iX_0" name="Milestone"/>
-            <userEvent id="ue__aa5iX_0" name="Reactivate Stage"/>
-            <userEvent id="ue__aa5iX_1" name="Achieve Milestone"/>
             <stage id="_aa5iX_6" name="Test Reactivation" autoComplete="true">
+                <extensionElements mustUnderstand="false"></extensionElements>
                 <planItem id="pi_ms__aa5iX_0" name="Milestone" definitionRef="ms__aa5iX_0">
-                    <entryCriterion id="_aa5iX_40" name="EntryCriterion_6" sentryRef="crit__aa5iX_6"/>
+                    <entryCriterion id="_aa5iX_40" name="EntryCriterion_6" sentryRef="s__aa5iX_40"/>
                     <itemControl id="_aa5iX_9">
                         <requiredRule id="_aa5iX_36">
                             <condition id="_aa5iX_39">
@@ -140,13 +138,17 @@
                     </itemControl>
                 </planItem>
                 <planItem id="pi_ue__aa5iX_1" name="Achieve Milestone" definitionRef="ue__aa5iX_1"/>
-                <sentry id="crit__aa5iX_6">
+                <sentry id="s__aa5iX_40">
                     <planItemOnPart id="_aa5iX_41" sourceRef="pi_ue__aa5iX_1">
                         <standardEvent>occur</standardEvent>
                     </planItemOnPart>
                 </sentry>
             </stage>
+            <milestone id="ms__aa5iX_0" name="Milestone"/>
+            <userEvent id="ue__aa5iX_1" name="Achieve Milestone"/>
+            <userEvent id="ue__aa5iX_0" name="Reactivate Stage"/>
         </casePlanModel>
+        <caseRoles/>
     </case>
     <process name="NextTaskCalculation" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified" id="next_task_calculation.process">
         <output id="_uJl8_out1" name="out1"/>

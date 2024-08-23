@@ -39,12 +39,16 @@
         <CMMNShape cmmnElementRef="_y2XPO_38">
             <Bounds x="544" y="380" width="12" height="20"/>
         </CMMNShape>
+        <CMMNShape cmmnElementRef="_y2XPO_33">
+            <Bounds x="284" y="380" width="12" height="20"/>
+        </CMMNShape>
         <CMMNShape cmmnElementRef="_y2XPO_25">
             <Bounds x="284" y="380" width="12" height="20"/>
         </CMMNShape>
         <CMMNEdge label="fault" sourceCMMNElementRef="pi_pt__y2XPO_1" targetCMMNElementRef="_y2XPO_31"/>
         <CMMNEdge label="complete" sourceCMMNElementRef="pi_pt__y2XPO_1" targetCMMNElementRef="_y2XPO_35"/>
         <CMMNEdge label="occur" sourceCMMNElementRef="pi_ms__y2XPO_0" targetCMMNElementRef="_y2XPO_38"/>
+        <CMMNEdge label="occur" sourceCMMNElementRef="pi_ue__y2XPO_0" targetCMMNElementRef="_y2XPO_33"/>
         <CMMNEdge label="occur" sourceCMMNElementRef="pi_ue__y2XPO_0" targetCMMNElementRef="_y2XPO_25"/>
     </CMMNDiagram>
 </CMMNDI>

@@ -1,4 +1,23 @@
-<definitions>
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
+    <caseFileItemDefinition name="Greeting" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="greeting.cfid">
+        <property name="Message" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+            </extensionElements>
+        </property>
+        <property name="To" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+            </extensionElements>
+        </property>
+        <property name="From" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    </caseFileItemDefinition>
+    <caseFileItemDefinition name="Response" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="response.cfid">
+        <property name="Message" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="Date" type="http://www.omg.org/spec/CMMN/PropertyType/date"/>
+        <property name="Time" type="http://www.omg.org/spec/CMMN/PropertyType/time"/>
+        <property name="SomeBoolean" type="http://www.omg.org/spec/CMMN/PropertyType/boolean"/>
+    </caseFileItemDefinition>
     <case id="helloworld.case" name="HelloWorld" expressionLanguage="spel">
         <documentation textFormat="text/plain">
             <text>
@@ -10,7 +29,7 @@
             <caseFileItem id="cfi_csVQy_1" name="Response" multiplicity="ExactlyOne" definitionRef="response.cfid"/>
         </caseFileModel>
         <casePlanModel id="cm_HelloWorld.case_HelloWorld_0" name="HelloWorld" autoComplete="true">
-            <planItem id="cm_csVQy_167" name="Receive Greeting and Send response" definitionRef="pid_cm_csVQy_167">
+            <planItem id="cm_csVQy_167" name="Receive Greeting and Send response" definitionRef="ht_cm_csVQy_167">
                 <documentation textFormat="text/plain">
                     <text>
                         <![CDATA[Receive Greeting
@@ -18,15 +37,15 @@ and Send response]]>
                     </text>
                 </documentation>
             </planItem>
-            <planItem id="cm_cs3hg_196" name="Read response" definitionRef="pid_cm_cs3hg_196">
-                <entryCriterion id="_nTPPc_0" name="EntryCriterion_0" sentryRef="cm_cs3hg_198"/>
+            <planItem id="cm_cs3hg_196" name="Read response" definitionRef="ht_cm_cs3hg_196">
+                <entryCriterion id="_nTPPc_0" name="EntryCriterion_0" sentryRef="s__nTPPc_0"/>
             </planItem>
-            <sentry id="cm_cs3hg_198">
+            <sentry id="s__nTPPc_0">
                 <planItemOnPart id="ref_id_cm_csVQy_167" sourceRef="cm_csVQy_167">
                     <standardEvent>complete</standardEvent>
                 </planItemOnPart>
             </sentry>
-            <humanTask id="pid_cm_csVQy_167" name="Receive Greeting and Send response" isBlocking="true">
+            <humanTask id="ht_cm_csVQy_167" name="Receive Greeting and Send response" isBlocking="true">
                 <inputs id="inTP_cm_cs2F1_174_1" name="Greeting" bindingRef="cfi_csVQy_0"/>
                 <outputs id="outTP_cm_cs2F1_174_1" name="Response" bindingRef="cfi_csVQy_1"/>
                 <extensionElements mustUnderstand="false">
@@ -119,7 +138,7 @@ and Send response]]>
                     </cafienne:implementation>
                 </extensionElements>
             </humanTask>
-            <humanTask id="pid_cm_cs3hg_196" name="Read response" isBlocking="true">
+            <humanTask id="ht_cm_cs3hg_196" name="Read response" isBlocking="true">
                 <inputs id="inTP_cm_cs3hg_196_0" name="Response" bindingRef="cfi_csVQy_1"/>
                 <extensionElements mustUnderstand="false">
                     <cafienne:implementation name="ReadRespose" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="readresponse.humantask">
@@ -187,7 +206,7 @@ and Send response]]>
                 </extensionElements>
             </humanTask>
         </casePlanModel>
-        <caseRoles id="role_csT3f_0" name="ADMIN">
+        <caseRoles>
             <role id="role_csT3f_0" name="ADMIN">
                 <documentation textFormat="text/plain">
                     <text>
@@ -237,25 +256,6 @@ and Send response]]>
 }</cafienne:start-case-model>
         </extensionElements>
     </case>
-    <caseFileItemDefinition name="Greeting" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="greeting.cfid">
-        <property name="Message" type="http://www.omg.org/spec/CMMN/PropertyType/string">
-            <extensionElements mustUnderstand="false">
-                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
-            </extensionElements>
-        </property>
-        <property name="To" type="http://www.omg.org/spec/CMMN/PropertyType/string">
-            <extensionElements mustUnderstand="false">
-                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
-            </extensionElements>
-        </property>
-        <property name="From" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
-    </caseFileItemDefinition>
-    <caseFileItemDefinition name="Response" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="response.cfid">
-        <property name="Message" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
-        <property name="Date" type="http://www.omg.org/spec/CMMN/PropertyType/date"/>
-        <property name="Time" type="http://www.omg.org/spec/CMMN/PropertyType/time"/>
-        <property name="SomeBoolean" type="http://www.omg.org/spec/CMMN/PropertyType/boolean"/>
-    </caseFileItemDefinition>
     <CMMNDI>
         <CMMNDiagram>
             <CMMNShape cmmnElementRef="cm_HelloWorld.case_HelloWorld_0">

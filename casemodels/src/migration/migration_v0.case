@@ -10,17 +10,13 @@
                     <standardEvent>complete</standardEvent>
                 </planItemOnPart>
             </entryCriterion>
-            <parameterMapping id="_RYrWb_3" sourceRef="_0UEh7_3">
-                <transformation id="_RYrWb_8">
-                    <body>
-                        <![CDATA[akf;jdsl]]>
-                    </body>
-                </transformation>
-            </parameterMapping>
         </caseTask>
     </casePlanModel>
     <caseRoles>
-        <role/>
+        <role id="_0UEh7_7" name="role1"/>
+        <role id="_0UEh7_8" name="role2"/>
+        <role id="_0UEh7_9" name="role3"/>
+        <role id="_0UEh7_10" name="role4"/>
     </caseRoles>
     <input id="_RYrWb_9" name="Input" bindingRef="_RYrWb_7"/>
 </case>

@@ -1,34 +1,53 @@
-<definitions>
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
+    <caseFileItemDefinition name="Greeting" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="greeting.cfid">
+        <property name="Message" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+            </extensionElements>
+        </property>
+        <property name="To" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+            </extensionElements>
+        </property>
+        <property name="From" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    </caseFileItemDefinition>
+    <caseFileItemDefinition name="Response" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="response.cfid">
+        <property name="Message" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="Date" type="http://www.omg.org/spec/CMMN/PropertyType/date"/>
+        <property name="Time" type="http://www.omg.org/spec/CMMN/PropertyType/time"/>
+        <property name="SomeBoolean" type="http://www.omg.org/spec/CMMN/PropertyType/boolean"/>
+    </caseFileItemDefinition>
     <case id="helloworld2.case" name="helloworld2" expressionLanguage="spel">
         <caseFileModel>
             <caseFileItem id="_biHn7_5" name="Greeting" multiplicity="ExactlyOne" definitionRef="greeting.cfid"/>
             <caseFileItem id="_biHn7_8" name="Response" multiplicity="ExactlyOne" definitionRef="response.cfid"/>
         </caseFileModel>
         <casePlanModel id="cm__biHn7_0" name="helloworld2" autoComplete="true">
+            <exitCriterion id="_biHn7_11" name="ExitCriterion_0" sentryRef="s__biHn7_11"/>
             <planItem id="pi_ht__biHn7_1" name="SendResponse" definitionRef="ht__biHn7_1">
-                <entryCriterion id="_biHn7_6" name="EntryCriterion_0" sentryRef="crit__biHn7_0"/>
+                <entryCriterion id="_biHn7_6" name="EntryCriterion_0" sentryRef="s__biHn7_6"/>
             </planItem>
             <planItem id="pi_ht__biHn7_0" name="Read response" definitionRef="ht__biHn7_0">
-                <entryCriterion id="_biHn7_9" name="EntryCriterion_1" sentryRef="crit__biHn7_1"/>
+                <entryCriterion id="_biHn7_9" name="EntryCriterion_1" sentryRef="s__biHn7_9"/>
             </planItem>
             <planItem id="pi_ue__biHn7_0" name="TerminateCase" definitionRef="ue__biHn7_0"/>
             <planItem id="pi_ht__biHn7_2" name="Task that is always started" definitionRef="ht__biHn7_2"/>
-            <sentry id="crit__biHn7_0">
-                <caseFileItemOnPart id="_biHn7_7" sourceRef="_biHn7_5">
-                    <standardEvent>create</standardEvent>
-                </caseFileItemOnPart>
-            </sentry>
-            <sentry id="crit__biHn7_1">
-                <caseFileItemOnPart id="_biHn7_10" sourceRef="_biHn7_8">
-                    <standardEvent>create</standardEvent>
-                </caseFileItemOnPart>
-            </sentry>
-            <sentry id="crit__biHn7_2">
+            <sentry id="s__biHn7_11">
                 <planItemOnPart id="_biHn7_12" sourceRef="pi_ue__biHn7_0">
                     <standardEvent>occur</standardEvent>
                 </planItemOnPart>
             </sentry>
-            <exitCriterion id="_biHn7_11" name="ExitCriterion_0" sentryRef="crit__biHn7_2"/>
+            <sentry id="s__biHn7_6">
+                <caseFileItemOnPart id="_biHn7_7" sourceRef="_biHn7_5">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </sentry>
+            <sentry id="s__biHn7_9">
+                <caseFileItemOnPart id="_biHn7_10" sourceRef="_biHn7_8">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </sentry>
             <humanTask id="ht__biHn7_1" name="SendResponse" isBlocking="true">
                 <inputs id="_biHn7_15" name="Greeting" bindingRef="_biHn7_5"/>
                 <outputs id="_biHn7_16" name="Response" bindingRef="_biHn7_8"/>
@@ -161,30 +180,12 @@
                     </cafienne:implementation>
                 </extensionElements>
             </humanTask>
-            <humanTask id="ht__biHn7_2" name="Task that is always started" isBlocking="true"/>
             <userEvent id="ue__biHn7_0" name="TerminateCase"/>
+            <humanTask id="ht__biHn7_2" name="Task that is always started" isBlocking="true"/>
         </casePlanModel>
+        <caseRoles/>
         <input id="_biHn7_13" name="Greeting" bindingRef="_biHn7_5"/>
     </case>
-    <caseFileItemDefinition name="Greeting" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="greeting.cfid">
-        <property name="Message" type="http://www.omg.org/spec/CMMN/PropertyType/string">
-            <extensionElements mustUnderstand="false">
-                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
-            </extensionElements>
-        </property>
-        <property name="To" type="http://www.omg.org/spec/CMMN/PropertyType/string">
-            <extensionElements mustUnderstand="false">
-                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
-            </extensionElements>
-        </property>
-        <property name="From" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
-    </caseFileItemDefinition>
-    <caseFileItemDefinition name="Response" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="response.cfid">
-        <property name="Message" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
-        <property name="Date" type="http://www.omg.org/spec/CMMN/PropertyType/date"/>
-        <property name="Time" type="http://www.omg.org/spec/CMMN/PropertyType/time"/>
-        <property name="SomeBoolean" type="http://www.omg.org/spec/CMMN/PropertyType/boolean"/>
-    </caseFileItemDefinition>
     <CMMNDI>
         <CMMNDiagram>
             <CMMNShape cmmnElementRef="cm__biHn7_0">

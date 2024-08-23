@@ -1,20 +1,43 @@
-<definitions>
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
+    <caseFileItemDefinition name="stats" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="stats.cfid">
+        <property name="name" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+            </extensionElements>
+        </property>
+        <property name="age" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
+        <property name="isRetired" type="http://www.omg.org/spec/CMMN/PropertyType/boolean">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+            </extensionElements>
+        </property>
+        <property name="country" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+            </extensionElements>
+        </property>
+        <property name="foot" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+            </extensionElements>
+        </property>
+    </caseFileItemDefinition>
     <case id="footballstats.case" name="footballstats" expressionLanguage="spel">
         <caseFileModel>
             <caseFileItem id="_cYgNJ_1" name="player" multiplicity="ExactlyOne" definitionRef="stats.cfid"/>
         </caseFileModel>
         <casePlanModel id="cm__cYgNJ_0" name="footballstats" autoComplete="true">
             <planItem id="pi_ht__cYgNJ_0" name="Player stats" definitionRef="ht__cYgNJ_0">
-                <entryCriterion id="_cYgNJ_2" name="EntryCriterion_0" sentryRef="crit__cYgNJ_0"/>
+                <entryCriterion id="_cYgNJ_2" name="EntryCriterion_0" sentryRef="s__cYgNJ_2"/>
             </planItem>
-            <sentry id="crit__cYgNJ_0">
+            <sentry id="s__cYgNJ_2">
                 <caseFileItemOnPart id="_cYgNJ_3" sourceRef="_cYgNJ_1">
                     <standardEvent>create</standardEvent>
                 </caseFileItemOnPart>
             </sentry>
             <humanTask id="ht__cYgNJ_0" name="Player stats" isBlocking="true">
                 <extensionElements mustUnderstand="false">
-                    <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" name="football_player_stats" description="" humanTaskRef="football_player_stats.humantask">
+                    <cafienne:implementation name="football_player_stats" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="football_player_stats.humantask">
                         <input id="_BiBt_stats" name="stats"/>
                         <task-model>{
 	"schema" : {
@@ -57,31 +80,9 @@
                 </extensionElements>
             </humanTask>
         </casePlanModel>
+        <caseRoles/>
         <input id="_cYgNJ_6" name="player" bindingRef="_cYgNJ_1"/>
     </case>
-    <caseFileItemDefinition name="stats" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="stats.cfid">
-        <property name="name" type="http://www.omg.org/spec/CMMN/PropertyType/string">
-            <extensionElements mustUnderstand="false">
-                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
-            </extensionElements>
-        </property>
-        <property name="age" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
-        <property name="isRetired" type="http://www.omg.org/spec/CMMN/PropertyType/boolean">
-            <extensionElements mustUnderstand="false">
-                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
-            </extensionElements>
-        </property>
-        <property name="country" type="http://www.omg.org/spec/CMMN/PropertyType/string">
-            <extensionElements mustUnderstand="false">
-                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
-            </extensionElements>
-        </property>
-        <property name="foot" type="http://www.omg.org/spec/CMMN/PropertyType/string">
-            <extensionElements mustUnderstand="false">
-                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
-            </extensionElements>
-        </property>
-    </caseFileItemDefinition>
     <CMMNDI>
         <CMMNDiagram>
             <CMMNShape cmmnElementRef="cm__cYgNJ_0">

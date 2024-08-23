@@ -1,4 +1,4 @@
-<definitions>
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
     <caseFileItemDefinition name="root" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="root.cfid">
         <property name="Outcome" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
     </caseFileItemDefinition>
@@ -9,9 +9,9 @@
         <casePlanModel id="cm__RYrWb_0" name="migration_v0" autoComplete="true">
             <planItem id="pi_ht__RYrWb_0" name="HumanTask" definitionRef="ht__RYrWb_0"/>
             <planItem id="pi_ct__RYrWb_0" name="migration_subcase" definitionRef="ct__RYrWb_0">
-                <entryCriterion id="_RYrWb_4" name="EntryCriterion_0" sentryRef="crit__RYrWb_0"/>
+                <entryCriterion id="_RYrWb_4" name="EntryCriterion_0" sentryRef="s__RYrWb_4"/>
             </planItem>
-            <sentry id="crit__RYrWb_0">
+            <sentry id="s__RYrWb_4">
                 <planItemOnPart id="_RYrWb_5" sourceRef="pi_ht__RYrWb_0">
                     <standardEvent>complete</standardEvent>
                 </planItemOnPart>

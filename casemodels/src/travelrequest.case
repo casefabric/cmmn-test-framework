@@ -475,7 +475,7 @@
                 </transformation>
             </parameterMapping>
         </processTask>
-        <userEvent id="cm_csEae_323" name="Cancel Travel request"/>
+        <userEvent id="cm_csEae_323" name="Cancel Travel request" authorizedRoleRefs="role_csKsD_1 role_csKsD_0"/>
         <stage id="cm_csSAF_389" name="Check prerequisites" autoComplete="true">
             <processTask id="cm_csSAF_392" name="Check travel requirements" isBlocking="true" processRef="checktravelrequirements.process">
                 <entryCriterion id="_4wCNa_11" name="EntryCriterion_10">
@@ -524,7 +524,7 @@ TravelRequest.TravelDetails.Destination[0].Country == "US"]]>
             </humanTask>
         </stage>
         <planningTable id="pt_cm_undefined_3">
-            <humanTask id="cm_csgxw_215" name="Select approver manually" isBlocking="true" performerRef="role_csKsD_2">
+            <humanTask id="cm_csgxw_215" name="Select approver manually" authorizedRoleRefs="role_csKsD_1" isBlocking="true" performerRef="role_csKsD_2">
                 <inputs id="inTP_cm_csgxw_215_0" name="TravelRequest" bindingRef="cfi_csKsD_0"/>
                 <outputs id="outTP_cm_cs24h_12_0" name="Project" bindingRef="cfi_cs9Q0_5"/>
                 <extensionElements mustUnderstand="false">
@@ -544,7 +544,27 @@ TravelRequest.TravelDetails.Destination[0].Country == "US"]]>
         </planningTable>
     </casePlanModel>
     <caseRoles>
-        <role/>
+        <role id="role_csKsD_0" name="Approver">
+            <documentation textFormat="text/plain">
+                <text>
+                    <![CDATA[Approver of the Travel Request]]>
+                </text>
+            </documentation>
+        </role>
+        <role id="role_csKsD_2" name="PersonalAssistant">
+            <documentation textFormat="text/plain">
+                <text>
+                    <![CDATA[Personal Assistant]]>
+                </text>
+            </documentation>
+        </role>
+        <role id="role_csKsD_1" name="Requestor">
+            <documentation textFormat="text/plain">
+                <text>
+                    <![CDATA[Requestor of the Travel Request]]>
+                </text>
+            </documentation>
+        </role>
     </caseRoles>
     <input id="cs9Q0_inCPs_0" name="TravelRequest" bindingRef="cfi_csKsD_0"/>
     <extensionElements mustUnderstand="false">

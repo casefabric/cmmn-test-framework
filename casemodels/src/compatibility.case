@@ -42,7 +42,7 @@
                     </body>
                 </timerExpression>
                 <planItemStartTrigger id="_Htde2_2">
-                    <standardEvent/>
+                    <standardEvent></standardEvent>
                 </planItemStartTrigger>
             </timerEvent>
             <caseTask id="pi_ct__Htde2_0" name="HelloWorld" isBlocking="true" caseRef="helloworld.case">

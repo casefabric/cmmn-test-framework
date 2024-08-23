@@ -50,7 +50,11 @@
                     </caseFileItemOnPart>
                 </entryCriterion>
                 <extensionElements mustUnderstand="false">
-                    <reactivateCriterion xmlns="org.cafienne" id="_t1FbK_14" name="ReactivateCriterion_0"/>
+                    <reactivateCriterion xmlns="org.cafienne" id="_t1FbK_14" name="ReactivateCriterion_0">
+                        <planItemOnPart id="_t1FbK_15" sourceRef="pi_ue__FcceR_0">
+                            <standardEvent>occur</standardEvent>
+                        </planItemOnPart>
+                    </reactivateCriterion>
                 </extensionElements>
                 <itemControl id="_FcceR_16">
                     <repetitionRule id="_FcceR_34">

@@ -33,7 +33,7 @@
         </caseTask>
     </casePlanModel>
     <caseRoles>
-        <role/>
+        <role id="_MuzRn_11" name="role"/>
     </caseRoles>
     <input id="_MuzRn_7" name="Greeting" bindingRef="_MuzRn_10"/>
 </case>
