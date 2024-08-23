@@ -1,4 +1,4 @@
-<definitions>
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
     <caseFileItemDefinition name="root" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="root.cfid">
         <property name="Outcome" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
     </caseFileItemDefinition>
@@ -8,7 +8,7 @@
         </caseFileModel>
         <casePlanModel id="cm__vdfDP_0" name="eventlistener" autoComplete="false">
             <planItem id="pi_ht__vdfDP_0" name="T1" definitionRef="ht__vdfDP_0">
-                <entryCriterion id="_vdfDP_11" name="UserEventOccurred" sentryRef="crit__vdfDP_1"/>
+                <entryCriterion id="_vdfDP_11" name="UserEventOccurred" sentryRef="s__vdfDP_11"/>
             </planItem>
             <planItem id="pi_ue__vdfDP_0" name="PlainUserEvent" definitionRef="ue__vdfDP_0"/>
             <planItem id="pi_ht__vdfDP_1" name="PlainTask" definitionRef="ht__vdfDP_1">
@@ -33,20 +33,18 @@
                     </repetitionRule>
                 </itemControl>
             </planItem>
-            <sentry id="crit__vdfDP_1">
+            <sentry id="s__vdfDP_11">
                 <planItemOnPart id="_vdfDP_12" sourceRef="pi_ue__vdfDP_0">
                     <standardEvent>occur</standardEvent>
                 </planItemOnPart>
             </sentry>
             <humanTask id="ht__vdfDP_0" name="T1" isBlocking="true"/>
-            <humanTask id="ht__vdfDP_1" name="PlainTask" isBlocking="true"/>
-            <milestone id="ms__vdfDP_0" name="M1"/>
             <userEvent id="ue__vdfDP_0" name="PlainUserEvent"/>
-            <userEvent id="ue__vdfDP_1" name="EmployeeUserEvent" authorizedRoleRefs="_vdfDP_6"/>
+            <humanTask id="ht__vdfDP_1" name="PlainTask" isBlocking="true"/>
             <stage id="_RFdjm_1" name="Repeater" autoComplete="true">
                 <planItem id="pi_ue__vdfDP_1" name="EmployeeUserEvent" definitionRef="ue__vdfDP_1"/>
                 <planItem id="pi_ms__vdfDP_0" name="M1" definitionRef="ms__vdfDP_0">
-                    <entryCriterion id="_vdfDP_4" name="EntryCriterion_0" sentryRef="crit__vdfDP_0"/>
+                    <entryCriterion id="_vdfDP_4" name="EntryCriterion_0" sentryRef="s__vdfDP_4"/>
                     <itemControl id="_vdfDP_1">
                         <requiredRule id="_vdfDP_2">
                             <condition id="_vdfDP_3">
@@ -57,12 +55,14 @@
                         </requiredRule>
                     </itemControl>
                 </planItem>
-                <sentry id="crit__vdfDP_0">
+                <sentry id="s__vdfDP_4">
                     <planItemOnPart id="_vdfDP_5" sourceRef="pi_ue__vdfDP_1">
                         <standardEvent>occur</standardEvent>
                     </planItemOnPart>
                 </sentry>
             </stage>
+            <userEvent id="ue__vdfDP_1" name="EmployeeUserEvent" authorizedRoleRefs="_vdfDP_6"/>
+            <milestone id="ms__vdfDP_0" name="M1"/>
         </casePlanModel>
         <caseRoles>
             <role id="_vdfDP_6" name="Employee"/>

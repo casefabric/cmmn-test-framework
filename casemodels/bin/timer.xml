@@ -1,4 +1,4 @@
-<definitions>
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
     <caseFileItemDefinition name="duration" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="duration.cfid">
         <property name="value" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
     </caseFileItemDefinition>
@@ -9,14 +9,13 @@
         <casePlanModel id="cm__GgFeT_0" name="timer" autoComplete="true">
             <planItem id="pi_tmr__GgFeT_0" name="After duration" definitionRef="tmr__GgFeT_0"/>
             <planItem id="pi_ht__GgFeT_0" name="Task" definitionRef="ht__GgFeT_0">
-                <entryCriterion id="_GgFeT_1" name="EntryCriterion_0" sentryRef="crit__GgFeT_0"/>
+                <entryCriterion id="_GgFeT_1" name="EntryCriterion_0" sentryRef="s__GgFeT_1"/>
             </planItem>
-            <sentry id="crit__GgFeT_0">
+            <sentry id="s__GgFeT_1">
                 <planItemOnPart id="_GgFeT_4" sourceRef="pi_tmr__GgFeT_0">
                     <standardEvent>occur</standardEvent>
                 </planItemOnPart>
             </sentry>
-            <humanTask id="ht__GgFeT_0" name="Task" isBlocking="true"/>
             <timerEvent id="tmr__GgFeT_0" name="After duration">
                 <timerExpression id="_GgFeT_3">
                     <body>
@@ -27,7 +26,9 @@
                     <standardEvent/>
                 </planItemStartTrigger>
             </timerEvent>
+            <humanTask id="ht__GgFeT_0" name="Task" isBlocking="true"/>
         </casePlanModel>
+        <caseRoles/>
         <input id="_GgFeT_2" name="duration" bindingRef="_GgFeT_5"/>
     </case>
     <CMMNDI>

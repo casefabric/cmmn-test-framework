@@ -1,4 +1,4 @@
-<definitions>
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
     <caseFileItemDefinition name="Greeting" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="greeting.cfid">
         <property name="Message" type="http://www.omg.org/spec/CMMN/PropertyType/string">
             <extensionElements mustUnderstand="false">
@@ -24,6 +24,9 @@
         <casePlanModel id="cm__FcceR_0" name="CasePlan" autoComplete="true">
             <planItem id="pi__FcceR_12" name="Send Mail From Stage" definitionRef="_FcceR_12"/>
             <planItem id="pi__FcceR_14" name="Send Mail With Error Handling" definitionRef="_FcceR_14"/>
+            <stage id="_FcceR_12" name="Send Mail From Stage" autoComplete="true">
+                <planItem id="pi_pt__FcceR_0" name="send mail" definitionRef="pt__FcceR_0"/>
+            </stage>
             <processTask id="pt__FcceR_0" name="send mail" isBlocking="true" processRef="sendmail.process">
                 <inputs id="_FcceR_37" name="Greeting" bindingRef="_FcceR_0"/>
                 <inputs id="_FcceR_41" name="subject"/>
@@ -56,7 +59,58 @@
                     </transformation>
                 </parameterMapping>
             </processTask>
+            <stage id="_FcceR_14" name="Send Mail With Error Handling" autoComplete="true">
+                <planItem id="pi_pt__FcceR_1" name="send mail with fault handling" definitionRef="pt__FcceR_1">
+                    <entryCriterion id="_FcceR_36" name="EntryCriterion_2" sentryRef="s__FcceR_36"/>
+                    <extensionElements mustUnderstand="false">
+                        <reactivateCriterion xmlns="org.cafienne" id="_t1FbK_14" name="ReactivateCriterion_0" sentryRef="s__t1FbK_14"/>
+                    </extensionElements>
+                    <itemControl id="_FcceR_16">
+                        <repetitionRule id="_FcceR_34">
+                            <condition id="_FcceR_35">
+                                <body>
+                                    <![CDATA[true]]>
+                                </body>
+                            </condition>
+                        </repetitionRule>
+                    </itemControl>
+                </planItem>
+                <planItem id="pi__FcceR_26" name="Mail Send Failure" definitionRef="_FcceR_26">
+                    <entryCriterion id="_FcceR_28" name="EntryCriterion_0" sentryRef="s__FcceR_28"/>
+                    <exitCriterion id="_FcceR_50" name="ExitCriterion_0" sentryRef="s__FcceR_50"/>
+                    <itemControl id="_FcceR_27">
+                        <repetitionRule id="_FcceR_30">
+                            <condition id="_FcceR_31">
+                                <body>
+                                    <![CDATA[true]]>
+                                </body>
+                            </condition>
+                        </repetitionRule>
+                    </itemControl>
+                </planItem>
+                <sentry id="s__FcceR_36">
+                    <caseFileItemOnPart id="_FcceR_52" sourceRef="_FcceR_0">
+                        <standardEvent>create</standardEvent>
+                    </caseFileItemOnPart>
+                </sentry>
+                <sentry id="s__t1FbK_14">
+                    <planItemOnPart id="_t1FbK_15" sourceRef="pi_ue__FcceR_0">
+                        <standardEvent>occur</standardEvent>
+                    </planItemOnPart>
+                </sentry>
+                <sentry id="s__FcceR_28">
+                    <planItemOnPart id="_FcceR_29" sourceRef="pi_pt__FcceR_1">
+                        <standardEvent>fault</standardEvent>
+                    </planItemOnPart>
+                </sentry>
+                <sentry id="s__FcceR_50">
+                    <planItemOnPart id="_FcceR_51" sourceRef="pi_pt__FcceR_1">
+                        <standardEvent>complete</standardEvent>
+                    </planItemOnPart>
+                </sentry>
+            </stage>
             <processTask id="pt__FcceR_1" name="send mail with fault handling" isBlocking="true" processRef="sendmail.process">
+                <extensionElements mustUnderstand="false"></extensionElements>
                 <inputs id="_FcceR_43" name="Greeting" bindingRef="_FcceR_0"/>
                 <inputs id="_FcceR_47" name="subject"/>
                 <parameterMapping id="_FcceR_17" sourceRef="_FcceR_43" targetRef="_WgV5_to">
@@ -88,64 +142,12 @@
                     </transformation>
                 </parameterMapping>
             </processTask>
-            <userEvent id="ue__FcceR_0" name="Try to send mail again"/>
-            <stage id="_FcceR_12" name="Send Mail From Stage" autoComplete="true">
-                <planItem id="pi_pt__FcceR_0" name="send mail" definitionRef="pt__FcceR_0"/>
-            </stage>
-            <stage id="_FcceR_14" name="Send Mail With Error Handling" autoComplete="true">
-                <planItem id="pi_pt__FcceR_1" name="send mail with fault handling" definitionRef="pt__FcceR_1">
-                    <entryCriterion id="_FcceR_36" name="EntryCriterion_2" sentryRef="crit__FcceR_3"/>
-                    <extensionElements mustUnderstand="false">
-                        <reactivateCriterion xmlns="org.cafienne" id="_t1FbK_14" name="ReactivateCriterion_0" sentryRef="crit__t1FbK_0"/>
-                    </extensionElements>
-                    <itemControl id="_FcceR_16">
-                        <repetitionRule id="_FcceR_34">
-                            <condition id="_FcceR_35">
-                                <body>
-                                    <![CDATA[true]]>
-                                </body>
-                            </condition>
-                        </repetitionRule>
-                    </itemControl>
-                </planItem>
-                <planItem id="pi__FcceR_26" name="Mail Send Failure" definitionRef="_FcceR_26">
-                    <entryCriterion id="_FcceR_28" name="EntryCriterion_0" sentryRef="crit__FcceR_0"/>
-                    <exitCriterion id="_FcceR_50" name="ExitCriterion_0" sentryRef="crit__FcceR_2"/>
-                    <itemControl id="_FcceR_27">
-                        <repetitionRule id="_FcceR_30">
-                            <condition id="_FcceR_31">
-                                <body>
-                                    <![CDATA[true]]>
-                                </body>
-                            </condition>
-                        </repetitionRule>
-                    </itemControl>
-                </planItem>
-                <sentry id="crit__FcceR_0">
-                    <planItemOnPart id="_FcceR_29" sourceRef="pi_pt__FcceR_1">
-                        <standardEvent>fault</standardEvent>
-                    </planItemOnPart>
-                </sentry>
-                <sentry id="crit__FcceR_2">
-                    <planItemOnPart id="_FcceR_51" sourceRef="pi_pt__FcceR_1">
-                        <standardEvent>complete</standardEvent>
-                    </planItemOnPart>
-                </sentry>
-                <sentry id="crit__FcceR_3">
-                    <caseFileItemOnPart id="_FcceR_52" sourceRef="_FcceR_0">
-                        <standardEvent>create</standardEvent>
-                    </caseFileItemOnPart>
-                </sentry>
-                <sentry id="crit__t1FbK_0">
-                    <planItemOnPart id="_t1FbK_15" sourceRef="pi_ue__FcceR_0">
-                        <standardEvent>occur</standardEvent>
-                    </planItemOnPart>
-                </sentry>
-            </stage>
             <stage id="_FcceR_26" name="Mail Send Failure" autoComplete="true">
                 <planItem id="pi_ue__FcceR_0" name="Try to send mail again" definitionRef="ue__FcceR_0"/>
             </stage>
+            <userEvent id="ue__FcceR_0" name="Try to send mail again"/>
         </casePlanModel>
+        <caseRoles/>
         <input id="_FcceR_1" name="Greeting" bindingRef="_FcceR_0"/>
         <textAnnotation id="_t1FbK_13">
             <text>

@@ -1,4 +1,12 @@
-<definitions>
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
+    <caseFileItemDefinition name="childitem" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="childitem.cfid">
+        <property name="ChildName" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="ChildAge" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
+    </caseFileItemDefinition>
+    <caseFileItemDefinition name="grandchilditem" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="grandchilditem.cfid">
+        <property name="GrandChildName" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="GrandChildBirthDate" type="http://www.omg.org/spec/CMMN/PropertyType/date"/>
+    </caseFileItemDefinition>
     <case id="repeat_with_mapping.case" name="repeat_with_mapping" expressionLanguage="spel">
         <caseFileModel>
             <caseFileItem id="_OgBIe_3" name="Child" multiplicity="ZeroOrMore" definitionRef="childitem.cfid">
@@ -10,7 +18,7 @@
         <casePlanModel id="cm__OgBIe_0" name="repeat_with_mapping" autoComplete="true">
             <planItem id="pi_ht__OgBIe_0" name="Create Children" definitionRef="ht__OgBIe_0"/>
             <planItem id="pi_ht__OgBIe_1" name="Edit GrandChild" definitionRef="ht__OgBIe_1">
-                <entryCriterion id="_OgBIe_11" name="EntryCriterion_0" sentryRef="crit__OgBIe_0"/>
+                <entryCriterion id="_OgBIe_11" name="EntryCriterion_0" sentryRef="s__OgBIe_11"/>
                 <itemControl id="_OgBIe_1">
                     <repetitionRule id="_OgBIe_9">
                         <condition id="_OgBIe_10">
@@ -21,7 +29,7 @@
                     </repetitionRule>
                 </itemControl>
             </planItem>
-            <sentry id="crit__OgBIe_0">
+            <sentry id="s__OgBIe_11">
                 <caseFileItemOnPart id="_OgBIe_12" sourceRef="_OgBIe_3">
                     <standardEvent>create</standardEvent>
                 </caseFileItemOnPart>
@@ -51,15 +59,8 @@
                 </extensionElements>
             </humanTask>
         </casePlanModel>
+        <caseRoles/>
     </case>
-    <caseFileItemDefinition name="childitem" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="childitem.cfid">
-        <property name="ChildName" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
-        <property name="ChildAge" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
-    </caseFileItemDefinition>
-    <caseFileItemDefinition name="grandchilditem" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="grandchilditem.cfid">
-        <property name="GrandChildName" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
-        <property name="GrandChildBirthDate" type="http://www.omg.org/spec/CMMN/PropertyType/date"/>
-    </caseFileItemDefinition>
     <CMMNDI>
         <CMMNDiagram>
             <CMMNShape cmmnElementRef="cm__OgBIe_0">

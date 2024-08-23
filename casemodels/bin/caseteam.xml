@@ -1,8 +1,13 @@
-<definitions>
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
     <caseFileItemDefinition name="root" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="root.cfid">
         <property name="Outcome" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
     </caseFileItemDefinition>
     <case id="caseteam.case" name="caseteam" expressionLanguage="spel">
+        <documentation textFormat="text/plain">
+            <text>
+                <![CDATA[Show authorization structure]]>
+            </text>
+        </documentation>
         <caseFileModel>
             <caseFileItem id="_jAVt1_3" name="Root" multiplicity="ExactlyOne" definitionRef="root.cfid"/>
         </caseFileModel>

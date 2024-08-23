@@ -1,4 +1,8 @@
-<definitions>
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
+    <caseFileItemDefinition name="http" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="http.cfid">
+        <property name="port" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
+    </caseFileItemDefinition>
+    <caseFileItemDefinition name="unspecified" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="unspecified.cfid"/>
     <case id="processtasktest.case" name="processtasktest" expressionLanguage="spel">
         <caseFileModel>
             <caseFileItem id="_czPo6_0" name="HTTPConfig" multiplicity="ExactlyOne" definitionRef="http.cfid"/>
@@ -12,13 +16,13 @@
             <planItem id="pi_ue__czPo6_0" name="Get Error" definitionRef="ue__czPo6_0"/>
             <planItem id="pi_ue__czPo6_1" name="Get OK" definitionRef="ue__czPo6_1"/>
             <planItem id="pi_pt__czPo6_0" name="Get Error Response" definitionRef="pt__czPo6_0">
-                <entryCriterion id="_czPo6_11" name="EntryCriterion_0" sentryRef="crit__czPo6_0"/>
+                <entryCriterion id="_czPo6_11" name="EntryCriterion_0" sentryRef="s__czPo6_11"/>
             </planItem>
             <planItem id="pi_pt__czPo6_1" name="Get Object Response" definitionRef="pt__czPo6_1">
-                <entryCriterion id="_czPo6_20" name="EntryCriterion_1" sentryRef="crit__czPo6_1"/>
+                <entryCriterion id="_czPo6_20" name="EntryCriterion_1" sentryRef="s__czPo6_20"/>
             </planItem>
             <planItem id="pi_ms__czPo6_0" name="Case Closed" definitionRef="ms__czPo6_0">
-                <entryCriterion id="_czPo6_41" name="EntryCriterion_2" sentryRef="crit__czPo6_2"/>
+                <entryCriterion id="_czPo6_41" name="EntryCriterion_2" sentryRef="s__czPo6_41"/>
                 <itemControl id="_czPo6_38">
                     <requiredRule id="_czPo6_39">
                         <condition id="_czPo6_40">
@@ -30,17 +34,17 @@
                 </itemControl>
             </planItem>
             <planItem id="pi_ue__czPo6_2" name="Close Case" definitionRef="ue__czPo6_2"/>
-            <sentry id="crit__czPo6_0">
+            <sentry id="s__czPo6_11">
                 <planItemOnPart id="_czPo6_12" sourceRef="pi_ue__czPo6_0">
                     <standardEvent>occur</standardEvent>
                 </planItemOnPart>
             </sentry>
-            <sentry id="crit__czPo6_1">
+            <sentry id="s__czPo6_20">
                 <planItemOnPart id="_czPo6_21" sourceRef="pi_ue__czPo6_1">
                     <standardEvent>occur</standardEvent>
                 </planItemOnPart>
             </sentry>
-            <sentry id="crit__czPo6_2">
+            <sentry id="s__czPo6_41">
                 <planItemOnPart id="_czPo6_42" sourceRef="pi_ue__czPo6_2">
                     <standardEvent>occur</standardEvent>
                 </planItemOnPart>
@@ -116,6 +120,7 @@
             <milestone id="ms__czPo6_0" name="Case Closed"/>
             <userEvent id="ue__czPo6_2" name="Close Case"/>
         </casePlanModel>
+        <caseRoles/>
         <input id="_czPo6_37" name="HTTPConfig" bindingRef="_czPo6_0"/>
     </case>
     <process name="GetResponse" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified" id="GetResponse.process">
@@ -126,7 +131,7 @@
         <output id="_1Eym_errorCode" name="errorCode"/>
         <output id="_urBb_errorMessage" name="errorPayload"/>
         <output id="_enkJ_responseMessage" name="responseMessage"/>
-        <extensionElements>
+        <extensionElements mustUnderstand="false">
             <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.http.HTTPCallDefinition">
                 <url>http://localhost:${port}/get/code/${getResponseCode}</url>
                 <method>POST</method>
@@ -145,8 +150,6 @@
             </cafienne:implementation>
         </extensionElements>
     </process>
-    <caseFileItemDefinition name="http" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="http.cfid"/>
-    <caseFileItemDefinition name="unspecified" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="unspecified.cfid"/>
     <CMMNDI>
         <CMMNDiagram>
             <CMMNShape cmmnElementRef="cm__czPo6_0">

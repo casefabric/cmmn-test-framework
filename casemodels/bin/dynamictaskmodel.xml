@@ -1,4 +1,4 @@
-<definitions>
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
     <caseFileItemDefinition name="Greeting" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="greeting.cfid">
         <property name="Message" type="http://www.omg.org/spec/CMMN/PropertyType/string">
             <extensionElements mustUnderstand="false">
@@ -96,6 +96,7 @@
                 </extensionElements>
             </humanTask>
         </casePlanModel>
+        <caseRoles/>
         <input id="_vO140_2" name="Greeting" bindingRef="_vO140_1"/>
     </case>
     <CMMNDI>

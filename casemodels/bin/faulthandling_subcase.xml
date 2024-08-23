@@ -1,4 +1,4 @@
-<definitions>
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
     <caseFileItemDefinition name="data" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="data.cfid"/>
     <case id="faulthandling_subcase.case" name="faulthandling_subcase" expressionLanguage="spel">
         <caseFileModel>
@@ -7,30 +7,24 @@
         <casePlanModel id="cm__y2XPO_0" name="faulthandling_subcase" autoComplete="true">
             <planItem id="pi__y2XPO_0" name="Stage Without Fault Handling" definitionRef="_y2XPO_0"/>
             <planItem id="pi__y2XPO_4" name="Stage With Fault Handling" definitionRef="_y2XPO_4"/>
-            <humanTask id="ht__y2XPO_0" name="Task" isBlocking="true"/>
-            <processTask id="pt__y2XPO_0" name="Call without Fault Handling" isBlocking="true" processRef="GetResponse2.process">
-                <inputs id="_y2XPO_13" name="data" bindingRef="_y2XPO_2"/>
-                <parameterMapping id="_y2XPO_7" sourceRef="_y2XPO_13" targetRef="_FcAX_data"/>
-            </processTask>
-            <processTask id="pt__y2XPO_1" name="Call with Fault Handling" isBlocking="true" processRef="GetResponse2.process">
-                <inputs id="_y2XPO_30" name="data" bindingRef="_y2XPO_2"/>
-                <parameterMapping id="_y2XPO_15" sourceRef="_y2XPO_30" targetRef="_FcAX_data"/>
-            </processTask>
-            <milestone id="ms__y2XPO_0" name="Task Failed"/>
-            <userEvent id="ue__y2XPO_0" name="Try again"/>
             <stage id="_y2XPO_0" name="Stage Without Fault Handling" autoComplete="true">
                 <planItem id="pi_pt__y2XPO_0" name="Call without Fault Handling" definitionRef="pt__y2XPO_0"/>
                 <planItem id="pi_ht__y2XPO_0" name="Task" definitionRef="ht__y2XPO_0"/>
             </stage>
+            <processTask id="pt__y2XPO_0" name="Call without Fault Handling" isBlocking="true" processRef="GetResponse2.process">
+                <inputs id="_y2XPO_13" name="data" bindingRef="_y2XPO_2"/>
+                <parameterMapping id="_y2XPO_7" sourceRef="_y2XPO_13" targetRef="_FcAX_data"/>
+            </processTask>
+            <humanTask id="ht__y2XPO_0" name="Task" isBlocking="true"/>
             <stage id="_y2XPO_4" name="Stage With Fault Handling" autoComplete="true">
                 <planItem id="pi_pt__y2XPO_1" name="Call with Fault Handling" definitionRef="pt__y2XPO_1">
                     <extensionElements mustUnderstand="false">
-                        <reactivateCriterion xmlns="org.cafienne" id="_y2XPO_25" name="ReactivateCriterion_0" sentryRef="crit__y2XPO_0"/>
+                        <reactivateCriterion xmlns="org.cafienne" id="_y2XPO_25" name="ReactivateCriterion_0" sentryRef="s__y2XPO_25"/>
                     </extensionElements>
                 </planItem>
                 <planItem id="pi__y2XPO_21" name="Failure Handling" definitionRef="_y2XPO_21">
-                    <entryCriterion id="_y2XPO_31" name="EntryCriterion_1" sentryRef="crit__y2XPO_1"/>
-                    <exitCriterion id="_y2XPO_35" name="ExitCriterion_0" sentryRef="crit__y2XPO_3"/>
+                    <entryCriterion id="_y2XPO_31" name="EntryCriterion_1" sentryRef="s__y2XPO_31"/>
+                    <exitCriterion id="_y2XPO_35" name="ExitCriterion_0" sentryRef="s__y2XPO_35"/>
                     <itemControl id="_y2XPO_22">
                         <repetitionRule id="_y2XPO_23">
                             <condition id="_y2XPO_24">
@@ -41,30 +35,30 @@
                         </repetitionRule>
                     </itemControl>
                 </planItem>
-                <sentry id="crit__y2XPO_1">
-                    <planItemOnPart id="_y2XPO_32" sourceRef="pi_pt__y2XPO_1">
-                        <standardEvent>fault</standardEvent>
-                    </planItemOnPart>
-                </sentry>
-                <sentry id="crit__y2XPO_3">
-                    <planItemOnPart id="_y2XPO_36" sourceRef="pi_pt__y2XPO_1">
-                        <standardEvent>complete</standardEvent>
-                    </planItemOnPart>
-                </sentry>
-                <sentry id="crit__y2XPO_2">
-                    <planItemOnPart id="_y2XPO_34" sourceRef="pi_ue__y2XPO_0">
-                        <standardEvent>occur</standardEvent>
-                    </planItemOnPart>
-                </sentry>
-                <sentry id="crit__y2XPO_0">
+                <sentry id="s__y2XPO_25">
                     <planItemOnPart id="_y2XPO_26" sourceRef="pi_ue__y2XPO_0">
                         <standardEvent>occur</standardEvent>
                     </planItemOnPart>
                 </sentry>
+                <sentry id="s__y2XPO_31">
+                    <planItemOnPart id="_y2XPO_32" sourceRef="pi_pt__y2XPO_1">
+                        <standardEvent>fault</standardEvent>
+                    </planItemOnPart>
+                </sentry>
+                <sentry id="s__y2XPO_35">
+                    <planItemOnPart id="_y2XPO_36" sourceRef="pi_pt__y2XPO_1">
+                        <standardEvent>complete</standardEvent>
+                    </planItemOnPart>
+                </sentry>
             </stage>
+            <processTask id="pt__y2XPO_1" name="Call with Fault Handling" isBlocking="true" processRef="GetResponse2.process">
+                <extensionElements mustUnderstand="false"></extensionElements>
+                <inputs id="_y2XPO_30" name="data" bindingRef="_y2XPO_2"/>
+                <parameterMapping id="_y2XPO_15" sourceRef="_y2XPO_30" targetRef="_FcAX_data"/>
+            </processTask>
             <stage id="_y2XPO_21" name="Failure Handling" autoComplete="true">
                 <planItem id="pi__y2XPO_29" name="Retry" definitionRef="_y2XPO_29">
-                    <entryCriterion id="_y2XPO_38" name="EntryCriterion_3" sentryRef="crit__y2XPO_4"/>
+                    <entryCriterion id="_y2XPO_38" name="EntryCriterion_3" sentryRef="s__y2XPO_38"/>
                     <itemControl id="_y2XPO_37">
                         <requiredRule id="_y2XPO_40">
                             <condition id="_y2XPO_41">
@@ -76,7 +70,7 @@
                     </itemControl>
                 </planItem>
                 <planItem id="pi_ms__y2XPO_0" name="Task Failed" definitionRef="ms__y2XPO_0"/>
-                <sentry id="crit__y2XPO_4">
+                <sentry id="s__y2XPO_38">
                     <planItemOnPart id="_y2XPO_39" sourceRef="pi_ms__y2XPO_0">
                         <standardEvent>occur</standardEvent>
                     </planItemOnPart>
@@ -85,7 +79,10 @@
             <stage id="_y2XPO_29" name="Retry" autoComplete="true">
                 <planItem id="pi_ue__y2XPO_0" name="Try again" definitionRef="ue__y2XPO_0"/>
             </stage>
+            <userEvent id="ue__y2XPO_0" name="Try again"/>
+            <milestone id="ms__y2XPO_0" name="Task Failed"/>
         </casePlanModel>
+        <caseRoles/>
         <input id="_y2XPO_3" name="data" bindingRef="_y2XPO_2"/>
     </case>
     <process name="GetResponse2" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified" id="GetResponse2.process">

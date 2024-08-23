@@ -1,37 +1,4 @@
-<definitions>
-    <case id="entrycriteriaoncaseinputparameters.case" name="entrycriteriaoncaseinputparameters" expressionLanguage="spel">
-        <caseFileModel>
-            <caseFileItem id="_cl3EV_0" name="Greeting" multiplicity="ExactlyOne" definitionRef="greeting.cfid">
-                <children>
-                    <caseFileItem id="_cl3EV_1" name="Child" multiplicity="ZeroOrMore" definitionRef="child.cfid"/>
-                </children>
-            </caseFileItem>
-        </caseFileModel>
-        <casePlanModel id="cm__cl3EV_0" name="entrycriteriaoncaseinputparameters" autoComplete="true">
-            <planItem id="pi__cl3EV_2" name="Stage" definitionRef="_cl3EV_2">
-                <entryCriterion id="_cl3EV_4" name="EntryCriterion_0" sentryRef="crit__cl3EV_0"/>
-                <itemControl id="_cl3EV_3">
-                    <repetitionRule id="_cl3EV_6">
-                        <condition id="_cl3EV_7">
-                            <body>
-                                <![CDATA[true]]>
-                            </body>
-                        </condition>
-                    </repetitionRule>
-                </itemControl>
-            </planItem>
-            <sentry id="crit__cl3EV_0">
-                <caseFileItemOnPart id="_cl3EV_5" sourceRef="_cl3EV_1">
-                    <standardEvent>create</standardEvent>
-                </caseFileItemOnPart>
-            </sentry>
-            <humanTask id="ht__cl3EV_0" name="Task" isBlocking="true"/>
-            <stage id="_cl3EV_2" name="Stage" autoComplete="true">
-                <planItem id="pi_ht__cl3EV_0" name="Task" definitionRef="ht__cl3EV_0"/>
-            </stage>
-        </casePlanModel>
-        <input id="_cl3EV_17" name="Greeting" bindingRef="_cl3EV_0"/>
-    </case>
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
     <caseFileItemDefinition name="Greeting" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="greeting.cfid">
         <property name="Message" type="http://www.omg.org/spec/CMMN/PropertyType/string">
             <extensionElements mustUnderstand="false">
@@ -48,6 +15,40 @@
     <caseFileItemDefinition name="child" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="child.cfid">
         <property name="name" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
     </caseFileItemDefinition>
+    <case id="entrycriteriaoncaseinputparameters.case" name="entrycriteriaoncaseinputparameters" expressionLanguage="spel">
+        <caseFileModel>
+            <caseFileItem id="_cl3EV_0" name="Greeting" multiplicity="ExactlyOne" definitionRef="greeting.cfid">
+                <children>
+                    <caseFileItem id="_cl3EV_1" name="Child" multiplicity="ZeroOrMore" definitionRef="child.cfid"/>
+                </children>
+            </caseFileItem>
+        </caseFileModel>
+        <casePlanModel id="cm__cl3EV_0" name="entrycriteriaoncaseinputparameters" autoComplete="true">
+            <planItem id="pi__cl3EV_2" name="Stage" definitionRef="_cl3EV_2">
+                <entryCriterion id="_cl3EV_4" name="EntryCriterion_0" sentryRef="s__cl3EV_4"/>
+                <itemControl id="_cl3EV_3">
+                    <repetitionRule id="_cl3EV_6">
+                        <condition id="_cl3EV_7">
+                            <body>
+                                <![CDATA[true]]>
+                            </body>
+                        </condition>
+                    </repetitionRule>
+                </itemControl>
+            </planItem>
+            <sentry id="s__cl3EV_4">
+                <caseFileItemOnPart id="_cl3EV_5" sourceRef="_cl3EV_1">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </sentry>
+            <stage id="_cl3EV_2" name="Stage" autoComplete="true">
+                <planItem id="pi_ht__cl3EV_0" name="Task" definitionRef="ht__cl3EV_0"/>
+            </stage>
+            <humanTask id="ht__cl3EV_0" name="Task" isBlocking="true"/>
+        </casePlanModel>
+        <caseRoles/>
+        <input id="_cl3EV_17" name="Greeting" bindingRef="_cl3EV_0"/>
+    </case>
     <CMMNDI>
         <CMMNDiagram>
             <CMMNShape cmmnElementRef="cm__cl3EV_0">

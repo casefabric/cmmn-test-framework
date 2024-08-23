@@ -1,4 +1,12 @@
-<definitions>
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
+    <caseFileItemDefinition name="rootcasefileitem" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="rootcasefileitem.cfid">
+        <property name="RootProperty1" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="RootProperty2" type="http://www.omg.org/spec/CMMN/PropertyType/boolean"/>
+    </caseFileItemDefinition>
+    <caseFileItemDefinition name="childitem" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="childitem.cfid">
+        <property name="ChildName" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="ChildAge" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
+    </caseFileItemDefinition>
     <case id="taskoutputoperations.case" name="taskoutputoperations" expressionLanguage="spel">
         <caseFileModel>
             <caseFileItem id="_v624r_4" name="TopItem" multiplicity="ExactlyOne" definitionRef="rootcasefileitem.cfid">
@@ -159,7 +167,6 @@
                         </documentation>
                         <input id="_dk8c_In" name="In"/>
                         <output id="_46Gh_Out" name="Out"/>
-                        <task-model/>
                         <parameterMapping id="_v624r_1" sourceRef="_46Gh_Out" targetRef="_v624r_32"/>
                     </cafienne:implementation>
                 </extensionElements>
@@ -181,7 +188,6 @@
                         </documentation>
                         <input id="_dk8c_In" name="In"/>
                         <output id="_46Gh_Out" name="Out"/>
-                        <task-model/>
                         <parameterMapping id="_v624r_10" sourceRef="_46Gh_Out" targetRef="_v624r_35"/>
                     </cafienne:implementation>
                 </extensionElements>
@@ -203,7 +209,6 @@
                         </documentation>
                         <input id="_dk8c_In" name="In"/>
                         <output id="_46Gh_Out" name="Out"/>
-                        <task-model/>
                         <parameterMapping id="_v624r_17" sourceRef="_46Gh_Out" targetRef="_v624r_38"/>
                     </cafienne:implementation>
                 </extensionElements>
@@ -225,7 +230,6 @@
                         </documentation>
                         <input id="_dk8c_In" name="In"/>
                         <output id="_46Gh_Out" name="Out"/>
-                        <task-model/>
                         <parameterMapping id="_v624r_16" sourceRef="_46Gh_Out" targetRef="_v624r_31"/>
                     </cafienne:implementation>
                 </extensionElements>
@@ -247,7 +251,6 @@
                         </documentation>
                         <input id="_dk8c_In" name="In"/>
                         <output id="_46Gh_Out" name="Out"/>
-                        <task-model/>
                         <parameterMapping id="_v624r_25" sourceRef="_46Gh_Out" targetRef="_v624r_40"/>
                     </cafienne:implementation>
                 </extensionElements>
@@ -269,7 +272,6 @@
                         </documentation>
                         <input id="_dk8c_In" name="In"/>
                         <output id="_46Gh_Out" name="Out"/>
-                        <task-model/>
                         <parameterMapping id="_v624r_27" sourceRef="_46Gh_Out" targetRef="_v624r_43"/>
                     </cafienne:implementation>
                 </extensionElements>
@@ -291,7 +293,6 @@
                         </documentation>
                         <input id="_dk8c_In" name="In"/>
                         <output id="_46Gh_Out" name="Out"/>
-                        <task-model/>
                         <parameterMapping id="_v624r_80" sourceRef="_46Gh_Out" targetRef="_v624r_82"/>
                     </cafienne:implementation>
                 </extensionElements>
@@ -313,7 +314,6 @@
                         </documentation>
                         <input id="_dk8c_In" name="In"/>
                         <output id="_46Gh_Out" name="Out"/>
-                        <task-model/>
                         <parameterMapping id="_v624r_78" sourceRef="_46Gh_Out" targetRef="_v624r_85"/>
                     </cafienne:implementation>
                 </extensionElements>
@@ -335,7 +335,6 @@
                         </documentation>
                         <input id="_dk8c_In" name="In"/>
                         <output id="_46Gh_Out" name="Out"/>
-                        <task-model/>
                         <parameterMapping id="_v624r_76" sourceRef="_46Gh_Out" targetRef="_v624r_88"/>
                     </cafienne:implementation>
                 </extensionElements>
@@ -357,7 +356,6 @@
                         </documentation>
                         <input id="_dk8c_In" name="In"/>
                         <output id="_46Gh_Out" name="Out"/>
-                        <task-model/>
                         <parameterMapping id="_v624r_70" sourceRef="_46Gh_Out" targetRef="_v624r_81"/>
                     </cafienne:implementation>
                 </extensionElements>
@@ -379,7 +377,6 @@
                         </documentation>
                         <input id="_dk8c_In" name="In"/>
                         <output id="_46Gh_Out" name="Out"/>
-                        <task-model/>
                         <parameterMapping id="_v624r_72" sourceRef="_46Gh_Out" targetRef="_v624r_94"/>
                     </cafienne:implementation>
                 </extensionElements>
@@ -401,23 +398,15 @@
                         </documentation>
                         <input id="_dk8c_In" name="In"/>
                         <output id="_46Gh_Out" name="Out"/>
-                        <task-model/>
                         <parameterMapping id="_v624r_74" sourceRef="_46Gh_Out" targetRef="_v624r_91"/>
                     </cafienne:implementation>
                 </extensionElements>
             </humanTask>
         </casePlanModel>
+        <caseRoles/>
         <input id="_v624r_23" name="TopItem" bindingRef="_v624r_4"/>
         <input id="_v624r_24" name="TopArray" bindingRef="_v624r_6"/>
     </case>
-    <caseFileItemDefinition name="rootcasefileitem" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="rootcasefileitem.cfid">
-        <property name="RootProperty1" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
-        <property name="RootProperty2" type="http://www.omg.org/spec/CMMN/PropertyType/boolean"/>
-    </caseFileItemDefinition>
-    <caseFileItemDefinition name="childitem" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="childitem.cfid">
-        <property name="ChildName" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
-        <property name="ChildAge" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
-    </caseFileItemDefinition>
     <CMMNDI>
         <CMMNDiagram>
             <CMMNShape cmmnElementRef="cm__v624r_0">

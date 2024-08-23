@@ -1,4 +1,4 @@
-<definitions>
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
     <caseFileItemDefinition name="root" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="root.cfid">
         <property name="Outcome" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
     </caseFileItemDefinition>
@@ -7,15 +7,15 @@
             <caseFileItem id="cfi_csQA1_0" name="CaseFileItem" multiplicity="ExactlyOne" definitionRef="root.cfid"/>
         </caseFileModel>
         <casePlanModel id="cm_planning.case_planning_0" name="planning" autoComplete="true">
-            <planItem id="cm_csQA1_4" name="T1" definitionRef="pid_cm_csQA1_4"/>
-            <planItem id="cm_csQA1_6" name="T2" definitionRef="pid_cm_csQA1_6"/>
-            <planItem id="cm_csQA1_8" name="T3" definitionRef="pid_cm_csQA1_8">
-                <entryCriterion id="_5pggv_0" name="EntryCriterion_0" sentryRef="cm_csQA1_12"/>
+            <planItem id="cm_csQA1_4" name="T1" definitionRef="ht_cm_csQA1_4"/>
+            <planItem id="cm_csQA1_6" name="T2" definitionRef="ht_cm_csQA1_6"/>
+            <planItem id="cm_csQA1_8" name="T3" definitionRef="ht_cm_csQA1_8">
+                <entryCriterion id="_5pggv_0" name="EntryCriterion_0" sentryRef="s__5pggv_0"/>
             </planItem>
-            <planItem id="cm_csQA1_24" name="Stage" definitionRef="pid_cm_csQA1_24">
-                <entryCriterion id="_5pggv_1" name="EntryCriterion_1" sentryRef="cm_csQA1_26"/>
+            <planItem id="cm_csQA1_24" name="Stage" definitionRef="s_cm_csQA1_24">
+                <entryCriterion id="_5pggv_1" name="EntryCriterion_1" sentryRef="s__5pggv_1"/>
             </planItem>
-            <sentry id="cm_csQA1_12">
+            <sentry id="s__5pggv_0">
                 <planItemOnPart id="ref_id_cm_csQA1_4" sourceRef="cm_csQA1_4">
                     <standardEvent>complete</standardEvent>
                 </planItemOnPart>
@@ -23,13 +23,13 @@
                     <standardEvent>complete</standardEvent>
                 </planItemOnPart>
             </sentry>
-            <sentry id="cm_csQA1_26">
+            <sentry id="s__5pggv_1">
                 <planItemOnPart id="ref_id_cm_csQA1_8" sourceRef="cm_csQA1_8">
                     <standardEvent>complete</standardEvent>
                 </planItemOnPart>
             </sentry>
             <planningTable id="pt_cm_undefined_3">
-                <discretionaryItem id="cm_csQA1_10" name="T4" definitionRef="pid_cm_csQA1_10" applicabilityRuleRefs="rule_csQA1_1" authorizedRoleRefs="_Jn9Vt_7 _Jn9Vt_8">
+                <discretionaryItem id="cm_csQA1_10" name="T4" definitionRef="ht_cm_csQA1_10" authorizedRoleRefs="_Jn9Vt_7 _Jn9Vt_8">
                     <itemControl>
                         <repetitionRule id="cm_csQA1_10_repetitionRule">
                             <condition>
@@ -40,7 +40,7 @@
                         </repetitionRule>
                     </itemControl>
                 </discretionaryItem>
-                <discretionaryItem id="cm_csQA1_16" name="Opnieuw T1" definitionRef="pid_cm_csQA1_16" applicabilityRuleRefs="rule_csQA1_1"/>
+                <discretionaryItem id="cm_csQA1_16" name="Opnieuw T1" definitionRef="ht_cm_csQA1_16"/>
                 <applicabilityRule id="rule_csQA1_1" name="isValid">
                     <condition>
                         <body>
@@ -49,10 +49,10 @@
                     </condition>
                 </applicabilityRule>
             </planningTable>
-            <humanTask id="pid_cm_csQA1_4" name="T1" isBlocking="true"/>
-            <humanTask id="pid_cm_csQA1_6" name="T2" isBlocking="true">
+            <humanTask id="ht_cm_csQA1_4" name="T1" isBlocking="true"/>
+            <humanTask id="ht_cm_csQA1_6" name="T2" isBlocking="true">
                 <planningTable id="pt_cm_7">
-                    <discretionaryItem id="cm_csQA1_13" name="Opnieuw T1" definitionRef="pid_cm_csQA1_13" applicabilityRuleRefs="rule_csQA1_0" authorizedRoleRefs="_Jn9Vt_7"/>
+                    <discretionaryItem id="cm_csQA1_13" name="Opnieuw T1" definitionRef="ht_cm_csQA1_13" authorizedRoleRefs="_Jn9Vt_7"/>
                     <applicabilityRule id="rule_csQA1_0" name="isValid">
                         <condition>
                             <body>
@@ -62,16 +62,16 @@
                     </applicabilityRule>
                 </planningTable>
             </humanTask>
-            <humanTask id="pid_cm_csQA1_8" name="T3" isBlocking="true"/>
-            <humanTask id="pid_cm_csQA1_27" name="T5" isBlocking="true"/>
-            <humanTask id="pid_cm_csQA1_10" name="T4" isBlocking="true"/>
-            <humanTask id="pid_cm_csQA1_13" name="Opnieuw T1" isBlocking="true"/>
-            <humanTask id="pid_cm_csQA1_16" name="Opnieuw T1" isBlocking="true"/>
-            <stage id="pid_cm_csQA1_24" name="Stage" autoComplete="false">
+            <humanTask id="ht_cm_csQA1_13" name="Opnieuw T1" isBlocking="true"/>
+            <humanTask id="ht_cm_csQA1_8" name="T3" isBlocking="true"/>
+            <stage id="s_cm_csQA1_24" name="Stage" autoComplete="false">
                 <planningTable id="pt_cm_25">
-                    <discretionaryItem id="cm_csQA1_27" name="T5" definitionRef="pid_cm_csQA1_27" authorizedRoleRefs="_Jn9Vt_8"/>
+                    <discretionaryItem id="cm_csQA1_27" name="T5" definitionRef="ht_cm_csQA1_27" authorizedRoleRefs="_Jn9Vt_8"/>
                 </planningTable>
             </stage>
+            <humanTask id="ht_cm_csQA1_27" name="T5" isBlocking="true"/>
+            <humanTask id="ht_cm_csQA1_10" name="T4" isBlocking="true"/>
+            <humanTask id="ht_cm_csQA1_16" name="Opnieuw T1" isBlocking="true"/>
         </casePlanModel>
         <caseRoles>
             <role id="_Jn9Vt_7" name="Employee"/>

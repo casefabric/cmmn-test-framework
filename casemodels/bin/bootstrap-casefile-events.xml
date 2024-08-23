@@ -1,4 +1,23 @@
-<definitions>
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
+    <caseFileItemDefinition name="Greeting" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="greeting.cfid">
+        <property name="Message" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+            </extensionElements>
+        </property>
+        <property name="To" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+            </extensionElements>
+        </property>
+        <property name="From" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    </caseFileItemDefinition>
+    <caseFileItemDefinition name="Response" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="response.cfid">
+        <property name="Message" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="Date" type="http://www.omg.org/spec/CMMN/PropertyType/date"/>
+        <property name="Time" type="http://www.omg.org/spec/CMMN/PropertyType/time"/>
+        <property name="SomeBoolean" type="http://www.omg.org/spec/CMMN/PropertyType/boolean"/>
+    </caseFileItemDefinition>
     <case id="bootstrap-casefile-events.case" name="bootstrap-casefile-events" expressionLanguage="spel">
         <caseFileModel>
             <caseFileItem id="_EGOwJ_0" name="Greeting" multiplicity="ExactlyOne" definitionRef="greeting.cfid"/>
@@ -7,17 +26,17 @@
         </caseFileModel>
         <casePlanModel id="cm__EGOwJ_0" name="bootstrap-casefile-events" autoComplete="true">
             <planItem id="pi_ht__EGOwJ_0" name="SendResponse" definitionRef="ht__EGOwJ_0">
-                <entryCriterion id="_EGOwJ_5" name="EntryCriterion_0" sentryRef="crit__EGOwJ_0"/>
+                <entryCriterion id="_EGOwJ_5" name="EntryCriterion_0" sentryRef="s__EGOwJ_5"/>
             </planItem>
             <planItem id="pi_ht__EGOwJ_1" name="ReadRespose" definitionRef="ht__EGOwJ_1">
-                <entryCriterion id="_EGOwJ_9" name="EntryCriterion_1" sentryRef="crit__EGOwJ_1"/>
+                <entryCriterion id="_EGOwJ_9" name="EntryCriterion_1" sentryRef="s__EGOwJ_9"/>
             </planItem>
-            <sentry id="crit__EGOwJ_0">
+            <sentry id="s__EGOwJ_5">
                 <caseFileItemOnPart id="_EGOwJ_6" sourceRef="_EGOwJ_0">
                     <standardEvent>create</standardEvent>
                 </caseFileItemOnPart>
             </sentry>
-            <sentry id="crit__EGOwJ_1">
+            <sentry id="s__EGOwJ_9">
                 <planItemOnPart id="_EGOwJ_10" sourceRef="pi_ht__EGOwJ_0">
                     <standardEvent>start</standardEvent>
                 </planItemOnPart>
@@ -151,28 +170,10 @@
                 </extensionElements>
             </humanTask>
         </casePlanModel>
+        <caseRoles/>
         <input id="_EGOwJ_13" name="Greeting" bindingRef="_EGOwJ_0"/>
         <input id="_EGOwJ_14" name="OneMoreInput" bindingRef="_EGOwJ_11"/>
     </case>
-    <caseFileItemDefinition name="Greeting" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="greeting.cfid">
-        <property name="Message" type="http://www.omg.org/spec/CMMN/PropertyType/string">
-            <extensionElements mustUnderstand="false">
-                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
-            </extensionElements>
-        </property>
-        <property name="To" type="http://www.omg.org/spec/CMMN/PropertyType/string">
-            <extensionElements mustUnderstand="false">
-                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
-            </extensionElements>
-        </property>
-        <property name="From" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
-    </caseFileItemDefinition>
-    <caseFileItemDefinition name="Response" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="response.cfid">
-        <property name="Message" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
-        <property name="Date" type="http://www.omg.org/spec/CMMN/PropertyType/date"/>
-        <property name="Time" type="http://www.omg.org/spec/CMMN/PropertyType/time"/>
-        <property name="SomeBoolean" type="http://www.omg.org/spec/CMMN/PropertyType/boolean"/>
-    </caseFileItemDefinition>
     <CMMNDI>
         <CMMNDiagram>
             <CMMNShape cmmnElementRef="cm__EGOwJ_0">

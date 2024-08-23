@@ -1,4 +1,4 @@
-<definitions>
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
     <caseFileItemDefinition name="Greeting" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="greeting.cfid">
         <property name="Message" type="http://www.omg.org/spec/CMMN/PropertyType/string">
             <extensionElements mustUnderstand="false">
@@ -19,9 +19,9 @@
         <casePlanModel id="cm__hDTXE_0" name="casemetspatie" autoComplete="true">
             <planItem id="pi_ht__hDTXE_0" name="Taak Met Eind Spatie " definitionRef="ht__hDTXE_0"/>
             <planItem id="pi_ht__hDTXE_1" name=" Taak Met Begin Spatie" definitionRef="ht__hDTXE_1">
-                <entryCriterion id="_hDTXE_4" name="EntryCriterion_0" sentryRef="crit__hDTXE_0"/>
+                <entryCriterion id="_hDTXE_4" name="EntryCriterion_0" sentryRef="s__hDTXE_4"/>
             </planItem>
-            <sentry id="crit__hDTXE_0">
+            <sentry id="s__hDTXE_4">
                 <caseFileItemOnPart id="_hDTXE_5" sourceRef="_hDTXE_2">
                     <standardEvent>create</standardEvent>
                 </caseFileItemOnPart>
@@ -29,6 +29,7 @@
             <humanTask id="ht__hDTXE_0" name="Taak Met Eind Spatie " isBlocking="true"/>
             <humanTask id="ht__hDTXE_1" name=" Taak Met Begin Spatie" isBlocking="true"/>
         </casePlanModel>
+        <caseRoles/>
         <input id="_hDTXE_3" name="Greeting" bindingRef="_hDTXE_2"/>
     </case>
     <CMMNDI>

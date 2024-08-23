@@ -1,4 +1,5 @@
-<definitions>
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
+    <caseFileItemDefinition name="unspecified" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="unspecified.cfid"/>
     <case id="documentation_case.case" name="documentation_case" expressionLanguage="spel">
         <caseFileModel>
             <caseFileItem id="_jBxoP_2" name="item1" multiplicity="ExactlyOne" definitionRef="unspecified.cfid">
@@ -48,7 +49,7 @@
                         <![CDATA[Second Documented Task Documentation]]>
                     </text>
                 </documentation>
-                <entryCriterion id="_jBxoP_9" name="EntryCriterion_0" sentryRef="crit__jBxoP_0"/>
+                <entryCriterion id="_jBxoP_9" name="EntryCriterion_0" sentryRef="s__jBxoP_9"/>
             </planItem>
             <planItem id="pi__jBxoP_11" name="Documented Stage" definitionRef="_jBxoP_11">
                 <documentation textFormat="text/plain">
@@ -57,7 +58,7 @@
                     </text>
                 </documentation>
             </planItem>
-            <sentry id="crit__jBxoP_0">
+            <sentry id="s__jBxoP_9">
                 <planItemOnPart id="_jBxoP_10" sourceRef="pi_ht__jBxoP_0">
                     <standardEvent>complete</standardEvent>
                 </planItemOnPart>
@@ -67,6 +68,7 @@
             <humanTask id="ht__jBxoP_2" name="Second Documented Task" isBlocking="true"/>
             <stage id="_jBxoP_11" name="Documented Stage" autoComplete="true"/>
         </casePlanModel>
+        <caseRoles/>
         <textAnnotation id="_jBxoP_7">
             <text>
                 <![CDATA[Item1 is documented
@@ -80,7 +82,6 @@ You may guess which task is documented]]>
             </text>
         </textAnnotation>
     </case>
-    <caseFileItemDefinition name="unspecified" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="unspecified.cfid"/>
     <CMMNDI>
         <CMMNDiagram>
             <CMMNShape cmmnElementRef="cm__jBxoP_0">

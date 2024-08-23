@@ -1,4 +1,4 @@
-<definitions>
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
     <caseFileItemDefinition name="root" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="root.cfid">
         <property name="Outcome" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
     </caseFileItemDefinition>
@@ -14,9 +14,10 @@
             </caseFileItem>
         </caseFileModel>
         <casePlanModel id="cm__Lf3bt_0" name="stagetaskexpressions" autoComplete="true">
+            <exitCriterion id="_Lf3bt_14" name="ExitCriterion_0" sentryRef="s__Lf3bt_14"/>
             <planItem id="pi__Lf3bt_2" name="Stage_0" definitionRef="_Lf3bt_2"/>
             <planItem id="pi__Lf3bt_4" name="Stage_1" definitionRef="_Lf3bt_4">
-                <entryCriterion id="_Lf3bt_12" name="EntryCriterion_0" sentryRef="crit__Lf3bt_0"/>
+                <entryCriterion id="_Lf3bt_12" name="EntryCriterion_0" sentryRef="s__Lf3bt_12"/>
                 <itemControl id="_Lf3bt_5">
                     <repetitionRule id="_Lf3bt_6">
                         <condition id="_Lf3bt_7">
@@ -28,17 +29,19 @@
                 </itemControl>
             </planItem>
             <planItem id="pi_ue__Lf3bt_0" name="Terminate Case" definitionRef="ue__Lf3bt_0"/>
-            <sentry id="crit__Lf3bt_0">
-                <caseFileItemOnPart id="_Lf3bt_13" sourceRef="_Lf3bt_1">
-                    <standardEvent>create</standardEvent>
-                </caseFileItemOnPart>
-            </sentry>
-            <sentry id="crit__Lf3bt_1">
+            <sentry id="s__Lf3bt_14">
                 <planItemOnPart id="_Lf3bt_15" sourceRef="pi_ue__Lf3bt_0">
                     <standardEvent>occur</standardEvent>
                 </planItemOnPart>
             </sentry>
-            <exitCriterion id="_Lf3bt_14" name="ExitCriterion_0" sentryRef="crit__Lf3bt_1"/>
+            <sentry id="s__Lf3bt_12">
+                <caseFileItemOnPart id="_Lf3bt_13" sourceRef="_Lf3bt_1">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </sentry>
+            <stage id="_Lf3bt_2" name="Stage_0" autoComplete="true">
+                <planItem id="pi_ht__Lf3bt_0" name="HumanTask_0" definitionRef="ht__Lf3bt_0"/>
+            </stage>
             <humanTask id="ht__Lf3bt_0" name="HumanTask_0" isBlocking="true">
                 <extensionElements mustUnderstand="false">
                     <cafienne:implementation name="SendResponse" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="sendresponse.humantask">
@@ -114,6 +117,9 @@
                     </cafienne:implementation>
                 </extensionElements>
             </humanTask>
+            <stage id="_Lf3bt_4" name="Stage_1" autoComplete="true">
+                <planItem id="pi_ht__Lf3bt_1" name="HumanTask_1" definitionRef="ht__Lf3bt_1"/>
+            </stage>
             <humanTask id="ht__Lf3bt_1" name="HumanTask_1" isBlocking="true">
                 <inputs id="_Lf3bt_24" name="child" bindingRef="_Lf3bt_1">
                     <bindingRefinement id="_Lf3bt_25">
@@ -211,13 +217,8 @@
                 </extensionElements>
             </humanTask>
             <userEvent id="ue__Lf3bt_0" name="Terminate Case"/>
-            <stage id="_Lf3bt_2" name="Stage_0" autoComplete="true">
-                <planItem id="pi_ht__Lf3bt_0" name="HumanTask_0" definitionRef="ht__Lf3bt_0"/>
-            </stage>
-            <stage id="_Lf3bt_4" name="Stage_1" autoComplete="true">
-                <planItem id="pi_ht__Lf3bt_1" name="HumanTask_1" definitionRef="ht__Lf3bt_1"/>
-            </stage>
         </casePlanModel>
+        <caseRoles/>
         <input id="_Lf3bt_16" name="Root" bindingRef="_Lf3bt_0"/>
     </case>
     <CMMNDI>

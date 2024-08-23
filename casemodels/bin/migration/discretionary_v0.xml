@@ -1,4 +1,4 @@
-<definitions>
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
     <caseFileItemDefinition name="root" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="root.cfid">
         <property name="Outcome" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
     </caseFileItemDefinition>
@@ -12,10 +12,11 @@
                 <discretionaryItem id="pi_ht__CcFyv_2" name="Task3" definitionRef="ht__CcFyv_2"/>
                 <discretionaryItem id="pi_ht__CcFyv_0" name="Task1" definitionRef="ht__CcFyv_0"/>
             </planningTable>
-            <humanTask id="ht__CcFyv_0" name="Task1" isBlocking="true"/>
             <humanTask id="ht__CcFyv_1" name="Task2" isBlocking="true"/>
             <humanTask id="ht__CcFyv_2" name="Task3" isBlocking="true"/>
+            <humanTask id="ht__CcFyv_0" name="Task1" isBlocking="true"/>
         </casePlanModel>
+        <caseRoles/>
     </case>
     <CMMNDI>
         <CMMNDiagram>
