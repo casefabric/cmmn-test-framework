@@ -10,13 +10,6 @@
                     <standardEvent>complete</standardEvent>
                 </planItemOnPart>
             </entryCriterion>
-            <parameterMapping id="_RYrWb_3" sourceRef="_0UEh7_3">
-                <transformation id="_RYrWb_8">
-                    <body>
-                        <![CDATA[akf;jdsl]]>
-                    </body>
-                </transformation>
-            </parameterMapping>
         </caseTask>
     </casePlanModel>
     <caseRoles>
