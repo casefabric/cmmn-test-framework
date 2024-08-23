@@ -32,7 +32,7 @@
                     </condition>
                 </repetitionRule>
             </itemControl>
-            <userEvent id="pi_ue__vdfDP_1" name="EmployeeUserEvent"/>
+            <userEvent id="pi_ue__vdfDP_1" name="EmployeeUserEvent" authorizedRoleRefs="_vdfDP_6"/>
             <milestone id="pi_ms__vdfDP_0" name="M1">
                 <entryCriterion id="_vdfDP_4" name="EntryCriterion_0">
                     <planItemOnPart id="_vdfDP_5" sourceRef="pi_ue__vdfDP_1">
@@ -52,7 +52,7 @@
         </stage>
     </casePlanModel>
     <caseRoles>
-        <role/>
+        <role id="_vdfDP_6" name="Employee"/>
     </caseRoles>
     <textAnnotation id="_vdfDP_shape_8">
         <text>

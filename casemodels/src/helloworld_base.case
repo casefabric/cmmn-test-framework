@@ -87,7 +87,21 @@ and Send response]]>
         <humanTask id="pi_ht__nTPPc_2" name="Task3" isBlocking="true"/>
     </casePlanModel>
     <caseRoles>
-        <role/>
+        <role id="role_csT3f_0" name="ADMIN">
+            <documentation textFormat="text/plain">
+                <text>
+                    <![CDATA[admin of the world]]>
+                </text>
+            </documentation>
+        </role>
+        <role id="_nTPPc_5" name="TempRole"/>
+        <role id="_nTPPc_6" name="OneMore">
+            <documentation textFormat="text/plain">
+                <text>
+                    <![CDATA[for whomsoever wants it]]>
+                </text>
+            </documentation>
+        </role>
     </caseRoles>
     <input id="csVQy_inCPs_0" name="Greeting" bindingRef="cfi_csVQy_0"/>
     <extensionElements mustUnderstand="false">

@@ -99,7 +99,11 @@
         </processTask>
         <stage id="pi__aa5iX_6" name="Test Reactivation" autoComplete="true">
             <extensionElements mustUnderstand="false">
-                <reactivateCriterion xmlns="org.cafienne" id="_n9caK_35" name="ReactivateCriterion_0"/>
+                <reactivateCriterion xmlns="org.cafienne" id="_n9caK_35" name="ReactivateCriterion_0">
+                    <planItemOnPart id="_n9caK_37" sourceRef="pi_ue__aa5iX_0">
+                        <standardEvent>occur</standardEvent>
+                    </planItemOnPart>
+                </reactivateCriterion>
             </extensionElements>
             <milestone id="pi_ms__aa5iX_0" name="Milestone">
                 <entryCriterion id="_aa5iX_40" name="EntryCriterion_6">

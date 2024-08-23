@@ -42,6 +42,9 @@
         <CMMNShape cmmnElementRef="_y8vam_28">
             <Bounds x="834" y="260" width="12" height="20"/>
         </CMMNShape>
+        <CMMNShape cmmnElementRef="_y8vam_26">
+            <Bounds x="520" y="90" width="270" height="90"/>
+        </CMMNShape>
         <CMMNEdge sourceCMMNElementRef="_Sp9aR_1" targetCMMNElementRef="_Sp9aR_11"/>
         <CMMNEdge sourceCMMNElementRef="pi_ue__y8vam_0" targetCMMNElementRef="_y8vam_14"/>
         <CMMNEdge sourceCMMNElementRef="pi_ue__y8vam_1" targetCMMNElementRef="_y8vam_24"/>

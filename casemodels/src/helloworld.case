@@ -68,7 +68,13 @@ and Send response]]>
         </humanTask>
     </casePlanModel>
     <caseRoles>
-        <role/>
+        <role id="role_csT3f_0" name="ADMIN">
+            <documentation textFormat="text/plain">
+                <text>
+                    <![CDATA[admin of the world]]>
+                </text>
+            </documentation>
+        </role>
     </caseRoles>
     <input id="csVQy_inCPs_0" name="Greeting" bindingRef="cfi_csVQy_0"/>
     <extensionElements mustUnderstand="false">
