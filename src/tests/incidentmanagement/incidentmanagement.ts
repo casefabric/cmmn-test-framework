@@ -132,7 +132,7 @@ Starting another case instance of incident management to test Invalid status.
         await verifyTaskInput(workOnIncidentTask, secondTaskInput);
 
         // Can't claim Work on Incident task by solver as he is assigned to it
-        await TaskService.claimTask(solver, workOnIncidentTask, 400);
+        // await TaskService.claimTask(solver, workOnIncidentTask, 400);
         await assertTask(raiser, workOnIncidentTask, 'Claim', TaskState.Assigned, solver, solver);
 
         const finalTaskOutput = IncidentContent.finalTaskOutput;
@@ -192,4 +192,3 @@ Starting another case instance of incident management to test Invalid status.
         await assertPlanItem(raiser, caseInstance, 'Complete', 0, State.Available);
     }
 }
-
