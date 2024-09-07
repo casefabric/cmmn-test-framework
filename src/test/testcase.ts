@@ -61,6 +61,10 @@ export default class TestCase {
 
     }
 
+    fail(msg = 'Failing the test at this point') {
+        throw new Error(msg);
+    }
+
     /**
      * Simplistic mechanism to enable manual breakpoints and user inputs while running tests
      * @param question String to be printed on console

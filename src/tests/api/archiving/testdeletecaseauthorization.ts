@@ -13,7 +13,7 @@ import PlatformService from '../../../service/platform/platformservice';
 import CaseEvents from '../../../service/storage/caseevents';
 import StorageService from '../../../service/storage/storageservice';
 import Tenant from '../../../tenant/tenant';
-import TenantUser, { TenantOwner } from '../../../tenant/tenantuser';
+import { TenantOwner } from '../../../tenant/tenantuser';
 import TestCase from '../../../test/testcase';
 import Util from '../../../test/util';
 import WorldWideTestTenant from '../../setup/worldwidetesttenant';

@@ -48,6 +48,7 @@ import TestCaseTeamAPI from '../tests/api/caseteam/testcaseteamapi';
 import TestCaseTeamAuthorizations from '../tests/api/caseteam/testcaseteamauthorizations';
 import TestCaseTeamConsentGroupAPI from '../tests/api/caseteam/testcaseteamconsentgroupapi';
 import TestCaseTeamTaskAuthorizations from '../tests/api/caseteam/testcaseteamtaskauthorizations';
+import TestCaseTeamTaskAuthorizationsForGroups from '../tests/api/caseteam/testcaseteamtaskauthorizationsforgroups';
 import TestCaseTeamTenantRoleMembers from '../tests/api/caseteam/testcaseteamtenantrolemembers';
 import TestStartCaseEmptyRole from '../tests/api/caseteam/teststartcaseemptyrole';
 import TestTenantGroupMembership from '../tests/api/caseteam/testtenantgroupmembership';
@@ -210,6 +211,7 @@ const AllTests: Array<Function> = [
     , TestCaseTeamTenantRoleMembers
     , TestCaseTeamConsentGroupAPI
     , TestCaseTeamTaskAuthorizations
+    , TestCaseTeamTaskAuthorizationsForGroups
     , TestCaseTeamAuthorizations
     , TestEventAuthorization
     , TestArchiveHelloworld
