@@ -16,7 +16,7 @@
             <failure sourceRef="exception" targetRef="exception"/>
             <success sourceRef="responsePayload" targetRef="detailsIdentifiers">
                 <transformation language="json">
-                    <body>$..[*].id</body>
+                    <body>$..id</body>
                 </transformation>
             </success>
             <parameterMapping sourceRef="responseHeaders" targetRef="headerContentLength">
