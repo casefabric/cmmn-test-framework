@@ -111,7 +111,9 @@ export default class TestClasses {
         const addExplicitRunner = (test: Function) => addRunner(test, true);
         const addDefaultRunner = (test: Function) => addRunner(test, false);
 
-        if (!list.length) {
+        const from = (list.length === 2 && list[0] === 'from' && Number(list[1]) > 0) ? Number(list[1]) : 0;
+
+        if (!list.length || from > 0) {
             AllTests.forEach(addDefaultRunner);
         } else {
             list.forEach(name => {
@@ -127,7 +129,7 @@ export default class TestClasses {
             });
         }
         // Filter out the tests that do not to be ran.
-        const actualRunners = runners.filter(run => run.needsRunning());
+        const actualRunners = runners.filter(run => run.needsRunning()).splice(from - 1);
         // Give each runner the right test number, starting from 1 as that is more "human-intuitive"
         actualRunners.forEach((run, index) => run.testNumber = index + 1);
         return actualRunners;
