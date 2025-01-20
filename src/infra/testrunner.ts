@@ -28,6 +28,7 @@ export default class TestRunner {
     }
 
     async execute() {
+        this.calculatedWhitespace = '                                          '.substring((this.name + this.testNumber).length);
         try {
             await this.prepare();
             await this.run();
@@ -39,11 +40,11 @@ export default class TestRunner {
 
     async prepare() {
         console.log(`\n
-####################################################################
-#                                                                  #
-#      PREPARING TEST:  "${this.name}"${this.calculatedWhitespace}#
-#                                                                  #
-####################################################################
+######################################################################
+#                                                                    #
+#      PREPARING TEST ${this.testNumber}:  "${this.name}"${this.calculatedWhitespace}#
+#                                                                    #
+######################################################################
                         `);
         await this.test.onPrepareTest();
     }
@@ -52,22 +53,22 @@ export default class TestRunner {
         this.running = true;
         this.started = new Date();
         console.log(`\n
-####################################################################
-#                                                                  #
-#      STARTING TEST:   "${this.name}"${this.calculatedWhitespace}#
-#                                                                  #
-####################################################################
+######################################################################
+#                                                                    #
+#      STARTING TEST ${this.testNumber}:   "${this.name}"${this.calculatedWhitespace}#
+#                                                                    #
+######################################################################
                         `);
         await this.test.run();
     }
 
     async close() {
         console.log(`\n
-####################################################################
-#                                                                  #
-#      CLOSING TEST:    "${this.name}"${this.calculatedWhitespace}#
-#                                                                  #
-####################################################################
+######################################################################
+#                                                                    #
+#      CLOSING TEST ${this.testNumber}:    "${this.name}"${this.calculatedWhitespace}#
+#                                                                    #
+######################################################################
                         `);
         await this.test.onCloseTest();
         this.finished();
