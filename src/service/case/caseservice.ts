@@ -6,6 +6,7 @@ import CaseEngineService from '../caseengineservice';
 import CaseFilter from './casefilter';
 import { DiscretionaryItemsResponse } from './response/discretionaryitemsresponse';
 import StartCase from './startcase';
+import { Document } from '@xmldom/xmldom';
 
 export default class CaseService {
     static async startCase(user: User, command: StartCase, expectedStatusCode: number = 200, msg = `StartCase is not expected to succeed for user ${user ? user.id : 'anonymous'}`, trace: Trace = new Trace()): Promise<Case> {

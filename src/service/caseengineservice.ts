@@ -5,7 +5,7 @@ import User from '../user';
 import QueryFilter, { extendURL } from './queryfilter';
 import CaseEngineResponse from './response';
 import CaseEngineRequest from './request';
-import Util from '../util/util';
+import { Document } from '@xmldom/xmldom';
 
 class CaseEngineHeaders {
     public values: any = new Object();
