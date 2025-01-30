@@ -4,6 +4,7 @@ import logger from '../logger';
 import User from '../user';
 import QueryFilter, { extendURL } from './queryfilter';
 import CaseEngineResponse from './response';
+import { Document } from '@xmldom/xmldom';
 
 class CaseEngineHeaders {
     public values:any = new Object();

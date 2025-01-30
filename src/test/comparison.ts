@@ -1,3 +1,5 @@
+import { Node, Element } from "@xmldom/xmldom";
+
 function endLog(msg: any, returnValue: boolean) {
     if (msg) console.log(msg);
     console.groupEnd();
@@ -204,9 +206,6 @@ function contains(xml1: Node, xml2: Node): boolean {
         return false;
     }
 
-    if (type1 == 'Document') {
-        return contains((<Document>xml1).documentElement, (<Document>xml2).documentElement);
-    }
 
     if (type1 == 'Element') {
         return compareElements((<Element>xml1), (<Element>xml2));

@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { DOMParser } from 'xmldom';
+import { DOMParser, Document } from '@xmldom/xmldom';
 import Definitions from '../../cmmn/definitions/definitions';
 import Config from '../../config';
 import logger from '../../logger';

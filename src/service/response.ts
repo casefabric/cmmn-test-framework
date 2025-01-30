@@ -1,4 +1,4 @@
-import { DOMParser } from 'xmldom';
+import { DOMParser } from '@xmldom/xmldom';
 import Trace from '../util/async/trace';
 import { addType, addTypes, Constructor } from '../util/json';
 import AsyncEngineError from './asyncengineerror';

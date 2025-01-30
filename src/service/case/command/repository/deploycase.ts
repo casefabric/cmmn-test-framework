@@ -1,3 +1,5 @@
+import { Document } from "@xmldom/xmldom";
+
 /**
  * Interface with fields required to deploy a CMMN case into the Case Engine
  */
