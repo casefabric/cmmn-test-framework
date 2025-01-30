@@ -3,10 +3,12 @@
   "version": "0.8.2",
   "description": "A javascript based test framework for CMMN case models",
   "main": "index.js",
+  "types": "./@types/index.d.ts",
   "scripts": {
     "test": "node ./dist/app.js",
+    "rebuild-index": "node ./generate-index.mjs",
     "build": "tsc",
-    "clean": "rm -rf ./dist",
+    "clean": "shx rm -rf ./dist",
     "deploy-source": "ts-node-dev --transpile-only ./src/deploy-source.ts",
     "try": "ts-node-dev --transpile-only ./src/app.ts",
     "dev": "npm run try",

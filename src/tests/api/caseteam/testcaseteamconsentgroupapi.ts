@@ -1,6 +1,6 @@
 'use strict';
 
-import { assertSameGroup } from '../../..';
+import { assertSameCaseTeamGroup } from '../../../test/caseassertions/team';
 import Case from '../../../cmmn/case';
 import Definitions from '../../../cmmn/definitions/definitions';
 import CaseTeam from '../../../cmmn/team/caseteam';
@@ -256,7 +256,7 @@ export default class TestCaseTeamConsentGroupAPI extends TestCase {
         await CaseTeamService.setGroup(universe.boy, caseInstance, caseTeamMarsGroup);
 
         // Group should not have changed.
-        await assertSameGroup(universe.boy, caseInstance, caseTeamMarsGroup);
+        await assertSameCaseTeamGroup(universe.boy, caseInstance, caseTeamMarsGroup);
 
         // And also jeff should still have access
         await CaseService.getCase(universe.jeff, caseInstance, 200, 'As a marsgroup test user, jeff should have access');
@@ -264,13 +264,13 @@ export default class TestCaseTeamConsentGroupAPI extends TestCase {
         // Change the group mappings and check they are applied
         const caseTeamMarsGroupAlternative = new CaseTeamGroup(universe.marsGroup, [new GroupRoleMapping(universe.groupRoleTester, [caseRoleApprover, caseRoleRequestor]), validMappingUserIsRequestor]);
         await CaseTeamService.setGroup(universe.boy, caseInstance, caseTeamMarsGroupAlternative);
-        await assertSameGroup(universe.boy, caseInstance, caseTeamMarsGroupAlternative);
-        await assertSameGroup(universe.boy, caseInstance, caseTeamMarsGroup, false);
+        await assertSameCaseTeamGroup(universe.boy, caseInstance, caseTeamMarsGroupAlternative);
+        await assertSameCaseTeamGroup(universe.boy, caseInstance, caseTeamMarsGroup, false);
 
         // Restore the initial group mappings and check they are applied
         await CaseTeamService.setGroup(universe.boy, caseInstance, caseTeamMarsGroup);
-        await assertSameGroup(universe.boy, caseInstance, caseTeamMarsGroup);
-        await assertSameGroup(universe.boy, caseInstance, caseTeamMarsGroupAlternative, false);
+        await assertSameCaseTeamGroup(universe.boy, caseInstance, caseTeamMarsGroup);
+        await assertSameCaseTeamGroup(universe.boy, caseInstance, caseTeamMarsGroupAlternative, false);
 
         // Check to see if we can remove the group and set it again.
         await CaseTeamService.removeGroup(universe.boy, caseInstance, caseTeamMarsGroup);
@@ -282,13 +282,13 @@ export default class TestCaseTeamConsentGroupAPI extends TestCase {
 
         // Set the mars group again and check is is available again
         await CaseTeamService.setGroup(universe.boy, caseInstance, caseTeamMarsGroup);
-        await assertSameGroup(universe.boy, caseInstance, caseTeamMarsGroup);
+        await assertSameCaseTeamGroup(universe.boy, caseInstance, caseTeamMarsGroup);
 
         // Now also give it ownership, and also different case roles
         const groupMapping = new GroupRoleMappingWithCaseOwnership(universe.groupRoleTester, [caseRoleRequestor, caseRoleApprover]);
         const caseTeamMarsGroupWithOwnership = new CaseTeamGroup(universe.marsGroup, [groupMapping]);
         await CaseTeamService.setGroup(universe.boy, caseInstance, caseTeamMarsGroupWithOwnership);
-        await assertSameGroup(universe.boy, caseInstance, caseTeamMarsGroupWithOwnership);
+        await assertSameCaseTeamGroup(universe.boy, caseInstance, caseTeamMarsGroupWithOwnership);
     }
 
     async testAdditionalGroup(caseInstance: Case) {
