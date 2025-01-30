@@ -1,4 +1,4 @@
-import { DOMParser } from 'xmldom';
+import { DOMParser } from '@xmldom/xmldom';
 import AsyncError from '../infra/asyncerror';
 import Trace from '../infra/trace';
 

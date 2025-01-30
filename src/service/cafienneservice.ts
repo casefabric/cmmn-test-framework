@@ -4,6 +4,7 @@ import logger from '../logger';
 import User from '../user';
 import QueryFilter, { extendURL } from './queryfilter';
 import CafienneResponse from './response';
+import { Document } from '@xmldom/xmldom';
 
 class CafienneHeaders {
     public values:any = new Object();

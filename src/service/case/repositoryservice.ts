@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { DOMParser } from 'xmldom';
+import { DOMParser, Document } from '@xmldom/xmldom';
 import CafienneService from '../cafienneservice';
 import DeployCase from './command/repository/deploycase';
 import Config from '../../config';
