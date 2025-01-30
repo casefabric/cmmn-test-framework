@@ -3,7 +3,7 @@ import ConsentGroupMember, { ConsentGroupOwner } from "../../../service/consentg
 import ConsentGroupService from "../../../service/consentgroup/consentgroupservice";
 import TestCase from "../../../test/testcase";
 import { SomeTime } from "../../../test/time";
-import assertSameGroup, { assertMemberHasNoRoles, assertMemberRole } from "../../../test/userassertions/consentgroup";
+import assertSameConsentGroup, { assertMemberHasNoRoles, assertMemberRole } from "../../../test/userassertions/consentgroup";
 import Util from "../../../util/util";
 import WorldWideTestTenant from "../../setup/worldwidetesttenant";
 
@@ -104,7 +104,7 @@ export default class TestConsentGroupAPI extends TestCase {
         await ConsentGroupService.getGroupMember(member, group, tenantAndGroupOwner);
 
         // Get it and check it to be the same as expected
-        await assertSameGroup(tenantAndGroupOwner, group);
+        await assertSameConsentGroup(tenantAndGroupOwner, group);
 
         // Check that non-group members are not allowed to get the group, nor members of the group
         await ConsentGroupService.getGroup(tenantOwner, group, 404);
@@ -127,7 +127,7 @@ export default class TestConsentGroupAPI extends TestCase {
 
         // Move the member also in the local group and check that server and client are the same
         group.members.push(newMember);
-        await assertSameGroup(tenantAndGroupOwner, group);
+        await assertSameConsentGroup(tenantAndGroupOwner, group);
 
         // Check that remove member is not allowed if you're not an owner
         await ConsentGroupService.removeGroupMember(tenantUser, group, newMember, 401);

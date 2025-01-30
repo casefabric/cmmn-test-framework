@@ -160,7 +160,7 @@ export async function assertCaseTeamUser(user: User, caseId: Case | string, memb
  * @param user User that retrieves the case team
  * @param expectNoDifferences Defaults to true, but can be set to false and then checks that the member may NOT be present in the team
  */
- export async function assertSameGroup(user: User, caseId: Case | string, member: CaseTeamGroup, expectNoDifferences: boolean = true, trace: Trace = new Trace()): Promise<void> {
+export async function assertSameCaseTeamGroup(user: User, caseId: Case | string, member: CaseTeamGroup, expectNoDifferences: boolean = true, trace: Trace = new Trace()): Promise<void> {
     // Get case team via getCaseTeam
     const actualCaseTeam = await CaseTeamService.getCaseTeam(user, caseId, undefined, undefined, trace);
     hasGroup(actualCaseTeam, member, expectNoDifferences, trace);
