@@ -21,7 +21,7 @@ export default class TestRepositoryAPI extends TestCase {
         const addUser = async (user:TenantUser, tenant: WorldWideTestTenant) => {
             try {
                 await TenantService.setTenantUser(tenantOwner, tenant.tenant, user);
-            } catch (e) {
+            } catch (e: any) {
                 if (e.message.indexOf('already exists') < 0) {
                     throw e;
                 }

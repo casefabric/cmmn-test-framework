@@ -136,7 +136,7 @@ export default class CaseAssertions {
                     }
                     console.log(`- running assertion ${assertion} succeeded`);
                 })
-            } catch (e) {
+            } catch (e: any) {
                 this.caseInstance = undefined; // Force another fetch attempt
                 console.log("Run on " + this.identifier + " gave an exception " + e.message);
                 throw e;
