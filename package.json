@@ -18,7 +18,6 @@
   "author": "",
   "license": "MPL-2.0",
   "dependencies": {
-    "@cafienne/repository": "^0.1.7",
     "express": "^4.17.1",
     "isomorphic-fetch": "^3.0.0",
     "poll-until-promise": "^4.1.0",
