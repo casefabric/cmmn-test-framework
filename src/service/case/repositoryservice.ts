@@ -8,7 +8,7 @@ import { checkResponse } from '../response';
 import Comparison from '../../test/comparison';
 import logger from '../../logger';
 import Tenant from '../../tenant/tenant';
-import Definitions from '../../cmmn/definitions/definitions';
+import Definition from '../../cmmn/definitions/definition';
 import Trace from '../../infra/trace';
 import AsyncError from '../../infra/asyncerror';
 
@@ -64,7 +64,7 @@ export default class RepositoryService {
      * Invokes the validation API
      * @param source 
      */
-    static async validateCaseDefinition(user: User, source: Document | string | Definitions, expectedStatusCode: number = 200, trace: Trace = new Trace()) {
+    static async validateCaseDefinition(user: User, source: Document | string | Definition, expectedStatusCode: number = 200, trace: Trace = new Trace()) {
         const url = `/repository/validate`;
         const xml = readLocalXMLDocument(source);
         const response = await CafienneService.postXML(url, user, xml);

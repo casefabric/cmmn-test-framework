@@ -1,4 +1,4 @@
-import Definitions from "../../cmmn/definitions/definitions";
+import Definition from "../../cmmn/definitions/definition";
 import QueryFilter from "../queryfilter";
 
 /**
@@ -16,7 +16,7 @@ export default interface CaseFilter extends QueryFilter {
     /**
      * Filter instances that have this definition as their name
      */
-    definition?: string | Definitions,
+    definition?: string | Definition,
     /**
      * Filter instances in the specified state
      */

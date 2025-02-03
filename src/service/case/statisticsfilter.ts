@@ -1,4 +1,4 @@
-import Definitions from "../../cmmn/definitions/definitions";
+import Definition from "../../cmmn/definitions/definition";
 import State from "../../cmmn/state";
 import QueryFilter from "../queryfilter";
 
@@ -13,7 +13,7 @@ export default interface StatisticsFilter extends QueryFilter {
     /**
      * Fetch statistisc for cases that have this definition as their name
      */
-    definition?: string | Definitions,
+    definition?: string | Definition,
     /**
      * Fetch statistisc for cases in this state (e.g. to fetch all 'Completed' or 'Failed' cases)
      */

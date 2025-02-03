@@ -2,7 +2,7 @@ import User from "../../user";
 import Case from "../../cmmn/case";
 import CafienneService from "../cafienneservice";
 import { checkJSONResponse } from "../response";
-import Definitions from "../../cmmn/definitions/definitions";
+import Definition from "../../cmmn/definitions/definition";
 import CaseTeam from "../../cmmn/team/caseteam";
 import Trace from "../../infra/trace";
 
@@ -22,6 +22,6 @@ export default class CaseMigrationService {
 }
 
 export class DefinitionMigration {
-    constructor(public newDefinition: string | Definitions, public newTeam?: CaseTeam) {
+    constructor(public newDefinition: string | Definition, public newTeam?: CaseTeam) {
     }
 }

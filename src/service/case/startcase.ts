@@ -1,4 +1,4 @@
-import Definitions from "../../cmmn/definitions/definitions";
+import Definition from "../../cmmn/definitions/definition";
 import CaseTeam from "../../cmmn/team/caseteam";
 import Tenant from "../../tenant/tenant";
 
@@ -11,7 +11,7 @@ export default interface StartCase {
      * It can be a filename (e.g. 'helloworld.xml') or a Definitions object (e.g. Definitions.HelloWorld) or
      * it can be undefined (for negative testing purposes).
      */
-    definition: string | Definitions | undefined;
+    definition: string | Definition | undefined;
     /**
      * Optional values for the input parameters of the case
      */

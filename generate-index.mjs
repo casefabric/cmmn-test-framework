@@ -5,6 +5,8 @@ const directoryPath = join(process.cwd(), './src');
 
 const exclusionPatterns = [
     /^\.\/mock\//,
+    /^\.\/service\/case\/repositoryservice\.ts/,
+    /^\.\/cmmn\/definitions\/definition\.ts/,
 ];
 
 function extractClassNames(filePath) {

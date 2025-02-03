@@ -1,17 +1,11 @@
 import Case from '../cmmn/case';
 import ConsentGroup from '../service/consentgroup/consentgroup';
 import Tenant from '../tenant/tenant';
-import LineReader from './linereader';
 
 /**
  * Extremely simple generic TestCase class.
  */
 export default class TestCase {
-    private reader: LineReader = new LineReader();
-    /**
-     * Enable or disable line reading in this test case
-     */
-    protected lineReaderEnabled = false;
     public name: string = this.constructor.name
     public isDefaultTest = true;
     public isParallelTest = true;
@@ -63,14 +57,5 @@ export default class TestCase {
 
     fail(msg = 'Failing the test at this point') {
         throw new Error(msg);
-    }
-
-    /**
-     * Simplistic mechanism to enable manual breakpoints and user inputs while running tests
-     * @param question String to be printed on console
-     * @returns 
-     */
-    readLine(question: string = 'Press enter to continue'): string {
-        return this.reader.question(question, this.lineReaderEnabled);
     }
 }
