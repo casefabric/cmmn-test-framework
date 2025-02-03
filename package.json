@@ -1,24 +1,17 @@
 {
-  "name": "@cafienne/typescript-client",
-  "version": "0.8.2",
-  "description": "A javascript based test framework for CMMN case models",
-  "main": "index.js",
-  "types": "./@types/index.d.ts",
   "scripts": {
     "test": "node ./dist/app.js",
     "rebuild-index": "node ./indexgenerator/generate-index.mjs",
     "build": "tsc",
     "clean": "shx rm -rf ./dist",
     "deploy-source": "ts-node-dev --transpile-only ./src/deploy-source.ts",
-    "try": "npm run build && node ./dist/app.js",
-    "dev": "ts-node-dev --transpile-only ./src/app.ts",
-    "prepare-publish": "npm run clean && npm run build && shx cp package.json ./dist && shx cp README.md ./dist",
+    "try": "ts-node-dev --transpile-only ./src/app.ts",
+    "dev": "npm run try",
+    "prepare-publish": "npm run clean && npm run build && shx cp ./src/@casefabric-typescript-client-package.json ./dist/package.json && shx cp README.md ./dist",
     "publishLocal": "npm run prepare-publish && cd ./dist & npm pack",
     "publishRemote": "npm run prepare-publish & cd ./dist & npm publish --access public",
     "prod": "npm run build & node ./dist/app.js"
   },
-  "author": "",
-  "license": "MPL-2.0",
   "dependencies": {
     "express": "^4.17.1",
     "isomorphic-fetch": "^3.0.0",

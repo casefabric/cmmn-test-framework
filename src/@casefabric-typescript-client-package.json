@@ -1,0 +1,18 @@
+{
+    "name": "@casefabric/typescript-client",
+    "version": "0.0.1",
+    "description": "A javascript based test framework for CMMN case models",
+    "main": "index.js",
+    "types": "./@types/index.d.ts",
+    "author": "",
+    "license": "MPL-2.0",
+    "dependencies": {
+        "express": "^4.17.1",
+        "isomorphic-fetch": "^3.0.0",
+        "poll-until-promise": "^4.1.0",
+        "readline-sync": "^1.4.10",
+        "server-destroy": "1.0.1",
+        "typescript": "^5.4.5",
+        "@xmldom/xmldom": "^0.9.7"
+    }
+}
