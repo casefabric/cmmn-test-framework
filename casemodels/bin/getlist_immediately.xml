@@ -1,0 +1,99 @@
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
+    <caseFileItemDefinition name="case_getlist_getdetails" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="case_getlist_getdetails.type"/>
+    <caseFileItemDefinition name="DetailsKey" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="string_type_DetailsKey.object"/>
+    <caseFileItemDefinition name="string" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="string.type"/>
+    <caseFileItemDefinition name="details" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="details.type">
+        <property name="description" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="id" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    </caseFileItemDefinition>
+    <caseFileItemDefinition name="http" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="http.type">
+        <property name="port" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
+    </caseFileItemDefinition>
+    <caseFileItemDefinition name="exception" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="exception.type"/>
+    <case id="getlist_immediately.case" name="getlist_immediately" expressionLanguage="spel">
+        <caseFileModel cafienne:typeRef="case_getlist_getdetails.type">
+            <caseFileItem id="IdentifierList" name="IdentifierList" multiplicity="ExactlyOne" definitionRef="string.type">
+                <children>
+                    <caseFileItem id="IdentifierList/DetailsKey" name="DetailsKey" multiplicity="ZeroOrMore" definitionRef="string_type_DetailsKey.object"/>
+                </children>
+            </caseFileItem>
+            <caseFileItem id="DetailsContent" name="DetailsContent" multiplicity="ZeroOrMore" definitionRef="details.type"/>
+            <caseFileItem id="HTTPConfig" name="HTTPConfig" multiplicity="ExactlyOne" definitionRef="http.type"/>
+            <caseFileItem id="Exception" name="Exception" multiplicity="ZeroOrMore" definitionRef="exception.type"/>
+        </caseFileModel>
+        <casePlanModel id="cm__8xdE9_0" name="getlist_immediately" autoComplete="true">
+            <planItem id="pi_pt__8xdE9_0" name="GetListWebService" definitionRef="pt__8xdE9_0"/>
+            <planItem id="pi_ht__8xdE9_0" name="We have a list" definitionRef="ht__8xdE9_0">
+                <entryCriterion id="crit__8xdE9_0" sentryRef="s_crit__8xdE9_0"/>
+            </planItem>
+            <planItem id="pi_ms__8xdE9_0" name="We have a case" definitionRef="ms__8xdE9_0"/>
+            <sentry id="s_crit__8xdE9_0">
+                <planItemOnPart id="_8xdE9_11" sourceRef="pi_ms__8xdE9_0">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <processTask id="pt__8xdE9_0" name="GetListWebService" isBlocking="true" processRef="GetListWebService.process">
+                <inputs id="_8xdE9_25" name="httpPort"/>
+                <parameterMapping id="_8xdE9_12" sourceRef="_8xdE9_25" targetRef="httpPort">
+                    <transformation id="_8xdE9_24">
+                        <body><![CDATA[1887]]></body>
+                    </transformation>
+                </parameterMapping>
+            </processTask>
+            <humanTask id="ht__8xdE9_0" name="We have a list" isBlocking="true"/>
+            <milestone id="ms__8xdE9_0" name="We have a case"/>
+        </casePlanModel>
+        <caseRoles/>
+    </case>
+    <process id="GetListWebService.process" name="GetListWebService" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
+        <input id="httpPort" name="httpPort"/>
+        <input id="testParameter" name="testParameter"/>
+        <input id="_OLKF_HEADER" name="HEADER"/>
+        <output id="responseCode" name="responseCode"/>
+        <output id="responseMessage" name="responseMessage"/>
+        <output id="output" name="output"/>
+        <output id="detailsIdentifiers" name="detailsIdentifiers"/>
+        <output id="headerContentLength" name="headerContentLength"/>
+        <output id="_dTMD_exception" name="exception"/>
+        <extensionElements mustUnderstand="false">
+            <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.http.HTTPCallDefinition">
+                <url>http://localhost:${httpPort}/getListWebService</url>
+                <method>GET</method>
+                <http-headers>
+                    <http-header name="Accept">${HEADER}</http-header>
+                </http-headers>
+                <parameterMapping sourceRef="exception" targetRef="exception"/>
+                <parameterMapping sourceRef="responsePayload" targetRef="detailsIdentifiers">
+                    <transformation language="json">
+                        <body>$..id</body>
+                    </transformation>
+                </parameterMapping>
+                <parameterMapping sourceRef="responseHeaders" targetRef="headerContentLength">
+                    <transformation language="spel">
+                        <body>responseHeaders.get("Content-Type")</body>
+                    </transformation>
+                </parameterMapping>
+            </cafienne:implementation>
+        </extensionElements>
+    </process>
+    <CMMNDI>
+        <CMMNDiagram>
+            <CMMNShape name="getlist_immediately" cmmnElementRef="cm__8xdE9_0">
+                <Bounds x="20" y="20" width="800" height="500"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_pt__8xdE9_0">
+                <Bounds x="130" y="240" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__8xdE9_0">
+                <Bounds x="380" y="110" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="crit__8xdE9_0">
+                <Bounds x="374" y="140" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ms__8xdE9_0">
+                <Bounds x="150" y="130" width="100" height="40"/>
+            </CMMNShape>
+            <CMMNEdge sourceCMMNElementRef="crit__8xdE9_0" targetCMMNElementRef="pi_ms__8xdE9_0"/>
+        </CMMNDiagram>
+    </CMMNDI>
+</definitions>

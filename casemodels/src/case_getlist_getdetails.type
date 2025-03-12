@@ -1,0 +1,8 @@
+<type xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="case_getlist_getdetails.type" name="case_getlist_getdetails">
+    <schema>
+        <property id="sp__zOgfp_0" name="IdentifierList" type="identifiers.type" multiplicity="ExactlyOne"/>
+        <property id="sp__zOgfp_1" name="DetailsContent" type="details.type" multiplicity="ZeroOrMore"/>
+        <property id="sp__zOgfp_2" name="HTTPConfig" type="http.type" multiplicity="ExactlyOne"/>
+        <property id="sp__zOgfp_3" name="Exception" type="exception.type" multiplicity="ZeroOrMore"/>
+    </schema>
+</type>

@@ -1,0 +1,7 @@
+<type xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="identifiers.type" name="identifiers">
+    <schema>
+        <property id="sp__4HmHK_0" name="DetailsKey" type="object" multiplicity="ZeroOrMore">
+            <schema id="_9o8hg_0" name="Schema_0"/>
+        </property>
+    </schema>
+</type>

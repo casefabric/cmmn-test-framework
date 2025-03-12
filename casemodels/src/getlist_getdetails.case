@@ -1,23 +1,12 @@
-<case id="getlist_getdetails.case" name="getlist_getdetails" expressionLanguage="spel" guid="_Sp9aR">
+<case xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="getlist_getdetails.case" name="getlist_getdetails" expressionLanguage="spel" guid="_Sp9aR">
     <documentation textFormat="text/plain">
-        <text>
-            <![CDATA[list-detail-case]]>
-        </text>
+        <text><![CDATA[list-detail-case]]></text>
     </documentation>
-    <caseFileModel>
-        <caseFileItem id="_LQXO7_5" name="IdentifierList" multiplicity="ExactlyOne" definitionRef="string.cfid">
-            <children>
-                <caseFileItem id="_LQXO7_7" name="DetailsKey" multiplicity="ZeroOrMore" definitionRef="string.cfid"/>
-            </children>
-        </caseFileItem>
-        <caseFileItem id="_LQXO7_6" name="DetailsContent" multiplicity="ZeroOrMore" definitionRef="details.cfid"/>
-        <caseFileItem id="_Sp9aR_1" name="HTTPConfig" multiplicity="ExactlyOne" definitionRef="http.cfid"/>
-        <caseFileItem id="_Sp9aR_27" name="Exception" multiplicity="ZeroOrMore" definitionRef="exception.cfid"/>
-    </caseFileModel>
+    <caseFileModel typeRef="case_getlist_getdetails.type"/>
     <casePlanModel id="cm_casefile/getlist_getdetails.case_0" name="getlist_getdetails" autoComplete="true">
         <processTask id="pi_pt__LQXO7_8" name="GetList" isBlocking="true" processRef="GetListWebService.process">
             <entryCriterion id="_Sp9aR_11" name="EntryCriterion_1">
-                <caseFileItemOnPart id="_Sp9aR_12" sourceRef="_Sp9aR_1">
+                <caseFileItemOnPart id="_Sp9aR_12" sourceRef="HTTPConfig">
                     <standardEvent>create</standardEvent>
                 </caseFileItemOnPart>
             </entryCriterion>
@@ -29,32 +18,26 @@
             <itemControl id="_Sp9aR_0">
                 <repetitionRule id="_Sp9aR_22">
                     <condition id="_Sp9aR_23">
-                        <body>
-                            <![CDATA[true]]>
-                        </body>
+                        <body><![CDATA[true]]></body>
                     </condition>
                 </repetitionRule>
             </itemControl>
-            <inputs id="_Sp9aR_5" name="HTTPConfig" bindingRef="_Sp9aR_1"/>
+            <inputs id="_Sp9aR_5" name="HTTPConfig" bindingRef="HTTPConfig"/>
             <inputs id="_Sp9aR_33" name="HEADER"/>
             <outputs id="_LQXO7_14" name="responseCode"/>
-            <outputs id="_LQXO7_16" name="responseMessage" bindingRef="_Sp9aR_27"/>
+            <outputs id="_LQXO7_16" name="responseMessage" bindingRef="Exception"/>
             <outputs id="_LQXO7_18" name="output"/>
-            <outputs id="_LQXO7_20" name="detailsIdentifiers" bindingRef="_LQXO7_7"/>
+            <outputs id="_LQXO7_20" name="detailsIdentifiers" bindingRef="IdentifierList/DetailsKey"/>
             <outputs id="_LQXO7_22" name="headerContentLength"/>
             <parameterMapping id="_LQXO7_11" sourceRef="_Sp9aR_5" targetRef="httpPort">
                 <transformation id="_Sp9aR_4">
-                    <body>
-                        <![CDATA[HTTPConfig.port]]>
-                    </body>
+                    <body><![CDATA[HTTPConfig.port]]></body>
                 </transformation>
             </parameterMapping>
             <parameterMapping id="_LQXO7_15" sourceRef="responseCode" targetRef="_LQXO7_14"/>
             <parameterMapping id="_LQXO7_17" sourceRef="_dTMD_exception" targetRef="_LQXO7_16">
                 <transformation id="_Sp9aR_28">
-                    <body>
-                        <![CDATA[exception.message]]>
-                    </body>
+                    <body><![CDATA[exception.message]]></body>
                 </transformation>
             </parameterMapping>
             <parameterMapping id="_LQXO7_19" sourceRef="output" targetRef="_LQXO7_18"/>
@@ -62,55 +45,43 @@
             <parameterMapping id="_LQXO7_23" sourceRef="headerContentLength" targetRef="_LQXO7_22"/>
             <parameterMapping id="_Sp9aR_29" sourceRef="_Sp9aR_33" targetRef="_OLKF_HEADER">
                 <transformation id="_Sp9aR_32">
-                    <body>
-                        <![CDATA["application/json"]]>
-                    </body>
+                    <body><![CDATA["application/json"]]></body>
                 </transformation>
             </parameterMapping>
         </processTask>
         <processTask id="pi_pt__LQXO7_24" name="GetDetails" isBlocking="true" processRef="GetDetailsWebService.process">
             <entryCriterion id="_LQXO7_1" name="EntryCriterion_0">
-                <ifPart id="_LQXO7_8" contextRef="_LQXO7_7">
+                <ifPart id="_LQXO7_8" contextRef="IdentifierList/DetailsKey">
                     <condition id="_LQXO7_9">
-                        <body>
-                            <![CDATA[!DetailsKey.isEmpty()]]>
-                        </body>
+                        <body><![CDATA[!DetailsKey.isEmpty()]]></body>
                     </condition>
                 </ifPart>
-                <caseFileItemOnPart id="_LQXO7_0" sourceRef="_LQXO7_7">
+                <caseFileItemOnPart id="_LQXO7_0" sourceRef="IdentifierList/DetailsKey">
                     <standardEvent>create</standardEvent>
                 </caseFileItemOnPart>
             </entryCriterion>
             <itemControl id="_LQXO7_32">
                 <repetitionRule id="_Sp9aR_3">
                     <condition id="_Sp9aR_7">
-                        <body>
-                            <![CDATA[task.index < 3]]>
-                        </body>
+                        <body><![CDATA[task.index < 3]]></body>
                     </condition>
                 </repetitionRule>
                 <requiredRule id="_Sp9aR_13">
                     <condition id="_Sp9aR_14">
-                        <body>
-                            <![CDATA[true]]>
-                        </body>
+                        <body><![CDATA[true]]></body>
                     </condition>
                 </requiredRule>
             </itemControl>
-            <inputs id="_LQXO7_28" name="detailsId" bindingRef="_LQXO7_7"/>
-            <inputs id="_Sp9aR_10" name="HTTPConfig" bindingRef="_Sp9aR_1">
+            <inputs id="_LQXO7_28" name="detailsId" bindingRef="IdentifierList/DetailsKey"/>
+            <inputs id="_Sp9aR_10" name="HTTPConfig" bindingRef="HTTPConfig">
                 <bindingRefinement id="_Sp9aR_9">
-                    <body>
-                        <![CDATA[GET]]>
-                    </body>
+                    <body><![CDATA[GET]]></body>
                 </bindingRefinement>
             </inputs>
-            <outputs id="_LQXO7_30" name="details" bindingRef="_LQXO7_6"/>
+            <outputs id="_LQXO7_30" name="details" bindingRef="DetailsContent"/>
             <parameterMapping id="_LQXO7_27" sourceRef="_Sp9aR_10" targetRef="httpPort">
                 <transformation id="_Sp9aR_6">
-                    <body>
-                        <![CDATA[HTTPConfig.port]]>
-                    </body>
+                    <body><![CDATA[HTTPConfig.port]]></body>
                 </transformation>
             </parameterMapping>
             <parameterMapping id="_LQXO7_29" sourceRef="_LQXO7_28" targetRef="detailsId"/>
@@ -125,9 +96,7 @@
             <itemControl id="_Sp9aR_15">
                 <repetitionRule id="_Sp9aR_20">
                     <condition id="_Sp9aR_21">
-                        <body>
-                            <![CDATA[true]]>
-                        </body>
+                        <body><![CDATA[true]]></body>
                     </condition>
                 </repetitionRule>
             </itemControl>
@@ -138,5 +107,5 @@
         </stage>
     </casePlanModel>
     <caseRoles/>
-    <input id="_Sp9aR_34" name="HTTPConfig" bindingRef="_Sp9aR_1"/>
+    <input id="_Sp9aR_34" name="HTTPConfig" bindingRef="HTTPConfig"/>
 </case>

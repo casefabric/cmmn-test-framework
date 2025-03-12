@@ -1,0 +1,22 @@
+<case xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="getlist_immediately.case" name="getlist_immediately" expressionLanguage="spel" guid="_8xdE9">
+    <caseFileModel typeRef="case_getlist_getdetails.type"/>
+    <casePlanModel id="cm__8xdE9_0" name="getlist_immediately" autoComplete="true">
+        <processTask id="pi_pt__8xdE9_0" name="GetListWebService" isBlocking="true" processRef="GetListWebService.process">
+            <inputs id="_8xdE9_25" name="httpPort"/>
+            <parameterMapping id="_8xdE9_12" sourceRef="_8xdE9_25" targetRef="httpPort">
+                <transformation id="_8xdE9_24">
+                    <body><![CDATA[1887]]></body>
+                </transformation>
+            </parameterMapping>
+        </processTask>
+        <humanTask id="pi_ht__8xdE9_0" name="We have a list" isBlocking="true">
+            <entryCriterion id="crit__8xdE9_0">
+                <planItemOnPart id="_8xdE9_11" sourceRef="pi_ms__8xdE9_0">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </entryCriterion>
+        </humanTask>
+        <milestone id="pi_ms__8xdE9_0" name="We have a case"/>
+    </casePlanModel>
+    <caseRoles/>
+</case>

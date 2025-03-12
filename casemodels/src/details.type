@@ -1,0 +1,6 @@
+<type xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="details.type" name="details">
+    <schema>
+        <property id="sp__bZIYZ_0" name="description" type="string" multiplicity="ExactlyOne"/>
+        <property id="sp__bZIYZ_1" name="id" type="string" multiplicity="ExactlyOne"/>
+    </schema>
+</type>
