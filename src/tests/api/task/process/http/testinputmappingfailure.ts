@@ -8,6 +8,7 @@ import MockServer from '../../../../../mock/mockserver';
 import CaseMigrationService, { DefinitionMigration } from '../../../../../service/case/casemigrationservice';
 import CasePlanService from '../../../../../service/case/caseplanservice';
 import CaseService from '../../../../../service/case/caseservice';
+import DebugService from '../../../../../service/case/debugservice';
 import { assertPlanItem } from '../../../../../test/caseassertions/plan';
 import TestCase from '../../../../../test/testcase';
 import { SomeTime } from '../../../../../test/time';
@@ -60,7 +61,11 @@ export default class TestInputMappingFailure extends TestCase {
 
         await CasePlanService.makePlanItemTransition(user, caseInstance, this.dashedParameterProcessTask, Transition.Reactivate);
 
-        await assertPlanItem(user, caseInstance, this.dashedParameterProcessTask, 0, State.Failed);
+        const processTask = await assertPlanItem(user, caseInstance, this.dashedParameterProcessTask, 0, State.Failed);
+
+        await DebugService.forceRecovery(user, processTask.id);
+
+        await DebugService.forceRecovery(user, caseInstance);
 
         await CaseMigrationService.migrateDefinition(user, caseInstance, new DefinitionMigration(newDefinition));
 
