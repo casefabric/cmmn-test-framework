@@ -1,0 +1,5 @@
+<type xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="http.type" name="http">
+    <schema>
+        <property id="sp__UI882_0" name="port" type="integer" multiplicity="ExactlyOne"/>
+    </schema>
+</type>

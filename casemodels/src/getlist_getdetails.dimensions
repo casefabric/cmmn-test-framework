@@ -1,4 +1,4 @@
-<CMMNDI>
+<CMMNDI xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
     <CMMNDiagram>
         <CMMNShape cmmnElementRef="cm_casefile/getlist_getdetails.case_0">
             <Bounds x="20" y="20" width="710" height="560"/>
@@ -33,15 +33,15 @@
         <CMMNShape cmmnElementRef="pi__Sp9aR_30">
             <Bounds x="90" y="310" width="110" height="100"/>
         </CMMNShape>
-        <CMMNShape cmmnElementRef="_LQXO7_7">
+        <CMMNShape cmmnElementRef="IdentifierList/DetailsKey">
             <Bounds x="360" y="140" width="25" height="40"/>
         </CMMNShape>
-        <CMMNShape cmmnElementRef="_Sp9aR_1">
+        <CMMNShape cmmnElementRef="HTTPConfig">
             <Bounds x="50" y="100" width="25" height="40"/>
         </CMMNShape>
-        <CMMNEdge sourceCMMNElementRef="_Sp9aR_1" targetCMMNElementRef="_Sp9aR_11"/>
+        <CMMNEdge sourceCMMNElementRef="HTTPConfig" targetCMMNElementRef="_Sp9aR_11"/>
         <CMMNEdge sourceCMMNElementRef="pi_pt__LQXO7_8" targetCMMNElementRef="_Sp9aR_18"/>
-        <CMMNEdge sourceCMMNElementRef="_LQXO7_1" targetCMMNElementRef="_LQXO7_7"/>
+        <CMMNEdge sourceCMMNElementRef="_LQXO7_1" targetCMMNElementRef="IdentifierList/DetailsKey"/>
         <CMMNEdge sourceCMMNElementRef="pi_ue__Sp9aR_0" targetCMMNElementRef="_Sp9aR_24"/>
     </CMMNDiagram>
 </CMMNDI>

@@ -78,6 +78,7 @@ import TestTaskFilterAPI from '../tests/api/task/humantask/testtaskfilterapi';
 import TestTaskFilterAPI2 from '../tests/api/task/humantask/testtaskfilterapi2';
 import TestTaskValidationAPI from '../tests/api/task/humantask/testtaskvalidationapi';
 import TestGetListGetDetails from '../tests/api/task/process/http/getlistgetdetails';
+import TestGetListNow from '../tests/api/task/process/http/getlistnow';
 import TestDashedParameters from '../tests/api/task/process/http/testdashedparameters';
 import TestInputMappingFailure from '../tests/api/task/process/http/testinputmappingfailure';
 import TestSMTP from '../tests/api/task/process/mail/testsmtp';
@@ -238,6 +239,7 @@ const AllTests: Array<Function> = [
     , TestAnonymousStartCase
     , TestDefinitionInStartCase
     , TestCalculation
+    , TestGetListNow
     , TestGetListGetDetails
     , TestDashedParameters
     , TestInputMappingFailure
