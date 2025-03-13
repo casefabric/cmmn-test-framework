@@ -6,6 +6,7 @@ import CaseTeamGroup, { GroupRoleMappingWithCaseOwnership } from '../../../cmmn/
 import { CaseOwnerTenantRole } from '../../../cmmn/team/caseteamtenantrole';
 import CaseService from '../../../service/case/caseservice';
 import ConsentGroup from '../../../service/consentgroup/consentgroup';
+import { ConsentGroupOwner } from '../../../service/consentgroup/consentgroupmember';
 import ConsentGroupService from '../../../service/consentgroup/consentgroupservice';
 import TestCase from '../../../test/testcase';
 import Util from '../../../test/util';
@@ -25,6 +26,7 @@ const userWith_TENANT_ROLE_1 = primaryTenant.addUser(new RandomUser(undefined, [
 
 // Also create a group in the primary tenant, with both a member that has TenantRole1 and also one that has a different role
 const groupInPrimaryTenant = new ConsentGroup([], Util.generateId('random_group_in_' + primaryTenant.name));
+groupInPrimaryTenant.members.push(new ConsentGroupOwner(userWith_TENANT_ROLE_1.id, [TENANT_ROLE_1]));
 
 export default class TestCaseWithoutUserMembership extends TestCase {
     async onPrepareTest() {
