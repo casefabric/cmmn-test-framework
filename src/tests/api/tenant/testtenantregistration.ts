@@ -5,9 +5,9 @@ import TenantUser, { TenantOwner } from "../../../tenant/tenantuser";
 import Comparison from "../../../test/comparison";
 import TestCase from "../../../test/testcase";
 import Util from "../../../test/util";
-import User from "../../../user";
+import { admin } from "../../../user";
 
-const platformAdmin = new User('admin');
+const platformAdmin = admin;
 
 const tenantName = Util.generateId('test_tenant');
 const tenantOwner1 = new TenantOwner('tenant-owner1');

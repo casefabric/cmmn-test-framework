@@ -15,7 +15,7 @@ import { TenantOwner } from '../../../tenant/tenantuser';
 import { assertTask, findTask } from '../../../test/caseassertions/task';
 import TestCase from '../../../test/testcase';
 import Util from '../../../test/util';
-import User from '../../../user';
+import User, { admin } from '../../../user';
 
 const definition = Definitions.CaseTeam;
 const adminUser1 = new TenantOwner('adminUser1');
@@ -42,7 +42,6 @@ const caseTeamGroup = new CaseTeamGroup(groupId, [groupMembershipMappingAdmin, g
 
 export default class TestCaseTeamTaskAuthorizationsForGroups extends TestCase {
     async onPrepareTest() {
-        const admin = new User('admin');
         await admin.login();
         await PlatformService.createTenant(admin, tenant);
         await adminUser1.refreshToken();

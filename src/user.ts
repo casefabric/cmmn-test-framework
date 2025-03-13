@@ -1,8 +1,8 @@
-import TokenService from './service/platform/tokenservice';
-import UserInformation from './tenant/userinformation';
-import PlatformService from './service/platform/platformservice';
 import Config from './config';
 import logger from './logger';
+import PlatformService from './service/platform/platformservice';
+import TokenService from './service/platform/tokenservice';
+import UserInformation from './tenant/userinformation';
 
 export default class User {
     /**
@@ -93,3 +93,8 @@ export default class User {
         });
     }
 }
+
+/**
+ * The default platform admin user as configured in the engine setup
+ */
+export const admin = new User('admin');

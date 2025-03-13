@@ -6,7 +6,7 @@ import CaseTeamTenantRole from '../../../cmmn/team/caseteamtenantrole';
 import { CaseOwner } from "../../../cmmn/team/caseteamuser";
 import CaseService from '../../../service/case/caseservice';
 import TestCase from '../../../test/testcase';
-import User from '../../../user';
+import { admin } from '../../../user';
 import RandomGroup from '../../setup/randomgroup';
 import RandomTenant from '../../setup/randomtenant';
 import RandomUser from '../../setup/randomuser';
@@ -18,8 +18,6 @@ const otherTenant = new RandomTenant('other_tenant_');
 
 const TENANT_ROLE_1 = 'TenantRole_1';
 const TENANT_ROLE_2 = 'TenantRole_2';
-
-const admin = new User('admin');
 
 // Create a user that has tenant role 1 and also one with role 2.
 //  The first one should have case access, the second one not.
