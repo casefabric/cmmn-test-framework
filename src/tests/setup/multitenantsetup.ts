@@ -1,9 +1,9 @@
-import User from "../../user";
-import TenantUser, { TenantOwner } from "../../tenant/tenantuser";
-import Tenant from "../../tenant/tenant";
-import PlatformService from "../../service/platform/platformservice";
 import ConsentGroup from "../../service/consentgroup/consentgroup";
 import ConsentGroupService from "../../service/consentgroup/consentgroupservice";
+import PlatformService from "../../service/platform/platformservice";
+import Tenant from "../../tenant/tenant";
+import TenantUser, { TenantOwner } from "../../tenant/tenantuser";
+import User, { admin } from "../../user";
 
 /**
  * Somewhat complexer tenant setup, along with consent groups
@@ -44,7 +44,7 @@ export default class MultiTenantSetup {
     marsGroup = new ConsentGroup([this.jeff.asCGO(), this.boy.asCGM(this.groupRoleUser), this.alien.asCGM(this.groupRoleTester)], 'mars-group');
     marsGroup2 = new ConsentGroup([this.boy.asCGO(), this.elon.asCGM(this.groupRoleUser), this.martian.asCGM(this.groupRoleTester)], 'mars-group2');
 
-    constructor(public platformAdmin: User = new User('admin')) {
+    constructor(public platformAdmin: User = admin) {
     }
 
     /**

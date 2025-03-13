@@ -17,3 +17,10 @@ export default class CaseTeamTenantRole extends CMMNBaseClass {
         return this.tenantRole;
     }
 }
+
+export class CaseOwnerTenantRole extends CaseTeamTenantRole {
+    constructor(public tenantRole: string, public caseRoles: string[] = []) {
+        super(tenantRole, caseRoles);
+        this.isOwner = true;
+    }
+}

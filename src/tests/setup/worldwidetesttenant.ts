@@ -1,8 +1,8 @@
-import User from "../../user";
-import TenantUser, { TenantOwner } from "../../tenant/tenantuser";
-import Tenant from "../../tenant/tenant";
 import PlatformService from "../../service/platform/platformservice";
 import TenantService from "../../service/tenant/tenantservice";
+import Tenant from "../../tenant/tenant";
+import TenantUser, { TenantOwner } from "../../tenant/tenantuser";
+import User, { admin } from "../../user";
 
 /**
  * Simple test tenant to avoid duplicate code
@@ -27,7 +27,7 @@ export default class WorldWideTestTenant {
         return this.wrapper.tenant;
     }
 
-    constructor(public readonly name: string = WorldWideTestTenant.defaultTenantName, public platformAdmin: User = new User('admin')) {
+    constructor(public readonly name: string = WorldWideTestTenant.defaultTenantName, public platformAdmin: User = admin) {
         this.wrapper = TenantWrapper.get(name, platformAdmin);
     }
 

@@ -1,7 +1,7 @@
 import PlatformService from "../../../service/platform/platformservice";
 import Tenant from "../../../tenant/tenant";
 import TenantUser from "../../../tenant/tenantuser";
-import User from "../../../user";
+import User, { admin } from "../../../user";
 
 /**
  * Simple test tenant to avoid duplicate code
@@ -9,7 +9,7 @@ import User from "../../../user";
 export default class AnonymousWorld {
     tenant: Tenant = new Tenant(this.name, this.members);
 
-    constructor(public readonly name: string, public members: Array<TenantUser>, public platformAdmin: User = new User('admin')) {
+    constructor(public readonly name: string, public members: Array<TenantUser>, public platformAdmin: User = admin) {
     }
 
     /**

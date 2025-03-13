@@ -2,9 +2,7 @@ import Config from "../../../config";
 import PlatformService from "../../../service/platform/platformservice";
 import TokenService, { dateAsSeconds } from "../../../service/platform/tokenservice";
 import TestCase from "../../../test/testcase";
-import User from "../../../user";
-
-const user = new User('admin')
+import { admin } from "../../../user";
 
 export default class TestTokenValidation extends TestCase {
     async run() {
@@ -54,10 +52,10 @@ const twoDaysAfterTomorrow = getDate(+3);
 
 
 async function checkMissingToken() {
-    user.clearToken();
+    admin.clearToken();
     try {
         // User is not logged in, so this should give an error that the token is missing.
-        await PlatformService.getUserInformation(user);
+        await PlatformService.getUserInformation(admin);
         throw new Error('Should not be able to login during checkMissingToken');
     } catch (error) {
         console.log("error: ", error)
@@ -66,10 +64,10 @@ async function checkMissingToken() {
 
 async function checkInvalidToken() {
     const checkToken = async (token: string) => {
-        user.token = token;
+        admin.token = token;
         try {
             // User is not logged in, so this should give an error that the token is missing.
-            await PlatformService.getUserInformation(user);
+            await PlatformService.getUserInformation(admin);
             throw new Error('Should not be able to login during checkInvalidToken');
         } catch (error) {
             console.log("error: ", error)
@@ -89,11 +87,11 @@ async function checkInvalidToken() {
 async function checkInvalidIssuer() {
     // Use a token with an invalid issuer
     const invalidIssuer = "bla-die-bla" + Config.TokenService.issuer + "xyz";
-    const claims = createClaims(user.id, invalidIssuer, today, dayAfterTomorrow);
-    user.token = await TokenService.fetchToken(claims);
+    const claims = createClaims(admin.id, invalidIssuer, today, dayAfterTomorrow);
+    admin.token = await TokenService.fetchToken(claims);
     try {
         // Login with invalid "iss" in token.
-        await PlatformService.getUserInformation(user);
+        await PlatformService.getUserInformation(admin);
         throw new Error('Should not be able to login during checkInvalidIssuer');
     } catch (error) {
         console.log("error: ", error)
@@ -102,11 +100,11 @@ async function checkInvalidIssuer() {
 
 async function checkIssuedWayLater() {
     // Use a token that is issued the day after tomorrow.
-    const claims = createClaims(user.id, Config.TokenService.issuer, dayAfterTomorrow, twoDaysAfterTomorrow);
-    user.token = await TokenService.fetchToken(claims);
+    const claims = createClaims(admin.id, Config.TokenService.issuer, dayAfterTomorrow, twoDaysAfterTomorrow);
+    admin.token = await TokenService.fetchToken(claims);
     try {
         // Login with too early issued token.
-        await PlatformService.getUserInformation(user);
+        await PlatformService.getUserInformation(admin);
         throw new Error('Should not be able to login during checkIssuedWayLater');
     } catch (error) {
         console.log("error: ", error)
@@ -115,11 +113,11 @@ async function checkIssuedWayLater() {
 
 async function checkShouldHaveExpired() {
     // Use a token that is issued 4 days ago and expired 2 days ago.
-    const claims = createClaims(user.id, Config.TokenService.issuer, twoDaysBeforeYesterday, dayBeforeYesterday);
-    user.token = await TokenService.fetchToken(claims);
+    const claims = createClaims(admin.id, Config.TokenService.issuer, twoDaysBeforeYesterday, dayBeforeYesterday);
+    admin.token = await TokenService.fetchToken(claims);
     try {
         // Login with too early issued token.
-        await PlatformService.getUserInformation(user);
+        await PlatformService.getUserInformation(admin);
         throw new Error('Should not be able to login during checkShouldHaveExpired');
     } catch (error) {
         console.log("error: ", error)
@@ -128,11 +126,11 @@ async function checkShouldHaveExpired() {
 
 async function checkExpiryBeforeIssuedDate() {
     // Use a token that was issued after it expired (expires now, issued 2 days from now).
-    const claims = createClaims(user.id, Config.TokenService.issuer, dayAfterTomorrow, today);
-    user.token = await TokenService.fetchToken(claims);
+    const claims = createClaims(admin.id, Config.TokenService.issuer, dayAfterTomorrow, today);
+    admin.token = await TokenService.fetchToken(claims);
     try {
         // trying to login should fail
-        await PlatformService.getUserInformation(user);
+        await PlatformService.getUserInformation(admin);
         throw new Error('Should not be able to login during checkExpiryBeforeIssuedDate');
     } catch (error) {
         console.log("error: ", error)
@@ -141,12 +139,12 @@ async function checkExpiryBeforeIssuedDate() {
 
 async function checkExpiryEqualsIssuedDate() {
     // Use a token that was expired the moment it was issued.
-    const claims = createClaims(user.id, Config.TokenService.issuer, today, today);
-    user.token = await TokenService.fetchToken(claims);
+    const claims = createClaims(admin.id, Config.TokenService.issuer, today, today);
+    admin.token = await TokenService.fetchToken(claims);
 
     try {
         // trying to login should fail
-        await PlatformService.getUserInformation(user);
+        await PlatformService.getUserInformation(admin);
         throw new Error('Should not be able to login during checkExpiryEqualsIssuedDate');
     } catch (error) {
         console.log("error: ", error)
@@ -155,10 +153,10 @@ async function checkExpiryEqualsIssuedDate() {
 
 async function checkEmptyClaims() {
     const claims = createClaims();
-    user.token = await TokenService.fetchToken(claims);
+    admin.token = await TokenService.fetchToken(claims);
     try {
         // trying to login should fail
-        await PlatformService.getUserInformation(user);
+        await PlatformService.getUserInformation(admin);
         throw new Error('Should not be able to login during checkEmptyClaims');
     } catch (error) {
         console.log("error: ", error)
@@ -167,10 +165,10 @@ async function checkEmptyClaims() {
 
 async function checkEmptySubject() {
     const claims = createClaims(undefined, Config.TokenService.issuer, today, dayAfterTomorrow);
-    user.token = await TokenService.fetchToken(claims);
+    admin.token = await TokenService.fetchToken(claims);
     try {
         // trying to login should fail
-        await PlatformService.getUserInformation(user);
+        await PlatformService.getUserInformation(admin);
         throw new Error('Should not be able to login during checkEmptySubject');
     } catch (error) {
         console.log("error: ", error)
@@ -178,11 +176,11 @@ async function checkEmptySubject() {
 }
 
 async function checkEmptyIssuer() {
-    const claims = createClaims(user.id, undefined, today, dayAfterTomorrow);
-    user.token = await TokenService.fetchToken(claims);
+    const claims = createClaims(admin.id, undefined, today, dayAfterTomorrow);
+    admin.token = await TokenService.fetchToken(claims);
     try {
         // trying to login should fail
-        await PlatformService.getUserInformation(user);
+        await PlatformService.getUserInformation(admin);
         throw new Error('Should not be able to login during checkEmptyIssuer');
     } catch (error) {
         console.log("error: ", error)

@@ -1,7 +1,7 @@
 import PlatformService from "../../../service/platform/platformservice";
 import TestCase from "../../../test/testcase";
 import { SomeTime } from "../../../test/time";
-import User from "../../../user";
+import User, { admin } from "../../../user";
 
 export default class PingTestEnvironment extends TestCase {
     public isParallelTest: boolean = false;
@@ -26,7 +26,7 @@ export class PingTokenService extends TestCase {
  * @param times Number of times to try to ping the environment
  * @param waitTime Number of milliseconds to wait inbetween various login attempts
  */
-export async function pingTokenService(platformAdmin: User = new User('admin'), times: number = 5, waitTime: number = 5000) {
+export async function pingTokenService(platformAdmin: User = admin, times: number = 5, waitTime: number = 5000) {
     do {        
         try {
             console.log("Login to IDP as platform admin ... ");
@@ -50,7 +50,7 @@ export async function pingTokenService(platformAdmin: User = new User('admin'), 
  * @param times Number of times to try to ping the environment
  * @param waitTime Number of milliseconds to wait inbetween various login attempts
  */
-export async function pingTestEnvironment(platformAdmin: User = new User('admin'), times: number = 5, waitTime: number = 5000) {
+export async function pingTestEnvironment(platformAdmin: User = admin, times: number = 5, waitTime: number = 5000) {
     do {
         console.log("Pinging engine for health and version ... ");
         
