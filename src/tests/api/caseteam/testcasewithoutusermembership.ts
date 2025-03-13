@@ -37,7 +37,7 @@ export default class TestCaseWithoutUserMembership extends TestCase {
 
         await ConsentGroupService.createGroup(admin, primaryTenant, groupInPrimaryTenant);
         // Get the group to ensure it exists when creating a case for it
-        // await ConsentGroupService.getGroup(userWith_TENANT_ROLE_1, groupInPrimaryTenant);
+        await ConsentGroupService.getGroup(userWith_TENANT_ROLE_1, groupInPrimaryTenant);
 
         await definition.deploy(admin, primaryTenant);
     }
