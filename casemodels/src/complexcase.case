@@ -1,4 +1,4 @@
-<case id="complexcase.case" name="complexcase" expressionLanguage="spel" guid="_MuzRn">
+<case xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="complexcase.case" name="complexcase" expressionLanguage="spel" guid="_MuzRn">
     <caseFileModel>
         <caseFileItem id="_MuzRn_10" name="Greeting" multiplicity="ExactlyOne" definitionRef="greeting.cfid"/>
     </caseFileModel>
@@ -7,9 +7,7 @@
             <inputs id="_MuzRn_9" name="Greeting" bindingRef="_MuzRn_10"/>
             <parameterMapping id="_MuzRn_1" sourceRef="_MuzRn_9" targetRef="csVQy_inCPs_0">
                 <transformation id="_MuzRn_8">
-                    <body>
-                        <![CDATA[map("Message", "default message").merge(Greeting)]]>
-                    </body>
+                    <body><![CDATA[map("Message", "default message").merge(Greeting)]]></body>
                 </transformation>
             </parameterMapping>
         </caseTask>
@@ -17,9 +15,7 @@
             <inputs id="_MuzRn_12" name="HTTPConfig.1"/>
             <parameterMapping id="_MuzRn_3" sourceRef="_MuzRn_12" targetRef="_Sp9aR_34">
                 <transformation id="_MuzRn_5">
-                    <body>
-                        <![CDATA[map("port", -1)]]>
-                    </body>
+                    <body><![CDATA[map("port", -1)]]></body>
                 </transformation>
             </parameterMapping>
         </caseTask>
@@ -31,6 +27,23 @@
                 </planItemOnPart>
             </entryCriterion>
         </caseTask>
+        <stage id="pi_st__MuzRn_0" name="Case Lifetime Progress" autoComplete="true">
+            <timerEvent id="pi_tmr__MuzRn_0" name="2 days timer">
+                <timerExpression id="_MuzRn_21">
+                    <body><![CDATA[P2DT10S]]></body>
+                </timerExpression>
+                <planItemStartTrigger id="_MuzRn_20">
+                    <standardEvent/>
+                </planItemStartTrigger>
+            </timerEvent>
+            <milestone id="pi_ms__MuzRn_0" name="Case LifeTime achieved 2 days">
+                <entryCriterion id="crit__MuzRn_0">
+                    <planItemOnPart id="_MuzRn_23" sourceRef="pi_tmr__MuzRn_0">
+                        <standardEvent>occur</standardEvent>
+                    </planItemOnPart>
+                </entryCriterion>
+            </milestone>
+        </stage>
     </casePlanModel>
     <caseRoles>
         <role id="_MuzRn_11" name="role"/>

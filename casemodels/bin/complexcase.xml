@@ -18,15 +18,17 @@
         <property name="Time" type="http://www.omg.org/spec/CMMN/PropertyType/time"/>
         <property name="SomeBoolean" type="http://www.omg.org/spec/CMMN/PropertyType/boolean"/>
     </caseFileItemDefinition>
-    <caseFileItemDefinition name="string" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="string.cfid"/>
-    <caseFileItemDefinition name="details" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="details.cfid">
+    <caseFileItemDefinition name="case_getlist_getdetails" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="case_getlist_getdetails.type"/>
+    <caseFileItemDefinition name="DetailsKey" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="identifiers_type_DetailsKey.object"/>
+    <caseFileItemDefinition name="identifiers" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="identifiers.type"/>
+    <caseFileItemDefinition name="details" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="details.type">
         <property name="description" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
         <property name="id" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
     </caseFileItemDefinition>
-    <caseFileItemDefinition name="http" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="http.cfid">
+    <caseFileItemDefinition name="http" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="http.type">
         <property name="port" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
     </caseFileItemDefinition>
-    <caseFileItemDefinition name="exception" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="exception.cfid"/>
+    <caseFileItemDefinition name="exception" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="exception.type"/>
     <case id="complexcase.case" name="complexcase" expressionLanguage="spel">
         <caseFileModel>
             <caseFileItem id="_MuzRn_10" name="Greeting" multiplicity="ExactlyOne" definitionRef="greeting.cfid"/>
@@ -38,6 +40,7 @@
             <planItem id="pi_ct__MuzRn_2" name="HelloWorld the second" definitionRef="ct__MuzRn_2">
                 <entryCriterion id="_MuzRn_14" name="EntryCriterion_0" sentryRef="s__MuzRn_14"/>
             </planItem>
+            <planItem id="pi_st__MuzRn_0" name="Case Lifetime Progress" definitionRef="st__MuzRn_0"/>
             <sentry id="s__MuzRn_14">
                 <planItemOnPart id="_MuzRn_15" sourceRef="pi_ue__MuzRn_0">
                     <standardEvent>occur</standardEvent>
@@ -47,9 +50,7 @@
                 <inputs id="_MuzRn_9" name="Greeting" bindingRef="_MuzRn_10"/>
                 <parameterMapping id="_MuzRn_1" sourceRef="_MuzRn_9" targetRef="csVQy_inCPs_0">
                     <transformation id="_MuzRn_8">
-                        <body>
-                            <![CDATA[map("Message", "default message").merge(Greeting)]]>
-                        </body>
+                        <body><![CDATA[map("Message", "default message").merge(Greeting)]]></body>
                     </transformation>
                 </parameterMapping>
             </caseTask>
@@ -57,14 +58,32 @@
                 <inputs id="_MuzRn_12" name="HTTPConfig.1"/>
                 <parameterMapping id="_MuzRn_3" sourceRef="_MuzRn_12" targetRef="_Sp9aR_34">
                     <transformation id="_MuzRn_5">
-                        <body>
-                            <![CDATA[map("port", -1)]]>
-                        </body>
+                        <body><![CDATA[map("port", -1)]]></body>
                     </transformation>
                 </parameterMapping>
             </caseTask>
             <userEvent id="ue__MuzRn_0" name="Trigger Second Hello World"/>
             <caseTask id="ct__MuzRn_2" name="HelloWorld the second" isBlocking="true" caseRef="helloworld.case"/>
+            <stage id="st__MuzRn_0" name="Case Lifetime Progress" autoComplete="true">
+                <planItem id="pi_tmr__MuzRn_0" name="2 days timer" definitionRef="tmr__MuzRn_0"/>
+                <planItem id="pi_ms__MuzRn_0" name="Case LifeTime achieved 2 days" definitionRef="ms__MuzRn_0">
+                    <entryCriterion id="crit__MuzRn_0" sentryRef="s_crit__MuzRn_0"/>
+                </planItem>
+                <sentry id="s_crit__MuzRn_0">
+                    <planItemOnPart id="_MuzRn_23" sourceRef="pi_tmr__MuzRn_0">
+                        <standardEvent>occur</standardEvent>
+                    </planItemOnPart>
+                </sentry>
+            </stage>
+            <timerEvent id="tmr__MuzRn_0" name="2 days timer">
+                <timerExpression id="_MuzRn_21">
+                    <body><![CDATA[P2DT10S]]></body>
+                </timerExpression>
+                <planItemStartTrigger id="_MuzRn_20">
+                    <standardEvent></standardEvent>
+                </planItemStartTrigger>
+            </timerEvent>
+            <milestone id="ms__MuzRn_0" name="Case LifeTime achieved 2 days"/>
         </casePlanModel>
         <caseRoles>
             <role id="_MuzRn_11" name="role"/>
@@ -73,9 +92,7 @@
     </case>
     <case id="helloworld.case" name="HelloWorld" expressionLanguage="spel">
         <documentation textFormat="text/plain">
-            <text>
-                <![CDATA[Hello World]]>
-            </text>
+            <text><![CDATA[Hello World]]></text>
         </documentation>
         <caseFileModel>
             <caseFileItem id="cfi_csVQy_0" name="Greeting" multiplicity="ExactlyOne" definitionRef="greeting.cfid"/>
@@ -84,10 +101,8 @@
         <casePlanModel id="cm_HelloWorld.case_HelloWorld_0" name="HelloWorld" autoComplete="true">
             <planItem id="cm_csVQy_167" name="Receive Greeting and Send response" definitionRef="ht_cm_csVQy_167">
                 <documentation textFormat="text/plain">
-                    <text>
-                        <![CDATA[Receive Greeting
-and Send response]]>
-                    </text>
+                    <text><![CDATA[Receive Greeting
+and Send response]]></text>
                 </documentation>
             </planItem>
             <planItem id="cm_cs3hg_196" name="Read response" definitionRef="ht_cm_cs3hg_196">
@@ -104,9 +119,7 @@ and Send response]]>
                 <extensionElements mustUnderstand="false">
                     <cafienne:implementation name="SendResponse" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="sendresponse.humantask">
                         <documentation textFormat="text/plain">
-                            <text>
-                                <![CDATA[Sends a response back to the initiator of the hello world case]]>
-                            </text>
+                            <text><![CDATA[Sends a response back to the initiator of the hello world case]]></text>
                         </documentation>
                         <input id="Greeting" name="Greeting"/>
                         <output id="Response" name="Response"/>
@@ -170,24 +183,19 @@ and Send response]]>
 			}
 		}
 	}
-}
-</task-model>
-                        <duedate id="_nTPPc_9">
-                            <condition id="_nTPPc_10">
-                                <body>
-                                    <![CDATA[T(java.time.Instant).now()]]>
-                                </body>
-                            </condition>
-                        </duedate>
-                        <assignment id="_nTPPc_3" contextRef="cfi_csVQy_0">
-                            <condition id="_nTPPc_4">
-                                <body>
-                                    <![CDATA[Greeting.To]]>
-                                </body>
-                            </condition>
-                        </assignment>
+}</task-model>
                         <parameterMapping id="inPM_cm_cshJq_4_0" sourceRef="inTP_cm_cs2F1_174_1" targetRef="Greeting"/>
                         <parameterMapping id="outPM_cm_csuYs_174_0" sourceRef="Response" targetRef="outTP_cm_cs2F1_174_1"/>
+                        <assignment id="_nTPPc_3" contextRef="cfi_csVQy_0">
+                            <condition id="_nTPPc_4">
+                                <body><![CDATA[Greeting.To]]></body>
+                            </condition>
+                        </assignment>
+                        <duedate id="_nTPPc_9">
+                            <condition id="_nTPPc_10">
+                                <body><![CDATA[T(java.time.Instant).now()]]></body>
+                            </condition>
+                        </duedate>
                     </cafienne:implementation>
                 </extensionElements>
             </humanTask>
@@ -196,13 +204,10 @@ and Send response]]>
                 <extensionElements mustUnderstand="false">
                     <cafienne:implementation name="ReadRespose" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="readresponse.humantask">
                         <documentation textFormat="text/plain">
-                            <text>
-                                <![CDATA[Read Response]]>
-                            </text>
+                            <text><![CDATA[Read Response]]></text>
                         </documentation>
                         <input id="Response" name="Response"/>
-                        <task-model>
-			{
+                        <task-model>{
 				"schema": {
 					"title": "Read response",
 					"type": "object",
@@ -238,23 +243,18 @@ and Send response]]>
 						"ui:widget": "textarea"
 					}
 				}
-			}
-		</task-model>
-                        <duedate id="_nTPPc_14">
-                            <condition id="_nTPPc_15">
-                                <body>
-                                    <![CDATA[T(java.time.Instant).now()]]>
-                                </body>
-                            </condition>
-                        </duedate>
+			}</task-model>
+                        <parameterMapping id="inPM_cm_cs3hg_196_0" sourceRef="inTP_cm_cs3hg_196_0" targetRef="Response"/>
                         <assignment id="_nTPPc_12" contextRef="cfi_csVQy_0">
                             <condition id="_nTPPc_13">
-                                <body>
-                                    <![CDATA[Greeting.From]]>
-                                </body>
+                                <body><![CDATA[Greeting.From]]></body>
                             </condition>
                         </assignment>
-                        <parameterMapping id="inPM_cm_cs3hg_196_0" sourceRef="inTP_cm_cs3hg_196_0" targetRef="Response"/>
+                        <duedate id="_nTPPc_14">
+                            <condition id="_nTPPc_15">
+                                <body><![CDATA[T(java.time.Instant).now()]]></body>
+                            </condition>
+                        </duedate>
                     </cafienne:implementation>
                 </extensionElements>
             </humanTask>
@@ -262,9 +262,7 @@ and Send response]]>
         <caseRoles>
             <role id="role_csT3f_0" name="ADMIN">
                 <documentation textFormat="text/plain">
-                    <text>
-                        <![CDATA[admin of the world]]>
-                    </text>
+                    <text><![CDATA[admin of the world]]></text>
                 </documentation>
             </role>
         </caseRoles>
@@ -311,19 +309,17 @@ and Send response]]>
     </case>
     <case id="getlist_getdetails.case" name="getlist_getdetails" expressionLanguage="spel">
         <documentation textFormat="text/plain">
-            <text>
-                <![CDATA[list-detail-case]]>
-            </text>
+            <text><![CDATA[list-detail-case]]></text>
         </documentation>
-        <caseFileModel>
-            <caseFileItem id="_LQXO7_5" name="IdentifierList" multiplicity="ExactlyOne" definitionRef="string.cfid">
+        <caseFileModel cafienne:typeRef="case_getlist_getdetails.type">
+            <caseFileItem id="getlist_getdetails/IdentifierList" name="IdentifierList" multiplicity="ExactlyOne" definitionRef="identifiers.type">
                 <children>
-                    <caseFileItem id="_LQXO7_7" name="DetailsKey" multiplicity="ZeroOrMore" definitionRef="string.cfid"/>
+                    <caseFileItem id="getlist_getdetails/IdentifierList/DetailsKey" name="DetailsKey" multiplicity="ZeroOrMore" definitionRef="identifiers_type_DetailsKey.object"/>
                 </children>
             </caseFileItem>
-            <caseFileItem id="_LQXO7_6" name="DetailsContent" multiplicity="ZeroOrMore" definitionRef="details.cfid"/>
-            <caseFileItem id="_Sp9aR_1" name="HTTPConfig" multiplicity="ExactlyOne" definitionRef="http.cfid"/>
-            <caseFileItem id="_Sp9aR_27" name="Exception" multiplicity="ZeroOrMore" definitionRef="exception.cfid"/>
+            <caseFileItem id="getlist_getdetails/DetailsContent" name="DetailsContent" multiplicity="ZeroOrMore" definitionRef="details.type"/>
+            <caseFileItem id="getlist_getdetails/HTTPConfig" name="HTTPConfig" multiplicity="ExactlyOne" definitionRef="http.type"/>
+            <caseFileItem id="getlist_getdetails/Exception" name="Exception" multiplicity="ZeroOrMore" definitionRef="exception.type"/>
         </caseFileModel>
         <casePlanModel id="cm_casefile/getlist_getdetails.case_0" name="getlist_getdetails" autoComplete="true">
             <planItem id="pi_pt__LQXO7_8" name="GetList" definitionRef="pt__LQXO7_8">
@@ -332,9 +328,7 @@ and Send response]]>
                 <itemControl id="_Sp9aR_0">
                     <repetitionRule id="_Sp9aR_22">
                         <condition id="_Sp9aR_23">
-                            <body>
-                                <![CDATA[true]]>
-                            </body>
+                            <body><![CDATA[true]]></body>
                         </condition>
                     </repetitionRule>
                 </itemControl>
@@ -344,16 +338,12 @@ and Send response]]>
                 <itemControl id="_LQXO7_32">
                     <repetitionRule id="_Sp9aR_3">
                         <condition id="_Sp9aR_7">
-                            <body>
-                                <![CDATA[task.index < 3]]>
-                            </body>
+                            <body><![CDATA[task.index < 3]]></body>
                         </condition>
                     </repetitionRule>
                     <requiredRule id="_Sp9aR_13">
                         <condition id="_Sp9aR_14">
-                            <body>
-                                <![CDATA[true]]>
-                            </body>
+                            <body><![CDATA[true]]></body>
                         </condition>
                     </requiredRule>
                 </itemControl>
@@ -363,15 +353,13 @@ and Send response]]>
                 <itemControl id="_Sp9aR_15">
                     <repetitionRule id="_Sp9aR_20">
                         <condition id="_Sp9aR_21">
-                            <body>
-                                <![CDATA[true]]>
-                            </body>
+                            <body><![CDATA[true]]></body>
                         </condition>
                     </repetitionRule>
                 </itemControl>
             </planItem>
             <sentry id="s__Sp9aR_11">
-                <caseFileItemOnPart id="_Sp9aR_12" sourceRef="_Sp9aR_1">
+                <caseFileItemOnPart id="_Sp9aR_12" sourceRef="getlist_getdetails/HTTPConfig">
                     <standardEvent>create</standardEvent>
                 </caseFileItemOnPart>
             </sentry>
@@ -381,14 +369,12 @@ and Send response]]>
                 </planItemOnPart>
             </sentry>
             <sentry id="s__LQXO7_1">
-                <ifPart id="_LQXO7_8" contextRef="_LQXO7_7">
+                <ifPart id="_LQXO7_8" contextRef="getlist_getdetails/IdentifierList/DetailsKey">
                     <condition id="_LQXO7_9">
-                        <body>
-                            <![CDATA[!DetailsKey.isEmpty()]]>
-                        </body>
+                        <body><![CDATA[!DetailsKey.isEmpty()]]></body>
                     </condition>
                 </ifPart>
-                <caseFileItemOnPart id="_LQXO7_0" sourceRef="_LQXO7_7">
+                <caseFileItemOnPart id="_LQXO7_0" sourceRef="getlist_getdetails/IdentifierList/DetailsKey">
                     <standardEvent>create</standardEvent>
                 </caseFileItemOnPart>
             </sentry>
@@ -398,26 +384,22 @@ and Send response]]>
                 </planItemOnPart>
             </sentry>
             <processTask id="pt__LQXO7_8" name="GetList" isBlocking="true" processRef="GetListWebService.process">
-                <inputs id="_Sp9aR_5" name="HTTPConfig" bindingRef="_Sp9aR_1"/>
+                <inputs id="_Sp9aR_5" name="HTTPConfig" bindingRef="getlist_getdetails/HTTPConfig"/>
                 <inputs id="_Sp9aR_33" name="HEADER"/>
                 <outputs id="_LQXO7_14" name="responseCode"/>
-                <outputs id="_LQXO7_16" name="responseMessage" bindingRef="_Sp9aR_27"/>
+                <outputs id="_LQXO7_16" name="responseMessage" bindingRef="getlist_getdetails/Exception"/>
                 <outputs id="_LQXO7_18" name="output"/>
-                <outputs id="_LQXO7_20" name="detailsIdentifiers" bindingRef="_LQXO7_7"/>
+                <outputs id="_LQXO7_20" name="detailsIdentifiers" bindingRef="getlist_getdetails/IdentifierList/DetailsKey"/>
                 <outputs id="_LQXO7_22" name="headerContentLength"/>
                 <parameterMapping id="_LQXO7_11" sourceRef="_Sp9aR_5" targetRef="httpPort">
                     <transformation id="_Sp9aR_4">
-                        <body>
-                            <![CDATA[HTTPConfig.port]]>
-                        </body>
+                        <body><![CDATA[HTTPConfig.port]]></body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="_LQXO7_15" sourceRef="responseCode" targetRef="_LQXO7_14"/>
                 <parameterMapping id="_LQXO7_17" sourceRef="_dTMD_exception" targetRef="_LQXO7_16">
                     <transformation id="_Sp9aR_28">
-                        <body>
-                            <![CDATA[exception.message]]>
-                        </body>
+                        <body><![CDATA[exception.message]]></body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="_LQXO7_19" sourceRef="output" targetRef="_LQXO7_18"/>
@@ -425,27 +407,21 @@ and Send response]]>
                 <parameterMapping id="_LQXO7_23" sourceRef="headerContentLength" targetRef="_LQXO7_22"/>
                 <parameterMapping id="_Sp9aR_29" sourceRef="_Sp9aR_33" targetRef="_OLKF_HEADER">
                     <transformation id="_Sp9aR_32">
-                        <body>
-                            <![CDATA["application/json"]]>
-                        </body>
+                        <body><![CDATA["application/json"]]></body>
                     </transformation>
                 </parameterMapping>
             </processTask>
             <processTask id="pt__LQXO7_24" name="GetDetails" isBlocking="true" processRef="GetDetailsWebService.process">
-                <inputs id="_LQXO7_28" name="detailsId" bindingRef="_LQXO7_7"/>
-                <inputs id="_Sp9aR_10" name="HTTPConfig" bindingRef="_Sp9aR_1">
+                <inputs id="_LQXO7_28" name="detailsId" bindingRef="getlist_getdetails/IdentifierList/DetailsKey"/>
+                <inputs id="_Sp9aR_10" name="HTTPConfig" bindingRef="getlist_getdetails/HTTPConfig">
                     <bindingRefinement id="_Sp9aR_9">
-                        <body>
-                            <![CDATA[GET]]>
-                        </body>
+                        <body><![CDATA[GET]]></body>
                     </bindingRefinement>
                 </inputs>
-                <outputs id="_LQXO7_30" name="details" bindingRef="_LQXO7_6"/>
+                <outputs id="_LQXO7_30" name="details" bindingRef="getlist_getdetails/DetailsContent"/>
                 <parameterMapping id="_LQXO7_27" sourceRef="_Sp9aR_10" targetRef="httpPort">
                     <transformation id="_Sp9aR_6">
-                        <body>
-                            <![CDATA[HTTPConfig.port]]>
-                        </body>
+                        <body><![CDATA[HTTPConfig.port]]></body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="_LQXO7_29" sourceRef="_LQXO7_28" targetRef="detailsId"/>
@@ -462,7 +438,7 @@ and Send response]]>
             <milestone id="ms__Sp9aR_0" name="GetList Failed"/>
         </casePlanModel>
         <caseRoles/>
-        <input id="_Sp9aR_34" name="HTTPConfig" bindingRef="_Sp9aR_1"/>
+        <input id="_Sp9aR_34" name="HTTPConfig" bindingRef="getlist_getdetails/HTTPConfig"/>
     </case>
     <process id="GetListWebService.process" name="GetListWebService" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
         <input id="httpPort" name="httpPort"/>
@@ -484,7 +460,7 @@ and Send response]]>
                 <parameterMapping sourceRef="exception" targetRef="exception"/>
                 <parameterMapping sourceRef="responsePayload" targetRef="detailsIdentifiers">
                     <transformation language="json">
-                        <body>$..[*].id</body>
+                        <body>$..id</body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping sourceRef="responseHeaders" targetRef="headerContentLength">
@@ -519,7 +495,7 @@ and Send response]]>
                 <Bounds x="150" y="120" width="140" height="80"/>
             </CMMNShape>
             <CMMNShape cmmnElementRef="pi_ct__MuzRn_1">
-                <Bounds x="150" y="290" width="140" height="80"/>
+                <Bounds x="150" y="230" width="140" height="80"/>
             </CMMNShape>
             <CMMNShape cmmnElementRef="pi_ue__MuzRn_0">
                 <Bounds x="500" y="120" width="32" height="32"/>
@@ -530,7 +506,20 @@ and Send response]]>
             <CMMNShape cmmnElementRef="_MuzRn_14">
                 <Bounds x="504" y="270" width="12" height="20"/>
             </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_tmr__MuzRn_0">
+                <Bounds x="90" y="420" width="32" height="32"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ms__MuzRn_0">
+                <Bounds x="210" y="410" width="130" height="60"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="crit__MuzRn_0">
+                <Bounds x="204" y="430" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_st__MuzRn_0">
+                <Bounds x="50" y="370" width="420" height="140"/>
+            </CMMNShape>
             <CMMNEdge sourceCMMNElementRef="pi_ue__MuzRn_0" targetCMMNElementRef="_MuzRn_14"/>
+            <CMMNEdge sourceCMMNElementRef="pi_tmr__MuzRn_0" targetCMMNElementRef="crit__MuzRn_0"/>
             <CMMNShape cmmnElementRef="cm_HelloWorld.case_HelloWorld_0">
                 <Bounds x="20" y="10" width="626" height="330"/>
             </CMMNShape>
@@ -577,15 +566,15 @@ and Send response]]>
             <CMMNShape cmmnElementRef="pi__Sp9aR_30">
                 <Bounds x="90" y="310" width="110" height="100"/>
             </CMMNShape>
-            <CMMNShape cmmnElementRef="_LQXO7_7">
+            <CMMNShape cmmnElementRef="getlist_getdetails/IdentifierList/DetailsKey">
                 <Bounds x="360" y="140" width="25" height="40"/>
             </CMMNShape>
-            <CMMNShape cmmnElementRef="_Sp9aR_1">
+            <CMMNShape cmmnElementRef="getlist_getdetails/HTTPConfig">
                 <Bounds x="50" y="100" width="25" height="40"/>
             </CMMNShape>
-            <CMMNEdge sourceCMMNElementRef="_Sp9aR_1" targetCMMNElementRef="_Sp9aR_11"/>
+            <CMMNEdge sourceCMMNElementRef="getlist_getdetails/HTTPConfig" targetCMMNElementRef="_Sp9aR_11"/>
             <CMMNEdge sourceCMMNElementRef="pi_pt__LQXO7_8" targetCMMNElementRef="_Sp9aR_18"/>
-            <CMMNEdge sourceCMMNElementRef="_LQXO7_1" targetCMMNElementRef="_LQXO7_7"/>
+            <CMMNEdge sourceCMMNElementRef="_LQXO7_1" targetCMMNElementRef="getlist_getdetails/IdentifierList/DetailsKey"/>
             <CMMNEdge sourceCMMNElementRef="pi_ue__Sp9aR_0" targetCMMNElementRef="_Sp9aR_24"/>
         </CMMNDiagram>
     </CMMNDI>
