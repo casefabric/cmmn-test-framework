@@ -9,6 +9,7 @@ export default class CommandLineParser {
         this.parseLogging();
         this.parseParallellism();
         this.parseTenant();
+        this.parsePollingPeriod();
     }
 
     private parseTimeout() {
@@ -24,6 +25,10 @@ export default class CommandLineParser {
                 Config.CafienneService.cqrsWaitTime = this.readNumber('-t', 'CQRS wait time', Config.CafienneService.cqrsWaitTime, 100);
             }
         }
+    }
+
+    private parsePollingPeriod() {
+        Config.TestCase.polltimeout = this.readNumber('-r', 'Retry period upon failing assertions', Config.TestCase.polltimeout, 1000);
     }
 
     private parseLogging() {
