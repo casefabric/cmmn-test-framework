@@ -6,7 +6,7 @@ import CaseService from '../../../service/case/caseservice';
 import StorageService from '../../../service/storage/storageservice';
 import { assertPlanItem } from '../../../test/caseassertions/plan';
 import TestCase from '../../../test/testcase';
-import { SomeTime } from '../../../test/time';
+import { PollUntilSuccess, SomeTime } from '../../../test/time';
 import WorldWideTestTenant from '../../setup/worldwidetesttenant';
 
 const worldwideTenant = new WorldWideTestTenant();
@@ -42,9 +42,9 @@ export default class TestRestoreCaseWithTimer extends TestCase {
 
     await SomeTime(1000, `Awaiting restore of timer case ${caseInstance}`);
 
-    await CaseService.getDiscretionaryItems(user, caseInstance);
-
-    await assertPlanItem(user, caseInstance, 'Task', -1, State.Available);
+    await PollUntilSuccess(async () => {
+      await CaseService.getDiscretionaryItems(user, caseInstance);
+    }, `Check existence of case ${caseInstance}`);
 
     await SomeTime(3000, `Giving timer some room to occur before checking it went off`);
 

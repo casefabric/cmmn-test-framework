@@ -69,7 +69,7 @@ export default class TestDeleteTenantWithContent extends TestCase {
 
     // Lets poll the engine until the tenant is succesfully deleted
     await PollUntilSuccess(async () => {
-      await TenantService.getTenantOwners(user, tenant, 404, 'It should not be possible to retrieve tenant owners when the tenant is deleted');
+      await TenantService.getTenantUser(user, tenant, user, 404, 'It should not be possible to retrieve a tenant user when the tenant is deleted');
     }, `Checking existence of tenant ${tenant}`);
 
     // Then the cases also must have been deleted, let's try on the first one ...
