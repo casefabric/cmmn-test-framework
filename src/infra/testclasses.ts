@@ -8,6 +8,7 @@ import TestDeleteCaseAuthorization from '../tests/api/archiving/testdeletecaseau
 import TestDeleteHelloworld from '../tests/api/archiving/testdeletehelloworld';
 import TestDeleteTenant from '../tests/api/archiving/testdeletetenant';
 import TestDeleteTenantWithContent from '../tests/api/archiving/testdeletetenantwithcontent';
+import TestRestoreCaseWithTimer from '../tests/api/archiving/testrestorecasewithtimer';
 import TestFootballBusinessIdentifiers from '../tests/api/businessidentifiers/footballbusinessidentifiers/testfootballbusinessidentifiers';
 import TestBusinessIdentifiers from '../tests/api/businessidentifiers/testbusinessidentifiers';
 import TestHelloWorldBusinessIdentifiers from '../tests/api/businessidentifiers/testhelloworldbusinessidentifiers';
@@ -142,6 +143,7 @@ export default class TestClasses {
 const StorageTests: Array<Function> = [
     TestArchiveHelloworld,
     TestArchiveCase,
+    TestRestoreCaseWithTimer,
     TestDeleteCase,
     TestDeleteHelloworld,
     TestDeleteTenant,
