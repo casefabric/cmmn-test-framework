@@ -14,6 +14,8 @@ const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
 
 export default class TestSMTP extends TestCase {
+    public isDefaultTest: boolean = false;
+
     async onPrepareTest() {
         await worldwideTenant.create();
         await definition.deploy(user, tenant);
