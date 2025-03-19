@@ -31,6 +31,9 @@ export default class TestDeleteTenant extends TestCase {
     // Check that we cannot again delete the tenant
     await StorageService.deleteTenant(user, tenant, 404);
 
+    // First check that we can no longer get a tenant user
+    await TenantService.getTenantUser(user, tenant, user, 404, 'It should not be possible to retrieve a tenant user when the tenant is deleted');
+
     // Check that we cannot get the tenant owners
     await TenantService.getTenantOwners(user, tenant, 404, 'It should not be possible to retrieve tenant owners when the tenant is deleted');
 
@@ -43,6 +46,10 @@ export default class TestDeleteTenant extends TestCase {
 
     await tenantEvents.assertDeleted();
 
+    // Again check that we can no longer get a tenant user
+    await TenantService.getTenantUser(user, tenant, user, 404, 'It should not be possible to retrieve a tenant user when the tenant is deleted');
+
+    // Check that we cannot get the tenant owners
     await TenantService.getTenantOwners(user, tenant, 404, 'It should not be possible to retrieve tenant owners when the tenant is deleted');
   }
 }
