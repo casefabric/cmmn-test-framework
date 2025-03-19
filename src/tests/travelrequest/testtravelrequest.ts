@@ -4,7 +4,6 @@ import Definitions from '../../cmmn/definitions/definitions';
 import CaseTeam from '../../cmmn/team/caseteam';
 import CaseTeamUser, { CaseOwner } from "../../cmmn/team/caseteamuser";
 import CaseService from '../../service/case/caseservice';
-import RepositoryService from '../../service/case/repositoryservice';
 import StartCase from '../../service/case/startcase';
 import TaskService from '../../service/task/taskservice';
 import TenantService from '../../service/tenant/tenantservice';
@@ -20,6 +19,7 @@ const approver = new TenantUser('approver', ['Approver'], 'Gerald', 'gerald-the-
 const lana = new TenantUser('lana', ['PersonalAssistant', 'Requestor', 'Approver'], 'lana', 'lana@all-you-need-is-me.com');
 
 export default class TestTravelRequest extends TestCase {
+    public isDefaultTest: boolean = false;
     async onPrepareTest() {
         await worldwideTenant.create();
         const platformOwner = worldwideTenant.sender;
