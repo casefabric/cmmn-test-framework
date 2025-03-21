@@ -1,0 +1,51 @@
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
+    <caseFileItemDefinition name="case_getlist_getdetails" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="case_getlist_getdetails.type"/>
+    <caseFileItemDefinition name="DetailsKey" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="identifiers_type_DetailsKey.object"/>
+    <caseFileItemDefinition name="identifiers" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="identifiers.type"/>
+    <caseFileItemDefinition name="details" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="details.type">
+        <property name="description" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="id" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    </caseFileItemDefinition>
+    <caseFileItemDefinition name="http" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="http.type">
+        <property name="port" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
+    </caseFileItemDefinition>
+    <caseFileItemDefinition name="exception" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="exception.type"/>
+    <case id="invalidmissingname.case" name="invalidmissingname" expressionLanguage="spel">
+        <caseFileModel cafienne:typeRef="case_getlist_getdetails.type">
+            <caseFileItem id="IdentifierList" name="IdentifierList" multiplicity="ExactlyOne" definitionRef="identifiers.type">
+                <children>
+                    <caseFileItem id="IdentifierList/DetailsKey" name="DetailsKey" multiplicity="ZeroOrMore" definitionRef="identifiers_type_DetailsKey.object"/>
+                </children>
+            </caseFileItem>
+            <caseFileItem id="DetailsContent" name="DetailsContent" multiplicity="ZeroOrMore" definitionRef="details.type"/>
+            <caseFileItem id="HTTPConfig" name="HTTPConfig" multiplicity="ExactlyOne" definitionRef="http.type"/>
+            <caseFileItem id="Exception" name="Exception" multiplicity="ZeroOrMore" definitionRef="exception.type"/>
+        </caseFileModel>
+        <casePlanModel id="cm__QTMkS_0" autoComplete="true">
+            <planItem id="pi_ht__QTMkS_0" name="null" definitionRef="ht__QTMkS_0"/>
+            <planItem id="pi_ms__QTMkS_0" name="null" definitionRef="ms__QTMkS_0"/>
+            <humanTask id="ht__QTMkS_0" isBlocking="true"/>
+            <milestone id="ms__QTMkS_0"/>
+        </casePlanModel>
+        <caseRoles/>
+        <textAnnotation id="_QTMkS_2">
+            <text><![CDATA[Tasks, milestones, stages, etc. need a name]]></text>
+        </textAnnotation>
+    </case>
+    <CMMNDI>
+        <CMMNDiagram>
+            <CMMNShape name="invalidmissingname" cmmnElementRef="cm__QTMkS_0">
+                <Bounds x="20" y="20" width="800" height="500"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__QTMkS_0">
+                <Bounds x="160" y="160" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ms__QTMkS_0">
+                <Bounds x="530" y="150" width="100" height="40"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_QTMkS_2">
+                <Bounds x="320" y="90" width="100" height="60"/>
+            </CMMNShape>
+        </CMMNDiagram>
+    </CMMNDI>
+</definitions>
