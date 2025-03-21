@@ -1,37 +1,37 @@
 <definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
-    <caseFileItemDefinition name="unspecified" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="unspecified.cfid"/>
+    <caseFileItemDefinition name="Root" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="case_calculation_type_Root.object"/>
+    <caseFileItemDefinition name="case_calculation" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="case_calculation.type"/>
+    <caseFileItemDefinition name="unspecified" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="unspecified.type"/>
     <case id="calculation.case" name="calculation" expressionLanguage="spel">
-        <caseFileModel>
-            <caseFileItem id="_ZlziS_0" name="Root" multiplicity="ExactlyOne" definitionRef="unspecified.cfid">
+        <caseFileModel cafienne:typeRef="case_calculation.type">
+            <caseFileItem id="Root" name="Root" multiplicity="ExactlyOne" definitionRef="case_calculation_type_Root.object">
                 <children>
-                    <caseFileItem id="_ZlziS_1" name="input1" multiplicity="ExactlyOne" definitionRef="unspecified.cfid"/>
-                    <caseFileItem id="_ZlziS_2" name="input2" multiplicity="ZeroOrMore" definitionRef="unspecified.cfid"/>
+                    <caseFileItem id="Root/input1" name="input1" multiplicity="ExactlyOne" definitionRef="unspecified.type"/>
+                    <caseFileItem id="Root/input2" name="input2" multiplicity="ExactlyOne" definitionRef="unspecified.type"/>
                 </children>
             </caseFileItem>
-            <caseFileItem id="_ZlziS_3" name="Output1" multiplicity="ExactlyOne" definitionRef="unspecified.cfid"/>
-            <caseFileItem id="_ZlziS_13" name="Output2" multiplicity="ExactlyOne" definitionRef="unspecified.cfid"/>
-            <caseFileItem id="_ZlziS_14" name="Output3" multiplicity="ExactlyOne" definitionRef="unspecified.cfid"/>
-            <caseFileItem id="_ZlziS_21" name="Output4" multiplicity="ExactlyOne" definitionRef="unspecified.cfid"/>
-            <caseFileItem id="_ZlziS_22" name="Output5" multiplicity="ExactlyOne" definitionRef="unspecified.cfid"/>
-            <caseFileItem id="_ZlziS_20" name="Output6" multiplicity="ExactlyOne" definitionRef="unspecified.cfid"/>
+            <caseFileItem id="Output1" name="Output1" multiplicity="ExactlyOne" definitionRef="unspecified.type"/>
+            <caseFileItem id="Output2" name="Output2" multiplicity="ExactlyOne" definitionRef="unspecified.type"/>
+            <caseFileItem id="Output3" name="Output3" multiplicity="ExactlyOne" definitionRef="unspecified.type"/>
+            <caseFileItem id="Output4" name="Output4" multiplicity="ExactlyOne" definitionRef="unspecified.type"/>
+            <caseFileItem id="Output5" name="Output5" multiplicity="ExactlyOne" definitionRef="unspecified.type"/>
+            <caseFileItem id="Output6" name="Output6" multiplicity="ExactlyOne" definitionRef="unspecified.type"/>
         </caseFileModel>
         <casePlanModel id="cm__ZlziS_0" name="calculation" autoComplete="true">
             <planItem id="pi_pt__ZlziS_0" name="CalculationTask" definitionRef="pt__ZlziS_0"/>
             <processTask id="pt__ZlziS_0" name="CalculationTask" isBlocking="true" processRef="simplecalculation.process">
-                <inputs id="_ZlziS_9" name="input1" bindingRef="_ZlziS_1"/>
-                <inputs id="_ZlziS_10" name="input2" bindingRef="_ZlziS_2">
+                <inputs id="_ZlziS_9" name="input1" bindingRef="Root/input1"/>
+                <inputs id="_ZlziS_10" name="input2" bindingRef="Root/input2">
                     <bindingRefinement id="_ZlziS_25">
-                        <body>
-                            <![CDATA[list]]>
-                        </body>
+                        <body><![CDATA[list]]></body>
                     </bindingRefinement>
                 </inputs>
-                <outputs id="_ZlziS_11" name="Output" bindingRef="_ZlziS_3"/>
-                <outputs id="_ZlziS_17" name="Output2" bindingRef="_ZlziS_13"/>
-                <outputs id="_ZlziS_18" name="Output3" bindingRef="_ZlziS_14"/>
-                <outputs id="_ZlziS_23" name="Output4" bindingRef="_ZlziS_21"/>
-                <outputs id="_ZlziS_24" name="Output5" bindingRef="_ZlziS_22"/>
-                <outputs id="_ZlziS_28" name="Output6" bindingRef="_ZlziS_20"/>
+                <outputs id="_ZlziS_11" name="Output" bindingRef="Output1"/>
+                <outputs id="_ZlziS_17" name="Output2" bindingRef="Output2"/>
+                <outputs id="_ZlziS_18" name="Output3" bindingRef="Output3"/>
+                <outputs id="_ZlziS_23" name="Output4" bindingRef="Output4"/>
+                <outputs id="_ZlziS_24" name="Output5" bindingRef="Output5"/>
+                <outputs id="_ZlziS_28" name="Output6" bindingRef="Output6"/>
                 <parameterMapping id="_ZlziS_5" sourceRef="_ZlziS_9" targetRef="_L7Tg_in1"/>
                 <parameterMapping id="_ZlziS_6" sourceRef="_ZlziS_10" targetRef="_0Fl1_in2"/>
                 <parameterMapping id="_ZlziS_7" sourceRef="_spg6_out1" targetRef="_ZlziS_11"/>
@@ -43,7 +43,7 @@
             </processTask>
         </casePlanModel>
         <caseRoles/>
-        <input id="_ZlziS_12" name="Root" bindingRef="_ZlziS_0"/>
+        <input id="_ZlziS_12" name="Root" bindingRef="Root"/>
     </case>
     <process name="SimpleCalculation" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified" id="simplecalculation.process">
         <input id="_L7Tg_in1" name="in1"/>
@@ -85,15 +85,11 @@
                 </step>
                 <map output="mappedOut4">
                     <input source="out5"/>
-                    <expression>
-                        <![CDATA[out5]]>
-                    </expression>
+                    <expression><![CDATA[out5]]></expression>
                 </map>
                 <step output="out4">
                     <input source="mappedOut4"/>
-                    <expression>
-                        <![CDATA[mappedOut4]]>
-                    </expression>
+                    <expression><![CDATA[mappedOut4]]></expression>
                 </step>
                 <step output="out5">
                     <input source="c3"/>
@@ -101,9 +97,7 @@
                 </step>
                 <step output="c3">
                     <input source="in1"/>
-                    <expression>
-                        <![CDATA[(11 != 13) && (2 * 2 == 4) && in1.nr == 1]]>
-                    </expression>
+                    <expression><![CDATA[(11 != 13) && (2 * 2 == 4) && in1.nr == 1]]></expression>
                 </step>
                 <step output="out6">
                     <input source="in1"/>

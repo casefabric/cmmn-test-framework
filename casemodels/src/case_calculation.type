@@ -1,0 +1,16 @@
+<type xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="case_calculation.type" name="case_calculation">
+    <schema>
+        <property id="sp__PHItA_0" name="Root" type="object" multiplicity="ExactlyOne">
+            <schema id="_wfYqX_0" name="Schema_0">
+                <property id="sp__wfYqX_1" name="input1" type="unspecified.type" multiplicity="ExactlyOne"/>
+                <property id="sp__wfYqX_2" name="input2" type="unspecified.type" multiplicity="ExactlyOne"/>
+            </schema>
+        </property>
+        <property id="sp__PHItA_1" name="Output1" type="unspecified.type" multiplicity="ExactlyOne"/>
+        <property id="sp__PHItA_2" name="Output2" type="unspecified.type" multiplicity="ExactlyOne"/>
+        <property id="sp__PHItA_3" name="Output3" type="unspecified.type" multiplicity="ExactlyOne"/>
+        <property id="sp__PHItA_4" name="Output4" type="unspecified.type" multiplicity="ExactlyOne"/>
+        <property id="sp__PHItA_5" name="Output5" type="unspecified.type" multiplicity="ExactlyOne"/>
+        <property id="sp__PHItA_6" name="Output6" type="unspecified.type" multiplicity="ExactlyOne"/>
+    </schema>
+</type>
