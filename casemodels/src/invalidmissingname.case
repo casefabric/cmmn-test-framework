@@ -1,0 +1,11 @@
+<case xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="invalidmissingname.case" name="invalidmissingname" expressionLanguage="spel" guid="_QTMkS">
+    <caseFileModel typeRef="case_getlist_getdetails.type"/>
+    <casePlanModel id="cm__QTMkS_0" autoComplete="true">
+        <humanTask id="pi_ht__QTMkS_0" isBlocking="true"/>
+        <milestone id="pi_ms__QTMkS_0"/>
+    </casePlanModel>
+    <caseRoles/>
+    <textAnnotation id="_QTMkS_2">
+        <text><![CDATA[Tasks, milestones, stages, etc. need a name]]></text>
+    </textAnnotation>
+</case>

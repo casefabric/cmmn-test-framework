@@ -67,6 +67,7 @@ import TestCaseFileExpressions from '../tests/api/expression/testcasefileexpress
 import TestRepeatWithMapping from '../tests/api/expression/testrepeatwithmapping';
 import TestStageTaskExpressions from '../tests/api/expression/teststagetaskexpressions';
 import TestTaskExpressions from '../tests/api/expression/testtaskexpressions';
+import TestInvalidDefinitions from '../tests/api/repository/testinvaliddefinitions';
 import TestRecursiveDefinitions from '../tests/api/repository/testrecursivedefinitions';
 import TestRepositoryAPI from '../tests/api/repository/testrepositoryapi';
 import TestRepeatStage from '../tests/api/stage/testrepeatstage';
@@ -197,6 +198,7 @@ const AllTests: Array<Function> = [
     , TestDebugMode
     , TestDocumentationAPI
     , TestRepositoryAPI
+    , TestInvalidDefinitions
     , TestRecursiveDefinitions
     , TestTokenValidation
     , TestCaseFileAPI
