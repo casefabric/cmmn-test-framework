@@ -1,0 +1,6 @@
+<type xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="casefile_with_array_structures.type" name="casefile_with_array_structures">
+    <schema>
+        <property id="sp__dGIj4_0" name="RootCaseFileItem" type="rootcasefileitem.type" multiplicity="ExactlyOne"/>
+        <property id="sp__dGIj4_1" name="RootCaseFileArray" type="rootcasefileitem.type" multiplicity="ZeroOrMore"/>
+    </schema>
+</type>

@@ -1,0 +1,8 @@
+<type xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="childitem.type" name="childitem">
+    <schema>
+        <property id="sp__Uq9pm_0" name="ChildName" type="string" multiplicity="ExactlyOne"/>
+        <property id="sp__Uq9pm_1" name="ChildAge" type="integer" multiplicity="ExactlyOne"/>
+        <property id="sp__Uq9pm_2" name="GrandChildItem" type="grandchilditem.type" multiplicity="ExactlyOne"/>
+        <property id="sp__Uq9pm_3" name="GrandChildArray" type="grandchilditem.type" multiplicity="ZeroOrMore"/>
+    </schema>
+</type>

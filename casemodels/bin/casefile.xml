@@ -1,35 +1,51 @@
 <definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
-    <caseFileItemDefinition name="rootcasefileitem" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="rootcasefileitem.cfid">
+    <caseFileItemDefinition name="casefile_with_array_structures" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="casefile_with_array_structures.type"/>
+    <caseFileItemDefinition name="rootcasefileitem" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="rootcasefileitem.type">
         <property name="RootProperty1" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
         <property name="RootProperty2" type="http://www.omg.org/spec/CMMN/PropertyType/boolean"/>
     </caseFileItemDefinition>
-    <caseFileItemDefinition name="childitem" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="childitem.cfid">
+    <caseFileItemDefinition name="childitem" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="childitem.type">
         <property name="ChildName" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
         <property name="ChildAge" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
     </caseFileItemDefinition>
-    <caseFileItemDefinition name="grandchilditem" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="grandchilditem.cfid">
+    <caseFileItemDefinition name="grandchilditem" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="grandchilditem.type">
         <property name="GrandChildName" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
         <property name="GrandChildBirthDate" type="http://www.omg.org/spec/CMMN/PropertyType/date"/>
     </caseFileItemDefinition>
     <case id="casefile.case" name="casefile" expressionLanguage="spel">
-        <caseFileModel>
-            <caseFileItem id="_kWyIV_1" name="RootCaseFileItem" multiplicity="ExactlyOne" definitionRef="rootcasefileitem.cfid">
+        <caseFileModel cafienne:typeRef="casefile_with_array_structures.type">
+            <caseFileItem id="RootCaseFileItem" name="RootCaseFileItem" multiplicity="ExactlyOne" definitionRef="rootcasefileitem.type">
                 <children>
-                    <caseFileItem id="_kWyIV_3" name="ChildItem" multiplicity="ExactlyOne" definitionRef="childitem.cfid">
+                    <caseFileItem id="RootCaseFileItem/ChildItem" name="ChildItem" multiplicity="ExactlyOne" definitionRef="childitem.type">
                         <children>
-                            <caseFileItem id="_kWyIV_5" name="GrandChildItem" multiplicity="ExactlyOne" definitionRef="grandchilditem.cfid"/>
-                            <caseFileItem id="_kWyIV_6" name="GrandChildArray" multiplicity="ZeroOrMore" definitionRef="grandchilditem.cfid"/>
+                            <caseFileItem id="RootCaseFileItem/ChildItem/GrandChildItem" name="GrandChildItem" multiplicity="ExactlyOne" definitionRef="grandchilditem.type"/>
+                            <caseFileItem id="RootCaseFileItem/ChildItem/GrandChildArray" name="GrandChildArray" multiplicity="ZeroOrMore" definitionRef="grandchilditem.type"/>
                         </children>
                     </caseFileItem>
-                    <caseFileItem id="_kWyIV_4" name="ChildArray" multiplicity="ZeroOrMore" definitionRef="childitem.cfid">
+                    <caseFileItem id="RootCaseFileItem/ChildArray" name="ChildArray" multiplicity="ZeroOrMore" definitionRef="childitem.type">
                         <children>
-                            <caseFileItem id="_kWyIV_7" name="GrandChildItem" multiplicity="ExactlyOne" definitionRef="grandchilditem.cfid"/>
-                            <caseFileItem id="_kWyIV_8" name="GrandChildArray" multiplicity="ZeroOrMore" definitionRef="grandchilditem.cfid"/>
+                            <caseFileItem id="RootCaseFileItem/ChildArray/GrandChildItem" name="GrandChildItem" multiplicity="ExactlyOne" definitionRef="grandchilditem.type"/>
+                            <caseFileItem id="RootCaseFileItem/ChildArray/GrandChildArray" name="GrandChildArray" multiplicity="ZeroOrMore" definitionRef="grandchilditem.type"/>
                         </children>
                     </caseFileItem>
                 </children>
             </caseFileItem>
-            <caseFileItem id="_kWyIV_2" name="RootCaseFileArray" multiplicity="ZeroOrMore" definitionRef="rootcasefileitem.cfid"/>
+            <caseFileItem id="RootCaseFileArray" name="RootCaseFileArray" multiplicity="ZeroOrMore" definitionRef="rootcasefileitem.type">
+                <children>
+                    <caseFileItem id="RootCaseFileArray/ChildItem" name="ChildItem" multiplicity="ExactlyOne" definitionRef="childitem.type">
+                        <children>
+                            <caseFileItem id="RootCaseFileArray/ChildItem/GrandChildItem" name="GrandChildItem" multiplicity="ExactlyOne" definitionRef="grandchilditem.type"/>
+                            <caseFileItem id="RootCaseFileArray/ChildItem/GrandChildArray" name="GrandChildArray" multiplicity="ZeroOrMore" definitionRef="grandchilditem.type"/>
+                        </children>
+                    </caseFileItem>
+                    <caseFileItem id="RootCaseFileArray/ChildArray" name="ChildArray" multiplicity="ZeroOrMore" definitionRef="childitem.type">
+                        <children>
+                            <caseFileItem id="RootCaseFileArray/ChildArray/GrandChildItem" name="GrandChildItem" multiplicity="ExactlyOne" definitionRef="grandchilditem.type"/>
+                            <caseFileItem id="RootCaseFileArray/ChildArray/GrandChildArray" name="GrandChildArray" multiplicity="ZeroOrMore" definitionRef="grandchilditem.type"/>
+                        </children>
+                    </caseFileItem>
+                </children>
+            </caseFileItem>
         </caseFileModel>
         <casePlanModel id="cm__kWyIV_0" name="casefile" autoComplete="true">
             <planItem id="pi_ht__kWyIV_0" name="Simplistic Unused Task" definitionRef="ht__kWyIV_0"/>
@@ -40,11 +56,12 @@
     <CMMNDI>
         <CMMNDiagram>
             <CMMNShape cmmnElementRef="cm__kWyIV_0">
-                <Bounds x="20" y="20" width="800" height="500"/>
+                <Bounds x="40" y="30" width="800" height="500"/>
             </CMMNShape>
             <CMMNShape cmmnElementRef="pi_ht__kWyIV_0">
-                <Bounds x="150" y="110" width="140" height="80"/>
+                <Bounds x="170" y="120" width="140" height="80"/>
             </CMMNShape>
+            <CMMNEdge sourceCMMNElementRef="RootCaseFileItem/ChildArray" targetCMMNElementRef="crit__kWyIV_0"/>
         </CMMNDiagram>
     </CMMNDI>
 </definitions>
