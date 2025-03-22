@@ -1,0 +1,6 @@
+<type xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="grandchilditem.type" name="grandchilditem">
+    <schema>
+        <property id="sp__oYaSO_0" name="GrandChildName" type="string" multiplicity="ExactlyOne"/>
+        <property id="sp__oYaSO_1" name="GrandChildBirthDate" type="string" multiplicity="ExactlyOne" format="date"/>
+    </schema>
+</type>

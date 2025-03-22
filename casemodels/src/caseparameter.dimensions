@@ -1,0 +1,20 @@
+<CMMNDI xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
+    <CMMNDiagram>
+        <CMMNShape name="caseparameter" cmmnElementRef="cm__xvmgO_0">
+            <Bounds x="20" y="20" width="800" height="500"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ht__xvmgO_0">
+            <Bounds x="330" y="190" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="crit__xvmgO_0">
+            <Bounds x="324" y="210" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="RootCaseFileArray/ChildArray/GrandChildItem">
+            <Bounds x="151.92047119140625" y="193.09091186523438" width="25" height="40"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="pi_ht__xvmgO_1">
+            <Bounds x="210" y="80" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNEdge sourceCMMNElementRef="RootCaseFileArray/ChildArray/GrandChildItem" targetCMMNElementRef="crit__xvmgO_0"/>
+    </CMMNDiagram>
+</CMMNDI>

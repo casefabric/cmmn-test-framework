@@ -26,6 +26,7 @@ import TestValidStartCase from '../tests/api/case/testvalidstartcase';
 import TestUsersCaseAPI from '../tests/api/case/usercases';
 import TestCaseFileAPI from '../tests/api/casefile/testcasefileapi';
 import TestCaseFileArrayAPI from '../tests/api/casefile/testcasefilearrayapi';
+import TestCaseParameterAPI from '../tests/api/casefile/testcaseparameterapi';
 import TestTaskBindingRefinement from '../tests/api/casefile/testtaskbindingrefinement';
 import TestTaskCompletion from '../tests/api/casefile/testtaskcompletion';
 import TestTaskOutputOperations from '../tests/api/casefile/testtaskoutputoperations';
@@ -204,6 +205,7 @@ const AllTests: Array<Function> = [
     , TestCaseFileAPI
     , TestCaseFileArrayAPI
     , TestCaseFileExpressions
+    , TestCaseParameterAPI
     , TestBootstrapCaseFileEvents
     , TestCasePlanAPI
     , TestCasePlanHistoryAPI

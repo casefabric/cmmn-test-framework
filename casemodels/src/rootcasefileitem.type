@@ -1,0 +1,8 @@
+<type xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="rootcasefileitem.type" name="rootcasefileitem">
+    <schema>
+        <property id="sp__JY5c3_0" name="RootProperty1" type="string" multiplicity="ExactlyOne"/>
+        <property id="sp__JY5c3_1" name="RootProperty2" type="boolean" multiplicity="ExactlyOne"/>
+        <property id="sp__JY5c3_2" name="ChildItem" type="childitem.type" multiplicity="ExactlyOne"/>
+        <property id="sp__JY5c3_3" name="ChildArray" type="childitem.type" multiplicity="ZeroOrMore"/>
+    </schema>
+</type>
