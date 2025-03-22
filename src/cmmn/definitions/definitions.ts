@@ -7,6 +7,7 @@ export default class Definitions {
     public static readonly BootstrapCaseFileEvents = new Definitions('bootstrap-casefile-events.xml');
     public static readonly Calculation = new Definitions('calculation.xml');
     public static readonly CaseFile = new Definitions('casefile.xml');
+    public static readonly CaseParameter = new Definitions('caseparameter.xml');
     public static readonly CaseTeam = new Definitions('caseteam.xml');
     public static readonly CaseWithSpace = new Definitions('casemetspatie.xml');
     public static readonly Compatibility = new Definitions('compatibility.xml');

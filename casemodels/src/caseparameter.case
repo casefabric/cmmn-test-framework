@@ -1,0 +1,15 @@
+<case xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="caseparameter.case" name="caseparameter" expressionLanguage="spel" guid="_xvmgO">
+    <caseFileModel typeRef="casefile_with_array_structures.type"/>
+    <casePlanModel id="cm__xvmgO_0" name="caseparameter" autoComplete="true">
+        <humanTask id="pi_ht__xvmgO_0" name="Start when creating GrandChildItem" isBlocking="true">
+            <entryCriterion id="crit__xvmgO_0">
+                <caseFileItemOnPart id="_xvmgO_6" sourceRef="RootCaseFileArray/ChildArray/GrandChildItem">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </entryCriterion>
+        </humanTask>
+        <humanTask id="pi_ht__xvmgO_1" name="Immediately Starting Task" isBlocking="true"/>
+    </casePlanModel>
+    <caseRoles/>
+    <input id="_xvmgO_9" name="RootCaseFileItem" bindingRef="RootCaseFileItem"/>
+</case>
