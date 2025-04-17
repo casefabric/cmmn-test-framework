@@ -74,6 +74,11 @@ export default class TestDeleteTenantWithContent extends TestCase {
 
     // Then the cases also must have been deleted, let's try on the first one ...
     await PollUntilSuccess(async () => {
+      await CaseService.getCase(user, caseHierarchy.id, 404, 'It should not be possible to retrieve the case');
+    }, `Check existence of case ${caseHierarchy.id}`);
+
+    // Also try to retrieve the discretionary items
+    await PollUntilSuccess(async () => {
       await CaseService.getDiscretionaryItems(user, caseHierarchy.id, 404, 'It should not be possible to retrieve discretionary items of the case');
     }, `Check existence of case ${caseHierarchy.id}`);
 
