@@ -23,6 +23,7 @@ export default class DebugService {
     }
 
     static async forceRecovery(user: User, model: string | Case | Tenant) {
-        return await CafienneService.patch(user, `/debug/force-recovery/${model}`)
+        const actorType = model instanceof Case ? 'case' : 'tenant';
+        return await CafienneService.patch(user, `/debug/force-recovery/${model}?actorType=${actorType}`)
     }
 }
