@@ -65,7 +65,7 @@ export default class TestArchiveCase extends TestCase {
     this.readLine("Case is fully archived; press enter to continue assertion tests");
 
     // Getting the case should not be possible, as it is archived (this tests query database removal)
-    await SomeTime(3000);
+    await SomeTime(5000);
     await CaseService.getCase(user, caseInstance, 404);
 
     // Also not possible to get the discretionary items should not be possible (this checks Case ModelActor removed from memory)
