@@ -72,7 +72,7 @@ export default class TestArchiveCase extends TestCase {
     await CaseService.getDiscretionaryItems(user, caseInstance, 404);
 
     // Now validate that it is not possible to create a new case instance with the same id as the archived case has.
-    await SomeTime(3000);
+    await SomeTime(5000);
     startCase.caseInstanceId = caseInstance.id;
     await CaseService.startCase(user, startCase, 400);
 
