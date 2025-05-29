@@ -159,8 +159,8 @@ export default class TaskService {
      * @param Case
      * @param user 
      */
-    static async getCaseTasks(user: User, caseId: Case | string, expectedStatusCode: number = 200, msg = `GetCaseTasks is not expected to succeed for member ${user} in case ${caseId}`, trace: Trace = new Trace()): Promise<Array<Task>> {
-        const response = await CafienneService.get(`/tasks/case/${caseId}`, user);
+    static async getCaseTasks(user: User, caseId: Case | string, includeSubCaseTasks: boolean = false, expectedStatusCode: number = 200, msg = `GetCaseTasks is not expected to succeed for member ${user} in case ${caseId}`, trace: Trace = new Trace()): Promise<Array<Task>> {
+        const response = await CafienneService.get(`/tasks/case/${caseId}?includeSubCaseTasks=${includeSubCaseTasks}`, user);
         return await checkJSONResponse(response, msg, expectedStatusCode, [Task], trace);
     }
 
@@ -173,7 +173,7 @@ export default class TaskService {
      */
     static async getCaseTask(user: User, caseId: Case | string, task: Task | PlanItem | string, trace: Trace = new Trace()): Promise<Task> {
         const taskId = getTaskId(task);
-        const tasks = await this.getCaseTasks(user, caseId, undefined, undefined, trace);
+        const tasks = await this.getCaseTasks(user, caseId, false, undefined, undefined, trace);
         const responseTask = tasks.find(task => task.id === taskId || task.taskName === taskId);
         if (!responseTask) {
             throw new AsyncError(trace, `Cannot find task ${taskId} in case ${caseId}; tasks are ${tasks.map(t => t.taskName).join('\'')}`);

@@ -73,7 +73,7 @@ export default class TestCaseTeam extends TestCase {
 
         // As receiver is not part of the team, getting tasks for receiver should fail
         await TaskService.getTask(receiver, approveTask, 404);
-        await TaskService.getCaseTasks(receiver, caseInstance, 404);
+        await TaskService.getCaseTasks(receiver, caseInstance, false, 404);
 
         // Sender can add a role mapping to the case team
         await CaseTeamService.setTenantRole(sender, caseInstance, new CaseTeamTenantRole('Receiver', [requestorRole]));
@@ -106,7 +106,7 @@ export default class TestCaseTeam extends TestCase {
 
         // Finally, sender cannot perform find case, case tasks, and task
         await CaseService.getCase(sender, caseInstance, 404);
-        await TaskService.getCaseTasks(sender, caseInstance, 404);
+        await TaskService.getCaseTasks(sender, caseInstance, false, 404);
         await TaskService.getTask(sender, approveTask, 404);
     }
 }
