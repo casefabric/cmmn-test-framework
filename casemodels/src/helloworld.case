@@ -55,13 +55,7 @@ and Send response]]></text>
             </extensionElements>
         </humanTask>
     </casePlanModel>
-    <caseRoles>
-        <role id="role_csT3f_0" name="ADMIN">
-            <documentation textFormat="text/plain">
-                <text><![CDATA[admin of the world]]></text>
-            </documentation>
-        </role>
-    </caseRoles>
+    <caseRoles caseTeamRef="testteam.caseteam"/>
     <input id="csVQy_inCPs_0" name="Greeting" bindingRef="cfi_csVQy_0"/>
     <extensionElements mustUnderstand="false">
         <cafienne:start-case-model xmlns:cafienne="org.cafienne">{

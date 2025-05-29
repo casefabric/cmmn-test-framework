@@ -6,7 +6,7 @@
         <humanTask id="cm_csQA1_4" name="T1" isBlocking="true"/>
         <humanTask id="cm_csQA1_6" name="T2" isBlocking="true">
             <planningTable id="pt_cm_7">
-                <humanTask id="cm_csQA1_13" name="Opnieuw T1" authorizedRoleRefs="_Jn9Vt_7" isBlocking="true"/>
+                <humanTask id="cm_csQA1_13" name="Opnieuw T1" authorizedRoleRefs="cr__rAKmR_0" isBlocking="true"/>
                 <applicabilityRule id="rule_csQA1_0" name="isValid">
                     <condition>
                         <body>
@@ -33,11 +33,11 @@
                 </planItemOnPart>
             </entryCriterion>
             <planningTable id="pt_cm_25">
-                <humanTask id="cm_csQA1_27" name="T5" authorizedRoleRefs="_Jn9Vt_8" isBlocking="true"/>
+                <humanTask id="cm_csQA1_27" name="T5" authorizedRoleRefs="cr__rAKmR_1" isBlocking="true"/>
             </planningTable>
         </stage>
         <planningTable id="pt_cm_undefined_3">
-            <humanTask id="cm_csQA1_10" name="T4" authorizedRoleRefs="_Jn9Vt_7 _Jn9Vt_8" isBlocking="true">
+            <humanTask id="cm_csQA1_10" name="T4" authorizedRoleRefs="cr__rAKmR_0 cr__rAKmR_1" isBlocking="true">
                 <itemControl>
                     <repetitionRule id="cm_csQA1_10_repetitionRule">
                         <condition>
@@ -58,10 +58,7 @@
             </applicabilityRule>
         </planningTable>
     </casePlanModel>
-    <caseRoles>
-        <role id="_Jn9Vt_7" name="Employee"/>
-        <role id="_Jn9Vt_8" name="Manager"/>
-    </caseRoles>
+    <caseRoles caseTeamRef="testteam.caseteam"/>
     <textAnnotation id="_Jn9Vt_9">
         <text>
             <![CDATA[Can only be planned by "Employee" role]]>

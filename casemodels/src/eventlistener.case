@@ -1,4 +1,4 @@
-<case id="eventlistener.case" name="eventlistener" expressionLanguage="spel" guid="_RFdjm">
+<case xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="eventlistener.case" name="eventlistener" expressionLanguage="spel" guid="_RFdjm">
     <caseFileModel>
         <caseFileItem id="_vdfDP_15" name="Root" multiplicity="ExactlyOne" definitionRef="root.cfid"/>
     </caseFileModel>
@@ -15,9 +15,7 @@
             <itemControl id="_vdfDP_7">
                 <repetitionRule id="_vdfDP_8">
                     <condition id="_vdfDP_9">
-                        <body>
-                            <![CDATA[true]]>
-                        </body>
+                        <body><![CDATA[true]]></body>
                     </condition>
                 </repetitionRule>
             </itemControl>
@@ -26,13 +24,11 @@
             <itemControl id="_RFdjm_2">
                 <repetitionRule id="_RFdjm_3">
                     <condition id="_RFdjm_4">
-                        <body>
-                            <![CDATA[true]]>
-                        </body>
+                        <body><![CDATA[true]]></body>
                     </condition>
                 </repetitionRule>
             </itemControl>
-            <userEvent id="pi_ue__vdfDP_1" name="EmployeeUserEvent" authorizedRoleRefs="_vdfDP_6"/>
+            <userEvent id="pi_ue__vdfDP_1" name="EmployeeUserEvent" authorizedRoleRefs="cr__rAKmR_0"/>
             <milestone id="pi_ms__vdfDP_0" name="M1">
                 <entryCriterion id="_vdfDP_4" name="EntryCriterion_0">
                     <planItemOnPart id="_vdfDP_5" sourceRef="pi_ue__vdfDP_1">
@@ -42,23 +38,17 @@
                 <itemControl id="_vdfDP_1">
                     <requiredRule id="_vdfDP_2">
                         <condition id="_vdfDP_3">
-                            <body>
-                                <![CDATA[true]]>
-                            </body>
+                            <body><![CDATA[true]]></body>
                         </condition>
                     </requiredRule>
                 </itemControl>
             </milestone>
         </stage>
     </casePlanModel>
-    <caseRoles>
-        <role id="_vdfDP_6" name="Employee"/>
-    </caseRoles>
+    <caseRoles caseTeamRef="testteam.caseteam"/>
     <textAnnotation id="_vdfDP_shape_8">
-        <text>
-            <![CDATA[Anyone can start this task.
+        <text><![CDATA[Anyone can start this task.
 By doing that, the user will
-get added to the case team]]>
-        </text>
+get added to the case team]]></text>
     </textAnnotation>
 </case>
