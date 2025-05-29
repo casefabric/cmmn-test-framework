@@ -1,0 +1,15 @@
+<caseteam xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="migration_helloworld_v1.caseteam" name="migration_helloworld_v1">
+    <documentation textFormat="text/plain">
+        <text><![CDATA[Helloworld team after migration]]></text>
+    </documentation>
+    <role id="role_csT3f_0" name="ADMIN">
+        <documentation textFormat="text/plain">
+            <text><![CDATA[admin of the world]]></text>
+        </documentation>
+    </role>
+    <role id="_nTPPc_6" name="With a decent name">
+        <documentation textFormat="text/plain">
+            <text><![CDATA[for whomsoever wants it]]></text>
+        </documentation>
+    </role>
+</caseteam>

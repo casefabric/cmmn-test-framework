@@ -1,8 +1,6 @@
-<case id="helloworld_base.case" name="HelloWorld_Migrated" expressionLanguage="spel" guid="_nTPPc">
+<case xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="helloworld_base.case" name="HelloWorld_Migrated" expressionLanguage="spel" guid="_nTPPc">
     <documentation textFormat="text/plain">
-        <text>
-            <![CDATA[Hello World]]>
-        </text>
+        <text><![CDATA[Hello World]]></text>
     </documentation>
     <caseFileModel>
         <caseFileItem id="cfi_csVQy_0" name="Greetings" multiplicity="ExactlyOne" definitionRef="greeting.cfid"/>
@@ -11,24 +9,17 @@
     <casePlanModel id="cm_HelloWorld.case_HelloWorld_0" name="HelloWorld_Migrated" autoComplete="true">
         <humanTask id="cm_csVQy_167" name="Receive Greeting and Send response" isBlocking="true">
             <documentation textFormat="text/plain">
-                <text>
-                    <![CDATA[Receive Greeting
-and Send response]]>
-                </text>
+                <text><![CDATA[Receive Greeting and Send response]]></text>
             </documentation>
             <itemControl id="_nTPPc_1">
                 <repetitionRule id="_nTPPc_5">
                     <condition id="_nTPPc_7">
-                        <body>
-                            <![CDATA[true]]>
-                        </body>
+                        <body><![CDATA[true]]></body>
                     </condition>
                 </repetitionRule>
                 <requiredRule id="_nTPPc_16">
                     <condition id="_nTPPc_17">
-                        <body>
-                            <![CDATA[task.index < 2]]>
-                        </body>
+                        <body><![CDATA[task.index < 2]]></body>
                     </condition>
                 </requiredRule>
             </itemControl>
@@ -39,23 +30,17 @@ and Send response]]>
                     <parameterMapping id="inPM_cm_cshJq_4_0" sourceRef="inTP_cm_cs2F1_174_1" targetRef="Greeting"/>
                     <parameterMapping id="outPM_cm_csuYs_174_0" sourceRef="Response" targetRef="outTP_cm_cs2F1_174_1">
                         <transformation id="_nTPPc_6">
-                            <body>
-                                <![CDATA[map("Message", Response.Message + "IS ALWAYS EXTENDED")]]>
-                            </body>
+                            <body><![CDATA[map("Message", Response.Message + "IS ALWAYS EXTENDED")]]></body>
                         </transformation>
                     </parameterMapping>
                     <assignment id="_nTPPc_3" contextRef="cfi_csVQy_0">
                         <condition id="_nTPPc_4">
-                            <body>
-                                <![CDATA[Greeting.To]]>
-                            </body>
+                            <body><![CDATA[Greeting.To]]></body>
                         </condition>
                     </assignment>
                     <duedate id="_nTPPc_9">
                         <condition id="_nTPPc_10">
-                            <body>
-                                <![CDATA[T(java.time.Instant).now()]]>
-                            </body>
+                            <body><![CDATA[T(java.time.Instant).now()]]></body>
                         </condition>
                     </duedate>
                 </cafienne:implementation>
@@ -70,9 +55,7 @@ and Send response]]>
             <itemControl id="_nTPPc_2">
                 <repetitionRule id="_nTPPc_18">
                     <condition id="_nTPPc_19">
-                        <body>
-                            <![CDATA[true]]>
-                        </body>
+                        <body><![CDATA[true]]></body>
                     </condition>
                 </repetitionRule>
             </itemControl>
@@ -82,16 +65,12 @@ and Send response]]>
                     <parameterMapping id="inPM_cm_cs3hg_196_0" sourceRef="inTP_cm_cs3hg_196_0" targetRef="Response"/>
                     <assignment id="_nTPPc_12" contextRef="cfi_csVQy_0">
                         <condition id="_nTPPc_13">
-                            <body>
-                                <![CDATA[Greeting.From]]>
-                            </body>
+                            <body><![CDATA[Greeting.From]]></body>
                         </condition>
                     </assignment>
                     <duedate id="_nTPPc_14">
                         <condition id="_nTPPc_15">
-                            <body>
-                                <![CDATA[T(java.time.Instant).now()]]>
-                            </body>
+                            <body><![CDATA[T(java.time.Instant).now()]]></body>
                         </condition>
                     </duedate>
                 </cafienne:implementation>
@@ -106,22 +85,7 @@ and Send response]]>
             </entryCriterion>
         </humanTask>
     </casePlanModel>
-    <caseRoles>
-        <role id="role_csT3f_0" name="ADMIN">
-            <documentation textFormat="text/plain">
-                <text>
-                    <![CDATA[admin of the world]]>
-                </text>
-            </documentation>
-        </role>
-        <role id="_nTPPc_6" name="With a decent name">
-            <documentation textFormat="text/plain">
-                <text>
-                    <![CDATA[for whomsoever wants it]]>
-                </text>
-            </documentation>
-        </role>
-    </caseRoles>
+    <caseRoles caseTeamRef="migration_helloworld_v1.caseteam"/>
     <input id="csVQy_inCPs_0" name="Greeting" bindingRef="cfi_csVQy_0"/>
     <extensionElements mustUnderstand="false">
         <cafienne:start-case-model xmlns:cafienne="org.cafienne">{

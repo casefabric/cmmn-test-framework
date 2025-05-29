@@ -1,0 +1,8 @@
+<caseteam xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="migration_v1.caseteam" name="migration_v1">
+    <documentation textFormat="text/plain">
+        <text><![CDATA[Team after migration]]></text>
+    </documentation>
+    <role id="_0UEh7_7" name="role1"/>
+    <role id="_0UEh7_8" name="role2"/>
+    <role id="_0UEh7_9" name="role3_v1"/>
+</caseteam>
