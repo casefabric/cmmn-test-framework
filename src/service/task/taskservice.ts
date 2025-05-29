@@ -160,7 +160,8 @@ export default class TaskService {
      * @param user 
      */
     static async getCaseTasks(user: User, caseId: Case | string, includeSubCaseTasks: boolean = false, expectedStatusCode: number = 200, msg = `GetCaseTasks is not expected to succeed for member ${user} in case ${caseId}`, trace: Trace = new Trace()): Promise<Array<Task>> {
-        const response = await CafienneService.get(`/tasks/case/${caseId}?includeSubCaseTasks=${includeSubCaseTasks}`, user);
+        const optionalSubcaseParameter = includeSubCaseTasks ? '?includeSubCaseTasks=true' : '';
+        const response = await CafienneService.get(`/tasks/case/${caseId}${optionalSubcaseParameter}`, user);
         return await checkJSONResponse(response, msg, expectedStatusCode, [Task], trace);
     }
 

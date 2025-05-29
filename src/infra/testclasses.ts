@@ -39,7 +39,8 @@ import TestFaultBubbling from '../tests/api/caseplan/stage/testfaultbubbling';
 import TestModelBasedReactivate from '../tests/api/caseplan/stage/testmodelbasedreactivate';
 import TestNoFaultBubbling from '../tests/api/caseplan/stage/testnofaultbubbling';
 import TestStage from '../tests/api/caseplan/stage/teststage';
-import TestSubCaseFailureBubble from '../tests/api/caseplan/task/subcase/testsubcasefailurebubble';
+import TestSubCaseFailureBubble from '../tests/api/caseplan/task/casetask/testsubcasefailurebubble';
+import TestSubCaseTasks from '../tests/api/caseplan/task/casetask/testsubcasetasks';
 import TestAuthenticationFlow from '../tests/api/caseplan/task/testauthenticationflow';
 import TestProcessTask from '../tests/api/caseplan/task/testprocesstask';
 import TestTaskWithSpaces from '../tests/api/caseplan/task/testtaskwithspaces';
@@ -125,6 +126,8 @@ export default class TestClasses {
             list.forEach(name => {
                 if (name === '*') {
                     AllTests.forEach(addDefaultRunner);
+                } else if (name === 'tasks') {
+                    TaskTests.forEach(addExplicitRunner);
                 } else if (name === 'storage') {
                     StorageTests.forEach(addExplicitRunner);
                 } else if (name === 'migration') {
@@ -143,21 +146,37 @@ export default class TestClasses {
     }
 }
 
+const TaskTests: Array<Function> = [
+    TestTaskAPI
+    , TestTaskCountAPI
+    , TestTaskFilterAPI
+    , TestTaskFilterAPI2
+    , TestTaskWithSpaces
+    , TestTaskValidationAPI
+    , TestTaskExpressions
+    , TestStageTaskExpressions
+    , TestTaskBindingRefinement
+    , TestTaskCompletion
+    , TestTaskOutputOperations
+    , TestCaseTeamTaskAuthorizations
+    , TestCaseTeamTaskAuthorizationsForGroups
+    , TestSubCaseTasks
+]
+
 const StorageTests: Array<Function> = [
-    TestArchiveHelloworld,
-    TestArchiveCase,
-    TestRestoreCase,
-    TestRestoreCaseWithTimer,
-    TestDeleteCase,
-    TestDeleteHelloworld,
-    TestDeleteTenant,
-    TestDeleteTenantWithContent,
-    TestDeleteCaseAuthorization
+    TestArchiveHelloworld
+    , TestArchiveCase
+    , TestRestoreCase
+    , TestRestoreCaseWithTimer
+    , TestDeleteCase
+    , TestDeleteHelloworld
+    , TestDeleteTenant
+    , TestDeleteTenantWithContent
+    , TestDeleteCaseAuthorization
 ];
 
 const MigrationTests: Array<Function> = [
     TestProcessTaskMigration
-    , TestProcessTaskMigration
     , TestCaseMigration
     , TestSubCaseMigration
     , TestCaseTeamMigration
@@ -175,9 +194,7 @@ const AllTests: Array<Function> = [
     , TestVersion
     , TestTenantRegistration
     , TestConsentGroupAPI
-    , TestTaskCompletion
-    , TestTaskOutputOperations
-    , TestTaskBindingRefinement
+    , ...TaskTests
     , TestEntryCriteriaOnCaseInputParameters
     , TestEntryCriteriaOnRecovery
     , TestStage
@@ -190,12 +207,6 @@ const AllTests: Array<Function> = [
     , TestUsersCaseAPI
     , TestDiscretionaryItems
     , TestStatsAPI
-    , TestTaskValidationAPI
-    , TestTaskAPI
-    , TestTaskFilterAPI
-    , TestTaskFilterAPI2
-    , TestTaskCountAPI
-    , TestTaskWithSpaces
     , TestDynamicForm
     , TestFourEyes
     , TestDebugMode
@@ -215,16 +226,12 @@ const AllTests: Array<Function> = [
     , TestFootballBusinessIdentifiers
     , TestHelloWorldBusinessIdentifiers
     , TestRepeatWithMapping
-    , TestTaskExpressions
-    , TestStageTaskExpressions
     , TestProcessTask
     , TestAuthenticationFlow
     , TestCaseTeamAPI
     , TestCaseTeam
     , TestCaseTeamTenantRoleMembers
     , TestCaseTeamConsentGroupAPI
-    , TestCaseTeamTaskAuthorizations
-    , TestCaseTeamTaskAuthorizationsForGroups
     , TestCaseTeamAuthorizations
     , TestEventAuthorization
     , TestArchiveHelloworld
