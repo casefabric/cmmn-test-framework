@@ -1,8 +1,6 @@
-<case id="caseteam.case" name="caseteam" expressionLanguage="spel" guid="_Crena">
+<case xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="caseteam.case" name="caseteam" expressionLanguage="spel" guid="_Crena">
     <documentation textFormat="text/plain">
-        <text>
-            <![CDATA[Show authorization structure]]>
-        </text>
+        <text><![CDATA[Show authorization structure]]></text>
     </documentation>
     <caseFileModel>
         <caseFileItem id="_jAVt1_3" name="Root" multiplicity="ExactlyOne" definitionRef="root.cfid"/>
@@ -12,9 +10,7 @@
             <itemControl id="_Crena_0">
                 <repetitionRule id="_Crena_8">
                     <condition id="_Crena_9">
-                        <body>
-                            <![CDATA[true]]>
-                        </body>
+                        <body><![CDATA[true]]></body>
                     </condition>
                 </repetitionRule>
             </itemControl>
@@ -23,9 +19,7 @@
             <itemControl id="_Crena_1">
                 <repetitionRule id="_Crena_6">
                     <condition id="_Crena_7">
-                        <body>
-                            <![CDATA[true]]>
-                        </body>
+                        <body><![CDATA[true]]></body>
                     </condition>
                 </repetitionRule>
             </itemControl>
@@ -34,9 +28,7 @@
             <itemControl id="_Crena_2">
                 <repetitionRule id="_Crena_10">
                     <condition id="_Crena_11">
-                        <body>
-                            <![CDATA[true]]>
-                        </body>
+                        <body><![CDATA[true]]></body>
                     </condition>
                 </repetitionRule>
             </itemControl>
@@ -45,9 +37,7 @@
             <itemControl id="_Crena_4">
                 <repetitionRule id="_Crena_14">
                     <condition id="_Crena_15">
-                        <body>
-                            <![CDATA[true]]>
-                        </body>
+                        <body><![CDATA[true]]></body>
                     </condition>
                 </repetitionRule>
             </itemControl>
@@ -56,30 +46,11 @@
             <itemControl id="_Crena_5">
                 <repetitionRule id="_Crena_12">
                     <condition id="_Crena_13">
-                        <body>
-                            <![CDATA[true]]>
-                        </body>
+                        <body><![CDATA[true]]></body>
                     </condition>
                 </repetitionRule>
             </itemControl>
         </humanTask>
     </casePlanModel>
-    <caseRoles>
-        <role id="_jAVt1_0" name="Requestor"/>
-        <role id="_jAVt1_1" name="Approver"/>
-        <role id="_jAVt1_2" name="PersonalAssistant">
-            <documentation textFormat="text/plain">
-                <text>
-                    <![CDATA[Personal Assistant]]>
-                </text>
-            </documentation>
-        </role>
-        <role id="_Crena_3" name="CaseParticipant">
-            <documentation textFormat="text/plain">
-                <text>
-                    <![CDATA[Arbitrary role that is not a tenant role]]>
-                </text>
-            </documentation>
-        </role>
-    </caseRoles>
+    <caseRoles caseTeamRef="travellers.caseteam"/>
 </case>
