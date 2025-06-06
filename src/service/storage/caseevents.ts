@@ -24,7 +24,7 @@ export default class CaseEvents extends PlanItemEvents {
     cases: Array<CaseEvents> = [];
     processes: Array<ProcessEvents> = [];
 
-    private constructor(public user: User, item: PlanItem, public parentCase?: CaseEvents) {
+    private constructor(public user: User, private item: PlanItem, public parentCase?: CaseEvents) {
         super(user, item, parentCase);
     }
 
@@ -51,6 +51,17 @@ export default class CaseEvents extends PlanItemEvents {
         const subCaseHierarchy = new CaseEvents(this.user, subCase, this);
         this.cases.push(subCaseHierarchy);
         return subCaseHierarchy;
+    }
+
+    findCaseName(id: string): string {
+        if (this.item.id === id) {
+            return this.item.name;
+        }
+        for (const subCase of this.cases) {
+            const name = subCase.findCaseName(id);
+            if (name) return name;
+        }
+        return '';
     }
 
     findItem(name: string, type?: string): ActorEvents | undefined {

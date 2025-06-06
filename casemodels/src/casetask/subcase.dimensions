@@ -12,5 +12,11 @@
         <CMMNShape cmmnElementRef="_6SOUw_5">
             <Bounds x="340" y="80" width="140" height="80"/>
         </CMMNShape>
+        <CMMNShape cmmnElementRef="_6SOUw_10">
+            <Bounds x="110" y="360" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_6SOUw_12">
+            <Bounds x="340" y="220" width="140" height="80"/>
+        </CMMNShape>
     </CMMNDiagram>
 </CMMNDI>
