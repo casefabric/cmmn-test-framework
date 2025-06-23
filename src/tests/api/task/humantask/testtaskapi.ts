@@ -52,7 +52,7 @@ export default class TestTaskAPI extends TestCase {
             console.log('Sender has ' + tasks.length + ' case tasks')
         });
 
-        await TaskService.getCaseTasks(receiver, caseInstance, 404).then(response => {
+        await TaskService.getCaseTasks(receiver, caseInstance, false, 404).then(response => {
             console.log('Receiver cannot access the tasks of our case')
         });
 

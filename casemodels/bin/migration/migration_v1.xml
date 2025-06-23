@@ -19,7 +19,7 @@
             <humanTask id="ht__RYrWb_0" name="HumanTask" isBlocking="true"/>
             <caseTask id="ct__RYrWb_0" name="migration_subcase" isBlocking="true" caseRef="migration/migration_subcase_v1.case"/>
         </casePlanModel>
-        <caseRoles>
+        <caseRoles cafienne:caseTeamRef="migration_v1.caseteam">
             <role id="_0UEh7_7" name="role1"/>
             <role id="_0UEh7_8" name="role2"/>
             <role id="_0UEh7_9" name="role3_v1"/>
@@ -36,9 +36,7 @@
                 <itemControl id="_0UEh7_4">
                     <repetitionRule id="_0UEh7_5">
                         <condition id="_0UEh7_6">
-                            <body>
-                                <![CDATA[true]]>
-                            </body>
+                            <body><![CDATA[true]]></body>
                         </condition>
                     </repetitionRule>
                 </itemControl>
@@ -47,7 +45,7 @@
             <humanTask id="ht__0UEh7_0" name="Task1" isBlocking="true"/>
             <humanTask id="ht__0UEh7_1" name="Task2" isBlocking="true"/>
         </casePlanModel>
-        <caseRoles>
+        <caseRoles cafienne:caseTeamRef="migration_v1.caseteam">
             <role id="_0UEh7_7" name="role1"/>
             <role id="_0UEh7_8" name="role2"/>
             <role id="_0UEh7_9" name="role3_v1"/>

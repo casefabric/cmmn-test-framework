@@ -1,8 +1,6 @@
-<case id="travelrequest.case" name="travelrequest" expressionLanguage="spel" guid="_4wCNa">
+<case xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="travelrequest.case" name="travelrequest" expressionLanguage="spel" guid="_4wCNa">
     <documentation textFormat="text/plain">
-        <text>
-            <![CDATA[Travel Request]]>
-        </text>
+        <text><![CDATA[Travel Request]]></text>
     </documentation>
     <caseFileModel>
         <caseFileItem id="cfi_csKsD_0" name="TravelRequest" multiplicity="ExactlyOne" definitionRef="travelrequest.cfid">
@@ -32,30 +30,26 @@
                 <standardEvent>occur</standardEvent>
             </planItemOnPart>
         </exitCriterion>
-        <humanTask id="cm_cs9Q0_205" name="View Travel request" isBlocking="true" performerRef="role_csKsD_1">
+        <humanTask id="cm_cs9Q0_205" name="View Travel request" isBlocking="true" performerRef="_jAVt1_0">
             <inputs id="inTP_cm_cs9Q0_205_0" name="TravelRequest" bindingRef="cfi_csKsD_0"/>
             <extensionElements mustUnderstand="false">
                 <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="managetravelrequest.humantask">
                     <parameterMapping id="inPM_cm_csMh4_6_0" sourceRef="inTP_cm_cs9Q0_205_0" targetRef="TravelRequest"/>
                     <assignment id="_4wCNa_43" contextRef="cfi_csKsD_0">
                         <condition id="_4wCNa_44">
-                            <body>
-                                <![CDATA[TravelRequest.TravellerDetails.Requestor]]>
-                            </body>
+                            <body><![CDATA[TravelRequest.TravellerDetails.Requestor]]></body>
                         </condition>
                     </assignment>
                     <duedate id="_4wCNa_45" contextRef="cfi_csKsD_0">
                         <condition id="_4wCNa_46">
-                            <body>
-                                <![CDATA[(T(java.time.LocalDate).parse(TravelRequest.TravelDetails.DepartureDate).atStartOfDay().toInstant(T(java.time.ZoneOffset).UTC)).toString()]]>
-                            </body>
+                            <body><![CDATA[(T(java.time.LocalDate).parse(TravelRequest.TravelDetails.DepartureDate).atStartOfDay().toInstant(T(java.time.ZoneOffset).UTC)).toString()]]></body>
                         </condition>
                     </duedate>
                 </cafienne:implementation>
             </extensionElements>
         </humanTask>
         <stage id="cm_cs9Q0_207" name="Approve and Generate Travel Order" autoComplete="true">
-            <humanTask id="cm_csgxw_208" name="Approve Travel request" isBlocking="true" performerRef="role_csKsD_0">
+            <humanTask id="cm_csgxw_208" name="Approve Travel request" isBlocking="true" performerRef="_jAVt1_1">
                 <inputs id="inTP_cm_csgxw_208_0" name="TravelRequest" bindingRef="cfi_csKsD_0"/>
                 <outputs id="outTP_cm_csgxw_208_0" name="Approval" bindingRef="cfi_csgxw_6"/>
                 <extensionElements mustUnderstand="false">
@@ -64,28 +58,22 @@
                         <parameterMapping id="outPM_cm_csFY2_10_0" sourceRef="Approval_2" targetRef="outTP_cm_csgxw_208_0"/>
                         <assignment id="_4wCNa_48" contextRef="cfi_cs9Q0_5">
                             <condition id="_4wCNa_49">
-                                <body>
-                                    <![CDATA[Project.Manager]]>
-                                </body>
+                                <body><![CDATA[Project.Manager]]></body>
                             </condition>
                         </assignment>
                         <duedate id="_4wCNa_50" contextRef="cfi_csKsD_0">
                             <condition id="_4wCNa_51">
-                                <body>
-                                    <![CDATA[(T(java.time.LocalDate).parse(TravelRequest.TravelDetails.DepartureDate).atStartOfDay().toInstant(T(java.time.ZoneOffset).UTC).minus(1, T(java.time.temporal.ChronoUnit).DAYS)).toString()]]>
-                                </body>
+                                <body><![CDATA[(T(java.time.LocalDate).parse(TravelRequest.TravelDetails.DepartureDate).atStartOfDay().toInstant(T(java.time.ZoneOffset).UTC).minus(1, T(java.time.temporal.ChronoUnit).DAYS)).toString()]]></body>
                             </condition>
                         </duedate>
                     </cafienne:implementation>
                 </extensionElements>
             </humanTask>
-            <humanTask id="cm_csgxw_210" name="Create Travel Order" isBlocking="true" performerRef="role_csKsD_2">
+            <humanTask id="cm_csgxw_210" name="Create Travel Order" isBlocking="true" performerRef="_jAVt1_2">
                 <entryCriterion id="_4wCNa_7" name="EntryCriterion_6">
                     <ifPart contextRef="cfi_csgxw_6">
                         <condition>
-                            <body>
-                                <![CDATA[Approval.Status == "approved"]]>
-                            </body>
+                            <body><![CDATA[Approval.Status == "approved"]]></body>
                         </condition>
                     </ifPart>
                     <planItemOnPart id="ref_id_cm_csgxw_208" sourceRef="cm_csgxw_208">
@@ -99,9 +87,7 @@
                         <parameterMapping id="inPM_cm_csMHr_12_0" sourceRef="inTP_cm_csgxw_210_0" targetRef="TravelRequest_3"/>
                         <parameterMapping id="inPM_cm_csMHr_12_1" sourceRef="inTP_cm_csgxw_210_0" targetRef="DueDate_3">
                             <transformation>
-                                <body>
-                                    <![CDATA[(T(java.time.LocalDate).parse(TravelRequest.TravelDetails.DepartureDate).atStartOfDay().toInstant(T(java.time.ZoneOffset).UTC)).toString()]]>
-                                </body>
+                                <body><![CDATA[(T(java.time.LocalDate).parse(TravelRequest.TravelDetails.DepartureDate).atStartOfDay().toInstant(T(java.time.ZoneOffset).UTC)).toString()]]></body>
                             </transformation>
                         </parameterMapping>
                         <parameterMapping id="outPM_cm_csMHr_12_0" sourceRef="Project_3" targetRef="outTP_cm_csgxw_210_0"/>
@@ -112,9 +98,7 @@
                 <entryCriterion id="_4wCNa_8" name="EntryCriterion_7">
                     <ifPart contextRef="cfi_csKsD_0">
                         <condition>
-                            <body>
-                                <![CDATA[1 == 0]]>
-                            </body>
+                            <body><![CDATA[1 == 0]]></body>
                         </condition>
                     </ifPart>
                     <planItemOnPart id="ref_id_cm_csgxw_210" sourceRef="cm_csgxw_210">
@@ -135,65 +119,47 @@
                 <inputs id="inTP_cm_csjTZ_604_0" name="travelrequest" bindingRef="cfi_csKsD_0"/>
                 <parameterMapping id="inPM_cm_csjTZ_604_2" sourceRef="inTP_cm_csjTZ_604_0" targetRef="travellerName">
                     <transformation>
-                        <body>
-                            <![CDATA[travelrequest.TravellerDetails.Traveller[0].Name]]>
-                        </body>
+                        <body><![CDATA[travelrequest.TravellerDetails.Traveller[0].Name]]></body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csjTZ_604_3" sourceRef="inTP_cm_csjTZ_604_0" targetRef="destinationCountry">
                     <transformation>
-                        <body>
-                            <![CDATA[travelrequest.TravelDetails.Destination[0].Country]]>
-                        </body>
+                        <body><![CDATA[travelrequest.TravelDetails.Destination[0].Country]]></body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csjTZ_604_4" sourceRef="inTP_cm_csjTZ_604_0" targetRef="destinationCity">
                     <transformation>
-                        <body>
-                            <![CDATA[travelrequest.TravelDetails.Destination[0].City]]>
-                        </body>
+                        <body><![CDATA[travelrequest.TravelDetails.Destination[0].City]]></body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csjTZ_604_5" sourceRef="inTP_cm_csjTZ_604_0" targetRef="departureDate">
                     <transformation>
-                        <body>
-                            <![CDATA[travelrequest.TravelDetails.DepartureDate]]>
-                        </body>
+                        <body><![CDATA[travelrequest.TravelDetails.DepartureDate]]></body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csjTZ_604_6" sourceRef="inTP_cm_csjTZ_604_0" targetRef="returnDate">
                     <transformation>
-                        <body>
-                            <![CDATA[travelrequest.TravelDetails.ReturnDate]]>
-                        </body>
+                        <body><![CDATA[travelrequest.TravelDetails.ReturnDate]]></body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csjTZ_604_7" sourceRef="inTP_cm_csjTZ_604_0" targetRef="toName">
                     <transformation>
-                        <body>
-                            <![CDATA[case.team.role.Approver.member?.id]]>
-                        </body>
+                        <body><![CDATA[case.team.role.Approver.member?.id]]></body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csjTZ_604_8" sourceRef="inTP_cm_csjTZ_604_0" targetRef="toAddress">
                     <transformation>
-                        <body>
-                            <![CDATA[case.team.role.Approver.member?.id + "@email.com"]]>
-                        </body>
+                        <body><![CDATA[case.team.role.Approver.member?.id + "@email.com"]]></body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csVHC_16_7" sourceRef="inTP_cm_csjTZ_604_0" targetRef="taskId">
                     <transformation>
-                        <body>
-                            <![CDATA[case.plan["Approve and Generate Travel Order"]["Approve Travel request"].id]]>
-                        </body>
+                        <body><![CDATA[case.plan["Approve and Generate Travel Order"]["Approve Travel request"].id]]></body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csVHC_16_8" sourceRef="inTP_cm_csjTZ_604_0" targetRef="caseId">
                     <transformation>
-                        <body>
-                            <![CDATA[case.id]]>
-                        </body>
+                        <body><![CDATA[case.id]]></body>
                     </transformation>
                 </parameterMapping>
             </processTask>
@@ -209,9 +175,7 @@
             <entryCriterion id="_4wCNa_1" name="EntryCriterion_1">
                 <ifPart contextRef="cfi_csgxw_6">
                     <condition>
-                        <body>
-                            <![CDATA[Approval.Status == "approved"]]>
-                        </body>
+                        <body><![CDATA[Approval.Status == "approved"]]></body>
                     </condition>
                 </ifPart>
                 <planItemOnPart id="ref_id_cm_cs9Q0_207" sourceRef="cm_cs9Q0_207">
@@ -226,9 +190,7 @@
             <entryCriterion id="_4wCNa_2" name="EntryCriterion_2">
                 <ifPart contextRef="cfi_csgxw_6">
                     <condition>
-                        <body>
-                            <![CDATA[Approval.Status == "disapproved"]]>
-                        </body>
+                        <body><![CDATA[Approval.Status == "disapproved"]]></body>
                     </condition>
                 </ifPart>
                 <planItemOnPart id="ref_id_cm_cs9Q0_207" sourceRef="cm_cs9Q0_207">
@@ -254,65 +216,47 @@
                 <inputs id="inTP_cm_csTEb_966_4" name="travelrequest" bindingRef="cfi_csKsD_0"/>
                 <parameterMapping id="inPM_cm_csTEb_966_5" sourceRef="inTP_cm_csTEb_966_4" targetRef="destinationCountry">
                     <transformation>
-                        <body>
-                            <![CDATA[travelrequest.TravelDetails.Destination[0].Country]]>
-                        </body>
+                        <body><![CDATA[travelrequest.TravelDetails.Destination[0].Country]]></body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csTEb_966_6" sourceRef="inTP_cm_csTEb_966_4" targetRef="destinationCity">
                     <transformation>
-                        <body>
-                            <![CDATA[travelrequest.TravelDetails.Destination[0].City]]>
-                        </body>
+                        <body><![CDATA[travelrequest.TravelDetails.Destination[0].City]]></body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csTEb_966_7" sourceRef="inTP_cm_csTEb_966_4" targetRef="departureDate">
                     <transformation>
-                        <body>
-                            <![CDATA[travelrequest.TravelDetails.DepartureDate]]>
-                        </body>
+                        <body><![CDATA[travelrequest.TravelDetails.DepartureDate]]></body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csTEb_966_8" sourceRef="inTP_cm_csTEb_966_4" targetRef="returnDate">
                     <transformation>
-                        <body>
-                            <![CDATA[travelrequest.TravelDetails.ReturnDate]]>
-                        </body>
+                        <body><![CDATA[travelrequest.TravelDetails.ReturnDate]]></body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csTEb_966_9" sourceRef="inTP_cm_csTEb_966_4" targetRef="departurePoint">
                     <transformation>
-                        <body>
-                            <![CDATA[travelrequest.TravelDetails.DeparturePoint]]>
-                        </body>
+                        <body><![CDATA[travelrequest.TravelDetails.DeparturePoint]]></body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csTEb_966_10" sourceRef="inTP_cm_csTEb_966_4" targetRef="returnPoint">
                     <transformation>
-                        <body>
-                            <![CDATA[travelrequest.TravelDetails.ReturnPoint]]>
-                        </body>
+                        <body><![CDATA[travelrequest.TravelDetails.ReturnPoint]]></body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csTEb_966_11" sourceRef="inTP_cm_csTEb_966_4" targetRef="transportMode">
                     <transformation>
-                        <body>
-                            <![CDATA[travelrequest.Transport.ModeOfTransport]]>
-                        </body>
+                        <body><![CDATA[travelrequest.Transport.ModeOfTransport]]></body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csTEb_966_12" sourceRef="inTP_cm_csTEb_966_4" targetRef="fromName">
                     <transformation>
-                        <body>
-                            <![CDATA[travelrequest.TravellerDetails.Traveller[0].Name]]>
-                        </body>
+                        <body><![CDATA[travelrequest.TravellerDetails.Traveller[0].Name]]></body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csTEb_966_13" sourceRef="inTP_cm_csTEb_966_4" targetRef="fromAddress">
                     <transformation>
-                        <body>
-                            <![CDATA[travelrequest.TravellerDetails.Traveller[0].Email]]>
-                        </body>
+                        <body><![CDATA[travelrequest.TravellerDetails.Traveller[0].Email]]></body>
                     </transformation>
                 </parameterMapping>
             </processTask>
@@ -323,11 +267,9 @@
                 <parameterMapping id="inPM_cm_csScW_1018_3" sourceRef="inTP_cm_csScW_1018_3" targetRef="approval"/>
                 <parameterMapping id="inPM_cm_cs5fo_847_2" sourceRef="inTP_cm_csScW_1018_2" targetRef="travelrequest">
                     <transformation>
-                        <body>
-                            <![CDATA[
+                        <body><![CDATA[
                             "{""Approval"":"+case.file.Approval.toString()+", ""travelrequest"": "+case.file.TravelRequest.toString()+"}"
-                        ]]>
-                        </body>
+                        ]]></body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="outPM_cm_csO0y_733_0" sourceRef="travelorder" targetRef="outTP_cm_csScW_1018_1"/>
@@ -343,52 +285,38 @@
                 <inputs id="inTP_cm_csRSq_791_2" name="travelrequest" bindingRef="cfi_csKsD_0"/>
                 <parameterMapping id="inPM_cm_csRSq_791_0" sourceRef="inTP_cm_csO0y_735_2" targetRef="filename">
                     <transformation>
-                        <body>
-                            <![CDATA["TravelOrder.pdf"]]>
-                        </body>
+                        <body><![CDATA["TravelOrder.pdf"]]></body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csRSq_791_1" sourceRef="inTP_cm_csBJk_720_1" targetRef="travelorder"/>
                 <parameterMapping id="inPM_cm_csRSq_791_2" sourceRef="inTP_cm_csRSq_791_2" targetRef="destinationCity">
                     <transformation>
-                        <body>
-                            <![CDATA[travelrequest.TravelDetails.Destination[0].City]]>
-                        </body>
+                        <body><![CDATA[travelrequest.TravelDetails.Destination[0].City]]></body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csRSq_791_3" sourceRef="inTP_cm_csRSq_791_2" targetRef="destinationCountry">
                     <transformation>
-                        <body>
-                            <![CDATA[travelrequest.TravelDetails.Destination[0].Country]]>
-                        </body>
+                        <body><![CDATA[travelrequest.TravelDetails.Destination[0].Country]]></body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csRSq_791_4" sourceRef="inTP_cm_csRSq_791_2" targetRef="departureDate">
                     <transformation>
-                        <body>
-                            <![CDATA[travelrequest.TravelDetails.DepartureDate]]>
-                        </body>
+                        <body><![CDATA[travelrequest.TravelDetails.DepartureDate]]></body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csRSq_791_5" sourceRef="inTP_cm_csRSq_791_2" targetRef="fromName">
                     <transformation>
-                        <body>
-                            <![CDATA[case.team.role.PersonalAssistant.member?.id]]>
-                        </body>
+                        <body><![CDATA[case.team.role.PersonalAssistant.member?.id]]></body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csRSq_791_6" sourceRef="inTP_cm_csRSq_791_2" targetRef="toName">
                     <transformation>
-                        <body>
-                            <![CDATA[travelrequest.TravellerDetails.Traveller[0].Name]]>
-                        </body>
+                        <body><![CDATA[travelrequest.TravellerDetails.Traveller[0].Name]]></body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="inPM_cm_csRSq_791_7" sourceRef="inTP_cm_csRSq_791_2" targetRef="toAddress">
                     <transformation>
-                        <body>
-                            <![CDATA[travelrequest.TravellerDetails.Traveller[0].Email]]>
-                        </body>
+                        <body><![CDATA[travelrequest.TravellerDetails.Traveller[0].Email]]></body>
                     </transformation>
                 </parameterMapping>
             </processTask>
@@ -408,96 +336,76 @@
             <inputs id="inTP_cm_csjTZ_617_3" name="approval" bindingRef="cfi_csgxw_6"/>
             <parameterMapping id="inPM_cm_csjTZ_617_4" sourceRef="inTP_cm_csjTZ_617_3" targetRef="approvalStatus">
                 <transformation>
-                    <body>
-                        <![CDATA[
+                    <body><![CDATA[
                             approval.Status
-                        ]]>
-                    </body>
+                        ]]></body>
                 </transformation>
             </parameterMapping>
             <parameterMapping id="inPM_cm_csjTZ_617_5" sourceRef="inTP_cm_csjTZ_617_2" targetRef="destinationCountry">
                 <transformation>
-                    <body>
-                        <![CDATA[
+                    <body><![CDATA[
                             travelrequest.TravelDetails.Destination[0].Country
-                        ]]>
-                    </body>
+                        ]]></body>
                 </transformation>
             </parameterMapping>
             <parameterMapping id="inPM_cm_csjTZ_617_6" sourceRef="inTP_cm_csjTZ_617_2" targetRef="destinationCity">
                 <transformation>
-                    <body>
-                        <![CDATA[
+                    <body><![CDATA[
                             travelrequest.TravelDetails.Destination[0].City
-                        ]]>
-                    </body>
+                        ]]></body>
                 </transformation>
             </parameterMapping>
             <parameterMapping id="inPM_cm_csjTZ_617_7" sourceRef="inTP_cm_csjTZ_617_2" targetRef="departureDate">
                 <transformation>
-                    <body>
-                        <![CDATA[
+                    <body><![CDATA[
                             travelrequest.TravelDetails.DepartureDate
-                        ]]>
-                    </body>
+                        ]]></body>
                 </transformation>
             </parameterMapping>
             <parameterMapping id="inPM_cm_csjTZ_617_8" sourceRef="inTP_cm_csjTZ_617_3" targetRef="fromName">
                 <transformation>
-                    <body>
-                        <![CDATA[
+                    <body><![CDATA[
                             approval.ApprovedBy
-                        ]]>
-                    </body>
+                        ]]></body>
                 </transformation>
             </parameterMapping>
             <parameterMapping id="inPM_cm_csjTZ_617_9" sourceRef="inTP_cm_csjTZ_617_3" targetRef="fromAddress">
                 <transformation>
-                    <body>
-                        <![CDATA[
+                    <body><![CDATA[
                             approval.ApprovedBy + "@email.com"
-                        ]]>
-                    </body>
+                        ]]></body>
                 </transformation>
             </parameterMapping>
             <parameterMapping id="inPM_cm_csjTZ_617_10" sourceRef="inTP_cm_csjTZ_617_2" targetRef="toName">
                 <transformation>
-                    <body>
-                        <![CDATA[travelrequest.TravellerDetails.Requestor]]>
-                    </body>
+                    <body><![CDATA[travelrequest.TravellerDetails.Requestor]]></body>
                 </transformation>
             </parameterMapping>
             <parameterMapping id="inPM_cm_csjTZ_617_11" sourceRef="inTP_cm_csjTZ_617_2" targetRef="toAddress">
                 <transformation>
-                    <body>
-                        <![CDATA[travelrequest.TravellerDetails.Requestor + "@email.com"]]>
-                    </body>
+                    <body><![CDATA[travelrequest.TravellerDetails.Requestor + "@email.com"]]></body>
                 </transformation>
             </parameterMapping>
         </processTask>
-        <userEvent id="cm_csEae_323" name="Cancel Travel request" authorizedRoleRefs="role_csKsD_1 role_csKsD_0"/>
+        <userEvent id="cm_csEae_323" name="Cancel Travel request" authorizedRoleRefs="_jAVt1_0 _jAVt1_1"/>
         <stage id="cm_csSAF_389" name="Check prerequisites" autoComplete="true">
             <processTask id="cm_csSAF_392" name="Check travel requirements" isBlocking="true" processRef="checktravelrequirements.process">
                 <entryCriterion id="_4wCNa_11" name="EntryCriterion_10">
                     <ifPart contextRef="cfi_csKsD_0">
                         <condition>
-                            <body>
-                                <![CDATA[
+                            <body><![CDATA[
                                 TravelRequest.TravelDetails.Destination[0].Country != "US" or TravelRequest.TravellerDetails.Traveller[0].Nationality == "US"
-                            ]]>
-                            </body>
+                            ]]></body>
                         </condition>
                     </ifPart>
                 </entryCriterion>
             </processTask>
-            <humanTask id="cm_cs3yg_484" name="Arrange Visa and ESTA" isBlocking="true" performerRef="role_csKsD_1">
+            <humanTask id="cm_cs3yg_484" name="Arrange Visa and ESTA" isBlocking="true" performerRef="_jAVt1_0">
                 <entryCriterion id="_4wCNa_12" name="EntryCriterion_11">
                     <ifPart contextRef="cfi_csKsD_0">
                         <condition>
-                            <body>
-                                <![CDATA[TravelRequest.TravellerDetails.Traveller[0].Nationality != "US" and
-TravelRequest.TravelDetails.Destination[0].Country == "US"]]>
-                            </body>
+                            <body><![CDATA[TravelRequest.TravellerDetails.Traveller[0].Nationality != "US" and
+TravelRequest.TravelDetails.Destination[0].Country == "US"]]></body>
                         </condition>
                     </ifPart>
                 </entryCriterion>
@@ -507,16 +415,12 @@ TravelRequest.TravelDetails.Destination[0].Country == "US"]]>
                         <parameterMapping id="inPM_cm_csEQz_36_1" sourceRef="inTP_cm_csZvZ_679_0" targetRef="TravelRequest"/>
                         <assignment id="_4wCNa_47" contextRef="cfi_csKsD_0">
                             <condition id="_4wCNa_52">
-                                <body>
-                                    <![CDATA[TravelRequest.TravellerDetails.Requestor]]>
-                                </body>
+                                <body><![CDATA[TravelRequest.TravellerDetails.Requestor]]></body>
                             </condition>
                         </assignment>
                         <duedate id="_4wCNa_53" contextRef="cfi_csKsD_0">
                             <condition id="_4wCNa_54">
-                                <body>
-                                    <![CDATA[(T(java.time.LocalDate).parse(TravelRequest.TravelDetails.DepartureDate).atStartOfDay().toInstant(T(java.time.ZoneOffset).UTC)).toString()]]>
-                                </body>
+                                <body><![CDATA[(T(java.time.LocalDate).parse(TravelRequest.TravelDetails.DepartureDate).atStartOfDay().toInstant(T(java.time.ZoneOffset).UTC)).toString()]]></body>
                             </condition>
                         </duedate>
                     </cafienne:implementation>
@@ -524,7 +428,7 @@ TravelRequest.TravelDetails.Destination[0].Country == "US"]]>
             </humanTask>
         </stage>
         <planningTable id="pt_cm_undefined_3">
-            <humanTask id="cm_csgxw_215" name="Select approver manually" authorizedRoleRefs="role_csKsD_1" isBlocking="true" performerRef="role_csKsD_2">
+            <humanTask id="cm_csgxw_215" name="Select approver manually" authorizedRoleRefs="_jAVt1_0" isBlocking="true" performerRef="_jAVt1_2">
                 <inputs id="inTP_cm_csgxw_215_0" name="TravelRequest" bindingRef="cfi_csKsD_0"/>
                 <outputs id="outTP_cm_cs24h_12_0" name="Project" bindingRef="cfi_cs9Q0_5"/>
                 <extensionElements mustUnderstand="false">
@@ -532,9 +436,7 @@ TravelRequest.TravelDetails.Destination[0].Country == "US"]]>
                         <parameterMapping id="inPM_cm_csd2I_4_0" sourceRef="inTP_cm_csgxw_215_0" targetRef="TravelRequest_1"/>
                         <parameterMapping id="inPM_cm_csd2I_4_1" sourceRef="inTP_cm_csgxw_215_0" targetRef="DueDate_1">
                             <transformation>
-                                <body>
-                                    <![CDATA[(T(java.time.LocalDate).parse(TravelRequest.TravelDetails.DepartureDate).atStartOfDay().toInstant(T(java.time.ZoneOffset).UTC).minus(1, T(java.time.temporal.ChronoUnit).DAYS)).toString()]]>
-                                </body>
+                                <body><![CDATA[(T(java.time.LocalDate).parse(TravelRequest.TravelDetails.DepartureDate).atStartOfDay().toInstant(T(java.time.ZoneOffset).UTC).minus(1, T(java.time.temporal.ChronoUnit).DAYS)).toString()]]></body>
                             </transformation>
                         </parameterMapping>
                         <parameterMapping id="outPM_cm_csd2I_4_0" sourceRef="Project_1" targetRef="outTP_cm_cs24h_12_0"/>
@@ -543,29 +445,7 @@ TravelRequest.TravelDetails.Destination[0].Country == "US"]]>
             </humanTask>
         </planningTable>
     </casePlanModel>
-    <caseRoles>
-        <role id="role_csKsD_0" name="Approver">
-            <documentation textFormat="text/plain">
-                <text>
-                    <![CDATA[Approver of the Travel Request]]>
-                </text>
-            </documentation>
-        </role>
-        <role id="role_csKsD_2" name="PersonalAssistant">
-            <documentation textFormat="text/plain">
-                <text>
-                    <![CDATA[Personal Assistant]]>
-                </text>
-            </documentation>
-        </role>
-        <role id="role_csKsD_1" name="Requestor">
-            <documentation textFormat="text/plain">
-                <text>
-                    <![CDATA[Requestor of the Travel Request]]>
-                </text>
-            </documentation>
-        </role>
-    </caseRoles>
+    <caseRoles caseTeamRef="travellers.caseteam"/>
     <input id="cs9Q0_inCPs_0" name="TravelRequest" bindingRef="cfi_csKsD_0"/>
     <extensionElements mustUnderstand="false">
         <cafienne:start-case-model xmlns:cafienne="org.cafienne">{
@@ -960,7 +840,6 @@ TravelRequest.TravelDetails.Destination[0].Country == "US"]]>
       }
     }
   }
-}
-            </cafienne:start-case-model>
+}</cafienne:start-case-model>
     </extensionElements>
 </case>

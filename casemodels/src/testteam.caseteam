@@ -1,0 +1,13 @@
+<caseteam xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="testteam.caseteam" name="testteam">
+    <documentation textFormat="text/plain">
+        <text><![CDATA[A generic team that can be applied in many models]]></text>
+    </documentation>
+    <role id="cr__rAKmR_0" name="Employee"/>
+    <role id="cr__rAKmR_1" name="Manager"/>
+    <role id="cr__rAKmR_2" name="ADMIN">
+        <documentation textFormat="text/plain">
+            <text><![CDATA[admin of the world]]></text>
+        </documentation>
+    </role>
+    <role id="cr__ZAwz2_0" name="role"/>
+</caseteam>

@@ -61,11 +61,11 @@
                     </planItemOnPart>
                 </sentry>
             </stage>
-            <userEvent id="ue__vdfDP_1" name="EmployeeUserEvent" authorizedRoleRefs="_vdfDP_6"/>
+            <userEvent id="ue__vdfDP_1" name="EmployeeUserEvent" authorizedRoleRefs="cr__rAKmR_0"/>
             <milestone id="ms__vdfDP_0" name="M1"/>
         </casePlanModel>
         <caseRoles>
-            <role id="_vdfDP_6" name="Employee"/>
+            <role id="cr__rAKmR_0" name="Employee"/>
         </caseRoles>
         <textAnnotation id="_vdfDP_shape_8">
             <text>

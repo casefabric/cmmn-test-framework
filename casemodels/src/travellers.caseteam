@@ -1,0 +1,25 @@
+<caseteam xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="travellers.caseteam" name="travellers">
+    <documentation textFormat="text/plain">
+        <text><![CDATA[Team of travellers]]></text>
+    </documentation>
+    <role id="_jAVt1_1" name="Approver">
+        <documentation textFormat="text/plain">
+            <text><![CDATA[Approver of the Travel Request]]></text>
+        </documentation>
+    </role>
+    <role id="_jAVt1_2" name="PersonalAssistant">
+        <documentation textFormat="text/plain">
+            <text><![CDATA[Personal Assistant]]></text>
+        </documentation>
+    </role>
+    <role id="_jAVt1_0" name="Requestor">
+        <documentation textFormat="text/plain">
+            <text><![CDATA[Requestor of the Travel Request]]></text>
+        </documentation>
+    </role>
+    <role id="_Crena_3" name="CaseParticipant">
+        <documentation textFormat="text/plain">
+            <text><![CDATA[Arbitrary role that is not a tenant role]]></text>
+        </documentation>
+    </role>
+</caseteam>

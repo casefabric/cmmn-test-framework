@@ -1,4 +1,4 @@
-<case id="migration/migration_subcase_v0.case" name="migration_subcase" expressionLanguage="spel" guid="_0UEh7">
+<case xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="migration/migration_subcase_v0.case" name="migration_subcase" expressionLanguage="spel" guid="_0UEh7">
     <caseFileModel>
         <caseFileItem id="_0UEh7_0" name="Input" multiplicity="ExactlyOne" definitionRef="root.cfid"/>
         <caseFileItem id="_0UEh7_2" name="Output" multiplicity="ExactlyOne" definitionRef="root.cfid"/>
@@ -6,12 +6,7 @@
     <casePlanModel id="cm__0UEh7_0" name="migration_subcase" autoComplete="true">
         <humanTask id="pi_ht__0UEh7_0" name="HumanTask_0" isBlocking="true"/>
     </casePlanModel>
-    <caseRoles>
-        <role id="_0UEh7_7" name="role1"/>
-        <role id="_0UEh7_8" name="role2"/>
-        <role id="_0UEh7_9" name="role3"/>
-        <role id="_0UEh7_10" name="role4"/>
-    </caseRoles>
+    <caseRoles caseTeamRef="migration_v0.caseteam"/>
     <input id="_0UEh7_1" name="Input" bindingRef="_0UEh7_0"/>
     <output id="_0UEh7_3" name="Output" bindingRef="_0UEh7_2"/>
 </case>

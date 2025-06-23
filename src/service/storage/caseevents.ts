@@ -3,8 +3,9 @@ import PlanItem from "../../cmmn/planitem";
 import State from "../../cmmn/state";
 import AsyncError from "../../infra/asyncerror";
 import Trace from '../../infra/trace';
+import logger from "../../logger";
 import { assertCasePlan } from "../../test/caseassertions/plan";
-import { PollUntilSuccess, SomeTime } from "../../test/time";
+import { PollUntilSuccess } from "../../test/time";
 import User from "../../user";
 import CaseService from "../case/caseservice";
 import ActorEvents from "./actorevents";
@@ -23,7 +24,7 @@ export default class CaseEvents extends PlanItemEvents {
     cases: Array<CaseEvents> = [];
     processes: Array<ProcessEvents> = [];
 
-    private constructor(public user: User, item: PlanItem, public parentCase?: CaseEvents) {
+    private constructor(public user: User, private item: PlanItem, public parentCase?: CaseEvents) {
         super(user, item, parentCase);
     }
 
@@ -52,6 +53,17 @@ export default class CaseEvents extends PlanItemEvents {
         return subCaseHierarchy;
     }
 
+    findCaseName(id: string): string {
+        if (this.item.id === id) {
+            return this.item.name;
+        }
+        for (const subCase of this.cases) {
+            const name = subCase.findCaseName(id);
+            if (name) return name;
+        }
+        return '';
+    }
+
     findItem(name: string, type?: string): ActorEvents | undefined {
         const matches = (task: ActorEvents) => task.name === name && (!type || task.type === type);
 
@@ -69,9 +81,16 @@ export default class CaseEvents extends PlanItemEvents {
         }
     }
 
+    findCaseTask(name: string): CaseEvents | undefined {
+        const task = this.findItem(name, 'Case');
+        logger.info("Found task named " + name + ": " + task?.constructor.name)
+        if (task && task instanceof CaseEvents) return task;
+        return undefined;
+    }
+
     findProcessTask(name: string): ProcessEvents | undefined {
         const task = this.findItem(name, 'Process');
-        console.log("Found task named " + name + ": " + task?.constructor.name)
+        logger.info("Found task named " + name + ": " + task?.constructor.name)
         if (task && task instanceof ProcessEvents) return task;
         return undefined;
     }

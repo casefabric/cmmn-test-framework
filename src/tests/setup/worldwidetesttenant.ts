@@ -8,27 +8,23 @@ import User, { admin } from "../../user";
  * Simple test tenant to avoid duplicate code
  */
 export default class WorldWideTestTenant {
-//*/
+    //*/
     static defaultTenantName = 'World-Wide-Test-Tenant';
-/*/
-    static defaultTenantName = 'world';
-//*/
-    private wrapper: TenantWrapper;
-    get sender() {
-        return this.wrapper.sender;
-    }
-    get receiver() {
-        return this.wrapper.receiver;
-    }
-    get employee() {
-        return this.wrapper.employee;
-    }
-    get tenant(): Tenant {
-        return this.wrapper.tenant;
-    }
+    /*/
+        static defaultTenantName = 'world';
+    //*/
+    protected wrapper: TenantWrapper;
+    sender: TenantOwner;
+    receiver: TenantOwner;
+    employee: TenantUser;
+    tenant: Tenant;
 
     constructor(public readonly name: string = WorldWideTestTenant.defaultTenantName, public platformAdmin: User = admin) {
         this.wrapper = TenantWrapper.get(name, platformAdmin);
+        this.employee = this.wrapper.employee;
+        this.sender = this.wrapper.sender;
+        this.receiver = this.wrapper.receiver;
+        this.tenant = this.wrapper.tenant;
     }
 
     /**
@@ -45,6 +41,16 @@ export default class WorldWideTestTenant {
      */
     static reset(tenant: Tenant | string) {
         TenantWrapper.reset(tenant);
+    }
+}
+
+export class CompanyTestTenant extends WorldWideTestTenant {
+    owner: TenantOwner;
+    manager: TenantOwner;
+    constructor(platformAdmin: User = admin) {
+        super('company', platformAdmin);
+        this.owner = this.wrapper.sender;
+        this.manager = this.wrapper.receiver;
     }
 }
 
@@ -72,18 +78,26 @@ class TenantWrapper {
     get senderId() {
         if (this.name === 'world') {
             return 'CgRzdXp5EgVsb2NhbA'; // suzy
+        } else if (this.name === 'company') {
+            return 'owner';
         }
         return 'sending-user';
     }
+
     get receiverId() {
         if (this.name === 'world') {
             return 'CgRsYW5hEgVsb2NhbA'; // lana
+        } else if (this.name === 'company') {
+            return 'manager';
         }
         return 'receiving-user';
     }
+
     get employeeId() {
         if (this.name === 'world') {
             return 'CgRoYW5rEgVsb2NhbA'; // hank
+        } else if (this.name === 'company') {
+            return 'employee';
         }
         return 'employee';
     }

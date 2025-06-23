@@ -85,8 +85,15 @@
             </timerEvent>
             <milestone id="ms__MuzRn_0" name="Case LifeTime achieved 2 days"/>
         </casePlanModel>
-        <caseRoles>
-            <role id="_MuzRn_11" name="role"/>
+        <caseRoles cafienne:caseTeamRef="testteam.caseteam">
+            <role id="cr__rAKmR_0" name="Employee"/>
+            <role id="cr__rAKmR_1" name="Manager"/>
+            <role id="cr__rAKmR_2" name="ADMIN">
+                <documentation textFormat="text/plain">
+                    <text><![CDATA[admin of the world]]></text>
+                </documentation>
+            </role>
+            <role id="cr__ZAwz2_0" name="role"/>
         </caseRoles>
         <input id="_MuzRn_7" name="Greeting" bindingRef="_MuzRn_10"/>
     </case>
@@ -259,12 +266,15 @@ and Send response]]></text>
                 </extensionElements>
             </humanTask>
         </casePlanModel>
-        <caseRoles>
-            <role id="role_csT3f_0" name="ADMIN">
+        <caseRoles cafienne:caseTeamRef="testteam.caseteam">
+            <role id="cr__rAKmR_0" name="Employee"/>
+            <role id="cr__rAKmR_1" name="Manager"/>
+            <role id="cr__rAKmR_2" name="ADMIN">
                 <documentation textFormat="text/plain">
                     <text><![CDATA[admin of the world]]></text>
                 </documentation>
             </role>
+            <role id="cr__ZAwz2_0" name="role"/>
         </caseRoles>
         <input id="csVQy_inCPs_0" name="Greeting" bindingRef="cfi_csVQy_0"/>
         <extensionElements mustUnderstand="false">
