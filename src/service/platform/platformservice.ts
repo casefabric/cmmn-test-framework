@@ -24,7 +24,7 @@ export default class PlatformService {
             const msg = await response.text();
             if (msg === 'Tenant already exists' || msg.indexOf('Failure while handling message CreateTenant') >= 0) {
                 // Tenant already exists is ok.
-                if (Config.PlatformService.log) logger.debug(`Tenant ${tenant.name} already exists.'`)
+                if (Config.PlatformService.log) logger.debug(`Tenant ${tenant.name} already exists.`)
                 return response;
             }
         }
