@@ -92,6 +92,7 @@ import TestProcessTaskMigration from '../tests/api/task/process/migration/testpr
 import TestCalculation from '../tests/api/task/process/testcalculation';
 import TestTenantRegistration from '../tests/api/tenant/testtenantregistration';
 import TestVersion from '../tests/api/version/testversion';
+import TestEntryCriteriaMigration from '../tests/api/case/migration/entrycriteria_migration';
 import TestCompatibility from '../tests/compatibility/testcompatibility';
 import TestHelloworld from '../tests/helloworld/testhelloworld';
 import TestIncidentManagement from '../tests/incidentmanagement/incidentmanagement';
@@ -183,6 +184,7 @@ const MigrationTests: Array<Function> = [
     , TestReactivationMigration
     , TestRepetitionMigration
     , TestDiscretionaryMigration
+    , TestEntryCriteriaMigration
 ];
 
 const AllTests: Array<Function> = [

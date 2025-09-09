@@ -1,0 +1,7 @@
+<type xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="migration/entrycriteria_v0.type" name="migration/entrycriteria_v0">
+    <schema>
+        <property id="sp__AT52l_0" name="casefileitem" type="object" multiplicity="ExactlyOne">
+            <schema id="_AT52l_0" name="Schema_0"/>
+        </property>
+    </schema>
+</type>
