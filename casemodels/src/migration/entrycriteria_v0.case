@@ -1,0 +1,42 @@
+<case xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="migration/entrycriteria_v0.case" name="migration/entrycriteria_v0" expressionLanguage="spel" guid="_QnV5T">
+    <caseFileModel typeRef="migration/entrycriteria_v0.type"/>
+    <casePlanModel id="cm__QnV5T_0" name="migration/entrycriteria_v0" autoComplete="true">
+        <stage id="_QnV5T_1" name="case started" autoComplete="true"/>
+        <stage id="_QnV5T_3" name="repeating stage" autoComplete="true">
+            <entryCriterion id="crit__QnV5T_1">
+                <planItemOnPart id="_QnV5T_12" sourceRef="_QnV5T_9">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+            </entryCriterion>
+            <entryCriterion id="crit__QnV5T_2">
+                <planItemOnPart id="_QnV5T_17" sourceRef="_QnV5T_1">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+            </entryCriterion>
+            <itemControl id="_QnV5T_4">
+                <repetitionRule id="_QnV5T_5">
+                    <condition id="_QnV5T_6">
+                        <body><![CDATA[true]]></body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
+            <userEvent id="_QnV5T_7" name="UserEvent"/>
+        </stage>
+        <stage id="_QnV5T_9" name="execution stage" autoComplete="true">
+            <entryCriterion id="crit__QnV5T_0">
+                <planItemOnPart id="_QnV5T_11" sourceRef="_QnV5T_3">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+            </entryCriterion>
+            <itemControl id="_QnV5T_10">
+                <repetitionRule id="_QnV5T_15">
+                    <condition id="_QnV5T_16">
+                        <body><![CDATA[true]]></body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
+            <humanTask id="_QnV5T_13" name="task" isBlocking="true"/>
+        </stage>
+    </casePlanModel>
+    <caseRoles caseTeamRef="migration/entrycriteria_v0.caseteam"/>
+</case>

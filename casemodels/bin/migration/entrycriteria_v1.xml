@@ -1,0 +1,92 @@
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
+    <caseFileItemDefinition name="casefileitem" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="migration/entrycriteria_v0_type_casefileitem.object"/>
+    <caseFileItemDefinition name="migration/entrycriteria_v0" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="migration/entrycriteria_v0.type"/>
+    <case id="migration/entrycriteria_v1.case" name="migration/entrycriteria_v1" expressionLanguage="spel">
+        <caseFileModel cafienne:typeRef="migration/entrycriteria_v0.type">
+            <caseFileItem id="casefileitem" name="casefileitem" multiplicity="ExactlyOne" definitionRef="migration/entrycriteria_v0_type_casefileitem.object"/>
+        </caseFileModel>
+        <casePlanModel id="cm__PRVF7_0" name="migration/entrycriteria_v1" autoComplete="true">
+            <planItem id="_PRVF7_1" name="case started" definitionRef="s__PRVF7_1"/>
+            <planItem id="_PRVF7_3" name="repeating stage" definitionRef="s__PRVF7_3">
+                <entryCriterion id="crit__PRVF7_1" sentryRef="s_crit__PRVF7_1"/>
+                <entryCriterion id="crit__PRVF7_2" sentryRef="s_crit__PRVF7_2"/>
+                <itemControl id="_PRVF7_4">
+                    <repetitionRule id="_PRVF7_5">
+                        <condition id="_PRVF7_6">
+                            <body><![CDATA[true]]></body>
+                        </condition>
+                    </repetitionRule>
+                </itemControl>
+            </planItem>
+            <planItem id="_PRVF7_9" name="execution stage" definitionRef="s__PRVF7_9">
+                <entryCriterion id="crit__PRVF7_0" sentryRef="s_crit__PRVF7_0"/>
+                <itemControl id="_PRVF7_10">
+                    <repetitionRule id="_PRVF7_11">
+                        <condition id="_PRVF7_12">
+                            <body><![CDATA[true]]></body>
+                        </condition>
+                    </repetitionRule>
+                </itemControl>
+            </planItem>
+            <sentry id="s_crit__PRVF7_1">
+                <planItemOnPart id="_PRVF7_14" sourceRef="_PRVF7_9">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <sentry id="s_crit__PRVF7_2">
+                <planItemOnPart id="_PRVF7_15" sourceRef="_PRVF7_1">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <sentry id="s_crit__PRVF7_0">
+                <planItemOnPart id="_PRVF7_13" sourceRef="_PRVF7_3">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <stage id="s__PRVF7_1" name="case started" autoComplete="true"/>
+            <stage id="s__PRVF7_3" name="repeating stage" autoComplete="true">
+                <planItem id="_PRVF7_7" name="UserEvent" definitionRef="ue__PRVF7_7"/>
+            </stage>
+            <userEvent id="ue__PRVF7_7" name="UserEvent"/>
+            <stage id="s__PRVF7_9" name="execution stage" autoComplete="true">
+                <planItem id="_PRVF7_16" name="task" definitionRef="ht__PRVF7_16"/>
+            </stage>
+            <humanTask id="ht__PRVF7_16" name="task" isBlocking="true"/>
+        </casePlanModel>
+        <caseRoles cafienne:caseTeamRef="migration/entrycriteria_v0.caseteam"/>
+    </case>
+    <CMMNDI>
+        <CMMNDiagram>
+            <CMMNShape name="migration/entrycriteria_v1" cmmnElementRef="cm__PRVF7_0">
+                <Bounds x="20" y="20" width="800" height="500"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_PRVF7_1">
+                <Bounds x="70" y="110" width="200" height="140"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_PRVF7_3">
+                <Bounds x="70" y="310" width="220" height="140"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_PRVF7_7">
+                <Bounds x="170" y="360" width="32" height="32"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_PRVF7_9">
+                <Bounds x="350" y="310" width="210" height="140"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="crit__PRVF7_0">
+                <Bounds x="344" y="340" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="crit__PRVF7_1">
+                <Bounds x="284" y="380" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="crit__PRVF7_2">
+                <Bounds x="254" y="300" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_PRVF7_16">
+                <Bounds x="400" y="350" width="120" height="60"/>
+            </CMMNShape>
+            <CMMNEdge sourceCMMNElementRef="_PRVF7_3" targetCMMNElementRef="crit__PRVF7_0"/>
+            <CMMNEdge sourceCMMNElementRef="_PRVF7_9" targetCMMNElementRef="crit__PRVF7_1"/>
+            <CMMNEdge sourceCMMNElementRef="_PRVF7_1" targetCMMNElementRef="crit__PRVF7_2"/>
+        </CMMNDiagram>
+    </CMMNDI>
+</definitions>
