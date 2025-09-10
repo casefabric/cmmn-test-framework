@@ -57,6 +57,7 @@ export default class TestRepetitionMigration extends TestCase {
 
         // Migrate caseInstance1, and then complete the task in case1
         await CaseMigrationService.migrateDefinition(user, caseInstance, migratedDefinition);
+        await SomeTime(2000, 'Awaiting 2 seconds after case migration')
         await DebugService.forceRecovery(user, caseInstance);
         await this.completeNextTask(caseInstance, 2);
         console.log("First completed: " + firstTaskBatch);
