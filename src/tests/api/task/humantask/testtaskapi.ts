@@ -10,6 +10,7 @@ import TestCase from '../../../../test/testcase';
 import Util from '../../../../test/util';
 import User from '../../../../user';
 import WorldWideTestTenant from '../../../setup/worldwidetesttenant';
+import { taskPrinter } from '../../../../cmmn/task';
 
 const definition = Definitions.HelloWorld;
 const tenant = Util.generateId('temp_task_tenant');
@@ -31,7 +32,7 @@ export default class TestTaskAPI extends TestCase {
             }
         };
         const caseTeam = new CaseTeam([new CaseOwner(sender)]);
-        
+
         const startCase = { tenant, definition, inputs, caseTeam, debug: true };
         const taskOutput = {
             Response: {
@@ -49,7 +50,13 @@ export default class TestTaskAPI extends TestCase {
         await CaseService.getCase(receiver, caseInstance, 404);
 
         await TaskService.getCaseTasks(sender, caseInstance).then(tasks => {
-            console.log('Sender has ' + tasks.length + ' case tasks')
+            console.log('Sender has ' + tasks.length + ' case tasks');
+            taskPrinter(tasks);
+            tasks.forEach(task => {
+                if (task.caseName !== caseInstance.caseName) {
+                    throw new Error(`Task ${task}' does not have a proper case name. Expected "${caseInstance.caseName}", but found "${task.caseName}" instead`);
+                }
+            });
         });
 
         await TaskService.getCaseTasks(receiver, caseInstance, false, 404).then(response => {

@@ -2,6 +2,7 @@
 
 import Definitions from '../../cmmn/definitions/definitions';
 import State from '../../cmmn/state';
+import Task, { taskPrinter } from '../../cmmn/task';
 import TaskState from '../../cmmn/taskstate';
 import CaseTeam from '../../cmmn/team/caseteam';
 import CaseTeamUser, { CaseOwner } from "../../cmmn/team/caseteamuser";
@@ -44,6 +45,7 @@ export default class TestHelloworld extends TestCase {
 
         const caseInstance = await CaseService.startCase(sender, startCase);
         this.addIdentifier(caseInstance);
+        await TaskService.getCaseTasks(sender, caseInstance).then(taskPrinter);
 
         const cases = await CaseService.getCases(sender, { tenant: tenant, numberOfResults: 10000 });
         console.log("We have " + cases.length + " cases ...");
@@ -66,7 +68,7 @@ export default class TestHelloworld extends TestCase {
         await assertTask(sender, receiveGreetingTask, 'Complete', TaskState.Completed, receiver);
 
         const responseTaskName = 'Read response';
-        const nextTasks = await TaskService.getCaseTasks(sender, caseInstance);
+        const nextTasks = await TaskService.getCaseTasks(sender, caseInstance).then(taskPrinter);
         const readResponseTask = findTask(nextTasks, responseTaskName);
         if (readResponseTask.assignee !== sender.id) {
             throw new Error('Expecting task to be assigned to sending user, but found ' + readResponseTask.assignee + ' instead');
@@ -76,7 +78,6 @@ export default class TestHelloworld extends TestCase {
 
         await assertCasePlan(sender, caseInstance, State.Completed);
 
-        console.log(`\nCase Team:${JSON.stringify(freshCaseInstance.team, undefined, 2)}`);
         console.log(`\nCase ID: ${freshCaseInstance.id}\n`);
     }
 }
