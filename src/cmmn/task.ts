@@ -9,6 +9,7 @@ export default class Task extends CMMNBaseClass {
         public mayPerform: boolean,
         public owner: string,
         public caseInstanceId: string,
+        public caseName: string,
         public tenant: string,
         public role: string,
         public lastModified: string,
@@ -47,4 +48,9 @@ export default class Task extends CMMNBaseClass {
     static isActive(task: Task) {
         return task && task.isActive();
     }
+}
+
+export function taskPrinter(tasks: Task[]) {
+    console.log(tasks.map(t => `Task [id = ${t.id} | name = ${t.taskName} | case = ${t.caseName} | state = ${t.taskState} | mayPerform = ${t.mayPerform}]`).join('\n'));
+    return tasks;
 }
