@@ -60,6 +60,11 @@ export default class Case extends CMMNBaseClass {
         return this.id;
     }
 
+    toConsole() {
+        console.log(`Case ${this.caseName} [id = ${this.id} | parent = ${this.parentCaseId} | root = ${this.rootCaseId} | createdBy = ${this.createdBy} | modifiedBy = ${this.modifiedBy}]\n${this.printPlan()}`);
+        return this;
+    }
+
     /**
      * Returns the plan item matching the path, or throws an error
      * @param path - The path to resolve on the plan item structure of the case
