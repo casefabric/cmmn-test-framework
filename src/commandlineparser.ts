@@ -2,7 +2,8 @@ import Config, { MinimalLoggingConfig, NoLoggingConfig } from './config';
 import WorldWideTestTenant from './tests/setup/worldwidetesttenant';
 
 export default class CommandLineParser {
-    configArguments: Array<string> = process.argv.slice(2);
+    isNPM = process.argv.length > 0 && process.argv[0].toLowerCase() === 'npm';
+    configArguments: Array<string> = process.argv.slice(this.isNPM ? 3 : 2);
 
     constructor() {
         this.parseTimeout();
