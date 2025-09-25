@@ -3,7 +3,6 @@
 import Definitions from '../../../cmmn/definitions/definitions';
 import CaseService from '../../../service/case/caseservice';
 import DebugService from '../../../service/case/debugservice';
-import RepositoryService from '../../../service/case/repositoryservice';
 import TestCase from '../../../test/testcase';
 import WorldWideTestTenant from '../../setup/worldwidetesttenant';
 
