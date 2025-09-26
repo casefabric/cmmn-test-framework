@@ -1,0 +1,21 @@
+<case xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="migration/move_task_v0.case" name="migration/move_task_v0" expressionLanguage="spel" guid="_xwh5R">
+    <caseFileModel typeRef="case_calculation.type"/>
+    <casePlanModel id="cm__xwh5R_0" name="migration/move_task_v0" autoComplete="true">
+        <humanTask id="_xwh5R_1" name="Task_To_Move" isBlocking="true"/>
+        <stage id="_xwh5R_3" name="Stage_0" autoComplete="true">
+            <entryCriterion id="crit__xwh5R_0">
+                <planItemOnPart id="_xwh5R_9" sourceRef="_xwh5R_7">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+            </entryCriterion>
+            <humanTask id="_xwh5R_5" name="HumanTask_1" isBlocking="true"/>
+        </stage>
+        <humanTask id="_xwh5R_7" name="HumanTask_2" isBlocking="true"/>
+        <humanTask id="_xwh5R_17" name="Task_To_Drop" isBlocking="true"/>
+        <stage id="_xwh5R_24" name="Stage_3" autoComplete="true">
+            <humanTask id="_xwh5R_49" name="S3Task1" isBlocking="true"/>
+            <humanTask id="_xwh5R_28" name="S3Task2" isBlocking="true"/>
+        </stage>
+    </casePlanModel>
+    <caseRoles caseTeamRef="testteam.caseteam"/>
+</case>

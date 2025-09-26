@@ -98,6 +98,8 @@ import TestHelloworld from '../tests/helloworld/testhelloworld';
 import TestIncidentManagement from '../tests/incidentmanagement/incidentmanagement';
 import TestTravelRequest from '../tests/travelrequest/testtravelrequest';
 import TestRunner from './testrunner';
+import TestOnPartMigration from '../tests/api/case/migration/testonpartmigration';
+import TestMoveTaskMigration from '../tests/api/case/migration/testmovetaskmigration';
 
 export default class TestClasses {
     static getTestClass(name: string): Function {
@@ -185,6 +187,8 @@ const MigrationTests: Array<Function> = [
     , TestRepetitionMigration
     , TestDiscretionaryMigration
     , TestEntryCriteriaMigration
+    , TestOnPartMigration
+    , TestMoveTaskMigration
 ];
 
 const AllTests: Array<Function> = [
