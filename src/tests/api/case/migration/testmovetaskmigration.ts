@@ -16,6 +16,7 @@ const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
 
 export default class TestMoveTaskMigration extends TestCase {
+    lineReaderEnabled = true;
     async onPrepareTest() {
         await worldwideTenant.create();
         await base_definition.deploy(user, tenant);
@@ -41,19 +42,25 @@ export default class TestMoveTaskMigration extends TestCase {
         await assertPlanItem(user, caseInstance, "Task_To_Move", 0, State.Active);
         await assertPlanItem(user, caseInstance, "HumanTask_2", 0, State.Active);
         await assertPlanItem(user, caseInstance, "Stage_0", 0, State.Available);
-        await TaskService.completeTask(user, taskToMove!.id);
+        // await TaskService.completeTask(user, taskToMove!.id);
         await TaskService.completeTask(user, task2!.id);
         await TaskService.completeTask(user, taskToDrop!.id);
 
         await CaseService.getCase(user, caseInstance).then(caseInstance => caseInstance.toConsole())
 
-        console.log("Migrating case now");
+        this.readLine(`Press ENTER to migrate case ${caseInstance}`);
         await CaseMigrationService.migrateDefinition(user, caseInstance, migratedDefinition).then(() => CaseService.getCase(user, caseInstance));
+
+        this.readLine(`Case ${caseInstance} migrated. Press ENTER to continue...`);
+        await CaseService.getCase(user, caseInstance).then(caseInstance => caseInstance.toConsole())
+
+        this.readLine(`Assert that NewStage is in state Available...`);
 
         await assertPlanItem(user, caseInstance, "NewStage", 0, State.Available);
         await assertPlanItem(user, caseInstance, "Stage_0", 0, State.Active);
         
         const task4 = await CaseService.getCase(user, caseInstance).then(caseInstance => caseInstance.toConsole()).then(c => c.planitems.find(i => i.name === 'HumanTask_4'));
+        this.readLine(`Complete Task 4`);
         await TaskService.completeTask(user, task4!.id);
 
         await CaseService.getCase(user, caseInstance).then(caseInstance => caseInstance.toConsole()).then(caseInstance => {
