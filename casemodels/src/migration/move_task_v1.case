@@ -15,12 +15,13 @@
                     </planItemOnPart>
                 </entryCriterion>
             </milestone>
+            <humanTask id="_xwh5R_28" name="S3Task2" isBlocking="true"/>
         </stage>
         <humanTask id="_xwh5R_7" name="HumanTask_2" isBlocking="true"/>
         <stage id="_xwh5R_25" name="Stage_1" autoComplete="true">
             <stage id="_xwh5R_15" name="NewStage" autoComplete="true">
                 <entryCriterion id="crit__xwh5R_3">
-                    <planItemOnPart id="_xwh5R_38" sourceRef="_xwh5R_36">
+                    <planItemOnPart id="_xwh5R_74" sourceRef="_xwh5R_36">
                         <standardEvent>complete</standardEvent>
                     </planItemOnPart>
                 </entryCriterion>
@@ -36,7 +37,7 @@
             <humanTask id="_xwh5R_36" name="HumanTask_4" isBlocking="true"/>
         </stage>
         <humanTask id="_xwh5R_49" name="S3Task1" isBlocking="true"/>
-        <stage id="_xwh5R_61" name="Stage3" autoComplete="true"/>
+        <stage id="_xwh5R_24" name="Stage3" autoComplete="true"/>
     </casePlanModel>
     <caseRoles caseTeamRef="testteam.caseteam"/>
 </case>

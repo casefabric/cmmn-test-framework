@@ -16,7 +16,7 @@ const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
 
 export default class TestMoveTaskMigration extends TestCase {
-    lineReaderEnabled = true;
+    // lineReaderEnabled = true;
     async onPrepareTest() {
         await worldwideTenant.create();
         await base_definition.deploy(user, tenant);
@@ -38,13 +38,15 @@ export default class TestMoveTaskMigration extends TestCase {
         const taskToMove = caseInstance.planitems.find(i => i.name === 'Task_To_Move');
         const task2 = caseInstance.planitems.find(i => i.name === 'HumanTask_2');
         const taskToDrop = caseInstance.planitems.find(i => i.name === 'Task_To_Drop');
+        const taskMovingUp = caseInstance.planitems.find(i => i.name === 'S3Task1');
 
         await assertPlanItem(user, caseInstance, "Task_To_Move", 0, State.Active);
         await assertPlanItem(user, caseInstance, "HumanTask_2", 0, State.Active);
         await assertPlanItem(user, caseInstance, "Stage_0", 0, State.Available);
-        // await TaskService.completeTask(user, taskToMove!.id);
+        await TaskService.completeTask(user, taskToMove!.id);
         await TaskService.completeTask(user, task2!.id);
         await TaskService.completeTask(user, taskToDrop!.id);
+        await TaskService.completeTask(user, taskMovingUp!.id);
 
         await CaseService.getCase(user, caseInstance).then(caseInstance => caseInstance.toConsole())
 
@@ -67,5 +69,9 @@ export default class TestMoveTaskMigration extends TestCase {
             const movedTasks = caseInstance.planitems.filter(i => i.name === 'Task_To_Move');
             if (movedTasks.length !== 1) throw new Error(`Expected to find exactly one Task_To_Move after migration. Found ${movedTasks.length}`);
         });
+
+        const movedTask = await assertPlanItem(user, caseInstance, "Task_To_Move", 0, State.Completed);
+        if (movedTask.id !== taskToMove!.id) throw new Error(`Expected moved task to have id ${taskToMove!.id}. Found ${movedTask.id}`);
+        await assertPlanItem(user, caseInstance, "HumanTask_3", 0, State.Active);
     }
 }
