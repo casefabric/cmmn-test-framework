@@ -8,6 +8,7 @@ import TaskService from '../../../../service/task/taskservice';
 import { assertPlanItem } from '../../../../test/caseassertions/plan';
 import TestCase from '../../../../test/testcase';
 import WorldWideTestTenant from '../../../setup/worldwidetesttenant';
+import DebugService from '../../../../service/case/debugservice';
 
 const base_definition = Definitions.Migration_MoveTask_v0;
 const definitionMigrated = Definitions.Migration_MoveTask_v1;
@@ -60,6 +61,10 @@ export default class TestMoveTaskMigration extends TestCase {
 
         await assertPlanItem(user, caseInstance, "NewStage", 0, State.Available);
         await assertPlanItem(user, caseInstance, "Stage_0", 0, State.Active);
+
+        await DebugService.forceRecovery(user, caseInstance);
+        await CaseService.getCase(user, caseInstance).then(caseInstance => caseInstance.toConsole());
+        this.readLine(`Forced recovery. Press ENTER to continue...`);
         
         const task4 = await CaseService.getCase(user, caseInstance).then(caseInstance => caseInstance.toConsole()).then(c => c.planitems.find(i => i.name === 'HumanTask_4'));
         this.readLine(`Complete Task 4`);
