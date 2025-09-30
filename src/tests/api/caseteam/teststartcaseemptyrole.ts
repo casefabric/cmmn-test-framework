@@ -51,7 +51,7 @@ export default class TestStartCaseEmptyRole extends TestCase {
         const caseInstance = await CaseService.startCase(sender, startCase);
         this.addIdentifier(caseInstance);
 
-        assertCaseTeam(receiver, caseInstance, caseTeam2);
+        await assertCaseTeam(receiver, caseInstance, caseTeam2);
 
         // receiver cannot add sender with empty role
         await CaseTeamService.setUser(receiver, caseInstance, new CaseTeamUser(sender, [emptyRole]), 400);
