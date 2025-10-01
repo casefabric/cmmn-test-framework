@@ -16,6 +16,20 @@
             <humanTask id="_xwh5R_49" name="S3Task1" isBlocking="true"/>
             <humanTask id="_xwh5R_28" name="S3Task2" isBlocking="true"/>
         </stage>
+        <stage id="_xwh5R_74" name="Just A Stage" autoComplete="false">
+            <humanTask id="_xwh5R_59" name="RepeatingTask" isBlocking="true">
+                <itemControl id="_xwh5R_60">
+                    <repetitionRule id="_xwh5R_87">
+                        <condition id="_xwh5R_88">
+                            <body><![CDATA[false]]></body>
+                        </condition>
+                    </repetitionRule>
+                </itemControl>
+                <extensionElements mustUnderstand="false">
+                    <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="sendresponse.humantask"/>
+                </extensionElements>
+            </humanTask>
+        </stage>
     </casePlanModel>
     <caseRoles caseTeamRef="testteam.caseteam"/>
 </case>

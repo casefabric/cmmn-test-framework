@@ -1,7 +1,7 @@
 <CMMNDI xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
     <CMMNDiagram>
         <CMMNShape name="migration/move_task_v0" cmmnElementRef="cm__xwh5R_0">
-            <Bounds x="10" y="20" width="800" height="690"/>
+            <Bounds x="10" y="20" width="800" height="930"/>
         </CMMNShape>
         <CMMNShape cmmnElementRef="_xwh5R_1">
             <Bounds x="380" y="120" width="140" height="80"/>
@@ -56,6 +56,15 @@
         </CMMNShape>
         <CMMNShape cmmnElementRef="crit__xwh5R_4">
             <Bounds x="444" y="450" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_xwh5R_74">
+            <Bounds x="70" y="680" width="670" height="250"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_xwh5R_59">
+            <Bounds x="180" y="770" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_xwh5R_94">
+            <Bounds x="120" y="740" width="420" height="140"/>
         </CMMNShape>
         <CMMNEdge sourceCMMNElementRef="_xwh5R_7" targetCMMNElementRef="crit__xwh5R_0"/>
         <CMMNEdge sourceCMMNElementRef="_xwh5R_1" targetCMMNElementRef="crit__xwh5R_1"/>

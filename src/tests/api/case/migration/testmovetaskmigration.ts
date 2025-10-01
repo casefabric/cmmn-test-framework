@@ -48,9 +48,12 @@ export default class TestMoveTaskMigration extends TestCase {
         await TaskService.completeTask(user, task2!.id);
         await TaskService.completeTask(user, taskToDrop!.id);
         await TaskService.completeTask(user, taskMovingUp!.id);
+        const repeatingTask = await assertPlanItem(user, caseInstance, "RepeatingTask", 0, State.Active);
+        await TaskService.completeTask(user, repeatingTask!.id);
 
         await CaseService.getCase(user, caseInstance).then(caseInstance => caseInstance.toConsole())
 
+        // await DebugService.forceRecovery(user, caseInstance);
         this.readLine(`Press ENTER to migrate case ${caseInstance}`);
         await CaseMigrationService.migrateDefinition(user, caseInstance, migratedDefinition).then(() => CaseService.getCase(user, caseInstance));
 
@@ -61,8 +64,16 @@ export default class TestMoveTaskMigration extends TestCase {
 
         await assertPlanItem(user, caseInstance, "NewStage", 0, State.Available);
         await assertPlanItem(user, caseInstance, "Stage_0", 0, State.Active);
+        this.readLine(`Press ENTER to complete seoncd repeating task...`);
 
-        await DebugService.forceRecovery(user, caseInstance);
+        await assertPlanItem(user, caseInstance, "RepeatingTask", 1, State.Active).then(async task => {
+            await TaskService.completeTask(user, task!.id);
+
+        });
+
+        // await TaskService.completeTask(user, repeatingTask!.id);
+
+        // await DebugService.forceRecovery(user, caseInstance);
         await CaseService.getCase(user, caseInstance).then(caseInstance => caseInstance.toConsole());
         this.readLine(`Forced recovery. Press ENTER to continue...`);
         

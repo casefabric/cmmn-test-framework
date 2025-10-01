@@ -25,6 +25,7 @@
             <planItem id="_xwh5R_25" name="Stage_1" definitionRef="s__xwh5R_25"/>
             <planItem id="_xwh5R_49" name="S3Task1" definitionRef="ht__xwh5R_49"/>
             <planItem id="_xwh5R_24" name="Stage3" definitionRef="s__xwh5R_24"/>
+            <planItem id="_xwh5R_74" name="Just A Stage" definitionRef="s__xwh5R_74"/>
             <sentry id="s_crit__xwh5R_0">
                 <planItemOnPart id="_xwh5R_9" sourceRef="_xwh5R_7">
                     <standardEvent>complete</standardEvent>
@@ -82,6 +83,94 @@
             <humanTask id="ht__xwh5R_36" name="HumanTask_4" isBlocking="true"/>
             <humanTask id="ht__xwh5R_49" name="S3Task1" isBlocking="true"/>
             <stage id="s__xwh5R_24" name="Stage3" autoComplete="true"/>
+            <stage id="s__xwh5R_74" name="Just A Stage" autoComplete="false">
+                <planItem id="_xwh5R_94" name="Repeating Stage" definitionRef="s__xwh5R_94">
+                    <itemControl id="_xwh5R_95">
+                        <repetitionRule id="_xwh5R_134">
+                            <condition id="_xwh5R_135">
+                                <body><![CDATA[true]]></body>
+                            </condition>
+                        </repetitionRule>
+                    </itemControl>
+                </planItem>
+            </stage>
+            <stage id="s__xwh5R_94" name="Repeating Stage" autoComplete="true">
+                <planItem id="_xwh5R_59" name="RepeatingTask" definitionRef="ht__xwh5R_59"/>
+            </stage>
+            <humanTask id="ht__xwh5R_59" name="RepeatingTask" isBlocking="true" performerRef="cr__rAKmR_0">
+                <outputs id="_xwh5R_154" name="input1" bindingRef="Root/input1"/>
+                <extensionElements mustUnderstand="false">
+                    <cafienne:implementation name="SendResponse" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="sendresponse.humantask">
+                        <documentation textFormat="text/plain">
+                            <text><![CDATA[Sends a response back to the initiator of the hello world case]]></text>
+                        </documentation>
+                        <input id="Greeting" name="Greeting"/>
+                        <output id="Response" name="Response"/>
+                        <task-model>{
+	"schema" : {
+		"title" : "You have received a greeting",
+		"type" : "object",
+		"required" : [
+			"Response"
+		],
+		"properties" : {
+			"Greeting" : {
+				"title" : " ",
+				"type" : "object",
+				"properties" : {
+					"Message" : {
+						"type" : "string"
+					}
+				}
+			},
+			"Response" : {
+				"title" : "Your response",
+				"type" : "object",
+				"properties" : {
+					"Message" : {
+						"type" : "string",
+						"title" : "Your response message"
+					},
+					"Date" : {
+						"type" : "string",
+						"format" : "date",
+						"title" : "Pick a date"
+					},
+					"Time" : {
+						"type" : "string",
+						"format" : "time",
+						"title" : "Pick a time"
+					},
+					"SomeBoolean" : {
+						"type" : "boolean",
+						"title" : "Check this"
+					}
+				}
+			}
+		}
+	},
+	"uiSchema" : {
+       	"ui:order": [ "Greeting", "Response" ],
+		"Greeting" : {
+			"Message" : {
+				"ui:widget" : "textarea",
+				"ui:readonly" : true
+			},
+			"To" : {
+				"ui:readonly" : true
+			}
+		},
+		"Response" : {
+			"Message" : {
+				"ui:widget" : "textarea"
+			}
+		}
+	}
+}</task-model>
+                        <parameterMapping id="_xwh5R_137" sourceRef="Response" targetRef="_xwh5R_154"/>
+                    </cafienne:implementation>
+                </extensionElements>
+            </humanTask>
         </casePlanModel>
         <caseRoles cafienne:caseTeamRef="testteam.caseteam">
             <role id="cr__rAKmR_0" name="Employee"/>
@@ -97,7 +186,7 @@
     <CMMNDI>
         <CMMNDiagram>
             <CMMNShape name="migration/move_task_v0" cmmnElementRef="cm__xwh5R_0">
-                <Bounds x="10" y="20" width="800" height="690"/>
+                <Bounds x="10" y="20" width="800" height="930"/>
             </CMMNShape>
             <CMMNShape cmmnElementRef="_xwh5R_1">
                 <Bounds x="380" y="120" width="140" height="80"/>
@@ -152,6 +241,15 @@
             </CMMNShape>
             <CMMNShape cmmnElementRef="crit__xwh5R_4">
                 <Bounds x="444" y="450" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_xwh5R_74">
+                <Bounds x="70" y="680" width="670" height="250"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_xwh5R_59">
+                <Bounds x="180" y="770" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_xwh5R_94">
+                <Bounds x="120" y="740" width="420" height="140"/>
             </CMMNShape>
             <CMMNEdge sourceCMMNElementRef="_xwh5R_7" targetCMMNElementRef="crit__xwh5R_0"/>
             <CMMNEdge sourceCMMNElementRef="_xwh5R_1" targetCMMNElementRef="crit__xwh5R_1"/>
