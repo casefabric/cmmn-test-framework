@@ -1,3 +1,6 @@
+import PlanItem from "./planitem";
+import Case from "./case";
+
 /**
  * Base class to expose possible states of plan items and case file items.
  */
@@ -29,8 +32,13 @@ export default class State {
     private constructor(public readonly value: string) {
     }
 
+    matches(item: PlanItem | undefined): boolean {
+        if (!item) return false;
+        return this.is(item.currentState);        
+    }
+
     is(other: string | State | undefined | null): boolean {
-        if (! other) return false;
+        if (!other) return false;
         return this.value.toLowerCase() === other.toString().toLowerCase();
     }
 

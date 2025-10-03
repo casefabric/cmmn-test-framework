@@ -1,7 +1,9 @@
 import Case from '../../cmmn/case';
 import DiscretionaryItem from '../../cmmn/discretionaryitem';
+import PlanItem from '../../cmmn/planitem';
 import CaseTeam from '../../cmmn/team/caseteam';
 import Trace from '../../infra/trace';
+import Util from '../../test/util';
 import User from '../../user';
 import CafienneService from '../cafienneservice';
 import { checkJSONResponse, checkResponse } from '../response';
@@ -50,8 +52,13 @@ export default class CaseService {
             if (json.team && !(json.team.members || json.team.users || json.team.tenantRoles || json.team.groups)) json.team = new CaseTeam(json.team);
             return json;
         }
+        const convertItems = (json: any) => {
+            if (json || !json.planitems) return json;
+            json.planitems = Util.convertJsonToTypedObject('', json.planitems, [PlanItem]);
+            return json;
+        };
         const response = await CafienneService.get(`/cases/${caseId}`, user);
-        return checkJSONResponse(response, msg, expectedStatusCode, Case, trace).then(convertCaseTeamFormat);
+        return checkJSONResponse(response, msg, expectedStatusCode, Case, trace).then(convertItems).then(convertCaseTeamFormat);
     }
 
     /**
