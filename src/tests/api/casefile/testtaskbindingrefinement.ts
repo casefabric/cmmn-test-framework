@@ -27,7 +27,7 @@ export default class TestTaskBindingRefinement extends TestCase {
         };
 
         const startCase = { tenant, definition, inputs };
-        const caseId = await CaseService.startCase(user, startCase) as Case
+        const caseId = await CaseService.startCase(user, startCase)
         const caseInstance = await CaseService.getCase(user, caseId);
         this.addIdentifier(caseInstance);
 

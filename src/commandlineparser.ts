@@ -1,9 +1,16 @@
 import Config, { MinimalLoggingConfig, NoLoggingConfig } from './config';
 import WorldWideTestTenant from './tests/setup/worldwidetesttenant';
 
+const TIMEOUT_PARAMETER = '-t';
+const LOGGING_PARAMETER = '-l'
+const TENANT_PARAMETER = 'in'
+const PARALLELLISM_PARAMETER = '-p'
+const RETRYPERIOD_PARAMETER = '-r'
+
 export default class CommandLineParser {
     isNPM = process.argv.length > 0 && process.argv[0].toLowerCase() === 'npm';
     configArguments: Array<string> = process.argv.slice(this.isNPM ? 3 : 2);
+
 
     constructor() {
         this.parseTimeout();
@@ -16,24 +23,24 @@ export default class CommandLineParser {
     private parseTimeout() {
         if (this.configArguments.length) {
             const timeout = this.configArguments[0];
-            if (!isNaN(Number(timeout)) && timeout.trim() !== '-t') { // Classic style setting timeout
+            if (!isNaN(Number(timeout)) && timeout.trim() !== TIMEOUT_PARAMETER) { // Classic style setting timeout
                 console.log('Setting CQRS wait time to ' + timeout)
                 Config.CafienneService.cqrsWaitTime = Number(timeout);
 
                 // Remove the timeout parameter
                 this.configArguments = this.configArguments.slice(1);
             } else {
-                Config.CafienneService.cqrsWaitTime = this.readNumber('-t', 'CQRS wait time', Config.CafienneService.cqrsWaitTime, 100);
+                Config.CafienneService.cqrsWaitTime = this.readNumber(TIMEOUT_PARAMETER, 'CQRS wait time', Config.CafienneService.cqrsWaitTime, 100);
             }
         }
     }
 
     private parsePollingPeriod() {
-        Config.TestCase.polltimeout = this.readNumber('-r', 'Retry period upon failing assertions', Config.TestCase.polltimeout, 1000);
+        Config.TestCase.polltimeout = this.readNumber(RETRYPERIOD_PARAMETER, 'Retry period upon failing assertions', Config.TestCase.polltimeout, 1000);
     }
 
     private parseLogging() {
-        const logLevel = this.readValue('-l', 'logging', 'max', 'min', 'none');
+        const logLevel = this.readValue(LOGGING_PARAMETER, 'logging', 'max', 'min', 'none');
         const fillLoggingConfiguration = (logConfig: any) => Object.assign(Config, logConfig);
         switch (logLevel) {
             case 'max': break; // No changes
@@ -47,11 +54,11 @@ export default class CommandLineParser {
     }
 
     private parseTenant() {
-        WorldWideTestTenant.defaultTenantName = this.readValue('in', 'tenant', 'World-Wide-Test-Tenant', 'world');
+        WorldWideTestTenant.defaultTenantName = this.readValue(TENANT_PARAMETER, 'tenant', 'World-Wide-Test-Tenant', 'world');
     }
 
     private parseParallellism() {
-        Config.CafienneService.cqrsWaitTime = this.readNumber('-p', 'parallellism', Config.TestCase.parallellism, 1);
+        Config.TestCase.parallellism = this.readNumber(PARALLELLISM_PARAMETER, 'parallellism', Config.TestCase.parallellism, 1);
     }
 
     private readNumber(setting: string, description: string, defaultValue: number, mininumValue: number): number {

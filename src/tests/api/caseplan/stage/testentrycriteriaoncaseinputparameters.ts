@@ -136,7 +136,7 @@ export default class TestEntryCriteriaOnCaseInputParameters extends TestCase {
 }
 
 function printCaseSummary(c: Case) {
-    const messages: Array<String> = ['\n'];
+    const messages: Array<string> = ['\n'];
     const name = c.caseName;
     const id = c.id;
     messages.push(`Case[${c.caseName}] has id ${c.id}`);

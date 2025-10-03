@@ -57,7 +57,7 @@ export default class TestDeleteCaseAuthorization extends TestCase {
     await caseHierarchy.load();
 
     // The process task deep down in complexcase needs time to fail. We should await that.
-    caseHierarchy.findProcessTask('GetList')?.assertState(State.Failed);
+    await caseHierarchy.findProcessTask('GetList')?.assertState(State.Failed);
 
     console.log(">>>>>>>> DELETING Case " + caseInstance.id);
 

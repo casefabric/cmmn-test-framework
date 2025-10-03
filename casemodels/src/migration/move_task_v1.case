@@ -1,0 +1,69 @@
+<case xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="migration/move_task_v0.case" name="migration/move_task_v0" expressionLanguage="spel" guid="_xwh5R">
+    <caseFileModel typeRef="case_calculation.type"/>
+    <casePlanModel id="cm__xwh5R_0" name="migration/move_task_v0" autoComplete="true">
+        <stage id="_xwh5R_3" name="Stage_0" autoComplete="true">
+            <entryCriterion id="crit__xwh5R_0">
+                <planItemOnPart id="_xwh5R_9" sourceRef="_xwh5R_7">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+            </entryCriterion>
+            <humanTask id="_xwh5R_5" name="HumanTask_1" isBlocking="true"/>
+            <milestone id="_xwh5R_17" name="Task_To_Drop">
+                <entryCriterion id="crit__xwh5R_2">
+                    <planItemOnPart id="_xwh5R_35" sourceRef="_xwh5R_5">
+                        <standardEvent>complete</standardEvent>
+                    </planItemOnPart>
+                </entryCriterion>
+            </milestone>
+            <humanTask id="_xwh5R_28" name="S3Task2" isBlocking="true"/>
+            <milestone id="_xwh5R_77" name="Later_Milestone">
+                <entryCriterion id="crit__xwh5R_4">
+                    <planItemOnPart id="_xwh5R_79" sourceRef="_xwh5R_1">
+                        <standardEvent>complete</standardEvent>
+                    </planItemOnPart>
+                </entryCriterion>
+            </milestone>
+        </stage>
+        <humanTask id="_xwh5R_7" name="HumanTask_2" isBlocking="true"/>
+        <stage id="_xwh5R_25" name="Stage_1" autoComplete="true">
+            <stage id="_xwh5R_15" name="NewStage" autoComplete="true">
+                <entryCriterion id="crit__xwh5R_3">
+                    <planItemOnPart id="_xwh5R_63" sourceRef="_xwh5R_36">
+                        <standardEvent>complete</standardEvent>
+                    </planItemOnPart>
+                </entryCriterion>
+                <humanTask id="_xwh5R_22" name="HumanTask_3" isBlocking="true">
+                    <entryCriterion id="crit__xwh5R_1">
+                        <planItemOnPart id="_xwh5R_24" sourceRef="_xwh5R_1">
+                            <standardEvent>complete</standardEvent>
+                        </planItemOnPart>
+                    </entryCriterion>
+                </humanTask>
+                <humanTask id="_xwh5R_1" name="Task_To_Move" isBlocking="true"/>
+            </stage>
+            <humanTask id="_xwh5R_36" name="HumanTask_4" isBlocking="true"/>
+        </stage>
+        <humanTask id="_xwh5R_49" name="S3Task1" isBlocking="true"/>
+        <stage id="_xwh5R_24" name="Stage3" autoComplete="true"/>
+        <stage id="_xwh5R_74" name="Just A Stage" autoComplete="false">
+            <stage id="_xwh5R_94" name="Repeating Stage" autoComplete="true">
+                <itemControl id="_xwh5R_95">
+                    <repetitionRule id="_xwh5R_134">
+                        <condition id="_xwh5R_135">
+                            <body><![CDATA[true]]></body>
+                        </condition>
+                    </repetitionRule>
+                </itemControl>
+                <humanTask id="_xwh5R_59" name="RepeatingTask" isBlocking="true" performerRef="cr__rAKmR_0">
+                    <outputs id="_xwh5R_154" name="input1" bindingRef="Root/input1"/>
+                    <extensionElements mustUnderstand="false">
+                        <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="sendresponse.humantask">
+                            <parameterMapping id="_xwh5R_137" sourceRef="Response" targetRef="_xwh5R_154"/>
+                        </cafienne:implementation>
+                    </extensionElements>
+                </humanTask>
+            </stage>
+        </stage>
+    </casePlanModel>
+    <caseRoles caseTeamRef="testteam.caseteam"/>
+</case>

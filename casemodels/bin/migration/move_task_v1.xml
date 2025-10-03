@@ -1,0 +1,261 @@
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
+    <caseFileItemDefinition name="Root" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="case_calculation_type_Root.object"/>
+    <caseFileItemDefinition name="case_calculation" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="case_calculation.type"/>
+    <caseFileItemDefinition name="unspecified" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="unspecified.type"/>
+    <case id="migration/move_task_v1.case" name="migration/move_task_v0" expressionLanguage="spel">
+        <caseFileModel cafienne:typeRef="case_calculation.type">
+            <caseFileItem id="Root" name="Root" multiplicity="ExactlyOne" definitionRef="case_calculation_type_Root.object">
+                <children>
+                    <caseFileItem id="Root/input1" name="input1" multiplicity="ExactlyOne" definitionRef="unspecified.type"/>
+                    <caseFileItem id="Root/input2" name="input2" multiplicity="ExactlyOne" definitionRef="unspecified.type"/>
+                </children>
+            </caseFileItem>
+            <caseFileItem id="Output1" name="Output1" multiplicity="ExactlyOne" definitionRef="unspecified.type"/>
+            <caseFileItem id="Output2" name="Output2" multiplicity="ExactlyOne" definitionRef="unspecified.type"/>
+            <caseFileItem id="Output3" name="Output3" multiplicity="ExactlyOne" definitionRef="unspecified.type"/>
+            <caseFileItem id="Output4" name="Output4" multiplicity="ExactlyOne" definitionRef="unspecified.type"/>
+            <caseFileItem id="Output5" name="Output5" multiplicity="ExactlyOne" definitionRef="unspecified.type"/>
+            <caseFileItem id="Output6" name="Output6" multiplicity="ExactlyOne" definitionRef="unspecified.type"/>
+        </caseFileModel>
+        <casePlanModel id="cm__xwh5R_0" name="migration/move_task_v0" autoComplete="true">
+            <planItem id="_xwh5R_3" name="Stage_0" definitionRef="s__xwh5R_3">
+                <entryCriterion id="crit__xwh5R_0" sentryRef="s_crit__xwh5R_0"/>
+            </planItem>
+            <planItem id="_xwh5R_7" name="HumanTask_2" definitionRef="ht__xwh5R_7"/>
+            <planItem id="_xwh5R_25" name="Stage_1" definitionRef="s__xwh5R_25"/>
+            <planItem id="_xwh5R_49" name="S3Task1" definitionRef="ht__xwh5R_49"/>
+            <planItem id="_xwh5R_24" name="Stage3" definitionRef="s__xwh5R_24"/>
+            <planItem id="_xwh5R_74" name="Just A Stage" definitionRef="s__xwh5R_74"/>
+            <sentry id="s_crit__xwh5R_0">
+                <planItemOnPart id="_xwh5R_9" sourceRef="_xwh5R_7">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <stage id="s__xwh5R_3" name="Stage_0" autoComplete="true">
+                <planItem id="_xwh5R_5" name="HumanTask_1" definitionRef="ht__xwh5R_5"/>
+                <planItem id="_xwh5R_17" name="Task_To_Drop" definitionRef="ms__xwh5R_17">
+                    <entryCriterion id="crit__xwh5R_2" sentryRef="s_crit__xwh5R_2"/>
+                </planItem>
+                <planItem id="_xwh5R_28" name="S3Task2" definitionRef="ht__xwh5R_28"/>
+                <planItem id="_xwh5R_77" name="Later_Milestone" definitionRef="ms__xwh5R_77">
+                    <entryCriterion id="crit__xwh5R_4" sentryRef="s_crit__xwh5R_4"/>
+                </planItem>
+                <sentry id="s_crit__xwh5R_2">
+                    <planItemOnPart id="_xwh5R_35" sourceRef="_xwh5R_5">
+                        <standardEvent>complete</standardEvent>
+                    </planItemOnPart>
+                </sentry>
+                <sentry id="s_crit__xwh5R_4">
+                    <planItemOnPart id="_xwh5R_79" sourceRef="_xwh5R_1">
+                        <standardEvent>complete</standardEvent>
+                    </planItemOnPart>
+                </sentry>
+            </stage>
+            <humanTask id="ht__xwh5R_5" name="HumanTask_1" isBlocking="true"/>
+            <milestone id="ms__xwh5R_17" name="Task_To_Drop"/>
+            <humanTask id="ht__xwh5R_28" name="S3Task2" isBlocking="true"/>
+            <milestone id="ms__xwh5R_77" name="Later_Milestone"/>
+            <humanTask id="ht__xwh5R_7" name="HumanTask_2" isBlocking="true"/>
+            <stage id="s__xwh5R_25" name="Stage_1" autoComplete="true">
+                <planItem id="_xwh5R_15" name="NewStage" definitionRef="s__xwh5R_15">
+                    <entryCriterion id="crit__xwh5R_3" sentryRef="s_crit__xwh5R_3"/>
+                </planItem>
+                <planItem id="_xwh5R_36" name="HumanTask_4" definitionRef="ht__xwh5R_36"/>
+                <sentry id="s_crit__xwh5R_3">
+                    <planItemOnPart id="_xwh5R_63" sourceRef="_xwh5R_36">
+                        <standardEvent>complete</standardEvent>
+                    </planItemOnPart>
+                </sentry>
+            </stage>
+            <stage id="s__xwh5R_15" name="NewStage" autoComplete="true">
+                <planItem id="_xwh5R_22" name="HumanTask_3" definitionRef="ht__xwh5R_22">
+                    <entryCriterion id="crit__xwh5R_1" sentryRef="s_crit__xwh5R_1"/>
+                </planItem>
+                <planItem id="_xwh5R_1" name="Task_To_Move" definitionRef="ht__xwh5R_1"/>
+                <sentry id="s_crit__xwh5R_1">
+                    <planItemOnPart id="_xwh5R_24" sourceRef="_xwh5R_1">
+                        <standardEvent>complete</standardEvent>
+                    </planItemOnPart>
+                </sentry>
+            </stage>
+            <humanTask id="ht__xwh5R_22" name="HumanTask_3" isBlocking="true"/>
+            <humanTask id="ht__xwh5R_1" name="Task_To_Move" isBlocking="true"/>
+            <humanTask id="ht__xwh5R_36" name="HumanTask_4" isBlocking="true"/>
+            <humanTask id="ht__xwh5R_49" name="S3Task1" isBlocking="true"/>
+            <stage id="s__xwh5R_24" name="Stage3" autoComplete="true"/>
+            <stage id="s__xwh5R_74" name="Just A Stage" autoComplete="false">
+                <planItem id="_xwh5R_94" name="Repeating Stage" definitionRef="s__xwh5R_94">
+                    <itemControl id="_xwh5R_95">
+                        <repetitionRule id="_xwh5R_134">
+                            <condition id="_xwh5R_135">
+                                <body><![CDATA[true]]></body>
+                            </condition>
+                        </repetitionRule>
+                    </itemControl>
+                </planItem>
+            </stage>
+            <stage id="s__xwh5R_94" name="Repeating Stage" autoComplete="true">
+                <planItem id="_xwh5R_59" name="RepeatingTask" definitionRef="ht__xwh5R_59"/>
+            </stage>
+            <humanTask id="ht__xwh5R_59" name="RepeatingTask" isBlocking="true" performerRef="cr__rAKmR_0">
+                <outputs id="_xwh5R_154" name="input1" bindingRef="Root/input1"/>
+                <extensionElements mustUnderstand="false">
+                    <cafienne:implementation name="SendResponse" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="sendresponse.humantask">
+                        <documentation textFormat="text/plain">
+                            <text><![CDATA[Sends a response back to the initiator of the hello world case]]></text>
+                        </documentation>
+                        <input id="Greeting" name="Greeting"/>
+                        <output id="Response" name="Response"/>
+                        <task-model>{
+	"schema" : {
+		"title" : "You have received a greeting",
+		"type" : "object",
+		"required" : [
+			"Response"
+		],
+		"properties" : {
+			"Greeting" : {
+				"title" : " ",
+				"type" : "object",
+				"properties" : {
+					"Message" : {
+						"type" : "string"
+					}
+				}
+			},
+			"Response" : {
+				"title" : "Your response",
+				"type" : "object",
+				"properties" : {
+					"Message" : {
+						"type" : "string",
+						"title" : "Your response message"
+					},
+					"Date" : {
+						"type" : "string",
+						"format" : "date",
+						"title" : "Pick a date"
+					},
+					"Time" : {
+						"type" : "string",
+						"format" : "time",
+						"title" : "Pick a time"
+					},
+					"SomeBoolean" : {
+						"type" : "boolean",
+						"title" : "Check this"
+					}
+				}
+			}
+		}
+	},
+	"uiSchema" : {
+       	"ui:order": [ "Greeting", "Response" ],
+		"Greeting" : {
+			"Message" : {
+				"ui:widget" : "textarea",
+				"ui:readonly" : true
+			},
+			"To" : {
+				"ui:readonly" : true
+			}
+		},
+		"Response" : {
+			"Message" : {
+				"ui:widget" : "textarea"
+			}
+		}
+	}
+}</task-model>
+                        <parameterMapping id="_xwh5R_137" sourceRef="Response" targetRef="_xwh5R_154"/>
+                    </cafienne:implementation>
+                </extensionElements>
+            </humanTask>
+        </casePlanModel>
+        <caseRoles cafienne:caseTeamRef="testteam.caseteam">
+            <role id="cr__rAKmR_0" name="Employee"/>
+            <role id="cr__rAKmR_1" name="Manager"/>
+            <role id="cr__rAKmR_2" name="ADMIN">
+                <documentation textFormat="text/plain">
+                    <text><![CDATA[admin of the world]]></text>
+                </documentation>
+            </role>
+            <role id="cr__ZAwz2_0" name="role"/>
+        </caseRoles>
+    </case>
+    <CMMNDI>
+        <CMMNDiagram>
+            <CMMNShape name="migration/move_task_v0" cmmnElementRef="cm__xwh5R_0">
+                <Bounds x="10" y="20" width="800" height="930"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_xwh5R_1">
+                <Bounds x="380" y="120" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_xwh5R_3">
+                <Bounds x="330" y="320" width="420" height="200"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_xwh5R_5">
+                <Bounds x="380" y="340" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_xwh5R_7">
+                <Bounds x="90" y="360" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="crit__xwh5R_0">
+                <Bounds x="324" y="390" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_xwh5R_15">
+                <Bounds x="340" y="90" width="420" height="140"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_xwh5R_22">
+                <Bounds x="580" y="120" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="crit__xwh5R_1">
+                <Bounds x="574" y="150" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_xwh5R_25">
+                <Bounds x="170" y="60" width="610" height="210"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_xwh5R_17">
+                <Bounds x="590" y="360" width="100" height="40"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_xwh5R_77">
+                <Bounds x="400" y="460" width="100" height="40"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="crit__xwh5R_2">
+                <Bounds x="584" y="370" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_xwh5R_36">
+                <Bounds x="180" y="110" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_xwh5R_49">
+                <Bounds x="60" y="540" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_xwh5R_24">
+                <Bounds x="320" y="530" width="420" height="140"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_xwh5R_28">
+                <Bounds x="560" y="420" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="crit__xwh5R_3">
+                <Bounds x="334" y="130" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="crit__xwh5R_4">
+                <Bounds x="444" y="450" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_xwh5R_74">
+                <Bounds x="70" y="680" width="670" height="250"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_xwh5R_59">
+                <Bounds x="180" y="770" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_xwh5R_94">
+                <Bounds x="120" y="740" width="420" height="140"/>
+            </CMMNShape>
+            <CMMNEdge sourceCMMNElementRef="_xwh5R_7" targetCMMNElementRef="crit__xwh5R_0"/>
+            <CMMNEdge sourceCMMNElementRef="_xwh5R_1" targetCMMNElementRef="crit__xwh5R_1"/>
+            <CMMNEdge sourceCMMNElementRef="_xwh5R_5" targetCMMNElementRef="crit__xwh5R_2"/>
+            <CMMNEdge sourceCMMNElementRef="_xwh5R_36" targetCMMNElementRef="crit__xwh5R_3"/>
+            <CMMNEdge sourceCMMNElementRef="crit__xwh5R_4" targetCMMNElementRef="_xwh5R_1"/>
+        </CMMNDiagram>
+    </CMMNDI>
+</definitions>

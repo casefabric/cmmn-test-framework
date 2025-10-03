@@ -86,10 +86,9 @@ export default class User {
      * Refresh the user information with latest from case engine.
      */
     async refreshUserInformation(): Promise<UserInformation> {
-        const user =  this;
         return PlatformService.getUserInformation(this).then(info => {
-            user.userInformation = info;
-            return info
+            this.userInformation = info;
+            return info;
         });
     }
 }

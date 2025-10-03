@@ -33,7 +33,7 @@ export default class CafienneService {
         return Config.CafienneService.url;
     }
 
-    static async updateCaseLastModified(response: CafienneResponse) {
+    static updateCaseLastModified(response: CafienneResponse) {
         // TODO: this currently is not a Singleton, but it should be...
         if (response.ok) {
             const readAndUpdateHeader = (headerName: string) => {
@@ -109,7 +109,7 @@ export default class CafienneService {
             logger.debug(body);
         }
  
-        const response = await fetch(url, { method, headers, body }).then(response => new CafienneResponse(response)).then(this.updateCaseLastModified);
+        const response = await fetch(url, { method, headers, body }).then(response => new CafienneResponse(response)).then(r => this.updateCaseLastModified(r));
         
         if (! response.ok && Config.CafienneService.log.response.error) {
             if (!Config.CafienneService.log.url) {
@@ -152,7 +152,7 @@ export default class CafienneService {
     }
 }
 
-export function printHeaders(msg: string, headers: {}) {
+export function printHeaders(msg: string, headers: Headers | object) {
     logger.debug(msg);
     if (headers.constructor.name === 'Headers') {
         (headers as Headers).forEach((value, key) => {

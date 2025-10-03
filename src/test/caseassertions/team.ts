@@ -96,7 +96,7 @@ function hasTenantRole(team: CaseTeam, expectedTenantRole: CaseTeamTenantRole, e
     }
 }
 
-async function verifyTeam(actualTeam: CaseTeam, expectedTeam: CaseTeam, trace: Trace) {
+function verifyTeam(actualTeam: CaseTeam, expectedTeam: CaseTeam, trace: Trace) {
     const missingMembers = expectedTeam.users.filter(member => !findMember(actualTeam, member));
     const tooManyMembers = actualTeam.users.filter(member => !findMember(expectedTeam, member));
 
@@ -124,7 +124,7 @@ async function verifyTeam(actualTeam: CaseTeam, expectedTeam: CaseTeam, trace: T
  * @param expectedTeam 
  */
 export async function assertCaseTeam(user: User, caseId: Case | string, expectedTeam: CaseTeam, trace: Trace = new Trace()) {
-    CaseTeamService.getCaseTeam(user, caseId, undefined, undefined, trace).then(team => verifyTeam(team, expectedTeam, trace));
+    return CaseTeamService.getCaseTeam(user, caseId, undefined, undefined, trace).then(team => verifyTeam(team, expectedTeam, trace));
 }
 
 /**

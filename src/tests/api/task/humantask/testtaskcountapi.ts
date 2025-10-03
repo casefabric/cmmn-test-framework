@@ -32,7 +32,7 @@ export default class TestTaskCountAPI extends TestCase {
 
         const startCase = { tenant, definition, inputs };
 
-        const taskCountBefore = await TaskService.countTasks(user, {tenant}) as TaskCount;
+        const taskCountBefore = await TaskService.countTasks(user, {tenant});
         console.log(`Task Count before starting new cases and claiming a task: ${JSON.stringify(taskCountBefore, undefined, 2)}`);
 
         const numSendResponseTasksBefore = (await this.getTasks('SendResponse')).length;
@@ -69,7 +69,7 @@ export default class TestTaskCountAPI extends TestCase {
     }
 
     async getTasks(taskName: string, expectedCount: number = -1) {
-        const tasks = (await TaskService.getTasks(user, { taskName, tenant})).filter(Task.isActive);
+        const tasks = await TaskService.getTasks(user, { taskName, tenant}).then(tasks => tasks.filter(t => Task.isActive(t)));
         console.log(`Found ${tasks.length} tasks with name '${taskName}'`);
         if (expectedCount >= 0 && tasks.length !== expectedCount) {
             throw new Error(`Expected to find ${expectedCount} tasks named '${taskName}', but found ${tasks.length}`);
@@ -78,7 +78,7 @@ export default class TestTaskCountAPI extends TestCase {
     }
 
     async validateTaskCountChange(expectedNumberOfClaimedTasks: number, expectedNumberOfUnclaimedTasks: number, msg: string) {
-        const taskCountAfter = await TaskService.countTasks(user, {tenant}) as TaskCount;
+        const taskCountAfter = await TaskService.countTasks(user, {tenant});
         console.log(`${msg}: ${JSON.stringify(taskCountAfter, undefined, 2)}`);
 
         if (taskCountAfter.claimed !== expectedNumberOfClaimedTasks) {

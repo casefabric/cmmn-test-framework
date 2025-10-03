@@ -53,7 +53,7 @@ export default class PlatformService {
         return checkResponse(response, msg, expectedStatusCode, trace);
     }
 
-    static async getDisabledTenants(user: User, expectedStatusCode: number = 200) {
+    getDisabledTenants(user: User, expectedStatusCode: number = 200) {
         throw new Error('Not yet implemented in the server side')
     }
 

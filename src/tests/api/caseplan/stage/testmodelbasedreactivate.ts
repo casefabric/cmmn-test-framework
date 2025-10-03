@@ -24,7 +24,7 @@ const mock = new SimpleDataMock();
  */
 export default class TestModelBasedReactivate extends TestCase {
     async onPrepareTest() {
-        await mock.start();
+        mock.start();
         await worldwideTenant.create();
         await definition.deploy(user, tenant);
     }

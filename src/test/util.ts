@@ -1,3 +1,6 @@
+import Trace from "../infra/trace";
+import AsyncError from "../infra/asyncerror";
+
 /**
  * Few simple util functions
  */
@@ -47,5 +50,52 @@ export default class Util {
      */
     static generateString(prefix: string = '', postfix: string = ''): string {
         return prefix + Util.randomString + postfix;
+    }
+
+    /**
+     * Converts a raw json object into an instance of the given return type.
+     * @param errorMsg 
+     * @param json 
+     * @param returnType 
+     * @param trace 
+     */
+    static convertJsonToTypedObject(errorMsg: string = '', json: any, returnType?: Function | Array<Function>, trace: Trace = new Trace()) {
+        if (returnType) {
+            // console.log("Response is " + JSON.stringify(json, undefined, 2))
+            // console.log("\n\n Return type is " , returnType)
+            if (returnType instanceof Array) {
+                if (returnType.length == 0) {
+                    if (!errorMsg) {
+                        errorMsg = 'Return type must have at least 1 element';
+                    }
+                    throw new AsyncError(trace, errorMsg);
+                }
+                const constructorCall = returnType[0] as any;
+                if (json instanceof Array) {
+                    const array = <Array<object>>json;
+                    return array.map(tenantUser => Object.assign(new constructorCall, tenantUser));
+                } else {
+                    if (!errorMsg) {
+                        errorMsg = `Expected a json array with objects of type ${constructorCall.name}, but the response was not an array: ${JSON.stringify(json, undefined, 2)}`;
+                    }
+                    throw new AsyncError(trace, errorMsg);
+                }
+            } else if (returnType !== undefined) {
+                const constructorCall = returnType as any;
+                return Object.assign(new constructorCall(), json);
+            }
+        }
+        return json;
+    }
+}
+
+/**
+ * Run an async method over an array in a "forEach" style
+ * @param array 
+ * @param asyncLogic 
+ */
+export async function asyncForEach<T, R>(array: T[], asyncLogic: (item: T, index: number, array: any[]) => Promise<R>) {
+    for (let index = 0; index < array.length; index++) {
+        await asyncLogic(array[index], index, array);
     }
 }

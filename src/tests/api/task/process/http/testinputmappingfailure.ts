@@ -37,7 +37,7 @@ export default class TestInputMappingFailure extends TestCase {
         await definition.deploy(user, tenant);
         await newDefinition.deploy(user, tenant);
         // Start mock service straight away
-        await mock.start();
+        mock.start();
     }
 
     async run() {
@@ -79,6 +79,6 @@ export default class TestInputMappingFailure extends TestCase {
 
         console.log(`\nCase ID:  ${caseInstance.id}`);
 
-        await mock.stop();
+        mock.stop();
     }
 }

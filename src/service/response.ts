@@ -1,6 +1,7 @@
 import { DOMParser } from 'xmldom';
 import AsyncError from '../infra/asyncerror';
 import Trace from '../infra/trace';
+import Util from '../test/util';
 
 export default class CafienneResponse {
     private json_prop?: any;
@@ -19,7 +20,7 @@ export default class CafienneResponse {
      * Creates a json object structure with response status code, status text and response message
      */
     async asJSON() {
-        const tryParseJSON = async (text: string | undefined) => {
+        const tryParseJSON = (text: string | undefined) => {
             try {
                 return JSON.parse(text || '');
             } catch (e) {
@@ -126,34 +127,8 @@ export async function checkJSONResponse(response: CafienneResponse, errorMsg: st
     await checkResponse(response, errorMsg, expectedStatusCode, trace);
     if (response.ok) {
         const json = await response.json();
-        if (returnType) {
-            // console.log("Response is " + JSON.stringify(json, undefined, 2))
-            // console.log("\n\n Return type is " , returnType)
-            if (returnType instanceof Array) {
-                if (returnType.length == 0) {
-                    if (! errorMsg) {
-                        errorMsg = 'Return type must have at least 1 element';
-                    }
-                    throw new AsyncError(trace, errorMsg);
-                }
-                const constructorCall = returnType[0] as any;
-                if (json instanceof Array) {
-                    const array = <Array<object>>json;
-                    return array.map(tenantUser => Object.assign(new constructorCall, tenantUser));
-                } else {
-                    if (! errorMsg) {
-                        errorMsg = `Expected a json array with objects of type ${constructorCall.name}, but the response was not an array: ${JSON.stringify(json, undefined, 2)}`;
-                    }
-                    throw new AsyncError(trace, errorMsg);
-                }
-            } else if (returnType !== undefined) {
-                const constructorCall = returnType as any;
-                return Object.assign(new constructorCall(), json);
-            }
-        }
-        return json;
+        return Util.convertJsonToTypedObject(errorMsg, json, returnType, trace);
     } else {
         return response;
     }
 }
-

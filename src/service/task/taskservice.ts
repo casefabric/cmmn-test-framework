@@ -184,15 +184,6 @@ export default class TaskService {
     }
 
     /**
-     * Returns all tasks from case instances with the specified definition
-     * @param user 
-     * @param definition 
-     */
-    static async getTasksOfCaseType(user: User, definition: string, expectedStatusCode: number = 200): Promise<Array<Task>> {
-        throw new Error('Not yet implemented');
-    }
-
-    /**
      * Fetches all tasks to which the user has access, with an optional filter
      * @param user User fetching the task list
      * @param filter Optional filter for the tasks (e.g., to get only Active tasks)

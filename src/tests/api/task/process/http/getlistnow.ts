@@ -25,7 +25,7 @@ export default class TestGetListNow extends TestCase {
         await worldwideTenant.create();
 
         // Starting mock service
-        await mock.start();
+        mock.start();
         await definition.deploy(user, tenant);
     }
 
@@ -46,6 +46,6 @@ export default class TestGetListNow extends TestCase {
         caseInstance = await CaseService.getCase(user, caseInstance);
 
         // In the end, stop the mock service, such that the test completes.
-        await mock.stop();
+        mock.stop();
     }
 }

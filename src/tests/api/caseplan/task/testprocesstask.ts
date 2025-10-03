@@ -22,7 +22,7 @@ const mock = new DynamicResponseMock(mockPort);
 
 export default class TestProcessTask extends TestCase {
     async onPrepareTest() {
-        await mock.start();
+        mock.start();
         await worldwideTenant.create();
         await definition.deploy(user, tenant);
     }
@@ -81,6 +81,6 @@ export default class TestProcessTask extends TestCase {
         console.log(`\nCase ID: ${caseInstance.id}\n`);
 
         // In the end, stop the mock service, such that the test completes.
-        await mock.stop();
+        mock.stop();
     }
 }

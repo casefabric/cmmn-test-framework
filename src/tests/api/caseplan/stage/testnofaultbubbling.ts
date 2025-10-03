@@ -26,7 +26,7 @@ export default class TestNoFaultBubbling extends TestCase {
     public isDefaultTest: boolean = false;
 
     async onPrepareTest() {
-        await mock.start();
+        mock.start();
         await worldwideTenant.create();
         await definition.deploy(user, tenant);
         await parentCasedefinition.deploy(user, tenant);

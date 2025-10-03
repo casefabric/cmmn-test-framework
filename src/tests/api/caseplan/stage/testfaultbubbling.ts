@@ -27,7 +27,7 @@ export default class TestFaultBubbling extends TestCase {
     private subCaseInstance!: Case;
 
     async onPrepareTest() {
-        await mock.start();
+        mock.start();
         await worldwideTenant.create();
         await definition.deploy(user, tenant);
         await parentCasedefinition.deploy(user, tenant);

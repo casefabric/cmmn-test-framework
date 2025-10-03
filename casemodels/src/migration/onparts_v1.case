@@ -1,0 +1,32 @@
+<case xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="migration/onparts_v0.case" name="migration/onparts_v0" expressionLanguage="spel" guid="_J1Kt7">
+    <caseFileModel typeRef="case_calculation.type"/>
+    <casePlanModel id="cm__J1Kt7_0" name="migration/onparts" autoComplete="true">
+        <humanTask id="_J1Kt7_1" name="Task" isBlocking="true">
+            <entryCriterion id="crit__J1Kt7_0">
+                <planItemOnPart id="_J1Kt7_9" sourceRef="_J1Kt7_3">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+                <planItemOnPart id="_J1Kt7_10" sourceRef="_J1Kt7_5">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </entryCriterion>
+        </humanTask>
+        <userEvent id="_J1Kt7_3" name="UserEvent1"/>
+        <userEvent id="_J1Kt7_5" name="UserEvent2"/>
+        <milestone id="_J1Kt7_15" name="Done">
+            <entryCriterion id="crit__J1Kt7_1">
+                <planItemOnPart id="_J1Kt7_17" sourceRef="_J1Kt7_1">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+            </entryCriterion>
+            <itemControl id="_J1Kt7_16">
+                <requiredRule id="_J1Kt7_18">
+                    <condition id="_J1Kt7_19">
+                        <body><![CDATA[true]]></body>
+                    </condition>
+                </requiredRule>
+            </itemControl>
+        </milestone>
+    </casePlanModel>
+    <caseRoles caseTeamRef="testteam.caseteam"/>
+</case>

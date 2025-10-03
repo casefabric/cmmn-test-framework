@@ -2,8 +2,8 @@
  * Base for QueryFilters. Queries to the case services can be extended with optional parameters.
  * See also: @TaskFilter and @link CaseFilter.
  */
-export default interface QueryFilter {
-}
+type QueryFilter = object;
+export default QueryFilter;
 
 /**
  * Extends the url with the available parameters inside the query filter
