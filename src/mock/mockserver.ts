@@ -29,7 +29,7 @@ export default class MockServer {
     /**
      * Open the port (if not yet done), and register our mocks
      */
-    async start() {
+    start() {
         this.expressWrapper.start();
         this.mocks.forEach(mock => mock.register());
     }
@@ -37,7 +37,7 @@ export default class MockServer {
     /**
      * Stop the mock server
      */
-    async stop() {
+    stop() {
         this.expressWrapper.stop();
     }
 }

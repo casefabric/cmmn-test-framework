@@ -25,7 +25,7 @@ const mock = new SimpleDataMock(port);
 
 export default class TestSubCaseFailureBubble extends TestCase {
     async onPrepareTest() {
-        await mock.start();
+        mock.start();
         await worldwideTenant.create();
         await definition.deploy(user, tenant);
     }

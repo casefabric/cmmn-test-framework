@@ -4,7 +4,7 @@ import ConsentGroupService from "../../service/consentgroup/consentgroupservice"
 import PlatformService from "../../service/platform/platformservice";
 import Tenant from "../../tenant/tenant";
 import TenantUser, { TenantOwner } from "../../tenant/tenantuser";
-import Util from "../../test/util";
+import Util, { asyncForEach } from "../../test/util";
 import User from "../../user";
 
 export default class RandomTenant extends Tenant {
@@ -36,11 +36,11 @@ export default class RandomTenant extends Tenant {
         this.owner.isOwner = true;
         await this.owner.login();
         await PlatformService.createTenant(this.owner, this);
-        await this.groups.forEach(async group => {
-            await this.createGroup(group)
-            await group.members.forEach(async member => await member.login());
+        await asyncForEach(this.groups, async (group) => {
+            await this.createGroup(group);
+            await asyncForEach(group.members, async (member) => await member.login());
         });
-        await this.users.forEach(async user => await user.login());
+        await asyncForEach(this.users, async (user) => await user.login());
     }
 
     /**

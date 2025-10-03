@@ -56,7 +56,7 @@ const notifyCustomer = new GetMock(mockServer, '/notifycustomer/:status', call =
 
 export default class TestIncidentManagement extends TestCase {
     async onPrepareTest() {
-        await mockServer.start();
+        mockServer.start();
         await worldwideTenant.create();
         await definition.deploy(raiser, tenant);
     }
@@ -78,7 +78,7 @@ Starting another case instance of incident management to test Invalid status.
 
         await this.testInvalidStatus(startCase, firstTaskName, firstTaskInput);
         // In the end, stop the mock service, such that the test completes.
-        await mockServer.stop();
+        mockServer.stop();
 
     }
 
@@ -93,7 +93,7 @@ Starting another case instance of incident management to test Invalid status.
 
         // Get Verify Details task
         const verifyDetailsTask = findTask(tasks, firstTaskName);
-        await verifyTaskInput(verifyDetailsTask, firstTaskInput);
+        verifyTaskInput(verifyDetailsTask, firstTaskInput);
 
         // Claim Verify Details task by raiser
         await TaskService.claimTask(raiser, verifyDetailsTask);
@@ -129,7 +129,7 @@ Starting another case instance of incident management to test Invalid status.
 
         // Get Work on Incident task
         const workOnIncidentTask = findTask(nextTasks, 'Work on Incident');
-        await verifyTaskInput(workOnIncidentTask, secondTaskInput);
+        verifyTaskInput(workOnIncidentTask, secondTaskInput);
 
         // Can't claim Work on Incident task by solver as he is assigned to it
         // await TaskService.claimTask(solver, workOnIncidentTask, 400);
@@ -164,7 +164,7 @@ Starting another case instance of incident management to test Invalid status.
 
         // Get Verify Details task
         const verifyDetailsTask = findTask(tasks, firstTaskName);
-        await verifyTaskInput(verifyDetailsTask, firstTaskInput);
+        verifyTaskInput(verifyDetailsTask, firstTaskInput);
 
         // Claim Verify Details task by raiser
         await TaskService.claimTask(raiser, verifyDetailsTask);

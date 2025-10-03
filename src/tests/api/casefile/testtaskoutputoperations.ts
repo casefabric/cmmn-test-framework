@@ -27,7 +27,7 @@ export default class TestTaskOutputOperations extends TestCase {
         const caseTeam = new CaseTeam([new CaseOwner(user)]);
 
         const startCase = { tenant, definition, inputs, caseTeam, debug: true };
-        this.caseInstance = await CaseService.startCase(user, startCase) as Case
+        this.caseInstance = await CaseService.startCase(user, startCase)
         this.addIdentifier(this.caseInstance);
 
         await this.freshCase();

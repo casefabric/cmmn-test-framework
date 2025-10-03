@@ -8,6 +8,7 @@ import CaseFileService from '../../../service/case/casefileservice';
 import CasePlanService from '../../../service/case/caseplanservice';
 import CaseService from '../../../service/case/caseservice';
 import TestCase from '../../../test/testcase';
+import { asyncForEach } from '../../../test/util';
 import WorldWideTestTenant from '../../setup/worldwidetesttenant';
 
 const definition = Definitions.Documentation;
@@ -31,7 +32,8 @@ export default class TestDocumentationAPI extends TestCase {
         console.log('Plan item summary:\n' + planItems.map(p => `- ${p.type}[${p.name}] ${p.id}`).join('\n'));
 
         // Check each plan item, if it has the word 'Documented' in the name, then it should have documentation, otherwise not.
-        planItems.forEach(async item => await this.assertPlanItemDocumentation(caseInstance, item));
+        // planItems.forEach(async item => await this.assertPlanItemDocumentation(caseInstance, item));
+        await asyncForEach(planItems, async item => await this.assertPlanItemDocumentation(caseInstance, item));
 
         await CaseFileService.getCaseFileDocumentation(user, caseInstance).then(casefileDocs => {
             this.assertCaseFileItemDocumented(casefileDocs, 'item1');

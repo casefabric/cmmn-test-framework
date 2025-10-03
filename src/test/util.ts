@@ -49,3 +49,14 @@ export default class Util {
         return prefix + Util.randomString + postfix;
     }
 }
+
+/**
+ * Run an async method over an array in a "forEach" style
+ * @param array 
+ * @param asyncLogic 
+ */
+export async function asyncForEach<T, R>(array: T[], asyncLogic: (item: T, index: number, array: any[]) => Promise<R>) {
+    for (let index = 0; index < array.length; index++) {
+        await asyncLogic(array[index], index, array);
+    }
+}

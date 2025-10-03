@@ -59,7 +59,7 @@ export default class TestHelloworld extends TestCase {
 
         const tasks = await TaskService.getCaseTasks(sender, caseInstance);
         const receiveGreetingTask = findTask(tasks, taskName);
-        await verifyTaskInput(receiveGreetingTask, inputs)
+        verifyTaskInput(receiveGreetingTask, inputs)
 
         await TaskService.claimTask(receiver, receiveGreetingTask);
         await assertTask(sender, receiveGreetingTask, 'Claim', TaskState.Assigned, receiver);

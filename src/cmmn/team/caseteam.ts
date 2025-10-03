@@ -9,8 +9,8 @@ import CaseTeamTenantRole from "./caseteamtenantrole";
  * Each case instance has it's own team.
  */
 export default class CaseTeam extends CMMNBaseClass {
-    public caseRoles?: String[] = undefined
-    public unassignedRoles?: String[] = undefined
+    public caseRoles?: string[] = undefined
+    public unassignedRoles?: string[] = undefined
 
     /**
      * 

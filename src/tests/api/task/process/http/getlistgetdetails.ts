@@ -86,7 +86,7 @@ export default class TestGetListGetDetails extends TestCase {
         await assertPlanItem(user, caseInstance, 'GetDetails', 0, State.Available);
 
         // Starting mock service
-        await mock.start();
+        mock.start();
 
         // Trigger the 'Try Again' event
         await CasePlanService.makePlanItemTransition(user, caseInstance, 'Try Again', Transition.Occur);
@@ -117,6 +117,6 @@ export default class TestGetListGetDetails extends TestCase {
         exceptionContentChecker(2, null);
 
         // In the end, stop the mock service, such that the test completes.
-        await mock.stop();
+        mock.stop();
     }
 }

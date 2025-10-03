@@ -19,7 +19,7 @@ export default class CafienneResponse {
      * Creates a json object structure with response status code, status text and response message
      */
     async asJSON() {
-        const tryParseJSON = async (text: string | undefined) => {
+        const tryParseJSON = (text: string | undefined) => {
             try {
                 return JSON.parse(text || '');
             } catch (e) {

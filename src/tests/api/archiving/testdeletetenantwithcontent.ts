@@ -53,7 +53,7 @@ export default class TestDeleteTenantWithContent extends TestCase {
     await caseHierarchy.load();
 
     // The process task deep down in complexcase needs time to fail. We should await that - but only if there is such a process task
-    caseHierarchy.findProcessTask('GetList')?.assertState(State.Failed);
+    await caseHierarchy.findProcessTask('GetList')?.assertState(State.Failed);
 
     await caseHierarchy.loadEventHierarchy();
     console.log("Total event count on first case: " + caseHierarchy.totalEventCount);

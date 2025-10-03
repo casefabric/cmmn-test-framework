@@ -2,6 +2,7 @@ import PlatformService from "../../../service/platform/platformservice";
 import Tenant from "../../../tenant/tenant";
 import TenantUser from "../../../tenant/tenantuser";
 import User, { admin } from "../../../user";
+import { asyncForEach } from "../../../test/util";
 
 /**
  * Simple test tenant to avoid duplicate code
@@ -18,6 +19,6 @@ export default class AnonymousWorld {
     async create() {
         await this.platformAdmin.login();
         await PlatformService.createTenant(this.platformAdmin, this.tenant);
-        this.members.forEach(async member => await member.login());
+        await asyncForEach(this.members, async member => await member.login());
     }
 }

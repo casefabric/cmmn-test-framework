@@ -51,7 +51,7 @@ export default class TestTaskValidationAPI extends TestCase {
     // private 
     async onPrepareTest() {
         console.log("Starting mock servive in test preparation");
-        await mock.start();
+        mock.start();
         console.log("\n\n============Started mock server. Now creating tenant\n\n");
         await worldwideTenant.create();
         // Deploy the case model
@@ -158,6 +158,6 @@ export default class TestTaskValidationAPI extends TestCase {
         await TaskService.validateTaskOutput(pete, taskWithDefaultValidation, TaskContent.TaskOutputValidProperties);
 
         // In the end, stop the mock service, such that the test completes.
-        // await mock.stop();
+        // mock.stop();
     }
 }

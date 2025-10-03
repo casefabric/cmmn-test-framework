@@ -10,8 +10,6 @@ import User from '../../user';
 import Comparison from '../comparison';
 import { PollUntilSuccess } from '../time';
 
-
-
 /**
  * Asserts that the task has expected state, assignee, and owner
  * @param task 
@@ -75,8 +73,8 @@ export function findTask(tasks: Task[], taskName: string): Task {
  * @param state 
  * @param expectedCount 
  */
-export function assertTaskCount(tasks: Task[], state: string, expectedCount: Number) {
-    const actualCount = tasks.filter(t => t.taskState === state).length
+export function assertTaskCount(tasks: Task[], state: string, expectedCount: number) {
+    const actualCount = tasks.filter(t => t.taskState === state).length;
     if (actualCount != expectedCount) {
         throw new StackTraceError('Number of ' + state + ' tasks expected to be ' + expectedCount + '; but found ' + actualCount)
     }
