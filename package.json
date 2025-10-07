@@ -3,6 +3,7 @@
     "test": "node ./dist/tests/app.js",
     "rebuild-index": "node ./indexgenerator/generate-index.mjs",
     "build": "tsc",
+    "watch": "tsc --watch",
     "clean": "shx rm -rf ./dist",
     "try": "ts-node-dev --transpile-only ./tests/app.ts",
     "dev": "npm run try",
@@ -12,21 +13,22 @@
     "prod": "npm run build & node ./dist/tests/app.js"
   },
   "dependencies": {
+    "@xmldom/xmldom": "^0.9.7",
     "express": "^4.17.1",
     "isomorphic-fetch": "^3.0.0",
     "poll-until-promise": "^4.1.0",
     "readline-sync": "^1.4.10",
     "server-destroy": "1.0.1",
-    "typescript": "^5.4.5",
-    "@xmldom/xmldom": "^0.9.7"
+    "typescript": "^5.4.5"
   },
   "devDependencies": {
     "@types/express": "^4.17.2",
+    "@types/isomorphic-fetch": "^0.0.39",
     "@types/node": "^18.0.0",
     "@types/readline-sync": "^1.4.4",
     "@types/server-destroy": "1.0.1",
+    "shx": "^0.3.4",
     "ts-node-dev": "^1.1.8",
-    "typescript": "^5.4.5",
-    "shx": "^0.3.4"
+    "typescript": "^5.4.5"
   }
 }
