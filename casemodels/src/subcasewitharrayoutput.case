@@ -1,4 +1,4 @@
-<case id="subcasewitharrayoutput.case" name="subcasewitharrayoutput" expressionLanguage="spel" guid="_fl0cb">
+<case xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="subcasewitharrayoutput.case" name="subcasewitharrayoutput" expressionLanguage="spel" guid="_fl0cb">
     <caseFileModel>
         <caseFileItem id="_fl0cb_3" name="in" multiplicity="ExactlyOne" definitionRef="unspecified.cfid"/>
         <caseFileItem id="_fl0cb_4" name="out" multiplicity="ZeroOrMore" definitionRef="unspecified.cfid"/>
@@ -18,11 +18,18 @@
             <parameterMapping id="_fl0cb_2" sourceRef="_8RCIX_4" targetRef="_fl0cb_9"/>
             <parameterMapping id="_fl0cb_15" sourceRef="_8RCIX_4" targetRef="_fl0cb_18">
                 <transformation id="_fl0cb_17">
-                    <body>
-                        <![CDATA[map("response", out.get(0).getValue() > 0 ? true : false)]]>
-                    </body>
+                    <body><![CDATA[map("response", out.get(0).getValue() > 0 ? true : false)]]></body>
                 </transformation>
             </parameterMapping>
+        </caseTask>
+        <caseTask id="_fl0cb_22" name="non-blocking simpleinoutcase" isBlocking="false" caseRef="simpleinoutcase.case">
+            <entryCriterion id="crit__fl0cb_0">
+                <caseFileItemOnPart id="_fl0cb_26" sourceRef="_fl0cb_3">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </entryCriterion>
+            <inputs id="_fl0cb_28" name="in" bindingRef="_fl0cb_3"/>
+            <parameterMapping id="_fl0cb_24" sourceRef="_fl0cb_28" targetRef="_8RCIX_3"/>
         </caseTask>
     </casePlanModel>
     <caseRoles/>

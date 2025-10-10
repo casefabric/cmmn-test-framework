@@ -13,6 +13,7 @@ import Comparison from "../../../../../test/comparison";
 import TestCase from "../../../../../test/testcase";
 import WorldWideTestTenant from "../../../../setup/worldwidetesttenant";
 import SimpleDataMock from "../../stage/simpledatamock";
+import DebugService from "../../../../../service/case/debugservice";
 
 const definition = Definitions.SubCaseWithArrayOutput;
 const worldwideTenant = new WorldWideTestTenant();
@@ -37,10 +38,16 @@ export default class TestSubCaseFailureBubble extends TestCase {
         // Start the parent case
         const caseInstance = await CaseService.startCase(user, startCase).then(async id => CaseService.getCase(user, id));
         this.addIdentifier(caseInstance);
-        // Retrieve subcase 
-        const subCasePlanItem = caseInstance.planitems.find(item => item.name === 'simpleinoutcase') as PlanItem;
 
+        // Retrieve subcases, both blocking and non-blocking 
+        const subCasePlanItem = caseInstance.planitems.find(item => item.name === 'simpleinoutcase') as PlanItem;
+        this.addIdentifier(subCasePlanItem);
         await assertPlanItem(user, caseInstance, subCasePlanItem.name, subCasePlanItem.index, State.Active);
+
+        // Non-blocking subcase should be in completed state.
+        const nonBlockingSubCasePlanItem = caseInstance.planitems.find(item => item.name === 'non-blocking simpleinoutcase') as PlanItem;
+        this.addIdentifier(nonBlockingSubCasePlanItem);
+        await assertPlanItem(user, caseInstance, nonBlockingSubCasePlanItem.name, nonBlockingSubCasePlanItem.index, State.Completed);
 
         // Get subcase is possible by sender
         const subCaseInstance = await assertCasePlan(user, subCasePlanItem.id, State.Active);
@@ -83,5 +90,7 @@ export default class TestSubCaseFailureBubble extends TestCase {
         await CasePlanService.raiseEvent(user, subCaseInstance, 'Complete Case');
         await assertCasePlan(user, subCasePlanItem.id, State.Completed);
         await assertPlanItem(user, caseInstance, subCasePlanItem.name, subCasePlanItem.index, State.Completed);
+
+        await DebugService.getEvents(caseInstance, user);
     }
 }
