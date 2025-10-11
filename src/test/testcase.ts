@@ -2,6 +2,7 @@ import Case from '../cmmn/case';
 import ConsentGroup from '../service/consentgroup/consentgroup';
 import Tenant from '../tenant/tenant';
 import LineReader from './linereader';
+import PlanItem from '../cmmn/planitem';
 
 /**
  * Extremely simple generic TestCase class.
@@ -24,13 +25,15 @@ export default abstract class TestCase {
      * Identifiers will be printed in the test summary if any.
      * They can be string, or be an object that has an id field (returned from the toString() method)
      */
-    public identifiers: Array<string | Case | Tenant | ConsentGroup | undefined> = [];
+    public identifiers: Array<string | Case | PlanItem | Tenant | ConsentGroup | undefined> = [];
 
     /**
      * Add an identifier for the test results summary.
      */
-    addIdentifier(identifier: string | Case | Tenant | ConsentGroup | undefined) {
-        this.identifiers.push(identifier);
+    addIdentifier(identifier: string | Case | PlanItem | Tenant | ConsentGroup | undefined) {
+        if (identifier) {
+            this.identifiers.push(identifier);
+        }
         return identifier;
     }
 

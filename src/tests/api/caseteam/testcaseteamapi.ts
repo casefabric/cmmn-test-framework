@@ -44,7 +44,7 @@ export default class TestCaseTeamAPI extends TestCase {
     async generalAPITest() {
         const caseTeam = new CaseTeam([
             new CaseOwner(sender, [requestorRole]),
-            new CaseOwner(receiver, [approverRole, paRole])            
+            new CaseOwner(receiver, [approverRole, paRole])
         ], [], [new CaseTeamTenantRole(requestorRole, ['ADMIN', 'Not-Exisitng-TenantRole-Still-Allowed-In-Team'])]);
         const startCase = { tenant, definition, debug: true, caseTeam };
 
@@ -194,7 +194,7 @@ export default class TestCaseTeamAPI extends TestCase {
 
         // Verify ownerToRemove's ownership in the case team
         await CaseTeamService.getCaseTeam(ownerWhoRemoves, caseInstance).then(team => {
-            const expectedOwnership = ! removingOwnershipShouldSucceed;
+            const expectedOwnership = !removingOwnershipShouldSucceed;
             if (team.find(ownerToRemove)?.isOwner !== expectedOwnership) {
                 throw new Error(`Not expecting user ${ownerToRemove.id} to still have ownership === ${expectedOwnership}`);
             }

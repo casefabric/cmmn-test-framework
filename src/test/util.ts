@@ -70,19 +70,28 @@ export default class Util {
                     }
                     throw new AsyncError(trace, errorMsg);
                 }
-                const constructorCall = returnType[0] as any;
                 if (json instanceof Array) {
                     const array = <Array<object>>json;
-                    return array.map(tenantUser => Object.assign(new constructorCall, tenantUser));
+                    return array.map(item => this.convertToTypedObject(item, returnType[0]));
                 } else {
                     if (!errorMsg) {
-                        errorMsg = `Expected a json array with objects of type ${constructorCall.name}, but the response was not an array: ${JSON.stringify(json, undefined, 2)}`;
+                        errorMsg = `Expected a json array with objects of type ${returnType[0].name}, but the response was not an array: ${JSON.stringify(json, undefined, 2)}`;
                     }
                     throw new AsyncError(trace, errorMsg);
                 }
             } else if (returnType !== undefined) {
-                const constructorCall = returnType as any;
-                return Object.assign(new constructorCall(), json);
+                this.convertToTypedObject(json, returnType);
+            }
+        }
+        return json;
+    }
+
+    static convertToTypedObject(json: any, returnType: Function) {
+        Object.setPrototypeOf(json, returnType.prototype);
+        if (returnType.prototype.hasOwnProperty('init_json')) {
+            const init_json = (returnType.prototype as any).init_json;
+            if (init_json && typeof init_json === 'function') {
+                init_json.call(json);
             }
         }
         return json;
@@ -97,5 +106,26 @@ export default class Util {
 export async function asyncForEach<T, R>(array: T[], asyncLogic: (item: T, index: number, array: any[]) => Promise<R>) {
     for (let index = 0; index < array.length; index++) {
         await asyncLogic(array[index], index, array);
+    }
+}
+
+/**
+ * Mechanism to do typed printing of an object
+ * @param obj 
+ * @param label 
+ * @param indent 
+ */
+export function printObject(obj: any, label: string, indent: string = '') {
+    if (obj === null || obj === undefined) {
+        console.log(indent + obj);
+    } else {
+        if (typeof obj !== 'object') {
+            console.log(indent + ' - ' + label + ' (' + obj.constructor.name + '): ' + obj);
+        } else {
+            console.log(indent + ' - ' + label + ' (' + obj.constructor.name + '): ');
+            Object.keys(obj).forEach(key => {
+                printObject(obj[key], key, indent + '  ');
+            });
+        }
     }
 }
