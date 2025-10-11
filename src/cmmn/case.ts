@@ -4,6 +4,7 @@ import CaseFile from './casefile';
 import CaseTeamUser from "./team/caseteamuser";
 import CMMNBaseClass from './cmmnbaseclass';
 import Path from '../service/case/path';
+import Util from '../test/util';
 
 /**
  * Wrapper for json response of Cafienne Service for a single case instance.
@@ -46,7 +47,15 @@ export default class Case extends CMMNBaseClass {
         public team: CaseTeam,
         public planitems: Array<PlanItem>,
         public file: CaseFile
-    ) { super(); }
+    ) {
+        super();
+
+    }
+
+    init_json() {
+        if (this.planitems) this.planitems.forEach(item => Util.convertToTypedObject(item, PlanItem));
+        if (this.team) Util.convertToTypedObject(this.team, CaseTeam);
+    }
 
     get plan(): PlanItem {
         const caseplan = this.planitems.find(item => item.type === 'CasePlan');
@@ -71,7 +80,7 @@ export default class Case extends CMMNBaseClass {
      */
     findItem(path: Path | string): PlanItem {
         const item = Path.from(path).resolve(this);
-        if (! item) {
+        if (!item) {
             throw new Error(`Expected a plan item ${path} to be present in the case, but it cannot be found`);
         }
         return item;

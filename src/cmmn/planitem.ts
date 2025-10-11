@@ -33,4 +33,8 @@ export default class PlanItem extends CMMNBaseClass {
         public lastModified: string,
         public modifiedBy: string
     ) { super() }
+
+    toString() {
+        return this.id;
+    }
 }

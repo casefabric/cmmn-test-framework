@@ -1,5 +1,6 @@
 import ConsentGroup from "../../service/consentgroup/consentgroup";
 import CMMNBaseClass from "../cmmnbaseclass";
+import Util from "../../test/util";
 
 export default class CaseTeamGroup extends CMMNBaseClass {
     public groupId: string;
@@ -14,6 +15,10 @@ export default class CaseTeamGroup extends CMMNBaseClass {
     constructor(group: ConsentGroup | string, public mappings: Array<GroupRoleMapping> = []) {
         super();
         this.groupId = '' + group;
+    }
+
+    init_json() {
+        if (this.mappings) this.mappings.forEach(mapping => Util.convertToTypedObject(mapping, mapping.isOwner ? GroupRoleMappingWithCaseOwnership : GroupRoleMapping));
     }
 
     toString() {
