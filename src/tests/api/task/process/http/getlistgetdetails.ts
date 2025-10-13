@@ -10,7 +10,6 @@ import CasePlanService from '../../../../../service/case/caseplanservice';
 import CaseService from '../../../../../service/case/caseservice';
 import { assertPlanItem } from '../../../../../test/caseassertions/plan';
 import TestCase from '../../../../../test/testcase';
-import { ServerSideProcessing } from '../../../../../test/time';
 import WorldWideTestTenant from '../../../../setup/worldwidetesttenant';
 
 const definition = Definitions.GetListGetDetails;
@@ -48,8 +47,6 @@ export default class TestGetListGetDetails extends TestCase {
         // Starts the case with user
         let caseInstance = await CaseService.startCase(user, startCase);
         this.addIdentifier(caseInstance);
-
-        await ServerSideProcessing();
 
         // Get case details
         caseInstance = await CaseService.getCase(user, caseInstance);

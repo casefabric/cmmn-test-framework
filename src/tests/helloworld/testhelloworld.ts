@@ -2,7 +2,7 @@
 
 import Definitions from '../../cmmn/definitions/definitions';
 import State from '../../cmmn/state';
-import Task, { taskPrinter } from '../../cmmn/task';
+import { taskPrinter } from '../../cmmn/task';
 import TaskState from '../../cmmn/taskstate';
 import CaseTeam from '../../cmmn/team/caseteam';
 import CaseTeamUser, { CaseOwner } from "../../cmmn/team/caseteamuser";

@@ -10,7 +10,6 @@ import TaskService from '../../../../service/task/taskservice';
 import { assertPlanItem } from '../../../../test/caseassertions/plan';
 import Comparison from '../../../../test/comparison';
 import TestCase from '../../../../test/testcase';
-import { ServerSideProcessing } from '../../../../test/time';
 import WorldWideTestTenant from '../../../setup/worldwidetesttenant';
 import TaskContent from './taskcontent';
 
@@ -79,13 +78,8 @@ export default class TestTaskValidationAPI extends TestCase {
 
         await pingMock.untilCallInvoked(3000);
 
-        // Since process completion happens asynchronously in the Cafienne engine, we will still wait 
-        //  a second before continuing the test script
-        await ServerSideProcessing();
-
-        caseInstance = await CaseService.getCase(pete, caseInstance);
-
         await assertPlanItem(pete, caseInstance, 'AssertMockServiceIsRunning', 0, State.Completed);
+        caseInstance = await CaseService.getCase(pete, caseInstance);
 
         const taskId = caseInstance.planitems.find(p => p.name === 'HumanTask')?.id;
         if (!taskId) {

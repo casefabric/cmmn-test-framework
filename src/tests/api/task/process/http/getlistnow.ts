@@ -1,11 +1,12 @@
 'use strict';
 
 import Definitions from '../../../../../cmmn/definitions/definitions';
+import State from '../../../../../cmmn/state';
 import GetMock from '../../../../../mock/getmock';
 import MockServer from '../../../../../mock/mockserver';
 import CaseService from '../../../../../service/case/caseservice';
+import { assertPlanItem } from '../../../../../test/caseassertions/plan';
 import TestCase from '../../../../../test/testcase';
-import { ServerSideProcessing } from '../../../../../test/time';
 import WorldWideTestTenant from '../../../../setup/worldwidetesttenant';
 
 const definition = Definitions.GetListNow;
@@ -40,8 +41,7 @@ export default class TestGetListNow extends TestCase {
         let caseInstance = await CaseService.startCase(user, startCase);
         this.addIdentifier(caseInstance);
 
-        await ServerSideProcessing();
-
+        assertPlanItem(user, caseInstance, 'GetListWebService', 0, State.Completed);
         // Get case details
         caseInstance = await CaseService.getCase(user, caseInstance);
 

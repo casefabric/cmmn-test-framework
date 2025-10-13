@@ -12,7 +12,6 @@ import TaskService from '../../service/task/taskservice';
 import { assertPlanItem } from '../../test/caseassertions/plan';
 import { assertTask, findTask, verifyTaskInput } from '../../test/caseassertions/task';
 import TestCase from '../../test/testcase';
-import { ServerSideProcessing } from '../../test/time';
 import WorldWideTestTenant from '../setup/worldwidetesttenant';
 import IncidentContent from './incidentmanagementcontent';
 
@@ -105,19 +104,11 @@ Starting another case instance of incident management to test Invalid status.
         await TaskService.completeTask(raiser, verifyDetailsTask, verifyDetailsInputs);
         await assertTask(raiser, verifyDetailsTask, 'Complete', TaskState.Completed, raiser);
 
-        // Since process completion happens asynchronously in the Cafienne engine, we will still wait 
-        //  a second before continuing the test script
-        await ServerSideProcessing();
-
         // Verify completion of Assign Specialist plan item
         await assertPlanItem(raiser, caseInstance, 'Assign Specialist', 0, State.Completed);
 
         // Verify completion of Assigned plan item
         await assertPlanItem(raiser, caseInstance, 'Assigned', 0, State.Completed);
-
-
-        // Next step fails too often
-        await ServerSideProcessing();
 
         // Verify completion of first Notify Customer plan item
         await assertPlanItem(raiser, caseInstance, 'Notify Customer', 0, State.Completed);
@@ -148,8 +139,6 @@ Starting another case instance of incident management to test Invalid status.
         // Verify completion of Complete plan item
         await assertPlanItem(raiser, caseInstance, 'Complete', 0, State.Completed);
 
-        await ServerSideProcessing();
-
         // Verify completion of second Notify Customer plan item
         await assertPlanItem(raiser, caseInstance, 'Notify Customer', 1, State.Completed);
     }
@@ -176,14 +165,8 @@ Starting another case instance of incident management to test Invalid status.
         await TaskService.completeTask(raiser, verifyDetailsTask, verifyDetailsInputs);
         await assertTask(raiser, verifyDetailsTask, 'Complete', TaskState.Completed, raiser);
 
-        // Since process completion happens asynchronously in the Cafienne engine, we will still wait 
-        //  a second before continuing the test script
-        await ServerSideProcessing();
-
         // Verify completion of Invalid Status plan item
         await assertPlanItem(raiser, caseInstance, 'Invalid Status', 0, State.Completed);
-
-        await ServerSideProcessing();
 
         // Verify completion of first Notify Customer plan item
         await assertPlanItem(raiser, caseInstance, 'Notify Customer', 0, State.Completed);
