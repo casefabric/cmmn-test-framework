@@ -5,7 +5,7 @@ import Task from '../../../../cmmn/task';
 import Transition from '../../../../cmmn/transition';
 import CasePlanService from '../../../../service/case/caseplanservice';
 import CaseService from '../../../../service/case/caseservice';
-import TaskService, { TaskCount } from '../../../../service/task/taskservice';
+import TaskService from '../../../../service/task/taskservice';
 import TestCase from '../../../../test/testcase';
 import WorldWideTestTenant from '../../../setup/worldwidetesttenant';
 

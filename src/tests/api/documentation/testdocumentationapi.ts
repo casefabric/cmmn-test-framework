@@ -57,8 +57,9 @@ export default class TestDocumentationAPI extends TestCase {
         await CasePlanService.getPlanItemDocumentation(user, caseId, planItem.id).then(documentation => {
             // If plan item name contains the word "Documented" then we expect to find documentation, otherwise it should be empty
             const expectedDocumentation = planItem.name.indexOf('Documented')>=0 ? planItem.name + ' Documentation' : undefined;
-            if (documentation.text !== expectedDocumentation) {
-                throw new Error(`Missing documentation for ${planItem.type} '${planItem.name}'.\nExpect: ${expectedDocumentation}\nFound:  ${documentation.text}`);
+            const foundDocumentation = documentation ? documentation.text : undefined;
+            if (foundDocumentation !== expectedDocumentation) {
+                throw new Error(`Missing documentation for ${planItem.type} '${planItem.name}'.\nExpect: ${expectedDocumentation}\nFound: ${foundDocumentation}`);
             }
         });
     }

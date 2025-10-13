@@ -87,6 +87,7 @@ export default class Util {
     }
 
     static convertToTypedObject(json: any, returnType: Function) {
+        if (json === null || json === undefined) return json;
         Object.setPrototypeOf(json, returnType.prototype);
         if (returnType.prototype.hasOwnProperty('init_json')) {
             const init_json = (returnType.prototype as any).init_json;
