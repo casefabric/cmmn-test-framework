@@ -43,7 +43,7 @@ export default class TestArchiveCase extends TestCase {
     this.readLine(`Press enter to start test loop on ${definition} with case hierarchy\n ${caseHierarchy}`);
 
     // The process task deep down in complexcase needs time to fail. We should await that.
-    await caseHierarchy.findProcessTask('GetList')?.assertState(State.Failed);
+    await caseHierarchy.findProcessTask('GetList')?.assertState(State.Failed).then(p => this.addIdentifier(p));
 
     while (true) {
       const line = this.readLine("Type p and press Enter to print event hierarchy. Press enter to archive the case ");
