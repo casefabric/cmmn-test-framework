@@ -134,6 +134,8 @@ export default class TestClasses {
                     StorageTests.forEach(addExplicitRunner);
                 } else if (name === 'migration') {
                     MigrationTests.forEach(addExplicitRunner);
+                } else if (name === 'plugins') {
+                    PluginTests.forEach(addExplicitRunner);
                 } else {
                     addExplicitRunner(this.getTestClass(name));
                 }
@@ -188,6 +190,11 @@ const MigrationTests: Array<Function> = [
     , TestEntryCriteriaMigration
     , TestOnPartMigration
     , TestMoveTaskMigration
+];
+
+const PluginTests: Array<Function> = [
+    TestSMTP,
+    TestTravelRequest,
 ];
 
 const AllTests: Array<Function> = [
@@ -246,7 +253,6 @@ const AllTests: Array<Function> = [
     , TestDeleteTenant
     , TestDeleteTenantWithContent
     , TestIncidentManagement
-    , TestTravelRequest
     , TestInvalidStartCase
     , TestValidStartCase
     , TestStartCaseEmptyRole
@@ -255,7 +261,6 @@ const AllTests: Array<Function> = [
     , TestSubCase
     , TestArraySubCase
     , TestRepeatStage
-    , TestSMTP
     , TestNoAnonymousStartCase
     , TestAnonymousStartCase
     , TestDefinitionInStartCase
@@ -266,6 +271,7 @@ const AllTests: Array<Function> = [
     , TestInputMappingFailure
     , ...StorageTests
     , ...MigrationTests
+    , ...PluginTests
     , TestRecovery
     , TestCompatibility
 ];
