@@ -8,10 +8,8 @@ import User from '../../user';
 import CafienneService from '../cafienneservice';
 import { checkJSONResponse, checkResponse } from '../response';
 import CaseFilter from './casefilter';
-import { CaseStatistics } from './response/casestatistics';
 import { DiscretionaryItemsResponse } from './response/discretionaryitemsresponse';
 import StartCase from './startcase';
-import StatisticsFilter from './statisticsfilter';
 
 export default class CaseService {
     static async startCase(user: User, command: StartCase, expectedStatusCode: number = 200, msg = `StartCase is not expected to succeed for user ${user ? user.id : 'anonymous'}`, trace: Trace = new Trace()): Promise<Case> {
@@ -104,16 +102,6 @@ export default class CaseService {
         const response = await CafienneService.post(`/cases/${caseId}/discretionaryitems/plan`, user, itemToPlan);
         const json = await checkJSONResponse(response, msg, expectedStatusCode, Object, trace);
         return json.planItemId;
-    }
-
-    /**
-     * Fetch statistics of cases across the system.
-     * @param user 
-     * @param filter 
-     */
-    static async getCaseStatistics(user: User, filter?: StatisticsFilter, expectedStatusCode: number = 200, msg = `GetCaseStatistics is not expected to succeed for user ${user}`, trace: Trace = new Trace()): Promise<Array<CaseStatistics>> {
-        const response = await CafienneService.get('/cases/stats', user, filter);
-        return checkJSONResponse(response, msg, expectedStatusCode, [CaseStatistics], trace);
     }
 
     /**

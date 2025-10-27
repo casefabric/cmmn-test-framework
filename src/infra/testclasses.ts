@@ -13,16 +13,18 @@ import TestRestoreCaseWithTimer from '../tests/api/archiving/testrestorecasewith
 import TestFootballBusinessIdentifiers from '../tests/api/businessidentifiers/footballbusinessidentifiers/testfootballbusinessidentifiers';
 import TestBusinessIdentifiers from '../tests/api/businessidentifiers/testbusinessidentifiers';
 import TestHelloWorldBusinessIdentifiers from '../tests/api/businessidentifiers/testhelloworldbusinessidentifiers';
+import TestEntryCriteriaMigration from '../tests/api/case/migration/entrycriteria_migration';
 import TestCaseMigration from '../tests/api/case/migration/testcasemigration';
 import TestCaseTeamMigration from '../tests/api/case/migration/testcaseteammigration';
 import TestDiscretionaryMigration from '../tests/api/case/migration/testdiscretionarymigration';
+import TestMoveTaskMigration from '../tests/api/case/migration/testmovetaskmigration';
+import TestOnPartMigration from '../tests/api/case/migration/testonpartmigration';
 import TestReactivationMigration from '../tests/api/case/migration/testreactivationmigration';
 import TestRepetitionMigration from '../tests/api/case/migration/testrepetitionmigration';
 import TestSubCaseMigration from '../tests/api/case/migration/testsubcasemigration';
 import TestBootstrapCaseFileEvents from '../tests/api/case/testbootstrapcasefileevents';
 import TestDefinitionInStartCase from '../tests/api/case/testdefinitioninstartcase';
 import TestInvalidStartCase from '../tests/api/case/testinvalidstartcase';
-import TestStatsAPI from '../tests/api/case/teststatsapi';
 import TestValidStartCase from '../tests/api/case/testvalidstartcase';
 import TestUsersCaseAPI from '../tests/api/case/usercases';
 import TestCaseFileAPI from '../tests/api/casefile/testcasefileapi';
@@ -92,14 +94,11 @@ import TestProcessTaskMigration from '../tests/api/task/process/migration/testpr
 import TestCalculation from '../tests/api/task/process/testcalculation';
 import TestTenantRegistration from '../tests/api/tenant/testtenantregistration';
 import TestVersion from '../tests/api/version/testversion';
-import TestEntryCriteriaMigration from '../tests/api/case/migration/entrycriteria_migration';
 import TestCompatibility from '../tests/compatibility/testcompatibility';
 import TestHelloworld from '../tests/helloworld/testhelloworld';
 import TestIncidentManagement from '../tests/incidentmanagement/incidentmanagement';
 import TestTravelRequest from '../tests/travelrequest/testtravelrequest';
 import TestRunner from './testrunner';
-import TestOnPartMigration from '../tests/api/case/migration/testonpartmigration';
-import TestMoveTaskMigration from '../tests/api/case/migration/testmovetaskmigration';
 
 export default class TestClasses {
     static getTestClass(name: string): Function {
@@ -212,7 +211,6 @@ const AllTests: Array<Function> = [
     , TestTimer
     , TestUsersCaseAPI
     , TestDiscretionaryItems
-    , TestStatsAPI
     , TestDynamicForm
     , TestFourEyes
     , TestDebugMode

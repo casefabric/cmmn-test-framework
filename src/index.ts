@@ -36,7 +36,6 @@ export * from "./service/case/caseteamservice";
 export * from "./service/case/debugservice";
 export * from "./service/case/repositoryservice";
 export * from "./service/case/startcase";
-export * from "./service/case/statisticsfilter";
 export * from "./service/case/command/repository/deploycase";
 export * from "./service/case/response/casestatistics";
 export * from "./service/case/response/discretionaryitemsresponse";
