@@ -23,7 +23,6 @@ const employee = worldwideTenant.employee;
 const definition = Definitions.Chain;
 
 export default class TestSubCaseTasks extends TestCase {
-  isDefaultTest = false;
   isParallelTest: boolean = false;
   // lineReaderEnabled = true;
 
