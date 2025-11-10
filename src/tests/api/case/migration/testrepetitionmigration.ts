@@ -7,7 +7,7 @@ import CaseService from '../../../../service/case/caseservice';
 import DebugService from '../../../../service/case/debugservice';
 import TaskService from '../../../../service/task/taskservice';
 import TestCase from '../../../../test/testcase';
-import { SomeTime } from '../../../../test/time';
+import { SomeTime, PollUntilSuccess } from '../../../../test/time';
 import WorldWideTestTenant from '../../../setup/worldwidetesttenant';
 
 const base_definition = Definitions.Migration_RepeatingTask_v0;
@@ -30,9 +30,9 @@ export default class TestRepetitionMigration extends TestCase {
                 Next: 1
             }
         };
-        
-        const startCase = { 
-            tenant, 
+
+        const startCase = {
+            tenant,
             definition: base_definition,
             inputs
         };
@@ -65,13 +65,15 @@ export default class TestRepetitionMigration extends TestCase {
     }
 
     async completeNextTask(case1_before: Case, expectedNumberOfActiveTasks: number) {
-        const tasks = await TaskService.getCaseTasks(user, case1_before);
-        const activeTasks = tasks.filter(task => task.taskState === 'Unassigned');
-        if (activeTasks.length !== expectedNumberOfActiveTasks) {
-            throw new Error(`Expected to find ${expectedNumberOfActiveTasks} active task(s), but found ${activeTasks.length}`);
-        }
-        const activeTask = activeTasks[0];
-        this.tasksFound.push(activeTask.taskName);
-        await TaskService.completeTask(user, activeTask);
+        PollUntilSuccess(async () => {
+            const tasks = await TaskService.getCaseTasks(user, case1_before);
+            const activeTasks = tasks.filter(task => task.taskState === 'Unassigned');
+            if (activeTasks.length !== expectedNumberOfActiveTasks) {
+                throw new Error(`Expected to find ${expectedNumberOfActiveTasks} active task(s), but found ${activeTasks.length}`);
+            }
+            const activeTask = activeTasks[0];
+            this.tasksFound.push(activeTask.taskName);
+            await TaskService.completeTask(user, activeTask);
+        }, `Waiting for ${expectedNumberOfActiveTasks} active task(s) in case ${case1_before}`);
     }
 }
