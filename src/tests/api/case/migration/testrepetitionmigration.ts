@@ -65,7 +65,7 @@ export default class TestRepetitionMigration extends TestCase {
     }
 
     async completeNextTask(case1_before: Case, expectedNumberOfActiveTasks: number) {
-        PollUntilSuccess(async () => {
+        return await PollUntilSuccess(async () => {
             const tasks = await TaskService.getCaseTasks(user, case1_before);
             const activeTasks = tasks.filter(task => task.taskState === 'Unassigned');
             if (activeTasks.length !== expectedNumberOfActiveTasks) {
