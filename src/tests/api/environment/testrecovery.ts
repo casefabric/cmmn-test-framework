@@ -12,6 +12,8 @@ import Util from "../../../test/util";
 import WorldWideTestTenant from "../../setup/worldwidetesttenant";
 
 const definition = Definitions.HelloWorld;
+const base_definition = Definitions.Migration_HelloworldBase;
+const definitionMigrated = Definitions.Migration_HelloworldMigrated;
 const worldwideTenant = new WorldWideTestTenant(Util.generateId('recoverable-tenant'));
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
@@ -20,6 +22,8 @@ export default class TestRecovery extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
         await definition.deploy(user, tenant);
+        await base_definition.deploy(user, tenant);
+        await definitionMigrated.deploy(user, tenant);
     }
 
     /**
@@ -79,7 +83,7 @@ export default class TestRecovery extends TestCase {
     async runMigratedCaseRecovery() {
         const startCase = {
             tenant,
-            definition: 'helloworld_base.xml',
+            definition: base_definition,
             inputs: { Greeting: { Message: 'Hello there', From: user.id } },
             caseTeam: new CaseTeam([new CaseOwner(user, ["ADMIN", "TempRole"]), new CaseTeamUser(worldwideTenant.receiver, ["OneMore"])])
         };
@@ -88,7 +92,7 @@ export default class TestRecovery extends TestCase {
 
         const firstTaskName = 'Receive Greeting and Send response';
         const taskOutput = { Response: { Message: 'Toedeledoki', } };
-        const migratedDefinition = new DefinitionMigration("helloworld_migrated.xml");
+        const migratedDefinition = new DefinitionMigration(definitionMigrated);
         const case1Tasks_before = await TaskService.getCaseTasks(user, case1_before);
         const case1FirstTask = findTask(case1Tasks_before, firstTaskName);
 
