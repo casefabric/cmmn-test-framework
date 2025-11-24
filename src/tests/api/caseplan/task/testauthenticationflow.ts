@@ -29,7 +29,7 @@ export default class TestAuthenticationFlow extends TestCase {
         const caseInstance = await CaseService.startCase(user, startCase);
         this.addIdentifier(caseInstance);
 
-        const baseURL = (Config.CafienneService.url.endsWith('/') ? Config.CafienneService.url.substring(0, Config.CafienneService.url.length - 1) : Config.CafienneService.url).replace('0.0.0.0', 'localhost');
+        const baseURL = (Config.CaseEngine.url.endsWith('/') ? Config.CaseEngine.url.substring(0, Config.CaseEngine.url.length - 1) : Config.CaseEngine.url).replace('0.0.0.0', 'localhost');
         const caseLastModified = CaseEngineService.getHeaders(user)["Case-Last-Modified"];
 
         const http = {
