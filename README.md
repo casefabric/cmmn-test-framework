@@ -1,20 +1,20 @@
 
-# Cafienne Test Framework
+# Case Engine Test Framework
 A Typescript based test framework for CMMN case models
 
-The test framework is intended to provide an easy means of building test cases against the Cafienne engine.
+The test framework is intended to provide an easy means of building test cases against the Case Engine.
 
-The Cafienne engine has the following aspects
+The Case Engine has the following aspects
 - Authentication can only be done through OpenID Connect protocol
 - The multi-tenant environment requires user registration before you can start running cases.
 
 # Setup environment
-The test framework uses a simple Token Generator to generate JWT tokens that the Cafienne Engine can trust. This "IDP" generates any JWT token that we ask it to generate, and in using that the test framework circumvents the Open ID Connect protocol that a normal Cafienne deployment uses.
-In order to make Cafienne Engine "trust" these tokens, the config settings of the engine have to be changed.
+The test framework uses a simple Token Generator to generate JWT tokens that the Case Engine can trust. This "IDP" generates any JWT token that we ask it to generate, and in using that the test framework circumvents the Open ID Connect protocol that a normal production deployment uses.
+In order to make Case Engine "trust" these tokens, the config settings of the engine have to be changed.
 
 ## Running the Token Generator
 Some of the default engine test cases also need a mailcatcher docker image.
-Inside the [developer-information repository](https://github.com/cafienne/developer-information) you can find a simple setup that includes both images.
+Inside the [developer-information repository](https://github.com/casefabric/developer-information) you can find a simple setup that includes both images.
 
 If you want to run only with the basic Token Generator, follow the instructions below. 
 
@@ -26,16 +26,16 @@ To run the Token Generator, make sure docker is started, and then run `docker-co
 ```
 This will start a token generator on port http://localhost:2377.
 
-## Configure Cafienne Engine to trust this IDP
+## Configure Case Engine to trust this IDP
 ```yml
     Security Alert - do not run this in production
 
     The IDP generates any requested token without validation.
-    Using it in a production environment of the Cafienne Engine
+    Using it in a production environment of the Case Engine
     will run the system without proper authentication
 ```
-The Cafienne Engine OpenID Connect configuration settings must be modified to point to the test IDP.
-Open Cafienne's `local.conf` file.
+The Case Engine OpenID Connect configuration settings must be modified to point to the test IDP.
+Open the `local.conf` file.
 In there, search for `oidc` and change it in the below
 ```conf
     cafienne {
@@ -80,7 +80,7 @@ The test framework exposes a few configuration options. These are stored inside 
 By default all logging is enabled.
 ```js
 var Config = {
-    CafienneService: {
+    CaseEngine: {
         // URL of backend engine
         url: 'http://localhost:2027/',
         log: {
@@ -102,7 +102,7 @@ var Config = {
     TokenService: {
         // URL of token service
         url: 'http://localhost:2377/token',
-        // Issuer can be configured. The issuer must equal what is configure inside the Cafienne Engine
+        // Issuer can be configured. The issuer must equal what is configure inside the Case Engine
         issuer: 'http://localhost:8080',
         // Whether or not to show the tokens requested and updated in the user
         log: true
