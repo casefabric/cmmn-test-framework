@@ -9,7 +9,7 @@ import { checkJSONResponse, checkResponse } from '../response';
 import TaskFilter from './taskfilter';
 
 /**
- * Base class for invoking the Cafienne Tasks API (http://localhost:2027/tasks)
+ * Base class for invoking the Case Engine Tasks API (http://localhost:2027/tasks)
  */
 export default class TaskService {
     /**

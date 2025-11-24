@@ -1,5 +1,5 @@
 /**
- * Interface with fields required to deploy a CMMN case into the Cafienne Engine
+ * Interface with fields required to deploy a CMMN case into the Case Engine
  */
 export default class DeployCase {
     /**

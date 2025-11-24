@@ -10,7 +10,7 @@ import ConsentGroupMember from './consentgroupmember';
 
 
 /**
- * Connection to the /consent-group APIs of Cafienne
+ * Connection to the /consent-group APIs of the Case Engine
  */
 export default class ConsentGroupService {
     /**

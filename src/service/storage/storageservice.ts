@@ -9,7 +9,7 @@ import CaseEngineService from "../caseengineservice";
 import { checkResponse } from "../response";
 
 /**
- * Connection to the /storage APIs of Cafienne
+ * Connection to the /storage APIs of the Case Engine
  */
 export default class StorageService {
     /**
