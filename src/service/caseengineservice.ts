@@ -5,17 +5,17 @@ import User from '../user';
 import QueryFilter, { extendURL } from './queryfilter';
 import CafienneResponse from './response';
 
-class CafienneHeaders {
+class CaseEngineHeaders {
     public values:any = new Object();
     setHeader(name: string, value: any) {
         this.values[name] = value;
     }
 }
 
-const BaseHeaders = new CafienneHeaders();
+const BaseHeaders = new CaseEngineHeaders();
 BaseHeaders.setHeader('Content-Type', 'application/json');
 
-export default class CafienneService {
+export default class CaseEngineService {
     static calls = 0;
 
     /**
