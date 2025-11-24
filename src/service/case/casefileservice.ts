@@ -1,6 +1,6 @@
 import User from "../../user";
 import Case from "../../cmmn/case";
-import CafienneService from "../cafienneservice";
+import CaseEngineService from "../caseengineservice";
 import { checkJSONResponse, checkResponse } from "../response";
 import CaseFileItemDocumentation from "../../cmmn/casefileitemdocumentation";
 import Trace from "../../infra/trace";
@@ -12,7 +12,7 @@ export default class CaseFileService {
      * @param user 
      */
     static async getCaseFile(user: User, caseId: Case | string, expectedStatusCode: number = 200, msg = `GetCaseFile is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()) {
-        const response = await CafienneService.get(`/cases/${caseId}/casefile`, user);
+        const response = await CaseEngineService.get(`/cases/${caseId}/casefile`, user);
         return checkJSONResponse(response, msg, expectedStatusCode, undefined, trace);
     }
 
@@ -23,7 +23,7 @@ export default class CaseFileService {
      * @param planItemId
      */
     static async getCaseFileDocumentation(user: User, caseId: Case | string, expectedStatusCode: number = 200, msg = `GetPlanItem is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()): Promise<Array<CaseFileItemDocumentation>> {
-        const response = await CafienneService.get(`/cases/${caseId}/documentation/casefile`, user);
+        const response = await CaseEngineService.get(`/cases/${caseId}/documentation/casefile`, user);
         return checkJSONResponse(response, msg, expectedStatusCode, [CaseFileItemDocumentation], trace);
     }
 
@@ -35,7 +35,7 @@ export default class CaseFileService {
      * @param data Any json structure matching the case file definition
      */
     static async createCaseFileItem(user: User, caseId: Case | string, path: string, data: object, expectedStatusCode: number = 200, msg = `CreateCaseFileItem is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()) {
-        const response = await CafienneService.post(`/cases/${caseId}/casefile/create/${encodeURI(path)}`, user, data);
+        const response = await CaseEngineService.post(`/cases/${caseId}/casefile/create/${encodeURI(path)}`, user, data);
         return checkResponse(response, msg, expectedStatusCode, trace);
     }
 
@@ -47,7 +47,7 @@ export default class CaseFileService {
      * @param data 
      */
     static async updateCaseFileItem(user: User, caseId: Case | string, path: string, data: any, expectedStatusCode: number = 200, msg = `UpdateCaseFileItem is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()) {
-        const response = await CafienneService.put(`/cases/${caseId}/casefile/update/${encodeURI(path)}`, user, data);
+        const response = await CaseEngineService.put(`/cases/${caseId}/casefile/update/${encodeURI(path)}`, user, data);
         return checkResponse(response, msg, expectedStatusCode, trace);
     }
 
@@ -59,7 +59,7 @@ export default class CaseFileService {
      * @param data 
      */
     static async replaceCaseFileItem(user: User, caseId: Case | string, path: string, data: object, expectedStatusCode: number = 200, msg = `ReplaceCaseFileItem is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()) {
-        const response = await CafienneService.put(`/cases/${caseId}/casefile/replace/${encodeURI(path)}`, user, data);
+        const response = await CaseEngineService.put(`/cases/${caseId}/casefile/replace/${encodeURI(path)}`, user, data);
         return checkResponse(response, msg, expectedStatusCode, trace);
     }
 
@@ -70,7 +70,7 @@ export default class CaseFileService {
      * @param path 
      */
     static async deleteCaseFileItem(user: User, caseId: Case | string, path: string, expectedStatusCode: number = 200, msg = `DeleteCaseFileItem is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()) {
-        const response = await CafienneService.delete(`/cases/${caseId}/casefile/delete/${encodeURI(path)}`, user);
+        const response = await CaseEngineService.delete(`/cases/${caseId}/casefile/delete/${encodeURI(path)}`, user);
         return checkResponse(response, msg, expectedStatusCode, trace);
     }
 
@@ -82,7 +82,7 @@ export default class CaseFileService {
      * @param data Any json structure matching the case file definition
      */
     static async createCaseFile(user: User, caseId: Case | string, data: object, expectedStatusCode: number = 200, msg = `CreateCaseFile is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()) {
-        const response = await CafienneService.post(`/cases/${caseId}/casefile/create/`, user, data);
+        const response = await CaseEngineService.post(`/cases/${caseId}/casefile/create/`, user, data);
         return checkResponse(response, msg, expectedStatusCode, trace);
     }
 
@@ -94,7 +94,7 @@ export default class CaseFileService {
      * @param data 
      */
     static async updateCaseFile(user: User, caseId: Case | string, data: any, expectedStatusCode: number = 200, msg = `UpdateCaseFile is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()) {
-        const response = await CafienneService.put(`/cases/${caseId}/casefile/update/`, user, data);
+        const response = await CaseEngineService.put(`/cases/${caseId}/casefile/update/`, user, data);
         return checkResponse(response, msg, expectedStatusCode, trace);
     }
 
@@ -106,7 +106,7 @@ export default class CaseFileService {
      * @param data 
      */
     static async replaceCaseFile(user: User, caseId: Case | string, data: object, expectedStatusCode: number = 200, msg = `ReplaceCaseFile is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()) {
-        const response = await CafienneService.put(`/cases/${caseId}/casefile/replace/`, user, data);
+        const response = await CaseEngineService.put(`/cases/${caseId}/casefile/replace/`, user, data);
         return checkResponse(response, msg, expectedStatusCode, trace);
     }
 
@@ -117,7 +117,7 @@ export default class CaseFileService {
      * @param path 
      */
     static async deleteCaseFile(user: User, caseId: Case | string, expectedStatusCode: number = 200, msg = `DeleteCaseFile is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()) {
-        const response = await CafienneService.delete(`/cases/${caseId}/casefile/delete/`, user);
+        const response = await CaseEngineService.delete(`/cases/${caseId}/casefile/delete/`, user);
         return checkResponse(response, msg, expectedStatusCode, trace);
     }
 }

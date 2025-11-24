@@ -1,5 +1,5 @@
 import Config from "../config";
-import CafienneService from "../service/cafienneservice";
+import CaseEngineService from "../service/caseengineservice";
 import TestClasses from "./testclasses";
 import TestError from "./testerror";
 import TestRunner from "./testrunner";
@@ -81,7 +81,7 @@ export default class TestBatch {
     resultPrinter() {
         const completedTests = this.runners.filter(run => run.completed);
         return completedTests.map(result => result.toString()).join('\n') + 
-        `\n\n========= Completed ${completedTests.length} test cases and ${CafienneService.calls} API calls in ${((this.endTime.getTime() - this.startTime.getTime()) / 1000)} seconds at ${this.endTime}\n`;
+        `\n\n========= Completed ${completedTests.length} test cases and ${CaseEngineService.calls} API calls in ${((this.endTime.getTime() - this.startTime.getTime()) / 1000)} seconds at ${this.endTime}\n`;
     }
 
     throwFailureReport(run: TestRunner) {

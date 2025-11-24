@@ -1,4 +1,4 @@
-export default class CafienneEvent {
+export default class CaseEngineEvent {
     constructor(public type: string, public offset: number, public content: any) { }
 
     toString() {

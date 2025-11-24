@@ -3,7 +3,7 @@ import Trace from '../../infra/trace';
 import logger from '../../logger';
 import Tenant from '../../tenant/tenant';
 import User from '../../user';
-import CafienneService from '../cafienneservice';
+import CaseEngineService from '../caseengineservice';
 import { checkJSONResponse, checkResponse } from '../response';
 import ConsentGroup from './consentgroup';
 import ConsentGroupMember from './consentgroupmember';
@@ -22,7 +22,7 @@ export default class ConsentGroupService {
      * @returns 
      */
     static async createGroup(user: User, tenant: Tenant | string, group: ConsentGroup, expectedStatusCode: number = 200, msg = `CreateConsentGroup is not expected to succeed for user ${user.id} in ${tenant}`, trace: Trace = new Trace()) {
-        const response = await CafienneService.post(`/tenant/${tenant}/consent-groups`, user, group.toJson());
+        const response = await CaseEngineService.post(`/tenant/${tenant}/consent-groups`, user, group.toJson());
         if (response.status === 400 && expectedStatusCode === 200) {
             const responseText = await response.text();
             if (responseText === 'Consent group already exists' || responseText.indexOf('Failure while handling message CreateConsentGroup') >= 0) {
@@ -47,7 +47,7 @@ export default class ConsentGroupService {
      * @param expectedStatusCode 
      */
     static async getGroup(user: User, groupId: ConsentGroup | string, expectedStatusCode: number = 200, msg = `GetGroup is not expected to succeed for user ${user.id} in group ${groupId}`, trace: Trace = new Trace()): Promise<ConsentGroup> {
-        const response = await CafienneService.get(`/consent-group/${groupId}`, user);
+        const response = await CaseEngineService.get(`/consent-group/${groupId}`, user);
         return checkJSONResponse(response, msg, expectedStatusCode, ConsentGroup, trace);
     }
 
@@ -60,7 +60,7 @@ export default class ConsentGroupService {
      * @returns 
      */
     static async replaceGroup(user: User, group: ConsentGroup, expectedStatusCode: number = 202, msg = `ReplaceConsentGroup is not expected to succeed for user ${user.id} in ${group}`, trace: Trace = new Trace()) {
-        const response = await CafienneService.post(`/consent-group/${group}`, user, group.toJson());
+        const response = await CaseEngineService.post(`/consent-group/${group}`, user, group.toJson());
         return checkResponse(response, msg, expectedStatusCode, trace);
     }
 
@@ -72,7 +72,7 @@ export default class ConsentGroupService {
      * @param expectedStatusCode 
      */
     static async getGroupMember(user: User, groupId: ConsentGroup | string, userId: User | string, expectedStatusCode: number = 200, msg = `GetGroupMember(${userId}) is not expected to succeed for user ${user.id} in group ${groupId}`, trace: Trace = new Trace()): Promise<ConsentGroupMember> {
-        const response = await CafienneService.get(`/consent-group/${groupId}/members/${userId}`, user);
+        const response = await CaseEngineService.get(`/consent-group/${groupId}/members/${userId}`, user);
         return checkJSONResponse(response, msg, expectedStatusCode, ConsentGroupMember, trace);
     }
 
@@ -84,7 +84,7 @@ export default class ConsentGroupService {
      * @param expectedStatusCode 
      */
     static async setGroupMember(user: User, groupId: ConsentGroup | string, newUser: ConsentGroupMember, expectedStatusCode: number = 202, msg = `SetGroupMember is not expected to succeed for user ${user.id} in consent group ${groupId}`, trace: Trace = new Trace()) {
-        const response = await CafienneService.post(`/consent-group/${groupId}/members`, user, newUser.toJson());
+        const response = await CaseEngineService.post(`/consent-group/${groupId}/members`, user, newUser.toJson());
         return checkResponse(response, msg, expectedStatusCode, trace);
     }
 
@@ -97,7 +97,7 @@ export default class ConsentGroupService {
      * @returns 
      */
     static async removeGroupMember(user: User, groupId: ConsentGroup | string, userId: User | string, expectedStatusCode: number = 202, msg = `RemoveGroupMember ${userId} from group ${groupId} is not expected to succeed for user ${user.id}`, trace: Trace = new Trace()) {
-        const response = await CafienneService.delete(`/consent-group/${groupId}/members/${userId}`, user);
+        const response = await CaseEngineService.delete(`/consent-group/${groupId}/members/${userId}`, user);
         return checkResponse(response, msg, expectedStatusCode, trace);
     }
 }

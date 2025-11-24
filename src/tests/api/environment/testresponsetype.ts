@@ -4,7 +4,7 @@ import Definitions from '../../../cmmn/definitions/definitions';
 import CaseTeam from '../../../cmmn/team/caseteam';
 import { CaseOwner } from '../../../cmmn/team/caseteamuser';
 import Config from '../../../config';
-import CafienneService, { printHeaders } from '../../../service/cafienneservice';
+import CaseEngineService, { printHeaders } from '../../../service/caseengineservice';
 import CaseService from '../../../service/case/caseservice';
 import TestCase from '../../../test/testcase';
 import WorldWideTestTenant from '../../setup/worldwidetesttenant';
@@ -33,7 +33,7 @@ export default class TestResponseType extends TestCase {
 
     async tryFetchCase(caseId: string) {
         // create headers
-        const headers = CafienneService.getHeaders(user);
+        const headers = CaseEngineService.getHeaders(user);
 
         // create request parameters
         const url = Config.CafienneService.url + 'cases/' + caseId;
