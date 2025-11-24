@@ -6,7 +6,7 @@ import CaseTeamUser, { CaseOwner } from "../../../cmmn/team/caseteamuser";
 import CaseService from '../../../service/case/caseservice';
 import DebugService from '../../../service/case/debugservice';
 import StartCase from '../../../service/case/startcase';
-import CafienneResponse from '../../../service/response';
+import CaseEngineResponse from '../../../service/response';
 import TenantService from '../../../service/tenant/tenantservice';
 import TestCase from '../../../test/testcase';
 import { SomeTime } from '../../../test/time';
@@ -84,7 +84,7 @@ export default class TestInvalidStartCase extends TestCase {
     async tryStartCase(msg: string, expectedResponseCode: number = 400) {
         console.log('\n============\n' + msg);
         const response = await CaseService.startCase(user, this.startCase, expectedResponseCode, msg)
-        if (response instanceof CafienneResponse) {
+        if (response instanceof CaseEngineResponse) {
             await response.text().then(response => console.log("Response text: " + response));
         }
     }
