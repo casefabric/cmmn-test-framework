@@ -3,7 +3,7 @@ import Config from '../config';
 import logger from '../logger';
 import User from '../user';
 import QueryFilter, { extendURL } from './queryfilter';
-import CafienneResponse from './response';
+import CaseEngineResponse from './response';
 
 class CaseEngineHeaders {
     public values:any = new Object();
@@ -33,7 +33,7 @@ export default class CaseEngineService {
         return Config.CafienneService.url;
     }
 
-    static updateCaseLastModified(response: CafienneResponse) {
+    static updateCaseLastModified(response: CaseEngineResponse) {
         // TODO: this currently is not a Singleton, but it should be...
         if (response.ok) {
             const readAndUpdateHeader = (headerName: string) => {
@@ -58,7 +58,7 @@ export default class CaseEngineService {
         return this.fetch(user, url, method, getHeaders(user), body);    
     }
 
-    static async postXML(url: string, user: User, request: Document, method = 'POST'): Promise<CafienneResponse> {
+    static async postXML(url: string, user: User, request: Document, method = 'POST'): Promise<CaseEngineResponse> {
         const headers = getHeaders(user, { 'Content-Type': 'application/xml'});
         const body = request.toString();
         return this.fetch(user, url, method, headers, body);
@@ -90,7 +90,7 @@ export default class CaseEngineService {
         return (await this.get(url, user, undefined, headers)).xml();
     }
 
-    static async fetch(user: User | undefined, url: string, method: string, headers?: any, body?: string): Promise<CafienneResponse> {
+    static async fetch(user: User | undefined, url: string, method: string, headers?: any, body?: string): Promise<CaseEngineResponse> {
         if (! headers) {
             headers = getHeaders(user);
         }
@@ -109,7 +109,7 @@ export default class CaseEngineService {
             logger.debug(body);
         }
  
-        const response = await fetch(url, { method, headers, body }).then(response => new CafienneResponse(response)).then(r => this.updateCaseLastModified(r));
+        const response = await fetch(url, { method, headers, body }).then(response => new CaseEngineResponse(response)).then(r => this.updateCaseLastModified(r));
         
         if (! response.ok && Config.CafienneService.log.response.error) {
             if (!Config.CafienneService.log.url) {
