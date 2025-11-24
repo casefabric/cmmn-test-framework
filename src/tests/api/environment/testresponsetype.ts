@@ -36,7 +36,7 @@ export default class TestResponseType extends TestCase {
         const headers = CaseEngineService.getHeaders(user);
 
         // create request parameters
-        const url = Config.CafienneService.url + 'cases/' + caseId;
+        const url = Config.CaseEngine.url + 'cases/' + caseId;
         const method = 'GET';
         console.log('\nURL: ' + url);
         printHeaders('\nRequest headers:', headers);
