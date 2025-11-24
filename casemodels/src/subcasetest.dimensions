@@ -1,4 +1,4 @@
-<CMMNDI>
+<CMMNDI xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
     <CMMNDiagram>
         <CMMNShape cmmnElementRef="cm__FKa3D_0">
             <Bounds x="20" y="20" width="800" height="500"/>
@@ -10,7 +10,10 @@
             <Bounds x="354" y="160" width="12" height="20"/>
         </CMMNShape>
         <CMMNShape cmmnElementRef="_FKa3D_1">
-            <Bounds x="230" y="150" width="25" height="40"/>
+            <Bounds x="230" y="140" width="25" height="40"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_FKa3D_8">
+            <Bounds x="280" y="260" width="140" height="80"/>
         </CMMNShape>
         <CMMNEdge sourceCMMNElementRef="_FKa3D_1" targetCMMNElementRef="_FKa3D_2"/>
     </CMMNDiagram>

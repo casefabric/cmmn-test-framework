@@ -34,14 +34,32 @@
             <Bounds x="90" y="310" width="110" height="100"/>
         </CMMNShape>
         <CMMNShape cmmnElementRef="IdentifierList/DetailsKey">
-            <Bounds x="360" y="140" width="25" height="40"/>
+            <Bounds x="359" y="121" width="25" height="40"/>
         </CMMNShape>
         <CMMNShape cmmnElementRef="HTTPConfig">
-            <Bounds x="50" y="100" width="25" height="40"/>
+            <Bounds x="51" y="92" width="25" height="40"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_Sp9aR_42">
+            <Bounds x="480" y="270" width="32" height="32"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_Sp9aR_44">
+            <Bounds x="460" y="360" width="100" height="40"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="crit__Sp9aR_0">
+            <Bounds x="494" y="350" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="crit__Sp9aR_1">
+            <Bounds x="274" y="140" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="crit__Sp9aR_2">
+            <Bounds x="374" y="370" width="12" height="20"/>
         </CMMNShape>
         <CMMNEdge sourceCMMNElementRef="HTTPConfig" targetCMMNElementRef="_Sp9aR_11"/>
         <CMMNEdge sourceCMMNElementRef="pi_pt__LQXO7_8" targetCMMNElementRef="_Sp9aR_18"/>
         <CMMNEdge sourceCMMNElementRef="_LQXO7_1" targetCMMNElementRef="IdentifierList/DetailsKey"/>
         <CMMNEdge sourceCMMNElementRef="pi_ue__Sp9aR_0" targetCMMNElementRef="_Sp9aR_24"/>
+        <CMMNEdge sourceCMMNElementRef="_Sp9aR_42" targetCMMNElementRef="crit__Sp9aR_0"/>
+        <CMMNEdge sourceCMMNElementRef="_Sp9aR_44" targetCMMNElementRef="crit__Sp9aR_1"/>
+        <CMMNEdge sourceCMMNElementRef="_Sp9aR_44" targetCMMNElementRef="crit__Sp9aR_2"/>
     </CMMNDiagram>
 </CMMNDI>

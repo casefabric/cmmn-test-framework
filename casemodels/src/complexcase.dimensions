@@ -10,27 +10,34 @@
             <Bounds x="150" y="230" width="140" height="80"/>
         </CMMNShape>
         <CMMNShape cmmnElementRef="pi_ue__MuzRn_0">
-            <Bounds x="500" y="120" width="32" height="32"/>
+            <Bounds x="494" y="116" width="32" height="32"/>
         </CMMNShape>
         <CMMNShape cmmnElementRef="pi_ct__MuzRn_2">
-            <Bounds x="440" y="280" width="140" height="80"/>
+            <Bounds x="440" y="260" width="140" height="80"/>
         </CMMNShape>
         <CMMNShape cmmnElementRef="_MuzRn_14">
-            <Bounds x="504" y="270" width="12" height="20"/>
+            <Bounds x="504" y="250" width="12" height="20"/>
         </CMMNShape>
         <CMMNShape cmmnElementRef="pi_tmr__MuzRn_0">
-            <Bounds x="90" y="420" width="32" height="32"/>
+            <Bounds x="80" y="414" width="32" height="32"/>
         </CMMNShape>
         <CMMNShape cmmnElementRef="pi_ms__MuzRn_0">
-            <Bounds x="210" y="410" width="130" height="60"/>
+            <Bounds x="220" y="410" width="130" height="60"/>
         </CMMNShape>
         <CMMNShape cmmnElementRef="crit__MuzRn_0">
-            <Bounds x="204" y="430" width="12" height="20"/>
+            <Bounds x="214" y="430" width="12" height="20"/>
         </CMMNShape>
         <CMMNShape cmmnElementRef="pi_st__MuzRn_0">
             <Bounds x="50" y="370" width="420" height="140"/>
         </CMMNShape>
-        <CMMNEdge sourceCMMNElementRef="pi_ue__MuzRn_0" targetCMMNElementRef="_MuzRn_14"/>
-        <CMMNEdge sourceCMMNElementRef="pi_tmr__MuzRn_0" targetCMMNElementRef="crit__MuzRn_0"/>
+        <CMMNShape cmmnElementRef="_MuzRn_33">
+            <Bounds x="640" y="340" width="32" height="32"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="crit__MuzRn_1">
+            <Bounds x="654" y="510" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNEdge label="occur" sourceCMMNElementRef="pi_ue__MuzRn_0" targetCMMNElementRef="_MuzRn_14"/>
+        <CMMNEdge label="occur" sourceCMMNElementRef="pi_tmr__MuzRn_0" targetCMMNElementRef="crit__MuzRn_0"/>
+        <CMMNEdge sourceCMMNElementRef="_MuzRn_33" targetCMMNElementRef="crit__MuzRn_1"/>
     </CMMNDiagram>
 </CMMNDI>

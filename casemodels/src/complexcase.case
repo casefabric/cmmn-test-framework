@@ -3,6 +3,11 @@
         <caseFileItem id="_MuzRn_10" name="Greeting" multiplicity="ExactlyOne" definitionRef="greeting.cfid"/>
     </caseFileModel>
     <casePlanModel id="cm__MuzRn_0" name="Case with subcases and subprocesses" autoComplete="true">
+        <exitCriterion id="crit__MuzRn_1">
+            <planItemOnPart id="_MuzRn_35" sourceRef="_MuzRn_33">
+                <standardEvent>occur</standardEvent>
+            </planItemOnPart>
+        </exitCriterion>
         <caseTask id="pi_ct__MuzRn_0" name="HelloWorld" isBlocking="true" caseRef="helloworld.case">
             <inputs id="_MuzRn_9" name="Greeting" bindingRef="_MuzRn_10"/>
             <parameterMapping id="_MuzRn_1" sourceRef="_MuzRn_9" targetRef="csVQy_inCPs_0">
@@ -44,6 +49,7 @@
                 </entryCriterion>
             </milestone>
         </stage>
+        <userEvent id="_MuzRn_33" name="Terminate Case"/>
     </casePlanModel>
     <caseRoles caseTeamRef="testteam.caseteam"/>
     <input id="_MuzRn_7" name="Greeting" bindingRef="_MuzRn_10"/>

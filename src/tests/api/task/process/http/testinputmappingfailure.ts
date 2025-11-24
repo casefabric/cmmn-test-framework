@@ -3,8 +3,6 @@
 import Definitions from '../../../../../cmmn/definitions/definitions';
 import State from '../../../../../cmmn/state';
 import Transition from '../../../../../cmmn/transition';
-import GetMock from '../../../../../mock/getmock';
-import MockServer from '../../../../../mock/mockserver';
 import CaseMigrationService, { DefinitionMigration } from '../../../../../service/case/casemigrationservice';
 import CasePlanService from '../../../../../service/case/caseplanservice';
 import CaseService from '../../../../../service/case/caseservice';
@@ -13,6 +11,7 @@ import { assertPlanItem } from '../../../../../test/caseassertions/plan';
 import TestCase from '../../../../../test/testcase';
 import { SomeTime } from '../../../../../test/time';
 import WorldWideTestTenant from '../../../../setup/worldwidetesttenant';
+import ListDetailsMock from './listdetailsmock';
 
 const definition = Definitions.Migration_GetList;
 const newDefinition = Definitions.Migration_GetList_v1;
@@ -21,16 +20,12 @@ const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
 
 const mockPort = 18076;
-const mock = new MockServer(mockPort);
-new GetMock(mock, '/getListWebService', call => {
-    const keys = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
-    call.json(keys.map(key => ({ id: key })));
-});
-
+const mock = new ListDetailsMock(mockPort);
 
 export default class TestInputMappingFailure extends TestCase {
     dashedParameterProcessTask = 'process_with_mapping_failure';
     triggerTaskEvent = 'TriggerInputMappingFailure';
+    // lineReaderEnabled = true;
 
     async onPrepareTest() {
         await worldwideTenant.create();
@@ -62,6 +57,8 @@ export default class TestInputMappingFailure extends TestCase {
         await CasePlanService.makePlanItemTransition(user, caseInstance, this.dashedParameterProcessTask, Transition.Reactivate);
 
         const processTask = await assertPlanItem(user, caseInstance, this.dashedParameterProcessTask, 0, State.Failed);
+
+        this.readLine("Press ENTER to force recovery of the process task...");
 
         await DebugService.forceRecovery(user, processTask.id);
 

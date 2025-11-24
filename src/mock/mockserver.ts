@@ -32,6 +32,7 @@ export default class MockServer {
     start() {
         this.expressWrapper.start();
         this.mocks.forEach(mock => mock.register());
+        return this;
     }
 
     /**
@@ -39,6 +40,7 @@ export default class MockServer {
      */
     stop() {
         this.expressWrapper.stop();
+        return this;
     }
 }
 

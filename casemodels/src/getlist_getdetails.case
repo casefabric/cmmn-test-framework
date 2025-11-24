@@ -15,6 +15,13 @@
                     <standardEvent>occur</standardEvent>
                 </planItemOnPart>
             </entryCriterion>
+            <extensionElements mustUnderstand="false">
+                <reactivateCriterion xmlns="org.cafienne" id="crit__Sp9aR_1">
+                    <planItemOnPart id="_Sp9aR_56" sourceRef="_Sp9aR_44">
+                        <standardEvent>occur</standardEvent>
+                    </planItemOnPart>
+                </reactivateCriterion>
+            </extensionElements>
             <itemControl id="_Sp9aR_0">
                 <repetitionRule id="_Sp9aR_22">
                     <condition id="_Sp9aR_23">
@@ -93,6 +100,11 @@
                     <standardEvent>fault</standardEvent>
                 </planItemOnPart>
             </entryCriterion>
+            <exitCriterion id="crit__Sp9aR_2">
+                <planItemOnPart id="_Sp9aR_65" sourceRef="_Sp9aR_44">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </exitCriterion>
             <itemControl id="_Sp9aR_15">
                 <repetitionRule id="_Sp9aR_20">
                     <condition id="_Sp9aR_21">
@@ -105,6 +117,21 @@
             </stage>
             <milestone id="pi_ms__Sp9aR_0" name="GetList Failed"/>
         </stage>
+        <timerEvent id="_Sp9aR_42" name="After 2 seconds">
+            <timerExpression id="_Sp9aR_46">
+                <body><![CDATA[P0DT10S]]></body>
+            </timerExpression>
+            <planItemStartTrigger id="_Sp9aR_41">
+                <standardEvent/>
+            </planItemStartTrigger>
+        </timerEvent>
+        <milestone id="_Sp9aR_44" name="Case exists 2 seconds">
+            <entryCriterion id="crit__Sp9aR_0">
+                <planItemOnPart id="_Sp9aR_47" sourceRef="_Sp9aR_42">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </entryCriterion>
+        </milestone>
     </casePlanModel>
     <caseRoles/>
     <input id="_Sp9aR_34" name="HTTPConfig" bindingRef="HTTPConfig"/>

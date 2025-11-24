@@ -1,4 +1,4 @@
-<case id="subcasetest.case" name="subcasetest" expressionLanguage="spel" guid="_FKa3D">
+<case xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="subcasetest.case" name="subcasetest" expressionLanguage="spel" guid="_FKa3D">
     <caseFileModel>
         <caseFileItem id="_FKa3D_1" name="Greet" multiplicity="ExactlyOne" definitionRef="greeting.cfid"/>
     </caseFileModel>
@@ -12,6 +12,7 @@
             <inputs id="_FKa3D_4" name="Greeting" bindingRef="_FKa3D_1"/>
             <parameterMapping id="_FKa3D_5" sourceRef="_FKa3D_4" targetRef="csVQy_inCPs_0"/>
         </caseTask>
+        <caseTask id="_FKa3D_8" name="complexcase" isBlocking="true" caseRef="complexcase.case"/>
     </casePlanModel>
     <caseRoles/>
 </case>

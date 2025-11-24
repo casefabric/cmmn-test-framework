@@ -3,14 +3,13 @@
 import Definitions from '../../../../../cmmn/definitions/definitions';
 import State from '../../../../../cmmn/state';
 import Transition from '../../../../../cmmn/transition';
-import GetMock from '../../../../../mock/getmock';
-import MockServer from '../../../../../mock/mockserver';
 import CaseFileService from '../../../../../service/case/casefileservice';
 import CasePlanService from '../../../../../service/case/caseplanservice';
 import CaseService from '../../../../../service/case/caseservice';
 import { assertPlanItem } from '../../../../../test/caseassertions/plan';
 import TestCase from '../../../../../test/testcase';
 import WorldWideTestTenant from '../../../../setup/worldwidetesttenant';
+import ListDetailsMock from './listdetailsmock';
 
 const definition = Definitions.GetListGetDetails;
 const worldwideTenant = new WorldWideTestTenant();
@@ -18,18 +17,7 @@ const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
 
 const mockPort = 18087;
-const mock = new MockServer(mockPort);
-new GetMock(mock, '/getListWebService', call => {
-    const keys = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
-    call.json(keys.map(key => ({ id: key })));
-});
-new GetMock(mock, '/details/:detailsKey', call => {
-    const detailsKey = call.req.params['detailsKey'];
-    call.json({
-        description: `details of '${detailsKey}'`,
-        id: detailsKey
-    });
-})
+const mock = new ListDetailsMock(mockPort);
 
 export default class TestGetListGetDetails extends TestCase {
     async onPrepareTest() {
