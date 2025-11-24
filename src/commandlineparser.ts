@@ -25,12 +25,12 @@ export default class CommandLineParser {
             const timeout = this.configArguments[0];
             if (!isNaN(Number(timeout)) && timeout.trim() !== TIMEOUT_PARAMETER) { // Classic style setting timeout
                 console.log('Setting CQRS wait time to ' + timeout)
-                Config.CafienneService.cqrsWaitTime = Number(timeout);
+                Config.CaseEngine.cqrsWaitTime = Number(timeout);
 
                 // Remove the timeout parameter
                 this.configArguments = this.configArguments.slice(1);
             } else {
-                Config.CafienneService.cqrsWaitTime = this.readNumber(TIMEOUT_PARAMETER, 'CQRS wait time', Config.CafienneService.cqrsWaitTime, 100);
+                Config.CaseEngine.cqrsWaitTime = this.readNumber(TIMEOUT_PARAMETER, 'CQRS wait time', Config.CaseEngine.cqrsWaitTime, 100);
             }
         }
     }
