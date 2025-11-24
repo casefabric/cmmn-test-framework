@@ -8,7 +8,7 @@ import logger from '../../logger';
 import Trace from '../../infra/trace';
 
 /**
- * Connection to the /registration APIs of Cafienne
+ * Connection to the /registration APIs of the Case Engine
  */
 export default class PlatformService {
     /**

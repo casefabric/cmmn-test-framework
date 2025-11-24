@@ -10,7 +10,7 @@ import { assertPlanItem } from '../../../../test/caseassertions/plan';
 import TestCase from '../../../../test/testcase';
 import WorldWideTestTenant from '../../../setup/worldwidetesttenant';
 
-const definition = Definitions.InvokeCafienne;
+const definition = Definitions.InvokeCaseEngine;
 
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
@@ -41,7 +41,7 @@ export default class TestAuthenticationFlow extends TestCase {
 
         console.log(`\nCase ID: ${caseInstance.id}\n`);
 
-        await assertPlanItem(user, caseInstance, 'Invoke Cafienne', 0, State.Completed);
+        await assertPlanItem(user, caseInstance, 'Invoke Case Engine', 0, State.Completed);
 
         console.log(`\nCase ID: ${caseInstance.id}\n`);
     }

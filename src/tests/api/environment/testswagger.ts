@@ -16,7 +16,7 @@ export default class TestSwagger extends TestCase {
             urls.push(key);
         }
 
-        console.log(`Cafienne has ${urls.length} APIs:\n${urls.join('\n')}`);
+        console.log(`The Case Engine has ${urls.length} APIs:\n${urls.join('\n')}`);
 
         // Expect at least one path to start with /cases
         if (! urls.find(url => url.startsWith('/cases'))) {
