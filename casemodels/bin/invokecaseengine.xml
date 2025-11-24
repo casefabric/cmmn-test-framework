@@ -3,13 +3,13 @@
         <property name="port" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
     </caseFileItemDefinition>
     <caseFileItemDefinition name="items" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="items.cfid"/>
-    <case id="invokecafienne.case" name="invokecafienne" expressionLanguage="spel">
+    <case id="invokecaseengine.case" name="invokecaseengine" expressionLanguage="spel">
         <caseFileModel>
             <caseFileItem id="_EkelP_1" name="http" multiplicity="ExactlyOne" definitionRef="http.cfid"/>
             <caseFileItem id="_EkelP_10" name="items" multiplicity="ZeroOrMore" definitionRef="items.cfid"/>
         </caseFileModel>
-        <casePlanModel id="cm__EkelP_0" name="invokecafienne" autoComplete="true">
-            <planItem id="pi_pt__EkelP_0" name="Invoke Cafienne" definitionRef="pt__EkelP_0">
+        <casePlanModel id="cm__EkelP_0" name="Invoke Case Engine" autoComplete="true">
+            <planItem id="pi_pt__EkelP_0" name="Invoke Case Engine" definitionRef="pt__EkelP_0">
                 <entryCriterion id="_EkelP_11" name="EntryCriterion_0" sentryRef="s__EkelP_11"/>
             </planItem>
             <sentry id="s__EkelP_11">
@@ -17,30 +17,24 @@
                     <standardEvent>create</standardEvent>
                 </caseFileItemOnPart>
             </sentry>
-            <processTask id="pt__EkelP_0" name="Invoke Cafienne" isBlocking="true" processRef="invokecafienne.process">
+            <processTask id="pt__EkelP_0" name="Invoke Case Engine" isBlocking="true" processRef="invokecaseengine.process">
                 <inputs id="_EkelP_7" name="http" bindingRef="_EkelP_1"/>
                 <inputs id="_EkelP_9" name="caseId"/>
                 <outputs id="_EkelP_18" name="items" bindingRef="_EkelP_10"/>
                 <parameterMapping id="_EkelP_3" sourceRef="_EkelP_9" targetRef="_ZUs0_caseId">
                     <transformation id="_EkelP_8">
-                        <body>
-                            <![CDATA[case.id]]>
-                        </body>
+                        <body><![CDATA[case.id]]></body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="_EkelP_2" sourceRef="_EkelP_7" targetRef="_26Ke_baseURL">
                     <transformation id="_EkelP_15">
-                        <body>
-                            <![CDATA[http.baseURL]]>
-                        </body>
+                        <body><![CDATA[http.baseURL]]></body>
                     </transformation>
                 </parameterMapping>
                 <parameterMapping id="_EkelP_4" sourceRef="_oCRq_responsePayload" targetRef="_EkelP_18"/>
                 <parameterMapping id="_EkelP_14" sourceRef="_EkelP_7" targetRef="_MHwW_caseLastModified">
                     <transformation id="_EkelP_16">
-                        <body>
-                            <![CDATA[http.caseLastModified]]>
-                        </body>
+                        <body><![CDATA[http.caseLastModified]]></body>
                     </transformation>
                 </parameterMapping>
             </processTask>
@@ -48,12 +42,10 @@
         <caseRoles/>
         <input id="_EkelP_13" name="http" bindingRef="_EkelP_1"/>
         <textAnnotation id="_EkelP_17">
-            <text>
-                <![CDATA[The sub process invokes Cafienne to get the case itself. Note: this only works when the CaseLastModified header is also given ... Otherwise the case is not yet in the projection and cannot be found.]]>
-            </text>
+            <text><![CDATA[The sub process invokes Cafienne to get the case itself. Note: this only works when the CaseLastModified header is also given ... Otherwise the case is not yet in the projection and cannot be found.]]></text>
         </textAnnotation>
     </case>
-    <process name="invokecafienne" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified" id="invokecafienne.process">
+    <process name="invokecaseengine" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified" id="invokecaseengine.process">
         <input id="_26Ke_baseURL" name="baseURL"/>
         <input id="_ZUs0_caseId" name="caseId"/>
         <input id="_MHwW_caseLastModified" name="caseLastModified"/>
@@ -61,14 +53,14 @@
         <output id="_kcO2_exception" name="exception"/>
         <extensionElements mustUnderstand="false">
             <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.http.HTTPCallDefinition">
-                <url>${baseURL}/cases/${caseId}/planitems</url>
-                <method>GET</method>
-                <http-headers>
+                <url xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL">${baseURL}/cases/${caseId}/planitems</url>
+                <method xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL">GET</method>
+                <http-headers xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL">
                     <http-header name="Authorization">Bearer ${user.token}</http-header>
                     <http-header name="Case-Last-Modified">${caseLastModified}</http-header>
                 </http-headers>
-                <parameterMapping sourceRef="exception" targetRef="exception"/>
-                <parameterMapping sourceRef="responsePayload" targetRef="responsePayload"/>
+                <parameterMapping sourceRef="exception" targetRef="exception" xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL"/>
+                <parameterMapping sourceRef="responsePayload" targetRef="responsePayload" xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL"/>
             </cafienne:implementation>
         </extensionElements>
     </process>

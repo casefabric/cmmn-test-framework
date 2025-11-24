@@ -7,7 +7,7 @@ import Trace from '../../infra/trace';
 
 
 /**
- * Connection to the /tenant APIs of Cafienne
+ * Connection to the /tenant APIs of the Case Engine
  */
 export default class TenantService {
     /**
