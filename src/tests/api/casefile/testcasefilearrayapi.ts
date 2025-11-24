@@ -82,7 +82,7 @@ export default class TestCaseFileArrayAPI extends TestCase {
 
         await CaseFileService.createCaseFileItem(user, caseInstance, path, ChildArray);
 
-        // Force the case to be removed from memory and then recovered. This causes cafienne engine issue https://github.com/cafienne/cafienne-engine/issues/235
+        // Force the case to be removed from memory and then recovered. This causes issue https://github.com/casefabric/case-engine/issues/235
         await DebugService.forceRecovery(user, caseInstance);
 
         await CaseFileService.updateCaseFileItem(user, caseInstance, path, ChildArray);
@@ -124,7 +124,7 @@ export default class TestCaseFileArrayAPI extends TestCase {
 
         await CaseFileService.createCaseFileItem(user, caseInstance, path, ChildArray);
 
-        // Now replace the case file. This causes cafienne engine issue https://github.com/cafienne/cafienne-engine/issues/428
+        // Now replace the case file. This causes issue https://github.com/casefabric/case-engine/issues/428
         const replaceCaseFile = Object.assign({}, initialCaseFile);
         (replaceCaseFile.RootCaseFileItem as any).ChildArray = [];
         await CaseFileService.replaceCaseFile(user, caseInstance, replaceCaseFile);
