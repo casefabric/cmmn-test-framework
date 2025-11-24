@@ -4,7 +4,7 @@ import Task from '../../cmmn/task';
 import AsyncError from '../../infra/asyncerror';
 import Trace from '../../infra/trace';
 import User from '../../user';
-import CafienneService from '../cafienneservice';
+import CaseEngineService from '../caseengineservice';
 import { checkJSONResponse, checkResponse } from '../response';
 import TaskFilter from './taskfilter';
 
@@ -27,7 +27,7 @@ export default class TaskService {
         if (! msg) {
             msg = msg;
         }
-        const response = await CafienneService.put(`tasks/${taskId}/claim`, user);
+        const response = await CaseEngineService.put(`tasks/${taskId}/claim`, user);
         return checkResponse(response, msg, expectedStatusCode, trace);
     }
 
@@ -43,7 +43,7 @@ export default class TaskService {
         if (!msg) {
             msg = `Task '${taskName}' with id ${taskId} was revoked succesfully, but this was not expected`;
         }
-        const response = await CafienneService.put(`tasks/${taskId}/revoke`, user);
+        const response = await CaseEngineService.put(`tasks/${taskId}/revoke`, user);
         return checkResponse(response, msg, expectedStatusCode, trace);
     }
 
@@ -60,7 +60,7 @@ export default class TaskService {
         if (! msg) {
             msg = `Task '${taskName}' with id ${taskId} was assigned successfully, but this was not expected`;
         }
-        const response = await CafienneService.put(`tasks/${taskId}/assign`, user, { assignee: assignee.id });
+        const response = await CaseEngineService.put(`tasks/${taskId}/assign`, user, { assignee: assignee.id });
         return checkResponse(response, msg, expectedStatusCode, trace);
     }
 
@@ -77,7 +77,7 @@ export default class TaskService {
         if (! msg) {
             msg = `Task '${taskName}' with id ${taskId} was delegated succesfully, but this was not expected`;
         }
-        const response = await CafienneService.put(`tasks/${taskId}/delegate`, user, { assignee: assignee.id });
+        const response = await CaseEngineService.put(`tasks/${taskId}/delegate`, user, { assignee: assignee.id });
         return checkResponse(response, msg, expectedStatusCode, trace);
     }
 
@@ -94,7 +94,7 @@ export default class TaskService {
         if (! msg) {
             msg = `Task '${taskName}' with id ${taskId} was completed succesfully, but this was not expected`;
         }
-        const response = await CafienneService.post(`tasks/${taskId}/complete`, user, taskOutput);
+        const response = await CaseEngineService.post(`tasks/${taskId}/complete`, user, taskOutput);
         return checkResponse(response, msg, expectedStatusCode, trace);
     }
 
@@ -111,7 +111,7 @@ export default class TaskService {
         if (! msg) {
             msg = `Task output for '${taskName}' with id ${taskId} was validated succesfully, but this was not expected`;
         }
-        const response = await CafienneService.post(`tasks/${taskId}`, user, taskOutput);
+        const response = await CaseEngineService.post(`tasks/${taskId}`, user, taskOutput);
         const res = await checkResponse(response, msg, expectedStatusCode, trace);
         if (response.ok) {
             const json = await response.json();
@@ -135,7 +135,7 @@ export default class TaskService {
         if (! msg) {
             msg = `Task output for '${taskName}' with id ${taskId} was saved succesfully, but this was not expected`;
         }
-        const response = await CafienneService.put(`tasks/${taskId}`, user, taskOutput);
+        const response = await CaseEngineService.put(`tasks/${taskId}`, user, taskOutput);
         return checkResponse(response, msg, expectedStatusCode, trace);
     }
 
@@ -150,7 +150,7 @@ export default class TaskService {
         if (!msg) {
             msg = `GetTask is not expected to succeed for user ${user} on task ${taskId}`;
         }
-        const response = await CafienneService.get(`tasks/${taskId}`, user);
+        const response = await CaseEngineService.get(`tasks/${taskId}`, user);
         return await checkJSONResponse(response, msg, expectedStatusCode, Task, trace);
     }
 
@@ -161,7 +161,7 @@ export default class TaskService {
      */
     static async getCaseTasks(user: User, caseId: Case | string, includeSubCaseTasks: boolean = false, expectedStatusCode: number = 200, msg = `GetCaseTasks is not expected to succeed for member ${user} in case ${caseId}`, trace: Trace = new Trace()): Promise<Array<Task>> {
         const optionalSubcaseParameter = includeSubCaseTasks ? '?includeSubCaseTasks=true' : '';
-        const response = await CafienneService.get(`/tasks/case/${caseId}${optionalSubcaseParameter}`, user);
+        const response = await CaseEngineService.get(`/tasks/case/${caseId}${optionalSubcaseParameter}`, user);
         return await checkJSONResponse(response, msg, expectedStatusCode, [Task], trace);
     }
 
@@ -189,7 +189,7 @@ export default class TaskService {
      * @param filter Optional filter for the tasks (e.g., to get only Active tasks)
      */
     static async getTasks(user: User, filter?: TaskFilter, expectedStatusCode: number = 200, msg = `GetTasks is not expected to succeed for member ${user}`, trace: Trace = new Trace()): Promise<Array<Task>> {
-        const response = await CafienneService.get('/tasks', user, filter);
+        const response = await CaseEngineService.get('/tasks', user, filter);
         return await checkJSONResponse(response, msg, expectedStatusCode, [Task], trace);
     }
 
@@ -200,7 +200,7 @@ export default class TaskService {
      * @param filter 
      */
     static async countTasks(user: User, filter?: TaskFilter, expectedStatusCode: number = 200, msg = `CountTasks is not expected to succeed for member ${user}`, trace: Trace = new Trace()): Promise<TaskCount> {
-        const response = await CafienneService.get('/tasks/user/count', user, filter);
+        const response = await CaseEngineService.get('/tasks/user/count', user, filter);
         return await checkJSONResponse(response, msg, expectedStatusCode, undefined, trace);
     }
 }
