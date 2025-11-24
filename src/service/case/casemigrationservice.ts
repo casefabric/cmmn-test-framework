@@ -1,6 +1,6 @@
 import User from "../../user";
 import Case from "../../cmmn/case";
-import CafienneService from "../cafienneservice";
+import CaseEngineService from "../caseengineservice";
 import { checkJSONResponse } from "../response";
 import Definitions from "../../cmmn/definitions/definitions";
 import CaseTeam from "../../cmmn/team/caseteam";
@@ -13,7 +13,7 @@ export default class CaseMigrationService {
      * @param user 
      */
     static async migrateDefinition(user: User, caseId: Case | string, migration: DefinitionMigration, expectedStatusCode: number = 200, msg = `MigrateDefinition is not expected to succeed for user ${user.id} in case ${caseId}`, trace: Trace = new Trace()): Promise<any> {
-        const response = await CafienneService.post(`/cases/${caseId}/migrate-definition`, user, { 
+        const response = await CaseEngineService.post(`/cases/${caseId}/migrate-definition`, user, { 
             newDefinition: migration.newDefinition.toString(),
             newTeam: migration.newTeam,
         });

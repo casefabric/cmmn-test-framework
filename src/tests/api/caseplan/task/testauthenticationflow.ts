@@ -3,7 +3,7 @@
 import Definitions from '../../../../cmmn/definitions/definitions';
 import State from '../../../../cmmn/state';
 import Config from '../../../../config';
-import CafienneService from '../../../../service/cafienneservice';
+import CaseEngineService from '../../../../service/caseengineservice';
 import CaseFileService from '../../../../service/case/casefileservice';
 import CaseService from '../../../../service/case/caseservice';
 import { assertPlanItem } from '../../../../test/caseassertions/plan';
@@ -30,7 +30,7 @@ export default class TestAuthenticationFlow extends TestCase {
         this.addIdentifier(caseInstance);
 
         const baseURL = (Config.CafienneService.url.endsWith('/') ? Config.CafienneService.url.substring(0, Config.CafienneService.url.length - 1) : Config.CafienneService.url).replace('0.0.0.0', 'localhost');
-        const caseLastModified = CafienneService.getHeaders(user)["Case-Last-Modified"];
+        const caseLastModified = CaseEngineService.getHeaders(user)["Case-Last-Modified"];
 
         const http = {
             baseURL,
