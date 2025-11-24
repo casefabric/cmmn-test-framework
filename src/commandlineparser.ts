@@ -2,10 +2,11 @@ import Config, { MinimalLoggingConfig, NoLoggingConfig } from './config';
 import WorldWideTestTenant from './tests/setup/worldwidetesttenant';
 
 const TIMEOUT_PARAMETER = '-t';
-const LOGGING_PARAMETER = '-l'
-const TENANT_PARAMETER = 'in'
-const PARALLELLISM_PARAMETER = '-p'
-const RETRYPERIOD_PARAMETER = '-r'
+const LOGGING_PARAMETER = '-l';
+const TENANT_PARAMETER = 'in';
+const PARALLELLISM_PARAMETER = '-p';
+const RETRYPERIOD_PARAMETER = '-r';
+const URLS_PARAMETER = '-urls';
 
 export default class CommandLineParser {
     isNPM = process.argv.length > 0 && process.argv[0].toLowerCase() === 'npm';
@@ -18,6 +19,7 @@ export default class CommandLineParser {
         this.parseParallellism();
         this.parseTenant();
         this.parsePollingPeriod();
+        this.parseEngines();
     }
 
     private parseTimeout() {
@@ -50,6 +52,14 @@ export default class CommandLineParser {
             case 'none':
                 fillLoggingConfiguration(NoLoggingConfig);
                 break;
+        }
+    }
+
+    private parseEngines() {
+        const urls = this.readValue(URLS_PARAMETER, 'URLs for various engine nodes as a comma separate list', '').split(',');
+        if (urls.length > 1) {
+            (Config.CaseEngine as any).urls = urls;
+            console.log("URLS: " + Config.CaseEngine.urls);
         }
     }
 

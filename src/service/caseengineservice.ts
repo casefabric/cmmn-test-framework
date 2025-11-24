@@ -30,7 +30,14 @@ export default class CaseEngineService {
     }
 
     static get baseURL() {
-        return Config.CaseEngine.url;
+        let urls = [];
+        if (Config.CaseEngine.urls) urls.push(...Config.CaseEngine.urls);
+        urls.push(Config.CaseEngine.url);
+        urls = urls.filter(url => url !== undefined);
+        const index = Math.floor(Math.random() * urls.length);
+        console.log(`Taking url[${index}]: ${urls[index]}`);
+        const url = urls[index];
+        return url;
     }
 
     static updateCaseLastModified(response: CaseEngineResponse) {
