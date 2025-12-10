@@ -4,6 +4,7 @@ import TenantService from "../../../service/tenant/tenantservice";
 import TenantUser from "../../../tenant/tenantuser";
 import TestCase from "../../../test/testcase";
 import WorldWideTestTenant from "../../setup/worldwidetesttenant";
+import User from "../../../user";
 
 const repositoryTenant = new WorldWideTestTenant('For-repository-testing');
 const repositoryTenant2 = new WorldWideTestTenant('For-repository-testing-2');
@@ -75,6 +76,8 @@ export default class TestRepositoryAPI extends TestCase {
         await RepositoryService.listCaseDefinitions(tenantUserInBothTenants, undefined, 400, 'Listing case definitions without passing tenant information if the user belongs to multiple tenants should fail');
 
         // Listing case definitions without being registered in a tenant should not be possible
-        await RepositoryService.listCaseDefinitions(repositoryTenant.platformAdmin, undefined, 401, 'Listing case definitions without being registered in a tenant should not be possible');
+        const unregistredUser = new User('unregistered-user');
+        await unregistredUser.login();
+        await RepositoryService.listCaseDefinitions(unregistredUser, undefined, 401, 'Listing case definitions without being registered in a tenant should not be possible');
     }
 }
