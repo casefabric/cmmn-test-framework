@@ -2,15 +2,15 @@
 
 import Definitions from '../../../../cmmn/definitions/definitions';
 import State from '../../../../cmmn/state';
+import Transition from '../../../../cmmn/transition';
 import CaseMigrationService, { DefinitionMigration } from '../../../../service/case/casemigrationservice';
+import CasePlanService from '../../../../service/case/caseplanservice';
 import CaseService from '../../../../service/case/caseservice';
+import DebugService from '../../../../service/case/debugservice';
 import TaskService from '../../../../service/task/taskservice';
 import { assertPlanItem } from '../../../../test/caseassertions/plan';
 import TestCase from '../../../../test/testcase';
 import WorldWideTestTenant from '../../../setup/worldwidetesttenant';
-import DebugService from '../../../../service/case/debugservice';
-import CasePlanService from '../../../../service/case/caseplanservice';
-import Transition from '../../../../cmmn/transition';
 
 const base_definition = Definitions.Migration_MoveTask_v0;
 const definitionMigrated = Definitions.Migration_MoveTask_v1;
@@ -44,7 +44,9 @@ export default class TestMoveTaskMigration extends TestCase {
         const caseInstance = await CaseService.startCase(user, startCase).then(instance => CaseService.getCase(user, instance).then(caseInstance => caseInstance.toConsole()));
         this.addIdentifier(caseInstance);
 
-        const casePlan = await assertPlanItem(user, caseInstance, "move_task_v0", 0, State.Active);
+        const casePlan = caseInstance.planitems.find(item => item.type === 'CasePlan')!;
+        await assertPlanItem(user, caseInstance, casePlan.id, 0, State.Active);
+
         const taskToMove = await assertPlanItem(user, caseInstance, "Task_To_Move", 0, State.Active);
         const taskToDrop = await assertPlanItem(user, caseInstance, "Task_To_Drop", 0, State.Active);
         const task2 = await assertPlanItem(user, caseInstance, "HumanTask_2", 0, State.Active)
