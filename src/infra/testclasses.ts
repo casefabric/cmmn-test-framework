@@ -99,6 +99,7 @@ import TestHelloworld from '../tests/helloworld/testhelloworld';
 import TestIncidentManagement from '../tests/incidentmanagement/incidentmanagement';
 import TestTravelRequest from '../tests/travelrequest/testtravelrequest';
 import TestRunner from './testrunner';
+import TestEmptyUser from '../tests/api/environment/testemptyuser';
 
 export default class TestClasses {
     static getTestClass(name: string): Function {
@@ -201,6 +202,7 @@ const AllTests: Array<Function> = [
     PingTokenService
     , PingTestEnvironment
     , TestResponseType
+    , TestEmptyUser
     , TestSwagger
     , TestHelloworld
     , TestVersion

@@ -1,16 +1,16 @@
 import fs from 'fs';
 import { DOMParser } from 'xmldom';
-import CafienneService from '../cafienneservice';
-import DeployCase from './command/repository/deploycase';
+import Definitions from '../../cmmn/definitions/definitions';
 import Config from '../../config';
-import User from '../../user';
-import { checkResponse } from '../response';
-import Comparison from '../../test/comparison';
+import { AsyncEngineError } from '../../infra/asyncerror';
+import Trace from '../../infra/trace';
 import logger from '../../logger';
 import Tenant from '../../tenant/tenant';
-import Definitions from '../../cmmn/definitions/definitions';
-import Trace from '../../infra/trace';
-import AsyncError from '../../infra/asyncerror';
+import Comparison from '../../test/comparison';
+import User from '../../user';
+import CafienneService from '../cafienneservice';
+import { checkResponse } from '../response';
+import DeployCase from './command/repository/deploycase';
 
 const FileSystem = fs;
 
@@ -72,10 +72,10 @@ export default class RepositoryService {
         if (status !== expectedStatusCode) {
             if (response.ok) {
                 const responseText = await response.text();
-                throw new AsyncError(trace, `Expected status ${expectedStatusCode} instead of ${status} ${response.statusText}: ${responseText}`);
+                throw new AsyncEngineError(trace, `Expected status ${expectedStatusCode} instead of ${status} ${response.statusText}: ${responseText}`, response);
             } else {
                 const messages = <Array<string>>await response.json();
-                throw new AsyncError(trace, `Validation failed: ${response.statusText}\n${messages.join('\n')}`);
+                throw new AsyncEngineError(trace, `Validation failed: ${response.statusText}\n${messages.join('\n')}`, response);
             }
         } else {
             if (response.ok) {
