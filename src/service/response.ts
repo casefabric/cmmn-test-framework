@@ -1,5 +1,5 @@
 import { DOMParser } from 'xmldom';
-import AsyncError from '../infra/asyncerror';
+import { AsyncEngineError } from '../infra/asyncerror';
 import Trace from '../infra/trace';
 import Util from '../test/util';
 
@@ -111,7 +111,7 @@ export async function checkResponse(response: CafienneResponse, errorMsg: string
         if (!errorMsg) {
             errorMsg = `Expected status ${expectedStatusCode} instead of ${response.status} ${response.statusText}: ${responseText}`;
         }
-        throw new AsyncError(trace, errorMsg);
+        throw new AsyncEngineError(trace, errorMsg, response);
     }
     return response;
 }
