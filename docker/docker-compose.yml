@@ -60,81 +60,79 @@ services:
     hostname: ctf-fake-idp
     container_name: ctf-fake-idp
 
-  ctf-cafienne-ide:
+  ctf-case-designer:
     image: cafienne/ide:latest
     labels:
-      component: cafienne-ide
+      component: ctf-case-designer
     networks:
       - dev
     expose:
       - 2081
     ports:
       - "9081:2081"
-    hostname: ctf-ide
-    container_name: ctf-ide
+    hostname: ctf-case-designer
+    container_name: ctf-case-designer
     environment:
-      BACKEND_API_URL: ${BACKEND_API_URL:-http://ctf-cafienne-engine:2027}
+      BACKEND_API_URL: ${BACKEND_API_URL:-http://ctf-case-engine:2027}
     volumes:
       - ../casemodels/bin:/usr/src/app/repository_deploy
       - ../casemodels/src:/usr/src/app/repository
 
-  ctf-cafienne-ui:
+  ctf-case-ui:
     image: cafienne/cafienne-ui:latest
     labels:
-      component: ctf-cafienne-ui
+      component: ctf-case-ui
     networks:
       - dev
     ports:
       - "4317:80"
     expose:
       - 4317
-    hostname: ctf-cafienne-ui
-    container_name: ctf-cafienne-ui
+    hostname: ctf-case-ui
+    container_name: ctf-case-ui
     environment:
       OIDC_URI: http://localhost:5556/dex
       OIDC_CLIENT_ID: cafienne-ui
       CAFIENNE_URI: http://localhost:2027
 
-  ctf-cafienne-ui-fake-idp:
+  ctf-case-ui-fake-idp:
     image: cafienne/cafienne-ui:latest
     labels:
-      component: ctf-cafienne-ui-fake-idp
+      component: ctf-case-ui-fake-idp
     networks:
       - dev
     ports:
       - "5317:80"
     expose:
       - 5317
-    hostname: ctf-cafienne-ui-fake-idp
-    container_name: ctf-cafienne-ui-fake-idp
+    hostname: ctf-case-ui-fake-idp
+    container_name: ctf-case-ui-fake-idp
     environment:
       OIDC_URI: http://localhost:2377
       OIDC_CLIENT_ID: cafienne-ui
       CAFIENNE_URI: http://localhost:2027
 
-  ctf-cafienne-engine:
+  ctf-case-engine:
     image: cafienne/engine:latest
     labels:
-      component: cafienne-engine
+      component: ctf-case-engine
     networks:
       - dev
     expose:
       - 2027
     ports:
       - "2027:2027"
-    hostname: ctf-cafienne-engine
-    container_name: ctf-cafienne-engine
+    hostname: ctf-case-engine
+    container_name: ctf-case-engine
     healthcheck:
-      test: ["CMD", "curl", "-sS", "-o", "/dev/null", "http://cafienne:2027/status"]
+      test: ["CMD", "curl", "-sS", "-o", "/dev/null", "http://ctf-case-engine:2027/status"]
       interval: 10s
       timeout: 5s
       retries: 6
     volumes:
-      - ./run/cafienne/journal:/opt/cafienne/journal
-      - ./run/cafienne/logs:/opt/cafienne/logs
-      - ./run/cafienne/definitions:/opt/cafienne/definitions
-      - ./config/cafienne:/opt/cafienne/conf
-      - ./config/cafienne:/opt/cafienne/bootstrap
+      - ./run/case-engine/definitions:/opt/cafienne/definitions
+      - ./config/case-engine:/opt/cafienne/conf
+      - ./config/case-engine:/opt/cafienne/bootstrap
 
 volumes:
   dex:

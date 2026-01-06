@@ -2,7 +2,7 @@
 
 import Case from '../../../../cmmn/case';
 import Definitions from '../../../../cmmn/definitions/definitions';
-import CafienneEvent from '../../../../cmmn/event/cafienneevent';
+import CaseEngineEvent from '../../../../cmmn/event/caseengineevent';
 import CaseEvent from '../../../../cmmn/event/caseevent';
 import CaseMigrationService, { DefinitionMigration } from '../../../../service/case/casemigrationservice';
 import CaseService from '../../../../service/case/caseservice';
@@ -32,8 +32,8 @@ export default class TestDiscretionaryMigration extends TestCase {
     }
 
     async run() {
-        const startCase = { 
-            tenant, 
+        const startCase = {
+            tenant,
             definition: base_definition,
         };
 
@@ -47,10 +47,10 @@ export default class TestDiscretionaryMigration extends TestCase {
         const discretionaryItems = (await CaseService.getDiscretionaryItems(user, caseInstance)).discretionaryItems;
         const planDiscretionary = async (name: string) => {
             const item = discretionaryItems.find(item => item.name === name);
-            if (! item) {
+            if (!item) {
                 throw new Error(`Expected a discretionary item named ${name}. Found ${discretionaryItems.length}`);
             }
-            await CaseService.planDiscretionaryItem(user, caseInstance, item);    
+            await CaseService.planDiscretionaryItem(user, caseInstance, item);
         }
 
         await planDiscretionary(TASK_1);
@@ -62,7 +62,7 @@ export default class TestDiscretionaryMigration extends TestCase {
 
 
         const events = await DebugService.getParsedEvents(caseInstance);
-        events.forEach((e:CafienneEvent) => console.log(e.offset +": " + e));
+        events.forEach((e: CaseEngineEvent) => console.log(e.offset + ": " + e));
 
         const migratedPlanItems = events.filter(e => e.hasType(CaseEvent.PlanItemMigrated)).map(e => e.name);
         const mustContain = (name: string) => {
@@ -79,7 +79,7 @@ export default class TestDiscretionaryMigration extends TestCase {
         mustContain(TASK_1);
         mustContain(TASK_2);
         shouldNotContain(TASK_3);
-    }   
+    }
 
     async completeNextTask(case1_before: Case, expectedNumberOfActiveTasks: number) {
         const tasks = await TaskService.getCaseTasks(user, case1_before);

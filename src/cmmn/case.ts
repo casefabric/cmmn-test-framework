@@ -1,13 +1,12 @@
-import PlanItem from './planitem';
-import CaseTeam from './team/caseteam';
-import CaseFile from './casefile';
-import CaseTeamUser from "./team/caseteamuser";
-import CMMNBaseClass from './cmmnbaseclass';
 import Path from '../service/case/path';
 import Util from '../test/util';
+import CaseFile from './casefile';
+import CMMNBaseClass from './cmmnbaseclass';
+import PlanItem from './planitem';
+import CaseTeam from './team/caseteam';
 
 /**
- * Wrapper for json response of Cafienne Service for a single case instance.
+ * Wrapper for json response of CaseEngine Service for a single case instance.
  */
 export default class Case extends CMMNBaseClass {
     /**

@@ -3,14 +3,14 @@
 import Definitions from '../../../../cmmn/definitions/definitions';
 import State from '../../../../cmmn/state';
 import Config from '../../../../config';
-import CafienneService from '../../../../service/cafienneservice';
+import CaseEngineService from '../../../../service/caseengineservice';
 import CaseFileService from '../../../../service/case/casefileservice';
 import CaseService from '../../../../service/case/caseservice';
 import { assertPlanItem } from '../../../../test/caseassertions/plan';
 import TestCase from '../../../../test/testcase';
 import WorldWideTestTenant from '../../../setup/worldwidetesttenant';
 
-const definition = Definitions.InvokeCafienne;
+const definition = Definitions.InvokeCaseEngine;
 
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
@@ -29,8 +29,8 @@ export default class TestAuthenticationFlow extends TestCase {
         const caseInstance = await CaseService.startCase(user, startCase);
         this.addIdentifier(caseInstance);
 
-        const baseURL = (Config.CafienneService.url.endsWith('/') ? Config.CafienneService.url.substring(0, Config.CafienneService.url.length - 1) : Config.CafienneService.url).replace('0.0.0.0', 'localhost');
-        const caseLastModified = CafienneService.getHeaders(user)["Case-Last-Modified"];
+        const baseURL = (Config.CaseEngine.url.endsWith('/') ? Config.CaseEngine.url.substring(0, Config.CaseEngine.url.length - 1) : Config.CaseEngine.url).replace('0.0.0.0', 'localhost');
+        const caseLastModified = CaseEngineService.getHeaders(user)["Case-Last-Modified"];
 
         const http = {
             baseURL,
@@ -41,7 +41,7 @@ export default class TestAuthenticationFlow extends TestCase {
 
         console.log(`\nCase ID: ${caseInstance.id}\n`);
 
-        await assertPlanItem(user, caseInstance, 'Invoke Cafienne', 0, State.Completed);
+        await assertPlanItem(user, caseInstance, 'Invoke Case Engine', 0, State.Completed);
 
         console.log(`\nCase ID: ${caseInstance.id}\n`);
     }

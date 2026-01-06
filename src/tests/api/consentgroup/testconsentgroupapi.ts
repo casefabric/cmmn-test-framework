@@ -110,7 +110,7 @@ export default class TestConsentGroupAPI extends TestCase {
         await ConsentGroupService.getGroup(tenantOwner, group, 404);
         await ConsentGroupService.getGroupMember(tenantOwner, group, tenantAndGroupOwner, 404);
 
-        // Reproduce issue https://github.com/cafienne/cafienne-engine/issues/323
+        // Reproduce issue https://github.com/casefabric/case-engine/issues/323
         const invalidMember = Object.assign({toJson: () => { return {} }}) as ConsentGroupMember; // Need to override toJson method to create an empty member.
         await ConsentGroupService.setGroupMember(tenantAndGroupOwner, group, invalidMember, 400);
 

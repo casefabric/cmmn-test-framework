@@ -3,7 +3,7 @@ import { AsyncEngineError } from '../infra/asyncerror';
 import Trace from '../infra/trace';
 import Util from '../test/util';
 
-export default class CafienneResponse {
+export default class CaseEngineResponse {
     private json_prop?: any;
     private text_prop: string = '';
     private hasText: boolean = false;
@@ -100,7 +100,7 @@ export default class CafienneResponse {
  * @param errorMsg 
  * @param expectedStatusCode 
  */
-export async function checkResponse(response: CafienneResponse, errorMsg: string, expectedStatusCode: number, trace: Trace = new Trace()): Promise<CafienneResponse> {
+export async function checkResponse(response: CaseEngineResponse, errorMsg: string, expectedStatusCode: number, trace: Trace = new Trace()): Promise<CaseEngineResponse> {
     if (response.status !== expectedStatusCode) {
         const responseText = await response.text();
         if (expectedStatusCode >= 200 && expectedStatusCode < 300) {
@@ -123,7 +123,7 @@ export async function checkResponse(response: CafienneResponse, errorMsg: string
  * @param errorMsg 
  * @param expectedStatusCode 
  */
-export async function checkJSONResponse(response: CafienneResponse, errorMsg: string = '', expectedStatusCode: number, returnType?: Function | Array<Function>, trace: Trace = new Trace()): Promise<any> {
+export async function checkJSONResponse(response: CaseEngineResponse, errorMsg: string = '', expectedStatusCode: number, returnType?: Function | Array<Function>, trace: Trace = new Trace()): Promise<any> {
     await checkResponse(response, errorMsg, expectedStatusCode, trace);
     if (response.ok) {
         const json = await response.json();

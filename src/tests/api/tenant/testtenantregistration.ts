@@ -102,7 +102,7 @@ export default class TestTenantRegistration extends TestCase {
     }
 
     async tryAddRemoveTenantUser() {
-        // Reproduce issue https://github.com/cafienne/cafienne-engine/issues/322
+        // Reproduce issue https://github.com/casefabric/case-engine/issues/322
         const invalidUser = Object.assign({}) as TenantUser;
         await TenantService.setTenantUser(tenantOwner1, tenant1, invalidUser, 400, 'It should not be possible to register an invalid tenant user');
 

@@ -33,11 +33,11 @@ staticClients:
     - 'http://localhost:2027/oauth2-redirect.html'
   name: 'Cafienne Swagger UI'
   secret: ZXhhbXBsZS1hcHAtc2VjcmV0
-- id: cafienne-ui 
+- id: case-user-interface 
   redirectURIs:
     - 'http://localhost:3317/callback'
     - 'http://localhost:4317/callback'
-  name: 'Cafienne Platform UI'
+  name: 'Case Engine UI'
   secret: ZXhhbXBsZS1hcHAtc2VjcmV0
 
 # Let dex keep a list of passwords which can be used to login to dex.
@@ -56,66 +56,66 @@ staticPasswords:
 - email: "lana" #email is the login name for dex;
   # bcrypt hash of the string "lana"
   hash: "$2a$10$ZrEQl/enxrc1bhDWrwhKSePYkqCEf.2X3wXeat/hI0ULOptDUpyCS"
-  # userID is the account that is known and registered inside Cafienne engine
+  # userID is the account that is known and registered inside Case Engine
   userID: "lana"
 
 - email: "lana@example.com"
   # bcrypt hash of the string "lana"
   hash: "$2a$10$ZrEQl/enxrc1bhDWrwhKSePYkqCEf.2X3wXeat/hI0ULOptDUpyCS"
-  # userID is the account that is known and registered inside Cafienne engine
+  # userID is the account that is known and registered inside Case Engine
   userID: "lana"
 
 - email: "suzy@example.com"
   # bcrypt hash of the string "suzy"
   hash: "$2a$10$3pTi1m5yR.tBcZMV/dJi.O1NlMPN/ZH03eSmNfJFuTOOTm82T03lK"
-  # userID is the account that is known and registered inside Cafienne engine
+  # userID is the account that is known and registered inside Case Engine
   userID: "suzy"
 
 - email: "suzy"
   # bcrypt hash of the string "suzy"
   hash: "$2a$10$3pTi1m5yR.tBcZMV/dJi.O1NlMPN/ZH03eSmNfJFuTOOTm82T03lK"
-  # userID is the account that is known and registered inside Cafienne engine
+  # userID is the account that is known and registered inside Case Engine
   userID: "suzy"
 
 - email: "hank@example.com"
   # bcrypt hash of the string "hank"
   hash: "$2a$10$osTMgQ8GxoeWghmYcrBXB.0nV9XsoQkAMUcNlL0/wT7qYoJSnbJzS"
-  # userID is the account that is known and registered inside Cafienne engine
+  # userID is the account that is known and registered inside Case Engine
   userID: "hank"
 
 - email: "hank"
   # bcrypt hash of the string "hank"
   hash: "$2a$10$osTMgQ8GxoeWghmYcrBXB.0nV9XsoQkAMUcNlL0/wT7qYoJSnbJzS"
-  # userID is the account that is known and registered inside Cafienne engine
+  # userID is the account that is known and registered inside Case Engine
   userID: "hank"
 
 - email: "sending-user@example.com"
   # bcrypt hash of the string "suzy"
   hash: "$2a$10$3pTi1m5yR.tBcZMV/dJi.O1NlMPN/ZH03eSmNfJFuTOOTm82T03lK"
-  # userID is the account that is known and registered inside Cafienne engine
+  # userID is the account that is known and registered inside Case Engine
   userID: "sender"
 
 - email: "receiving-user@example.com"
   # bcrypt hash of the string "suzy"
   hash: "$2a$10$3pTi1m5yR.tBcZMV/dJi.O1NlMPN/ZH03eSmNfJFuTOOTm82T03lK"
-  # userID is the account that is known and registered inside Cafienne engine
+  # userID is the account that is known and registered inside Case Engine
   userID: "receiver"
 
 - email: "sender"
   # bcrypt hash of the string "suzy"
   hash: "$2a$10$3pTi1m5yR.tBcZMV/dJi.O1NlMPN/ZH03eSmNfJFuTOOTm82T03lK"
-  # userID is the account that is known and registered inside Cafienne engine
+  # userID is the account that is known and registered inside Case Engine
   userID: "sending-user"
 
 - email: "receiver"
   # bcrypt hash of the string "suzy"
   hash: "$2a$10$3pTi1m5yR.tBcZMV/dJi.O1NlMPN/ZH03eSmNfJFuTOOTm82T03lK"
-  # userID is the account that is known and registered inside Cafienne engine
+  # userID is the account that is known and registered inside Case Engine
   userID: "receiving-user"
 
 - email: "employee"
   # bcrypt hash of the string "suzy"
   hash: "$2a$10$3pTi1m5yR.tBcZMV/dJi.O1NlMPN/ZH03eSmNfJFuTOOTm82T03lK"
-  # userID is the account that is known and registered inside Cafienne engine
+  # userID is the account that is known and registered inside Case Engine
   userID: "employee"
 

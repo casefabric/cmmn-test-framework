@@ -1,5 +1,5 @@
 import RepositoryService from "../../../service/case/repositoryservice";
-import CafienneResponse from "../../../service/response";
+import CaseEngineResponse from "../../../service/response";
 import Comparison from "../../../test/comparison";
 import TestCase from "../../../test/testcase";
 import WorldWideTestTenant from "../../setup/worldwidetesttenant";
@@ -37,7 +37,7 @@ export default class TestInvalidDefinitions extends TestCase {
         this.expectErrors('invalid.xml', errors, "invalid.case: A plan item with name 'cm_csQA1_4' is referenced from exitCriterion , but it does not exist in the case plan model" );
     }
 
-    expectErrors(testDescription: string, response: string[] | CafienneResponse, ...expectedErrors: string[]) {
+    expectErrors(testDescription: string, response: string[] | CaseEngineResponse, ...expectedErrors: string[]) {
         if (response instanceof Array) {
             if (!Comparison.sameArray(response, expectedErrors)) {
                 throw new Error(`Invalid Definitions Test ${testDescription} encountered wrong validation errors`);
