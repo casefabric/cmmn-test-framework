@@ -1,3 +1,5 @@
+const url = 'http://0.0.0.0:2027/';
+
 const Config = {
     Log: {
         level: 'DEBUG',
@@ -10,7 +12,8 @@ const Config = {
     },
     CaseEngine: {
         // URL of backend engine
-        url: 'http://0.0.0.0:2027/',
+        url: url,
+        urls: [url],
         log: {
             // Whether or not to log HTTP call information (user, url, method type, headers)
             url: true, // URL includes call number, method type and user id
@@ -73,6 +76,7 @@ export const MinimalLoggingConfig = {
     },
     CaseEngine: {
         // URL of backend engine
+        urlss: ['http://0.0.0.0:2027/', 'http://0.0.0.0:2028/'],
         url: 'http://0.0.0.0:2027/',
         log: {
             // Whether or not to log HTTP call information (user, url, method type, headers)
