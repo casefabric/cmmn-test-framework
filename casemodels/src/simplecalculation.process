@@ -1,4 +1,4 @@
-<process name="SimpleCalculation" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
+<process xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" name="SimpleCalculation" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
     <input id="_L7Tg_in1" name="in1"/>
     <input id="_0Fl1_in2" name="in2"/>
     <output id="_spg6_out1" name="out1"/>
@@ -38,15 +38,11 @@
             </step>
             <map output="mappedOut4">
                 <input source="out5"/>
-                <expression>
-                    <![CDATA[out5]]>
-                </expression>
+                <expression><![CDATA[out5]]></expression>
             </map>
             <step output="out4">
                 <input source="mappedOut4"/>
-                <expression>
-                    <![CDATA[mappedOut4]]>
-                </expression>
+                <expression><![CDATA[mappedOut4]]></expression>
             </step>
             <step output="out5">
                 <input source="c3"/>
@@ -54,9 +50,7 @@
             </step>
             <step output="c3">
                 <input source="in1"/>
-                <expression>
-                    <![CDATA[(11 != 13) && (2 * 2 == 4) && in1.nr == 1]]>
-                </expression>
+                <expression><![CDATA[(11 != 13) && (2 * 2 == 4) && in1.nr == 1]]></expression>
             </step>
             <step output="out6">
                 <input source="in1"/>

@@ -30,10 +30,12 @@ import TestUsersCaseAPI from '../tests/api/case/usercases';
 import TestCaseFileAPI from '../tests/api/casefile/testcasefileapi';
 import TestCaseFileArrayAPI from '../tests/api/casefile/testcasefilearrayapi';
 import TestCaseParameterAPI from '../tests/api/casefile/testcaseparameterapi';
+import TestReplaceWithChildArray from '../tests/api/casefile/testreplacewithchildarray';
 import TestTaskBindingRefinement from '../tests/api/casefile/testtaskbindingrefinement';
 import TestTaskCompletion from '../tests/api/casefile/testtaskcompletion';
 import TestTaskOutputOperations from '../tests/api/casefile/testtaskoutputoperations';
 import TestTimer from '../tests/api/caseplan/event/testtimer';
+import TestTimerInSubCase from '../tests/api/caseplan/event/testtimerinsubcase';
 import TestEntryCriteriaOnRecovery from '../tests/api/caseplan/sentry/testentrycriteriaonrecovery';
 import TestClassicFaultHandling from '../tests/api/caseplan/stage/testclassicfaulthandling';
 import TestEntryCriteriaOnCaseInputParameters from '../tests/api/caseplan/stage/testentrycriteriaoncaseinputparameters';
@@ -64,6 +66,7 @@ import TestDebugMode from '../tests/api/debug/testdebugmode';
 import TestDiscretionaryItems from '../tests/api/discretionary/testdiscretionaryitems';
 import TestDocumentationAPI from '../tests/api/documentation/testdocumentationapi';
 import PingTestEnvironment, { PingTokenService } from '../tests/api/environment/ping';
+import TestEmptyUser from '../tests/api/environment/testemptyuser';
 import TestRecovery from '../tests/api/environment/testrecovery';
 import TestResponseType from '../tests/api/environment/testresponsetype';
 import TestSwagger from '../tests/api/environment/testswagger';
@@ -99,8 +102,6 @@ import TestHelloworld from '../tests/helloworld/testhelloworld';
 import TestIncidentManagement from '../tests/incidentmanagement/incidentmanagement';
 import TestTravelRequest from '../tests/travelrequest/testtravelrequest';
 import TestRunner from './testrunner';
-import TestEmptyUser from '../tests/api/environment/testemptyuser';
-import TestReplaceWithChildArray from '../tests/api/casefile/testreplacewithchildarray';
 
 export default class TestClasses {
     static getTestClass(name: string): Function {
@@ -219,6 +220,7 @@ const AllTests: Array<Function> = [
     , TestNoFaultBubbling
     , TestSubCaseFailureBubble
     , TestTimer
+    , TestTimerInSubCase
     , TestUsersCaseAPI
     , TestDiscretionaryItems
     , TestDynamicForm

@@ -1,0 +1,5 @@
+<type xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="case_timer.type" name="case_timer">
+    <schema>
+        <property id="sp__k7yvg_0" name="duration" type="duration.type" multiplicity="ExactlyOne"/>
+    </schema>
+</type>
