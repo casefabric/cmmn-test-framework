@@ -2,10 +2,11 @@ import Config, { MinimalLoggingConfig, NoLoggingConfig } from './config';
 import WorldWideTestTenant from './tests/setup/worldwidetesttenant';
 
 const TIMEOUT_PARAMETER = '-t';
-const LOGGING_PARAMETER = '-l'
-const TENANT_PARAMETER = 'in'
-const PARALLELLISM_PARAMETER = '-p'
-const RETRYPERIOD_PARAMETER = '-r'
+const LOGGING_PARAMETER = '-l';
+const TENANT_PARAMETER = 'in';
+const PARALLELLISM_PARAMETER = '-p';
+const RETRYPERIOD_PARAMETER = '-r';
+const URLS_PARAMETER = '-urls';
 
 export default class CommandLineParser {
     isNPM = process.argv.length > 0 && process.argv[0].toLowerCase() === 'npm';
@@ -18,6 +19,7 @@ export default class CommandLineParser {
         this.parseParallellism();
         this.parseTenant();
         this.parsePollingPeriod();
+        this.parseEngines();
     }
 
     private parseTimeout() {
@@ -50,6 +52,30 @@ export default class CommandLineParser {
             case 'none':
                 fillLoggingConfiguration(NoLoggingConfig);
                 break;
+        }
+    }
+
+    private parseEngines() {
+        const urls = this.readValue(URLS_PARAMETER, 'URLs for various engine nodes as a comma separate list', '').split(',').filter(url => url.trim().length > 0);
+        const urlEnhancer = (url: string) => {
+            // Let's first check if it is only a port number or a full URL
+            const asPortNumber = new Number(url);
+            if (asPortNumber >= 0) {
+                url = `http://0.0.0.0:${asPortNumber}/`;
+            }
+            // Make sure it ends with a slash
+            url = url.endsWith('/') ? url : url + '/';
+            return url;
+        }
+        if (urls.length) {
+            const configuredBackendURLs = urls.map(urlEnhancer);
+            console.log(`Found command line engine URLs:\n${urls.map(url => ` - ${url} ${urlEnhancer(url) != url ? '==> ' + urlEnhancer(url) : ''}`).join('\n')}`);
+            (Config.CaseEngine as any).urls = configuredBackendURLs;
+            const singleBackendEndpoint = configuredBackendURLs.find(url => url.indexOf(Config.CaseEngine.url) >= 0);
+            if (!singleBackendEndpoint) {
+                console.log(`\nOverriding config setting\n Config.CaseEngine.url: ${Config.CaseEngine.url} ==> ${configuredBackendURLs[0]}`);
+                Config.CaseEngine.url = configuredBackendURLs[0];
+            }
         }
     }
 
