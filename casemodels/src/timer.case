@@ -1,16 +1,12 @@
-<case id="timer.case" name="timer" expressionLanguage="spel" guid="_GgFeT">
-    <caseFileModel>
-        <caseFileItem id="_GgFeT_5" name="duration" multiplicity="ExactlyOne" definitionRef="duration.cfid"/>
-    </caseFileModel>
+<case xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="timer.case" name="timer" expressionLanguage="spel" guid="_GgFeT">
+    <caseFileModel typeRef="case_timer.type"/>
     <casePlanModel id="cm__GgFeT_0" name="timer" autoComplete="true">
         <timerEvent id="pi_tmr__GgFeT_0" name="After duration">
             <timerExpression id="_GgFeT_3">
-                <body>
-                    <![CDATA[case.file.duration.value]]>
-                </body>
+                <body><![CDATA[case.file.duration.value]]></body>
             </timerExpression>
             <planItemStartTrigger id="_GgFeT_7">
-                <standardEvent></standardEvent>
+                <standardEvent/>
             </planItemStartTrigger>
         </timerEvent>
         <humanTask id="pi_ht__GgFeT_0" name="Task" isBlocking="true">
@@ -22,5 +18,5 @@
         </humanTask>
     </casePlanModel>
     <caseRoles/>
-    <input id="_GgFeT_2" name="duration" bindingRef="_GgFeT_5"/>
+    <input id="_GgFeT_2" name="duration" bindingRef="duration"/>
 </case>

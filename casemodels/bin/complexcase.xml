@@ -18,6 +18,12 @@
         <property name="Time" type="http://www.omg.org/spec/CMMN/PropertyType/time"/>
         <property name="SomeBoolean" type="http://www.omg.org/spec/CMMN/PropertyType/boolean"/>
     </caseFileItemDefinition>
+    <caseFileItemDefinition name="case_complexcase" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="case_complexcase.type"/>
+    <caseFileItemDefinition name="greeting" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="greeting.type">
+        <property name="Message" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="To" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="From" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    </caseFileItemDefinition>
     <caseFileItemDefinition name="case_getlist_getdetails" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="case_getlist_getdetails.type"/>
     <caseFileItemDefinition name="DetailsKey" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="identifiers_type_DetailsKey.object"/>
     <caseFileItemDefinition name="identifiers" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="identifiers.type"/>
@@ -29,9 +35,13 @@
         <property name="port" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
     </caseFileItemDefinition>
     <caseFileItemDefinition name="exception" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="exception.type"/>
+    <caseFileItemDefinition name="duration" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="duration.type">
+        <property name="value" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    </caseFileItemDefinition>
+    <caseFileItemDefinition name="case_timer" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="case_timer.type"/>
     <case id="complexcase.case" name="complexcase" expressionLanguage="spel">
-        <caseFileModel>
-            <caseFileItem id="_MuzRn_10" name="Greeting" multiplicity="ExactlyOne" definitionRef="greeting.cfid"/>
+        <caseFileModel cafienne:typeRef="case_complexcase.type">
+            <caseFileItem id="Greeting" name="Greeting" multiplicity="ExactlyOne" definitionRef="greeting.type"/>
         </caseFileModel>
         <casePlanModel id="cm__MuzRn_0" name="Case with subcases and subprocesses" autoComplete="true">
             <exitCriterion id="crit__MuzRn_1" sentryRef="s_crit__MuzRn_1"/>
@@ -54,7 +64,7 @@
                 </planItemOnPart>
             </sentry>
             <caseTask id="ct__MuzRn_0" name="HelloWorld" isBlocking="true" caseRef="helloworld.case">
-                <inputs id="_MuzRn_9" name="Greeting" bindingRef="_MuzRn_10"/>
+                <inputs id="_MuzRn_9" name="Greeting" bindingRef="Greeting"/>
                 <parameterMapping id="_MuzRn_1" sourceRef="_MuzRn_9" targetRef="csVQy_inCPs_0">
                     <transformation id="_MuzRn_8">
                         <body><![CDATA[map("Message", "default message").merge(Greeting)]]></body>
@@ -62,9 +72,9 @@
                 </parameterMapping>
             </caseTask>
             <caseTask id="ct__MuzRn_1" name="getlist_getdetails" isBlocking="true" caseRef="getlist_getdetails.case">
-                <inputs id="_MuzRn_12" name="HTTPConfig.1"/>
-                <parameterMapping id="_MuzRn_3" sourceRef="_MuzRn_12" targetRef="_Sp9aR_34">
-                    <transformation id="_MuzRn_5">
+                <inputs id="_MuzRn_60" name="HTTPConfig"/>
+                <parameterMapping id="_MuzRn_3" sourceRef="_MuzRn_60" targetRef="_Sp9aR_34">
+                    <transformation id="_MuzRn_59">
                         <body><![CDATA[map("port", -1)]]></body>
                     </transformation>
                 </parameterMapping>
@@ -103,7 +113,7 @@
             </role>
             <role id="cr__ZAwz2_0" name="role"/>
         </caseRoles>
-        <input id="_MuzRn_7" name="Greeting" bindingRef="_MuzRn_10"/>
+        <input id="_MuzRn_7" name="Greeting" bindingRef="Greeting"/>
     </case>
     <case id="helloworld.case" name="HelloWorld" expressionLanguage="spel">
         <documentation textFormat="text/plain">
@@ -338,6 +348,7 @@ and Send response]]></text>
             <caseFileItem id="getlist_getdetails/DetailsContent" name="DetailsContent" multiplicity="ZeroOrMore" definitionRef="details.type"/>
             <caseFileItem id="getlist_getdetails/HTTPConfig" name="HTTPConfig" multiplicity="ExactlyOne" definitionRef="http.type"/>
             <caseFileItem id="getlist_getdetails/Exception" name="Exception" multiplicity="ZeroOrMore" definitionRef="exception.type"/>
+            <caseFileItem id="getlist_getdetails/Timer" name="Timer" multiplicity="ExactlyOne" definitionRef="duration.type"/>
         </caseFileModel>
         <casePlanModel id="cm_casefile/getlist_getdetails.case_0" name="getlist_getdetails" autoComplete="true">
             <planItem id="pi_pt__LQXO7_8" name="GetList" definitionRef="pt__LQXO7_8">
@@ -384,6 +395,9 @@ and Send response]]></text>
             <planItem id="_Sp9aR_44" name="Case exists 2 seconds" definitionRef="ms__Sp9aR_44">
                 <entryCriterion id="crit__Sp9aR_0" sentryRef="s_crit__Sp9aR_0"/>
             </planItem>
+            <planItem id="_Sp9aR_74" name="timer" definitionRef="ct__Sp9aR_74">
+                <entryCriterion id="crit__Sp9aR_3" sentryRef="s_crit__Sp9aR_3"/>
+            </planItem>
             <sentry id="s__Sp9aR_11">
                 <caseFileItemOnPart id="_Sp9aR_12" sourceRef="getlist_getdetails/HTTPConfig">
                     <standardEvent>create</standardEvent>
@@ -423,6 +437,11 @@ and Send response]]></text>
                 <planItemOnPart id="_Sp9aR_47" sourceRef="_Sp9aR_42">
                     <standardEvent>occur</standardEvent>
                 </planItemOnPart>
+            </sentry>
+            <sentry id="s_crit__Sp9aR_3">
+                <caseFileItemOnPart id="_Sp9aR_85" sourceRef="getlist_getdetails/Timer">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
             </sentry>
             <processTask id="pt__LQXO7_8" name="GetList" isBlocking="true" processRef="GetListWebService.process">
                 <extensionElements mustUnderstand="false"/>
@@ -480,16 +499,47 @@ and Send response]]></text>
             <milestone id="ms__Sp9aR_0" name="GetList Failed"/>
             <timerEvent id="tmr__Sp9aR_42" name="After 2 seconds">
                 <timerExpression id="_Sp9aR_46">
-                    <body><![CDATA[P0DT2S]]></body>
+                    <body><![CDATA[P0DT10S]]></body>
                 </timerExpression>
                 <planItemStartTrigger id="_Sp9aR_41">
                     <standardEvent></standardEvent>
                 </planItemStartTrigger>
             </timerEvent>
             <milestone id="ms__Sp9aR_44" name="Case exists 2 seconds"/>
+            <caseTask id="ct__Sp9aR_74" name="timer" isBlocking="true" caseRef="timer.case">
+                <inputs id="_Sp9aR_87" name="Timer" bindingRef="getlist_getdetails/Timer"/>
+                <parameterMapping id="_Sp9aR_77" sourceRef="_Sp9aR_87" targetRef="_GgFeT_2"/>
+            </caseTask>
         </casePlanModel>
         <caseRoles/>
         <input id="_Sp9aR_34" name="HTTPConfig" bindingRef="getlist_getdetails/HTTPConfig"/>
+    </case>
+    <case id="timer.case" name="timer" expressionLanguage="spel">
+        <caseFileModel cafienne:typeRef="case_timer.type">
+            <caseFileItem id="timer/duration" name="duration" multiplicity="ExactlyOne" definitionRef="duration.type"/>
+        </caseFileModel>
+        <casePlanModel id="cm__GgFeT_0" name="timer" autoComplete="true">
+            <planItem id="pi_tmr__GgFeT_0" name="After duration" definitionRef="tmr__GgFeT_0"/>
+            <planItem id="pi_ht__GgFeT_0" name="Task" definitionRef="ht__GgFeT_0">
+                <entryCriterion id="_GgFeT_1" name="EntryCriterion_0" sentryRef="s__GgFeT_1"/>
+            </planItem>
+            <sentry id="s__GgFeT_1">
+                <planItemOnPart id="_GgFeT_4" sourceRef="pi_tmr__GgFeT_0">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <timerEvent id="tmr__GgFeT_0" name="After duration">
+                <timerExpression id="_GgFeT_3">
+                    <body><![CDATA[case.file.duration.value]]></body>
+                </timerExpression>
+                <planItemStartTrigger id="_GgFeT_7">
+                    <standardEvent></standardEvent>
+                </planItemStartTrigger>
+            </timerEvent>
+            <humanTask id="ht__GgFeT_0" name="Task" isBlocking="true"/>
+        </casePlanModel>
+        <caseRoles/>
+        <input id="_GgFeT_2" name="duration" bindingRef="timer/duration"/>
     </case>
     <process id="GetListWebService.process" name="GetListWebService" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified">
         <input id="httpPort" name="httpPort"/>
@@ -645,6 +695,15 @@ and Send response]]></text>
             <CMMNShape cmmnElementRef="crit__Sp9aR_2">
                 <Bounds x="374" y="370" width="12" height="20"/>
             </CMMNShape>
+            <CMMNShape cmmnElementRef="_Sp9aR_74">
+                <Bounds x="260" y="470" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="getlist_getdetails/Timer">
+                <Bounds x="153" y="481" width="25" height="40"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="crit__Sp9aR_3">
+                <Bounds x="254" y="500" width="12" height="20"/>
+            </CMMNShape>
             <CMMNEdge sourceCMMNElementRef="getlist_getdetails/HTTPConfig" targetCMMNElementRef="_Sp9aR_11"/>
             <CMMNEdge sourceCMMNElementRef="pi_pt__LQXO7_8" targetCMMNElementRef="_Sp9aR_18"/>
             <CMMNEdge sourceCMMNElementRef="_LQXO7_1" targetCMMNElementRef="getlist_getdetails/IdentifierList/DetailsKey"/>
@@ -652,6 +711,20 @@ and Send response]]></text>
             <CMMNEdge sourceCMMNElementRef="_Sp9aR_42" targetCMMNElementRef="crit__Sp9aR_0"/>
             <CMMNEdge sourceCMMNElementRef="_Sp9aR_44" targetCMMNElementRef="crit__Sp9aR_1"/>
             <CMMNEdge sourceCMMNElementRef="_Sp9aR_44" targetCMMNElementRef="crit__Sp9aR_2"/>
+            <CMMNEdge sourceCMMNElementRef="getlist_getdetails/Timer" targetCMMNElementRef="crit__Sp9aR_3"/>
+            <CMMNShape cmmnElementRef="cm__GgFeT_0">
+                <Bounds x="20" y="20" width="800" height="500"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_ht__GgFeT_0">
+                <Bounds x="210" y="90" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_GgFeT_1">
+                <Bounds x="204" y="120" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="pi_tmr__GgFeT_0">
+                <Bounds x="90" y="110" width="32" height="32"/>
+            </CMMNShape>
+            <CMMNEdge sourceCMMNElementRef="pi_tmr__GgFeT_0" targetCMMNElementRef="_GgFeT_1"/>
         </CMMNDiagram>
     </CMMNDI>
 </definitions>

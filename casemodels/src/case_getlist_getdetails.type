@@ -4,5 +4,6 @@
         <property id="sp__zOgfp_1" name="DetailsContent" type="details.type" multiplicity="ZeroOrMore"/>
         <property id="sp__zOgfp_2" name="HTTPConfig" type="http.type" multiplicity="ExactlyOne"/>
         <property id="sp__zOgfp_3" name="Exception" type="exception.type" multiplicity="ZeroOrMore"/>
+        <property id="sp__I4wvH_0" name="Timer" type="duration.type" multiplicity="ExactlyOne"/>
     </schema>
 </type>

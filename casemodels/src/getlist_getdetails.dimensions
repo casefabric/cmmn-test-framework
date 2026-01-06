@@ -54,6 +54,15 @@
         <CMMNShape cmmnElementRef="crit__Sp9aR_2">
             <Bounds x="374" y="370" width="12" height="20"/>
         </CMMNShape>
+        <CMMNShape cmmnElementRef="_Sp9aR_74">
+            <Bounds x="260" y="470" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="Timer">
+            <Bounds x="153.73577880859375" y="481.2783889770508" width="25" height="40"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="crit__Sp9aR_3">
+            <Bounds x="254" y="500" width="12" height="20"/>
+        </CMMNShape>
         <CMMNEdge sourceCMMNElementRef="HTTPConfig" targetCMMNElementRef="_Sp9aR_11"/>
         <CMMNEdge sourceCMMNElementRef="pi_pt__LQXO7_8" targetCMMNElementRef="_Sp9aR_18"/>
         <CMMNEdge sourceCMMNElementRef="_LQXO7_1" targetCMMNElementRef="IdentifierList/DetailsKey"/>
@@ -61,5 +70,6 @@
         <CMMNEdge sourceCMMNElementRef="_Sp9aR_42" targetCMMNElementRef="crit__Sp9aR_0"/>
         <CMMNEdge sourceCMMNElementRef="_Sp9aR_44" targetCMMNElementRef="crit__Sp9aR_1"/>
         <CMMNEdge sourceCMMNElementRef="_Sp9aR_44" targetCMMNElementRef="crit__Sp9aR_2"/>
+        <CMMNEdge sourceCMMNElementRef="Timer" targetCMMNElementRef="crit__Sp9aR_3"/>
     </CMMNDiagram>
 </CMMNDI>
