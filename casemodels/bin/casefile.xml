@@ -49,7 +49,55 @@
         </caseFileModel>
         <casePlanModel id="cm__kWyIV_0" name="casefile" autoComplete="true">
             <planItem id="pi_ht__kWyIV_0" name="Simplistic Unused Task" definitionRef="ht__kWyIV_0"/>
+            <planItem id="_kWyIV_2" name="Add Child Task" definitionRef="ht__kWyIV_2">
+                <itemControl id="_kWyIV_10">
+                    <repetitionRule id="_kWyIV_12">
+                        <condition id="_kWyIV_13">
+                            <body><![CDATA[true]]></body>
+                        </condition>
+                    </repetitionRule>
+                </itemControl>
+            </planItem>
+            <planItem id="_kWyIV_17" name="Replace Array Task" definitionRef="ht__kWyIV_17">
+                <itemControl id="_kWyIV_18">
+                    <repetitionRule id="_kWyIV_21">
+                        <condition id="_kWyIV_22">
+                            <body><![CDATA[true]]></body>
+                        </condition>
+                    </repetitionRule>
+                </itemControl>
+            </planItem>
             <humanTask id="ht__kWyIV_0" name="Simplistic Unused Task" isBlocking="true"/>
+            <humanTask id="ht__kWyIV_2" name="Add Child Task" isBlocking="true">
+                <outputs id="_kWyIV_7" name="ChildArray" bindingRef="RootCaseFileItem/ChildArray"/>
+                <extensionElements mustUnderstand="false">
+                    <cafienne:implementation name="simple_in_out_task" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
+                        <documentation textFormat="text/plain">
+                            <text><![CDATA[This task is intended to simply stream input/output data]]></text>
+                        </documentation>
+                        <input id="_dk8c_In" name="In"/>
+                        <output id="_46Gh_Out" name="Out"/>
+                        <parameterMapping id="_kWyIV_5" sourceRef="_46Gh_Out" targetRef="_kWyIV_7"/>
+                    </cafienne:implementation>
+                </extensionElements>
+            </humanTask>
+            <humanTask id="ht__kWyIV_17" name="Replace Array Task" isBlocking="true">
+                <outputs id="_kWyIV_24" name="RootCaseFileItem" bindingRef="RootCaseFileItem">
+                    <bindingRefinement id="_kWyIV_25">
+                        <body><![CDATA[replace]]></body>
+                    </bindingRefinement>
+                </outputs>
+                <extensionElements mustUnderstand="false">
+                    <cafienne:implementation name="simple_in_out_task" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
+                        <documentation textFormat="text/plain">
+                            <text><![CDATA[This task is intended to simply stream input/output data]]></text>
+                        </documentation>
+                        <input id="_dk8c_In" name="In"/>
+                        <output id="_46Gh_Out" name="Out"/>
+                        <parameterMapping id="_kWyIV_20" sourceRef="_46Gh_Out" targetRef="_kWyIV_24"/>
+                    </cafienne:implementation>
+                </extensionElements>
+            </humanTask>
         </casePlanModel>
         <caseRoles/>
     </case>
@@ -60,6 +108,12 @@
             </CMMNShape>
             <CMMNShape cmmnElementRef="pi_ht__kWyIV_0">
                 <Bounds x="170" y="120" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_kWyIV_2">
+                <Bounds x="170" y="270" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_kWyIV_17">
+                <Bounds x="480" y="270" width="140" height="80"/>
             </CMMNShape>
             <CMMNEdge sourceCMMNElementRef="RootCaseFileItem/ChildArray" targetCMMNElementRef="crit__kWyIV_0"/>
         </CMMNDiagram>
