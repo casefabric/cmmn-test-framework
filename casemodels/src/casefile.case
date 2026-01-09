@@ -2,6 +2,40 @@
     <caseFileModel typeRef="casefile_with_array_structures.type"/>
     <casePlanModel id="cm__kWyIV_0" name="casefile" autoComplete="true">
         <humanTask id="pi_ht__kWyIV_0" name="Simplistic Unused Task" isBlocking="true"/>
+        <humanTask id="_kWyIV_2" name="Add Child Task" isBlocking="true">
+            <itemControl id="_kWyIV_10">
+                <repetitionRule id="_kWyIV_12">
+                    <condition id="_kWyIV_13">
+                        <body><![CDATA[true]]></body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
+            <outputs id="_kWyIV_7" name="ChildArray" bindingRef="RootCaseFileItem/ChildArray"/>
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="simple_in_out_task.humantask">
+                    <parameterMapping id="_kWyIV_5" sourceRef="_46Gh_Out" targetRef="_kWyIV_7"/>
+                </cafienne:implementation>
+            </extensionElements>
+        </humanTask>
+        <humanTask id="_kWyIV_17" name="Replace Array Task" isBlocking="true">
+            <itemControl id="_kWyIV_18">
+                <repetitionRule id="_kWyIV_21">
+                    <condition id="_kWyIV_22">
+                        <body><![CDATA[true]]></body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
+            <outputs id="_kWyIV_24" name="RootCaseFileItem" bindingRef="RootCaseFileItem">
+                <bindingRefinement id="_kWyIV_25">
+                    <body><![CDATA[replace]]></body>
+                </bindingRefinement>
+            </outputs>
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="simple_in_out_task.humantask">
+                    <parameterMapping id="_kWyIV_20" sourceRef="_46Gh_Out" targetRef="_kWyIV_24"/>
+                </cafienne:implementation>
+            </extensionElements>
+        </humanTask>
     </casePlanModel>
     <caseRoles/>
 </case>

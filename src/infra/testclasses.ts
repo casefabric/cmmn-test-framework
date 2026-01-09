@@ -100,6 +100,7 @@ import TestIncidentManagement from '../tests/incidentmanagement/incidentmanageme
 import TestTravelRequest from '../tests/travelrequest/testtravelrequest';
 import TestRunner from './testrunner';
 import TestEmptyUser from '../tests/api/environment/testemptyuser';
+import TestReplaceWithChildArray from '../tests/api/casefile/testreplacewithchildarray';
 
 export default class TestClasses {
     static getTestClass(name: string): Function {
@@ -232,6 +233,7 @@ const AllTests: Array<Function> = [
     , TestCaseFileArrayAPI
     , TestCaseFileExpressions
     , TestCaseParameterAPI
+    , TestReplaceWithChildArray
     , TestBootstrapCaseFileEvents
     , TestCasePlanAPI
     , TestCasePlanHistoryAPI

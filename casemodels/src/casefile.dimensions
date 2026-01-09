@@ -6,6 +6,12 @@
         <CMMNShape cmmnElementRef="pi_ht__kWyIV_0">
             <Bounds x="170" y="120" width="140" height="80"/>
         </CMMNShape>
+        <CMMNShape cmmnElementRef="_kWyIV_2">
+            <Bounds x="170" y="270" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_kWyIV_17">
+            <Bounds x="480" y="270" width="140" height="80"/>
+        </CMMNShape>
         <CMMNEdge sourceCMMNElementRef="RootCaseFileItem/ChildArray" targetCMMNElementRef="crit__kWyIV_0"/>
     </CMMNDiagram>
 </CMMNDI>
