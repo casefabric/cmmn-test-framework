@@ -8,7 +8,7 @@ import logger from '../../logger';
 import Tenant from '../../tenant/tenant';
 import Comparison from '../../test/comparison';
 import User from '../../user';
-import CafienneService from '../cafienneservice';
+import CaseEngineService from '../caseengineservice';
 import { checkResponse } from '../response';
 import DeployCase from './command/repository/deploycase';
 
@@ -27,7 +27,7 @@ export default class RepositoryService {
         const tenantQueryParameter = command.tenant ? 'tenant=' + command.tenant : '';
         // Hmmm... Duplicate '/repository/repository/' is needed currently...
         const url = `/repository/deploy/${command.modelName}?${tenantQueryParameter}`;
-        const response = await CafienneService.postXML(url, user, command.definition);
+        const response = await CaseEngineService.postXML(url, user, command.definition);
         return checkResponse(response, msg, expectedStatusCode, trace);
     }
 
@@ -40,7 +40,7 @@ export default class RepositoryService {
     static async loadCaseDefinition(user: User, fileName: string, tenant: string | Tenant, expectedStatusCode: number = 200) {
         const modelName = fileName.endsWith('.xml') ? fileName.substring(0, fileName.length - 4) : fileName;
 
-        const xml = await CafienneService.getXml(`/repository/load/${modelName}?tenant=${getTenantName(tenant)}`, user);
+        const xml = await CaseEngineService.getXml(`/repository/load/${modelName}?tenant=${getTenantName(tenant)}`, user);
         return xml;
     }
 
@@ -51,7 +51,7 @@ export default class RepositoryService {
      */
     static async listCaseDefinitions(user: User, tenant?: string | Tenant, expectedStatusCode: number = 200, msg = `ListCaseDefinitions is not expected to succeed for member ${user}`, trace: Trace = new Trace()) {
         const tenantQueryParameter = tenant ? '?tenant=' + getTenantName(tenant) : '';
-        const response = await CafienneService.get(`/repository/list${tenantQueryParameter}`, user);
+        const response = await CaseEngineService.get(`/repository/list${tenantQueryParameter}`, user);
         const json = checkResponse(response, msg, expectedStatusCode, trace);
 
         if (Config.RepositoryService.log) {
@@ -67,7 +67,7 @@ export default class RepositoryService {
     static async validateCaseDefinition(user: User, source: Document | string | Definitions, expectedStatusCode: number = 200, trace: Trace = new Trace()) {
         const url = `/repository/validate`;
         const xml = readLocalXMLDocument(source);
-        const response = await CafienneService.postXML(url, user, xml);
+        const response = await CaseEngineService.postXML(url, user, xml);
         const status = response.status;
         if (status !== expectedStatusCode) {
             if (response.ok) {

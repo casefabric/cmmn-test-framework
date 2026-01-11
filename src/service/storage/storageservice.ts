@@ -5,11 +5,11 @@ import logger from "../../logger";
 import Tenant from "../../tenant/tenant";
 import WorldWideTestTenant from "../../tests/setup/worldwidetesttenant";
 import User from "../../user";
-import CafienneService from "../cafienneservice";
+import CaseEngineService from "../caseengineservice";
 import { checkResponse } from "../response";
 
 /**
- * Connection to the /storage APIs of Cafienne
+ * Connection to the /storage APIs of the Case Engine
  */
 export default class StorageService {
     /**
@@ -20,7 +20,7 @@ export default class StorageService {
      */
     static async archiveCase(user: User, caseInstance: Case | string, expectedStatusCode: number = 202, errorMsg = `ArchiveCase is not expected to succeed for user ${user} on case ${caseInstance}`, trace: Trace = new Trace()) {
         if (Config.PlatformService.log) logger.debug(`Archiving case ${caseInstance}`);
-        const response = await CafienneService.put(`/storage/case/${caseInstance}/archive`, user);
+        const response = await CaseEngineService.put(`/storage/case/${caseInstance}/archive`, user);
         return checkResponse(response, errorMsg, expectedStatusCode, trace);
     }
 
@@ -32,7 +32,7 @@ export default class StorageService {
      */
      static async restoreCase(user: User, caseInstance: Case | string, expectedStatusCode: number = 202, errorMsg = `RestoreCase is not expected to succeed for user ${user} on case ${caseInstance}`, trace: Trace = new Trace()) {
         if (Config.PlatformService.log) logger.debug(`Restoring case ${caseInstance}`);
-        const response = await CafienneService.put(`/storage/case/${caseInstance}/restore`, user);
+        const response = await CaseEngineService.put(`/storage/case/${caseInstance}/restore`, user);
         return checkResponse(response, errorMsg, expectedStatusCode, trace);
     }
 
@@ -44,7 +44,7 @@ export default class StorageService {
      */
      static async deleteCase(user: User, caseInstance: Case | string, expectedStatusCode: number = 202, errorMsg = `DeleteCase is not expected to succeed for user ${user} on case ${caseInstance}`, trace: Trace = new Trace()) {
         if (Config.PlatformService.log) logger.debug(`Deleting case ${caseInstance}`);
-        const response = await CafienneService.delete(`/storage/case/${caseInstance}`, user);
+        const response = await CaseEngineService.delete(`/storage/case/${caseInstance}`, user);
         return checkResponse(response, errorMsg, expectedStatusCode, trace);
     }
 
@@ -56,7 +56,7 @@ export default class StorageService {
      */
      static async deleteTenant(user: User, tenant: Tenant | string, expectedStatusCode: number = 202, errorMsg = `DeleteTenant is not expected to succeed for user ${user} on tenant ${tenant}`, trace: Trace = new Trace()) {
         if (Config.PlatformService.log) logger.debug(`Deleting Tenant ${tenant}`);
-        const response = await CafienneService.delete(`/storage/tenant/${tenant}`, user);
+        const response = await CaseEngineService.delete(`/storage/tenant/${tenant}`, user);
         if (response.ok) {
             WorldWideTestTenant.reset(tenant);
         }

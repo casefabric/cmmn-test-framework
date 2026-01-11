@@ -27,7 +27,7 @@ export default class Definitions {
     public static readonly FourEyes = new Definitions('four_eyes.xml');
     public static readonly GetListGetDetails = new Definitions('getlist_getdetails.xml');
     public static readonly GetListNow = new Definitions('getlist_immediately.xml');
-    public static readonly InvokeCafienne = new Definitions('invokecafienne.xml');
+    public static readonly InvokeCaseEngine = new Definitions('invokecaseengine.xml');
     public static readonly HelloWorld = new Definitions('helloworld.xml');
     public static readonly HelloWorld2 = new Definitions('helloworld2.xml');
     public static readonly IncidentManagementForTraining = new Definitions('IncidentManagementForTraining.xml');

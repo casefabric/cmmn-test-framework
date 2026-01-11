@@ -17,12 +17,12 @@ export async function SomeTime(millis: number, msg: string = `Waiting ${millis} 
 }
 
 /**
- * Await server side processing of commands. Takes the default option time from the Config setting Config.CafienneService.cqrsWaitTime.
+ * Await server side processing of commands. Takes the default option time from the Config setting Config.CaseEngine.cqrsWaitTime.
  * @param millis 
  * @param msg 
  */
-export async function ServerSideProcessing(msg: string = `Awaiting async server processing for ${Config.CafienneService.cqrsWaitTime} milliseconds`) {
-    await SomeTime(Config.CafienneService.cqrsWaitTime, msg);
+export async function ServerSideProcessing(msg: string = `Awaiting async server processing for ${Config.CaseEngine.cqrsWaitTime} milliseconds`) {
+    await SomeTime(Config.CaseEngine.cqrsWaitTime, msg);
 }
 
 /**
