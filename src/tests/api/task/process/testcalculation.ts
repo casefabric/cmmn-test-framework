@@ -10,6 +10,7 @@ import assertCaseFileContent from '../../../../test/caseassertions/file';
 import { assertPlanItem } from '../../../../test/caseassertions/plan';
 import TestCase from '../../../../test/testcase';
 import WorldWideTestTenant from '../../../setup/worldwidetesttenant';
+import { DebugEvent } from '../../../../cmmn/event/model/debugevent';
 
 const definition = Definitions.Calculation;
 const worldwideTenant = new WorldWideTestTenant();
@@ -75,8 +76,8 @@ export default class TestCalculation extends TestCase {
             await DebugService.getParsedEvents(caseInstance.id, user).then(events => {
                 // console.log("Found events " + JSON.stringify(events, undefined, 2));
                 console.log(`Found ${events.length} events, trying to print debug event`);
-                const debugEvent = events.filter((e: any) => e.type === 'DebugEvent');
-                console.log("Debug event " + JSON.stringify(debugEvent[0].content.messages, undefined, 2));
+                const debugEvent = events.filter(e => e instanceof DebugEvent) as Array<DebugEvent>;
+                console.log("Debug event " + JSON.stringify(debugEvent[0].messages, undefined, 2));
             });
 
             throw notFoundError;

@@ -2,15 +2,13 @@
 
 import Case from '../../../../cmmn/case';
 import Definitions from '../../../../cmmn/definitions/definitions';
-import CaseEngineEvent from '../../../../cmmn/event/caseengineevent';
-import CaseEvent from '../../../../cmmn/event/caseevent';
 import CaseMigrationService, { DefinitionMigration } from '../../../../service/case/casemigrationservice';
 import CaseService from '../../../../service/case/caseservice';
 import DebugService from '../../../../service/case/debugservice';
 import TaskService from '../../../../service/task/taskservice';
 import TestCase from '../../../../test/testcase';
-import { SomeTime } from '../../../../test/time';
 import WorldWideTestTenant from '../../../setup/worldwidetesttenant';
+import PlanItemMigrated from '../../../../cmmn/event/model/case/migration/planitemmigrated';
 
 const base_definition = Definitions.Migration_Discretionary_v0;
 const definitionMigrated = Definitions.Migration_Discretionary_v1;
@@ -62,9 +60,9 @@ export default class TestDiscretionaryMigration extends TestCase {
 
 
         const events = await DebugService.getParsedEvents(caseInstance);
-        events.forEach((e: CaseEngineEvent) => console.log(e.offset + ": " + e));
+        events.forEach(e => console.log(e.offset + ": " + e));
 
-        const migratedPlanItems = events.filter(e => e.hasType(CaseEvent.PlanItemMigrated)).map(e => e.name);
+        const migratedPlanItems = events.filter(e => e instanceof PlanItemMigrated).map(e => (e as PlanItemMigrated).name);
         const mustContain = (name: string) => {
             if (migratedPlanItems.indexOf(name) < 0) {
                 throw new Error(`Expected an event for plan item ${name}, but that was not found in the list [${migratedPlanItems.join(' - ')}]`);

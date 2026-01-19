@@ -91,6 +91,8 @@ export default class TestSubCaseFailureBubble extends TestCase {
         await assertCasePlan(user, subCasePlanItem.id, State.Completed);
         await assertPlanItem(user, caseInstance, subCasePlanItem.name, subCasePlanItem.index, State.Completed);
 
-        await DebugService.getEvents(caseInstance, user);
+        await DebugService.getParsedEvents(caseInstance, user).then(events => {
+            console.log(`Found ${events.length} events:\n ` + events.map(event => event.toString()).join('\n '));
+        });
     }
 }

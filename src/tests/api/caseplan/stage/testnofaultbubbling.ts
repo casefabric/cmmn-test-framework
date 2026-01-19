@@ -64,7 +64,7 @@ export default class TestNoFaultBubbling extends TestCase {
             throw new Error(`Missing sub case id - but that's not expected at all, as the assertions succeeded...`);
         }
         this.addIdentifier(subCaseId);
-        const path = new Path('/Stage With Fault Handling/Failure Handling/Retry[0]/Try again');
+        const path = Path.from('/Stage With Fault Handling/Failure Handling/Retry[0]/Try again');
         const tryAgain = subCaseTree.findItem(path);
 
         // Triggering the event on the "reactivate-criterion" to try again should lead to one more failure.
