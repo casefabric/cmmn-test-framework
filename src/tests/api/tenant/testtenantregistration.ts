@@ -189,7 +189,7 @@ export default class TestTenantRegistration extends TestCase {
         // Owner 2 should no longer be in the list of owners, as the account is disabled
         await TenantService.getTenantOwners(tenantOwner1, tenant1).then(owners => {
             console.log(JSON.stringify(owners));
-            if (owners.find((owner: string) => owner === tenantOwner2.id)) {
+            if (owners.find((owner: String) => owner === tenantOwner2.id)) {
                 throw new Error('The account for owner-2 has been disabled and should not appear in this list');
             };
         });
@@ -209,7 +209,7 @@ export default class TestTenantRegistration extends TestCase {
 
         await TenantService.getTenantOwners(tenantOwner1, tenant1).then(owners => {
             console.log(JSON.stringify(owners));
-            if (!owners.find((owner: string) => owner === tenantOwner2.id)) {
+            if (!owners.find((owner: String) => owner === tenantOwner2.id)) {
                 throw new Error('The account for owner-2 is enabled again and should appear in this list');
             };
         });
@@ -238,7 +238,7 @@ export default class TestTenantRegistration extends TestCase {
         await TenantService.getTenantUser(tenantOwner1, tenant1, roleChangingUser.userId).then(user => assertUserRoles(user, expectedNewRoles))
         await TenantService.getTenantUsers(tenantOwner1, tenant1)
             .then(users => users.find((user: TenantUser) => user.userId === roleChangingUser.userId))
-            .then(user => assertUserRoles(user, expectedNewRoles));
+            .then(user => assertUserRoles(user!, expectedNewRoles));
 
         // Restore role-x and check it
         roleChangingUser.roles.push(roleToRemove);
@@ -246,7 +246,7 @@ export default class TestTenantRegistration extends TestCase {
         await TenantService.getTenantUser(tenantOwner1, tenant1, roleChangingUser).then(user => assertUserRoles(user, userRoles));
         await TenantService.getTenantUsers(tenantOwner1, tenant1)
             .then(users => users.find((user: TenantUser) => user.userId === roleChangingUser.userId))
-            .then(user => assertUserRoles(user, userRoles));
+            .then(user => assertUserRoles(user! , userRoles));
 
     }
 
@@ -324,7 +324,7 @@ export default class TestTenantRegistration extends TestCase {
 
         await TenantService.getTenantOwners(tenantOwner1, tenant1).then(owners => {
             console.log(JSON.stringify(owners));
-            if (owners.find((owner: string) => owner === tenantOwner3.id)) {
+            if (owners.find((owner: String) => owner === tenantOwner3.id)) {
                 throw new Error('Owner 3 should have been updated to no longer be an owner, but still is');
             };
         });
@@ -381,7 +381,7 @@ export default class TestTenantRegistration extends TestCase {
         for (let i = 0; i < ownerList.length; i++) {
             const userId = ownerList[i];
             if (userId !== tenantOwner1.id) {
-                const replaceTheOwner = new TenantUser(userId);
+                const replaceTheOwner = new TenantUser(userId.toString());
                 replaceTheOwner.enabled = false;
                 await TenantService.setTenantUser(tenantOwner1, tenant1, replaceTheOwner);
             }

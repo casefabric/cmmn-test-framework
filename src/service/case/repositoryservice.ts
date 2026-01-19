@@ -9,7 +9,6 @@ import User from '../../user';
 import Trace from '../../util/async/trace';
 import AsyncEngineError from '../asyncengineerror';
 import CaseEngineService from '../caseengineservice';
-import { checkResponse } from '../response';
 import DeployCase from './command/repository/deploycase';
 
 const FileSystem = fs;
@@ -28,7 +27,7 @@ export default class RepositoryService {
         // Hmmm... Duplicate '/repository/repository/' is needed currently...
         const url = `/repository/deploy/${command.modelName}?${tenantQueryParameter}`;
         const response = await CaseEngineService.postXML(url, user, command.definition);
-        return checkResponse(response, msg, expectedStatusCode, trace);
+        return response.validate(msg, expectedStatusCode, trace);
     }
 
     /**
@@ -52,7 +51,7 @@ export default class RepositoryService {
     static async listCaseDefinitions(user: User, tenant?: string | Tenant, expectedStatusCode: number = 200, msg = `ListCaseDefinitions is not expected to succeed for member ${user}`, trace: Trace = new Trace()) {
         const tenantQueryParameter = tenant ? '?tenant=' + getTenantName(tenant) : '';
         const response = await CaseEngineService.get(`/repository/list${tenantQueryParameter}`, user);
-        const json = checkResponse(response, msg, expectedStatusCode, trace);
+        const json = response.validate(msg, expectedStatusCode, trace);
 
         if (Config.RepositoryService.log) {
             logger.debug('Cases deployed in the server: ' + JSON.stringify(json, undefined, 2))

@@ -4,10 +4,8 @@ import Tenant from '../../tenant/tenant';
 import User from '../../user';
 import Trace from '../../util/async/trace';
 import CaseEngineService from '../caseengineservice';
-import { checkJSONResponse, checkResponse } from '../response';
 import ConsentGroup from './consentgroup';
 import ConsentGroupMember from './consentgroupmember';
-
 
 /**
  * Connection to the /consent-group APIs of the Case Engine
@@ -31,7 +29,7 @@ export default class ConsentGroupService {
                 return response;
             }
         }
-        return checkJSONResponse(response, msg, expectedStatusCode, undefined, trace).then(json => {
+        return response.validateObject(Object, msg, expectedStatusCode, trace).then((json: any) => {
             // After getting a succesful response we silently set the group id if not available
             //  (typical use case: the server generated it instead the client passing it)
             if (!group.id && json.groupId) {
@@ -48,7 +46,7 @@ export default class ConsentGroupService {
      */
     static async getGroup(user: User, groupId: ConsentGroup | string, expectedStatusCode: number = 200, msg = `GetGroup is not expected to succeed for user ${user.id} in group ${groupId}`, trace: Trace = new Trace()): Promise<ConsentGroup> {
         const response = await CaseEngineService.get(`/consent-group/${groupId}`, user);
-        return checkJSONResponse(response, msg, expectedStatusCode, ConsentGroup, trace);
+        return response.validateObject(ConsentGroup, msg, expectedStatusCode, trace);
     }
 
     /**
@@ -61,7 +59,7 @@ export default class ConsentGroupService {
      */
     static async replaceGroup(user: User, group: ConsentGroup, expectedStatusCode: number = 202, msg = `ReplaceConsentGroup is not expected to succeed for user ${user.id} in ${group}`, trace: Trace = new Trace()) {
         const response = await CaseEngineService.post(`/consent-group/${group}`, user, group.toJson());
-        return checkResponse(response, msg, expectedStatusCode, trace);
+        return response.validate(msg, expectedStatusCode, trace);
     }
 
     /**
@@ -73,7 +71,7 @@ export default class ConsentGroupService {
      */
     static async getGroupMember(user: User, groupId: ConsentGroup | string, userId: User | string, expectedStatusCode: number = 200, msg = `GetGroupMember(${userId}) is not expected to succeed for user ${user.id} in group ${groupId}`, trace: Trace = new Trace()): Promise<ConsentGroupMember> {
         const response = await CaseEngineService.get(`/consent-group/${groupId}/members/${userId}`, user);
-        return checkJSONResponse(response, msg, expectedStatusCode, ConsentGroupMember, trace);
+        return response.validateObject(ConsentGroupMember, msg, expectedStatusCode, trace);
     }
 
     /**
@@ -85,7 +83,7 @@ export default class ConsentGroupService {
      */
     static async setGroupMember(user: User, groupId: ConsentGroup | string, newUser: ConsentGroupMember, expectedStatusCode: number = 202, msg = `SetGroupMember is not expected to succeed for user ${user.id} in consent group ${groupId}`, trace: Trace = new Trace()) {
         const response = await CaseEngineService.post(`/consent-group/${groupId}/members`, user, newUser.toJson());
-        return checkResponse(response, msg, expectedStatusCode, trace);
+        return response.validate(msg, expectedStatusCode, trace);
     }
 
     /**
@@ -98,6 +96,6 @@ export default class ConsentGroupService {
      */
     static async removeGroupMember(user: User, groupId: ConsentGroup | string, userId: User | string, expectedStatusCode: number = 202, msg = `RemoveGroupMember ${userId} from group ${groupId} is not expected to succeed for user ${user.id}`, trace: Trace = new Trace()) {
         const response = await CaseEngineService.delete(`/consent-group/${groupId}/members/${userId}`, user);
-        return checkResponse(response, msg, expectedStatusCode, trace);
+        return response.validate(msg, expectedStatusCode, trace);
     }
 }

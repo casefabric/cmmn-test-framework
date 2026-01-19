@@ -1,5 +1,5 @@
 import Path from '../service/case/path';
-import Util from '../util/util';
+import { addType, addTypes } from '../util/json';
 import CaseFile from './casefile';
 import CMMNBaseClass from './cmmnbaseclass';
 import PlanItem from './planitem';
@@ -48,12 +48,18 @@ export default class Case extends CMMNBaseClass {
         public file: CaseFile
     ) {
         super();
-
     }
 
+    private caseInstanceId: string = '';
+
     init_json() {
-        if (this.planitems) this.planitems.forEach(item => Util.convertToTypedObject(item, PlanItem));
-        if (this.team) Util.convertToTypedObject(this.team, CaseTeam);
+        if (this.caseInstanceId) {
+            // this.caseInstanceId is only set upon the response of StartCase 
+            console.log(`Created case instance with id: \t${this.caseInstanceId}`);
+            this.id = this.caseInstanceId;
+        }
+        addTypes(this.planitems, PlanItem);
+        addType(this.team, CaseTeam);
     }
 
     get plan(): PlanItem {

@@ -1,12 +1,8 @@
 import Case from '../../cmmn/case';
 import DiscretionaryItem from '../../cmmn/discretionaryitem';
-import PlanItem from '../../cmmn/planitem';
-import CaseTeam from '../../cmmn/team/caseteam';
-import Trace from '../../util/async/trace';
 import User from '../../user';
-import Util from '../../util/util';
+import Trace from '../../util/async/trace';
 import CaseEngineService from '../caseengineservice';
-import { checkJSONResponse, checkResponse } from '../response';
 import CaseFilter from './casefilter';
 import { DiscretionaryItemsResponse } from './response/discretionaryitemsresponse';
 import StartCase from './startcase';
@@ -29,14 +25,7 @@ export default class CaseService {
             debug
         }
         const response = await CaseEngineService.post(url, user, request);
-        const json = await checkJSONResponse(response, msg, expectedStatusCode, Case, trace);
-
-        // Hack: copy "StartCaseResponse.caseInstanceId" to "Case.id" in the json prior to instantiating Case.
-        // TODO: consider whether it is better to work with a "StartCaseResponse" object instead
-        if (response.ok) {
-            json.id = json.caseInstanceId;
-            console.log(`Created case instance with id: \t${json.id}`);
-        }
+        const json = await response.validateObject(Case, msg, expectedStatusCode, trace);
         return json;
     }
 
@@ -46,17 +35,7 @@ export default class CaseService {
      * @param user 
      */
     static async getCase(user: User, caseId: Case | string, expectedStatusCode: number = 200, msg = `GetCase is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()): Promise<Case> {
-        const convertCaseTeamFormat = (json: any) => {
-            if (json.team && !(json.team.members || json.team.users || json.team.tenantRoles || json.team.groups)) json.team = new CaseTeam(json.team);
-            return json;
-        }
-        const convertItems = (json: any) => {
-            if (json || !json.planitems) return json;
-            json.planitems = Util.convertJsonToTypedObject('', json.planitems, [PlanItem]);
-            return json;
-        };
-        const response = await CaseEngineService.get(`/cases/${caseId}`, user);
-        return checkJSONResponse(response, msg, expectedStatusCode, Case, trace).then(convertItems).then(convertCaseTeamFormat);
+        return CaseEngineService.get(`/cases/${caseId}`, user).then(response => response.validateObject(Case, msg, expectedStatusCode, trace));
     }
 
     /**
@@ -75,7 +54,7 @@ export default class CaseService {
      */
     static async getCases(user: User, filter?: CaseFilter, expectedStatusCode: number = 200, msg = `GetCases is not expected to succeed for user ${user}`, trace: Trace = new Trace()): Promise<Array<Case>> {
         const response = await CaseEngineService.get('/cases', user, filter);
-        return checkJSONResponse(response, msg, expectedStatusCode, [Case], trace);
+        return response.validateArray(Case, msg, expectedStatusCode, trace);
     }
 
     /**
@@ -85,7 +64,7 @@ export default class CaseService {
      */
     static async getDiscretionaryItems(user: User, caseId: Case | string, expectedStatusCode: number = 200, msg = `GetDiscretionaryItems is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()): Promise<DiscretionaryItemsResponse> {
         const response = await CaseEngineService.get(`/cases/${caseId}/discretionaryitems`, user)
-        return await checkJSONResponse(response, msg, expectedStatusCode, DiscretionaryItemsResponse, trace);
+        return response.validateObject(DiscretionaryItemsResponse, msg, expectedStatusCode, trace);
     }
 
     /**
@@ -100,7 +79,7 @@ export default class CaseService {
         const itemToPlan = { name: item.name, parentId: item.parentId, definitionId: item.definitionId, planItemId }
 
         const response = await CaseEngineService.post(`/cases/${caseId}/discretionaryitems/plan`, user, itemToPlan);
-        const json = await checkJSONResponse(response, msg, expectedStatusCode, Object, trace);
+        const json: any = await response.validateObject(Object, msg, expectedStatusCode, trace);
         return json.planItemId;
     }
 
@@ -111,7 +90,6 @@ export default class CaseService {
      * @param debugEnabled 
      */
     static async changeDebugMode(user: User, caseId: Case | string, debugEnabled: boolean, expectedStatusCode: number = 200, msg = `ChangeDebugMode is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()) {
-        const response = await CaseEngineService.put(`/cases/${caseId}/debug/${debugEnabled}`, user);
-        return checkResponse(response, msg, expectedStatusCode, trace);
+        return CaseEngineService.put(`/cases/${caseId}/debug/${debugEnabled}`, user).then(response => response.validate(msg, expectedStatusCode, trace));
     }
 }

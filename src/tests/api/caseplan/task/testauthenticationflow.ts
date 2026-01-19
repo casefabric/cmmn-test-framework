@@ -3,15 +3,14 @@
 import Definitions from '../../../../cmmn/definitions/definitions';
 import State from '../../../../cmmn/state';
 import Config from '../../../../config';
-import CaseEngineService from '../../../../service/caseengineservice';
 import CaseFileService from '../../../../service/case/casefileservice';
 import CaseService from '../../../../service/case/caseservice';
+import CaseEngineService from '../../../../service/caseengineservice';
 import { assertPlanItem } from '../../../../test/caseassertions/plan';
 import TestCase from '../../../../test/testcase';
 import WorldWideTestTenant from '../../../setup/worldwidetesttenant';
 
 const definition = Definitions.InvokeCaseEngine;
-
 const worldwideTenant = new WorldWideTestTenant();
 const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;

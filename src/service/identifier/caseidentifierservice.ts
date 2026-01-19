@@ -1,7 +1,6 @@
 import User from '../../user';
 import Trace from '../../util/async/trace';
 import CaseEngineService from '../caseengineservice';
-import { checkJSONResponse } from '../response';
 import IdentifierFilter from './identifierfilter';
 
 export default class CaseIdentifierService {
@@ -10,9 +9,9 @@ export default class CaseIdentifierService {
      * @param filter 
      * @param user 
      */
-    static async getIdentifiers(user: User, filter?: IdentifierFilter, expectedStatusCode: number = 200, msg = `GetIdentifiers is not expected to succeed for user ${user}`, trace: Trace = new Trace()): Promise<Array<any>> {
+    static async getIdentifiers(user: User, filter?: IdentifierFilter, expectedStatusCode: number = 200, msg = `GetIdentifiers is not expected to succeed for user ${user}`, trace: Trace = new Trace()): Promise<Array<CaseIdentifier>> {
         const response = await CaseEngineService.get('/identifiers', user, filter);
-        return checkJSONResponse(response, msg, expectedStatusCode, undefined, trace);
+        return response.validateArray(CaseIdentifier, msg, expectedStatusCode, trace);
     }
 
     /**
@@ -20,8 +19,13 @@ export default class CaseIdentifierService {
      * @param filter 
      * @param user 
      */
-     static async getIdentifierNames(user: User, filter?: IdentifierFilter, expectedStatusCode: number = 200, msg = `GetIdentifiers is not expected to succeed for user ${user}`, trace: Trace = new Trace()): Promise<Array<any>> {
+    static async getIdentifierNames(user: User, filter?: IdentifierFilter, expectedStatusCode: number = 200, msg = `GetIdentifiers is not expected to succeed for user ${user}`, trace: Trace = new Trace()): Promise<Array<String>> {
         const response = await CaseEngineService.get('/identifiers/names', user, filter);
-        return checkJSONResponse(response, msg, expectedStatusCode, undefined, trace);
+        return response.validateArray(String, msg, expectedStatusCode, trace);
     }
+}
+
+export class CaseIdentifier {
+    public name: string = '';
+    public value: string = '';
 }

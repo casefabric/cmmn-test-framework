@@ -1,10 +1,10 @@
 import { DOMParser } from 'xmldom';
 import Trace from '../util/async/trace';
-import Util from '../util/util';
+import { addType, addTypes, Constructor } from '../util/json';
 import AsyncEngineError from './asyncengineerror';
 
 export default class CaseEngineResponse {
-    private json_prop?: any;
+    private json_prop: any;
     private text_prop: string = '';
     private hasText: boolean = false;
 
@@ -14,6 +14,49 @@ export default class CaseEngineResponse {
      * @param response 
      */
     constructor(public response: Response) {
+    }
+
+    async validate(errorMsg: string, expectedStatusCode: number, trace: Trace = new Trace()): Promise<CaseEngineResponse> {
+        if (this.status !== expectedStatusCode) {
+            const responseText = await this.text();
+            if (expectedStatusCode >= 200 && expectedStatusCode < 300) {
+                // Change error messages, by default 
+                // Is not expected to succeed ===> Is expected to succeed
+                errorMsg = errorMsg.replace('is not expected to succeed for user', 'is expected to succeed for user');
+            }
+            if (!errorMsg) {
+                errorMsg = `Expected status ${expectedStatusCode} instead of ${this.status} ${this.statusText}: ${responseText}`;
+            }
+            throw new AsyncEngineError(trace, errorMsg, this);
+        }
+        return this;
+    }
+
+    async validateObject<T>(returnType: Constructor<T>, errorMsg: string = '', expectedStatusCode: number, trace: Trace = new Trace()): Promise<T> {
+        await this.validate(errorMsg, expectedStatusCode, trace);
+        if (this.ok) {
+            const json = await this.json();
+            return addType(json, returnType);
+        } else {
+            return this as any;
+        }
+    }
+
+    async validateArray<T>(returnType: Constructor<T>, errorMsg: string = '', expectedStatusCode: number, trace: Trace = new Trace()): Promise<T[]> {
+        await this.validate(errorMsg, expectedStatusCode, trace);
+        if (this.ok) {
+            const json = await this.json();
+            if (json instanceof Array) {
+                return addTypes(json, returnType);
+            } else {
+                if (!errorMsg) {
+                    errorMsg = `Expected a json array with objects of type ${returnType}, but the response was not an array: ${JSON.stringify(json, undefined, 2)}`;
+                }
+                throw new AsyncEngineError(trace, errorMsg, this);
+            }
+        } else {
+            return this as any;
+        }
     }
 
     /**
@@ -39,9 +82,11 @@ export default class CaseEngineResponse {
     get ok() {
         return this.response.ok;
     }
+
     get redirected() {
         return this.response.redirected;
     }
+
     get status() {
         return this.response.status;
     }
@@ -87,48 +132,5 @@ export default class CaseEngineResponse {
         const text = await this.text();
         this.json_prop = JSON.parse(text || '');
         return this.json_prop;
-    }
-}
-
-/**
- * Validates the HTTP Response object.
- * If it succeeded, but failures where expected, it will throw an error with the given error message.
- * If it fails, but it was expected to succeed, an error with the response text will be thrown.
- * In all other cases the response itself will be returned.
- * 
- * @param response 
- * @param errorMsg 
- * @param expectedStatusCode 
- */
-export async function checkResponse(response: CaseEngineResponse, errorMsg: string, expectedStatusCode: number, trace: Trace = new Trace()): Promise<CaseEngineResponse> {
-    if (response.status !== expectedStatusCode) {
-        const responseText = await response.text();
-        if (expectedStatusCode >= 200 && expectedStatusCode < 300) {
-            // Change error messages, by default 
-            // Is not expected to succeed ===> Is expected to succeed
-            errorMsg = errorMsg.replace('is not expected to succeed for user', 'is expected to succeed for user');
-        }
-        if (!errorMsg) {
-            errorMsg = `Expected status ${expectedStatusCode} instead of ${response.status} ${response.statusText}: ${responseText}`;
-        }
-        throw new AsyncEngineError(trace, errorMsg, response);
-    }
-    return response;
-}
-
-/**
- * Validates the response for failure by invoking checkResponse function internally.
- * If that validation succeeds, the json of the response is returned.
- * @param response 
- * @param errorMsg 
- * @param expectedStatusCode 
- */
-export async function checkJSONResponse(response: CaseEngineResponse, errorMsg: string = '', expectedStatusCode: number, returnType?: Function | Array<Function>, trace: Trace = new Trace()): Promise<any> {
-    await checkResponse(response, errorMsg, expectedStatusCode, trace);
-    if (response.ok) {
-        const json = await response.json();
-        return Util.convertJsonToTypedObject(errorMsg, json, returnType, trace);
-    } else {
-        return response;
     }
 }

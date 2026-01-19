@@ -1,6 +1,3 @@
-import Trace from "../util/async/trace";
-import AsyncError from "../util/async/asyncerror";
-
 /**
  * Few simple util functions
  */
@@ -50,52 +47,6 @@ export default class Util {
      */
     static generateString(prefix: string = '', postfix: string = ''): string {
         return prefix + Util.randomString + postfix;
-    }
-
-    /**
-     * Converts a raw json object into an instance of the given return type.
-     * @param errorMsg 
-     * @param json 
-     * @param returnType 
-     * @param trace 
-     */
-    static convertJsonToTypedObject(errorMsg: string = '', json: any, returnType?: Function | Array<Function>, trace: Trace = new Trace()) {
-        if (returnType) {
-            // console.log("Response is " + JSON.stringify(json, undefined, 2))
-            // console.log("\n\n Return type is " , returnType)
-            if (returnType instanceof Array) {
-                if (returnType.length == 0) {
-                    if (!errorMsg) {
-                        errorMsg = 'Return type must have at least 1 element';
-                    }
-                    throw new AsyncError(trace, errorMsg);
-                }
-                if (json instanceof Array) {
-                    const array = <Array<object>>json;
-                    return array.map(item => this.convertToTypedObject(item, returnType[0]));
-                } else {
-                    if (!errorMsg) {
-                        errorMsg = `Expected a json array with objects of type ${returnType[0].name}, but the response was not an array: ${JSON.stringify(json, undefined, 2)}`;
-                    }
-                    throw new AsyncError(trace, errorMsg);
-                }
-            } else if (returnType !== undefined) {
-                this.convertToTypedObject(json, returnType);
-            }
-        }
-        return json;
-    }
-
-    static convertToTypedObject(json: any, returnType: Function) {
-        if (json === null || json === undefined) return json;
-        Object.setPrototypeOf(json, returnType.prototype);
-        if (returnType.prototype.hasOwnProperty('init_json')) {
-            const init_json = (returnType.prototype as any).init_json;
-            if (init_json && typeof init_json === 'function') {
-                init_json.call(json);
-            }
-        }
-        return json;
     }
 }
 
