@@ -89,7 +89,7 @@ export default class TestCaseTeamConsentGroupAPI extends TestCase {
         await this.testAdditionalGroup(caseInstance);
 
         // Show that we can add users to the team without them being registered in a group or a tenant, but simply by token.
-        await this.testTokenBasedCafienneAccess(caseInstance);
+        await this.testTokenBasedCaseEngineAccess(caseInstance);
     }
 
     async startCaseTesting() {
@@ -302,7 +302,7 @@ export default class TestCaseTeamConsentGroupAPI extends TestCase {
         await CaseService.getCase(universe.elon, caseInstance, 200, 'As a marsgroup2 member, elon should have access');
     }
 
-    async testTokenBasedCafienneAccess(caseInstance: Case) {
+    async testTokenBasedCaseEngineAccess(caseInstance: Case) {
 
         // It should also be possible to add a member that is not even registered in the case system. As long as that member has a valid token, they should be able to get the case.
         const someone = new User('Some-one-out-there');

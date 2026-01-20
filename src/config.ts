@@ -8,7 +8,7 @@ const Config = {
             error: '\x1b[31m%s\x1b[0m' // red
         }
     },
-    CafienneService: {
+    CaseEngine: {
         // URL of backend engine
         url: 'http://0.0.0.0:2027/',
         log: {
@@ -31,7 +31,7 @@ const Config = {
     TokenService: {
         // URL of token service
         url: 'http://0.0.0.0:2377/token',
-        // Issuer can be configured. The issuer must equal what is configure inside the Cafienne Engine
+        // Issuer can be configured. The issuer must equal what is configure inside the Case Engine
         issuer: 'http://localhost:2377',
         // Whether or not to show the tokens requested and updated in the user
         log: true
@@ -71,7 +71,7 @@ export const MinimalLoggingConfig = {
             error: '\x1b[31m%s\x1b[0m' // red
         }
     },
-    CafienneService: {
+    CaseEngine: {
         // URL of backend engine
         url: 'http://0.0.0.0:2027/',
         log: {
@@ -94,7 +94,7 @@ export const MinimalLoggingConfig = {
     TokenService: {
         // URL of token service
         url: 'http://0.0.0.0:2377/token',
-        // Issuer can be configured. The issuer must equal what is configure inside the Cafienne Engine
+        // Issuer can be configured. The issuer must equal what is configure inside the Case Engine
         issuer: 'http://localhost:2377',
         // Whether or not to show the tokens requested and updated in the user
         log: false
@@ -133,7 +133,7 @@ export const NoLoggingConfig = {
             error: '\x1b[31m%s\x1b[0m' // red
         }
     },
-    CafienneService: {
+    CaseEngine: {
         // URL of backend engine
         url: 'http://0.0.0.0:2027/',
         log: {
@@ -156,7 +156,7 @@ export const NoLoggingConfig = {
     TokenService: {
         // URL of token service
         url: 'http://0.0.0.0:2377/token',
-        // Issuer can be configured. The issuer must equal what is configure inside the Cafienne Engine
+        // Issuer can be configured. The issuer must equal what is configure inside the Case Engine
         issuer: 'http://localhost:2377',
         // Whether or not to show the tokens requested and updated in the user
         log: false

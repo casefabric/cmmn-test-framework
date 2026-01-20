@@ -22,7 +22,7 @@ export * from "./mock/getmock";
 export * from "./mock/mockserver";
 export * from "./mock/mockurl";
 export * from "./mock/postmock";
-export * from "./service/cafienneservice";
+export * from "./service/caseengineservice";
 export * from "./service/queryfilter";
 export * from "./service/response";
 export * from "./service/anonymous/requestservice";

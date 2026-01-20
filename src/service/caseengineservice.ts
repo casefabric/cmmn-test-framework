@@ -3,19 +3,19 @@ import Config from '../config';
 import logger from '../logger';
 import User from '../user';
 import QueryFilter, { extendURL } from './queryfilter';
-import CafienneResponse from './response';
+import CaseEngineResponse from './response';
 
-class CafienneHeaders {
+class CaseEngineHeaders {
     public values:any = new Object();
     setHeader(name: string, value: any) {
         this.values[name] = value;
     }
 }
 
-const BaseHeaders = new CafienneHeaders();
+const BaseHeaders = new CaseEngineHeaders();
 BaseHeaders.setHeader('Content-Type', 'application/json');
 
-export default class CafienneService {
+export default class CaseEngineService {
     static calls = 0;
 
     /**
@@ -30,16 +30,16 @@ export default class CafienneService {
     }
 
     static get baseURL() {
-        return Config.CafienneService.url;
+        return Config.CaseEngine.url;
     }
 
-    static updateCaseLastModified(response: CafienneResponse) {
+    static updateCaseLastModified(response: CaseEngineResponse) {
         // TODO: this currently is not a Singleton, but it should be...
         if (response.ok) {
             const readAndUpdateHeader = (headerName: string) => {
                 const headerValue = response.headers.get(headerName);
                 if (headerValue) {
-                    if (Config.CafienneService.log.response.headers) {
+                    if (Config.CaseEngine.log.response.headers) {
                         logger.debug(`Updating ${headerName} to ${headerValue}`);
                     }
                     BaseHeaders.setHeader(headerName, headerValue);
@@ -58,7 +58,7 @@ export default class CafienneService {
         return this.fetch(user, url, method, getHeaders(user), body);    
     }
 
-    static async postXML(url: string, user: User, request: Document, method = 'POST'): Promise<CafienneResponse> {
+    static async postXML(url: string, user: User, request: Document, method = 'POST'): Promise<CaseEngineResponse> {
         const headers = getHeaders(user, { 'Content-Type': 'application/xml'});
         const body = request.toString();
         return this.fetch(user, url, method, headers, body);
@@ -90,7 +90,7 @@ export default class CafienneService {
         return (await this.get(url, user, undefined, headers)).xml();
     }
 
-    static async fetch(user: User | undefined, url: string, method: string, headers?: any, body?: string): Promise<CafienneResponse> {
+    static async fetch(user: User | undefined, url: string, method: string, headers?: any, body?: string): Promise<CaseEngineResponse> {
         if (! headers) {
             headers = getHeaders(user);
         }
@@ -99,40 +99,40 @@ export default class CafienneService {
         url = this.baseURL + (url.startsWith('/') ? url.substring(1) : url);
 
         const myCallNumber = this.calls++;
-        if (Config.CafienneService.log.url) {
+        if (Config.CaseEngine.log.url) {
             logger.info(`\n\nHTTP:${method}[${myCallNumber}] from [${user ? user.id : ''}] to ${url}`);
         }
-        if (Config.CafienneService.log.request.headers) {
+        if (Config.CaseEngine.log.request.headers) {
             printHeaders('Request headers:', headers);
         }
-        if (Config.CafienneService.log.request.body && body) {
+        if (Config.CaseEngine.log.request.body && body) {
             logger.debug(body);
         }
  
-        const response = await fetch(url, { method, headers, body }).then(response => new CafienneResponse(response)).then(r => this.updateCaseLastModified(r));
+        const response = await fetch(url, { method, headers, body }).then(response => new CaseEngineResponse(response)).then(r => this.updateCaseLastModified(r));
         
-        if (! response.ok && Config.CafienneService.log.response.error) {
-            if (!Config.CafienneService.log.url) {
+        if (! response.ok && Config.CaseEngine.log.response.error) {
+            if (!Config.CaseEngine.log.url) {
                 logger.error(`\n\nHTTP:${method}[${myCallNumber}] from [${user ? user.id : ''}] to ${url}`);
             }
             // Print error responses in a different color
-            if (Config.CafienneService.log.request.headers || (Config.CafienneService.log.request.body && body)) {
+            if (Config.CaseEngine.log.request.headers || (Config.CaseEngine.log.request.body && body)) {
                 // Add an extra newline to show the response
                 logger.debug();
             }
             logger.error(`RESPONSE[${myCallNumber}]==> ${response.status} ${response.statusText}`);
-            if (Config.CafienneService.log.response.headers) {
+            if (Config.CaseEngine.log.response.headers) {
                 printHeaders('Response headers:', response.headers);
             }
         } else {
-            if (Config.CafienneService.log.response.status) {
-                if (Config.CafienneService.log.request.headers || (Config.CafienneService.log.request.body && body)) {
+            if (Config.CaseEngine.log.response.status) {
+                if (Config.CaseEngine.log.request.headers || (Config.CaseEngine.log.request.body && body)) {
                     // Add an extra newline to show the response
                     logger.debug();
                 }
                 logger.info(`RESPONSE[${myCallNumber}]==> ${response.status} ${response.statusText}`);
             }
-            if (Config.CafienneService.log.response.headers) {
+            if (Config.CaseEngine.log.response.headers) {
                 printHeaders('Response headers:', response.headers);
             }
         }
@@ -142,9 +142,9 @@ export default class CafienneService {
         const text = await response.text();
 
         // For response ok, print to debug log only; for response not-ok print info logging
-        if (!response.ok && Config.CafienneService.log.response.error) {
+        if (!response.ok && Config.CaseEngine.log.response.error) {
             logger.error(text);
-        } else if (Config.CafienneService.log.response.body) {
+        } else if (Config.CaseEngine.log.response.body) {
             logger.debug(text);
         }
 

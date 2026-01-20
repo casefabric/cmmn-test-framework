@@ -47,12 +47,12 @@ export default class TestDashedParameters extends TestCase {
         // const caseInstanceId = 'abcde';
         const caseInstanceId = undefined;
 
-        // In Cafienne Engine versions 1.1.19 and 1.1.20 this will create a case instance with a 
+        // In Case Engine versions 1.1.19 and 1.1.20 this will create a case instance with a 
         //  process task 'process_with_dashed_parameter' that is failed
         const caseInstance = await this.createCaseInstance(caseInstanceId);
 
         // Note: case recovery logic is for recovering a test case that has been introduced before 
-        //  Cafienne Release 1.1.21, and it can be used to recover from persistence properly
+        //  Case Engine Release 1.1.21, and it can be used to recover from persistence properly
         // await this.recoverCase(caseInstanceId);
 
         await assertPlanItem(user, caseInstance, this.dashedParameterProcessTask, 0, State.Completed);

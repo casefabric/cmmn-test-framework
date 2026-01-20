@@ -1,9 +1,9 @@
 import Case from '../../cmmn/case';
-import CafienneEvent from '../../cmmn/event/cafienneevent';
+import CaseEngineEvent from '../../cmmn/event/caseengineevent';
 import Trace from '../../infra/trace';
 import Tenant from '../../tenant/tenant';
 import User from '../../user';
-import CafienneService from '../cafienneservice';
+import CaseEngineService from '../caseengineservice';
 import { checkJSONResponse } from '../response';
 
 export default class DebugService {
@@ -13,16 +13,16 @@ export default class DebugService {
      * @param user 
      */
     static async getEvents(model: string | Case | Tenant, user?: User) {
-        const json = await CafienneService.get('/debug/' + model, user);
+        const json = await CaseEngineService.get('/debug/' + model, user);
         return json;
     }
 
-    static async getParsedEvents(model: string | Case | Tenant, user?: User, trace: Trace = new Trace()): Promise<Array<CafienneEvent>> {
+    static async getParsedEvents(model: string | Case | Tenant, user?: User, trace: Trace = new Trace()): Promise<Array<CaseEngineEvent>> {
         const response = await this.getEvents(model, user);
-        return checkJSONResponse(response, 'Expecting model events', 200, [CafienneEvent], trace);
+        return checkJSONResponse(response, 'Expecting model events', 200, [CaseEngineEvent], trace);
     }
 
     static async forceRecovery(user: User, model: string | Case | Tenant) {
-        return await CafienneService.patch(user, `/debug/force-recovery/${model}`)
+        return await CaseEngineService.patch(user, `/debug/force-recovery/${model}`)
     }
 }
