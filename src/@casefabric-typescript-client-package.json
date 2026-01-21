@@ -1,6 +1,6 @@
 {
     "name": "@casefabric/typescript-client",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "A javascript based test framework for CMMN case models",
     "main": "index.js",
     "types": "./@types/index.d.ts",
