@@ -4,7 +4,7 @@ import Tenant from "../../../tenant/tenant";
 import TenantUser, { TenantOwner } from "../../../tenant/tenantuser";
 import Comparison from "../../../test/comparison";
 import TestCase from "../../../test/testcase";
-import Util from "../../../test/util";
+import Util from "../../../util/util";
 import { admin } from "../../../user";
 
 const platformAdmin = admin;

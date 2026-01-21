@@ -14,7 +14,7 @@ import Tenant from '../../../tenant/tenant';
 import { TenantOwner } from '../../../tenant/tenantuser';
 import { assertTask, findTask } from '../../../test/caseassertions/task';
 import TestCase from '../../../test/testcase';
-import Util from '../../../test/util';
+import Util from '../../../util/util';
 import User, { admin } from '../../../user';
 
 const definition = Definitions.CaseTeam;

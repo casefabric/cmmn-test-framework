@@ -1,9 +1,9 @@
-import CaseTeamUser, { CaseOwner } from "./caseteamuser";
 import User from "../../user";
 import CMMNBaseClass from "../cmmnbaseclass";
+import Util from '../../util/util';
 import CaseTeamGroup from "./caseteamgroup";
 import CaseTeamTenantRole, { CaseOwnerTenantRole } from "./caseteamtenantrole";
-import Util from "../../test/util";
+import CaseTeamUser, { CaseOwner } from "./caseteamuser";
 
 /**
  * Simple CaseTeam wrapper class.

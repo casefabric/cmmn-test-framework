@@ -1,6 +1,6 @@
 import PlanItem from "../../cmmn/planitem";
 import State from "../../cmmn/state";
-import Trace from "../../infra/trace";
+import Trace from "../../util/async/trace";
 import { assertPlanItem } from "../../test/caseassertions/plan";
 import CaseEvents from "./caseevents";
 import PlanItemEvents from "./planitemevents";

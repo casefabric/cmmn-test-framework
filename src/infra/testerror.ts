@@ -1,4 +1,4 @@
-import StackTraceError from "./stacktraceerror";
+import StackTraceError from "../util/async/stacktraceerror";
 
 export default class TestError extends StackTraceError {
     constructor(public error: unknown, message: string) {

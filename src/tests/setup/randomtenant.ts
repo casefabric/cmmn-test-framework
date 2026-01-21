@@ -4,7 +4,7 @@ import ConsentGroupService from "../../service/consentgroup/consentgroupservice"
 import PlatformService from "../../service/platform/platformservice";
 import Tenant from "../../tenant/tenant";
 import TenantUser, { TenantOwner } from "../../tenant/tenantuser";
-import Util, { asyncForEach } from "../../test/util";
+import Util, { asyncForEach } from "../../util/util";
 import User from "../../user";
 
 export default class RandomTenant extends Tenant {

@@ -1,6 +1,6 @@
 import ConsentGroup from "../../service/consentgroup/consentgroup";
 import ConsentGroupMember from "../../service/consentgroup/consentgroupmember";
-import Util from "../../test/util";
+import Util from "../../util/util";
 import User from "../../user";
 import RandomUser from "./randomuser";
 

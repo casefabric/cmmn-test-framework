@@ -5,7 +5,7 @@ import { checkJSONResponse, checkResponse } from "../response";
 import PlanItem from "../../cmmn/planitem";
 import CMMNDocumentation from "../../cmmn/cmmndocumentation";
 import Transition from "../../cmmn/transition";
-import Trace from "../../infra/trace";
+import Trace from "../../util/async/trace";
 
 export default class CasePlanService {
     /**

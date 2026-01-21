@@ -1,5 +1,5 @@
-import AsyncError from "../../infra/asyncerror";
-import Trace from "../../infra/trace";
+import AsyncError from "../../util/async/asyncerror";
+import Trace from "../../util/async/trace";
 import ConsentGroup from "../../service/consentgroup/consentgroup";
 import ConsentGroupService from "../../service/consentgroup/consentgroupservice";
 import User from "../../user";

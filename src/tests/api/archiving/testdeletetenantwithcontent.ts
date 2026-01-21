@@ -18,7 +18,7 @@ import TenantEvents from '../../../service/storage/tenantevents';
 import TenantService from '../../../service/tenant/tenantservice';
 import TestCase from '../../../test/testcase';
 import { PollUntilSuccess } from '../../../test/time';
-import Util from '../../../test/util';
+import Util from '../../../util/util';
 import WorldWideTestTenant from '../../setup/worldwidetesttenant';
 
 const tenant = Util.generateId('TestTenantWithContent_');

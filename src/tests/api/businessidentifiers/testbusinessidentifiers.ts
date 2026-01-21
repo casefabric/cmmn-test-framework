@@ -1,11 +1,11 @@
 'use strict';
 
-import Trace from '../../../infra/trace';
+import Trace from '../../../util/async/trace';
 import logger from '../../../logger';
 import CaseIdentifierService from '../../../service/identifier/caseidentifierservice';
 import IdentifierFilter from '../../../service/identifier/identifierfilter';
 import TestCase from '../../../test/testcase';
-import Util from '../../../test/util';
+import Util from '../../../util/util';
 import WorldWideTestTenant from '../../setup/worldwidetesttenant';
 import TestFootballBusinessIdentifiers from './footballbusinessidentifiers/testfootballbusinessidentifiers';
 

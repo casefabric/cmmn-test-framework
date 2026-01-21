@@ -1,6 +1,6 @@
 import ConsentGroup from "../../service/consentgroup/consentgroup";
 import CMMNBaseClass from "../cmmnbaseclass";
-import Util from "../../test/util";
+import Util from "../../util/util";
 
 export default class CaseTeamGroup extends CMMNBaseClass {
     public groupId: string;

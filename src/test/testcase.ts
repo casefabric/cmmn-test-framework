@@ -1,7 +1,7 @@
 import Case from '../cmmn/case';
 import ConsentGroup from '../service/consentgroup/consentgroup';
 import Tenant from '../tenant/tenant';
-import LineReader from './linereader';
+import LineReader from '../util/linereader';
 import PlanItem from '../cmmn/planitem';
 
 /**

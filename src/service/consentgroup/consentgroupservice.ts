@@ -1,8 +1,8 @@
 import Config from '../../config';
-import Trace from '../../infra/trace';
 import logger from '../../logger';
 import Tenant from '../../tenant/tenant';
 import User from '../../user';
+import Trace from '../../util/async/trace';
 import CaseEngineService from '../caseengineservice';
 import { checkJSONResponse, checkResponse } from '../response';
 import ConsentGroup from './consentgroup';

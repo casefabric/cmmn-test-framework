@@ -4,7 +4,7 @@ import ConsentGroupService from "../../../service/consentgroup/consentgroupservi
 import TestCase from "../../../test/testcase";
 import { SomeTime } from "../../../test/time";
 import assertSameGroup, { assertMemberHasNoRoles, assertMemberRole } from "../../../test/userassertions/consentgroup";
-import Util from "../../../test/util";
+import Util from "../../../util/util";
 import WorldWideTestTenant from "../../setup/worldwidetesttenant";
 
 const worldwideTenant = new WorldWideTestTenant();

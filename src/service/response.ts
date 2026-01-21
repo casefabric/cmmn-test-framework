@@ -1,7 +1,7 @@
 import { DOMParser } from 'xmldom';
-import { AsyncEngineError } from '../infra/asyncerror';
-import Trace from '../infra/trace';
-import Util from '../test/util';
+import Trace from '../util/async/trace';
+import Util from '../util/util';
+import AsyncEngineError from './asyncengineerror';
 
 export default class CaseEngineResponse {
     private json_prop?: any;

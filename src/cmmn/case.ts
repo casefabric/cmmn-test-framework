@@ -1,5 +1,5 @@
 import Path from '../service/case/path';
-import Util from '../test/util';
+import Util from '../util/util';
 import CaseFile from './casefile';
 import CMMNBaseClass from './cmmnbaseclass';
 import PlanItem from './planitem';

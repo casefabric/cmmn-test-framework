@@ -3,7 +3,7 @@ import CaseEngineService from '../caseengineservice';
 import Tenant from '../../tenant/tenant';
 import TenantUser from '../../tenant/tenantuser';
 import { checkResponse, checkJSONResponse } from '../response';
-import Trace from '../../infra/trace';
+import Trace from '../../util/async/trace';
 
 
 /**

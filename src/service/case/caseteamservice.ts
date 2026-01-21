@@ -6,7 +6,7 @@ import CaseTeamTenantRole from "../../cmmn/team/caseteamtenantrole";
 import User from "../../user";
 import CaseEngineService from "../caseengineservice";
 import { checkJSONResponse, checkResponse } from "../response";
-import Trace from "../../infra/trace";
+import Trace from "../../util/async/trace";
 
 export default class CaseTeamService {
     /**

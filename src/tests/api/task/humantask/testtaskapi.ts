@@ -7,7 +7,7 @@ import CaseService from '../../../../service/case/caseservice';
 import CaseTeamService from '../../../../service/case/caseteamservice';
 import TaskService from '../../../../service/task/taskservice';
 import TestCase from '../../../../test/testcase';
-import Util from '../../../../test/util';
+import Util from '../../../../util/util';
 import User from '../../../../user';
 import WorldWideTestTenant from '../../../setup/worldwidetesttenant';
 import { taskPrinter } from '../../../../cmmn/task';

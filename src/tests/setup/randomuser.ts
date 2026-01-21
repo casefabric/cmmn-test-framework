@@ -1,5 +1,5 @@
 import TenantUser from "../../tenant/tenantuser";
-import Util from "../../test/util";
+import Util from "../../util/util";
 import User from "../../user";
 
 export default class RandomUser extends TenantUser {

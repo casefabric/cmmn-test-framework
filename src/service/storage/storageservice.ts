@@ -1,6 +1,6 @@
 import Case from "../../cmmn/case";
 import Config from "../../config";
-import Trace from "../../infra/trace";
+import Trace from "../../util/async/trace";
 import logger from "../../logger";
 import Tenant from "../../tenant/tenant";
 import WorldWideTestTenant from "../../tests/setup/worldwidetesttenant";

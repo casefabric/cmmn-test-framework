@@ -10,7 +10,7 @@ import CaseEngineResponse from '../../../service/response';
 import TenantService from '../../../service/tenant/tenantservice';
 import TestCase from '../../../test/testcase';
 import { SomeTime } from '../../../test/time';
-import Util from '../../../test/util';
+import Util from '../../../util/util';
 import WorldWideTestTenant from '../../setup/worldwidetesttenant';
 
 const definition = Definitions.CaseTeam;

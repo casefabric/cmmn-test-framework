@@ -1,6 +1,6 @@
 import Case from '../../cmmn/case';
-import Trace from '../../infra/trace';
 import User from '../../user';
+import Trace from '../../util/async/trace';
 import CaseEngineService from '../caseengineservice';
 import { checkJSONResponse } from '../response';
 

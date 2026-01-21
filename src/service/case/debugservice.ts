@@ -1,6 +1,6 @@
 import Case from '../../cmmn/case';
 import CaseEngineEvent from '../../cmmn/event/caseengineevent';
-import Trace from '../../infra/trace';
+import Trace from '../../util/async/trace';
 import Tenant from '../../tenant/tenant';
 import User from '../../user';
 import CaseEngineService from '../caseengineservice';

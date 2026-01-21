@@ -5,7 +5,7 @@ import CaseService from '../../../../service/case/caseservice';
 import TaskFilter from '../../../../service/task/taskfilter';
 import TaskService from '../../../../service/task/taskservice';
 import TestCase from '../../../../test/testcase';
-import Util from '../../../../test/util';
+import Util from '../../../../util/util';
 import WorldWideTestTenant from '../../../setup/worldwidetesttenant';
 
 const definition1 = Definitions.HelloWorld;

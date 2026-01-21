@@ -4,7 +4,7 @@ import CaseEngineService from "../caseengineservice";
 import { checkJSONResponse } from "../response";
 import Definitions from "../../cmmn/definitions/definitions";
 import CaseTeam from "../../cmmn/team/caseteam";
-import Trace from "../../infra/trace";
+import Trace from "../../util/async/trace";
 
 export default class CaseMigrationService {
     /**

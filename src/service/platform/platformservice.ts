@@ -5,7 +5,7 @@ import UserInformation from '../../tenant/userinformation';
 import Config from '../../config';
 import { checkResponse, checkJSONResponse } from '../response';
 import logger from '../../logger';
-import Trace from '../../infra/trace';
+import Trace from '../../util/async/trace';
 
 /**
  * Connection to the /registration APIs of the Case Engine
