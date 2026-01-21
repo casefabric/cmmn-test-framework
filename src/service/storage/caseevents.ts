@@ -17,7 +17,7 @@ import ProcessEvents from "./processevents";
  */
 export default class CaseEvents extends PlanItemEvents {
     static from(user: User, caseInstance: Case): CaseEvents {
-        const fakedItem = new PlanItem(caseInstance.id, caseInstance.caseName, '', 'CaseTask', caseInstance.state, '', '', false, false, 0, caseInstance.lastModified, caseInstance.createdBy);
+        const fakedItem = new PlanItem(caseInstance.id, caseInstance.plan.definitionId, caseInstance.caseName, '', 'CaseTask', caseInstance.state, '', '', false, false, 0, caseInstance.lastModified, caseInstance.createdBy);
         return new CaseEvents(user, fakedItem);
     }
 

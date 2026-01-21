@@ -7,6 +7,7 @@ export default class PlanItem extends CMMNBaseClass {
     /**
      * 
      * @param id Plan item id
+     * @param definitionId Id of the plan item as defined in the case definition
      * @param name Plan item name
      * @param stageId Id of the stage to which this plan item belongs, or empty if it is the CasePlan itself.
      * @param type Type of plan item. E.g. HumanTask, Milestone, Stage, TimerEvent, UserEvent, ProcessTask, CaseTask, CasePlan.
@@ -21,6 +22,7 @@ export default class PlanItem extends CMMNBaseClass {
      */
     constructor(
         public id: string,
+        public definitionId: string,
         public name: string,
         public stageId: string,
         public type: string,
