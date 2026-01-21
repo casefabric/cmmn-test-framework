@@ -21,8 +21,10 @@ export default class Trace {
     /**
      * Returns a string with a stack trace of the moment this Trace was created.
      */
-    toMessage(errorMessage: string): string {
-        return [errorMessage, ...this.lines.slice(this.slice)].join('\n');
+    toMessage(errorMessage: string, fullTrace: boolean = true): string {
+        const lines = [...this.lines.slice(this.slice)];
+        const filteredLines = fullTrace ? lines : lines.filter((error, index, errors) => filter(error, index, errors));
+        return [errorMessage, ...filteredLines].join('\n');
     }
 }
 
@@ -32,4 +34,14 @@ function convertErrorStackToLines(error: unknown) {
     } else {
         return new Array<string>();
     }
+}
+
+export type LineFilter = (line: string, index: number, trace: string[]) => boolean;
+
+function filter(line: string, index: number, trace: string[]): boolean {
+    const awaiterMessage = trace.find(msg => msg.indexOf('at __awaiter (') >= 0);
+    const awaiterLocation = awaiterMessage ? trace.indexOf(awaiterMessage) : -1;
+    const isGeneratorMessage = line.indexOf('Generator.next') >= 0;
+    // console.log(`${index} | AL: ${awaiterLocation}; ${index > 0 && index <= awaiterLocation} / gen: ${isGeneratorMessage}| msg ${line}`);
+    return !isGeneratorMessage && !(index > 0 && index <= awaiterLocation);
 }
