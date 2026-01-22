@@ -4,7 +4,7 @@ import Case from '../../../../../cmmn/case';
 import Definitions from '../../../../../cmmn/definitions/definitions';
 import CaseTeam from '../../../../../cmmn/team/caseteam';
 import CaseTeamUser, { CaseOwner } from '../../../../../cmmn/team/caseteamuser';
-import Trace from '../../../../../infra/trace';
+import Trace from '../../../../../util/async/trace';
 import CaseService from '../../../../../service/case/caseservice';
 import CaseTeamService from '../../../../../service/case/caseteamservice';
 import StartCase from '../../../../../service/case/startcase';

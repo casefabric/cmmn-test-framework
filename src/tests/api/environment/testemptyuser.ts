@@ -1,11 +1,11 @@
 'use strict';
 
 import Definitions from '../../../cmmn/definitions/definitions';
-import { AsyncEngineError } from '../../../infra/asyncerror';
 import CaseService from '../../../service/case/caseservice';
 import TestCase from '../../../test/testcase';
 import User from '../../../user';
 import WorldWideTestTenant from '../../setup/worldwidetesttenant';
+import AsyncEngineError from '../../../service/asyncengineerror';
 
 const definition = Definitions.CaseTeam;
 const worldwideTenant = new WorldWideTestTenant('wwtt-2');

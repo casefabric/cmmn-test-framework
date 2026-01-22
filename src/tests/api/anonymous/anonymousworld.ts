@@ -2,7 +2,7 @@ import PlatformService from "../../../service/platform/platformservice";
 import Tenant from "../../../tenant/tenant";
 import TenantUser from "../../../tenant/tenantuser";
 import User, { admin } from "../../../user";
-import { asyncForEach } from "../../../test/util";
+import { asyncForEach } from "../../../util/util";
 
 /**
  * Simple test tenant to avoid duplicate code

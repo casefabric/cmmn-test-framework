@@ -1,7 +1,7 @@
-import AsyncError from "../../infra/asyncerror";
-import Trace from "../../infra/trace";
 import { PollUntilSuccess } from "../../test/time";
 import User from "../../user";
+import AsyncError from "../../util/async/asyncerror";
+import Trace from "../../util/async/trace";
 import DebugService from "../case/debugservice";
 
 /**

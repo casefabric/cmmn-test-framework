@@ -8,7 +8,7 @@ import CaseService from '../../../../service/case/caseservice';
 import TaskService from '../../../../service/task/taskservice';
 import TestCase from '../../../../test/testcase';
 import WorldWideTestTenant from '../../../setup/worldwidetesttenant';
-import Util from '../../../../test/util';
+import Util from '../../../../util/util';
 
 const definition = Definitions.HelloWorld2;
 const worldwideTenant = new WorldWideTestTenant(Util.generateId('task_count_tenant_'));

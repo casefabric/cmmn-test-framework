@@ -11,7 +11,7 @@ import TaskService from '../../../service/task/taskservice';
 import { assertTask, assertTaskCount, findTask } from '../../../test/caseassertions/task';
 import { assertCaseTeamTenantRole, assertCaseTeamUser } from '../../../test/caseassertions/team';
 import TestCase from '../../../test/testcase';
-import Util from '../../../test/util';
+import Util from '../../../util/util';
 import WorldWideTestTenant from '../../setup/worldwidetesttenant';
 
 const definition = Definitions.CaseTeam;

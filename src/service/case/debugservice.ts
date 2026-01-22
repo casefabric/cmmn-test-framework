@@ -1,10 +1,10 @@
 import Case from '../../cmmn/case';
 import CaseEngineEvent from '../../cmmn/event/caseengineevent';
-import Trace from '../../infra/trace';
+import ModelEvent from '../../cmmn/event/model/modelevent';
 import Tenant from '../../tenant/tenant';
 import User from '../../user';
+import Trace from '../../util/async/trace';
 import CaseEngineService from '../caseengineservice';
-import { checkJSONResponse } from '../response';
 
 export default class DebugService {
     /**
@@ -17,9 +17,9 @@ export default class DebugService {
         return json;
     }
 
-    static async getParsedEvents(model: string | Case | Tenant, user?: User, trace: Trace = new Trace()): Promise<Array<CaseEngineEvent>> {
+    static async getParsedEvents(model: string | Case | Tenant, user?: User, trace: Trace = new Trace()): Promise<ModelEvent[]> {
         const response = await this.getEvents(model, user);
-        return checkJSONResponse(response, 'Expecting model events', 200, [CaseEngineEvent], trace);
+        return response.validateArray(CaseEngineEvent, 'Expecting model events', 200, trace).then(events => events.map(event => event.content));
     }
 
     static async forceRecovery(user: User, model: string | Case | Tenant) {

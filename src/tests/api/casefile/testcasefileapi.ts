@@ -6,7 +6,7 @@ import CaseFileService from '../../../service/case/casefileservice';
 import CaseService from '../../../service/case/caseservice';
 import assertCaseFileContent from '../../../test/caseassertions/file';
 import TestCase from '../../../test/testcase';
-import Util from '../../../test/util';
+import Util from '../../../util/util';
 import WorldWideTestTenant from '../../setup/worldwidetesttenant';
 
 const definition = Definitions.CaseFile;

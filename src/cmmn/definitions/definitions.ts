@@ -1,7 +1,7 @@
-import Trace from "../../infra/trace";
 import RepositoryService from "../../service/case/repositoryservice";
 import Tenant from "../../tenant/tenant";
 import User from "../../user";
+import Trace from "../../util/async/trace";
 
 export default class Definitions {
     public static readonly BootstrapCaseFileEvents = new Definitions('bootstrap-casefile-events.xml');

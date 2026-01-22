@@ -6,6 +6,9 @@ import DebugService from '../../../service/case/debugservice';
 import PlatformService from '../../../service/platform/platformservice';
 import TestCase from '../../../test/testcase';
 import WorldWideTestTenant from '../../setup/worldwidetesttenant';
+import { DebugEvent } from '../../../cmmn/event/model/debugevent';
+import CaseDefinitionApplied from '../../../cmmn/event/model/case/definition/casedefinitionapplied';
+import EngineVersionChanged from '../../../cmmn/event/model/engineversionchanged';
 
 const definition = Definitions.HelloWorld;
 const worldwideTenant = new WorldWideTestTenant();
@@ -29,12 +32,13 @@ export default class TestVersion extends TestCase {
         const caseInstance = await CaseService.startCase(user, { tenant, definition }).then(id => CaseService.getCase(user, id));
 
         // Retrieve the initial set of events.
-        const firstEventBatch = (await DebugService.getParsedEvents(caseInstance.id, user)).filter((event: any) => event.type !== 'DebugEvent');
+        const firstEventBatch = (await DebugService.getParsedEvents(caseInstance.id, user)).filter(event => !event.hasType(DebugEvent));
+        console.log("Found " + firstEventBatch.length + " events in first batch");
 
         // Compare engine version from engine versus the one that the case instance thinks it has. They MUST be the same ;)
-        const caseDefinitionApplied = firstEventBatch.find((event: any) => event.type === 'CaseDefinitionApplied');
+        const caseDefinitionApplied = firstEventBatch.find(event => event instanceof CaseDefinitionApplied) as CaseDefinitionApplied;
         const v1 = JSON.stringify(engineVersion, undefined, 2);
-        const v2 = JSON.stringify(caseDefinitionApplied?.content.engineVersion, undefined, 2);
+        const v2 = JSON.stringify(caseDefinitionApplied.engineVersion, undefined, 2);
         if (v1 !== v2) {
             throw new Error(`Unexpected mismatch between engine's version of version and case instance's version of it:\nEngine version: ${v1}\nCase Instance Version: ${v2} `);
         }
@@ -42,7 +46,7 @@ export default class TestVersion extends TestCase {
         // Retrieve discretionaries and see if there are any additional events. It is either 1 or 0, depending whether debug flag is on.
         await CaseService.getDiscretionaryItems(user, caseInstance);
         await CaseService.getCase(user, caseInstance); // Also get the case, in order to make it await processing of additional events through CaseLastModified header
-        const secondEventBatch = (await DebugService.getParsedEvents(caseInstance.id, user)).filter((event: any) => event.type !== 'DebugEvent');
+        const secondEventBatch = (await DebugService.getParsedEvents(caseInstance.id, user)).filter(event => !event.hasType(DebugEvent));
 
         // Force recovery, so that the engine version state is removed from the case instance and set again, and tested against the actual engine version.
         await DebugService.forceRecovery(user, caseInstance);
@@ -51,11 +55,11 @@ export default class TestVersion extends TestCase {
         //  there is no EngineVersionChanged event either.
         await CaseService.getDiscretionaryItems(user, caseInstance);
         await CaseService.getCase(user, caseInstance); // Also get the case, in order to make it await processing of additional events through CaseLastModified header
-        const thirdEventBatch = (await DebugService.getParsedEvents(caseInstance.id, user)).filter((event: any) => event.type !== 'DebugEvent');
+        const thirdEventBatch = (await DebugService.getParsedEvents(caseInstance.id, user)).filter(event => !event.hasType(DebugEvent));
 
         console.log(`Event batch sizes: ${firstEventBatch.length}, ${secondEventBatch.length}, ${thirdEventBatch.length}`);
 
-        if (thirdEventBatch.find((event: any) => event.type === 'EngineVersionChanged')) {
+        if (thirdEventBatch.find(event => event instanceof EngineVersionChanged)) {
             throw new Error(`Not expecting an EngineVersionChanged event!`);
         }
 

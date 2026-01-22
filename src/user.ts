@@ -11,6 +11,9 @@ export default class User {
     static NONE = new User('');
 
     private token_property: string = '';
+    public userId: string;
+    public origin: string = ''; // This field is filled inside the engine to indicate the origin of the user
+
     /**
      * Information about the user as known within the case service
      * Is only available upon login of the user
@@ -21,7 +24,15 @@ export default class User {
      * 
      * @param id Id of the user, with which is must be registered within the case system
      */
-    constructor(public id: string) { }
+    constructor(public id: string) { 
+        this.userId = id;
+    }
+
+    init_json() {
+        if (this.userId) {
+            this.id = this.userId;
+        }
+    }
 
     toString() {
         return this.id;

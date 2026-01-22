@@ -5,8 +5,8 @@ import CaseTeamTenantRole from '../../cmmn/team/caseteamtenantrole';
 import CaseTeamService from '../../service/case/caseteamservice';
 import User from '../../user';
 import CaseTeamGroup from '../../cmmn/team/caseteamgroup';
-import Trace from '../../infra/trace';
-import AsyncError from '../../infra/asyncerror';
+import Trace from '../../util/async/trace';
+import AsyncError from '../../util/async/asyncerror';
 
 function findMember(team: CaseTeam, expectedMember: CaseTeamUser) {
     return team.users.find(member => member.userId === expectedMember.userId);

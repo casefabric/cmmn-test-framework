@@ -1,9 +1,8 @@
 import Case from "../../cmmn/case";
 import PlanItemHistory from "../../cmmn/planitemhistory";
-import Trace from "../../infra/trace";
 import User from "../../user";
+import Trace from "../../util/async/trace";
 import CaseEngineService from "../caseengineservice";
-import { checkJSONResponse } from "../response";
 
 export default class CaseHistoryService {
     /**
@@ -13,7 +12,7 @@ export default class CaseHistoryService {
      */
     static async getCasePlanHistory(user: User, caseId: Case | string, expectedStatusCode: number = 200, msg = `GetCasePlanHistory is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()): Promise<Array<PlanItemHistory>> {
         const response = await CaseEngineService.get(`/cases/${caseId}/history/planitems`, user);
-        return checkJSONResponse(response, msg, expectedStatusCode, [PlanItemHistory], trace);
+        return response.validateArray(PlanItemHistory, msg, expectedStatusCode, trace);
     }
 
     /**
@@ -24,6 +23,6 @@ export default class CaseHistoryService {
      */
     static async getPlanItemHistory(user: User, caseId: Case | string, planItemId: string, expectedStatusCode: number = 200, msg = `GetPlanItemHistory is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()): Promise<Array<PlanItemHistory>> {
         const response = await CaseEngineService.get(`/cases/${caseId}/history/planitems/${planItemId}`, user);
-        return checkJSONResponse(response, msg, expectedStatusCode, [PlanItemHistory], trace);
+        return response.validateArray(PlanItemHistory, msg, expectedStatusCode, trace);
     }
 }

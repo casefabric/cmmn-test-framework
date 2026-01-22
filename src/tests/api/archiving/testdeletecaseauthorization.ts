@@ -15,7 +15,7 @@ import StorageService from '../../../service/storage/storageservice';
 import Tenant from '../../../tenant/tenant';
 import { TenantOwner } from '../../../tenant/tenantuser';
 import TestCase from '../../../test/testcase';
-import Util from '../../../test/util';
+import Util from '../../../util/util';
 import WorldWideTestTenant from '../../setup/worldwidetesttenant';
 
 const worldwideTenant = new WorldWideTestTenant();

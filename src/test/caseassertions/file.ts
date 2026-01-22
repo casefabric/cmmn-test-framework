@@ -6,8 +6,8 @@ import { pathReader } from '../../cmmn/casefile';
 import Config from '../../config';
 import logger from '../../logger';
 import { PollUntilSuccess } from '../time';
-import AsyncError from '../../infra/asyncerror';
-import Trace from '../../infra/trace';
+import AsyncError from '../../util/async/asyncerror';
+import Trace from '../../util/async/trace';
 
 /**
  * Read the case instance's case file on behalf of the user and verify that the element at the end of the path matches the expectedContent.

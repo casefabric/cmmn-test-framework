@@ -1,6 +1,5 @@
 import Case from "../../cmmn/case";
 import PlanItem from "../../cmmn/planitem";
-import logger from "../../logger";
 
 export default class Path {
     static from(path: Path | string): Path {
@@ -15,13 +14,26 @@ export default class Path {
         }
     }
 
+    static EMPTY = new Path('');
+
     public child: Path | undefined = undefined;
     public name: string = '';
     public index: number = 0;
     public part: string = '';
-    constructor(private raw: string, slashedParts?: string[]) {
+    protected constructor(public readonly raw: string, slashedParts?: string[]) {
+        const partReader = (part: string) => {
+            part = part.trim();
+            const decoded = decodeURIComponent(part);
+            const slash = decoded.indexOf('/');
+            if (slash > 0 && slash < decoded.length - 1) {
+                return decoded;
+            } else {
+                return part;
+            }
+        }
+
         if (!slashedParts) {
-            slashedParts = raw.split('/').map(part => part.trim()).filter(part => part.length > 0);
+            slashedParts = raw.split('/').map(partReader).filter(part => part.length > 0);
         }
         if (slashedParts.length > 0) {
             this.part = slashedParts[0];

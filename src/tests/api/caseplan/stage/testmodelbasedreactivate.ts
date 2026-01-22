@@ -46,7 +46,7 @@ export default class TestModelBasedReactivate extends TestCase {
 
         await caseTree.runAssertions();
 
-        const path = new Path('/Stage With Fault Handling/Failure Handling[0]/Retry/Try again');
+        const path = Path.from('/Stage With Fault Handling/Failure Handling[0]/Retry/Try again');
         const tryAgain = path.resolve(caseTree.caseInstance);
 
         // Triggering the event to try again should lead to one more failure handling stage
@@ -60,7 +60,7 @@ export default class TestModelBasedReactivate extends TestCase {
         await CaseFileService.updateCaseFileItem(user, caseInstance, 'data', mock.success_data);
 
         // Now reactivate the case plan in the top level case
-        const tryAgain2 = new Path('/Stage With Fault Handling/Failure Handling[1]/Retry/Try again').resolve(caseTree.caseInstance);
+        const tryAgain2 = Path.from('/Stage With Fault Handling/Failure Handling[1]/Retry/Try again').resolve(caseTree.caseInstance);
         // Triggering the second instance of the event should reactivate the call
         await CasePlanService.raiseEvent(user, caseInstance, '' + tryAgain2?.id);
 

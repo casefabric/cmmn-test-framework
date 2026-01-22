@@ -1,11 +1,10 @@
-import User from '../../user';
-import CaseEngineService from '../caseengineservice';
+import Config from '../../config';
+import logger from '../../logger';
 import Tenant from '../../tenant/tenant';
 import UserInformation from '../../tenant/userinformation';
-import Config from '../../config';
-import { checkResponse, checkJSONResponse } from '../response';
-import logger from '../../logger';
-import Trace from '../../infra/trace';
+import User from '../../user';
+import Trace from '../../util/async/trace';
+import CaseEngineService from '../caseengineservice';
 
 /**
  * Connection to the /registration APIs of the Case Engine
@@ -28,7 +27,7 @@ export default class PlatformService {
                 return response;
             }
         }
-        return checkResponse(response, errorMsg, expectedStatusCode, trace);
+        return response.validate(errorMsg, expectedStatusCode, trace);
     }
 
     /**
@@ -39,7 +38,7 @@ export default class PlatformService {
      */
     static async disableTenant(user: User, tenant: Tenant | string, expectedStatusCode: number = 204, msg = `Disabling the tenant ${tenant} was not expected to succeed`, trace: Trace = new Trace()) {
         const response = await CaseEngineService.put(`/platform/${tenant}/disable`, user);
-        return checkResponse(response, msg, expectedStatusCode, trace);
+        return response.validate(msg, expectedStatusCode, trace);
     }
 
     /**
@@ -50,7 +49,7 @@ export default class PlatformService {
      */
     static async enableTenant(user: User, tenant: Tenant | string, expectedStatusCode: number = 204, msg = `Enabling the tenant ${tenant} was not expected to succeed`, trace: Trace = new Trace()) {
         const response = await CaseEngineService.put(`/platform/${tenant}/enable`, user);
-        return checkResponse(response, msg, expectedStatusCode, trace);
+        return response.validate(msg, expectedStatusCode, trace);
     }
 
     getDisabledTenants(user: User, expectedStatusCode: number = 200) {
@@ -65,7 +64,7 @@ export default class PlatformService {
     static async getUserInformation(user: User, trace: Trace = new Trace()): Promise<UserInformation> {
         const url = '/platform/user';
         const response = await CaseEngineService.get(url, user);
-        return checkJSONResponse(response, 'Expected valid user information', 200, UserInformation, trace);
+        return response.validateObject(UserInformation, 'Expected valid user information', 200, trace);
     }
 
     /**
@@ -74,7 +73,7 @@ export default class PlatformService {
     static async getHealth(trace: Trace = new Trace()) {
         const url = '/health';
         const response = await CaseEngineService.get(url, undefined);
-        return checkJSONResponse(response, 'Expected proper health information', 200, undefined, trace);
+        return response.validateObject(Object, 'Expected proper health information', 200, trace);
     }
 
     /**
@@ -83,6 +82,18 @@ export default class PlatformService {
     static async getVersion(trace: Trace = new Trace()) {
         const url = '/version';
         const response = await CaseEngineService.get(url, undefined);
-        return checkJSONResponse(response, 'Expected proper version information', 200, undefined, trace);
+        return response.validateObject(EngineVersion, 'Expected proper version information', 200, trace);
     }
 }
+
+export class EngineVersion {
+    public organization!: string;
+    public builtAtMillis!: number;
+    public name!: string;
+    public gitUncommittedChanges!: string;
+    public description!: string;
+    public gitHeadCommit!: string;
+    public gitCurrentBranch!: string;
+    public version!: string;
+    public builtAtString!: string;
+}    

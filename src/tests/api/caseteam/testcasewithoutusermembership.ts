@@ -9,7 +9,7 @@ import ConsentGroup from '../../../service/consentgroup/consentgroup';
 import { ConsentGroupOwner } from '../../../service/consentgroup/consentgroupmember';
 import ConsentGroupService from '../../../service/consentgroup/consentgroupservice';
 import TestCase from '../../../test/testcase';
-import Util from '../../../test/util';
+import Util from '../../../util/util';
 import User, { admin } from '../../../user';
 import RandomTenant from '../../setup/randomtenant';
 import RandomUser from '../../setup/randomuser';

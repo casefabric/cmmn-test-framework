@@ -1,9 +1,9 @@
 import fetch from 'isomorphic-fetch';
 import Config from '../../config';
-import AsyncError from '../../infra/asyncerror';
-import Trace from '../../infra/trace';
 import logger from '../../logger';
 import User from '../../user';
+import AsyncError from '../../util/async/asyncerror';
+import Trace from '../../util/async/trace';
 
 export default class TokenService {
     /**

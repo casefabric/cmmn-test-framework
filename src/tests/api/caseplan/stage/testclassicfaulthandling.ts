@@ -36,13 +36,13 @@ export default class TestClassicFaultHandling extends TestCase {
             console.log(`- ${item.type}[${item.name}.${item.index}] | state = ${item.currentState} | transition = ${item.transition}`);
         });
 
-        const firstRepeatingCall = new Path('Repeating Call[0]');
-        const firstFailureHandlingStage = new Path('Failure Handling[0]');
-        const firstTryAgain = new Path('Failure Handling[0]/Try Again');
-        const secondRepeatingCall = new Path('Repeating Call[1]');
-        const secondFailureHandlingStage = new Path('Failure Handling[1]');
-        const secondTryAgain = new Path('Failure Handling[1]/Try Again');
-        const thirdRepeatingCall = new Path('Repeating Call[2]');
+        const firstRepeatingCall = Path.from('Repeating Call[0]');
+        const firstFailureHandlingStage = Path.from('Failure Handling[0]');
+        const firstTryAgain = Path.from('Failure Handling[0]/Try Again');
+        const secondRepeatingCall = Path.from('Repeating Call[1]');
+        const secondFailureHandlingStage = Path.from('Failure Handling[1]');
+        const secondTryAgain = Path.from('Failure Handling[1]/Try Again');
+        const thirdRepeatingCall = Path.from('Repeating Call[2]');
 
         // Running the case should lead to a Failed task, and also to a first instance of Failure Handling with its Try Again event.
         const caseTree = CaseAssertions.from(user, caseInstance);

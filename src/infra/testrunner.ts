@@ -1,5 +1,5 @@
 import TestCase from "../test/testcase";
-import StackTraceError from "./stacktraceerror";
+import StackTraceError from "../util/async/stacktraceerror";
 
 export default class TestRunner {
     name: string = this.testClass.name;

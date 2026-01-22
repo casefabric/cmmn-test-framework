@@ -1,12 +1,11 @@
 import Case from "../../cmmn/case";
 import Config from "../../config";
-import Trace from "../../infra/trace";
+import Trace from "../../util/async/trace";
 import logger from "../../logger";
 import Tenant from "../../tenant/tenant";
 import WorldWideTestTenant from "../../tests/setup/worldwidetesttenant";
 import User from "../../user";
 import CaseEngineService from "../caseengineservice";
-import { checkResponse } from "../response";
 
 /**
  * Connection to the /storage APIs of the Case Engine
@@ -21,7 +20,7 @@ export default class StorageService {
     static async archiveCase(user: User, caseInstance: Case | string, expectedStatusCode: number = 202, errorMsg = `ArchiveCase is not expected to succeed for user ${user} on case ${caseInstance}`, trace: Trace = new Trace()) {
         if (Config.PlatformService.log) logger.debug(`Archiving case ${caseInstance}`);
         const response = await CaseEngineService.put(`/storage/case/${caseInstance}/archive`, user);
-        return checkResponse(response, errorMsg, expectedStatusCode, trace);
+        return response.validate(errorMsg, expectedStatusCode, trace);
     }
 
     /**
@@ -33,7 +32,7 @@ export default class StorageService {
      static async restoreCase(user: User, caseInstance: Case | string, expectedStatusCode: number = 202, errorMsg = `RestoreCase is not expected to succeed for user ${user} on case ${caseInstance}`, trace: Trace = new Trace()) {
         if (Config.PlatformService.log) logger.debug(`Restoring case ${caseInstance}`);
         const response = await CaseEngineService.put(`/storage/case/${caseInstance}/restore`, user);
-        return checkResponse(response, errorMsg, expectedStatusCode, trace);
+        return response.validate(errorMsg, expectedStatusCode, trace);
     }
 
     /**
@@ -45,7 +44,7 @@ export default class StorageService {
      static async deleteCase(user: User, caseInstance: Case | string, expectedStatusCode: number = 202, errorMsg = `DeleteCase is not expected to succeed for user ${user} on case ${caseInstance}`, trace: Trace = new Trace()) {
         if (Config.PlatformService.log) logger.debug(`Deleting case ${caseInstance}`);
         const response = await CaseEngineService.delete(`/storage/case/${caseInstance}`, user);
-        return checkResponse(response, errorMsg, expectedStatusCode, trace);
+        return response.validate(errorMsg, expectedStatusCode, trace);
     }
 
     /**
@@ -60,7 +59,6 @@ export default class StorageService {
         if (response.ok) {
             WorldWideTestTenant.reset(tenant);
         }
-        return checkResponse(response, errorMsg, expectedStatusCode, trace);
+        return response.validate(errorMsg, expectedStatusCode, trace);
     }
-
 }

@@ -8,7 +8,7 @@ import TaskService from "../../../service/task/taskservice";
 import TenantService from "../../../service/tenant/tenantservice";
 import { findTask } from "../../../test/caseassertions/task";
 import TestCase from "../../../test/testcase";
-import Util from "../../../test/util";
+import Util from "../../../util/util";
 import WorldWideTestTenant from "../../setup/worldwidetesttenant";
 
 const definition = Definitions.HelloWorld;

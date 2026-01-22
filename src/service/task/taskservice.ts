@@ -1,12 +1,12 @@
 import Case from '../../cmmn/case';
 import PlanItem from '../../cmmn/planitem';
 import Task from '../../cmmn/task';
-import AsyncError from '../../infra/asyncerror';
-import Trace from '../../infra/trace';
+import AsyncError from '../../util/async/asyncerror';
+import Trace from '../../util/async/trace';
 import User from '../../user';
 import CaseEngineService from '../caseengineservice';
-import { checkJSONResponse, checkResponse } from '../response';
 import TaskFilter from './taskfilter';
+import TaskCount from './taskcount';
 
 /**
  * Base class for invoking the Case Engine Tasks API (http://localhost:2027/tasks)
@@ -28,7 +28,7 @@ export default class TaskService {
             msg = msg;
         }
         const response = await CaseEngineService.put(`tasks/${taskId}/claim`, user);
-        return checkResponse(response, msg, expectedStatusCode, trace);
+        return response.validate(msg, expectedStatusCode, trace);
     }
 
     /**
@@ -44,7 +44,7 @@ export default class TaskService {
             msg = `Task '${taskName}' with id ${taskId} was revoked succesfully, but this was not expected`;
         }
         const response = await CaseEngineService.put(`tasks/${taskId}/revoke`, user);
-        return checkResponse(response, msg, expectedStatusCode, trace);
+        return response.validate(msg, expectedStatusCode, trace);
     }
 
     /**
@@ -61,7 +61,7 @@ export default class TaskService {
             msg = `Task '${taskName}' with id ${taskId} was assigned successfully, but this was not expected`;
         }
         const response = await CaseEngineService.put(`tasks/${taskId}/assign`, user, { assignee: assignee.id });
-        return checkResponse(response, msg, expectedStatusCode, trace);
+        return response.validate(msg, expectedStatusCode, trace);
     }
 
     /**
@@ -78,7 +78,7 @@ export default class TaskService {
             msg = `Task '${taskName}' with id ${taskId} was delegated succesfully, but this was not expected`;
         }
         const response = await CaseEngineService.put(`tasks/${taskId}/delegate`, user, { assignee: assignee.id });
-        return checkResponse(response, msg, expectedStatusCode, trace);
+        return response.validate(msg, expectedStatusCode, trace);
     }
 
     /**
@@ -95,7 +95,7 @@ export default class TaskService {
             msg = `Task '${taskName}' with id ${taskId} was completed succesfully, but this was not expected`;
         }
         const response = await CaseEngineService.post(`tasks/${taskId}/complete`, user, taskOutput);
-        return checkResponse(response, msg, expectedStatusCode, trace);
+        return response.validate(msg, expectedStatusCode, trace);
     }
 
     /**
@@ -112,7 +112,7 @@ export default class TaskService {
             msg = `Task output for '${taskName}' with id ${taskId} was validated succesfully, but this was not expected`;
         }
         const response = await CaseEngineService.post(`tasks/${taskId}`, user, taskOutput);
-        const res = await checkResponse(response, msg, expectedStatusCode, trace);
+        const res = await response.validate(msg, expectedStatusCode, trace);
         if (response.ok) {
             const json = await response.json();
             return json;
@@ -136,7 +136,7 @@ export default class TaskService {
             msg = `Task output for '${taskName}' with id ${taskId} was saved succesfully, but this was not expected`;
         }
         const response = await CaseEngineService.put(`tasks/${taskId}`, user, taskOutput);
-        return checkResponse(response, msg, expectedStatusCode, trace);
+        return response.validate(msg, expectedStatusCode, trace);
     }
 
     /**
@@ -151,7 +151,7 @@ export default class TaskService {
             msg = `GetTask is not expected to succeed for user ${user} on task ${taskId}`;
         }
         const response = await CaseEngineService.get(`tasks/${taskId}`, user);
-        return await checkJSONResponse(response, msg, expectedStatusCode, Task, trace);
+        return await response.validateObject(Task, msg, expectedStatusCode, trace);
     }
 
     /**
@@ -162,7 +162,7 @@ export default class TaskService {
     static async getCaseTasks(user: User, caseId: Case | string, includeSubCaseTasks: boolean = false, expectedStatusCode: number = 200, msg = `GetCaseTasks is not expected to succeed for member ${user} in case ${caseId}`, trace: Trace = new Trace()): Promise<Array<Task>> {
         const optionalSubcaseParameter = includeSubCaseTasks ? '?includeSubCaseTasks=true' : '';
         const response = await CaseEngineService.get(`/tasks/case/${caseId}${optionalSubcaseParameter}`, user);
-        return await checkJSONResponse(response, msg, expectedStatusCode, [Task], trace);
+        return response.validateArray(Task, msg, expectedStatusCode, trace);
     }
 
     /**
@@ -190,7 +190,7 @@ export default class TaskService {
      */
     static async getTasks(user: User, filter?: TaskFilter, expectedStatusCode: number = 200, msg = `GetTasks is not expected to succeed for member ${user}`, trace: Trace = new Trace()): Promise<Array<Task>> {
         const response = await CaseEngineService.get('/tasks', user, filter);
-        return await checkJSONResponse(response, msg, expectedStatusCode, [Task], trace);
+        return response.validateArray(Task, msg, expectedStatusCode, trace);
     }
 
     /**
@@ -201,7 +201,7 @@ export default class TaskService {
      */
     static async countTasks(user: User, filter?: TaskFilter, expectedStatusCode: number = 200, msg = `CountTasks is not expected to succeed for member ${user}`, trace: Trace = new Trace()): Promise<TaskCount> {
         const response = await CaseEngineService.get('/tasks/user/count', user, filter);
-        return await checkJSONResponse(response, msg, expectedStatusCode, undefined, trace);
+        return response.validateObject(TaskCount, msg, expectedStatusCode, trace);
     }
 }
 
@@ -211,10 +211,4 @@ function getTaskId(task: Task | PlanItem | string) {
 
 function getTaskName(task: Task | PlanItem | string) {
     return (typeof (task) === 'string') ? task : task instanceof Task ? task.taskName : task.name;
-}
-
-
-export interface TaskCount {
-    claimed: number;
-    unclaimed: number;
 }

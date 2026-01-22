@@ -8,7 +8,7 @@ import CaseFileService from '../../../service/case/casefileservice';
 import CasePlanService from '../../../service/case/caseplanservice';
 import CaseService from '../../../service/case/caseservice';
 import TestCase from '../../../test/testcase';
-import { asyncForEach } from '../../../test/util';
+import { asyncForEach } from '../../../util/util';
 import WorldWideTestTenant from '../../setup/worldwidetesttenant';
 
 const definition = Definitions.Documentation;
