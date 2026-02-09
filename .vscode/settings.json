@@ -1,0 +1,17 @@
+{
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit"
+    },
+    "typescript.preferences.importModuleSpecifier": "relative",
+    "[css]": {
+        "editor.formatOnSave": false
+    },
+    "files.associations": {
+        "tsconfig.json": "plaintext", // Treat tsconfig.json as plaintext to disable formatting
+    },
+    "[plaintext]": {
+        "editor.formatOnSave": false // Disable formatting for plaintext files
+    },
+    "files.insertFinalNewline": true,
+}
