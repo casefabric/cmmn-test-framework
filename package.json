@@ -1,16 +1,15 @@
 {
   "scripts": {
-    "test": "node ./dist/app.js",
+    "test": "node ./dist/tests/app.js",
     "rebuild-index": "node ./indexgenerator/generate-index.mjs",
     "build": "tsc",
     "clean": "shx rm -rf ./dist",
-    "deploy-source": "ts-node-dev --transpile-only ./src/deploy-source.ts",
-    "try": "ts-node-dev --transpile-only ./src/app.ts",
+    "try": "ts-node-dev --transpile-only ./tests/app.ts",
     "dev": "npm run try",
-    "prepare-publish": "npm run clean && npm run build && shx cp ./src/@casefabric-typescript-client-package.json ./dist/package.json && shx cp README.md ./dist",
-    "publishLocal": "npm run prepare-publish && cd ./dist & npm pack",
-    "publishRemote": "npm run prepare-publish & cd ./dist & npm publish --access public",
-    "prod": "npm run build & node ./dist/app.js"
+    "prepare-publish": "npm run clean && npm run build && shx cp ./src/@casefabric-typescript-client-package.json ./dist/src/package.json && shx cp -r ./dist/@types/src ./dist/src/@types && shx cp README.md ./dist/src",
+    "publishLocal": "npm run prepare-publish && cd ./dist/src & npm pack",
+    "publishRemote": "npm run prepare-publish & cd ./dist/src & npm publish --access public",
+    "prod": "npm run build & node ./dist/tests/app.js"
   },
   "dependencies": {
     "express": "^4.17.1",

@@ -1,5 +1,5 @@
 import Config, { MinimalLoggingConfig, NoLoggingConfig } from './config';
-import WorldWideTestTenant from './tests/setup/worldwidetesttenant';
+import WorldWideTestTenant from '../tests/setup/worldwidetesttenant';
 
 const TIMEOUT_PARAMETER = '-t';
 const LOGGING_PARAMETER = '-l'
