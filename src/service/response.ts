@@ -110,8 +110,12 @@ export default class CaseEngineResponse {
     async xml() {
         const xml = await this.text();
         const parser = new DOMParser();
-        const document = parser.parseFromString(xml, 'application/xml');
-        return document;
+        try {
+            return parser.parseFromString(xml, 'application/xml');
+        }
+        catch (e:any) {
+            throw new AsyncEngineError(new Trace(), `Failed to parse response as XML: ${e.message}`, this);
+        }
     }
 
     async text() {

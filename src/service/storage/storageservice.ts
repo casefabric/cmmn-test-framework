@@ -3,7 +3,7 @@ import Config from "../../config";
 import Trace from "../../util/async/trace";
 import logger from "../../logger";
 import Tenant from "../../tenant/tenant";
-import WorldWideTestTenant from "../../tests/setup/worldwidetesttenant";
+import WorldWideTestTenant from "../../../tests/setup/worldwidetesttenant";
 import User from "../../user";
 import CaseEngineService from "../caseengineservice";
 
