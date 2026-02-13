@@ -102,6 +102,7 @@ import TestHelloworld from '../tests/helloworld/testhelloworld';
 import TestIncidentManagement from '../tests/incidentmanagement/incidentmanagement';
 import TestTravelRequest from '../tests/travelrequest/testtravelrequest';
 import TestRunner from './testrunner';
+import TestCorrelationId from '../tests/api/environment/testcorrelationid';
 
 export default class TestClasses {
     static getTestClass(name: string): Function {
@@ -207,6 +208,7 @@ const AllTests: Array<Function> = [
     , TestEmptyUser
     , TestSwagger
     , TestHelloworld
+    , TestCorrelationId
     , TestVersion
     , TestTenantRegistration
     , TestConsentGroupAPI

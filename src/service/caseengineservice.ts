@@ -4,6 +4,8 @@ import logger from '../logger';
 import User from '../user';
 import QueryFilter, { extendURL } from './queryfilter';
 import CaseEngineResponse from './response';
+import CaseEngineRequest from './request';
+import Util from '../util/util';
 
 class CaseEngineHeaders {
     public values: any = new Object();
@@ -17,6 +19,12 @@ BaseHeaders.setHeader('Content-Type', 'application/json');
 
 export default class CaseEngineService {
     static calls = 0;
+
+    static hooks: RequestHook[] = [];
+
+    static registerHook(hook: RequestHook) {
+
+    }
 
     /**
      * Returns base headers (copying case-last-modified and tenant-last-modified) and 
@@ -117,6 +125,8 @@ export default class CaseEngineService {
             logger.debug(body);
         }
 
+        const request = new CaseEngineRequest(user, url, method, headers, body);
+        this.hooks.forEach(hook => hook.before(request));
         const response = await fetch(url, { method, headers, body }).then(response => new CaseEngineResponse(response)).then(r => this.updateCaseLastModified(r));
 
         if (!response.ok && Config.CaseEngine.log.response.error) {
@@ -202,4 +212,32 @@ function getHeaders(user: User | undefined, from: any = {}) {
     }
 
     return headers;
+}
+
+export abstract class RequestHook {
+    /**
+     * This method is invoked just before the request is sent
+     */
+    abstract before(request: CaseEngineRequest): void;
+
+    /**
+     * This method is invoked with the response, directly after it has been received.
+     */
+    after(request: CaseEngineRequest, response: CaseEngineResponse): void {        
+    }
+
+    register() {
+        if (CaseEngineService.hooks.indexOf(this) < 0) {
+            console.log("Adding hook");
+            CaseEngineService.hooks.push(this);
+        };
+    }
+
+    remove() {
+        const arrayIndex = CaseEngineService.hooks.indexOf(this);
+        if (arrayIndex > -1) {
+            console.log("Removing hook");
+            CaseEngineService.hooks.splice(arrayIndex, 1);
+        }
+    }
 }
