@@ -4,9 +4,11 @@ import logger from '../logger';
 import User from '../user';
 import QueryFilter, { extendURL } from './queryfilter';
 import CaseEngineResponse from './response';
+import CaseEngineRequest from './request';
+import Util from '../util/util';
 
 class CaseEngineHeaders {
-    public values:any = new Object();
+    public values: any = new Object();
     setHeader(name: string, value: any) {
         this.values[name] = value;
     }
@@ -17,6 +19,12 @@ BaseHeaders.setHeader('Content-Type', 'application/json');
 
 export default class CaseEngineService {
     static calls = 0;
+
+    static hooks: RequestHook[] = [];
+
+    static registerHook(hook: RequestHook) {
+
+    }
 
     /**
      * Returns base headers (copying case-last-modified and tenant-last-modified) and 
@@ -30,7 +38,15 @@ export default class CaseEngineService {
     }
 
     static get baseURL() {
-        return Config.CaseEngine.url;
+        if (!Config.CaseEngine.urls || Config.CaseEngine.urls.length === 0) {
+            return Config.CaseEngine.url;
+        } else {
+            const urls = [...Config.CaseEngine.urls];
+            const index = Math.floor(Math.random() * urls.length);
+            console.log(`Taking ${index + 1} of ${urls.length}: ${urls[index]}`);
+            const url = urls[index];
+            return url;
+        }
     }
 
     static updateCaseLastModified(response: CaseEngineResponse) {
@@ -55,11 +71,11 @@ export default class CaseEngineService {
 
     static async post(url: string, user: User, request?: object, method = 'POST') {
         const body = (typeof request === 'string') ? `"${request}"` : request ? JSON.stringify(request, undefined, 2) : undefined;
-        return this.fetch(user, url, method, getHeaders(user), body);    
+        return this.fetch(user, url, method, getHeaders(user), body);
     }
 
     static async postXML(url: string, user: User, request: Document, method = 'POST'): Promise<CaseEngineResponse> {
-        const headers = getHeaders(user, { 'Content-Type': 'application/xml'});
+        const headers = getHeaders(user, { 'Content-Type': 'application/xml' });
         const body = request.toString();
         return this.fetch(user, url, method, headers, body);
     }
@@ -86,12 +102,12 @@ export default class CaseEngineService {
     }
 
     static async getXml(url: string, user: User): Promise<Document> {
-        const headers = getHeaders(user, {'Content-Type': 'text/xml'});
+        const headers = getHeaders(user, { 'Content-Type': 'text/xml' });
         return (await this.get(url, user, undefined, headers)).xml();
     }
 
     static async fetch(user: User | undefined, url: string, method: string, headers?: any, body?: string): Promise<CaseEngineResponse> {
-        if (! headers) {
+        if (!headers) {
             headers = getHeaders(user);
         }
 
@@ -108,10 +124,12 @@ export default class CaseEngineService {
         if (Config.CaseEngine.log.request.body && body) {
             logger.debug(body);
         }
- 
+
+        const request = new CaseEngineRequest(user, url, method, headers, body);
+        this.hooks.forEach(hook => hook.before(request));
         const response = await fetch(url, { method, headers, body }).then(response => new CaseEngineResponse(response)).then(r => this.updateCaseLastModified(r));
-        
-        if (! response.ok && Config.CaseEngine.log.response.error) {
+
+        if (!response.ok && Config.CaseEngine.log.response.error) {
             if (!Config.CaseEngine.log.url) {
                 logger.error(`\n\nHTTP:${method}[${myCallNumber}] from [${user ? user.id : ''}] to ${url}`);
             }
@@ -157,11 +175,11 @@ export function printHeaders(msg: string, headers: Headers | object) {
     if (headers.constructor.name === 'Headers') {
         (headers as Headers).forEach((value, key) => {
             logger.debug(` ${key}\t: ${value}`)
-        })    
+        })
     } else {
         Object.entries(headers).forEach(([key, value]) => {
             logger.debug(` ${key}\t: ${value}`)
-        })    
+        })
     }
 }
 
@@ -188,10 +206,38 @@ function getHeaders(user: User | undefined, from: any = {}) {
     // Finally, check if there is anything additional to copy from
     for (const headerName in from) {
         const headerValue = from[headerName];
-        if (headerValue && ! (headerValue instanceof Function)) {
+        if (headerValue && !(headerValue instanceof Function)) {
             headers[headerName] = headerValue;
         }
     }
 
     return headers;
+}
+
+export abstract class RequestHook {
+    /**
+     * This method is invoked just before the request is sent
+     */
+    abstract before(request: CaseEngineRequest): void;
+
+    /**
+     * This method is invoked with the response, directly after it has been received.
+     */
+    after(request: CaseEngineRequest, response: CaseEngineResponse): void {        
+    }
+
+    register() {
+        if (CaseEngineService.hooks.indexOf(this) < 0) {
+            console.log("Adding hook");
+            CaseEngineService.hooks.push(this);
+        };
+    }
+
+    remove() {
+        const arrayIndex = CaseEngineService.hooks.indexOf(this);
+        if (arrayIndex > -1) {
+            console.log("Removing hook");
+            CaseEngineService.hooks.splice(arrayIndex, 1);
+        }
+    }
 }

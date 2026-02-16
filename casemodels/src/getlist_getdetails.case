@@ -132,6 +132,15 @@
                 </planItemOnPart>
             </entryCriterion>
         </milestone>
+        <caseTask id="_Sp9aR_74" name="timer" isBlocking="true" caseRef="timer.case">
+            <entryCriterion id="crit__Sp9aR_3">
+                <caseFileItemOnPart id="_Sp9aR_85" sourceRef="Timer">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </entryCriterion>
+            <inputs id="_Sp9aR_87" name="Timer" bindingRef="Timer"/>
+            <parameterMapping id="_Sp9aR_77" sourceRef="_Sp9aR_87" targetRef="_GgFeT_2"/>
+        </caseTask>
     </casePlanModel>
     <caseRoles/>
     <input id="_Sp9aR_34" name="HTTPConfig" bindingRef="HTTPConfig"/>

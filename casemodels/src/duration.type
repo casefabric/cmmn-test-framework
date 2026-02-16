@@ -1,0 +1,5 @@
+<type xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="duration.type" name="duration">
+    <schema>
+        <property id="sp__q29Gg_0" name="value" type="string" multiplicity="ExactlyOne"/>
+    </schema>
+</type>

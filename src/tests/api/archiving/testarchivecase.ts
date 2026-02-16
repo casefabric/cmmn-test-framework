@@ -33,7 +33,7 @@ export default class TestArchiveCase extends TestCase {
   }
 
   async test(definition: Definitions) {
-    const startCase = { tenant, definition, debug: true } as StartCase;
+    const startCase = { tenant, definition } as StartCase;
 
     const caseInstance = await CaseService.startCase(user, startCase).then(id => CaseService.getCase(user, id));
     this.addIdentifier(caseInstance);

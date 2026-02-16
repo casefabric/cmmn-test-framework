@@ -1,7 +1,5 @@
 <case xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="complexcase.case" name="complexcase" expressionLanguage="spel" guid="_MuzRn">
-    <caseFileModel>
-        <caseFileItem id="_MuzRn_10" name="Greeting" multiplicity="ExactlyOne" definitionRef="greeting.cfid"/>
-    </caseFileModel>
+    <caseFileModel typeRef="case_complexcase.type"/>
     <casePlanModel id="cm__MuzRn_0" name="Case with subcases and subprocesses" autoComplete="true">
         <exitCriterion id="crit__MuzRn_1">
             <planItemOnPart id="_MuzRn_35" sourceRef="_MuzRn_33">
@@ -9,7 +7,7 @@
             </planItemOnPart>
         </exitCriterion>
         <caseTask id="pi_ct__MuzRn_0" name="HelloWorld" isBlocking="true" caseRef="helloworld.case">
-            <inputs id="_MuzRn_9" name="Greeting" bindingRef="_MuzRn_10"/>
+            <inputs id="_MuzRn_9" name="Greeting" bindingRef="Greeting"/>
             <parameterMapping id="_MuzRn_1" sourceRef="_MuzRn_9" targetRef="csVQy_inCPs_0">
                 <transformation id="_MuzRn_8">
                     <body><![CDATA[map("Message", "default message").merge(Greeting)]]></body>
@@ -17,9 +15,9 @@
             </parameterMapping>
         </caseTask>
         <caseTask id="pi_ct__MuzRn_1" name="getlist_getdetails" isBlocking="true" caseRef="getlist_getdetails.case">
-            <inputs id="_MuzRn_12" name="HTTPConfig.1"/>
-            <parameterMapping id="_MuzRn_3" sourceRef="_MuzRn_12" targetRef="_Sp9aR_34">
-                <transformation id="_MuzRn_5">
+            <inputs id="_MuzRn_60" name="HTTPConfig"/>
+            <parameterMapping id="_MuzRn_3" sourceRef="_MuzRn_60" targetRef="_Sp9aR_34">
+                <transformation id="_MuzRn_59">
                     <body><![CDATA[map("port", -1)]]></body>
                 </transformation>
             </parameterMapping>
@@ -52,5 +50,5 @@
         <userEvent id="_MuzRn_33" name="Terminate Case"/>
     </casePlanModel>
     <caseRoles caseTeamRef="testteam.caseteam"/>
-    <input id="_MuzRn_7" name="Greeting" bindingRef="_MuzRn_10"/>
+    <input id="_MuzRn_7" name="Greeting" bindingRef="Greeting"/>
 </case>
