@@ -228,7 +228,7 @@ export abstract class RequestHook {
 
     register() {
         if (CaseEngineService.hooks.indexOf(this) < 0) {
-            console.log("Adding hook");
+            console.log("Adding hook " + this);
             CaseEngineService.hooks.push(this);
         };
     }
@@ -239,5 +239,9 @@ export abstract class RequestHook {
             console.log("Removing hook");
             CaseEngineService.hooks.splice(arrayIndex, 1);
         }
+    }
+
+    toString() {
+        return this.constructor.name;
     }
 }

@@ -22,7 +22,7 @@ export function addType<T>(json: any, returnType: Constructor<T>): T {
     // Note: using "in" vs. "hasOwnProperty" makes quite a difference:
     //  with "in" it is possible to make an init_json function in a base class,
     //  without having to override it in a subclass.
-    if (returnType.prototype.hasOwnProperty('init_json')) {
+    if ('init_json' in returnType.prototype) {
         const init_json = (returnType.prototype as any).init_json;
         if (init_json && typeof init_json === 'function') {
             init_json.call(json);
