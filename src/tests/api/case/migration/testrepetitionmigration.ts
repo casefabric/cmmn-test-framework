@@ -1,6 +1,7 @@
 'use strict';
 
 import Case from '../../../../cmmn/case';
+import Task from '../../../../cmmn/task';
 import Definitions from '../../../../cmmn/definitions/definitions';
 import CaseMigrationService, { DefinitionMigration } from '../../../../service/case/casemigrationservice';
 import CaseService from '../../../../service/case/caseservice';
@@ -17,7 +18,8 @@ const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
 
 export default class TestRepetitionMigration extends TestCase {
-    tasksFound: Array<string> = [];
+    tasksFound: Array<Task> = [];
+
     async onPrepareTest() {
         await worldwideTenant.create();
         await base_definition.deploy(user, tenant);
@@ -50,8 +52,8 @@ export default class TestRepetitionMigration extends TestCase {
         await this.completeNextTask(caseInstance, 1);
         await this.completeNextTask(caseInstance, 1);
 
-        const firstTaskBatch = this.tasksFound.join('\n- ');
-        console.log("Completed following tasks: " + firstTaskBatch);
+        const firstTaskBatch = this.tasksFound.map(t => t.summary()).join('\n- ');
+        console.log("Completed following tasks:\n- " + firstTaskBatch);
 
         await SomeTime(1000, 'Awaiting 1 second before case migration')
 
@@ -60,8 +62,8 @@ export default class TestRepetitionMigration extends TestCase {
         await SomeTime(2000, 'Awaiting 2 seconds after case migration')
         await DebugService.forceRecovery(user, caseInstance);
         await this.completeNextTask(caseInstance, 2);
-        console.log("First completed: " + firstTaskBatch);
-        console.log("\nTotal completed tasks: " + this.tasksFound.join('\n- '));
+        console.log("First completed:\n- " + firstTaskBatch);
+        console.log("\nTotal completed tasks:\n- " + this.tasksFound.map(t => t.summary()).join('\n- '));
     }
 
     async completeNextTask(case1_before: Case, expectedNumberOfActiveTasks: number) {
@@ -69,10 +71,11 @@ export default class TestRepetitionMigration extends TestCase {
             const tasks = await TaskService.getCaseTasks(user, case1_before);
             const activeTasks = tasks.filter(task => task.taskState === 'Unassigned');
             if (activeTasks.length !== expectedNumberOfActiveTasks) {
+                console.log(`Current task list:\n- ${tasks.map(t => t.summary()).join('\n- ')}`);
                 throw new Error(`Expected to find ${expectedNumberOfActiveTasks} active task(s), but found ${activeTasks.length}`);
             }
             const activeTask = activeTasks[0];
-            this.tasksFound.push(activeTask.taskName);
+            this.tasksFound.push(activeTask);
             await TaskService.completeTask(user, activeTask);
         }, `Waiting for ${expectedNumberOfActiveTasks} active task(s) in case ${case1_before}`);
     }
