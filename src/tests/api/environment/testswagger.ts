@@ -2,6 +2,7 @@ import CaseEngineService from "../../../service/caseengineservice";
 import TestCase from "../../../test/testcase";
 
 export default class TestSwagger extends TestCase {
+    isDefaultTest = false;
     async run() {
         const schema: any = await CaseEngineService.get('api-docs/swagger.json', undefined).then(response => {
             return response.validateObject(Object, 'Expected OpenAPI json schema', 200);
