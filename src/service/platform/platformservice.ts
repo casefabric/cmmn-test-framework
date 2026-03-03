@@ -64,7 +64,7 @@ export default class PlatformService {
     static async getUserInformation(user: User, trace: Trace = new Trace()): Promise<UserInformation> {
         const url = '/platform/user';
         const response = await CaseEngineService.get(url, user);
-        return response.validateObject(UserInformation, 'Expected valid user information', 200, trace);
+        return await response.validateObject(UserInformation, 'Expected valid user information', 200, trace);
     }
 
     /**
@@ -73,7 +73,7 @@ export default class PlatformService {
     static async getHealth(trace: Trace = new Trace()) {
         const url = '/health';
         const response = await CaseEngineService.get(url, undefined);
-        return response.validateObject(Object, 'Expected proper health information', 200, trace);
+        return await response.validateObject(Object, 'Expected proper health information', 200, trace);
     }
 
     /**
@@ -82,7 +82,7 @@ export default class PlatformService {
     static async getVersion(trace: Trace = new Trace()) {
         const url = '/version';
         const response = await CaseEngineService.get(url, undefined);
-        return response.validateObject(EngineVersion, 'Expected proper version information', 200, trace);
+        return await response.validateObject(EngineVersion, 'Expected proper version information', 200, trace);
     }
 }
 

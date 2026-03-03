@@ -29,7 +29,7 @@ export default class ConsentGroupService {
                 return response;
             }
         }
-        return response.validateObject(Object, msg, expectedStatusCode, trace).then((json: any) => {
+        return await response.validateObject(Object, msg, expectedStatusCode, trace).then((json: any) => {
             // After getting a succesful response we silently set the group id if not available
             //  (typical use case: the server generated it instead the client passing it)
             if (!group.id && json.groupId) {
@@ -46,7 +46,7 @@ export default class ConsentGroupService {
      */
     static async getGroup(user: User, groupId: ConsentGroup | string, expectedStatusCode: number = 200, msg = `GetGroup is not expected to succeed for user ${user.id} in group ${groupId}`, trace: Trace = new Trace()): Promise<ConsentGroup> {
         const response = await CaseEngineService.get(`/consent-group/${groupId}`, user);
-        return response.validateObject(ConsentGroup, msg, expectedStatusCode, trace);
+        return await response.validateObject(ConsentGroup, msg, expectedStatusCode, trace);
     }
 
     /**
@@ -71,7 +71,7 @@ export default class ConsentGroupService {
      */
     static async getGroupMember(user: User, groupId: ConsentGroup | string, userId: User | string, expectedStatusCode: number = 200, msg = `GetGroupMember(${userId}) is not expected to succeed for user ${user.id} in group ${groupId}`, trace: Trace = new Trace()): Promise<ConsentGroupMember> {
         const response = await CaseEngineService.get(`/consent-group/${groupId}/members/${userId}`, user);
-        return response.validateObject(ConsentGroupMember, msg, expectedStatusCode, trace);
+        return await response.validateObject(ConsentGroupMember, msg, expectedStatusCode, trace);
     }
 
     /**

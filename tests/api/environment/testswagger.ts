@@ -4,9 +4,9 @@ import TestCase from "../../../src/test/testcase";
 export default class TestSwagger extends TestCase {
     isDefaultTest = false;
     async run() {
-        const schema: any = await CaseEngineService.get('api-docs/swagger.json', undefined).then(response => {
-            return response.validateObject(Object, 'Expected OpenAPI json schema', 200);
-        });
+        const response = await CaseEngineService.get('api-docs/swagger.json', undefined);
+        const schema: any = await response.validateObject(Object, 'Expected OpenAPI json schema', 200);
+
         if (!schema.paths) {
             throw new Error(`Could not find OpenAPI 'paths' array for the case engine`)
         }

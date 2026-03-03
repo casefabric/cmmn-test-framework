@@ -20,7 +20,7 @@ export default class TestRecursiveDefinitions extends TestCase {
 
         // Validating the invalid case model should result in an error.
         //  We should also invalidate recursive definitions.
-        await RepositoryService.validateCaseDefinition(tenantOwner, 'invalidrecursion.xml', 400).then(error => {
+        await RepositoryService.validateCaseDefinition(tenantOwner, 'invalidrecursion.xml', 400).then((error: any) => {
             if (error instanceof Array) {
                 const expectedErrors = [
                     "invalidrecursion.case: CaseTask 'invalidrecursion' leads to infinite recursion, because",
@@ -91,7 +91,7 @@ export default class TestRecursiveDefinitions extends TestCase {
     }
 
     async testDefinition(test: InvalidDefinitionTest) {
-        await RepositoryService.validateCaseDefinition(tenantOwner, test.definitionFile, 400).then(error => {
+        await RepositoryService.validateCaseDefinition(tenantOwner, test.definitionFile, 400).then((error: any) => {
             if (error instanceof Array) {
                 // Note: we join/split the array, as the response may come with '\n' characters on the first array element. Not too sure why that happens.
                 const errors = error.join('\n').toString().split('\n');
@@ -115,7 +115,7 @@ export default class TestRecursiveDefinitions extends TestCase {
         // Deploying an invalid case definition to a valid file name should result in an error.
         const deployInvalidCaseDefinition = new DeployCase(readLocalXMLDocument(test.definitionFile), test.definitionFile, tenant);
         await RepositoryService.deployCase(tenantOwner, deployInvalidCaseDefinition, 400);
-        
+
     }
 }
 

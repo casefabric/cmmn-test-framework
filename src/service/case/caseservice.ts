@@ -1,3 +1,4 @@
+import { Document } from '@xmldom/xmldom';
 import Case from '../../cmmn/case';
 import DiscretionaryItem from '../../cmmn/discretionaryitem';
 import User from '../../user';
@@ -6,7 +7,6 @@ import CaseEngineService from '../caseengineservice';
 import CaseFilter from './casefilter';
 import { DiscretionaryItemsResponse } from './response/discretionaryitemsresponse';
 import StartCase from './startcase';
-import { Document } from '@xmldom/xmldom';
 
 export default class CaseService {
     static async startCase(user: User, command: StartCase, expectedStatusCode: number = 200, msg = `StartCase is not expected to succeed for user ${user ? user.id : 'anonymous'}`, trace: Trace = new Trace()): Promise<Case> {
@@ -26,8 +26,7 @@ export default class CaseService {
             debug
         }
         const response = await CaseEngineService.post(url, user, request);
-        const json = await response.validateObject(Case, msg, expectedStatusCode, trace);
-        return json;
+        return await response.validateObject(Case, msg, expectedStatusCode, trace);
     }
 
     /**
@@ -36,7 +35,8 @@ export default class CaseService {
      * @param user 
      */
     static async getCase(user: User, caseId: Case | string, expectedStatusCode: number = 200, msg = `GetCase is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()): Promise<Case> {
-        return CaseEngineService.get(`/cases/${caseId}`, user).then(response => response.validateObject(Case, msg, expectedStatusCode, trace));
+        const response = await CaseEngineService.get(`/cases/${caseId}`, user);
+        return await response.validateObject(Case, msg, expectedStatusCode, trace);
     }
 
     /**
@@ -45,7 +45,7 @@ export default class CaseService {
      * @param user 
      */
     static async getDefinition(user: User, caseId: Case | string, expectedStatusCode: number = 200): Promise<Document> {
-        return CaseEngineService.getXml(`/cases/${caseId}/definition`, user);
+        return await CaseEngineService.getXml(`/cases/${caseId}/definition`, user);
     }
 
     /**
@@ -65,7 +65,7 @@ export default class CaseService {
      */
     static async getDiscretionaryItems(user: User, caseId: Case | string, expectedStatusCode: number = 200, msg = `GetDiscretionaryItems is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()): Promise<DiscretionaryItemsResponse> {
         const response = await CaseEngineService.get(`/cases/${caseId}/discretionaryitems`, user)
-        return response.validateObject(DiscretionaryItemsResponse, msg, expectedStatusCode, trace);
+        return await response.validateObject(DiscretionaryItemsResponse, msg, expectedStatusCode, trace);
     }
 
     /**
@@ -91,6 +91,7 @@ export default class CaseService {
      * @param debugEnabled 
      */
     static async changeDebugMode(user: User, caseId: Case | string, debugEnabled: boolean, expectedStatusCode: number = 200, msg = `ChangeDebugMode is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()) {
-        return CaseEngineService.put(`/cases/${caseId}/debug/${debugEnabled}`, user).then(response => response.validate(msg, expectedStatusCode, trace));
+        const response = await CaseEngineService.put(`/cases/${caseId}/debug/${debugEnabled}`, user);
+        return await response.validate(msg, expectedStatusCode, trace);
     }
 }

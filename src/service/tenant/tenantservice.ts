@@ -14,7 +14,7 @@ export default class TenantService {
      * @param tenant 
      * @param expectedStatusCode 
      */
-    static async getTenantOwners(user: User, tenant: Tenant | string, expectedStatusCode: number = 200,  msg = `GetTenantOwners is not expected to succeed for user ${user} in tenant ${tenant}`, trace: Trace = new Trace()) {
+    static async getTenantOwners(user: User, tenant: Tenant | string, expectedStatusCode: number = 200, msg = `GetTenantOwners is not expected to succeed for user ${user} in tenant ${tenant}`, trace: Trace = new Trace()) {
         const response = await CaseEngineService.get(`/tenant/${tenant}/owners`, user);
         return response.validateArray(String, msg, expectedStatusCode, trace);
     }
@@ -25,7 +25,7 @@ export default class TenantService {
      * @param tenant 
      * @param expectedStatusCode 
      */
-    static async getTenantUsers(user: User, tenant: Tenant | string, expectedStatusCode: number = 200,  msg = `GetTenantUsers is not expected to succeed for user ${user} in tenant ${tenant}`, trace: Trace = new Trace()) {
+    static async getTenantUsers(user: User, tenant: Tenant | string, expectedStatusCode: number = 200, msg = `GetTenantUsers is not expected to succeed for user ${user} in tenant ${tenant}`, trace: Trace = new Trace()) {
         const response = await CaseEngineService.get(`/tenant/${tenant}/users`, user);
         return response.validateArray(TenantUser, msg, expectedStatusCode, trace);
     }
@@ -36,7 +36,7 @@ export default class TenantService {
      * @param tenant 
      * @param expectedStatusCode 
      */
-    static async getDisabledUserAccounts(user: User, tenant: Tenant | string, expectedStatusCode: number = 200,  msg = `GettingDisabledAccounts is not expected to succeed for user ${user} in tenant ${tenant}`, trace: Trace = new Trace()) {
+    static async getDisabledUserAccounts(user: User, tenant: Tenant | string, expectedStatusCode: number = 200, msg = `GettingDisabledAccounts is not expected to succeed for user ${user} in tenant ${tenant}`, trace: Trace = new Trace()) {
         const response = await CaseEngineService.get(`/tenant/${tenant}/disabled-accounts`, user);
         return response.validateArray(TenantUser, msg, expectedStatusCode, trace);
     }
@@ -48,8 +48,9 @@ export default class TenantService {
      * @param tenantUserId 
      * @param expectedStatusCode 
      */
-    static async getTenantUser(user: User, tenant: Tenant | string, tenantUserId: TenantUser | string, expectedStatusCode: number = 200,  msg = `GetTenantUser(${tenantUserId}) is not expected to succeed for user ${user} in tenant ${tenant}`, trace: Trace = new Trace()) {
-        return CaseEngineService.get(`/tenant/${tenant}/users/${tenantUserId}`, user).then(response => response.validateObject(TenantUser, msg, expectedStatusCode, trace));
+    static async getTenantUser(user: User, tenant: Tenant | string, tenantUserId: TenantUser | string, expectedStatusCode: number = 200, msg = `GetTenantUser(${tenantUserId}) is not expected to succeed for user ${user} in tenant ${tenant}`, trace: Trace = new Trace()) {
+        const response = await CaseEngineService.get(`/tenant/${tenant}/users/${tenantUserId}`, user);
+        return await response.validateObject(TenantUser, msg, expectedStatusCode, trace);
     }
 
     /**
@@ -59,7 +60,7 @@ export default class TenantService {
      * @param newTenantUser 
      * @param expectedStatusCode 
      */
-    static async setTenantUser(user: User, tenant: Tenant | string, newTenantUser: TenantUser, expectedStatusCode: number = 204,  msg = `SetTenantUser is not expected to succeed for user ${user} in tenant ${tenant}`, trace: Trace = new Trace()) {
+    static async setTenantUser(user: User, tenant: Tenant | string, newTenantUser: TenantUser, expectedStatusCode: number = 204, msg = `SetTenantUser is not expected to succeed for user ${user} in tenant ${tenant}`, trace: Trace = new Trace()) {
         const userToSet = newTenantUser.toJson ? newTenantUser.toJson() : newTenantUser;
         const response = await CaseEngineService.post(`/tenant/${tenant}/users`, user, userToSet);
         return response.validate(msg, expectedStatusCode, trace);
@@ -72,7 +73,7 @@ export default class TenantService {
      * @param newTenantUser 
      * @param expectedStatusCode 
      */
-     static async removeTenantUser(user: User, tenant: Tenant | string, tenantUser: TenantUser | string, expectedStatusCode: number = 204,  msg = `RemoveTenantUser is not expected to succeed for user ${user} in tenant ${tenant}`, trace: Trace = new Trace()) {
+    static async removeTenantUser(user: User, tenant: Tenant | string, tenantUser: TenantUser | string, expectedStatusCode: number = 204, msg = `RemoveTenantUser is not expected to succeed for user ${user} in tenant ${tenant}`, trace: Trace = new Trace()) {
         const response = await CaseEngineService.delete(`/tenant/${tenant}/users/${tenantUser}`, user);
         return response.validate(msg, expectedStatusCode, trace);
     }
@@ -83,7 +84,7 @@ export default class TenantService {
      * @param tenant 
      * @param expectedStatusCode 
      */
-    static async replaceTenant(user: User, tenant: Tenant, expectedStatusCode: number = 204,  msg = `ReplaceTenant is not expected to succeed for user ${user} in tenant ${tenant}`, trace: Trace = new Trace()) {
+    static async replaceTenant(user: User, tenant: Tenant, expectedStatusCode: number = 204, msg = `ReplaceTenant is not expected to succeed for user ${user} in tenant ${tenant}`, trace: Trace = new Trace()) {
         const response = await CaseEngineService.post(`/tenant/${tenant}`, user, tenant.toJson());
         return response.validate(msg, expectedStatusCode, trace);
     }
