@@ -150,7 +150,7 @@ export default class TestClasses {
         const foundRunners = runners.filter(run => run.needsRunning())
         const actualRunners = from > 0 ? foundRunners.splice(from - 1) : foundRunners;
         // Give each runner the right test number, starting from 1 as that is more "human-intuitive"
-        actualRunners.forEach((run, index) => run.testNumber = index + 1);
+        actualRunners.forEach((run, index) => run.testNumber = index + 1 + (from > 0 ? from - 1 : 0));
         return actualRunners;
     }
 }
