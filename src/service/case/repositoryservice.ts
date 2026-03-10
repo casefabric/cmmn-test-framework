@@ -78,7 +78,7 @@ export default class RepositoryService {
             }
         } else {
             if (response.ok) {
-                return response;
+                return [];
             } else {
                 const messages = <Array<string>>await response.json();
                 return messages;
