@@ -13,13 +13,13 @@ export default class DebugService {
      * @param user 
      */
     static async getEvents(model: string | Case | Tenant, user?: User) {
-        const json = await CaseEngineService.get('/debug/' + model, user);
-        return json;
+        return await CaseEngineService.get('/debug/' + model, user);
     }
 
     static async getParsedEvents(model: string | Case | Tenant, user?: User, trace: Trace = new Trace()): Promise<ModelEvent[]> {
         const response = await this.getEvents(model, user);
-        return response.validateArray(CaseEngineEvent, 'Expecting model events', 200, trace).then(events => events.map(event => event.content));
+        const events = await response.validateArray(CaseEngineEvent, 'Expecting model events', 200, trace);
+        return events.map(event => event.content);
     }
 
     static async forceRecovery(user: User, model: string | Case | Tenant) {

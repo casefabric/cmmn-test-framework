@@ -69,32 +69,32 @@ export default class CaseEngineService {
         return response;
     }
 
-    static async post(url: string, user: User, request?: object, method = 'POST') {
+    static post(url: string, user: User, request?: object, method = 'POST') {
         const body = (typeof request === 'string') ? `"${request}"` : request ? JSON.stringify(request, undefined, 2) : undefined;
         return this.fetch(user, url, method, getHeaders(user), body);
     }
 
-    static async postXML(url: string, user: User, request: Document, method = 'POST'): Promise<CaseEngineResponse> {
+    static postXML(url: string, user: User, request: Document, method = 'POST'): Promise<CaseEngineResponse> {
         const headers = getHeaders(user, { 'Content-Type': 'application/xml' });
         const body = request.toString();
         return this.fetch(user, url, method, headers, body);
     }
 
-    static async put(url: string, user: User, request?: object) {
+    static put(url: string, user: User, request?: object) {
         // Sorry, bit of a hack here...
         return this.post(url, user, request, 'PUT');
     }
 
-    static async delete(url: string, user: User) {
+    static delete(url: string, user: User) {
         return this.fetch(user, url, 'DELETE');
     }
 
-    static async patch(user: User, url: string) {
+    static patch(user: User, url: string) {
         const headers = getHeaders(user);
         return this.fetch(user, url, 'PATCH', headers);
     }
 
-    static async get(url: string, user: User | undefined, filter?: QueryFilter, headers?: any) {
+    static get(url: string, user: User | undefined, filter?: QueryFilter, headers?: any) {
         if (filter) {
             url = extendURL(url, filter);
         }
@@ -103,7 +103,8 @@ export default class CaseEngineService {
 
     static async getXml(url: string, user: User): Promise<Document> {
         const headers = getHeaders(user, { 'Content-Type': 'text/xml' });
-        return (await this.get(url, user, undefined, headers)).xml();
+        const response = await this.get(url, user, undefined, headers);
+        return await response.xml();
     }
 
     static async fetch(user: User | undefined, url: string, method: string, headers?: any, body?: string): Promise<CaseEngineResponse> {

@@ -1,12 +1,12 @@
 import Case from '../../cmmn/case';
 import PlanItem from '../../cmmn/planitem';
 import Task from '../../cmmn/task';
+import User from '../../user';
 import AsyncError from '../../util/async/asyncerror';
 import Trace from '../../util/async/trace';
-import User from '../../user';
 import CaseEngineService from '../caseengineservice';
-import TaskFilter from './taskfilter';
 import TaskCount from './taskcount';
+import TaskFilter from './taskfilter';
 
 /**
  * Base class for invoking the Case Engine Tasks API (http://localhost:2027/tasks)
@@ -24,11 +24,11 @@ export default class TaskService {
         if (!msg) {
             msg = `Task '${taskName}' with id ${taskId} was claimed succesfully, but this was not expected`;
         }
-        if (! msg) {
+        if (!msg) {
             msg = msg;
         }
         const response = await CaseEngineService.put(`tasks/${taskId}/claim`, user);
-        return response.validate(msg, expectedStatusCode, trace);
+        return await response.validate(msg, expectedStatusCode, trace);
     }
 
     /**
@@ -44,7 +44,7 @@ export default class TaskService {
             msg = `Task '${taskName}' with id ${taskId} was revoked succesfully, but this was not expected`;
         }
         const response = await CaseEngineService.put(`tasks/${taskId}/revoke`, user);
-        return response.validate(msg, expectedStatusCode, trace);
+        return await response.validate(msg, expectedStatusCode, trace);
     }
 
     /**
@@ -57,11 +57,11 @@ export default class TaskService {
     static async assignTask(user: User, task: Task | PlanItem | string, assignee: User, expectedStatusCode: number = 202, msg = '', trace: Trace = new Trace()) {
         const taskId = getTaskId(task);
         const taskName = getTaskName(task);
-        if (! msg) {
+        if (!msg) {
             msg = `Task '${taskName}' with id ${taskId} was assigned successfully, but this was not expected`;
         }
         const response = await CaseEngineService.put(`tasks/${taskId}/assign`, user, { assignee: assignee.id });
-        return response.validate(msg, expectedStatusCode, trace);
+        return await response.validate(msg, expectedStatusCode, trace);
     }
 
     /**
@@ -74,11 +74,11 @@ export default class TaskService {
     static async delegateTask(user: User, task: Task | PlanItem | string, assignee: User, expectedStatusCode: number = 202, msg = '', trace: Trace = new Trace()) {
         const taskId = getTaskId(task);
         const taskName = getTaskName(task);
-        if (! msg) {
+        if (!msg) {
             msg = `Task '${taskName}' with id ${taskId} was delegated succesfully, but this was not expected`;
         }
         const response = await CaseEngineService.put(`tasks/${taskId}/delegate`, user, { assignee: assignee.id });
-        return response.validate(msg, expectedStatusCode, trace);
+        return await response.validate(msg, expectedStatusCode, trace);
     }
 
     /**
@@ -91,11 +91,11 @@ export default class TaskService {
     static async completeTask(user: User, task: Task | PlanItem | string, taskOutput = {}, expectedStatusCode: number = 202, msg = '', trace: Trace = new Trace()) {
         const taskId = getTaskId(task);
         const taskName = getTaskName(task);
-        if (! msg) {
+        if (!msg) {
             msg = `Task '${taskName}' with id ${taskId} was completed succesfully, but this was not expected`;
         }
         const response = await CaseEngineService.post(`tasks/${taskId}/complete`, user, taskOutput);
-        return response.validate(msg, expectedStatusCode, trace);
+        return await response.validate(msg, expectedStatusCode, trace);
     }
 
     /**
@@ -108,7 +108,7 @@ export default class TaskService {
     static async validateTaskOutput(user: User, task: Task | PlanItem | string, taskOutput = {}, expectedStatusCode: number = 202, msg = '', trace: Trace = new Trace()) {
         const taskId = getTaskId(task);
         const taskName = getTaskName(task);
-        if (! msg) {
+        if (!msg) {
             msg = `Task output for '${taskName}' with id ${taskId} was validated succesfully, but this was not expected`;
         }
         const response = await CaseEngineService.post(`tasks/${taskId}`, user, taskOutput);
@@ -132,11 +132,11 @@ export default class TaskService {
     static async saveTaskOutput(user: User, task: Task | PlanItem | string, taskOutput = {}, expectedStatusCode: number = 202, msg = '', trace: Trace = new Trace()) {
         const taskId = getTaskId(task);
         const taskName = getTaskName(task);
-        if (! msg) {
+        if (!msg) {
             msg = `Task output for '${taskName}' with id ${taskId} was saved succesfully, but this was not expected`;
         }
         const response = await CaseEngineService.put(`tasks/${taskId}`, user, taskOutput);
-        return response.validate(msg, expectedStatusCode, trace);
+        return await response.validate(msg, expectedStatusCode, trace);
     }
 
     /**
@@ -162,7 +162,7 @@ export default class TaskService {
     static async getCaseTasks(user: User, caseId: Case | string, includeSubCaseTasks: boolean = false, expectedStatusCode: number = 200, msg = `GetCaseTasks is not expected to succeed for member ${user} in case ${caseId}`, trace: Trace = new Trace()): Promise<Array<Task>> {
         const optionalSubcaseParameter = includeSubCaseTasks ? '?includeSubCaseTasks=true' : '';
         const response = await CaseEngineService.get(`/tasks/case/${caseId}${optionalSubcaseParameter}`, user);
-        return response.validateArray(Task, msg, expectedStatusCode, trace);
+        return await response.validateArray(Task, msg, expectedStatusCode, trace);
     }
 
     /**
@@ -190,7 +190,7 @@ export default class TaskService {
      */
     static async getTasks(user: User, filter?: TaskFilter, expectedStatusCode: number = 200, msg = `GetTasks is not expected to succeed for member ${user}`, trace: Trace = new Trace()): Promise<Array<Task>> {
         const response = await CaseEngineService.get('/tasks', user, filter);
-        return response.validateArray(Task, msg, expectedStatusCode, trace);
+        return await response.validateArray(Task, msg, expectedStatusCode, trace);
     }
 
     /**
@@ -201,7 +201,7 @@ export default class TaskService {
      */
     static async countTasks(user: User, filter?: TaskFilter, expectedStatusCode: number = 200, msg = `CountTasks is not expected to succeed for member ${user}`, trace: Trace = new Trace()): Promise<TaskCount> {
         const response = await CaseEngineService.get('/tasks/user/count', user, filter);
-        return response.validateObject(TaskCount, msg, expectedStatusCode, trace);
+        return await response.validateObject(TaskCount, msg, expectedStatusCode, trace);
     }
 }
 

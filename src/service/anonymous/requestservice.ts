@@ -9,7 +9,6 @@ export default class RequestService {
         const url = `/request/case/${casePath}`;
         const response = await CaseEngineService.post(url, User.NONE, { inputs, caseInstanceId, debug });
         const msg = `Anonymously requesting Case is not expected to succeed`;
-        const json = await response.validateObject(Case, msg, expectedStatusCode, trace);
-        return json;
+        return await response.validateObject(Case, msg, expectedStatusCode, trace);
     }
 }
