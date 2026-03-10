@@ -142,7 +142,7 @@
         <output id="_52zr_errorPayload" name="errorPayload"/>
         <extensionElements mustUnderstand="false">
             <cafienne:implementation xmlns:cafienne="org.cafienne" async="false" class="org.cafienne.processtask.implementation.http.HTTPCallDefinition">
-                <url>http://localhost:${httpPort}/getWaitTime?index=${count}</url>
+                <url>http://host.docker.internal:${httpPort}/getWaitTime?index=${count}</url>
                 <method>GET</method>
                 <http-headers>
                     <http-header name="Accept">application/json</http-header>

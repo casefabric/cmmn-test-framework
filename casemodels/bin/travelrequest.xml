@@ -2554,7 +2554,7 @@ TravelRequest.TravelDetails.Destination[0].Country == "US"]]></body>
         <output id="purchaseorder" name="purchaseorder"/>
         <extensionElements mustUnderstand="false">
             <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.http.HTTPCallDefinition">
-                <url>http://localhost:8380/allocatefunds</url>
+                <url>http://host.docker.internal:8380/allocatefunds</url>
                 <method>POST</method>
                 <post-content>{"travelrequest": "${travelrequest}", "approval": "${approval}"}</post-content>
                 <http-headers>
