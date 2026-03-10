@@ -3,7 +3,7 @@
     <output id="_Wddw_responseCode" name="responseCode"/>
     <extensionElements mustUnderstand="false">
         <cafienne:implementation xmlns:cafienne="org.cafienne" async="false" class="org.cafienne.processtask.implementation.http.HTTPCallDefinition">
-            <url>http://localhost:${httpPort}/ping</url>
+            <url>http://host.docker.internal:${httpPort}/ping</url>
             <method>GET</method>
             <http-headers>
                 <http-header name="Accept">application/json</http-header>

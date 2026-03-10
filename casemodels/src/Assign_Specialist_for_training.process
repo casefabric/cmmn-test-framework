@@ -8,7 +8,7 @@
     <output id="_Y9cq_specialist" name="specialist"/>
     <extensionElements mustUnderstand="false">
         <cafienne:implementation xmlns:cafienne="org.cafienne" async="false" class="org.cafienne.processtask.implementation.http.HTTPCallDefinition">
-            <url>http://localhost:17384/usermappings/${incident_type}</url>
+            <url>http://host.docker.internal:17384/usermappings/${incident_type}</url>
             <method>GET</method>
             <http-headers>
                 <http-header name="Content-Type">application/json</http-header>

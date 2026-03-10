@@ -6,7 +6,7 @@
     <output id="_fnkJ_responseMessage" name="responseMessage"/>
     <extensionElements mustUnderstand="false">
         <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.http.HTTPCallDefinition">
-            <url>http://localhost:${input.port}/get/code/${input.responseCode}</url>
+            <url>http://host.docker.internal:${input.port}/get/code/${input.responseCode}</url>
             <method>POST</method>
             <post-content>${input.payload}</post-content>
             <http-headers>

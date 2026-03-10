@@ -8,7 +8,7 @@
     <output id="_3d7a_responseMessage" name="responseMessage"/>
     <extensionElements mustUnderstand="false">
         <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.http.HTTPCallDefinition">
-            <url>http://localhost:${port}/get/code/${responseCode}</url>
+            <url>http://host.docker.internal:${port}/get/code/${responseCode}</url>
             <method>POST</method>
             <post-content>${payload}</post-content>
             <http-headers>

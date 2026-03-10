@@ -133,6 +133,8 @@ services:
       - ./run/case-engine/definitions:/opt/cafienne/definitions
       - ./config/case-engine:/opt/cafienne/conf
       - ./config/case-engine:/opt/cafienne/bootstrap
+    extra_hosts:
+      - host.docker.internal:host-gateway
 
 volumes:
   dex:

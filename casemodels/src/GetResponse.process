@@ -8,7 +8,7 @@
     <output id="_enkJ_responseMessage" name="responseMessage"/>
     <extensionElements mustUnderstand="false">
         <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.http.HTTPCallDefinition">
-            <url>http://localhost:${port}/get/code/${getResponseCode}</url>
+            <url>http://host.docker.internal:${port}/get/code/${getResponseCode}</url>
             <method>POST</method>
             <post-content>${getResponsePayload}</post-content>
             <http-headers>
