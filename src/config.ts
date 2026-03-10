@@ -1,4 +1,4 @@
-const url = 'http://0.0.0.0:2027/';
+const url = 'http://localhost:2027/';
 
 const Config = {
     Log: {
@@ -33,7 +33,7 @@ const Config = {
     },
     TokenService: {
         // URL of token service
-        url: 'http://0.0.0.0:2377/token',
+        url: 'http://localhost:2377/token',
         // Issuer can be configured. The issuer must equal what is configure inside the Case Engine
         issuer: 'http://localhost:2377',
         // Whether or not to show the tokens requested and updated in the user
@@ -76,8 +76,8 @@ export const MinimalLoggingConfig = {
     },
     CaseEngine: {
         // URL of backend engine
-        urlss: ['http://0.0.0.0:2027/', 'http://0.0.0.0:2028/'],
-        url: 'http://0.0.0.0:2027/',
+        urlss: ['http://localhost:2027/', 'http://localhost:2028/'],
+        url: 'http://localhost:2027/',
         log: {
             // Whether or not to log HTTP call information (user, url, method type, headers)
             url: true, // URL includes call number, method type and user id
@@ -97,7 +97,7 @@ export const MinimalLoggingConfig = {
     },
     TokenService: {
         // URL of token service
-        url: 'http://0.0.0.0:2377/token',
+        url: 'http://localhost:2377/token',
         // Issuer can be configured. The issuer must equal what is configure inside the Case Engine
         issuer: 'http://localhost:2377',
         // Whether or not to show the tokens requested and updated in the user
@@ -139,7 +139,7 @@ export const NoLoggingConfig = {
     },
     CaseEngine: {
         // URL of backend engine
-        url: 'http://0.0.0.0:2027/',
+        url: 'http://localhost:2027/',
         log: {
             // Whether or not to log HTTP call information (user, url, method type, headers)
             url: false, // URL includes call number, method type and user id
@@ -159,7 +159,7 @@ export const NoLoggingConfig = {
     },
     TokenService: {
         // URL of token service
-        url: 'http://0.0.0.0:2377/token',
+        url: 'http://localhost:2377/token',
         // Issuer can be configured. The issuer must equal what is configure inside the Case Engine
         issuer: 'http://localhost:2377',
         // Whether or not to show the tokens requested and updated in the user
