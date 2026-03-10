@@ -63,7 +63,7 @@ export default class CommandLineParser {
             // Let's first check if it is only a port number or a full URL
             const asPortNumber = Number(url);
             if (asPortNumber >= 0) {
-                url = `http://0.0.0.0:${asPortNumber}/`;
+                url = `http://localhost:${asPortNumber}/`;
             }
             // Make sure it ends with a slash
             url = url.endsWith('/') ? url : url + '/';
