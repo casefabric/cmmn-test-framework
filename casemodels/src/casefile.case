@@ -36,6 +36,27 @@
                 </cafienne:implementation>
             </extensionElements>
         </humanTask>
+        <humanTask id="_kWyIV_30" name="Celebrate Birthday (Date Conversion Task)" isBlocking="true">
+            <entryCriterion id="crit__kWyIV_0">
+                <caseFileItemOnPart id="_kWyIV_34" sourceRef="RootCaseFileItem/ChildItem/GrandChildItem">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </entryCriterion>
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne">
+                    <assignment id="_kWyIV_40" contextRef="RootCaseFileItem/ChildItem/GrandChildItem">
+                        <condition id="_kWyIV_41">
+                            <body><![CDATA[GrandChildItem.GrandChildBirthDate.length() + 13]]></body>
+                        </condition>
+                    </assignment>
+                    <duedate id="_kWyIV_32" contextRef="RootCaseFileItem/ChildItem/GrandChildItem">
+                        <condition id="_kWyIV_33">
+                            <body><![CDATA[GrandChildItem.GrandChildBirthDate.toDate()]]></body>
+                        </condition>
+                    </duedate>
+                </cafienne:implementation>
+            </extensionElements>
+        </humanTask>
     </casePlanModel>
     <caseRoles/>
 </case>

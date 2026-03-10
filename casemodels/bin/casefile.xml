@@ -67,6 +67,14 @@
                     </repetitionRule>
                 </itemControl>
             </planItem>
+            <planItem id="_kWyIV_30" name="Celebrate Birthday (Date Conversion Task)" definitionRef="ht__kWyIV_30">
+                <entryCriterion id="crit__kWyIV_0" sentryRef="s_crit__kWyIV_0"/>
+            </planItem>
+            <sentry id="s_crit__kWyIV_0">
+                <caseFileItemOnPart id="_kWyIV_34" sourceRef="RootCaseFileItem/ChildItem/GrandChildItem">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </sentry>
             <humanTask id="ht__kWyIV_0" name="Simplistic Unused Task" isBlocking="true"/>
             <humanTask id="ht__kWyIV_2" name="Add Child Task" isBlocking="true">
                 <outputs id="_kWyIV_7" name="ChildArray" bindingRef="RootCaseFileItem/ChildArray"/>
@@ -98,6 +106,22 @@
                     </cafienne:implementation>
                 </extensionElements>
             </humanTask>
+            <humanTask id="ht__kWyIV_30" name="Celebrate Birthday (Date Conversion Task)" isBlocking="true">
+                <extensionElements mustUnderstand="false">
+                    <cafienne:implementation xmlns:cafienne="org.cafienne">
+                        <assignment id="_kWyIV_40" contextRef="RootCaseFileItem/ChildItem/GrandChildItem">
+                            <condition id="_kWyIV_41">
+                                <body><![CDATA["" + GrandChildItem.GrandChildBirthDate.length() + 13]]></body>
+                            </condition>
+                        </assignment>
+                        <duedate id="_kWyIV_32" contextRef="RootCaseFileItem/ChildItem/GrandChildItem">
+                            <condition id="_kWyIV_33">
+                                <body><![CDATA[GrandChildItem.GrandChildBirthDate.toDate()]]></body>
+                            </condition>
+                        </duedate>
+                    </cafienne:implementation>
+                </extensionElements>
+            </humanTask>
         </casePlanModel>
         <caseRoles/>
     </case>
@@ -115,7 +139,17 @@
             <CMMNShape cmmnElementRef="_kWyIV_17">
                 <Bounds x="480" y="270" width="140" height="80"/>
             </CMMNShape>
+            <CMMNShape cmmnElementRef="_kWyIV_30">
+                <Bounds x="270" y="400" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="RootCaseFileItem/ChildItem/GrandChildItem">
+                <Bounds x="160" y="420" width="25" height="40"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="crit__kWyIV_0">
+                <Bounds x="264" y="430" width="12" height="20"/>
+            </CMMNShape>
             <CMMNEdge sourceCMMNElementRef="RootCaseFileItem/ChildArray" targetCMMNElementRef="crit__kWyIV_0"/>
+            <CMMNEdge sourceCMMNElementRef="RootCaseFileItem/ChildItem/GrandChildItem" targetCMMNElementRef="crit__kWyIV_0"/>
         </CMMNDiagram>
     </CMMNDI>
 </definitions>
