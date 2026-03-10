@@ -1,0 +1,121 @@
+version: 2.1
+logging:
+  levels: debug
+
+jobs:
+  branch-build:
+    working_directory: ~/cmmn-test-framework
+    machine:
+      image: ubuntu-2404:2024.11.1
+    resource_class: large
+    steps:
+      - build-preparation
+      - setup-test-infra
+      - run-in-memory-tests
+      - show-engine-logs-on-fail
+      - build-package
+
+  main-build:
+    working_directory: ~/cmmn-test-framework
+    machine:
+      image: ubuntu-2404:2024.11.1
+    resource_class: large
+    steps:
+      - build-preparation
+      - setup-test-infra
+      - run-in-memory-tests
+      - show-engine-logs-on-fail
+      - build-package
+
+commands:
+  build-preparation:
+    steps:
+      - checkout
+      - restore_cache:
+          name: Restore Yarn Package Cache
+          keys:
+            - yarn-packages-v3-{{ checksum "yarn.lock" }}
+            - yarn-packages-v3-
+      - run:
+          name: Installing dependencies
+          command: |
+            yarn install --immutable
+      - save_cache:
+          name: Save Yarn Package Cache
+          key: yarn-packages-v3-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+      - run:
+          name: Compile CMMN Test Framwork
+          command: |
+            yarn build
+
+  setup-test-infra:
+    steps:
+      - run:
+          name: create deploy folder
+          command: |
+            sudo mkdir ./docker/run
+            sudo mkdir ./docker/run/case-engine
+            sudo mkdir ./docker/run/case-engine/definitions
+            sudo chmod -R 777 ./docker/run
+      - run:
+          name: Pull the docker images
+          command: |
+            docker-compose -f ./docker/docker-compose.yml pull ctf-fake-idp ctf-case-engine
+      - run:
+          name: Start engine with related images
+          command: |
+            docker-compose -f ./docker/docker-compose.yml up -d ctf-fake-idp ctf-case-engine
+
+  run-in-memory-tests:
+    steps:
+    - run:
+        name: Run tests
+        command: |
+          echo ==== starting tests
+          echo
+          yarn run dev
+
+  show-engine-logs-on-fail:
+    steps:
+      # Always show docker logs. This will give the cafienne engine console info when any of above tests fails.
+      - run:
+          name: Docker logs of engine after the test
+          command: docker logs cafienne
+          when: on_fail
+
+  build-package:
+    steps:
+      - run:
+          name: Build npm typescript client package
+          command: yarn publishLocal
+      - run:
+          name: Move package to separate folder
+          command: |
+            mkdir ./dist/packages
+            mv ./dist/*.tgz ./dist/packages
+      - store_artifacts:
+          path: ./dist/packages
+
+workflows:
+  ci:
+    jobs:
+      - main-build:
+          context: automation-context
+          filters:
+            branches:
+              only:
+                - main
+                - dependency-updates
+                - snapshot
+                - run-compatibility-tests
+      - branch-build:
+          context: automation-context
+          filters:
+            branches:
+              ignore:
+                - main
+                - dependency-updates
+                - snapshot
+                - run-compatibility-tests
