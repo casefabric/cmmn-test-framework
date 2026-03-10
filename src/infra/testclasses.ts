@@ -104,6 +104,7 @@ import TestTravelRequest from '../tests/travelrequest/testtravelrequest';
 import TestRunner from './testrunner';
 import TestCorrelationId from '../tests/api/environment/testcorrelationid';
 import TestClientApp from '../tests/clientcredentialsflow/testclientapp';
+import TestCaseFileDateConversion from '../tests/api/casefile/testcasefiledateconversion';
 
 export default class TestClasses {
     static getTestClass(name: string): Function {
@@ -238,6 +239,7 @@ const AllTests: Array<Function> = [
     , TestCaseFileAPI
     , TestCaseFileArrayAPI
     , TestCaseFileExpressions
+    , TestCaseFileDateConversion
     , TestCaseParameterAPI
     , TestReplaceWithChildArray
     , TestBootstrapCaseFileEvents
