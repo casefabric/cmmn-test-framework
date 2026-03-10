@@ -10,10 +10,10 @@
     "deploy-source": "ts-node-dev --transpile-only ./src/deploy-source.ts",
     "try": "npm run build && node ./dist/app.js",
     "dev": "ts-node-dev --transpile-only ./src/app.ts",
-    "prepare-publish": "npm run clean & npm run build & shx cp package.json ./dist & shx cp README.md ./dist",
-    "publishLocal": "npm run prepare-publish & cd ./dist & npm pack",
-    "publishRemote": "npm run prepare-publish & cd ./dist & npm publish --access public",
-    "prod": "npm run build & node ./dist/app.js"
+    "prepare-publish": "npm run clean && npm run build && shx cp package.json ./dist && shx cp README.md ./dist",
+    "publishLocal": "npm run prepare-publish && cd ./dist && npm pack",
+    "publishRemote": "npm run prepare-publish && cd ./dist && npm publish --access public",
+    "prod": "npm run build && node ./dist/app.js"
   },
   "author": "",
   "license": "MPL-2.0",
