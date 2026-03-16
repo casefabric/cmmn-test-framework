@@ -12,7 +12,7 @@ export default class CaseHistoryService {
      */
     static async getCasePlanHistory(user: User, caseId: Case | string, expectedStatusCode: number = 200, msg = `GetCasePlanHistory is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()): Promise<Array<PlanItemHistory>> {
         const response = await CaseEngineService.get(`/cases/${caseId}/history/planitems`, user);
-        return response.validateArray(PlanItemHistory, msg, expectedStatusCode, trace);
+        return await response.validateArray(PlanItemHistory, msg, expectedStatusCode, trace);
     }
 
     /**
@@ -23,6 +23,6 @@ export default class CaseHistoryService {
      */
     static async getPlanItemHistory(user: User, caseId: Case | string, planItemId: string, expectedStatusCode: number = 200, msg = `GetPlanItemHistory is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()): Promise<Array<PlanItemHistory>> {
         const response = await CaseEngineService.get(`/cases/${caseId}/history/planitems/${planItemId}`, user);
-        return response.validateArray(PlanItemHistory, msg, expectedStatusCode, trace);
+        return await response.validateArray(PlanItemHistory, msg, expectedStatusCode, trace);
     }
 }

@@ -16,35 +16,27 @@ export default class TestRecursiveDefinitions extends TestCase {
     async run() {
         const invalidCaseDefinition = 'invalidrecursion3.xml';
 
-
-
         // Validating the invalid case model should result in an error.
         //  We should also invalidate recursive definitions.
-        await RepositoryService.validateCaseDefinition(tenantOwner, 'invalidrecursion.xml', 400).then(error => {
-            if (error instanceof Array) {
-                const expectedErrors = [
-                    "invalidrecursion.case: CaseTask 'invalidrecursion' leads to infinite recursion, because",
-                    " CaseTask['invalidrecursion'] does not have entry criteria",
-                    " and Stage['Stage without entry criterion'] does not have entry criteria",
-                    " and invalidrecursion always starts immediately"];
+        const response = await RepositoryService.validateCaseDefinition(tenantOwner, 'invalidrecursion.xml', 400);
+        const expectedErrors = [
+            "invalidrecursion.case: CaseTask 'invalidrecursion' leads to infinite recursion, because",
+            " CaseTask['invalidrecursion'] does not have entry criteria",
+            " and Stage['Stage without entry criterion'] does not have entry criteria",
+            " and invalidrecursion always starts immediately"];
 
-                const errors = error.join('\n').toString().split('\n');
+        const errors = response.join('\n').toString().split('\n');
 
-                errors.forEach(e => console.log(`'${e}'`))
+        errors.forEach(e => console.log(`'${e}'`))
 
-                console.log("\n\nEXPECTED\n\n")
+        console.log("\n\nEXPECTED\n\n")
 
-                expectedErrors.forEach(e => console.log(`'${e}'`))
+        expectedErrors.forEach(e => console.log(`'${e}'`))
 
-                if (!Comparison.sameArray(errors, expectedErrors)) {
-                    console.log("Missing expected errors")
-                }
-
-            } else {
-                throw new Error(`Unexpected response. Expecting a string array, found a ${error.constructor.name}`)
-            }
-        });
-
+        if (!Comparison.sameArray(errors, expectedErrors)) {
+            console.log("Missing expected errors")
+        }
+ 
         const invalidRecursion1: InvalidDefinitionTest = {
             definitionFile: 'invalidrecursion.xml',
             expectedErrors: [
@@ -91,31 +83,24 @@ export default class TestRecursiveDefinitions extends TestCase {
     }
 
     async testDefinition(test: InvalidDefinitionTest) {
-        await RepositoryService.validateCaseDefinition(tenantOwner, test.definitionFile, 400).then(error => {
-            if (error instanceof Array) {
-                // Note: we join/split the array, as the response may come with '\n' characters on the first array element. Not too sure why that happens.
-                const errors = error.join('\n').toString().split('\n');
+        const error = await RepositoryService.validateCaseDefinition(tenantOwner, test.definitionFile, 400);
+        // Note: we join/split the array, as the response may come with '\n' characters on the first array element. Not too sure why that happens.
+        const errors = error.join('\n').toString().split('\n');
 
-                if (!Comparison.sameArray(errors, test.expectedErrors)) {
+        if (!Comparison.sameArray(errors, test.expectedErrors)) {
 
-                    console.log('Expected errors: ');
-                    test.expectedErrors.forEach((e, i) => console.log(`[${i}] = '${e}'`));
+            console.log('Expected errors: ');
+            test.expectedErrors.forEach((e, i) => console.log(`[${i}] = '${e}'`));
 
-                    console.log('Received errors: ');
-                    errors.forEach((e, i) => console.log(`[${i}] = '${e}'`));
+            console.log('Received errors: ');
+            errors.forEach((e, i) => console.log(`[${i}] = '${e}'`));
 
-                    throw new Error(`Mismatch in expected errors upon validation of definition ${test.definitionFile}`);
-                }
-
-            } else {
-                throw new Error(`Unexpected response. Expecting a string array, found a ${error.constructor.name}`)
-            }
-        });
+            throw new Error(`Mismatch in expected errors upon validation of definition ${test.definitionFile}`);
+        }
 
         // Deploying an invalid case definition to a valid file name should result in an error.
         const deployInvalidCaseDefinition = new DeployCase(readLocalXMLDocument(test.definitionFile), test.definitionFile, tenant);
         await RepositoryService.deployCase(tenantOwner, deployInvalidCaseDefinition, 400);
-        
     }
 }
 

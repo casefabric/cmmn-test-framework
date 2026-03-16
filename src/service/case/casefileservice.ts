@@ -12,7 +12,7 @@ export default class CaseFileService {
      */
     static async getCaseFile(user: User, caseId: Case | string, expectedStatusCode: number = 200, msg = `GetCaseFile is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()): Promise<any> {
         const response = await CaseEngineService.get(`/cases/${caseId}/casefile`, user);
-        return response.validateObject(Object, msg, expectedStatusCode, trace);
+        return await response.validateObject(Object, msg, expectedStatusCode, trace);
     }
 
     /**
@@ -23,7 +23,7 @@ export default class CaseFileService {
      */
     static async getCaseFileDocumentation(user: User, caseId: Case | string, expectedStatusCode: number = 200, msg = `GetPlanItem is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()): Promise<Array<CaseFileItemDocumentation>> {
         const response = await CaseEngineService.get(`/cases/${caseId}/documentation/casefile`, user);
-        return response.validateArray(CaseFileItemDocumentation, msg, expectedStatusCode, trace);
+        return await response.validateArray(CaseFileItemDocumentation, msg, expectedStatusCode, trace);
     }
 
     /**
@@ -35,7 +35,7 @@ export default class CaseFileService {
      */
     static async createCaseFileItem(user: User, caseId: Case | string, path: string, data: object, expectedStatusCode: number = 200, msg = `CreateCaseFileItem is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()) {
         const response = await CaseEngineService.post(`/cases/${caseId}/casefile/create/${encodeURI(path)}`, user, data);
-        return response.validate(msg, expectedStatusCode, trace);
+        return await response.validate(msg, expectedStatusCode, trace);
     }
 
     /**
@@ -47,7 +47,7 @@ export default class CaseFileService {
      */
     static async updateCaseFileItem(user: User, caseId: Case | string, path: string, data: any, expectedStatusCode: number = 200, msg = `UpdateCaseFileItem is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()) {
         const response = await CaseEngineService.put(`/cases/${caseId}/casefile/update/${encodeURI(path)}`, user, data);
-        return response.validate(msg, expectedStatusCode, trace);
+        return await response.validate(msg, expectedStatusCode, trace);
     }
 
     /**
@@ -59,7 +59,7 @@ export default class CaseFileService {
      */
     static async replaceCaseFileItem(user: User, caseId: Case | string, path: string, data: object, expectedStatusCode: number = 200, msg = `ReplaceCaseFileItem is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()) {
         const response = await CaseEngineService.put(`/cases/${caseId}/casefile/replace/${encodeURI(path)}`, user, data);
-        return response.validate(msg, expectedStatusCode, trace);
+        return await response.validate(msg, expectedStatusCode, trace);
     }
 
     /**
@@ -70,7 +70,7 @@ export default class CaseFileService {
      */
     static async deleteCaseFileItem(user: User, caseId: Case | string, path: string, expectedStatusCode: number = 200, msg = `DeleteCaseFileItem is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()) {
         const response = await CaseEngineService.delete(`/cases/${caseId}/casefile/delete/${encodeURI(path)}`, user);
-        return response.validate(msg, expectedStatusCode, trace);
+        return await response.validate(msg, expectedStatusCode, trace);
     }
 
     /**
@@ -82,7 +82,7 @@ export default class CaseFileService {
      */
     static async createCaseFile(user: User, caseId: Case | string, data: object, expectedStatusCode: number = 200, msg = `CreateCaseFile is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()) {
         const response = await CaseEngineService.post(`/cases/${caseId}/casefile/create/`, user, data);
-        return response.validate(msg, expectedStatusCode, trace);
+        return await response.validate(msg, expectedStatusCode, trace);
     }
 
     /**
@@ -94,7 +94,7 @@ export default class CaseFileService {
      */
     static async updateCaseFile(user: User, caseId: Case | string, data: any, expectedStatusCode: number = 200, msg = `UpdateCaseFile is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()) {
         const response = await CaseEngineService.put(`/cases/${caseId}/casefile/update/`, user, data);
-        return response.validate(msg, expectedStatusCode, trace);
+        return await response.validate(msg, expectedStatusCode, trace);
     }
 
     /**
@@ -106,7 +106,7 @@ export default class CaseFileService {
      */
     static async replaceCaseFile(user: User, caseId: Case | string, data: object, expectedStatusCode: number = 200, msg = `ReplaceCaseFile is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()) {
         const response = await CaseEngineService.put(`/cases/${caseId}/casefile/replace/`, user, data);
-        return response.validate(msg, expectedStatusCode, trace);
+        return await response.validate(msg, expectedStatusCode, trace);
     }
 
     /**
@@ -117,6 +117,6 @@ export default class CaseFileService {
      */
     static async deleteCaseFile(user: User, caseId: Case | string, expectedStatusCode: number = 200, msg = `DeleteCaseFile is not expected to succeed for user ${user} in case ${caseId}`, trace: Trace = new Trace()) {
         const response = await CaseEngineService.delete(`/cases/${caseId}/casefile/delete/`, user);
-        return response.validate(msg, expectedStatusCode, trace);
+        return await response.validate(msg, expectedStatusCode, trace);
     }
 }

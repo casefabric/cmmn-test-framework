@@ -27,7 +27,7 @@ export default class PlatformService {
                 return response;
             }
         }
-        return response.validate(errorMsg, expectedStatusCode, trace);
+        return await response.validate(errorMsg, expectedStatusCode, trace);
     }
 
     /**
@@ -38,7 +38,7 @@ export default class PlatformService {
      */
     static async disableTenant(user: User, tenant: Tenant | string, expectedStatusCode: number = 204, msg = `Disabling the tenant ${tenant} was not expected to succeed`, trace: Trace = new Trace()) {
         const response = await CaseEngineService.put(`/platform/${tenant}/disable`, user);
-        return response.validate(msg, expectedStatusCode, trace);
+        return await response.validate(msg, expectedStatusCode, trace);
     }
 
     /**
@@ -64,7 +64,7 @@ export default class PlatformService {
     static async getUserInformation(user: User, trace: Trace = new Trace()): Promise<UserInformation> {
         const url = '/platform/user';
         const response = await CaseEngineService.get(url, user);
-        return response.validateObject(UserInformation, 'Expected valid user information', 200, trace);
+        return await response.validateObject(UserInformation, 'Expected valid user information', 200, trace);
     }
 
     /**
@@ -73,7 +73,7 @@ export default class PlatformService {
     static async getHealth(trace: Trace = new Trace()) {
         const url = '/health';
         const response = await CaseEngineService.get(url, undefined);
-        return response.validateObject(Object, 'Expected proper health information', 200, trace);
+        return await response.validateObject(Object, 'Expected proper health information', 200, trace);
     }
 
     /**
@@ -82,7 +82,7 @@ export default class PlatformService {
     static async getVersion(trace: Trace = new Trace()) {
         const url = '/version';
         const response = await CaseEngineService.get(url, undefined);
-        return response.validateObject(EngineVersion, 'Expected proper version information', 200, trace);
+        return await response.validateObject(EngineVersion, 'Expected proper version information', 200, trace);
     }
 }
 

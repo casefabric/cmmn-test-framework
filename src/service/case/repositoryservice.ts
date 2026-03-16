@@ -27,7 +27,7 @@ export default class RepositoryService {
         // Hmmm... Duplicate '/repository/repository/' is needed currently...
         const url = `/repository/deploy/${command.modelName}?${tenantQueryParameter}`;
         const response = await CaseEngineService.postXML(url, user, command.definition);
-        return response.validate(msg, expectedStatusCode, trace);
+        return await response.validate(msg, expectedStatusCode, trace);
     }
 
     /**
@@ -39,8 +39,7 @@ export default class RepositoryService {
     static async loadCaseDefinition(user: User, fileName: string, tenant: string | Tenant, expectedStatusCode: number = 200) {
         const modelName = fileName.endsWith('.xml') ? fileName.substring(0, fileName.length - 4) : fileName;
 
-        const xml = await CaseEngineService.getXml(`/repository/load/${modelName}?tenant=${getTenantName(tenant)}`, user);
-        return xml;
+        return await CaseEngineService.getXml(`/repository/load/${modelName}?tenant=${getTenantName(tenant)}`, user);
     }
 
     /**
@@ -51,7 +50,7 @@ export default class RepositoryService {
     static async listCaseDefinitions(user: User, tenant?: string | Tenant, expectedStatusCode: number = 200, msg = `ListCaseDefinitions is not expected to succeed for member ${user}`, trace: Trace = new Trace()) {
         const tenantQueryParameter = tenant ? '?tenant=' + getTenantName(tenant) : '';
         const response = await CaseEngineService.get(`/repository/list${tenantQueryParameter}`, user);
-        const json = response.validate(msg, expectedStatusCode, trace);
+        const json = await response.validate(msg, expectedStatusCode, trace);
 
         if (Config.RepositoryService.log) {
             logger.debug('Cases deployed in the server: ' + JSON.stringify(json, undefined, 2))
@@ -78,7 +77,7 @@ export default class RepositoryService {
             }
         } else {
             if (response.ok) {
-                return response;
+                return [];
             } else {
                 const messages = <Array<string>>await response.json();
                 return messages;

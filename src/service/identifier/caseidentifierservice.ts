@@ -11,7 +11,7 @@ export default class CaseIdentifierService {
      */
     static async getIdentifiers(user: User, filter?: IdentifierFilter, expectedStatusCode: number = 200, msg = `GetIdentifiers is not expected to succeed for user ${user}`, trace: Trace = new Trace()): Promise<Array<CaseIdentifier>> {
         const response = await CaseEngineService.get('/identifiers', user, filter);
-        return response.validateArray(CaseIdentifier, msg, expectedStatusCode, trace);
+        return await response.validateArray(CaseIdentifier, msg, expectedStatusCode, trace);
     }
 
     /**
@@ -21,7 +21,7 @@ export default class CaseIdentifierService {
      */
     static async getIdentifierNames(user: User, filter?: IdentifierFilter, expectedStatusCode: number = 200, msg = `GetIdentifiers is not expected to succeed for user ${user}`, trace: Trace = new Trace()): Promise<Array<String>> {
         const response = await CaseEngineService.get('/identifiers/names', user, filter);
-        return response.validateArray(String, msg, expectedStatusCode, trace);
+        return await response.validateArray(String, msg, expectedStatusCode, trace);
     }
 }
 

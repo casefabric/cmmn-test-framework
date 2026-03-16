@@ -16,7 +16,7 @@ export default class CaseMigrationService {
             newDefinition: migration.newDefinition.toString(),
             newTeam: migration.newTeam,
         });
-        return response.validateObject(Object, msg, expectedStatusCode, trace);
+        return await response.validateObject(Object, msg, expectedStatusCode, trace);
     }
 }
 

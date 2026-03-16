@@ -61,7 +61,7 @@ export default class CommandLineParser {
         const urls = this.readValue(URLS_PARAMETER, 'URLs for various engine nodes as a comma separate list', '').split(',').filter(url => url.trim().length > 0);
         const urlEnhancer = (url: string) => {
             // Let's first check if it is only a port number or a full URL
-            const asPortNumber = new Number(url);
+            const asPortNumber = Number(url);
             if (asPortNumber >= 0) {
                 url = `http://0.0.0.0:${asPortNumber}/`;
             }
