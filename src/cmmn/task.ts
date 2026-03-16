@@ -4,6 +4,7 @@ export default class Task extends CMMNBaseClass {
     constructor(
         public id: string,
         public taskName: string,
+        public documentation: string,
         public taskState: string,
         public assignee: string,
         public mayPerform: boolean,
@@ -15,8 +16,10 @@ export default class Task extends CMMNBaseClass {
         public lastModified: string,
         public modifiedBy: string,
         public dueDate: string,
+        public taskDuration: string,
         public createdOn: string,
         public createdBy: string,
+        public activatedOn: string,
         public input: any,
         public output: any,
         public taskModel: any

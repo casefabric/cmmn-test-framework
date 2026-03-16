@@ -17,6 +17,8 @@ import TaskOutputFilled from "./case/plan/task/taskoutputfilled";
 import { DebugEvent } from "./debugevent";
 import EngineVersionChanged from "./engineversionchanged";
 import ModelEvent from "./modelevent";
+import TimerSet from "./case/plan/timer/timerset";
+import TimerCompleted from "./case/plan/timer/timercompleted";
 
 export default class ModelEventFactory {
     static getConstructor(type: string): typeof ModelEvent | null {
@@ -42,6 +44,8 @@ const events = [
     TaskOutputFilled,
     HumanTaskActivated,
     HumanTaskInputSaved,
+    TimerSet,
+    TimerCompleted,
     CaseModified,
     PlanItemCreated,
     PlanItemTransitioned,

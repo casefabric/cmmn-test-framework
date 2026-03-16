@@ -1,0 +1,44 @@
+<case xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="duration_and_instant.case" name="duration_and_instant" expressionLanguage="spel" guid="_R3uxA">
+    <caseFileModel typeRef="case_calculation.type"/>
+    <casePlanModel id="cm__R3uxA_0" name="duration_and_instant" autoComplete="true">
+        <humanTask id="_R3uxA_1" name="Duration in DueDate" isBlocking="true">
+            <documentation textFormat="text/plain">
+                <text><![CDATA[This is the task documentation]]></text>
+            </documentation>
+            <entryCriterion id="crit__R3uxA_0">
+                <planItemOnPart id="_R3uxA_13" sourceRef="_R3uxA_7">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </entryCriterion>
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne">
+                    <duedate id="_R3uxA_3" contextRef="Root">
+                        <condition id="_R3uxA_4">
+                            <body><![CDATA[Root.input1]]></body>
+                        </condition>
+                    </duedate>
+                </cafienne:implementation>
+            </extensionElements>
+        </humanTask>
+        <timerEvent id="_R3uxA_7" name="Immediate Timer">
+            <timerExpression id="_R3uxA_9">
+                <body><![CDATA[T(java.time.Instant).now()]]></body>
+            </timerExpression>
+            <planItemStartTrigger id="_R3uxA_6">
+                <standardEvent/>
+            </planItemStartTrigger>
+        </timerEvent>
+    </casePlanModel>
+    <caseRoles caseTeamRef="testteam.caseteam"/>
+    <input id="_R3uxA_5" name="Root" bindingRef="Root"/>
+    <textAnnotation id="_R3uxA_14">
+        <text><![CDATA[The Timer uses java.time.Instant instead of Duration.
+Note that usage of Duration is written in the CMMN spec, but in the case engine we support both formats.]]></text>
+    </textAnnotation>
+    <textAnnotation id="_R3uxA_15">
+        <text><![CDATA[The task now can also use Duration instead of only Instant for its DueDate expression.
+In this case, the actual DueDate is taken from the case file, so that is not really visible in the model.
+
+Note that now also the documentation on a task has become available when fetching it. That is also tested in the underlying typescript test case]]></text>
+    </textAnnotation>
+</case>

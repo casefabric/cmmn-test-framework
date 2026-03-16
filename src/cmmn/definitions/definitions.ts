@@ -14,6 +14,7 @@ export default class Definitions {
     public static readonly Compatibility = new Definitions('compatibility.xml');
     public static readonly ComplexCase = new Definitions('complexcase.xml');
     public static readonly Documentation = new Definitions('documentation_case.xml');
+    public static readonly DurationAndInstant = new Definitions('duration_and_instant.xml');
     public static readonly DynamicTaskModel = new Definitions('dynamictaskmodel.xml');
     public static readonly EntryCriteriaOnCaseInputParameters = new Definitions('entrycriteriaoncaseinputparameters.xml');
     public static readonly EntryCriteriaOnRecovery = new Definitions('entrycriteriaonrecovery.xml');
