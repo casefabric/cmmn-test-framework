@@ -104,6 +104,7 @@ import TestTravelRequest from '../tests/travelrequest/testtravelrequest';
 import TestRunner from './testrunner';
 import TestCorrelationId from '../tests/api/environment/testcorrelationid';
 import TestClientApp from '../tests/clientcredentialsflow/testclientapp';
+import TestDurationAndInstant from '../tests/api/task/humantask/testdurationandinstant';
 
 export default class TestClasses {
     static getTestClass(name: string): Function {
@@ -170,6 +171,7 @@ const TaskTests: Array<Function> = [
     , TestCaseTeamTaskAuthorizations
     , TestCaseTeamTaskAuthorizationsForGroups
     , TestSubCaseTasks
+    , TestDurationAndInstant
 ]
 
 const StorageTests: Array<Function> = [

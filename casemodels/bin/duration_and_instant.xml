@@ -1,0 +1,82 @@
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
+    <caseFileItemDefinition name="Root" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="case_calculation_type_Root.object"/>
+    <caseFileItemDefinition name="case_calculation" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="case_calculation.type"/>
+    <caseFileItemDefinition name="unspecified" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="unspecified.type"/>
+    <case id="duration_and_instant.case" name="duration_and_instant" expressionLanguage="spel">
+        <caseFileModel cafienne:typeRef="case_calculation.type">
+            <caseFileItem id="Root" name="Root" multiplicity="ExactlyOne" definitionRef="case_calculation_type_Root.object">
+                <children>
+                    <caseFileItem id="Root/input1" name="input1" multiplicity="ExactlyOne" definitionRef="unspecified.type"/>
+                    <caseFileItem id="Root/input2" name="input2" multiplicity="ExactlyOne" definitionRef="unspecified.type"/>
+                </children>
+            </caseFileItem>
+            <caseFileItem id="Output1" name="Output1" multiplicity="ExactlyOne" definitionRef="unspecified.type"/>
+            <caseFileItem id="Output2" name="Output2" multiplicity="ExactlyOne" definitionRef="unspecified.type"/>
+            <caseFileItem id="Output3" name="Output3" multiplicity="ExactlyOne" definitionRef="unspecified.type"/>
+            <caseFileItem id="Output4" name="Output4" multiplicity="ExactlyOne" definitionRef="unspecified.type"/>
+            <caseFileItem id="Output5" name="Output5" multiplicity="ExactlyOne" definitionRef="unspecified.type"/>
+            <caseFileItem id="Output6" name="Output6" multiplicity="ExactlyOne" definitionRef="unspecified.type"/>
+        </caseFileModel>
+        <casePlanModel id="cm__R3uxA_0" name="duration_and_instant" autoComplete="true">
+            <planItem id="_R3uxA_1" name="Duration in DueDate" definitionRef="ht__R3uxA_1">
+                <documentation textFormat="text/plain">
+                    <text><![CDATA[This is the task documentation]]></text>
+                </documentation>
+                <entryCriterion id="crit__R3uxA_0" sentryRef="s_crit__R3uxA_0"/>
+            </planItem>
+            <planItem id="_R3uxA_7" name="Immediate Timer" definitionRef="tmr__R3uxA_7"/>
+            <sentry id="s_crit__R3uxA_0">
+                <planItemOnPart id="_R3uxA_13" sourceRef="_R3uxA_7">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <humanTask id="ht__R3uxA_1" name="Duration in DueDate" isBlocking="true">
+                <extensionElements mustUnderstand="false">
+                    <cafienne:implementation xmlns:cafienne="org.cafienne">
+                        <duedate id="_R3uxA_3" contextRef="Root">
+                            <condition id="_R3uxA_4">
+                                <body><![CDATA[Root.input1]]></body>
+                            </condition>
+                        </duedate>
+                    </cafienne:implementation>
+                </extensionElements>
+            </humanTask>
+            <timerEvent id="tmr__R3uxA_7" name="Immediate Timer">
+                <timerExpression id="_R3uxA_9">
+                    <body><![CDATA[T(java.time.Instant).now()]]></body>
+                </timerExpression>
+                <planItemStartTrigger id="_R3uxA_6">
+                    <standardEvent></standardEvent>
+                </planItemStartTrigger>
+            </timerEvent>
+        </casePlanModel>
+        <caseRoles cafienne:caseTeamRef="testteam.caseteam">
+            <role id="cr__rAKmR_0" name="Employee"/>
+            <role id="cr__rAKmR_1" name="Manager"/>
+            <role id="cr__rAKmR_2" name="ADMIN">
+                <documentation textFormat="text/plain">
+                    <text><![CDATA[admin of the world]]></text>
+                </documentation>
+            </role>
+            <role id="cr__ZAwz2_0" name="role"/>
+        </caseRoles>
+        <input id="_R3uxA_5" name="Root" bindingRef="Root"/>
+    </case>
+    <CMMNDI>
+        <CMMNDiagram>
+            <CMMNShape name="duration_and_instant" cmmnElementRef="cm__R3uxA_0">
+                <Bounds x="20" y="20" width="800" height="500"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_R3uxA_1">
+                <Bounds x="340" y="130" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_R3uxA_7">
+                <Bounds x="120" y="150" width="32" height="32"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="crit__R3uxA_0">
+                <Bounds x="334" y="160" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNEdge sourceCMMNElementRef="_R3uxA_7" targetCMMNElementRef="crit__R3uxA_0"/>
+        </CMMNDiagram>
+    </CMMNDI>
+</definitions>

@@ -1,0 +1,23 @@
+<CMMNDI xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
+    <CMMNDiagram>
+        <CMMNShape name="duration_and_instant" cmmnElementRef="cm__R3uxA_0">
+            <Bounds x="20" y="20" width="800" height="500"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_R3uxA_1">
+            <Bounds x="440" y="130" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_R3uxA_7">
+            <Bounds x="120" y="150" width="32" height="32"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="crit__R3uxA_0">
+            <Bounds x="434" y="160" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_R3uxA_14">
+            <Bounds x="50" y="230" width="240" height="170"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_R3uxA_15">
+            <Bounds x="390" y="230" width="280" height="170"/>
+        </CMMNShape>
+        <CMMNEdge sourceCMMNElementRef="_R3uxA_7" targetCMMNElementRef="crit__R3uxA_0"/>
+    </CMMNDiagram>
+</CMMNDI>
