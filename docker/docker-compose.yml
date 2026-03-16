@@ -79,7 +79,7 @@ services:
       - ../casemodels/src:/usr/src/app/repository
 
   ctf-case-ui:
-    image: cafienne/cafienne-ui:latest
+    image: cafienne/cafienne-ui:0.7.3
     labels:
       component: ctf-case-ui
     networks:
@@ -96,7 +96,7 @@ services:
       CAFIENNE_URI: http://localhost:2027
 
   ctf-case-ui-fake-idp:
-    image: cafienne/cafienne-ui:latest
+    image: cafienne/cafienne-ui:0.7.3
     labels:
       component: ctf-case-ui-fake-idp
     networks:
