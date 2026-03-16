@@ -24,8 +24,13 @@ export default class ModelEvent {
     }
 
     toString(): string {
-        return this.constructor.name;
-        // return JSON.stringify(this, undefined, 2);
+        // return this.constructor.name;
+        const obj: any = Object.assign({}, this);
+        delete obj.engineEvent; // Avoid circular reference
+        if (obj.path) {
+            obj.path = obj.path.toString();
+        }
+        return `${this.constructor.name} ${JSON.stringify(obj, undefined, 2)}`;
     }
 
     hasType(type: Function): boolean {

@@ -17,7 +17,7 @@ export default class CasePlanEvent extends CaseEvent {
         return this.path.name;
     }
 
-    toString(): string {
+    summary(): string {
         return `${this.type}[${this.path}]`;
     }
 }
