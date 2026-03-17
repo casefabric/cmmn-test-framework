@@ -1,0 +1,46 @@
+<CMMNDI xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
+    <CMMNDiagram>
+        <CMMNShape name="suspendresume" cmmnElementRef="cm__9WQVj_0">
+            <Bounds x="20" y="20" width="800" height="710"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_9WQVj_1">
+            <Bounds x="490" y="100" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_9WQVj_4">
+            <Bounds x="230" y="100" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_9WQVj_6">
+            <Bounds x="260" y="230" width="100" height="40"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_9WQVj_8">
+            <Bounds x="90" y="60" width="650" height="260"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_9WQVj_10">
+            <Bounds x="180" y="350" width="140" height="120"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_9WQVj_14">
+            <Bounds x="230" y="390" width="32" height="32"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_9WQVj_23">
+            <Bounds x="450" y="350" width="130" height="120"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_9WQVj_27">
+            <Bounds x="500" y="390" width="32" height="32"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_9WQVj_39">
+            <Bounds x="440" y="230" width="32" height="32"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="crit__9WQVj_2">
+            <Bounds x="354" y="240" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="crit__9WQVj_0">
+            <Bounds x="240" y="310" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="crit__9WQVj_1">
+            <Bounds x="510" y="310" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNEdge sourceCMMNElementRef="crit__9WQVj_0" targetCMMNElementRef="_9WQVj_14"/>
+        <CMMNEdge sourceCMMNElementRef="_9WQVj_27" targetCMMNElementRef="crit__9WQVj_1"/>
+        <CMMNEdge sourceCMMNElementRef="_9WQVj_39" targetCMMNElementRef="crit__9WQVj_2"/>
+    </CMMNDiagram>
+</CMMNDI>

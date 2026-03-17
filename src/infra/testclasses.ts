@@ -105,6 +105,7 @@ import TestRunner from './testrunner';
 import TestCorrelationId from '../tests/api/environment/testcorrelationid';
 import TestClientApp from '../tests/clientcredentialsflow/testclientapp';
 import TestDurationAndInstant from '../tests/api/task/humantask/testdurationandinstant';
+import TestSuspendResume from '../tests/api/caseplan/sentry/testsuspendresume';
 
 export default class TestClasses {
     static getTestClass(name: string): Function {
@@ -219,6 +220,7 @@ const AllTests: Array<Function> = [
     , ...TaskTests
     , TestEntryCriteriaOnCaseInputParameters
     , TestEntryCriteriaOnRecovery
+    , TestSuspendResume
     , TestStage
     , TestFaultBubbling
     , TestClassicFaultHandling
