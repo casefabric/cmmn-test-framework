@@ -53,7 +53,7 @@ export default class TestClassicFaultHandling extends TestCase {
 
         // Triggering the event to try again should lead to one more failure, and one more instance of failure handling stage
         //  The first failure handling stage must be in Completed state.
-        await CasePlanService.raiseEvent(user, caseInstance, '' + firstTryAgain.resolve(caseTree.caseInstance)?.id);
+        await CasePlanService.raiseEvent(user, caseInstance, firstTryAgain.resolve(caseTree.caseInstance)!);
         caseTree.assertPlanItemState(firstRepeatingCall, State.Failed);
         caseTree.assertPlanItemState(secondRepeatingCall, State.Failed);
         caseTree.assertPlanItemState(firstFailureHandlingStage, State.Completed);
@@ -66,7 +66,7 @@ export default class TestClassicFaultHandling extends TestCase {
         await CaseFileService.updateCaseFileItem(user, caseInstance, 'data', mock.success_data);
 
         // Triggering the event to try again should lead to completion, but only on the last instance of the task.
-        await CasePlanService.raiseEvent(user, caseInstance, '' + secondTryAgain.resolve(caseTree.caseInstance)?.id);
+        await CasePlanService.raiseEvent(user, caseInstance, secondTryAgain.resolve(caseTree.caseInstance)!);
         caseTree.assertPlanItemState(firstFailureHandlingStage, State.Completed);
         caseTree.assertPlanItemState(secondFailureHandlingStage, State.Completed);
         caseTree.assertPlanItemState(firstRepeatingCall, State.Failed);

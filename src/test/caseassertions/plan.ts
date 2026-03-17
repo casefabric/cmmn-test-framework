@@ -1,13 +1,12 @@
 import Case from '../../cmmn/case';
 import PlanItem from '../../cmmn/planitem';
 import State from '../../cmmn/state';
-import Config from '../../config';
-import AsyncError from '../../util/async/asyncerror';
-import Trace from '../../util/async/trace';
-import logger from '../../logger';
 import CaseService from '../../service/case/caseservice';
 import User from '../../user';
+import AsyncError from '../../util/async/asyncerror';
+import Trace from '../../util/async/trace';
 import { PollUntilSuccess } from '../time';
+import Transition from '../../cmmn/transition';
 
 /**
  * Retrieves the plan items of the case and asserts that the plan item has the expected state.
@@ -23,29 +22,13 @@ import { PollUntilSuccess } from '../time';
  * @returns {Promise<PlanItem>} the plan item if it is found
  * @throws {Error} if the plan item is not found after so many attempts
  */
-export async function assertPlanItem(user: User, caseId: Case | string, planItemIdentifier: string, planItemIndex: number = -1, expectedState?: State, trace: Trace = new Trace()): Promise<PlanItem> {
+export async function assertPlanItem(user: User, caseId: Case | string, planItemIdentifier: string, planItemIndex: number = -1, expectedState?: State, expectedTransition?: Transition, trace: Trace = new Trace()): Promise<PlanItem> {
     return await PollUntilSuccess(async () => {
         const freshCase = await CaseService.getCase(user, caseId);
-        if (Config.TestCase.log) {
-            const longestNameLength = Math.max(...freshCase.planitems.map(item => item.name.length));
-            const longestState = Math.max(...freshCase.planitems.map(item => item.currentState.length));
-            logger.debug(' Current Plan Items\n' + (freshCase.planitems.map(item => ` ${item.name.padStart(longestNameLength)}.${item.index} ==> ${item.currentState.padEnd(longestState)} (id: ${item.id})`)).join('\n'));
-        }
-        const nameFilter = (item: PlanItem): boolean => item.name === planItemIdentifier || item.id === planItemIdentifier;
-        const indexFilter = (item: PlanItem): boolean => planItemIndex >= 0 ? item.index === planItemIndex : true;
-        const stateFilter = (item: PlanItem): boolean => expectedState ? State.of(item.currentState).is(expectedState) : true;
-
-        const matchers = freshCase.planitems.filter(item => nameFilter(item) && indexFilter(item));
-        const item = matchers.find(stateFilter);
-        if (item) {
-            return item;
-        }
-
-        const itemDescription: string = planItemIndex < 0 ? planItemIdentifier : `${planItemIdentifier}.${planItemIndex}`;
-        if (expectedState && matchers.length) { // If we have matchers, it means the item is found, but not in the correct state.
-            throw new AsyncError(trace, `Did not find the plan item '${itemDescription}' in state ${expectedState}`);
-        } else {
-            throw new AsyncError(trace, `Did not find the plan item '${itemDescription}' in the case plan`);
+        try {
+            return freshCase.assertPlanItem(planItemIdentifier, planItemIndex, expectedState, expectedTransition);
+        } catch (error) {
+            throw new AsyncError(trace, error.message);
         }
     });
 }

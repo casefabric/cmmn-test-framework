@@ -15,6 +15,6 @@ export default class ProcessEvents extends PlanItemEvents {
     }
 
     async assertState(state: State, trace: Trace = new Trace()) {
-        return assertPlanItem(this.user, this.parentCase.id, this.id, undefined, state, trace);
+        return assertPlanItem(this.user, this.parentCase.id, this.id, undefined, state, undefined, trace);
     }
 }

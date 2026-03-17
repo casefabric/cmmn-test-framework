@@ -56,7 +56,7 @@ export default class CasePlanService {
      * @param user 
      * @param eventName
      */
-    static async raiseEvent(user: User, caseId: Case | string, eventName: string, expectedStatusCode: number = 200, msg = `RaiseEvent is not expected to succeed for user ${user} in case ${caseId} on event ${eventName}`, trace: Trace = new Trace()) {
+    static async raiseEvent(user: User, caseId: Case | string, eventName: string | PlanItem, expectedStatusCode: number = 200, msg = `RaiseEvent is not expected to succeed for user ${user} in case ${caseId} on event ${eventName}`, trace: Trace = new Trace()) {
         const response = await CaseEngineService.post(`/cases/${caseId}/planitems/${eventName}/Occur`, user);
         return await response.validate(msg, expectedStatusCode, trace);
     }

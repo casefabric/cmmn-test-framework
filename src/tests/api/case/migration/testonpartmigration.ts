@@ -45,8 +45,8 @@ export default class TestOnPartMigration extends TestCase {
 
         await assertPlanItem(user, caseInstance, "Task", 0, State.Available);
 
-        await CasePlanService.raiseEvent(user, caseInstance, u1!.id);
-        await CasePlanService.raiseEvent(user, caseInstance, u2!.id);
+        await CasePlanService.raiseEvent(user, caseInstance, u1!);
+        await CasePlanService.raiseEvent(user, caseInstance, u2!);
 
         await CaseService.getCase(user, caseInstance).then(caseInstance => caseInstance.toConsole());
 
