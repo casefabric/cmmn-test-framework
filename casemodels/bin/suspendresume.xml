@@ -1,0 +1,398 @@
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
+    <caseFileItemDefinition name="Greeting" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="greeting.cfid">
+        <property name="Message" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+            </extensionElements>
+        </property>
+        <property name="To" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+            </extensionElements>
+        </property>
+        <property name="From" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    </caseFileItemDefinition>
+    <caseFileItemDefinition name="Response" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="response.cfid">
+        <property name="Message" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="Date" type="http://www.omg.org/spec/CMMN/PropertyType/date"/>
+        <property name="Time" type="http://www.omg.org/spec/CMMN/PropertyType/time"/>
+        <property name="SomeBoolean" type="http://www.omg.org/spec/CMMN/PropertyType/boolean"/>
+    </caseFileItemDefinition>
+    <caseFileItemDefinition name="Root" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="case_calculation_type_Root.object"/>
+    <caseFileItemDefinition name="case_calculation" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="case_calculation.type"/>
+    <caseFileItemDefinition name="unspecified" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="unspecified.type"/>
+    <case id="suspendresume.case" name="suspendresume" expressionLanguage="spel">
+        <caseFileModel cafienne:typeRef="case_calculation.type">
+            <caseFileItem id="Root" name="Root" multiplicity="ExactlyOne" definitionRef="case_calculation_type_Root.object">
+                <children>
+                    <caseFileItem id="Root/input1" name="input1" multiplicity="ExactlyOne" definitionRef="unspecified.type"/>
+                    <caseFileItem id="Root/input2" name="input2" multiplicity="ExactlyOne" definitionRef="unspecified.type"/>
+                </children>
+            </caseFileItem>
+            <caseFileItem id="Output1" name="Output1" multiplicity="ExactlyOne" definitionRef="unspecified.type"/>
+            <caseFileItem id="Output2" name="Output2" multiplicity="ExactlyOne" definitionRef="unspecified.type"/>
+            <caseFileItem id="Output3" name="Output3" multiplicity="ExactlyOne" definitionRef="unspecified.type"/>
+            <caseFileItem id="Output4" name="Output4" multiplicity="ExactlyOne" definitionRef="unspecified.type"/>
+            <caseFileItem id="Output5" name="Output5" multiplicity="ExactlyOne" definitionRef="unspecified.type"/>
+            <caseFileItem id="Output6" name="Output6" multiplicity="ExactlyOne" definitionRef="unspecified.type"/>
+        </caseFileModel>
+        <casePlanModel id="cm__9WQVj_0" name="suspendresume" autoComplete="true">
+            <planItem id="_9WQVj_8" name="Stage" definitionRef="s__9WQVj_8">
+                <extensionElements mustUnderstand="false">
+                    <suspendCriterion xmlns="org.cafienne" id="crit__9WQVj_0" sentryRef="s_crit__9WQVj_0"/>
+                    <resumeCriterion xmlns="org.cafienne" id="crit__9WQVj_1" sentryRef="s_crit__9WQVj_1"/>
+                </extensionElements>
+            </planItem>
+            <planItem id="_9WQVj_10" name="suspender" definitionRef="s__9WQVj_10">
+                <itemControl id="_9WQVj_11">
+                    <repetitionRule id="_9WQVj_12">
+                        <condition id="_9WQVj_13">
+                            <body><![CDATA[true]]></body>
+                        </condition>
+                    </repetitionRule>
+                </itemControl>
+            </planItem>
+            <planItem id="_9WQVj_23" name="resumer" definitionRef="s__9WQVj_23">
+                <itemControl id="_9WQVj_24">
+                    <repetitionRule id="_9WQVj_25">
+                        <condition id="_9WQVj_26">
+                            <body><![CDATA[true]]></body>
+                        </condition>
+                    </repetitionRule>
+                </itemControl>
+            </planItem>
+            <sentry id="s_crit__9WQVj_0">
+                <planItemOnPart id="_9WQVj_22" sourceRef="_9WQVj_14">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <sentry id="s_crit__9WQVj_1">
+                <planItemOnPart id="_9WQVj_29" sourceRef="_9WQVj_27">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <stage id="s__9WQVj_8" name="Stage" autoComplete="true">
+                <extensionElements mustUnderstand="false"/>
+                <planItem id="_9WQVj_4" name="Task in Stage" definitionRef="ht__9WQVj_4"/>
+                <planItem id="_9WQVj_1" name="HelloWorld" definitionRef="ct__9WQVj_1"/>
+                <planItem id="_9WQVj_6" name="Milestone" definitionRef="ms__9WQVj_6">
+                    <entryCriterion id="crit__9WQVj_2" sentryRef="s_crit__9WQVj_2"/>
+                </planItem>
+                <planItem id="_9WQVj_39" name="After 5 seconds" definitionRef="tmr__9WQVj_39"/>
+                <sentry id="s_crit__9WQVj_2">
+                    <planItemOnPart id="_9WQVj_41" sourceRef="_9WQVj_39">
+                        <standardEvent>occur</standardEvent>
+                    </planItemOnPart>
+                </sentry>
+            </stage>
+            <humanTask id="ht__9WQVj_4" name="Task in Stage" isBlocking="true"/>
+            <caseTask id="ct__9WQVj_1" name="HelloWorld" isBlocking="true" caseRef="helloworld.case"/>
+            <milestone id="ms__9WQVj_6" name="Milestone"/>
+            <timerEvent id="tmr__9WQVj_39" name="After 5 seconds">
+                <timerExpression id="_9WQVj_42">
+                    <body><![CDATA[PT5S]]></body>
+                </timerExpression>
+                <planItemStartTrigger id="_9WQVj_38">
+                    <standardEvent></standardEvent>
+                </planItemStartTrigger>
+            </timerEvent>
+            <stage id="s__9WQVj_10" name="suspender" autoComplete="true">
+                <planItem id="_9WQVj_14" name="Suspend Stage Event" definitionRef="ue__9WQVj_14"/>
+            </stage>
+            <userEvent id="ue__9WQVj_14" name="Suspend Stage Event"/>
+            <stage id="s__9WQVj_23" name="resumer" autoComplete="true">
+                <planItem id="_9WQVj_27" name="Resume Stage Event" definitionRef="ue__9WQVj_27"/>
+            </stage>
+            <userEvent id="ue__9WQVj_27" name="Resume Stage Event"/>
+        </casePlanModel>
+        <caseRoles cafienne:caseTeamRef="testteam.caseteam">
+            <role id="cr__rAKmR_0" name="Employee"/>
+            <role id="cr__rAKmR_1" name="Manager"/>
+            <role id="cr__rAKmR_2" name="ADMIN">
+                <documentation textFormat="text/plain">
+                    <text><![CDATA[admin of the world]]></text>
+                </documentation>
+            </role>
+            <role id="cr__ZAwz2_0" name="role"/>
+        </caseRoles>
+    </case>
+    <case id="helloworld.case" name="HelloWorld" expressionLanguage="spel">
+        <documentation textFormat="text/plain">
+            <text><![CDATA[Hello World]]></text>
+        </documentation>
+        <caseFileModel>
+            <caseFileItem id="cfi_csVQy_0" name="Greeting" multiplicity="ExactlyOne" definitionRef="greeting.cfid"/>
+            <caseFileItem id="cfi_csVQy_1" name="Response" multiplicity="ExactlyOne" definitionRef="response.cfid"/>
+        </caseFileModel>
+        <casePlanModel id="cm_HelloWorld.case_HelloWorld_0" name="HelloWorld" autoComplete="true">
+            <planItem id="cm_csVQy_167" name="Receive Greeting and Send response" definitionRef="ht_cm_csVQy_167">
+                <documentation textFormat="text/plain">
+                    <text><![CDATA[Receive Greeting
+and Send response]]></text>
+                </documentation>
+            </planItem>
+            <planItem id="cm_cs3hg_196" name="Read response" definitionRef="ht_cm_cs3hg_196">
+                <entryCriterion id="_nTPPc_0" name="EntryCriterion_0" sentryRef="s__nTPPc_0"/>
+            </planItem>
+            <sentry id="s__nTPPc_0">
+                <planItemOnPart id="ref_id_cm_csVQy_167" sourceRef="cm_csVQy_167">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <humanTask id="ht_cm_csVQy_167" name="Receive Greeting and Send response" isBlocking="true">
+                <inputs id="inTP_cm_cs2F1_174_1" name="Greeting" bindingRef="cfi_csVQy_0"/>
+                <outputs id="outTP_cm_cs2F1_174_1" name="Response" bindingRef="cfi_csVQy_1"/>
+                <extensionElements mustUnderstand="false">
+                    <cafienne:implementation name="SendResponse" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="sendresponse.humantask">
+                        <documentation textFormat="text/plain">
+                            <text><![CDATA[Sends a response back to the initiator of the hello world case]]></text>
+                        </documentation>
+                        <input id="Greeting" name="Greeting"/>
+                        <output id="Response" name="Response"/>
+                        <task-model>{
+	"schema" : {
+		"title" : "You have received a greeting",
+		"type" : "object",
+		"required" : [
+			"Response"
+		],
+		"properties" : {
+			"Greeting" : {
+				"title" : " ",
+				"type" : "object",
+				"properties" : {
+					"Message" : {
+						"type" : "string"
+					}
+				}
+			},
+			"Response" : {
+				"title" : "Your response",
+				"type" : "object",
+				"properties" : {
+					"Message" : {
+						"type" : "string",
+						"title" : "Your response message"
+					},
+					"Date" : {
+						"type" : "string",
+						"format" : "date",
+						"title" : "Pick a date"
+					},
+					"Time" : {
+						"type" : "string",
+						"format" : "time",
+						"title" : "Pick a time"
+					},
+					"SomeBoolean" : {
+						"type" : "boolean",
+						"title" : "Check this"
+					}
+				}
+			}
+		}
+	},
+	"uiSchema" : {
+       	"ui:order": [ "Greeting", "Response" ],
+		"Greeting" : {
+			"Message" : {
+				"ui:widget" : "textarea",
+				"ui:readonly" : true
+			},
+			"To" : {
+				"ui:readonly" : true
+			}
+		},
+		"Response" : {
+			"Message" : {
+				"ui:widget" : "textarea"
+			}
+		}
+	}
+}</task-model>
+                        <parameterMapping id="inPM_cm_cshJq_4_0" sourceRef="inTP_cm_cs2F1_174_1" targetRef="Greeting"/>
+                        <parameterMapping id="outPM_cm_csuYs_174_0" sourceRef="Response" targetRef="outTP_cm_cs2F1_174_1"/>
+                        <assignment id="_nTPPc_3" contextRef="cfi_csVQy_0">
+                            <condition id="_nTPPc_4">
+                                <body><![CDATA[Greeting.To]]></body>
+                            </condition>
+                        </assignment>
+                        <duedate id="_nTPPc_9">
+                            <condition id="_nTPPc_10">
+                                <body><![CDATA[T(java.time.Instant).now()]]></body>
+                            </condition>
+                        </duedate>
+                    </cafienne:implementation>
+                </extensionElements>
+            </humanTask>
+            <humanTask id="ht_cm_cs3hg_196" name="Read response" isBlocking="true">
+                <inputs id="inTP_cm_cs3hg_196_0" name="Response" bindingRef="cfi_csVQy_1"/>
+                <extensionElements mustUnderstand="false">
+                    <cafienne:implementation name="ReadRespose" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="readresponse.humantask">
+                        <documentation textFormat="text/plain">
+                            <text><![CDATA[Read Response]]></text>
+                        </documentation>
+                        <input id="Response" name="Response"/>
+                        <task-model>{
+				"schema": {
+					"title": "Read response",
+					"type": "object",
+					"properties": {
+						"Response": {
+							"title": "Your response",
+							"type": "object",
+							"properties": {
+								"Message": {
+									"type": "string",
+									"title": "Your response message"
+								},
+								"Date": {
+									"type": "string",
+									"format": "date",
+									"title": "Pick a date"
+								},
+								"Time": {
+									"type": "string",
+									"format": "time",
+									"title": "Pick a time"
+								},
+								"SomeBoolean": {
+									"type": "boolean",
+									"title": "Check this"
+								}
+							}
+						}
+					}
+				},
+				"uiSchema": {
+					"Message": {
+						"ui:widget": "textarea"
+					}
+				}
+			}</task-model>
+                        <parameterMapping id="inPM_cm_cs3hg_196_0" sourceRef="inTP_cm_cs3hg_196_0" targetRef="Response"/>
+                        <assignment id="_nTPPc_12" contextRef="cfi_csVQy_0">
+                            <condition id="_nTPPc_13">
+                                <body><![CDATA[Greeting.From]]></body>
+                            </condition>
+                        </assignment>
+                        <duedate id="_nTPPc_14">
+                            <condition id="_nTPPc_15">
+                                <body><![CDATA[T(java.time.Instant).now()]]></body>
+                            </condition>
+                        </duedate>
+                    </cafienne:implementation>
+                </extensionElements>
+            </humanTask>
+        </casePlanModel>
+        <caseRoles cafienne:caseTeamRef="testteam.caseteam">
+            <role id="cr__rAKmR_0" name="Employee"/>
+            <role id="cr__rAKmR_1" name="Manager"/>
+            <role id="cr__rAKmR_2" name="ADMIN">
+                <documentation textFormat="text/plain">
+                    <text><![CDATA[admin of the world]]></text>
+                </documentation>
+            </role>
+            <role id="cr__ZAwz2_0" name="role"/>
+        </caseRoles>
+        <input id="csVQy_inCPs_0" name="Greeting" bindingRef="cfi_csVQy_0"/>
+        <extensionElements mustUnderstand="false">
+            <cafienne:start-case-model xmlns:cafienne="org.cafienne">{
+  "schema": {
+    "title": "Greeting",
+    "type": "object",
+    "required": [
+      "Greeting"
+    ],
+    "properties": {
+      "Greeting": {
+        "title": "Your greeting to the World",
+        "type": "object",
+        "properties": {
+          "Message": {
+            "type": "string",
+            "title": "Your message"
+          },
+          "To": {
+            "type": "string",
+            "title": "To whom?"
+          },
+          "From": {
+            "type": "string",
+            "title": "From",
+            "default": "$CURRENT_USER"
+          }
+        }
+      }
+    }
+  },
+  "uiSchema": {
+    "Greeting": {
+      "Message": {"ui:widget": "textarea"},
+      "To" :  {"ui:widget": "user-selector", "multiSelect" : false, "role" : "Receiver"},
+      "From" :  {"ui:widget": "user-selector", "multiSelect" : false, "role" : "Sender"}
+    }
+  }
+}</cafienne:start-case-model>
+        </extensionElements>
+    </case>
+    <CMMNDI>
+        <CMMNDiagram>
+            <CMMNShape name="suspendresume" cmmnElementRef="cm__9WQVj_0">
+                <Bounds x="20" y="20" width="800" height="710"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_9WQVj_1">
+                <Bounds x="490" y="100" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_9WQVj_4">
+                <Bounds x="230" y="100" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_9WQVj_6">
+                <Bounds x="260" y="230" width="100" height="40"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_9WQVj_8">
+                <Bounds x="90" y="60" width="650" height="260"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_9WQVj_10">
+                <Bounds x="180" y="350" width="140" height="120"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_9WQVj_14">
+                <Bounds x="230" y="390" width="32" height="32"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_9WQVj_23">
+                <Bounds x="450" y="350" width="130" height="120"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_9WQVj_27">
+                <Bounds x="500" y="390" width="32" height="32"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_9WQVj_39">
+                <Bounds x="440" y="230" width="32" height="32"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="crit__9WQVj_2">
+                <Bounds x="354" y="240" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="crit__9WQVj_0">
+                <Bounds x="240" y="310" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="crit__9WQVj_1">
+                <Bounds x="510" y="310" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNEdge sourceCMMNElementRef="crit__9WQVj_0" targetCMMNElementRef="_9WQVj_14"/>
+            <CMMNEdge sourceCMMNElementRef="_9WQVj_27" targetCMMNElementRef="crit__9WQVj_1"/>
+            <CMMNEdge sourceCMMNElementRef="_9WQVj_39" targetCMMNElementRef="crit__9WQVj_2"/>
+            <CMMNShape cmmnElementRef="cm_HelloWorld.case_HelloWorld_0">
+                <Bounds x="20" y="10" width="626" height="330"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="cm_csVQy_167">
+                <Bounds x="90" y="90" width="130" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="cm_cs3hg_196">
+                <Bounds x="340" y="90" width="130" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_nTPPc_0">
+                <Bounds x="334" y="120" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNEdge sourceCMMNElementRef="cm_csVQy_167" targetCMMNElementRef="_nTPPc_0"/>
+        </CMMNDiagram>
+    </CMMNDI>
+</definitions>

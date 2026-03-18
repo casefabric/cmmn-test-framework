@@ -58,6 +58,7 @@ export default class Definitions {
     public static readonly StageTest = new Definitions('stagetest.xml');
     public static readonly SubCaseTest = new Definitions('subcasetest.xml');
     public static readonly SubCaseWithArrayOutput = new Definitions('subcasewitharrayoutput.xml');
+    public static readonly SuspendResume = new Definitions('suspendresume.xml');
     public static readonly TaskBindingRefinement = new Definitions('taskbindingrefinement.xml');
     public static readonly TaskOutputOperations = new Definitions('taskoutputoperations.xml');
     public static readonly TaskOutputValidation = new Definitions('taskoutputvalidation.xml');

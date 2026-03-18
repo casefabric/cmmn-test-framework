@@ -1,0 +1,57 @@
+<case xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="suspendresume.case" name="suspendresume" expressionLanguage="spel" guid="_9WQVj">
+    <caseFileModel typeRef="case_calculation.type"/>
+    <casePlanModel id="cm__9WQVj_0" name="suspendresume" autoComplete="true">
+        <stage id="_9WQVj_8" name="Stage" autoComplete="true">
+            <extensionElements mustUnderstand="false">
+                <suspendCriterion xmlns="org.cafienne" id="crit__9WQVj_0">
+                    <planItemOnPart id="_9WQVj_22" sourceRef="_9WQVj_14">
+                        <standardEvent>occur</standardEvent>
+                    </planItemOnPart>
+                </suspendCriterion>
+                <resumeCriterion xmlns="org.cafienne" id="crit__9WQVj_1">
+                    <planItemOnPart id="_9WQVj_29" sourceRef="_9WQVj_27">
+                        <standardEvent>occur</standardEvent>
+                    </planItemOnPart>
+                </resumeCriterion>
+            </extensionElements>
+            <humanTask id="_9WQVj_4" name="Task in Stage" isBlocking="true"/>
+            <caseTask id="_9WQVj_1" name="HelloWorld" isBlocking="true" caseRef="helloworld.case"/>
+            <milestone id="_9WQVj_6" name="Milestone">
+                <entryCriterion id="crit__9WQVj_2">
+                    <planItemOnPart id="_9WQVj_41" sourceRef="_9WQVj_39">
+                        <standardEvent>occur</standardEvent>
+                    </planItemOnPart>
+                </entryCriterion>
+            </milestone>
+            <timerEvent id="_9WQVj_39" name="After 5 seconds">
+                <timerExpression id="_9WQVj_42">
+                    <body><![CDATA[PT5S]]></body>
+                </timerExpression>
+                <planItemStartTrigger id="_9WQVj_38">
+                    <standardEvent/>
+                </planItemStartTrigger>
+            </timerEvent>
+        </stage>
+        <stage id="_9WQVj_10" name="suspender" autoComplete="true">
+            <itemControl id="_9WQVj_11">
+                <repetitionRule id="_9WQVj_12">
+                    <condition id="_9WQVj_13">
+                        <body><![CDATA[true]]></body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
+            <userEvent id="_9WQVj_14" name="Suspend Stage Event"/>
+        </stage>
+        <stage id="_9WQVj_23" name="resumer" autoComplete="true">
+            <itemControl id="_9WQVj_24">
+                <repetitionRule id="_9WQVj_25">
+                    <condition id="_9WQVj_26">
+                        <body><![CDATA[true]]></body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
+            <userEvent id="_9WQVj_27" name="Resume Stage Event"/>
+        </stage>
+    </casePlanModel>
+    <caseRoles caseTeamRef="testteam.caseteam"/>
+</case>

@@ -1,9 +1,13 @@
+import Config from '../config';
+import logger from '../logger';
 import Path from '../service/case/path';
 import { addType, addTypes } from '../util/json';
 import CaseFile from './casefile';
 import CMMNBaseClass from './cmmnbaseclass';
 import PlanItem from './planitem';
+import State from './state';
 import CaseTeam from './team/caseteam';
+import Transition from './transition';
 
 /**
  * Wrapper for json response of CaseEngine Service for a single case instance.
@@ -68,6 +72,50 @@ export default class Case extends CMMNBaseClass {
             throw new Error(`Could not find case plan among the ${this.planitems.length} items in the case`);
         }
         return caseplan;
+    }
+
+    assertPlanItem(planItemIdentifier: string, planItemIndex: number = -1, expectedState?: State, expectedTransition?: Transition): PlanItem {
+        if (Config.TestCase.log) {
+            const longestNameLength = Math.max(...this.planitems.map(item => item.name.length));
+            const longestState = Math.max(...this.planitems.map(item => item.currentState.length));
+            logger.debug(' Current Plan Items\n' + (this.planitems.map(item => ` ${item.name.padStart(longestNameLength)}.${item.index} ==> ${item.currentState.padEnd(longestState)} (id: ${item.id})`)).join('\n'));
+        }
+        const nameFilter = (item: PlanItem): boolean => item.name === planItemIdentifier || item.id === planItemIdentifier;
+        const indexFilter = (item: PlanItem): boolean => planItemIndex >= 0 ? item.index === planItemIndex : true;
+        const stateFilter = (item: PlanItem): boolean => expectedState ? State.of(item.currentState).is(expectedState) : true;
+        const transitionFilter = (item: PlanItem): boolean => expectedTransition ? Transition.of(item.transition).is(expectedTransition) : true;
+
+        const matchers = this.planitems.filter(item => nameFilter(item) && indexFilter(item));
+        const nameMatchers = this.planitems.filter(nameFilter);
+        const indexMatchers = nameMatchers.filter(indexFilter);
+        const stateMatchers = matchers.filter(stateFilter);
+        const transitionMatchers = stateMatchers.filter(transitionFilter);
+        const item = transitionMatchers.find(item => item);
+        if (item) {
+            if (transitionMatchers.length > 1) {
+                const filter = `[identifier = ${planItemIdentifier} | index = ${planItemIndex} | state = ${expectedState} | transition = ${expectedTransition}]`
+                console.warn(`Found ${transitionMatchers.length} plan items that match ${filter}, returning only the first ...`);
+            }
+            return item;
+        }
+
+        if (nameMatchers.length === 0) {
+            throw new Error(`Did not find the plan item '${planItemIdentifier}' in the case plan`);
+        }
+
+        if (indexMatchers.length === 0) {
+            throw new Error(`Did not find the plan item '${planItemIdentifier}' with index ${planItemIndex}`);
+        }
+
+        const itemDescription: string = planItemIndex < 0 ? planItemIdentifier : `${planItemIdentifier}.${planItemIndex}`;
+        if (expectedState && indexMatchers.length) { // If we have matchers, it means the item is found, but not in the correct state.
+            throw new Error(`Did not find the plan item '${itemDescription}' in state ${expectedState}`);
+        } else if (expectedTransition && indexMatchers.length) { // If we have matchers, it means the item is found, but not with the correct transition.
+            throw new Error(`Did not find the plan item '${itemDescription}' with transition ${expectedTransition}`);
+        } else {
+            // Probably unreachable code, since this basically means that there are matches on name and index ...
+            throw new Error(`Did not find the plan item '${itemDescription}' in the case plan`);
+        }
     }
 
     toString() {

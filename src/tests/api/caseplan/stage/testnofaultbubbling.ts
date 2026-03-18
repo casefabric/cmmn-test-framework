@@ -68,7 +68,7 @@ export default class TestNoFaultBubbling extends TestCase {
         const tryAgain = subCaseTree.findItem(path);
 
         // Triggering the event on the "reactivate-criterion" to try again should lead to one more failure.
-        await CasePlanService.raiseEvent(user, subCaseId, '' + tryAgain.id);
+        await CasePlanService.raiseEvent(user, subCaseId, '' + tryAgain);
         subCaseTree.assertPlanItemState('Failure Handling[0]', State.Completed); // First failure handling is triggered and should complete
         subCaseTree.assertPlanItemState('Failure Handling[1]', State.Active); // and a new instance should have been created
         await caseTree.runAssertions();

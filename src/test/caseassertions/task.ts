@@ -9,6 +9,7 @@ import TaskService from '../../service/task/taskservice';
 import User from '../../user';
 import Comparison from '../comparison';
 import { PollUntilSuccess } from '../time';
+import PlanItem from '../../cmmn/planitem';
 
 /**
  * Asserts that the task has expected state, assignee, and owner
@@ -19,7 +20,7 @@ import { PollUntilSuccess } from '../time';
  * @param expectedAssignee 
  * @param expectedOwner 
  */
-export async function assertTask(user: User, task: Task | string, action: string, expectedState: TaskState, expectedAssignee?: User, expectedOwner?: User, expectedLastModifiedBy?: User, trace: Trace = new Trace()): Promise<Task> {
+export async function assertTask(user: User, task: Task | PlanItem | string, action: string, expectedState: TaskState, expectedAssignee?: User, expectedOwner?: User, expectedLastModifiedBy?: User, trace: Trace = new Trace()): Promise<Task> {
     return await PollUntilSuccess(async function() {
          return await TaskService.getTask(user, task).then(task => {
             if (Config.TestCase.log) {

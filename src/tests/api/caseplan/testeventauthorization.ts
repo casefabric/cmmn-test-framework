@@ -11,6 +11,7 @@ import CaseService from '../../../service/case/caseservice';
 import { assertPlanItem } from '../../../test/caseassertions/plan';
 import TestCase from '../../../test/testcase';
 import WorldWideTestTenant from '../../setup/worldwidetesttenant';
+import Transition from '../../../cmmn/transition';
 
 
 const definition = Definitions.EventListener;
@@ -74,10 +75,10 @@ export default class TestEventAuthorization extends TestCase {
         }
 
         // Raising the EmployeeUserEVent by caseMember should fail because caseMember does not have role 'Employee'
-        await CasePlanService.raiseEvent(caseMember, caseInstance, employeeUserEvent.id, 401, `Raising the EmployeeUserEVent by caseMember should fail because caseMember does not have role 'Employee'`);
+        await CasePlanService.raiseEvent(caseMember, caseInstance, employeeUserEvent, 401, `Raising the EmployeeUserEVent by caseMember should fail because caseMember does not have role 'Employee'`);
 
         // Raising the EmployeeUserEVent by caseEmployee should succeed because caseEmployee has role 'Employee'
-        await CasePlanService.raiseEvent(caseEmployee, caseInstance, employeeUserEvent.id, 200, `Raising the EmployeeUserEVent by caseEmployee should succeed because caseEmployee has role 'Employee'`);
+        await CasePlanService.raiseEvent(caseEmployee, caseInstance, employeeUserEvent, 200, `Raising the EmployeeUserEVent by caseEmployee should succeed because caseEmployee has role 'Employee'`);
 
         // Check that raising EmployeeUserEVent has resulted in achieving the milestone 'M1'
         await assertPlanItem(caseOwner, caseInstance, 'M1', 0);
@@ -88,7 +89,7 @@ export default class TestEventAuthorization extends TestCase {
         const nextEmployeeEvent = await assertPlanItem(caseOwner, caseInstance, 'EmployeeUserEvent', 0, State.Available);
 
         // Raising the EmployeeUserEVent by caseOwner should succeed because of case ownership
-        await CasePlanService.raiseEvent(caseOwner, caseInstance, nextEmployeeEvent.id, 200, `Raising the EmployeeUserEVent by caseOwner should succeed because of case ownership`);
+        await CasePlanService.raiseEvent(caseOwner, caseInstance, nextEmployeeEvent, 200, `Raising the EmployeeUserEVent by caseOwner should succeed because of case ownership`);
     }
 
     async checkUserEventHistory(caseInstance: Case, id: string, expectedNumberOfHistoryItems: number) {
