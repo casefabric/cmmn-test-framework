@@ -1,0 +1,8 @@
+{
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+        "source.organizeimports": "explicit"
+    },
+    "js/ts.preferences.importModuleSpecifier": "relative",
+    "files.insertFinalNewline": true,
+}
