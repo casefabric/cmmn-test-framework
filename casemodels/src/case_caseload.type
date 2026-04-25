@@ -1,0 +1,5 @@
+<type xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="case_caseload.type" name="case_caseload">
+    <schema>
+        <property id="sp__JJIDh_0" name="Greeting" type="greeting.type" multiplicity="ZeroOrMore"/>
+    </schema>
+</type>

@@ -10,6 +10,7 @@ export default class Definitions {
     public static readonly CaseParameter = new Definitions('caseparameter.xml');
     public static readonly CaseTeam = new Definitions('caseteam.xml');
     public static readonly CaseWithSpace = new Definitions('casemetspatie.xml');
+    public static readonly CaseLoad = new Definitions('caseload.xml');
     public static readonly Chain = new Definitions('casetask/chain.xml');
     public static readonly Compatibility = new Definitions('compatibility.xml');
     public static readonly ComplexCase = new Definitions('complexcase.xml');
@@ -67,14 +68,14 @@ export default class Definitions {
 
 
     isDeployed: boolean = false;
-    constructor(public file: string) {}
+    constructor(public file: string) { }
 
     toString() {
         return this.file;
     }
 
     async deploy(user: User, tenant: string | Tenant, trace: Trace = new Trace()) {
-        if (! this.isDeployed) {
+        if (!this.isDeployed) {
             await RepositoryService.validateAndDeploy(user, this.file, tenant, trace);
         }
         this.isDeployed = true;

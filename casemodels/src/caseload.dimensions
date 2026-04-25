@@ -1,0 +1,34 @@
+<CMMNDI xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
+    <CMMNDiagram>
+        <CMMNShape name="caseload" cmmnElementRef="cm__evWig_0">
+            <Bounds x="20" y="20" width="800" height="500"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="Greeting">
+            <Bounds x="110" y="90" width="25" height="40"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_evWig_1">
+            <Bounds x="200" y="70" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="crit__evWig_0">
+            <Bounds x="194" y="100" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_evWig_11">
+            <Bounds x="520" y="110" width="32" height="32"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_evWig_13">
+            <Bounds x="480" y="200" width="100" height="40"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="crit__evWig_1">
+            <Bounds x="530" y="190" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="crit__evWig_2">
+            <Bounds x="814" y="120" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_evWig_19">
+            <Bounds x="120" y="190" width="230" height="110"/>
+        </CMMNShape>
+        <CMMNEdge sourceCMMNElementRef="Greeting" targetCMMNElementRef="crit__evWig_0"/>
+        <CMMNEdge sourceCMMNElementRef="_evWig_11" targetCMMNElementRef="crit__evWig_1"/>
+        <CMMNEdge sourceCMMNElementRef="_evWig_11" targetCMMNElementRef="crit__evWig_2"/>
+    </CMMNDiagram>
+</CMMNDI>

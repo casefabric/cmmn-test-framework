@@ -1,0 +1,357 @@
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
+    <caseFileItemDefinition name="Greeting" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="greeting.cfid">
+        <property name="Message" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+            </extensionElements>
+        </property>
+        <property name="To" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" isBusinessIdentifier="true"/>
+            </extensionElements>
+        </property>
+        <property name="From" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    </caseFileItemDefinition>
+    <caseFileItemDefinition name="Response" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="response.cfid">
+        <property name="Message" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="Date" type="http://www.omg.org/spec/CMMN/PropertyType/date"/>
+        <property name="Time" type="http://www.omg.org/spec/CMMN/PropertyType/time"/>
+        <property name="SomeBoolean" type="http://www.omg.org/spec/CMMN/PropertyType/boolean"/>
+    </caseFileItemDefinition>
+    <caseFileItemDefinition name="case_caseload" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="case_caseload.type"/>
+    <caseFileItemDefinition name="greeting" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="greeting.type">
+        <property name="Message" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="To" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="From" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    </caseFileItemDefinition>
+    <case id="caseload.case" name="caseload" expressionLanguage="spel">
+        <caseFileModel cafienne:typeRef="case_caseload.type">
+            <caseFileItem id="Greeting" name="Greeting" multiplicity="ZeroOrMore" definitionRef="greeting.type"/>
+        </caseFileModel>
+        <casePlanModel id="cm__evWig_0" name="caseload" autoComplete="true">
+            <exitCriterion id="crit__evWig_2" sentryRef="s_crit__evWig_2"/>
+            <planItem id="_evWig_1" name="Helloworld" definitionRef="ct__evWig_1">
+                <entryCriterion id="crit__evWig_0" sentryRef="s_crit__evWig_0"/>
+                <itemControl id="_evWig_2">
+                    <repetitionRule id="_evWig_4">
+                        <condition id="_evWig_5">
+                            <body><![CDATA[true]]></body>
+                        </condition>
+                    </repetitionRule>
+                </itemControl>
+            </planItem>
+            <planItem id="_evWig_11" name="Terminate Case" definitionRef="ue__evWig_11"/>
+            <planItem id="_evWig_13" name="Terminated" definitionRef="ms__evWig_13">
+                <entryCriterion id="crit__evWig_1" sentryRef="s_crit__evWig_1"/>
+                <itemControl id="_evWig_14">
+                    <requiredRule id="_evWig_15">
+                        <condition id="_evWig_16">
+                            <body><![CDATA[true]]></body>
+                        </condition>
+                    </requiredRule>
+                </itemControl>
+            </planItem>
+            <sentry id="s_crit__evWig_2">
+                <planItemOnPart id="_evWig_18" sourceRef="_evWig_11">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <sentry id="s_crit__evWig_0">
+                <caseFileItemOnPart id="_evWig_10" sourceRef="Greeting">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </sentry>
+            <sentry id="s_crit__evWig_1">
+                <planItemOnPart id="_evWig_17" sourceRef="_evWig_11">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <caseTask id="ct__evWig_1" name="Helloworld" isBlocking="true" caseRef="helloworld.case">
+                <inputs id="_evWig_9" name="Greeting" bindingRef="Greeting"/>
+                <parameterMapping id="_evWig_6" sourceRef="_evWig_9" targetRef="csVQy_inCPs_0"/>
+            </caseTask>
+            <userEvent id="ue__evWig_11" name="Terminate Case"/>
+            <milestone id="ms__evWig_13" name="Terminated"/>
+        </casePlanModel>
+        <caseRoles cafienne:caseTeamRef="testteam.caseteam">
+            <role id="cr__rAKmR_0" name="Employee"/>
+            <role id="cr__rAKmR_1" name="Manager"/>
+            <role id="cr__rAKmR_2" name="ADMIN">
+                <documentation textFormat="text/plain">
+                    <text><![CDATA[admin of the world]]></text>
+                </documentation>
+            </role>
+            <role id="cr__ZAwz2_0" name="role"/>
+        </caseRoles>
+        <textAnnotation id="_evWig_19">
+            <text><![CDATA[This case enables creating many subcases in one shot.]]></text>
+        </textAnnotation>
+    </case>
+    <case id="helloworld.case" name="HelloWorld" expressionLanguage="spel">
+        <documentation textFormat="text/plain">
+            <text><![CDATA[Hello World]]></text>
+        </documentation>
+        <caseFileModel>
+            <caseFileItem id="cfi_csVQy_0" name="Greeting" multiplicity="ExactlyOne" definitionRef="greeting.cfid"/>
+            <caseFileItem id="cfi_csVQy_1" name="Response" multiplicity="ExactlyOne" definitionRef="response.cfid"/>
+        </caseFileModel>
+        <casePlanModel id="cm_HelloWorld.case_HelloWorld_0" name="HelloWorld" autoComplete="true">
+            <planItem id="cm_csVQy_167" name="Receive Greeting and Send response" definitionRef="ht_cm_csVQy_167">
+                <documentation textFormat="text/plain">
+                    <text><![CDATA[Receive Greeting
+and Send response]]></text>
+                </documentation>
+            </planItem>
+            <planItem id="cm_cs3hg_196" name="Read response" definitionRef="ht_cm_cs3hg_196">
+                <entryCriterion id="_nTPPc_0" name="EntryCriterion_0" sentryRef="s__nTPPc_0"/>
+            </planItem>
+            <sentry id="s__nTPPc_0">
+                <planItemOnPart id="ref_id_cm_csVQy_167" sourceRef="cm_csVQy_167">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <humanTask id="ht_cm_csVQy_167" name="Receive Greeting and Send response" isBlocking="true">
+                <inputs id="inTP_cm_cs2F1_174_1" name="Greeting" bindingRef="cfi_csVQy_0"/>
+                <outputs id="outTP_cm_cs2F1_174_1" name="Response" bindingRef="cfi_csVQy_1"/>
+                <extensionElements mustUnderstand="false">
+                    <cafienne:implementation name="SendResponse" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="sendresponse.humantask">
+                        <documentation textFormat="text/plain">
+                            <text><![CDATA[Sends a response back to the initiator of the hello world case]]></text>
+                        </documentation>
+                        <input id="Greeting" name="Greeting"/>
+                        <output id="Response" name="Response"/>
+                        <task-model>{
+	"schema" : {
+		"title" : "You have received a greeting",
+		"type" : "object",
+		"required" : [
+			"Response"
+		],
+		"properties" : {
+			"Greeting" : {
+				"title" : " ",
+				"type" : "object",
+				"properties" : {
+					"Message" : {
+						"type" : "string"
+					}
+				}
+			},
+			"Response" : {
+				"title" : "Your response",
+				"type" : "object",
+				"properties" : {
+					"Message" : {
+						"type" : "string",
+						"title" : "Your response message"
+					},
+					"Date" : {
+						"type" : "string",
+						"format" : "date",
+						"title" : "Pick a date"
+					},
+					"Time" : {
+						"type" : "string",
+						"format" : "time",
+						"title" : "Pick a time"
+					},
+					"SomeBoolean" : {
+						"type" : "boolean",
+						"title" : "Check this"
+					}
+				}
+			}
+		}
+	},
+	"uiSchema" : {
+       	"ui:order": [ "Greeting", "Response" ],
+		"Greeting" : {
+			"Message" : {
+				"ui:widget" : "textarea",
+				"ui:readonly" : true
+			},
+			"To" : {
+				"ui:readonly" : true
+			}
+		},
+		"Response" : {
+			"Message" : {
+				"ui:widget" : "textarea"
+			}
+		}
+	}
+}</task-model>
+                        <parameterMapping id="inPM_cm_cshJq_4_0" sourceRef="inTP_cm_cs2F1_174_1" targetRef="Greeting"/>
+                        <parameterMapping id="outPM_cm_csuYs_174_0" sourceRef="Response" targetRef="outTP_cm_cs2F1_174_1"/>
+                        <assignment id="_nTPPc_3" contextRef="cfi_csVQy_0">
+                            <condition id="_nTPPc_4">
+                                <body><![CDATA[Greeting.To]]></body>
+                            </condition>
+                        </assignment>
+                        <duedate id="_nTPPc_9">
+                            <condition id="_nTPPc_10">
+                                <body><![CDATA[T(java.time.Instant).now()]]></body>
+                            </condition>
+                        </duedate>
+                    </cafienne:implementation>
+                </extensionElements>
+            </humanTask>
+            <humanTask id="ht_cm_cs3hg_196" name="Read response" isBlocking="true">
+                <inputs id="inTP_cm_cs3hg_196_0" name="Response" bindingRef="cfi_csVQy_1"/>
+                <extensionElements mustUnderstand="false">
+                    <cafienne:implementation name="ReadRespose" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="readresponse.humantask">
+                        <documentation textFormat="text/plain">
+                            <text><![CDATA[Read Response]]></text>
+                        </documentation>
+                        <input id="Response" name="Response"/>
+                        <task-model>{
+				"schema": {
+					"title": "Read response",
+					"type": "object",
+					"properties": {
+						"Response": {
+							"title": "Your response",
+							"type": "object",
+							"properties": {
+								"Message": {
+									"type": "string",
+									"title": "Your response message"
+								},
+								"Date": {
+									"type": "string",
+									"format": "date",
+									"title": "Pick a date"
+								},
+								"Time": {
+									"type": "string",
+									"format": "time",
+									"title": "Pick a time"
+								},
+								"SomeBoolean": {
+									"type": "boolean",
+									"title": "Check this"
+								}
+							}
+						}
+					}
+				},
+				"uiSchema": {
+					"Message": {
+						"ui:widget": "textarea"
+					}
+				}
+			}</task-model>
+                        <parameterMapping id="inPM_cm_cs3hg_196_0" sourceRef="inTP_cm_cs3hg_196_0" targetRef="Response"/>
+                        <assignment id="_nTPPc_12" contextRef="cfi_csVQy_0">
+                            <condition id="_nTPPc_13">
+                                <body><![CDATA[Greeting.From]]></body>
+                            </condition>
+                        </assignment>
+                        <duedate id="_nTPPc_14">
+                            <condition id="_nTPPc_15">
+                                <body><![CDATA[T(java.time.Instant).now()]]></body>
+                            </condition>
+                        </duedate>
+                    </cafienne:implementation>
+                </extensionElements>
+            </humanTask>
+        </casePlanModel>
+        <caseRoles cafienne:caseTeamRef="testteam.caseteam">
+            <role id="cr__rAKmR_0" name="Employee"/>
+            <role id="cr__rAKmR_1" name="Manager"/>
+            <role id="cr__rAKmR_2" name="ADMIN">
+                <documentation textFormat="text/plain">
+                    <text><![CDATA[admin of the world]]></text>
+                </documentation>
+            </role>
+            <role id="cr__ZAwz2_0" name="role"/>
+        </caseRoles>
+        <input id="csVQy_inCPs_0" name="Greeting" bindingRef="cfi_csVQy_0"/>
+        <extensionElements mustUnderstand="false">
+            <cafienne:start-case-model xmlns:cafienne="org.cafienne">{
+  "schema": {
+    "title": "Greeting",
+    "type": "object",
+    "required": [
+      "Greeting"
+    ],
+    "properties": {
+      "Greeting": {
+        "title": "Your greeting to the World",
+        "type": "object",
+        "properties": {
+          "Message": {
+            "type": "string",
+            "title": "Your message"
+          },
+          "To": {
+            "type": "string",
+            "title": "To whom?"
+          },
+          "From": {
+            "type": "string",
+            "title": "From",
+            "default": "$CURRENT_USER"
+          }
+        }
+      }
+    }
+  },
+  "uiSchema": {
+    "Greeting": {
+      "Message": {"ui:widget": "textarea"},
+      "To" :  {"ui:widget": "user-selector", "multiSelect" : false, "role" : "Receiver"},
+      "From" :  {"ui:widget": "user-selector", "multiSelect" : false, "role" : "Sender"}
+    }
+  }
+}</cafienne:start-case-model>
+        </extensionElements>
+    </case>
+    <CMMNDI>
+        <CMMNDiagram>
+            <CMMNShape name="caseload" cmmnElementRef="cm__evWig_0">
+                <Bounds x="20" y="20" width="800" height="500"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="Greeting">
+                <Bounds x="110" y="90" width="25" height="40"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_evWig_1">
+                <Bounds x="200" y="70" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="crit__evWig_0">
+                <Bounds x="194" y="100" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_evWig_11">
+                <Bounds x="520" y="110" width="32" height="32"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_evWig_13">
+                <Bounds x="480" y="200" width="100" height="40"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="crit__evWig_1">
+                <Bounds x="530" y="190" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="crit__evWig_2">
+                <Bounds x="814" y="120" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_evWig_19">
+                <Bounds x="120" y="190" width="230" height="110"/>
+            </CMMNShape>
+            <CMMNEdge sourceCMMNElementRef="Greeting" targetCMMNElementRef="crit__evWig_0"/>
+            <CMMNEdge sourceCMMNElementRef="_evWig_11" targetCMMNElementRef="crit__evWig_1"/>
+            <CMMNEdge sourceCMMNElementRef="_evWig_11" targetCMMNElementRef="crit__evWig_2"/>
+            <CMMNShape cmmnElementRef="cm_HelloWorld.case_HelloWorld_0">
+                <Bounds x="20" y="10" width="626" height="330"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="cm_csVQy_167">
+                <Bounds x="90" y="90" width="130" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="cm_cs3hg_196">
+                <Bounds x="340" y="90" width="130" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_nTPPc_0">
+                <Bounds x="334" y="120" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNEdge sourceCMMNElementRef="cm_csVQy_167" targetCMMNElementRef="_nTPPc_0"/>
+        </CMMNDiagram>
+    </CMMNDI>
+</definitions>

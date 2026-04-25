@@ -1,0 +1,45 @@
+<case xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="caseload.case" name="caseload" expressionLanguage="spel" guid="_evWig">
+    <caseFileModel typeRef="case_caseload.type"/>
+    <casePlanModel id="cm__evWig_0" name="caseload" autoComplete="true">
+        <exitCriterion id="crit__evWig_2">
+            <planItemOnPart id="_evWig_18" sourceRef="_evWig_11">
+                <standardEvent>occur</standardEvent>
+            </planItemOnPart>
+        </exitCriterion>
+        <caseTask id="_evWig_1" name="Helloworld" isBlocking="true" caseRef="helloworld.case">
+            <entryCriterion id="crit__evWig_0">
+                <caseFileItemOnPart id="_evWig_10" sourceRef="Greeting">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </entryCriterion>
+            <itemControl id="_evWig_2">
+                <repetitionRule id="_evWig_4">
+                    <condition id="_evWig_5">
+                        <body><![CDATA[true]]></body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
+            <inputs id="_evWig_9" name="Greeting" bindingRef="Greeting"/>
+            <parameterMapping id="_evWig_6" sourceRef="_evWig_9" targetRef="csVQy_inCPs_0"/>
+        </caseTask>
+        <userEvent id="_evWig_11" name="Terminate Case"/>
+        <milestone id="_evWig_13" name="Terminated">
+            <entryCriterion id="crit__evWig_1">
+                <planItemOnPart id="_evWig_17" sourceRef="_evWig_11">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </entryCriterion>
+            <itemControl id="_evWig_14">
+                <requiredRule id="_evWig_15">
+                    <condition id="_evWig_16">
+                        <body><![CDATA[true]]></body>
+                    </condition>
+                </requiredRule>
+            </itemControl>
+        </milestone>
+    </casePlanModel>
+    <caseRoles caseTeamRef="testteam.caseteam"/>
+    <textAnnotation id="_evWig_19">
+        <text><![CDATA[This case enables creating many subcases in one shot.]]></text>
+    </textAnnotation>
+</case>

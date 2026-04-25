@@ -106,6 +106,7 @@ import TestCorrelationId from '../tests/api/environment/testcorrelationid';
 import TestClientApp from '../tests/clientcredentialsflow/testclientapp';
 import TestDurationAndInstant from '../tests/api/task/humantask/testdurationandinstant';
 import TestSuspendResume from '../tests/api/caseplan/sentry/testsuspendresume';
+import TestCaseLoad from '../tests/load/testcaseload';
 
 export default class TestClasses {
     static getTestClass(name: string): Function {
@@ -273,6 +274,7 @@ const AllTests: Array<Function> = [
     , TestTenantGroupMembership
     , TestCaseWithoutUserMembership
     , TestSubCase
+    , TestCaseLoad
     , TestArraySubCase
     , TestRepeatStage
     , TestNoAnonymousStartCase
