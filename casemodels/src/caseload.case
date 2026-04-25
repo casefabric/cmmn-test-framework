@@ -1,0 +1,81 @@
+<case xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="caseload.case" name="caseload" expressionLanguage="spel" guid="_evWig">
+    <caseFileModel typeRef="case_caseload.type"/>
+    <casePlanModel id="cm__evWig_0" name="caseload" autoComplete="true">
+        <exitCriterion id="crit__evWig_2">
+            <planItemOnPart id="_evWig_18" sourceRef="_evWig_11">
+                <standardEvent>occur</standardEvent>
+            </planItemOnPart>
+        </exitCriterion>
+        <milestone id="_evWig_13" name="Terminated">
+            <entryCriterion id="crit__evWig_1">
+                <planItemOnPart id="_evWig_17" sourceRef="_evWig_11">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </entryCriterion>
+            <itemControl id="_evWig_14">
+                <requiredRule id="_evWig_15">
+                    <condition id="_evWig_16">
+                        <body><![CDATA[true]]></body>
+                    </condition>
+                </requiredRule>
+            </itemControl>
+        </milestone>
+        <stage id="_evWig_26" name="Stage_0" autoComplete="true">
+            <entryCriterion id="crit__evWig_3">
+                <caseFileItemOnPart id="_evWig_28" sourceRef="Greeting">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </entryCriterion>
+            <itemControl id="_evWig_27">
+                <repetitionRule id="_evWig_36">
+                    <condition id="_evWig_37">
+                        <body><![CDATA[true]]></body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
+            <timerEvent id="_evWig_23" name="TimerEvent_0">
+                <timerExpression id="_evWig_35">
+                    <body><![CDATA[PT0S]]></body>
+                </timerExpression>
+                <planItemStartTrigger id="_evWig_22">
+                    <standardEvent/>
+                </planItemStartTrigger>
+            </timerEvent>
+            <milestone id="_evWig_29" name="Milestone_0">
+                <entryCriterion id="crit__evWig_4">
+                    <planItemOnPart id="_evWig_31" sourceRef="_evWig_23">
+                        <standardEvent>occur</standardEvent>
+                    </planItemOnPart>
+                </entryCriterion>
+                <itemControl id="_evWig_30">
+                    <requiredRule id="_evWig_32">
+                        <condition id="_evWig_33">
+                            <body><![CDATA[true]]></body>
+                        </condition>
+                    </requiredRule>
+                </itemControl>
+            </milestone>
+        </stage>
+        <userEvent id="_evWig_11" name="Terminate Case"/>
+        <caseTask id="_evWig_1" name="Helloworld" isBlocking="true" caseRef="helloworld.case">
+            <entryCriterion id="crit__evWig_5">
+                <planItemOnPart id="_evWig_34" sourceRef="_evWig_26">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+            </entryCriterion>
+            <itemControl id="_evWig_2">
+                <repetitionRule id="_evWig_4">
+                    <condition id="_evWig_5">
+                        <body><![CDATA[true]]></body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
+            <inputs id="_evWig_9" name="Greeting" bindingRef="Greeting"/>
+            <parameterMapping id="_evWig_6" sourceRef="_evWig_9" targetRef="csVQy_inCPs_0"/>
+        </caseTask>
+    </casePlanModel>
+    <caseRoles caseTeamRef="testteam.caseteam"/>
+    <textAnnotation id="_evWig_19">
+        <text><![CDATA[This case enables creating many subcases in one shot.]]></text>
+    </textAnnotation>
+</case>

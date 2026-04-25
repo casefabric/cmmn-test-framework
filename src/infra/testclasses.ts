@@ -37,6 +37,7 @@ import TestTaskOutputOperations from '../tests/api/casefile/testtaskoutputoperat
 import TestTimer from '../tests/api/caseplan/event/testtimer';
 import TestTimerInSubCase from '../tests/api/caseplan/event/testtimerinsubcase';
 import TestEntryCriteriaOnRecovery from '../tests/api/caseplan/sentry/testentrycriteriaonrecovery';
+import TestSuspendResume from '../tests/api/caseplan/sentry/testsuspendresume';
 import TestClassicFaultHandling from '../tests/api/caseplan/stage/testclassicfaulthandling';
 import TestEntryCriteriaOnCaseInputParameters from '../tests/api/caseplan/stage/testentrycriteriaoncaseinputparameters';
 import TestFaultBubbling from '../tests/api/caseplan/stage/testfaultbubbling';
@@ -66,6 +67,7 @@ import TestDebugMode from '../tests/api/debug/testdebugmode';
 import TestDiscretionaryItems from '../tests/api/discretionary/testdiscretionaryitems';
 import TestDocumentationAPI from '../tests/api/documentation/testdocumentationapi';
 import PingTestEnvironment, { PingTokenService } from '../tests/api/environment/ping';
+import TestCorrelationId from '../tests/api/environment/testcorrelationid';
 import TestEmptyUser from '../tests/api/environment/testemptyuser';
 import TestRecovery from '../tests/api/environment/testrecovery';
 import TestResponseType from '../tests/api/environment/testresponsetype';
@@ -81,6 +83,7 @@ import TestRepositoryAPI from '../tests/api/repository/testrepositoryapi';
 import TestRepeatStage from '../tests/api/stage/testrepeatstage';
 import TestArraySubCase from '../tests/api/task/case/testarraysubcase';
 import TestSubCase from '../tests/api/task/case/testsubcase';
+import TestDurationAndInstant from '../tests/api/task/humantask/testdurationandinstant';
 import TestDynamicForm from '../tests/api/task/humantask/testdynamicform';
 import TestFourEyes from '../tests/api/task/humantask/testfoureyes';
 import TestTaskAPI from '../tests/api/task/humantask/testtaskapi';
@@ -97,15 +100,13 @@ import TestProcessTaskMigration from '../tests/api/task/process/migration/testpr
 import TestCalculation from '../tests/api/task/process/testcalculation';
 import TestTenantRegistration from '../tests/api/tenant/testtenantregistration';
 import TestVersion from '../tests/api/version/testversion';
+import TestClientApp from '../tests/clientcredentialsflow/testclientapp';
 import TestCompatibility from '../tests/compatibility/testcompatibility';
 import TestHelloworld from '../tests/helloworld/testhelloworld';
 import TestIncidentManagement from '../tests/incidentmanagement/incidentmanagement';
+import TestCaseLoad from '../tests/load/testcaseload';
 import TestTravelRequest from '../tests/travelrequest/testtravelrequest';
 import TestRunner from './testrunner';
-import TestCorrelationId from '../tests/api/environment/testcorrelationid';
-import TestClientApp from '../tests/clientcredentialsflow/testclientapp';
-import TestDurationAndInstant from '../tests/api/task/humantask/testdurationandinstant';
-import TestSuspendResume from '../tests/api/caseplan/sentry/testsuspendresume';
 
 export default class TestClasses {
     static getTestClass(name: string): Function {
@@ -273,6 +274,7 @@ const AllTests: Array<Function> = [
     , TestTenantGroupMembership
     , TestCaseWithoutUserMembership
     , TestSubCase
+    , TestCaseLoad
     , TestArraySubCase
     , TestRepeatStage
     , TestNoAnonymousStartCase
