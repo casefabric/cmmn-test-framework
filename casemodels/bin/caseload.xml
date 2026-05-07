@@ -18,6 +18,9 @@
         <property name="Time" type="http://www.omg.org/spec/CMMN/PropertyType/time"/>
         <property name="SomeBoolean" type="http://www.omg.org/spec/CMMN/PropertyType/boolean"/>
     </caseFileItemDefinition>
+    <caseFileItemDefinition name="Response" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="case_caseload_type_Response.object">
+        <property name="Message" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    </caseFileItemDefinition>
     <caseFileItemDefinition name="case_caseload" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="case_caseload.type"/>
     <caseFileItemDefinition name="greeting" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="greeting.type">
         <property name="Message" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
@@ -27,6 +30,7 @@
     <case id="caseload.case" name="caseload" expressionLanguage="spel">
         <caseFileModel cafienne:typeRef="case_caseload.type">
             <caseFileItem id="Greeting" name="Greeting" multiplicity="ZeroOrMore" definitionRef="greeting.type"/>
+            <caseFileItem id="Response" name="Response" multiplicity="ZeroOrMore" definitionRef="case_caseload_type_Response.object"/>
         </caseFileModel>
         <casePlanModel id="cm__evWig_0" name="caseload" autoComplete="true">
             <exitCriterion id="crit__evWig_2" sentryRef="s_crit__evWig_2"/>
@@ -61,6 +65,17 @@
                     </repetitionRule>
                 </itemControl>
             </planItem>
+            <planItem id="_evWig_43" name="Event Load Stage" definitionRef="s__evWig_43">
+                <entryCriterion id="crit__evWig_7" sentryRef="s_crit__evWig_7"/>
+                <exitCriterion id="crit__evWig_6" sentryRef="s_crit__evWig_6"/>
+                <itemControl id="_evWig_44">
+                    <repetitionRule id="_evWig_45">
+                        <condition id="_evWig_46">
+                            <body><![CDATA[true]]></body>
+                        </condition>
+                    </repetitionRule>
+                </itemControl>
+            </planItem>
             <sentry id="s_crit__evWig_2">
                 <planItemOnPart id="_evWig_18" sourceRef="_evWig_11">
                     <standardEvent>occur</standardEvent>
@@ -78,6 +93,16 @@
             </sentry>
             <sentry id="s_crit__evWig_5">
                 <planItemOnPart id="_evWig_34" sourceRef="_evWig_26">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <sentry id="s_crit__evWig_7">
+                <caseFileItemOnPart id="_evWig_52" sourceRef="Response">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </sentry>
+            <sentry id="s_crit__evWig_6">
+                <planItemOnPart id="_evWig_51" sourceRef="_evWig_49">
                     <standardEvent>complete</standardEvent>
                 </planItemOnPart>
             </sentry>
@@ -114,6 +139,20 @@
                 <inputs id="_evWig_9" name="Greeting" bindingRef="Greeting"/>
                 <parameterMapping id="_evWig_6" sourceRef="_evWig_9" targetRef="csVQy_inCPs_0"/>
             </caseTask>
+            <stage id="s__evWig_43" name="Event Load Stage" autoComplete="true">
+                <planItem id="_evWig_41" name="First Task" definitionRef="ht__evWig_41">
+                    <itemControl id="_evWig_42">
+                        <repetitionRule id="_evWig_47">
+                            <condition id="_evWig_48">
+                                <body><![CDATA[true]]></body>
+                            </condition>
+                        </repetitionRule>
+                    </itemControl>
+                </planItem>
+                <planItem id="_evWig_49" name="Second Task" definitionRef="ht__evWig_49"/>
+            </stage>
+            <humanTask id="ht__evWig_41" name="First Task" isBlocking="true"/>
+            <humanTask id="ht__evWig_49" name="Second Task" isBlocking="true"/>
         </casePlanModel>
         <caseRoles cafienne:caseTeamRef="testteam.caseteam">
             <role id="cr__rAKmR_0" name="Employee"/>
@@ -364,16 +403,16 @@ and Send response]]></text>
                 <Bounds x="520" y="110" width="32" height="32"/>
             </CMMNShape>
             <CMMNShape cmmnElementRef="_evWig_13">
-                <Bounds x="480" y="200" width="100" height="40"/>
+                <Bounds x="480" y="210" width="100" height="40"/>
             </CMMNShape>
             <CMMNShape cmmnElementRef="crit__evWig_1">
-                <Bounds x="530" y="190" width="12" height="20"/>
+                <Bounds x="530" y="200" width="12" height="20"/>
             </CMMNShape>
             <CMMNShape cmmnElementRef="crit__evWig_2">
                 <Bounds x="814" y="120" width="12" height="20"/>
             </CMMNShape>
             <CMMNShape cmmnElementRef="_evWig_19">
-                <Bounds x="240" y="340" width="230" height="110"/>
+                <Bounds x="70" y="360" width="230" height="110"/>
             </CMMNShape>
             <CMMNShape cmmnElementRef="_evWig_23">
                 <Bounds x="190" y="110" width="32" height="32"/>
@@ -393,11 +432,31 @@ and Send response]]></text>
             <CMMNShape cmmnElementRef="crit__evWig_5">
                 <Bounds x="200" y="250" width="12" height="20"/>
             </CMMNShape>
-            <CMMNEdge sourceCMMNElementRef="_evWig_11" targetCMMNElementRef="crit__evWig_1"/>
-            <CMMNEdge sourceCMMNElementRef="_evWig_11" targetCMMNElementRef="crit__evWig_2"/>
-            <CMMNEdge sourceCMMNElementRef="Greeting" targetCMMNElementRef="crit__evWig_3"/>
-            <CMMNEdge sourceCMMNElementRef="_evWig_23" targetCMMNElementRef="crit__evWig_4"/>
-            <CMMNEdge sourceCMMNElementRef="_evWig_26" targetCMMNElementRef="crit__evWig_5"/>
+            <CMMNShape cmmnElementRef="_evWig_41">
+                <Bounds x="390" y="310" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_evWig_43">
+                <Bounds x="350" y="280" width="420" height="140"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_evWig_49">
+                <Bounds x="590" y="310" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="crit__evWig_6">
+                <Bounds x="660" y="410" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="Response">
+                <Bounds x="675.5681457519531" y="179.4602279663086" width="25" height="40"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="crit__evWig_7">
+                <Bounds x="680" y="270" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNEdge label="occur" sourceCMMNElementRef="_evWig_11" targetCMMNElementRef="crit__evWig_1"/>
+            <CMMNEdge label="occur" sourceCMMNElementRef="_evWig_11" targetCMMNElementRef="crit__evWig_2"/>
+            <CMMNEdge label="create" sourceCMMNElementRef="Greeting" targetCMMNElementRef="crit__evWig_3"/>
+            <CMMNEdge label="occur" sourceCMMNElementRef="_evWig_23" targetCMMNElementRef="crit__evWig_4"/>
+            <CMMNEdge label="complete" sourceCMMNElementRef="_evWig_26" targetCMMNElementRef="crit__evWig_5"/>
+            <CMMNEdge label="complete" sourceCMMNElementRef="_evWig_49" targetCMMNElementRef="crit__evWig_6"/>
+            <CMMNEdge label="create" sourceCMMNElementRef="Response" targetCMMNElementRef="crit__evWig_7"/>
             <CMMNShape cmmnElementRef="cm_HelloWorld.case_HelloWorld_0">
                 <Bounds x="20" y="10" width="626" height="330"/>
             </CMMNShape>

@@ -73,6 +73,35 @@
             <inputs id="_evWig_9" name="Greeting" bindingRef="Greeting"/>
             <parameterMapping id="_evWig_6" sourceRef="_evWig_9" targetRef="csVQy_inCPs_0"/>
         </caseTask>
+        <stage id="_evWig_43" name="Event Load Stage" autoComplete="true">
+            <entryCriterion id="crit__evWig_7">
+                <caseFileItemOnPart id="_evWig_52" sourceRef="Response">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </entryCriterion>
+            <exitCriterion id="crit__evWig_6">
+                <planItemOnPart id="_evWig_51" sourceRef="_evWig_49">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+            </exitCriterion>
+            <itemControl id="_evWig_44">
+                <repetitionRule id="_evWig_45">
+                    <condition id="_evWig_46">
+                        <body><![CDATA[true]]></body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
+            <humanTask id="_evWig_41" name="First Task" isBlocking="true">
+                <itemControl id="_evWig_42">
+                    <repetitionRule id="_evWig_47">
+                        <condition id="_evWig_48">
+                            <body><![CDATA[true]]></body>
+                        </condition>
+                    </repetitionRule>
+                </itemControl>
+            </humanTask>
+            <humanTask id="_evWig_49" name="Second Task" isBlocking="true"/>
+        </stage>
     </casePlanModel>
     <caseRoles caseTeamRef="testteam.caseteam"/>
     <textAnnotation id="_evWig_19">
