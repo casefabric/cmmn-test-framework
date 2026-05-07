@@ -106,6 +106,7 @@ import TestHelloworld from '../tests/helloworld/testhelloworld';
 import TestIncidentManagement from '../tests/incidentmanagement/incidentmanagement';
 import TestCaseLoad from '../tests/load/testcaseload';
 import TestEventLoad from '../tests/load/testeventload';
+import TestLargeExpression from '../tests/load/testlargeexpression';
 import TestTravelRequest from '../tests/travelrequest/testtravelrequest';
 import TestRunner from './testrunner';
 
@@ -277,6 +278,7 @@ const AllTests: Array<Function> = [
     , TestSubCase
     , TestCaseLoad
     , TestEventLoad
+    , TestLargeExpression
     , TestArraySubCase
     , TestRepeatStage
     , TestNoAnonymousStartCase
