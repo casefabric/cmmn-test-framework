@@ -1,8 +1,8 @@
 import Case from '../cmmn/case';
+import PlanItem from '../cmmn/planitem';
 import ConsentGroup from '../service/consentgroup/consentgroup';
 import Tenant from '../tenant/tenant';
 import LineReader from '../util/linereader';
-import PlanItem from '../cmmn/planitem';
 
 /**
  * Extremely simple generic TestCase class.
@@ -72,5 +72,14 @@ export default abstract class TestCase {
      */
     readLine(question: string = 'Press enter to continue'): string {
         return this.reader.question(question, this.lineReaderEnabled);
+    }
+
+    readNumber(question: string = 'Please enter a number'): number | undefined {
+        const line = this.readLine(question).trim();
+        const number = Number(line).valueOf();
+        if (isNaN(number) || line.length === 0) {
+            return undefined;
+        }
+        return number;
     }
 }
