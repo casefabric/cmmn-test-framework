@@ -25,6 +25,12 @@ export default class DebugService {
         return await CaseEngineService.get('/debug/' + model + parameters, user);
     }
 
+    static async getJSONEvents(model: string | Case | Tenant, user?: User, from: number = 0, to?: number, trace: Trace = new Trace()): Promise<Object[]> {
+        const response = await this.getEvents(model, user, from, to, trace);
+        const events = await response.validateArray(Object, 'Expecting model events', 200, trace);
+        return events;
+    }
+
     static async getParsedEvents(model: string | Case | Tenant, user?: User, from: number = 0, to?: number, trace: Trace = new Trace()): Promise<ModelEvent[]> {
         const response = await this.getEvents(model, user, from, to, trace);
         const events = await response.validateArray(CaseEngineEvent, 'Expecting model events', 200, trace);
