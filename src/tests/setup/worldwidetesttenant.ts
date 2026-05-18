@@ -133,6 +133,7 @@ class TenantWrapper {
             this.creating = true;
             await this.platformAdmin.login();
             await PlatformService.createTenant(this.platformAdmin, this.tenant);
+            await TenantService.getTenantUsers(this.sender, this.tenant);
             await this.sender.login();
             await this.receiver.login();
             await this.employee.login();
