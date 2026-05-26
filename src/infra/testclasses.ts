@@ -140,6 +140,8 @@ export default class TestClasses {
                     AllTests.forEach(addDefaultRunner);
                 } else if (name === 'tasks') {
                     TaskTests.forEach(addExplicitRunner);
+                } else if (name === 'casefile') {
+                    CaseFileTests.forEach(addExplicitRunner);
                 } else if (name === 'storage') {
                     StorageTests.forEach(addExplicitRunner);
                 } else if (name === 'migration') {
@@ -160,6 +162,15 @@ export default class TestClasses {
     }
 }
 
+const CaseFileTests: Array<Function> = [
+    TestCaseFileAPI
+    , TestCaseFileArrayAPI
+    , TestCaseFileExpressions
+    , TestCaseParameterAPI
+    , TestReplaceWithChildArray
+    , TestBootstrapCaseFileEvents
+];
+
 const TaskTests: Array<Function> = [
     TestTaskAPI
     , TestTaskCountAPI
@@ -176,7 +187,7 @@ const TaskTests: Array<Function> = [
     , TestCaseTeamTaskAuthorizationsForGroups
     , TestSubCaseTasks
     , TestDurationAndInstant
-]
+];
 
 const StorageTests: Array<Function> = [
     TestArchiveHelloworld
@@ -242,12 +253,7 @@ const AllTests: Array<Function> = [
     , TestInvalidDefinitions
     , TestRecursiveDefinitions
     , TestTokenValidation
-    , TestCaseFileAPI
-    , TestCaseFileArrayAPI
-    , TestCaseFileExpressions
-    , TestCaseParameterAPI
-    , TestReplaceWithChildArray
-    , TestBootstrapCaseFileEvents
+    , ...CaseFileTests
     , TestCasePlanAPI
     , TestCasePlanHistoryAPI
     , TestBusinessIdentifiers
