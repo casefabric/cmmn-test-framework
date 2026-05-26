@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "node ./dist/app.js",
+    "test-cluster": "node ./dist/app.js -l min -urls 2027,2028",
     "build": "tsc",
     "watch": "tsc --watch",
     "clean": "shx rm -rf ./dist",
