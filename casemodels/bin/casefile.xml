@@ -1,4 +1,18 @@
 <definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
+    <caseFileItemDefinition name="PropertiesObject" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="casefile_with_array_structures_type_PropertiesObject.object">
+        <property name="singleString" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="multiString" type="http://www.omg.org/spec/CMMN/PropertyType/string">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation multiplicity="ZeroOrMore"/>
+            </extensionElements>
+        </property>
+        <property name="singleNumber" type="http://www.omg.org/spec/CMMN/PropertyType/float"/>
+        <property name="multiNumber" type="http://www.omg.org/spec/CMMN/PropertyType/float">
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation multiplicity="ZeroOrMore"/>
+            </extensionElements>
+        </property>
+    </caseFileItemDefinition>
     <caseFileItemDefinition name="casefile_with_array_structures" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="casefile_with_array_structures.type"/>
     <caseFileItemDefinition name="rootcasefileitem" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="rootcasefileitem.type">
         <property name="RootProperty1" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
@@ -46,6 +60,7 @@
                     </caseFileItem>
                 </children>
             </caseFileItem>
+            <caseFileItem id="PropertiesObject" name="PropertiesObject" multiplicity="ExactlyOne" definitionRef="casefile_with_array_structures_type_PropertiesObject.object"/>
         </caseFileModel>
         <casePlanModel id="cm__kWyIV_0" name="casefile" autoComplete="true">
             <planItem id="pi_ht__kWyIV_0" name="Simplistic Unused Task" definitionRef="ht__kWyIV_0"/>
@@ -53,7 +68,9 @@
                 <itemControl id="_kWyIV_10">
                     <repetitionRule id="_kWyIV_12">
                         <condition id="_kWyIV_13">
-                            <body><![CDATA[true]]></body>
+                            <body>
+                                <![CDATA[true]]>
+                            </body>
                         </condition>
                     </repetitionRule>
                 </itemControl>
@@ -62,7 +79,9 @@
                 <itemControl id="_kWyIV_18">
                     <repetitionRule id="_kWyIV_21">
                         <condition id="_kWyIV_22">
-                            <body><![CDATA[true]]></body>
+                            <body>
+                                <![CDATA[true]]>
+                            </body>
                         </condition>
                     </repetitionRule>
                 </itemControl>
@@ -73,7 +92,9 @@
                 <extensionElements mustUnderstand="false">
                     <cafienne:implementation name="simple_in_out_task" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
                         <documentation textFormat="text/plain">
-                            <text><![CDATA[This task is intended to simply stream input/output data]]></text>
+                            <text>
+                                <![CDATA[This task is intended to simply stream input/output data]]>
+                            </text>
                         </documentation>
                         <input id="_dk8c_In" name="In"/>
                         <output id="_46Gh_Out" name="Out"/>
@@ -84,13 +105,17 @@
             <humanTask id="ht__kWyIV_17" name="Replace Array Task" isBlocking="true">
                 <outputs id="_kWyIV_24" name="RootCaseFileItem" bindingRef="RootCaseFileItem">
                     <bindingRefinement id="_kWyIV_25">
-                        <body><![CDATA[replace]]></body>
+                        <body>
+                            <![CDATA[replace]]>
+                        </body>
                     </bindingRefinement>
                 </outputs>
                 <extensionElements mustUnderstand="false">
                     <cafienne:implementation name="simple_in_out_task" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
                         <documentation textFormat="text/plain">
-                            <text><![CDATA[This task is intended to simply stream input/output data]]></text>
+                            <text>
+                                <![CDATA[This task is intended to simply stream input/output data]]>
+                            </text>
                         </documentation>
                         <input id="_dk8c_In" name="In"/>
                         <output id="_46Gh_Out" name="Out"/>
