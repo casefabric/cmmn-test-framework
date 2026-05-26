@@ -20,12 +20,12 @@ export default class TestBootstrapCaseFileEvents extends TestCase {
         const inputs = {
             Greeting: {
                 Message: 'Checking whether the case decently starts',
-            }, 
+            },
             OneMoreInput: {
                 Message: 'One more message'
             }
         };
-        
+
         const startCase = { tenant, definition, inputs, debug: true };
         // Sender starts the parent case
         const caseInstance = await CaseService.startCase(sender, startCase);
