@@ -1,14 +1,16 @@
 'use strict';
 
 import Case from '../../../../cmmn/case';
-import Task from '../../../../cmmn/task';
 import Definitions from '../../../../cmmn/definitions/definitions';
+import Task from '../../../../cmmn/task';
+import TaskState from '../../../../cmmn/taskstate';
 import CaseMigrationService, { DefinitionMigration } from '../../../../service/case/casemigrationservice';
 import CaseService from '../../../../service/case/caseservice';
 import DebugService from '../../../../service/case/debugservice';
 import TaskService from '../../../../service/task/taskservice';
+import { assertTask } from '../../../../test/caseassertions/task';
 import TestCase from '../../../../test/testcase';
-import { SomeTime, PollUntilSuccess } from '../../../../test/time';
+import { PollUntilSuccess } from '../../../../test/time';
 import WorldWideTestTenant from '../../../setup/worldwidetesttenant';
 
 const base_definition = Definitions.Migration_RepeatingTask_v0;
@@ -55,11 +57,8 @@ export default class TestRepetitionMigration extends TestCase {
         const firstTaskBatch = this.tasksFound.map(t => t.summary()).join('\n- ');
         console.log("Completed following tasks:\n- " + firstTaskBatch);
 
-        await SomeTime(1000, 'Awaiting 1 second before case migration')
-
         // Migrate caseInstance1, and then complete the task in case1
         await CaseMigrationService.migrateDefinition(user, caseInstance, migratedDefinition);
-        await SomeTime(2000, 'Awaiting 2 seconds after case migration')
         await DebugService.forceRecovery(user, caseInstance);
         await this.completeNextTask(caseInstance, 2);
         console.log("First completed:\n- " + firstTaskBatch);
@@ -77,6 +76,7 @@ export default class TestRepetitionMigration extends TestCase {
             const activeTask = activeTasks[0];
             this.tasksFound.push(activeTask);
             await TaskService.completeTask(user, activeTask);
+            await assertTask(user, activeTask, "completion", TaskState.Completed)
         }, `Waiting for ${expectedNumberOfActiveTasks} active task(s) in case ${case1_before}`);
     }
 }
