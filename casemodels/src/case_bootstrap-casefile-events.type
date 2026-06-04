@@ -1,0 +1,8 @@
+<type xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="case_bootstrap-casefile-events.type" name="case_bootstrap-casefile-events">
+    <schema>
+        <property id="sp__L022x_0" name="Greeting" type="greeting.type" multiplicity="ExactlyOne"/>
+        <property id="sp__L022x_1" name="Response" type="response.type" multiplicity="ExactlyOne"/>
+        <property id="sp__L022x_2" name="OneMoreInput" type="greeting.type" multiplicity="ZeroOrMore"/>
+        <property id="sp__G962T_0" name="GreetingList" type="GreetingList.type" multiplicity="ExactlyOne"/>
+    </schema>
+</type>

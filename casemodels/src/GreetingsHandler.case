@@ -1,0 +1,23 @@
+<case xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="GreetingsHandler.case" name="GreetingsHandler" expressionLanguage="spel" guid="_64KNf">
+    <caseFileModel typeRef="case_bootstrap-casefile-events.type"/>
+    <casePlanModel id="cm__64KNf_0" name="GreetingsHandler" autoComplete="true">
+        <caseTask id="_64KNf_2" name="HelloWorld" isBlocking="true" caseRef="helloworld.case">
+            <entryCriterion id="crit__64KNf_0">
+                <caseFileItemOnPart id="_64KNf_13" sourceRef="GreetingList/Greeting">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </entryCriterion>
+            <itemControl id="_64KNf_9">
+                <repetitionRule id="_64KNf_10">
+                    <condition id="_64KNf_11">
+                        <body><![CDATA[true]]></body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
+            <inputs id="_64KNf_7" name="Greeting" bindingRef="GreetingList/Greeting"/>
+            <parameterMapping id="_64KNf_4" sourceRef="_64KNf_7" targetRef="csVQy_inCPs_0"/>
+        </caseTask>
+    </casePlanModel>
+    <caseRoles caseTeamRef="testteam.caseteam"/>
+    <input id="_64KNf_1" name="GreetingList" bindingRef="GreetingList"/>
+</case>
