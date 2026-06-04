@@ -7,6 +7,7 @@ import WorldWideTestTenant from "../../setup/worldwidetesttenant";
 import CaseFileService from "../../../service/case/casefileservice";
 import DebugService from "../../../service/case/debugservice";
 import { SomeTime } from "../../../test/time";
+import { assertCasePlan } from "../../../test/caseassertions/plan";
 
 const definition = Definitions.BootstrapCaseFileEvents;
 const worldwideTenant = new WorldWideTestTenant();
@@ -45,7 +46,7 @@ export default class TestBootstrapCaseFileEvents extends TestCase {
             const caseTask = newCase.findItem('Greetings Handler');
             this.addIdentifier(caseTask);
             return caseTask.id;
-        }).then(async id => await CaseService.getCase(user, id));
+        }).then(async id => await assertCasePlan(user, id));
 
         const caseTasks = handlerCase.planitems.filter(item => item.name === 'HelloWorld');
         console.log("CaseTasks:\n" + caseTasks.join("\n"))
