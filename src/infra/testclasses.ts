@@ -22,7 +22,7 @@ import TestOnPartMigration from '../tests/api/case/migration/testonpartmigration
 import TestReactivationMigration from '../tests/api/case/migration/testreactivationmigration';
 import TestRepetitionMigration from '../tests/api/case/migration/testrepetitionmigration';
 import TestSubCaseMigration from '../tests/api/case/migration/testsubcasemigration';
-import TestBootstrapCaseFileEvents from '../tests/api/case/testbootstrapcasefileevents';
+import TestBootstrapCaseFileEvents from '../tests/api/casefile/testbootstrapcasefileevents';
 import TestDefinitionInStartCase from '../tests/api/case/testdefinitioninstartcase';
 import TestInvalidStartCase from '../tests/api/case/testinvalidstartcase';
 import TestValidStartCase from '../tests/api/case/testvalidstartcase';

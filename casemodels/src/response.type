@@ -1,0 +1,8 @@
+<type xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="response.type" name="response">
+    <schema>
+        <property id="sp__q9DsS_0" name="Message" type="string" multiplicity="ExactlyOne"/>
+        <property id="sp__q9DsS_1" name="Date" type="string" multiplicity="ExactlyOne" format="date"/>
+        <property id="sp__q9DsS_2" name="Time" type="string" multiplicity="ExactlyOne" format="time"/>
+        <property id="sp__q9DsS_3" name="SomeBoolean" type="boolean" multiplicity="ExactlyOne"/>
+    </schema>
+</type>
