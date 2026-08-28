@@ -5,6 +5,7 @@ import CaseFileService from '../../../service/case/casefileservice';
 import CaseService from '../../../service/case/caseservice';
 import TestCase from '../../../test/testcase';
 import WorldWideTestTenant from '../../setup/worldwidetesttenant';
+import assertCaseFileContent from '../../../test/caseassertions/file';
 
 const definition = Definitions.CaseParameter;
 const worldwideTenant = new WorldWideTestTenant();
@@ -28,10 +29,9 @@ export default class TestCaseParameterAPI extends TestCase {
             }
         }
         const startCase = { tenant, definition, inputs };
-        const caseInstance = await CaseService.startCase(user, startCase);
+        const caseInstance = await CaseService.startCase(user, startCase).then(instance => CaseService.getCase(user, instance));
         this.addIdentifier(caseInstance);
-        await CaseFileService.getCaseFile(user, caseInstance).then(file => {
-            console.log("File: ", JSON.stringify(file, undefined, 2));
-        });
+        caseInstance.toConsole(true);
+        assertCaseFileContent(user, caseInstance, 'RootCaseFileItem/ChildArray', []);
     }
 }
