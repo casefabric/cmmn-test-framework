@@ -1,5 +1,11 @@
 <definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
-    <caseFileItemDefinition name="case_casefile" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="case_casefile.type"/>
+    <caseFileItemDefinition name="PropertiesObject" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="casefile_with_array_structures_type_PropertiesObject.object">
+        <property name="singleString" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="multiString" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="singleNumber" type="http://www.omg.org/spec/CMMN/PropertyType/float"/>
+        <property name="multiNumber" type="http://www.omg.org/spec/CMMN/PropertyType/float"/>
+    </caseFileItemDefinition>
+    <caseFileItemDefinition name="casefile_with_array_structures" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="casefile_with_array_structures.type"/>
     <caseFileItemDefinition name="rootcasefileitem" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="rootcasefileitem.type">
         <property name="RootProperty1" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
         <property name="RootProperty2" type="http://www.omg.org/spec/CMMN/PropertyType/boolean"/>
@@ -13,7 +19,7 @@
         <property name="GrandChildBirthDate" type="http://www.omg.org/spec/CMMN/PropertyType/date"/>
     </caseFileItemDefinition>
     <case id="caseparameter.case" name="caseparameter" expressionLanguage="spel">
-        <caseFileModel cafienne:typeRef="case_casefile.type">
+        <caseFileModel cafienne:typeRef="casefile_with_array_structures.type">
             <caseFileItem id="RootCaseFileItem" name="RootCaseFileItem" multiplicity="ExactlyOne" definitionRef="rootcasefileitem.type">
                 <children>
                     <caseFileItem id="RootCaseFileItem/ChildItem" name="ChildItem" multiplicity="ExactlyOne" definitionRef="childitem.type">
@@ -46,22 +52,46 @@
                     </caseFileItem>
                 </children>
             </caseFileItem>
+            <caseFileItem id="PropertiesObject" name="PropertiesObject" multiplicity="ExactlyOne" definitionRef="casefile_with_array_structures_type_PropertiesObject.object"/>
         </caseFileModel>
         <casePlanModel id="cm__xvmgO_0" name="caseparameter" autoComplete="true">
             <planItem id="pi_ht__xvmgO_0" name="Start when creating GrandChildItem" definitionRef="ht__xvmgO_0">
                 <entryCriterion id="crit__xvmgO_0" sentryRef="s_crit__xvmgO_0"/>
             </planItem>
             <planItem id="pi_ht__xvmgO_1" name="Immediately Starting Task" definitionRef="ht__xvmgO_1"/>
+            <planItem id="_xvmgO_14" name="FileReactingTask" definitionRef="ht__xvmgO_14">
+                <entryCriterion id="crit__xvmgO_1" sentryRef="s_crit__xvmgO_1"/>
+                <entryCriterion id="crit__xvmgO_2" sentryRef="s_crit__xvmgO_2"/>
+                <itemControl id="_xvmgO_15">
+                    <repetitionRule id="_xvmgO_17">
+                        <condition id="_xvmgO_18">
+                            <body><![CDATA[true]]></body>
+                        </condition>
+                    </repetitionRule>
+                </itemControl>
+            </planItem>
             <sentry id="s_crit__xvmgO_0">
                 <caseFileItemOnPart id="_xvmgO_6" sourceRef="RootCaseFileArray/ChildArray/GrandChildItem">
                     <standardEvent>create</standardEvent>
                 </caseFileItemOnPart>
             </sentry>
+            <sentry id="s_crit__xvmgO_1">
+                <caseFileItemOnPart id="_xvmgO_16" sourceRef="RootCaseFileArray">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </sentry>
+            <sentry id="s_crit__xvmgO_2">
+                <caseFileItemOnPart id="_xvmgO_23" sourceRef="RootCaseFileArray">
+                    <standardEvent>update</standardEvent>
+                </caseFileItemOnPart>
+            </sentry>
             <humanTask id="ht__xvmgO_0" name="Start when creating GrandChildItem" isBlocking="true"/>
             <humanTask id="ht__xvmgO_1" name="Immediately Starting Task" isBlocking="true"/>
+            <humanTask id="ht__xvmgO_14" name="FileReactingTask" isBlocking="true"/>
         </casePlanModel>
         <caseRoles/>
         <input id="_xvmgO_9" name="RootCaseFileItem" bindingRef="RootCaseFileItem"/>
+        <input id="_xvmgO_19" name="RootCaseFileArray" bindingRef="RootCaseFileArray"/>
     </case>
     <CMMNDI>
         <CMMNDiagram>
@@ -80,7 +110,20 @@
             <CMMNShape cmmnElementRef="pi_ht__xvmgO_1">
                 <Bounds x="210" y="80" width="140" height="80"/>
             </CMMNShape>
+            <CMMNShape cmmnElementRef="_xvmgO_14">
+                <Bounds x="300" y="360" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="RootCaseFileArray">
+                <Bounds x="170" y="370" width="25" height="40"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="crit__xvmgO_1">
+                <Bounds x="294" y="380" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="crit__xvmgO_2">
+                <Bounds x="294" y="410" width="12" height="20"/>
+            </CMMNShape>
             <CMMNEdge sourceCMMNElementRef="RootCaseFileArray/ChildArray/GrandChildItem" targetCMMNElementRef="crit__xvmgO_0"/>
+            <CMMNEdge label="create" sourceCMMNElementRef="RootCaseFileArray" targetCMMNElementRef="crit__xvmgO_1"/>
         </CMMNDiagram>
     </CMMNDI>
 </definitions>

@@ -9,7 +9,27 @@
             </entryCriterion>
         </humanTask>
         <humanTask id="pi_ht__xvmgO_1" name="Immediately Starting Task" isBlocking="true"/>
+        <humanTask id="_xvmgO_14" name="FileReactingTask" isBlocking="true">
+            <entryCriterion id="crit__xvmgO_1">
+                <caseFileItemOnPart id="_xvmgO_16" sourceRef="RootCaseFileArray">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </entryCriterion>
+            <entryCriterion id="crit__xvmgO_2">
+                <caseFileItemOnPart id="_xvmgO_23" sourceRef="RootCaseFileArray">
+                    <standardEvent>update</standardEvent>
+                </caseFileItemOnPart>
+            </entryCriterion>
+            <itemControl id="_xvmgO_15">
+                <repetitionRule id="_xvmgO_17">
+                    <condition id="_xvmgO_18">
+                        <body><![CDATA[true]]></body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
+        </humanTask>
     </casePlanModel>
     <caseRoles/>
     <input id="_xvmgO_9" name="RootCaseFileItem" bindingRef="RootCaseFileItem"/>
+    <input id="_xvmgO_19" name="RootCaseFileArray" bindingRef="RootCaseFileArray"/>
 </case>

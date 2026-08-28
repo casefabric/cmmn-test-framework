@@ -131,6 +131,14 @@ export default class Case extends CMMNBaseClass {
     }
 
     /**
+     * Returns an array with all (possible 0) plan items matching the identifier (name or id) of the case.
+     * @param identifier 
+     */
+    findItems(identifier: string): Array<PlanItem> {
+        return this.planitems.filter(item => item.name === identifier || item.id === identifier);
+    }
+
+    /**
      * Returns the plan item matching the path, or throws an error
      * @param path - The path to resolve on the plan item structure of the case
      */
