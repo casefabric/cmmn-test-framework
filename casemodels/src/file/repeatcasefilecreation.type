@@ -1,0 +1,14 @@
+<type xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="file/repeatcasefilecreation.type" name="file/repeatcasefilecreation">
+    <schema>
+        <property id="sp__zszOL_1" name="TopCase" type="object" multiplicity="ZeroOrOne">
+            <schema id="_GicPc_0" name="Schema_0">
+                <property id="sp__GicPc_0" name="items" type="object" multiplicity="ZeroOrMore">
+                    <schema id="_GicPc_1" name="Schema_1">
+                        <property id="sp__GicPc_1" name="item" type="string" multiplicity="ExactlyOne"/>
+                        <property id="sp__GicPc_2" name="role" type="string" multiplicity="ExactlyOne"/>
+                    </schema>
+                </property>
+            </schema>
+        </property>
+    </schema>
+</type>
