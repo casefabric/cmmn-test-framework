@@ -19,5 +19,6 @@ export default class CaseEngineEvent {
         } else {
             console.error('CaseEngineEvent.content is missing?!');
         }
+        this.content.eventType = this.type;
     }
 }
