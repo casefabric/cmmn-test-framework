@@ -4,6 +4,7 @@ import EventMetadata from "./eventmetadata";
 
 export default class ModelEvent {
     public engineEvent!: CaseEngineEvent;
+    public eventType: string = this.constructor.name;
     private modelEvent: EventMetadata = EventMetadata.EMPTY; // It is called 'modelEvent' in the JSON payload, and it holds metadata
 
     init_json() {
@@ -18,7 +19,7 @@ export default class ModelEvent {
     get offset(): number {
         return this.engineEvent.offset;
     }
-    
+
     get metadata(): EventMetadata {
         return this.modelEvent;
     }
@@ -30,7 +31,7 @@ export default class ModelEvent {
         if (obj.path) {
             obj.path = obj.path.toString();
         }
-        return `${this.constructor.name} ${JSON.stringify(obj, undefined, 2)}`;
+        return `${this.eventType} ${JSON.stringify(obj, undefined, 2)}`;
     }
 
     hasType(type: Function): boolean {

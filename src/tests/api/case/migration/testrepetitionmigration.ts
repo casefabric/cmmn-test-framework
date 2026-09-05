@@ -21,6 +21,7 @@ const user = worldwideTenant.sender;
 
 export default class TestRepetitionMigration extends TestCase {
     tasksFound: Array<Task> = [];
+    firstTaskBatch: string = '';
 
     async onPrepareTest() {
         await worldwideTenant.create();
@@ -48,21 +49,43 @@ export default class TestRepetitionMigration extends TestCase {
         const caseInstance = await CaseService.startCase(user, startCase).then(instance => CaseService.getCase(user, instance));
         this.addIdentifier(caseInstance);
 
-        await this.completeNextTask(caseInstance, 1);
-        await this.completeNextTask(caseInstance, 1);
-        await this.completeNextTask(caseInstance, 1);
-        await this.completeNextTask(caseInstance, 1);
-        await this.completeNextTask(caseInstance, 1);
+        const report = async (message: string, error: any) => {
+            console.log(message, error);
+            const events = await DebugService.getParsedEvents(caseInstance, user);
+            console.log("Events:", events.join('\n- '));
+            console.log('\n\n\n\n');
+            await CaseService.getCase(user, caseInstance).then(instance => instance.toConsole(true));
+            console.log('\n\n\n\n');
+            console.log(message, error);
+            throw error;
+        }
 
-        const firstTaskBatch = this.tasksFound.map(t => t.summary()).join('\n- ');
-        console.log("Completed following tasks:\n- " + firstTaskBatch);
+        try {
+            await this.completeNextTask(caseInstance, 1);
+            await this.completeNextTask(caseInstance, 1);
+            await this.completeNextTask(caseInstance, 1);
+            await this.completeNextTask(caseInstance, 1);
+            await this.completeNextTask(caseInstance, 1);
 
-        // Migrate caseInstance1, and then complete the task in case1
-        await CaseMigrationService.migrateDefinition(user, caseInstance, migratedDefinition);
-        await DebugService.forceRecovery(user, caseInstance);
-        await this.completeNextTask(caseInstance, 2);
-        console.log("First completed:\n- " + firstTaskBatch);
-        console.log("\nTotal completed tasks:\n- " + this.tasksFound.map(t => t.summary()).join('\n- '));
+            this.firstTaskBatch = this.tasksFound.map(t => t.summary()).join('\n- ');
+            console.log("Completed following tasks:\n- " + this.firstTaskBatch);
+
+        } catch (error) {
+            await report("Error during task completion: ", error);
+        }
+
+        try {
+            // Migrate caseInstance1, and then complete the task in case1
+            await CaseMigrationService.migrateDefinition(user, caseInstance, migratedDefinition);
+            await DebugService.forceRecovery(user, caseInstance);
+            await this.completeNextTask(caseInstance, 2);
+            console.log("First completed:\n- " + this.firstTaskBatch);
+            console.log("\nTotal completed tasks:\n- " + this.tasksFound.map(t => t.summary()).join('\n- '));
+
+
+        } catch (error) {
+            await report("Error after migration: ", error);
+        }
     }
 
     async completeNextTask(case1_before: Case, expectedNumberOfActiveTasks: number) {
