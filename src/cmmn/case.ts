@@ -122,9 +122,20 @@ export default class Case extends CMMNBaseClass {
         return this.id;
     }
 
-    toConsole() {
+    toConsole(includeFile: boolean = false) {
         console.log(`Case ${this.caseName} [id = ${this.id} | parent = ${this.parentCaseId} | root = ${this.rootCaseId} | createdBy = ${this.createdBy} | modifiedBy = ${this.modifiedBy}]\n${this.printPlan()}`);
+        if (includeFile) {
+            console.log(`- CaseFile: ${JSON.stringify(this.file, undefined, 2)}`);
+        }
         return this;
+    }
+
+    /**
+     * Returns an array with all (possible 0) plan items matching the identifier (name or id) of the case.
+     * @param identifier 
+     */
+    findItems(identifier: string): Array<PlanItem> {
+        return this.planitems.filter(item => item.name === identifier || item.id === identifier);
     }
 
     /**
@@ -146,12 +157,12 @@ export default class Case extends CMMNBaseClass {
             constructor(public item: PlanItem) { }
             print(indent = ''): string {
                 const item = this.item;
-                const string = `${indent}- ${item.type}[${item.name}.${item.index}] | state = ${item.currentState} | transition = ${item.transition} | id = ${item.id}\n`;
-                return string + this.children.map(child => child.print(indent + ' ')).join('');
+                const string = `${indent}- ${item.type}[${item.name}.${item.index}] | state = ${item.currentState} | transition = ${item.transition} | id = ${item.id}`;
+                return string + (this.children.length > 0 ? '\n' + this.children.map(child => child.print(indent + ' ')).join('\n') : '');
             }
         }
         const stages = this.planitems.filter(item => item.type === 'Stage' || item.type === 'CasePlan').map(item => new Wrapper(item));
-        const wrappers = this.planitems.filter(item => item.type !== 'Stage' && item.type !== 'CasePlan').map(item => {
+        this.planitems.filter(item => item.type !== 'Stage' && item.type !== 'CasePlan').map(item => {
             const wrapper = new Wrapper(item);
             if (item.stageId) {
                 wrapper.stage = stages.find(stage => stage.item.id === item.stageId);

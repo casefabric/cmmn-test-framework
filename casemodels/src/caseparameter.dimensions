@@ -10,11 +10,25 @@
             <Bounds x="324" y="210" width="12" height="20"/>
         </CMMNShape>
         <CMMNShape cmmnElementRef="RootCaseFileArray/ChildArray/GrandChildItem">
-            <Bounds x="151.92047119140625" y="193.09091186523438" width="25" height="40"/>
+            <Bounds x="151" y="193" width="25" height="40"/>
         </CMMNShape>
         <CMMNShape cmmnElementRef="pi_ht__xvmgO_1">
             <Bounds x="210" y="80" width="140" height="80"/>
         </CMMNShape>
+        <CMMNShape cmmnElementRef="_xvmgO_14">
+            <Bounds x="300" y="360" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="RootCaseFileArray">
+            <Bounds x="130" y="380" width="25" height="40"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="crit__xvmgO_1">
+            <Bounds x="294" y="380" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="crit__xvmgO_2">
+            <Bounds x="294" y="410" width="12" height="20"/>
+        </CMMNShape>
         <CMMNEdge sourceCMMNElementRef="RootCaseFileArray/ChildArray/GrandChildItem" targetCMMNElementRef="crit__xvmgO_0"/>
+        <CMMNEdge label="create" sourceCMMNElementRef="RootCaseFileArray" targetCMMNElementRef="crit__xvmgO_1"/>
+        <CMMNEdge label="update" sourceCMMNElementRef="RootCaseFileArray" targetCMMNElementRef="crit__xvmgO_2"/>
     </CMMNDiagram>
 </CMMNDI>

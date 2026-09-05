@@ -110,6 +110,7 @@ import TestLargeExpression from '../tests/load/testlargeexpression';
 import TestTravelRequest from '../tests/travelrequest/testtravelrequest';
 import TestRunner from './testrunner';
 import TestPropertyMultiplicity from '../tests/api/casefile/testpropertymultiplicity';
+import TestRepetitiveFileItems from '../tests/api/casefile/testrepetitivefileitems';
 
 export default class TestClasses {
     static getTestClass(name: string): Function {
@@ -169,6 +170,7 @@ const CaseFileTests: Array<Function> = [
     , TestCaseFileExpressions
     , TestPropertyMultiplicity
     , TestCaseParameterAPI
+    , TestRepetitiveFileItems
     , TestReplaceWithChildArray
     , TestBootstrapCaseFileEvents
 ];

@@ -1,0 +1,23 @@
+<case xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="file/repeatcasefilecreation.case" name="file/repeatcasefilecreation" expressionLanguage="spel" guid="_Oq7wE">
+    <caseFileModel typeRef="file/repeatcasefilecreation.type"/>
+    <casePlanModel id="cm__Oq7wE_0" name="file/repeatcasefilecreation" autoComplete="true">
+        <humanTask id="_Oq7wE_1" name="Review" isBlocking="true">
+            <entryCriterion id="crit__Oq7wE_0">
+                <caseFileItemOnPart id="_Oq7wE_5" sourceRef="TopCase/items">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </entryCriterion>
+            <itemControl id="_Oq7wE_2">
+                <repetitionRule id="_Oq7wE_3" contextRef="TopCase">
+                    <condition id="_Oq7wE_4">
+                        <body><![CDATA[TopCase.items.size() < 3]]></body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
+        </humanTask>
+    </casePlanModel>
+    <caseRoles caseTeamRef="testteam.caseteam"/>
+    <textAnnotation id="_Oq7wE_6">
+        <text><![CDATA[Repeat the ReviewTask as long as there are not more than 2 'Items' created in the case file]]></text>
+    </textAnnotation>
+</case>
