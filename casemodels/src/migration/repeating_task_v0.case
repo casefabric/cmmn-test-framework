@@ -22,8 +22,14 @@
                     </condition>
                 </repetitionRule>
             </itemControl>
+            <inputs id="_aa5iX_49" name="Next" bindingRef="_aa5iX_38"/>
             <outputs id="_aa5iX_10" name="Next" bindingRef="_aa5iX_38"/>
             <parameterMapping id="_aa5iX_7" sourceRef="_uJl8_out1" targetRef="_aa5iX_10"/>
+            <parameterMapping id="_aa5iX_67" sourceRef="_aa5iX_49" targetRef="index__SEFl">
+                <transformation id="_aa5iX_73">
+                    <body><![CDATA[task.index]]></body>
+                </transformation>
+            </parameterMapping>
         </processTask>
         <humanTask id="pi_ht__aa5iX_0" name="Task1" isBlocking="true">
             <entryCriterion id="_aa5iX_14" name="EntryCriterion_1">

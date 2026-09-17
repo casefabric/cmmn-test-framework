@@ -102,8 +102,14 @@
             </sentry>
             <humanTask id="ht__n9caK_0" name="New Task" isBlocking="true"/>
             <processTask id="pt__n9caK_0" name="Define Next Task" isBlocking="true" processRef="next_task_calculation.process">
+                <inputs id="_n9caK_46" name="Next" bindingRef="_n9caK_2"/>
                 <outputs id="_n9caK_36" name="Next" bindingRef="_n9caK_2"/>
                 <parameterMapping id="_n9caK_31" sourceRef="_uJl8_out1" targetRef="_n9caK_36"/>
+                <parameterMapping id="_n9caK_52" sourceRef="_n9caK_46" targetRef="index__SEFl">
+                    <transformation id="_n9caK_59">
+                        <body><![CDATA[task.index]]></body>
+                    </transformation>
+                </parameterMapping>
             </processTask>
             <humanTask id="ht__n9caK_1" name="Task1" isBlocking="true"/>
             <humanTask id="ht__n9caK_2" name="Task2" isBlocking="true"/>
@@ -134,11 +140,19 @@
         <caseRoles/>
     </case>
     <process name="NextTaskCalculation" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified" id="next_task_calculation.process">
+        <input id="index__SEFl" name="index" typeRef="number"/>
         <output id="_uJl8_out1" name="out1"/>
         <extensionElements mustUnderstand="false">
             <cafienne:implementation xmlns:cafienne="org.cafienne" class="org.cafienne.processtask.implementation.calculation.CalculationDefinition">
-                <step output="out1">
-                    <expression>T(java.lang.Math).round(T(java.lang.Math).random()*1)+1</expression>
+                <step output="out1" xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL">
+                    <input source="index"/>
+                    <expression>1</expression>
+                    <condition>index != 5</condition>
+                </step>
+                <step output="out1" xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL">
+                    <input source="index"/>
+                    <expression>2</expression>
+                    <condition>index == 5</condition>
                 </step>
             </cafienne:implementation>
         </extensionElements>

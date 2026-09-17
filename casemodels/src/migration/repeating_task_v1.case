@@ -23,8 +23,14 @@
                     </condition>
                 </repetitionRule>
             </itemControl>
+            <inputs id="_n9caK_46" name="Next" bindingRef="_n9caK_2"/>
             <outputs id="_n9caK_36" name="Next" bindingRef="_n9caK_2"/>
             <parameterMapping id="_n9caK_31" sourceRef="_uJl8_out1" targetRef="_n9caK_36"/>
+            <parameterMapping id="_n9caK_52" sourceRef="_n9caK_46" targetRef="index__SEFl">
+                <transformation id="_n9caK_59">
+                    <body><![CDATA[task.index]]></body>
+                </transformation>
+            </parameterMapping>
         </processTask>
         <humanTask id="pi_ht__n9caK_1" name="Task1" isBlocking="true">
             <entryCriterion id="_n9caK_11" name="EntryCriterion_1">
