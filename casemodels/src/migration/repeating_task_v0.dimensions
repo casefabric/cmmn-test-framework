@@ -1,4 +1,4 @@
-<CMMNDI>
+<CMMNDI xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
     <CMMNDiagram>
         <CMMNShape cmmnElementRef="cm__aa5iX_0">
             <Bounds x="20" y="20" width="800" height="640"/>
@@ -24,15 +24,6 @@
         <CMMNShape cmmnElementRef="_aa5iX_21">
             <Bounds x="414" y="230" width="12" height="20"/>
         </CMMNShape>
-        <CMMNShape cmmnElementRef="pi_pt__aa5iX_1">
-            <Bounds x="660" y="120" width="140" height="80"/>
-        </CMMNShape>
-        <CMMNShape cmmnElementRef="_aa5iX_26">
-            <Bounds x="654" y="140" width="12" height="20"/>
-        </CMMNShape>
-        <CMMNShape cmmnElementRef="_aa5iX_28">
-            <Bounds x="654" y="170" width="12" height="20"/>
-        </CMMNShape>
         <CMMNShape cmmnElementRef="_aa5iX_32">
             <Bounds x="214" y="190" width="12" height="20"/>
         </CMMNShape>
@@ -51,15 +42,24 @@
         <CMMNShape cmmnElementRef="_aa5iX_40">
             <Bounds x="264" y="480" width="12" height="20"/>
         </CMMNShape>
+        <CMMNShape cmmnElementRef="_aa5iX_56">
+            <Bounds x="670" y="130" width="130" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="crit__aa5iX_0">
+            <Bounds x="664" y="140" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="crit__aa5iX_1">
+            <Bounds x="664" y="170" width="12" height="20"/>
+        </CMMNShape>
         <CMMNEdge sourceCMMNElementRef="_aa5iX_0" targetCMMNElementRef="_aa5iX_2"/>
         <CMMNEdge sourceCMMNElementRef="pi_pt__aa5iX_0" targetCMMNElementRef="_aa5iX_14"/>
         <CMMNEdge sourceCMMNElementRef="pi_pt__aa5iX_0" targetCMMNElementRef="_aa5iX_21"/>
-        <CMMNEdge sourceCMMNElementRef="pi_ht__aa5iX_0" targetCMMNElementRef="_aa5iX_26"/>
-        <CMMNEdge sourceCMMNElementRef="pi_ht__aa5iX_1" targetCMMNElementRef="_aa5iX_28"/>
-        <CMMNEdge sourceCMMNElementRef="pi_pt__aa5iX_1" targetCMMNElementRef="_aa5iX_32">
-            <waypoint x="730" y="350"/>
-            <waypoint x="220" y="350"/>
-        </CMMNEdge>
         <CMMNEdge sourceCMMNElementRef="pi_ue__aa5iX_1" targetCMMNElementRef="_aa5iX_40"/>
+        <CMMNEdge sourceCMMNElementRef="pi_ht__aa5iX_0" targetCMMNElementRef="crit__aa5iX_0"/>
+        <CMMNEdge sourceCMMNElementRef="pi_ht__aa5iX_1" targetCMMNElementRef="crit__aa5iX_1"/>
+        <CMMNEdge sourceCMMNElementRef="_aa5iX_56" targetCMMNElementRef="_aa5iX_32">
+            <waypoint x="740" y="320"/>
+            <waypoint x="220" y="320"/>
+        </CMMNEdge>
     </CMMNDiagram>
 </CMMNDI>
