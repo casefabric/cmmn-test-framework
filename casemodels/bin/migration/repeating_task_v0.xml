@@ -12,9 +12,7 @@
                 <itemControl id="_aa5iX_1">
                     <repetitionRule id="_aa5iX_4">
                         <condition id="_aa5iX_5">
-                            <body>
-                                <![CDATA[true]]>
-                            </body>
+                            <body><![CDATA[true]]></body>
                         </condition>
                     </repetitionRule>
                 </itemControl>
@@ -24,9 +22,7 @@
                 <itemControl id="_aa5iX_11">
                     <repetitionRule id="_aa5iX_12">
                         <condition id="_aa5iX_13">
-                            <body>
-                                <![CDATA[true]]>
-                            </body>
+                            <body><![CDATA[true]]></body>
                         </condition>
                     </repetitionRule>
                 </itemControl>
@@ -36,44 +32,38 @@
                 <itemControl id="_aa5iX_18">
                     <repetitionRule id="_aa5iX_19">
                         <condition id="_aa5iX_20">
-                            <body>
-                                <![CDATA[true]]>
-                            </body>
-                        </condition>
-                    </repetitionRule>
-                </itemControl>
-            </planItem>
-            <planItem id="pi_pt__aa5iX_1" name="Read Output" definitionRef="pt__aa5iX_1">
-                <entryCriterion id="_aa5iX_26" name="EntryCriterion_3" sentryRef="s__aa5iX_26"/>
-                <entryCriterion id="_aa5iX_28" name="EntryCriterion_4" sentryRef="s__aa5iX_28"/>
-                <itemControl id="_aa5iX_25">
-                    <repetitionRule id="_aa5iX_30">
-                        <condition id="_aa5iX_31">
-                            <body>
-                                <![CDATA[true]]>
-                            </body>
+                            <body><![CDATA[true]]></body>
                         </condition>
                     </repetitionRule>
                 </itemControl>
             </planItem>
             <planItem id="pi__aa5iX_6" name="Test Reactivation" definitionRef="_aa5iX_6"/>
             <planItem id="pi_ue__aa5iX_0" name="Reactivate Stage" definitionRef="ue__aa5iX_0"/>
+            <planItem id="_aa5iX_56" name="Previous Human Task Completed" definitionRef="ms__aa5iX_56">
+                <entryCriterion id="crit__aa5iX_0" sentryRef="s_crit__aa5iX_0"/>
+                <entryCriterion id="crit__aa5iX_1" sentryRef="s_crit__aa5iX_1"/>
+                <itemControl id="_aa5iX_57">
+                    <repetitionRule id="_aa5iX_58">
+                        <condition id="_aa5iX_59">
+                            <body><![CDATA[true]]></body>
+                        </condition>
+                    </repetitionRule>
+                </itemControl>
+            </planItem>
             <sentry id="s__aa5iX_2">
                 <caseFileItemOnPart id="_aa5iX_3" sourceRef="_aa5iX_0">
                     <standardEvent>create</standardEvent>
                 </caseFileItemOnPart>
             </sentry>
             <sentry id="s__aa5iX_32">
-                <planItemOnPart id="_aa5iX_33" sourceRef="pi_pt__aa5iX_1">
-                    <standardEvent>complete</standardEvent>
+                <planItemOnPart id="_aa5iX_66" sourceRef="_aa5iX_56">
+                    <standardEvent>occur</standardEvent>
                 </planItemOnPart>
             </sentry>
             <sentry id="s__aa5iX_14">
                 <ifPart id="_aa5iX_16" contextRef="_aa5iX_38">
                     <condition id="_aa5iX_17">
-                        <body>
-                            <![CDATA[Next == 1]]>
-                        </body>
+                        <body><![CDATA[Next == 1]]></body>
                     </condition>
                 </ifPart>
                 <planItemOnPart id="_aa5iX_15" sourceRef="pi_pt__aa5iX_0">
@@ -83,22 +73,20 @@
             <sentry id="s__aa5iX_21">
                 <ifPart id="_aa5iX_23" contextRef="_aa5iX_38">
                     <condition id="_aa5iX_24">
-                        <body>
-                            <![CDATA[Next == 2]]>
-                        </body>
+                        <body><![CDATA[Next == 2]]></body>
                     </condition>
                 </ifPart>
                 <planItemOnPart id="_aa5iX_22" sourceRef="pi_pt__aa5iX_0">
                     <standardEvent>complete</standardEvent>
                 </planItemOnPart>
             </sentry>
-            <sentry id="s__aa5iX_26">
-                <planItemOnPart id="_aa5iX_27" sourceRef="pi_ht__aa5iX_0">
+            <sentry id="s_crit__aa5iX_0">
+                <planItemOnPart id="_aa5iX_60" sourceRef="pi_ht__aa5iX_0">
                     <standardEvent>complete</standardEvent>
                 </planItemOnPart>
             </sentry>
-            <sentry id="s__aa5iX_28">
-                <planItemOnPart id="_aa5iX_29" sourceRef="pi_ht__aa5iX_1">
+            <sentry id="s_crit__aa5iX_1">
+                <planItemOnPart id="_aa5iX_61" sourceRef="pi_ht__aa5iX_1">
                     <standardEvent>complete</standardEvent>
                 </planItemOnPart>
             </sentry>
@@ -108,19 +96,13 @@
             </processTask>
             <humanTask id="ht__aa5iX_0" name="Task1" isBlocking="true"/>
             <humanTask id="ht__aa5iX_1" name="Task2" isBlocking="true"/>
-            <processTask id="pt__aa5iX_1" name="Read Output" isBlocking="true" processRef="next_task_calculation.process">
-                <outputs id="_aa5iX_37" name="Next" bindingRef="_aa5iX_38"/>
-                <parameterMapping id="_aa5iX_34" sourceRef="_uJl8_out1" targetRef="_aa5iX_37"/>
-            </processTask>
             <stage id="_aa5iX_6" name="Test Reactivation" autoComplete="true">
                 <planItem id="pi_ms__aa5iX_0" name="Milestone" definitionRef="ms__aa5iX_0">
                     <entryCriterion id="_aa5iX_40" name="EntryCriterion_6" sentryRef="s__aa5iX_40"/>
                     <itemControl id="_aa5iX_9">
                         <requiredRule id="_aa5iX_36">
                             <condition id="_aa5iX_39">
-                                <body>
-                                    <![CDATA[true]]>
-                                </body>
+                                <body><![CDATA[true]]></body>
                             </condition>
                         </requiredRule>
                     </itemControl>
@@ -135,6 +117,7 @@
             <milestone id="ms__aa5iX_0" name="Milestone"/>
             <userEvent id="ue__aa5iX_1" name="Achieve Milestone"/>
             <userEvent id="ue__aa5iX_0" name="Reactivate Stage"/>
+            <milestone id="ms__aa5iX_56" name="Previous Human Task Completed"/>
         </casePlanModel>
         <caseRoles/>
         <input id="_aa5iX_35" name="Unspecified" bindingRef="_aa5iX_0"/>
@@ -175,15 +158,6 @@
             <CMMNShape cmmnElementRef="_aa5iX_21">
                 <Bounds x="414" y="230" width="12" height="20"/>
             </CMMNShape>
-            <CMMNShape cmmnElementRef="pi_pt__aa5iX_1">
-                <Bounds x="660" y="120" width="140" height="80"/>
-            </CMMNShape>
-            <CMMNShape cmmnElementRef="_aa5iX_26">
-                <Bounds x="654" y="140" width="12" height="20"/>
-            </CMMNShape>
-            <CMMNShape cmmnElementRef="_aa5iX_28">
-                <Bounds x="654" y="170" width="12" height="20"/>
-            </CMMNShape>
             <CMMNShape cmmnElementRef="_aa5iX_32">
                 <Bounds x="214" y="190" width="12" height="20"/>
             </CMMNShape>
@@ -202,16 +176,25 @@
             <CMMNShape cmmnElementRef="_aa5iX_40">
                 <Bounds x="264" y="480" width="12" height="20"/>
             </CMMNShape>
+            <CMMNShape cmmnElementRef="_aa5iX_56">
+                <Bounds x="670" y="130" width="130" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="crit__aa5iX_0">
+                <Bounds x="664" y="140" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="crit__aa5iX_1">
+                <Bounds x="664" y="170" width="12" height="20"/>
+            </CMMNShape>
             <CMMNEdge sourceCMMNElementRef="_aa5iX_0" targetCMMNElementRef="_aa5iX_2"/>
             <CMMNEdge sourceCMMNElementRef="pi_pt__aa5iX_0" targetCMMNElementRef="_aa5iX_14"/>
             <CMMNEdge sourceCMMNElementRef="pi_pt__aa5iX_0" targetCMMNElementRef="_aa5iX_21"/>
-            <CMMNEdge sourceCMMNElementRef="pi_ht__aa5iX_0" targetCMMNElementRef="_aa5iX_26"/>
-            <CMMNEdge sourceCMMNElementRef="pi_ht__aa5iX_1" targetCMMNElementRef="_aa5iX_28"/>
-            <CMMNEdge sourceCMMNElementRef="pi_pt__aa5iX_1" targetCMMNElementRef="_aa5iX_32">
-                <waypoint x="730" y="350"/>
-                <waypoint x="220" y="350"/>
-            </CMMNEdge>
             <CMMNEdge sourceCMMNElementRef="pi_ue__aa5iX_1" targetCMMNElementRef="_aa5iX_40"/>
+            <CMMNEdge sourceCMMNElementRef="pi_ht__aa5iX_0" targetCMMNElementRef="crit__aa5iX_0"/>
+            <CMMNEdge sourceCMMNElementRef="pi_ht__aa5iX_1" targetCMMNElementRef="crit__aa5iX_1"/>
+            <CMMNEdge sourceCMMNElementRef="_aa5iX_56" targetCMMNElementRef="_aa5iX_32">
+                <waypoint x="740" y="320"/>
+                <waypoint x="220" y="320"/>
+            </CMMNEdge>
         </CMMNDiagram>
     </CMMNDI>
 </definitions>
