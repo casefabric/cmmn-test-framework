@@ -59,7 +59,7 @@ const Config = {
         log: true,
         // Parallelism indicates how many test cases can be run parallelly. If set to 1, the whole test set will be ran sequentially
         //  Note that some tests always must be run sequentially. When parallellism is higher than 1, the sequential test cases are executed first.
-        parallellism: 1,
+        parallellism: 10,
         polltimeout: 20_000
     }
 }
@@ -123,7 +123,7 @@ export const MinimalLoggingConfig = {
         log: false,
         // Parallelism indicates how many test cases can be run parallelly. If set to 1, the whole test set will be ran sequentially
         //  Note that some tests always must be run sequentially. When parallellism is higher than 1, the sequential test cases are executed first.
-        parallellism: 1,
+        parallellism: 10,
         polltimeout: 20_000
     }
 }
@@ -185,7 +185,7 @@ export const NoLoggingConfig = {
         log: false,
         // Parallelism indicates how many test cases can be run parallelly. If set to 1, the whole test set will be ran sequentially
         //  Note that some tests always must be run sequentially. When parallellism is higher than 1, the sequential test cases are executed first.
-        parallellism: 1,
+        parallellism: 10,
         polltimeout: 20_000
     }
 }
