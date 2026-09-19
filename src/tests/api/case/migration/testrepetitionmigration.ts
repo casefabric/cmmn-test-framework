@@ -98,15 +98,17 @@ export default class TestRepetitionMigration extends TestCase {
     }
 
     async completeNextTask(caseInstance: Case, expectedNumberOfActiveTasks: number) {
-        const tasks = await TaskService.getCaseTasks(user, caseInstance);
-        const activeTasks = tasks.filter(task => task.taskState === 'Unassigned');
-        if (activeTasks.length !== expectedNumberOfActiveTasks) {
-            console.log(`Current task list:\n- ${tasks.map(t => t.summary()).join('\n- ')}`);
-            throw new Error(`Expected to find ${expectedNumberOfActiveTasks} active task(s), but found ${activeTasks.length}`);
-        }
-        const activeTask = activeTasks[0];
-        this.tasksFound.push(activeTask);
-        await TaskService.completeTask(user, activeTask);
-        await assertTask(user, activeTask, "completion", TaskState.Completed)
+        return await PollUntilSuccess(async () => {
+            const tasks = await TaskService.getCaseTasks(user, caseInstance);
+            const activeTasks = tasks.filter(task => task.taskState === 'Unassigned');
+            if (activeTasks.length !== expectedNumberOfActiveTasks) {
+                console.log(`Current task list:\n- ${tasks.map(t => t.summary()).join('\n- ')}`);
+                throw new Error(`Expected to find ${expectedNumberOfActiveTasks} active task(s), but found ${activeTasks.length}`);
+            }
+            const activeTask = activeTasks[0];
+            this.tasksFound.push(activeTask);
+            await TaskService.completeTask(user, activeTask);
+            await assertTask(user, activeTask, "completion", TaskState.Completed)
+        }, `Waiting for ${expectedNumberOfActiveTasks} active task(s) in case ${caseInstance}`);
     }
 }
