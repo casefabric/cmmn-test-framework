@@ -5,6 +5,7 @@ import TestCase from "../../../test/testcase";
 import { admin } from "../../../user";
 
 export default class TestTokenValidation extends TestCase {
+    isParallelTest = false;
     async run() {
 
         await checkMissingToken();
@@ -71,7 +72,7 @@ async function checkInvalidToken() {
             throw new Error('Should not be able to login during checkInvalidToken');
         } catch (error) {
             console.log("error: ", error)
-        }    
+        }
     }
 
     await checkToken('SomeInvalidTokenFormat');
