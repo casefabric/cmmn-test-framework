@@ -16,7 +16,7 @@ export default class TestEmptyUser extends TestCase {
     async onPrepareTest() {
         await worldwideTenant.create();
         await user.login();
-        await definition.deploy(user, tenant);
+        await definition.deploy(worldwideTenant.sender, tenant);
     }
 
     async run() {
