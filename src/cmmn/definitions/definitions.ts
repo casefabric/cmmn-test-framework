@@ -9,6 +9,8 @@ export default class Definitions {
     public static readonly CaseFile = new Definitions('casefile.xml');
     public static readonly CaseParameter = new Definitions('caseparameter.xml');
     public static readonly CaseTeam = new Definitions('caseteam.xml');
+    public static readonly RepeatCaseFileParentBefore = new Definitions('file/parent_before.xml');
+    public static readonly RepeatCaseFileParentMigrated = new Definitions('file/parent_migrated.xml');
     public static readonly RepeatCaseFileCreation = new Definitions('file/repeatcasefilecreation.xml');
     public static readonly CaseWithSpace = new Definitions('casemetspatie.xml');
     public static readonly CaseLoad = new Definitions('caseload.xml');

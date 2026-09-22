@@ -111,6 +111,7 @@ import TestTravelRequest from '../tests/travelrequest/testtravelrequest';
 import TestRunner from './testrunner';
 import TestPropertyMultiplicity from '../tests/api/casefile/testpropertymultiplicity';
 import TestRepetitiveFileItems from '../tests/api/casefile/testrepetitivefileitems';
+import TestRepeatingTaskOutput from '../tests/api/casefile/testrepeatingtaskoutput';
 
 export default class TestClasses {
     static getTestClass(name: string): Function {
@@ -171,6 +172,7 @@ const CaseFileTests: Array<Function> = [
     , TestPropertyMultiplicity
     , TestCaseParameterAPI
     , TestRepetitiveFileItems
+    , TestRepeatingTaskOutput
     , TestReplaceWithChildArray
     , TestBootstrapCaseFileEvents
 ];
