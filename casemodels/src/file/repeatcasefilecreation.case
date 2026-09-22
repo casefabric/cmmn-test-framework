@@ -15,6 +15,65 @@
                 </repetitionRule>
             </itemControl>
         </humanTask>
+        <humanTask id="_Oq7wE_49" name="Input has individual taskitem elements" isBlocking="true">
+            <entryCriterion id="crit__Oq7wE_1">
+                <caseFileItemOnPart id="_Oq7wE_74" sourceRef="TopLevel/TaskOutput/taskitems">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </entryCriterion>
+            <itemControl id="_Oq7wE_50">
+                <repetitionRule id="_Oq7wE_51">
+                    <condition id="_Oq7wE_52">
+                        <body><![CDATA[true]]></body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
+            <inputs id="_Oq7wE_70" name="taskitems" bindingRef="TopLevel/TaskOutput/taskitems"/>
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="simple_in_out_task.humantask">
+                    <parameterMapping id="_Oq7wE_64" sourceRef="_Oq7wE_70" targetRef="_dk8c_In"/>
+                </cafienne:implementation>
+            </extensionElements>
+        </humanTask>
+        <processTask id="_Oq7wE_39" name="Fixed Immediate Output Array" isBlocking="true" processRef="FixedOutputArray.process">
+            <outputs id="_Oq7wE_43" name="TaskOutput" bindingRef="TopLevel/TaskOutput"/>
+            <parameterMapping id="_Oq7wE_41" sourceRef="TaskOutput__cfih" targetRef="_Oq7wE_43"/>
+        </processTask>
+        <milestone id="_Oq7wE_75" name="Close me">
+            <entryCriterion id="crit__Oq7wE_2">
+                <planItemOnPart id="_Oq7wE_81" sourceRef="_Oq7wE_79">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </entryCriterion>
+            <itemControl id="_Oq7wE_76">
+                <requiredRule id="_Oq7wE_77">
+                    <condition id="_Oq7wE_78">
+                        <body><![CDATA[true]]></body>
+                    </condition>
+                </requiredRule>
+            </itemControl>
+        </milestone>
+        <userEvent id="_Oq7wE_79" name="UserEvent_0"/>
+        <humanTask id="_Oq7wE_86" name="Task with input parameter that has not been created in the case file" isBlocking="true">
+            <inputs id="_Oq7wE_91" name="EmptyItem" bindingRef="EmptyItem"/>
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="simple_in_out_task.humantask">
+                    <parameterMapping id="_Oq7wE_88" sourceRef="_Oq7wE_91" targetRef="_dk8c_In">
+                        <transformation id="_Oq7wE_92">
+                            <body><![CDATA["Just some text"]]></body>
+                        </transformation>
+                    </parameterMapping>
+                </cafienne:implementation>
+            </extensionElements>
+        </humanTask>
+        <humanTask id="_Oq7wE_93" name="Output has array of taskitems" isBlocking="true">
+            <outputs id="_Oq7wE_98" name="TaskOutput" bindingRef="TopLevel/TaskOutput"/>
+            <extensionElements mustUnderstand="false">
+                <cafienne:implementation xmlns:cafienne="org.cafienne" humanTaskRef="simple_in_out_task.humantask">
+                    <parameterMapping id="_Oq7wE_96" sourceRef="_46Gh_Out" targetRef="_Oq7wE_98"/>
+                </cafienne:implementation>
+            </extensionElements>
+        </humanTask>
     </casePlanModel>
     <caseRoles caseTeamRef="testteam.caseteam"/>
     <textAnnotation id="_Oq7wE_6">

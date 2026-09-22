@@ -1,0 +1,13 @@
+<CMMNDI xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
+    <CMMNDiagram>
+        <CMMNShape name="parent" cmmnElementRef="cm__6wGF5_0">
+            <Bounds x="20" y="20" width="800" height="500"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_6wGF5_1">
+            <Bounds x="170" y="120" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape cmmnElementRef="_6wGF5_3">
+            <Bounds x="600" y="210" width="140" height="80"/>
+        </CMMNShape>
+    </CMMNDiagram>
+</CMMNDI>

@@ -1,0 +1,8 @@
+<case xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="parent.case" name="parent" expressionLanguage="spel" guid="_6wGF5">
+    <caseFileModel typeRef="case_calculation.type"/>
+    <casePlanModel id="cm__6wGF5_0" name="parent" autoComplete="true">
+        <humanTask id="_6wGF5_1" name="HumanTask_0" isBlocking="true"/>
+        <caseTask id="_6wGF5_3" name="file/repeatcasefilecreation" isBlocking="true" caseRef="file/repeatcasefilecreation.case"/>
+    </casePlanModel>
+    <caseRoles caseTeamRef="testteam.caseteam"/>
+</case>
