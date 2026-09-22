@@ -14,7 +14,7 @@
     <caseFileItemDefinition name="TopLevel" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="file/repeatcasefilecreation_type_TopLevel.object"/>
     <caseFileItemDefinition name="EmptyItem" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="file/repeatcasefilecreation_type_EmptyItem.object"/>
     <caseFileItemDefinition name="file/repeatcasefilecreation" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="file/repeatcasefilecreation.type"/>
-    <case id="file/repeatcasefilecreation.case" name="file/repeatcasefilecreation" expressionLanguage="spel">
+    <case id="file/parent_migrated.case" name="parent" expressionLanguage="spel">
         <caseFileModel cafienne:typeRef="file/repeatcasefilecreation.type">
             <caseFileItem id="TopCase" name="TopCase" multiplicity="ZeroOrOne" definitionRef="file/repeatcasefilecreation_type_TopCase.object">
                 <children>
@@ -33,11 +33,61 @@
             </caseFileItem>
             <caseFileItem id="EmptyItem" name="EmptyItem" multiplicity="ExactlyOne" definitionRef="file/repeatcasefilecreation_type_EmptyItem.object"/>
         </caseFileModel>
+        <casePlanModel id="cm__6wGF5_0" name="parent" autoComplete="true">
+            <planItem id="_6wGF5_1" name="HumanTask_0" definitionRef="ht__6wGF5_1"/>
+            <planItem id="_6wGF5_3" name="file/repeatcasefilecreation" definitionRef="ct__6wGF5_3"/>
+            <planItem id="_6wGF5_11" name="Task that listens to CFI" definitionRef="ht__6wGF5_11">
+                <entryCriterion id="crit__6wGF5_0" sentryRef="s_crit__6wGF5_0"/>
+            </planItem>
+            <sentry id="s_crit__6wGF5_0">
+                <caseFileItemOnPart id="_6wGF5_13" sourceRef="TopLevel">
+                    <standardEvent>create</standardEvent>
+                </caseFileItemOnPart>
+            </sentry>
+            <humanTask id="ht__6wGF5_1" name="HumanTask_0" isBlocking="true"/>
+            <caseTask id="ct__6wGF5_3" name="file/repeatcasefilecreation" isBlocking="true" caseRef="file/repeatcasefilecreation.case"/>
+            <humanTask id="ht__6wGF5_11" name="Task that listens to CFI" isBlocking="true"/>
+        </casePlanModel>
+        <caseRoles cafienne:caseTeamRef="testteam.caseteam">
+            <role id="cr__rAKmR_0" name="Employee"/>
+            <role id="cr__rAKmR_1" name="Manager"/>
+            <role id="cr__rAKmR_2" name="ADMIN">
+                <documentation textFormat="text/plain">
+                    <text><![CDATA[admin of the world]]></text>
+                </documentation>
+            </role>
+            <role id="cr__ZAwz2_0" name="role"/>
+        </caseRoles>
+        <textAnnotation id="_6wGF5_7">
+            <text><![CDATA[Remove the case task to have "parent" / Leave the case task to have "parent1" 
+
+Note: parent and parent1 are used in the typescript test code]]></text>
+        </textAnnotation>
+    </case>
+    <case id="file/repeatcasefilecreation.case" name="file/repeatcasefilecreation" expressionLanguage="spel">
+        <caseFileModel cafienne:typeRef="file/repeatcasefilecreation.type">
+            <caseFileItem id="file/repeatcasefilecreation/TopCase" name="TopCase" multiplicity="ZeroOrOne" definitionRef="file/repeatcasefilecreation_type_TopCase.object">
+                <children>
+                    <caseFileItem id="file/repeatcasefilecreation/TopCase/items" name="items" multiplicity="ZeroOrMore" definitionRef="file/repeatcasefilecreation_type_items.object"/>
+                </children>
+            </caseFileItem>
+            <caseFileItem id="file/repeatcasefilecreation/TopLevel" name="TopLevel" multiplicity="ExactlyOne" definitionRef="file/repeatcasefilecreation_type_TopLevel.object">
+                <children>
+                    <caseFileItem id="file/repeatcasefilecreation/TopLevel/TaskOutput" name="TaskOutput" multiplicity="ZeroOrMore" definitionRef="file/repeatcasefilecreation_type_TaskOutput.object">
+                        <children>
+                            <caseFileItem id="file/repeatcasefilecreation/TopLevel/TaskOutput/taskitems" name="taskitems" multiplicity="ZeroOrMore" definitionRef="file/repeatcasefilecreation_type_taskitems.object"/>
+                            <caseFileItem id="file/repeatcasefilecreation/TopLevel/TaskOutput/metadata" name="metadata" multiplicity="ExactlyOne" definitionRef="file/repeatcasefilecreation_type_metadata.object"/>
+                        </children>
+                    </caseFileItem>
+                </children>
+            </caseFileItem>
+            <caseFileItem id="file/repeatcasefilecreation/EmptyItem" name="EmptyItem" multiplicity="ExactlyOne" definitionRef="file/repeatcasefilecreation_type_EmptyItem.object"/>
+        </caseFileModel>
         <casePlanModel id="cm__Oq7wE_0" name="file/repeatcasefilecreation" autoComplete="true">
             <planItem id="_Oq7wE_1" name="Review" definitionRef="ht__Oq7wE_1">
                 <entryCriterion id="crit__Oq7wE_0" sentryRef="s_crit__Oq7wE_0"/>
                 <itemControl id="_Oq7wE_2">
-                    <repetitionRule id="_Oq7wE_3" contextRef="TopCase">
+                    <repetitionRule id="_Oq7wE_3" contextRef="file/repeatcasefilecreation/TopCase">
                         <condition id="_Oq7wE_4">
                             <body><![CDATA[TopCase.items.size() < 3]]></body>
                         </condition>
@@ -69,12 +119,12 @@
             <planItem id="_Oq7wE_86" name="Task with input parameter that has not been created in the case file" definitionRef="ht__Oq7wE_86"/>
             <planItem id="_Oq7wE_93" name="Output has array of taskitems" definitionRef="ht__Oq7wE_93"/>
             <sentry id="s_crit__Oq7wE_0">
-                <caseFileItemOnPart id="_Oq7wE_5" sourceRef="TopCase/items">
+                <caseFileItemOnPart id="_Oq7wE_5" sourceRef="file/repeatcasefilecreation/TopCase/items">
                     <standardEvent>create</standardEvent>
                 </caseFileItemOnPart>
             </sentry>
             <sentry id="s_crit__Oq7wE_1">
-                <caseFileItemOnPart id="_Oq7wE_74" sourceRef="TopLevel/TaskOutput/taskitems">
+                <caseFileItemOnPart id="_Oq7wE_74" sourceRef="file/repeatcasefilecreation/TopLevel/TaskOutput/taskitems">
                     <standardEvent>create</standardEvent>
                 </caseFileItemOnPart>
             </sentry>
@@ -85,7 +135,7 @@
             </sentry>
             <humanTask id="ht__Oq7wE_1" name="Review" isBlocking="true"/>
             <humanTask id="ht__Oq7wE_49" name="Input has individual taskitem elements" isBlocking="true">
-                <inputs id="_Oq7wE_70" name="taskitems" bindingRef="TopLevel/TaskOutput/taskitems"/>
+                <inputs id="_Oq7wE_70" name="taskitems" bindingRef="file/repeatcasefilecreation/TopLevel/TaskOutput/taskitems"/>
                 <extensionElements mustUnderstand="false">
                     <cafienne:implementation name="simple_in_out_task" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
                         <documentation textFormat="text/plain">
@@ -98,13 +148,13 @@
                 </extensionElements>
             </humanTask>
             <processTask id="pt__Oq7wE_39" name="Fixed Immediate Output Array" isBlocking="true" processRef="FixedOutputArray.process">
-                <outputs id="_Oq7wE_43" name="TaskOutput" bindingRef="TopLevel/TaskOutput"/>
+                <outputs id="_Oq7wE_43" name="TaskOutput" bindingRef="file/repeatcasefilecreation/TopLevel/TaskOutput"/>
                 <parameterMapping id="_Oq7wE_41" sourceRef="TaskOutput__cfih" targetRef="_Oq7wE_43"/>
             </processTask>
             <milestone id="ms__Oq7wE_75" name="Close me"/>
             <userEvent id="ue__Oq7wE_79" name="UserEvent_0"/>
             <humanTask id="ht__Oq7wE_86" name="Task with input parameter that has not been created in the case file" isBlocking="true">
-                <inputs id="_Oq7wE_91" name="EmptyItem" bindingRef="EmptyItem"/>
+                <inputs id="_Oq7wE_91" name="EmptyItem" bindingRef="file/repeatcasefilecreation/EmptyItem"/>
                 <extensionElements mustUnderstand="false">
                     <cafienne:implementation name="simple_in_out_task" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
                         <documentation textFormat="text/plain">
@@ -121,7 +171,7 @@
                 </extensionElements>
             </humanTask>
             <humanTask id="ht__Oq7wE_93" name="Output has array of taskitems" isBlocking="true">
-                <outputs id="_Oq7wE_98" name="TaskOutput" bindingRef="TopLevel/TaskOutput"/>
+                <outputs id="_Oq7wE_98" name="TaskOutput" bindingRef="file/repeatcasefilecreation/TopLevel/TaskOutput"/>
                 <extensionElements mustUnderstand="false">
                     <cafienne:implementation name="simple_in_out_task" xmlns:cafienne="org.cafienne" class="org.cafienne.cmmn.definition.task.WorkflowTaskDefinition" humanTaskRef="simple_in_out_task.humantask">
                         <documentation textFormat="text/plain">
@@ -168,20 +218,42 @@
     </process>
     <CMMNDI>
         <CMMNDiagram>
+            <CMMNShape name="parent" cmmnElementRef="cm__6wGF5_0">
+                <Bounds x="20" y="20" width="800" height="500"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_6wGF5_1">
+                <Bounds x="170" y="120" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_6wGF5_3">
+                <Bounds x="600" y="210" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_6wGF5_7">
+                <Bounds x="340" y="270" width="210" height="100"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="TopLevel">
+                <Bounds x="481.4000244140625" y="102.66667175292969" width="25" height="40"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="_6wGF5_11">
+                <Bounds x="600" y="80" width="140" height="80"/>
+            </CMMNShape>
+            <CMMNShape cmmnElementRef="crit__6wGF5_0">
+                <Bounds x="594" y="110" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNEdge sourceCMMNElementRef="TopLevel" targetCMMNElementRef="crit__6wGF5_0"/>
             <CMMNShape name="file/repeatcasefilecreation" cmmnElementRef="cm__Oq7wE_0">
                 <Bounds x="20" y="20" width="800" height="760"/>
             </CMMNShape>
             <CMMNShape cmmnElementRef="_Oq7wE_1">
                 <Bounds x="160" y="140" width="140" height="80"/>
             </CMMNShape>
-            <CMMNShape cmmnElementRef="TopCase/items">
+            <CMMNShape cmmnElementRef="file/repeatcasefilecreation/TopCase/items">
                 <Bounds x="480" y="160" width="25" height="40"/>
             </CMMNShape>
             <CMMNShape cmmnElementRef="crit__Oq7wE_0">
                 <Bounds x="294" y="170" width="12" height="20"/>
             </CMMNShape>
             <CMMNShape cmmnElementRef="_Oq7wE_6"/>
-            <CMMNShape cmmnElementRef="TopLevel/TaskOutput/taskitems">
+            <CMMNShape cmmnElementRef="file/repeatcasefilecreation/TopLevel/TaskOutput/taskitems">
                 <Bounds x="290" y="400" width="25" height="40"/>
             </CMMNShape>
             <CMMNShape cmmnElementRef="_Oq7wE_39">
@@ -200,7 +272,7 @@
                 <Bounds x="360" y="280" width="32" height="32"/>
             </CMMNShape>
             <CMMNShape cmmnElementRef="crit__Oq7wE_2">
-                <Bounds x="490" y="300" width="12" height="20"/>
+                <Bounds x="464" y="280" width="12" height="20"/>
             </CMMNShape>
             <CMMNShape cmmnElementRef="_Oq7wE_86">
                 <Bounds x="410" y="540" width="140" height="90"/>
@@ -208,10 +280,10 @@
             <CMMNShape cmmnElementRef="_Oq7wE_93">
                 <Bounds x="60" y="540" width="140" height="80"/>
             </CMMNShape>
-            <CMMNEdge label="create" sourceCMMNElementRef="TopCase/items" targetCMMNElementRef="crit__Oq7wE_0"/>
+            <CMMNEdge label="create" sourceCMMNElementRef="file/repeatcasefilecreation/TopCase/items" targetCMMNElementRef="crit__Oq7wE_0"/>
             <CMMNEdge label="create" sourceCMMNElementRef="TaskOutput/taskitems" targetCMMNElementRef="crit__Oq7wE_1"/>
-            <CMMNEdge sourceCMMNElementRef="TopCase/items" targetCMMNElementRef="TopCase/items"/>
-            <CMMNEdge label="create" sourceCMMNElementRef="TopLevel/TaskOutput/taskitems" targetCMMNElementRef="crit__Oq7wE_1"/>
+            <CMMNEdge sourceCMMNElementRef="file/repeatcasefilecreation/TopCase/items" targetCMMNElementRef="file/repeatcasefilecreation/TopCase/items"/>
+            <CMMNEdge label="create" sourceCMMNElementRef="file/repeatcasefilecreation/TopLevel/TaskOutput/taskitems" targetCMMNElementRef="crit__Oq7wE_1"/>
             <CMMNEdge sourceCMMNElementRef="_Oq7wE_79" targetCMMNElementRef="crit__Oq7wE_2"/>
         </CMMNDiagram>
     </CMMNDI>
