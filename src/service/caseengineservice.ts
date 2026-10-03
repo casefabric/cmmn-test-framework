@@ -1,11 +1,11 @@
 import fetch from 'isomorphic-fetch';
 import Config from '../config';
 import logger from '../logger';
-import { coloredPrinter } from '../logger';
 import User from '../user';
 import QueryFilter, { extendURL } from './queryfilter';
-import CaseEngineRequest from './request';
 import CaseEngineResponse from './response';
+import CaseEngineRequest from './request';
+import Util from '../util/util';
 
 class CaseEngineHeaders {
     public values: any = new Object();
@@ -13,39 +13,6 @@ class CaseEngineHeaders {
         this.values[name] = value;
     }
 }
-
-class LastModified {
-    timestamp: string;
-    actor: string;
-    constructor(public name: string, public value: string = '') {
-        const separatorIndex = value.indexOf(';');
-        this.timestamp = separatorIndex < 0 ? value : value.substring(0, separatorIndex);;
-        this.actor = separatorIndex < 0 ? '' : value.substring(separatorIndex + 1);;
-    }
-
-    update(response: CaseEngineResponse) {
-        const value = response.headers.get(this.name);
-        if (!value) {
-            return;
-        }
-        const separatorIndex = value.indexOf(';');
-        const timestamp = separatorIndex < 0 ? value : value.substring(0, separatorIndex);;
-        const actor = separatorIndex < 0 ? '' : value.substring(separatorIndex + 1);;
-        if (timestamp > this.timestamp) {
-            this.value = value;
-            this.timestamp = timestamp;
-            this.actor = actor;
-            if (Config.CaseEngine.log.response.headers) {
-                logger.debug(`Updating ${this.name} to ${value}`);
-            }
-            BaseHeaders.setHeader(this.name, this.value);
-        }
-    }
-}
-
-const CaseLastModified = new LastModified('Case-Last-Modified');
-const TenantLastModified = new LastModified('Tenant-Last-Modified');
-const ConsentGroupLastModified = new LastModified('Consent-Group-Last-Modified');
 
 const BaseHeaders = new CaseEngineHeaders();
 BaseHeaders.setHeader('Content-Type', 'application/json');
@@ -85,9 +52,19 @@ export default class CaseEngineService {
     static updateCaseLastModified(response: CaseEngineResponse) {
         // TODO: this currently is not a Singleton, but it should be...
         if (response.ok) {
-            CaseLastModified.update(response);
-            TenantLastModified.update(response);
-            ConsentGroupLastModified.update(response);
+            const readAndUpdateHeader = (headerName: string) => {
+                const headerValue = response.headers.get(headerName);
+                if (headerValue) {
+                    if (Config.CaseEngine.log.response.headers) {
+                        logger.debug(`Updating ${headerName} to ${headerValue}`);
+                    }
+                    BaseHeaders.setHeader(headerName, headerValue);
+                }
+            }
+
+            readAndUpdateHeader('Case-Last-Modified');
+            readAndUpdateHeader('Tenant-Last-Modified');
+            readAndUpdateHeader('Consent-Group-Last-Modified');
         }
         return response;
     }
@@ -247,7 +224,7 @@ export abstract class RequestHook {
     /**
      * This method is invoked with the response, directly after it has been received.
      */
-    after(request: CaseEngineRequest, response: CaseEngineResponse): void {
+    after(request: CaseEngineRequest, response: CaseEngineResponse): void {        
     }
 
     register() {
