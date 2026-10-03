@@ -32,7 +32,7 @@ export default class TestRunner {
         try {
             await this.prepare();
             await this.run();
-            await this.close();    
+            await this.close();
         } catch (error) {
             this.failed(error);
         }
@@ -78,7 +78,7 @@ export default class TestRunner {
         this.ended = new Date();
         this.completed = true;
         if (this.test.identifiers.length) {
-            this.summary = `  ---  [ ${this.test.identifiers.join(' | ')} ]`
+            this.summary = this.printedIdentifiers();
         }
         this.ended = new Date();
     }
@@ -87,9 +87,13 @@ export default class TestRunner {
         this.ended = new Date();
         this.error = error;
         if (this.test.identifiers.length) {
-            this.summary = `  ---  [ ${this.test.identifiers.join(' | ')} ]`
+            this.summary = this.printedIdentifiers();
         }
         this.ended = new Date();
+    }
+
+    printedIdentifiers() {
+        return `  ---  [ ${this.test.identifiers.map(i => `http://localhost:2081/eventviewer#actorId=${i}`).join(' | ')} ]`
     }
 
     toString() {
