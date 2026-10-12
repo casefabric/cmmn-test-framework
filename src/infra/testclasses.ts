@@ -14,6 +14,7 @@ import TestFootballBusinessIdentifiers from '../tests/api/businessidentifiers/fo
 import TestBusinessIdentifiers from '../tests/api/businessidentifiers/testbusinessidentifiers';
 import TestHelloWorldBusinessIdentifiers from '../tests/api/businessidentifiers/testhelloworldbusinessidentifiers';
 import TestEntryCriteriaMigration from '../tests/api/case/migration/testentrycriteriamigration';
+import TestExitCriteriaMigration from '../tests/api/case/migration/testexitcriteriamigration';
 import TestCaseMigration from '../tests/api/case/migration/testcasemigration';
 import TestCaseTeamMigration from '../tests/api/case/migration/testcaseteammigration';
 import TestDiscretionaryMigration from '../tests/api/case/migration/testdiscretionarymigration';
@@ -217,6 +218,7 @@ const MigrationTests: Array<Function> = [
     , TestRepetitionMigration
     , TestDiscretionaryMigration
     , TestEntryCriteriaMigration
+    , TestExitCriteriaMigration
     , TestOnPartMigration
     , TestMoveTaskMigration
 ];
