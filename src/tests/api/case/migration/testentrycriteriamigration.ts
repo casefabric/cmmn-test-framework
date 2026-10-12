@@ -22,7 +22,7 @@ export default class TestEntryCriteriaMigration extends TestCase {
     }
 
     async run() {
-        
+
         const inputs = {};
 
         const caseTeam = new CaseTeam([

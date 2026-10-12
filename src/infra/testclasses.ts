@@ -13,7 +13,7 @@ import TestRestoreCaseWithTimer from '../tests/api/archiving/testrestorecasewith
 import TestFootballBusinessIdentifiers from '../tests/api/businessidentifiers/footballbusinessidentifiers/testfootballbusinessidentifiers';
 import TestBusinessIdentifiers from '../tests/api/businessidentifiers/testbusinessidentifiers';
 import TestHelloWorldBusinessIdentifiers from '../tests/api/businessidentifiers/testhelloworldbusinessidentifiers';
-import TestEntryCriteriaMigration from '../tests/api/case/migration/entrycriteria_migration';
+import TestEntryCriteriaMigration from '../tests/api/case/migration/testentrycriteriamigration';
 import TestCaseMigration from '../tests/api/case/migration/testcasemigration';
 import TestCaseTeamMigration from '../tests/api/case/migration/testcaseteammigration';
 import TestDiscretionaryMigration from '../tests/api/case/migration/testdiscretionarymigration';
