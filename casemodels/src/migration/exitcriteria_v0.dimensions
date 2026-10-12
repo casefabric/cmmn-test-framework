@@ -60,6 +60,12 @@
         <CMMNShape id="_keqT6_44" name="Shape_18" cmmnElementRef="crit__dXlWE_7">
             <Bounds id="_keqT6_43" name="Bounds_18" x="134" y="220" width="12" height="20"/>
         </CMMNShape>
+        <CMMNShape id="_7OztK_1" name="Shape_19" cmmnElementRef="crit__dXlWE_8">
+            <Bounds id="_7OztK_0" name="Bounds_19" x="70" y="360" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape id="_7OztK_3" name="Shape_20" cmmnElementRef="_dXlWE_27">
+            <Bounds id="_7OztK_2" name="Bounds_20" x="60" y="420" width="32" height="32"/>
+        </CMMNShape>
         <CMMNEdge id="_keqT6_8" name="Edge_0" sourceCMMNElementRef="_dXlWE_6" targetCMMNElementRef="crit__dXlWE_0"/>
         <CMMNEdge id="_keqT6_13" name="Edge_1" sourceCMMNElementRef="_dXlWE_8" targetCMMNElementRef="crit__dXlWE_1"/>
         <CMMNEdge id="_keqT6_18" name="Edge_2" sourceCMMNElementRef="_dXlWE_10" targetCMMNElementRef="crit__dXlWE_2"/>
@@ -68,5 +74,7 @@
         <CMMNEdge id="_keqT6_37" name="Edge_5" sourceCMMNElementRef="_dXlWE_22" targetCMMNElementRef="crit__dXlWE_5"/>
         <CMMNEdge id="_keqT6_40" name="Edge_6" sourceCMMNElementRef="_dXlWE_19" targetCMMNElementRef="crit__dXlWE_6"/>
         <CMMNEdge id="_keqT6_45" name="Edge_7" label="exit" sourceCMMNElementRef="crit__dXlWE_7" targetCMMNElementRef="_dXlWE_0"/>
+        <CMMNEdge id="_7OztK_4" name="Edge_8" sourceCMMNElementRef="_dXlWE_27" targetCMMNElementRef="crit__dXlWE_8"/>
+        <CMMNEdge id="_7OztK_5" name="Edge_9" sourceCMMNElementRef="crit__dXlWE_3" targetCMMNElementRef="_dXlWE_14"/>
     </CMMNDiagram>
 </CMMNDI>

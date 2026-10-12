@@ -17,7 +17,7 @@ const tenant = worldwideTenant.name;
 const user = worldwideTenant.sender;
 
 export default class TestExitCriteriaMigration extends TestCase {
-    lineReaderEnabled = true;
+    // lineReaderEnabled = true;
     async onPrepareTest(): Promise<any> {
         await worldwideTenant.create();
         await definition_v0.deploy(user, tenant);
@@ -26,17 +26,10 @@ export default class TestExitCriteriaMigration extends TestCase {
 
     async run() {
 
-        const inputs = {};
-
-        const caseTeam = new CaseTeam([
-            new CaseOwner(user, []), new CaseOwner("suzy", [])
-        ]);
 
         const startCase = {
             tenant,
             definition: definition_v0,
-            inputs,
-            caseTeam
         };
 
         const migratedDefinition = new DefinitionMigration(definition_v1);
