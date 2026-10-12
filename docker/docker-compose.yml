@@ -44,7 +44,7 @@ services:
       - ./run/dex/:/var/dex/
 
   ctf-fake-idp:
-    image: spectare/oidc-token-test-service:latest
+    image: spectare/fakeidp:latest
     labels:
       component: ctf-fake-idp
     networks: 
