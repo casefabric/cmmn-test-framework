@@ -49,6 +49,9 @@
                         <planItemOnPart id="_dXlWE_13" sourceRef="_dXlWE_12">
                             <standardEvent>occur</standardEvent>
                         </planItemOnPart>
+                        <planItemOnPart id="_dXlWE_29" sourceRef="_dXlWE_14">
+                            <standardEvent>complete</standardEvent>
+                        </planItemOnPart>
                     </entryCriterion>
                 </milestone>
                 <userEvent id="_dXlWE_10" name="Raise Close"/>
@@ -76,6 +79,11 @@
                     <standardEvent>exit</standardEvent>
                 </planItemOnPart>
             </entryCriterion>
+            <exitCriterion id="crit__dXlWE_8">
+                <planItemOnPart id="_dXlWE_28" sourceRef="_dXlWE_27">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </exitCriterion>
             <itemControl>
                 <repetitionRule id="_dXlWE_21">
                     <condition id="_dXlWE_20">
@@ -86,6 +94,7 @@
             <userEvent id="_dXlWE_25" name="Start Outer"/>
         </stage>
         <milestone id="_dXlWE_22" name="Case Started"/>
+        <userEvent id="_dXlWE_27" name="Stop Left"/>
     </casePlanModel>
     <caseRoles caseTeamRef="testteam.caseteam"/>
 </case>
