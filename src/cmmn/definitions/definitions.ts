@@ -48,6 +48,8 @@ export default class Definitions {
     public static readonly Migration_Discretionary_v1 = new Definitions('migration/discretionary_v1.xml');
     public static readonly Migration_EntryCriteria_v0 = new Definitions('migration/entrycriteria_v0.xml');
     public static readonly Migration_EntryCriteria_v1 = new Definitions('migration/entrycriteria_v1.xml');
+    public static readonly Migration_ExitCriteria_v0 = new Definitions('migration/exitcriteria_v0.xml');
+    public static readonly Migration_ExitCriteria_v1 = new Definitions('migration/exitcriteria_v1.xml');
     public static readonly Migration_OnParts_v0 = new Definitions('migration/onparts_v0.xml');
     public static readonly Migration_OnParts_v1 = new Definitions('migration/onparts_v1.xml');
     public static readonly Migration_MoveTask_v0 = new Definitions('migration/move_task_v0.xml');

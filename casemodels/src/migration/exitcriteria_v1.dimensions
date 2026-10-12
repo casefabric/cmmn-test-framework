@@ -1,0 +1,75 @@
+<CMMNDI xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
+    <CMMNDiagram>
+        <CMMNShape name="migration/exitcriteria_v1" cmmnElementRef="cm__dXlWE_0">
+            <Bounds x="20" y="20" width="720" height="500"/>
+        </CMMNShape>
+        <CMMNShape id="_keqT6_1" name="Shape_0" cmmnElementRef="_dXlWE_0">
+            <Bounds id="_keqT6_0" name="Bounds_0" x="190" y="60" width="500" height="430"/>
+        </CMMNShape>
+        <CMMNShape id="_keqT6_3" name="Shape_1" cmmnElementRef="_dXlWE_1">
+            <Bounds id="_keqT6_2" name="Bounds_1" x="250" y="140" width="370" height="330"/>
+        </CMMNShape>
+        <CMMNShape id="_keqT6_5" name="Shape_2" cmmnElementRef="_dXlWE_6">
+            <Bounds id="_keqT6_4" name="Bounds_2" x="460" y="200" width="100" height="40"/>
+        </CMMNShape>
+        <CMMNShape id="_keqT6_7" name="Shape_3" cmmnElementRef="crit__dXlWE_0">
+            <Bounds id="_keqT6_6" name="Bounds_3" x="684" y="210" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape id="_keqT6_10" name="Shape_4" cmmnElementRef="_dXlWE_8">
+            <Bounds id="_keqT6_9" name="Bounds_4" x="460" y="280" width="100" height="40"/>
+        </CMMNShape>
+        <CMMNShape id="_keqT6_12" name="Shape_5" cmmnElementRef="crit__dXlWE_1">
+            <Bounds id="_keqT6_11" name="Bounds_5" x="614" y="290" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape id="_keqT6_15" name="Shape_6" cmmnElementRef="_dXlWE_10">
+            <Bounds id="_keqT6_14" name="Bounds_6" x="330" y="200" width="32" height="32"/>
+        </CMMNShape>
+        <CMMNShape id="_keqT6_17" name="Shape_7" cmmnElementRef="crit__dXlWE_2">
+            <Bounds id="_keqT6_16" name="Bounds_7" x="454" y="210" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape id="_keqT6_20" name="Shape_8" cmmnElementRef="_dXlWE_12">
+            <Bounds id="_keqT6_19" name="Bounds_8" x="330" y="280" width="32" height="32"/>
+        </CMMNShape>
+        <CMMNShape id="_keqT6_22" name="Shape_9" cmmnElementRef="crit__dXlWE_3">
+            <Bounds id="_keqT6_21" name="Bounds_9" x="454" y="290" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape id="_keqT6_25" name="Shape_10" cmmnElementRef="_dXlWE_14">
+            <Bounds id="_keqT6_24" name="Bounds_10" x="330" y="360" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape id="_keqT6_27" name="Shape_11" cmmnElementRef="_dXlWE_17">
+            <Bounds id="_keqT6_26" name="Bounds_11" x="500" y="80" width="32" height="32"/>
+        </CMMNShape>
+        <CMMNShape id="_keqT6_29" name="Shape_12" cmmnElementRef="crit__dXlWE_4">
+            <Bounds id="_keqT6_28" name="Bounds_12" x="684" y="90" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape id="_keqT6_32" name="Shape_13" cmmnElementRef="_dXlWE_19">
+            <Bounds id="_keqT6_31" name="Bounds_13" x="50" y="150" width="90" height="220"/>
+        </CMMNShape>
+        <CMMNShape id="_keqT6_34" name="Shape_14" cmmnElementRef="_dXlWE_22">
+            <Bounds id="_keqT6_33" name="Bounds_14" x="50" y="70" width="100" height="40"/>
+        </CMMNShape>
+        <CMMNShape id="_keqT6_36" name="Shape_15" cmmnElementRef="crit__dXlWE_5">
+            <Bounds id="_keqT6_35" name="Bounds_15" x="100" y="140" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape id="_keqT6_39" name="Shape_16" cmmnElementRef="crit__dXlWE_6">
+            <Bounds id="_keqT6_38" name="Bounds_16" x="184" y="310" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape id="_keqT6_42" name="Shape_17" cmmnElementRef="_dXlWE_25">
+            <Bounds id="_keqT6_41" name="Bounds_17" x="80" y="240" width="32" height="32"/>
+        </CMMNShape>
+        <CMMNShape id="_keqT6_44" name="Shape_18" cmmnElementRef="crit__dXlWE_7">
+            <Bounds id="_keqT6_43" name="Bounds_18" x="134" y="220" width="12" height="20"/>
+        </CMMNShape>
+        <CMMNShape id="_3WfCW_1" name="Shape_19" cmmnElementRef="_dXlWE_27">
+            <Bounds id="_3WfCW_0" name="Bounds_19" x="30" y="410" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNEdge id="_keqT6_8" name="Edge_0" sourceCMMNElementRef="_dXlWE_6" targetCMMNElementRef="crit__dXlWE_0"/>
+        <CMMNEdge id="_keqT6_13" name="Edge_1" sourceCMMNElementRef="_dXlWE_8" targetCMMNElementRef="crit__dXlWE_1"/>
+        <CMMNEdge id="_keqT6_18" name="Edge_2" sourceCMMNElementRef="_dXlWE_10" targetCMMNElementRef="crit__dXlWE_2"/>
+        <CMMNEdge id="_keqT6_23" name="Edge_3" sourceCMMNElementRef="_dXlWE_12" targetCMMNElementRef="crit__dXlWE_3"/>
+        <CMMNEdge id="_keqT6_30" name="Edge_4" sourceCMMNElementRef="_dXlWE_17" targetCMMNElementRef="crit__dXlWE_4"/>
+        <CMMNEdge id="_keqT6_37" name="Edge_5" sourceCMMNElementRef="_dXlWE_22" targetCMMNElementRef="crit__dXlWE_5"/>
+        <CMMNEdge id="_keqT6_40" name="Edge_6" sourceCMMNElementRef="_dXlWE_19" targetCMMNElementRef="crit__dXlWE_6"/>
+        <CMMNEdge id="_keqT6_45" name="Edge_7" label="exit" sourceCMMNElementRef="crit__dXlWE_7" targetCMMNElementRef="_dXlWE_0"/>
+    </CMMNDiagram>
+</CMMNDI>
