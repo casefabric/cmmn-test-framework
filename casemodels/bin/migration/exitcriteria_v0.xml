@@ -21,6 +21,7 @@
             <planItem id="_dXlWE_19" name="Left" definitionRef="s__dXlWE_19">
                 <entryCriterion id="crit__dXlWE_5" sentryRef="s_crit__dXlWE_5"/>
                 <entryCriterion id="crit__dXlWE_7" sentryRef="s_crit__dXlWE_7"/>
+                <exitCriterion id="crit__dXlWE_8" sentryRef="s_crit__dXlWE_8"/>
                 <itemControl>
                     <repetitionRule id="_dXlWE_21">
                         <condition id="_dXlWE_20">
@@ -30,6 +31,7 @@
                 </itemControl>
             </planItem>
             <planItem id="_dXlWE_22" name="Case Started" definitionRef="ms__dXlWE_22"/>
+            <planItem id="_dXlWE_27" name="Stop Left" definitionRef="ue__dXlWE_27"/>
             <sentry id="s_crit__dXlWE_6">
                 <planItemOnPart id="_dXlWE_24" sourceRef="_dXlWE_19">
                     <standardEvent>complete</standardEvent>
@@ -53,6 +55,11 @@
             <sentry id="s_crit__dXlWE_7">
                 <planItemOnPart id="_dXlWE_26" sourceRef="_dXlWE_0">
                     <standardEvent>exit</standardEvent>
+                </planItemOnPart>
+            </sentry>
+            <sentry id="s_crit__dXlWE_8">
+                <planItemOnPart id="_dXlWE_28" sourceRef="_dXlWE_27">
+                    <standardEvent>occur</standardEvent>
                 </planItemOnPart>
             </sentry>
             <stage id="s__dXlWE_0" name="Outer" autoComplete="true">
@@ -100,6 +107,9 @@
                     <planItemOnPart id="_dXlWE_13" sourceRef="_dXlWE_12">
                         <standardEvent>occur</standardEvent>
                     </planItemOnPart>
+                    <planItemOnPart id="_dXlWE_29" sourceRef="_dXlWE_14">
+                        <standardEvent>complete</standardEvent>
+                    </planItemOnPart>
                 </sentry>
             </stage>
             <milestone id="ms__dXlWE_6" name="Close"/>
@@ -113,6 +123,7 @@
             </stage>
             <userEvent id="ue__dXlWE_25" name="Start Outer"/>
             <milestone id="ms__dXlWE_22" name="Case Started"/>
+            <userEvent id="ue__dXlWE_27" name="Stop Left"/>
         </casePlanModel>
         <caseRoles cafienne:caseTeamRef="testteam.caseteam">
             <role id="cr__rAKmR_0" name="Employee"/>
@@ -187,6 +198,12 @@
             <CMMNShape id="_keqT6_44" name="Shape_18" cmmnElementRef="crit__dXlWE_7">
                 <Bounds id="_keqT6_43" name="Bounds_18" x="134" y="220" width="12" height="20"/>
             </CMMNShape>
+            <CMMNShape id="_7OztK_1" name="Shape_19" cmmnElementRef="crit__dXlWE_8">
+                <Bounds id="_7OztK_0" name="Bounds_19" x="70" y="360" width="12" height="20"/>
+            </CMMNShape>
+            <CMMNShape id="_7OztK_3" name="Shape_20" cmmnElementRef="_dXlWE_27">
+                <Bounds id="_7OztK_2" name="Bounds_20" x="60" y="420" width="32" height="32"/>
+            </CMMNShape>
             <CMMNEdge id="_keqT6_8" name="Edge_0" sourceCMMNElementRef="_dXlWE_6" targetCMMNElementRef="crit__dXlWE_0"/>
             <CMMNEdge id="_keqT6_13" name="Edge_1" sourceCMMNElementRef="_dXlWE_8" targetCMMNElementRef="crit__dXlWE_1"/>
             <CMMNEdge id="_keqT6_18" name="Edge_2" sourceCMMNElementRef="_dXlWE_10" targetCMMNElementRef="crit__dXlWE_2"/>
@@ -195,6 +212,8 @@
             <CMMNEdge id="_keqT6_37" name="Edge_5" sourceCMMNElementRef="_dXlWE_22" targetCMMNElementRef="crit__dXlWE_5"/>
             <CMMNEdge id="_keqT6_40" name="Edge_6" sourceCMMNElementRef="_dXlWE_19" targetCMMNElementRef="crit__dXlWE_6"/>
             <CMMNEdge id="_keqT6_45" name="Edge_7" label="exit" sourceCMMNElementRef="crit__dXlWE_7" targetCMMNElementRef="_dXlWE_0"/>
+            <CMMNEdge id="_7OztK_4" name="Edge_8" sourceCMMNElementRef="_dXlWE_27" targetCMMNElementRef="crit__dXlWE_8"/>
+            <CMMNEdge id="_7OztK_5" name="Edge_9" sourceCMMNElementRef="crit__dXlWE_3" targetCMMNElementRef="_dXlWE_14"/>
         </CMMNDiagram>
     </CMMNDI>
 </definitions>
