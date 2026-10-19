@@ -36,6 +36,7 @@ import TestTaskCompletion from '../tests/api/casefile/testtaskcompletion';
 import TestTaskOutputOperations from '../tests/api/casefile/testtaskoutputoperations';
 import TestTimer from '../tests/api/caseplan/event/testtimer';
 import TestTimerInSubCase from '../tests/api/caseplan/event/testtimerinsubcase';
+import TestTimerSuspendResume from '../tests/api/caseplan/event/testtimersuspendresume';
 import TestEntryCriteriaOnRecovery from '../tests/api/caseplan/sentry/testentrycriteriaonrecovery';
 import TestSuspendResume from '../tests/api/caseplan/sentry/testsuspendresume';
 import TestClassicFaultHandling from '../tests/api/caseplan/stage/testclassicfaulthandling';
@@ -247,6 +248,7 @@ const AllTests: Array<Function> = [
     , TestSubCaseFailureBubble
     , TestTimer
     , TestTimerInSubCase
+    , TestTimerSuspendResume
     , TestUsersCaseAPI
     , TestDiscretionaryItems
     , TestDynamicForm
