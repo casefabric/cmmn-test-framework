@@ -1,15 +1,14 @@
 'use strict';
 
 import { assertPlanItem } from '../../../..';
+import Case from '../../../../cmmn/case';
 import Definitions from '../../../../cmmn/definitions/definitions';
 import State from '../../../../cmmn/state';
+import Transition from '../../../../cmmn/transition';
+import CasePlanService from '../../../../service/case/caseplanservice';
 import CaseService from '../../../../service/case/caseservice';
 import TestCase from '../../../../test/testcase';
 import WorldWideTestTenant from '../../../setup/worldwidetesttenant';
-import CasePlanService from '../../../../service/case/caseplanservice';
-import Transition from '../../../../cmmn/transition';
-import Case from '../../../../cmmn/case';
-import { SomeTime } from '../../../../test/time';
 
 const definition = Definitions.SuspendResume;
 const worldwideTenant = new WorldWideTestTenant();
@@ -83,5 +82,4 @@ export default class TestSuspendResume extends TestCase {
         resumedSubCase.toConsole();
         await assertPlanItem(user, resumedSubCase.id, 'Read response', 0, State.Available, Transition.ParentResume);
     }
-
 }

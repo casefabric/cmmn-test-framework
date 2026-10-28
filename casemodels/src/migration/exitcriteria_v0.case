@@ -1,0 +1,100 @@
+<case xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" id="migration/exitcriteria_v0.case" name="migration/exitcriteria_v0" expressionLanguage="spel" guid="_dXlWE">
+    <caseFileModel typeRef="migration/entrycriteria_v0.type"/>
+    <casePlanModel id="cm__dXlWE_0" name="migration/exitcriteria_v0" autoComplete="true">
+        <stage id="_dXlWE_0" name="Outer" autoComplete="true">
+            <entryCriterion id="crit__dXlWE_6">
+                <planItemOnPart id="_dXlWE_24" sourceRef="_dXlWE_19">
+                    <standardEvent>complete</standardEvent>
+                </planItemOnPart>
+            </entryCriterion>
+            <exitCriterion id="crit__dXlWE_0">
+                <planItemOnPart id="_dXlWE_7" sourceRef="_dXlWE_6">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </exitCriterion>
+            <exitCriterion id="crit__dXlWE_4">
+                <planItemOnPart id="_dXlWE_18" sourceRef="_dXlWE_17">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </exitCriterion>
+            <itemControl>
+                <repetitionRule id="_dXlWE_5">
+                    <condition id="_dXlWE_4">
+                        <body><![CDATA[true]]></body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
+            <stage id="_dXlWE_1" name="Inner" autoComplete="true">
+                <exitCriterion id="crit__dXlWE_1">
+                    <planItemOnPart id="_dXlWE_9" sourceRef="_dXlWE_8">
+                        <standardEvent>occur</standardEvent>
+                    </planItemOnPart>
+                </exitCriterion>
+                <itemControl>
+                    <repetitionRule id="_dXlWE_3">
+                        <condition id="_dXlWE_2">
+                            <body><![CDATA[true]]></body>
+                        </condition>
+                    </repetitionRule>
+                </itemControl>
+                <milestone id="_dXlWE_6" name="Close">
+                    <entryCriterion id="crit__dXlWE_2">
+                        <planItemOnPart id="_dXlWE_11" sourceRef="_dXlWE_10">
+                            <standardEvent>occur</standardEvent>
+                        </planItemOnPart>
+                    </entryCriterion>
+                </milestone>
+                <milestone id="_dXlWE_8" name="Continue">
+                    <entryCriterion id="crit__dXlWE_3">
+                        <planItemOnPart id="_dXlWE_13" sourceRef="_dXlWE_12">
+                            <standardEvent>occur</standardEvent>
+                        </planItemOnPart>
+                        <planItemOnPart id="_dXlWE_29" sourceRef="_dXlWE_14">
+                            <standardEvent>complete</standardEvent>
+                        </planItemOnPart>
+                    </entryCriterion>
+                </milestone>
+                <userEvent id="_dXlWE_10" name="Raise Close"/>
+                <userEvent id="_dXlWE_12" name="Raise Continue"/>
+                <humanTask id="_dXlWE_14" name="Repeating Task" isBlocking="true">
+                    <itemControl>
+                        <repetitionRule id="_dXlWE_16">
+                            <condition id="_dXlWE_15">
+                                <body><![CDATA[true]]></body>
+                            </condition>
+                        </repetitionRule>
+                    </itemControl>
+                </humanTask>
+            </stage>
+            <userEvent id="_dXlWE_17" name="Outer Close"/>
+        </stage>
+        <stage id="_dXlWE_19" name="Left" autoComplete="true">
+            <entryCriterion id="crit__dXlWE_5">
+                <planItemOnPart id="_dXlWE_23" sourceRef="_dXlWE_22">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </entryCriterion>
+            <entryCriterion id="crit__dXlWE_7">
+                <planItemOnPart id="_dXlWE_26" sourceRef="_dXlWE_0">
+                    <standardEvent>exit</standardEvent>
+                </planItemOnPart>
+            </entryCriterion>
+            <exitCriterion id="crit__dXlWE_8">
+                <planItemOnPart id="_dXlWE_28" sourceRef="_dXlWE_27">
+                    <standardEvent>occur</standardEvent>
+                </planItemOnPart>
+            </exitCriterion>
+            <itemControl>
+                <repetitionRule id="_dXlWE_21">
+                    <condition id="_dXlWE_20">
+                        <body><![CDATA[true]]></body>
+                    </condition>
+                </repetitionRule>
+            </itemControl>
+            <userEvent id="_dXlWE_25" name="Start Outer"/>
+        </stage>
+        <milestone id="_dXlWE_22" name="Case Started"/>
+        <userEvent id="_dXlWE_27" name="Stop Left"/>
+    </casePlanModel>
+    <caseRoles caseTeamRef="testteam.caseteam"/>
+</case>

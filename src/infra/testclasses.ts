@@ -14,6 +14,7 @@ import TestFootballBusinessIdentifiers from '../tests/api/businessidentifiers/fo
 import TestBusinessIdentifiers from '../tests/api/businessidentifiers/testbusinessidentifiers';
 import TestHelloWorldBusinessIdentifiers from '../tests/api/businessidentifiers/testhelloworldbusinessidentifiers';
 import TestEntryCriteriaMigration from '../tests/api/case/migration/testentrycriteriamigration';
+import TestExitCriteriaMigration from '../tests/api/case/migration/testexitcriteriamigration';
 import TestCaseMigration from '../tests/api/case/migration/testcasemigration';
 import TestCaseTeamMigration from '../tests/api/case/migration/testcaseteammigration';
 import TestDiscretionaryMigration from '../tests/api/case/migration/testdiscretionarymigration';
@@ -112,6 +113,7 @@ import TestTravelRequest from '../tests/travelrequest/testtravelrequest';
 import TestRunner from './testrunner';
 import TestPropertyMultiplicity from '../tests/api/casefile/testpropertymultiplicity';
 import TestRepetitiveFileItems from '../tests/api/casefile/testrepetitivefileitems';
+import TestRepeatingTaskOutput from '../tests/api/casefile/testrepeatingtaskoutput';
 
 export default class TestClasses {
     static getTestClass(name: string): Function {
@@ -172,6 +174,7 @@ const CaseFileTests: Array<Function> = [
     , TestPropertyMultiplicity
     , TestCaseParameterAPI
     , TestRepetitiveFileItems
+    , TestRepeatingTaskOutput
     , TestReplaceWithChildArray
     , TestBootstrapCaseFileEvents
 ];
@@ -215,6 +218,7 @@ const MigrationTests: Array<Function> = [
     , TestRepetitionMigration
     , TestDiscretionaryMigration
     , TestEntryCriteriaMigration
+    , TestExitCriteriaMigration
     , TestOnPartMigration
     , TestMoveTaskMigration
 ];

@@ -8,6 +8,8 @@ import PlanItem from './planitem';
 import State from './state';
 import CaseTeam from './team/caseteam';
 import Transition from './transition';
+import User from '../user';
+import CaseService from '../service/case/caseservice';
 
 /**
  * Wrapper for json response of CaseEngine Service for a single case instance.
@@ -72,6 +74,15 @@ export default class Case extends CMMNBaseClass {
             throw new Error(`Could not find case plan among the ${this.planitems.length} items in the case`);
         }
         return caseplan;
+    }
+
+    async refresh(user: User) {
+        const freshOne = await CaseService.getCase(user, this);
+        delete this.team;
+        delete this.planitems;
+        delete this.file;
+        Object.assign(this, freshOne);
+        return this;
     }
 
     assertPlanItem(planItemIdentifier: string, planItemIndex: number = -1, expectedState?: State, expectedTransition?: Transition): PlanItem {
