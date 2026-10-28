@@ -18,6 +18,10 @@ export default class TestBatch {
         this.runners = TestClasses.createTestRunners(this.list);
     }
 
+    printTestNames() {
+        this.runners.forEach((run, index) => console.log(`${index + 1}: ${run.name}`));
+    }
+
     print() {
         console.log(this.report);
     }

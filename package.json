@@ -6,6 +6,7 @@
   "scripts": {
     "test": "node ./dist/app.js",
     "test-cluster": "node ./dist/app.js -l min -urls 20271,20272,20273",
+    "list-tests": "node ./dist/list.js",
     "build": "tsc",
     "watch": "tsc --watch",
     "clean": "shx rm -rf ./dist",
