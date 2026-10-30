@@ -37,6 +37,9 @@ interface Scenario {
     expectedFiring: 'reactivation' | 'target';
 }
 
+let runScenariosInParallel = true;
+// runScenariosInParallel = false; // Useful for debugging if the test fails.
+
 /**
  * A suspended case plan pauses its timers. Upon reactivation a timer must keep the moment
  * that was determined when the timer was created, both for timers with a duration and for timers with a fixed moment.
@@ -72,8 +75,24 @@ export default class TestTimerSuspendResume extends TestCase {
             expectedFiring: 'target'
         }];
 
-        // Run the scenarios in parallel, each in its own case, to keep the test duration acceptable.
-        //  All scenarios run to the end, so that a failure reports each failing scenario instead of only the first one.
+        if (runScenariosInParallel) {
+            // Run the scenarios in parallel, each in its own case, to keep the test duration acceptable.
+            //  All scenarios run to the end, so that a failure reports each failing scenario instead of only the first one.
+            await this.runParallel(scenarios);
+        } else {
+            // Run the scenarios one after another, each in its own case, so that they do not influence each other's timing.
+            //  This is useful for debugging, but it makes the test take a long time.
+            await this.runSequential(scenarios);
+        }
+    }
+
+    async runSequential(scenarios: Scenario[]) {
+        for (const scenario of scenarios) {
+            await this.runScenario(scenario);
+        }
+    }
+
+    async runParallel(scenarios: Scenario[]) {
         const failures: string[] = [];
         await Promise.all(scenarios.map(scenario => this.runScenario(scenario).catch(error => {
             failures.push(error instanceof Error ? error.message : `${error}`);
