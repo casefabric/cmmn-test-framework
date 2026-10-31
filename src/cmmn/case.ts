@@ -168,7 +168,7 @@ export default class Case extends CMMNBaseClass {
             constructor(public item: PlanItem) { }
             print(indent = ''): string {
                 const item = this.item;
-                const string = `${indent}- ${item.type}[${item.name}.${item.index}] | state = ${item.currentState} | transition = ${item.transition} | id = ${item.id}`;
+                const string = `${indent}- ${item.type}[${item.name}.${item.index}] | state = ${item.currentState} | transition = ${item.transition} | id = ${item.id} | required = ${item.isRequired} | repetition = ${item.isRepeating}`;
                 return string + (this.children.length > 0 ? '\n' + this.children.map(child => child.print(indent + ' ')).join('\n') : '');
             }
         }

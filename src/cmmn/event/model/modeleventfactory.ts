@@ -20,6 +20,7 @@ import ModelEvent from "./modelevent";
 import TimerSet from "./case/plan/timer/timerset";
 import TimerCompleted from "./case/plan/timer/timercompleted";
 import TimerResumed from "./case/plan/timer/timerresumed";
+import PlanItemChanged from "./case/plan/planitemchanged";
 
 export default class ModelEventFactory {
     static getConstructor(type: string): typeof ModelEvent | null {
@@ -50,11 +51,12 @@ const events = [
     TimerResumed,
     CaseModified,
     PlanItemCreated,
+    PlanItemChanged,
     PlanItemTransitioned,
     RepetitionRuleEvaluated,
     RequiredRuleEvaluated,
     CaseDefinitionMigrated,
-    CaseDefinitionApplied,    
+    CaseDefinitionApplied,
     PlanItemMigrated,
     PlanItemDropped,
     HumanTaskDropped,
