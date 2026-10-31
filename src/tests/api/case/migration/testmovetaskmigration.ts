@@ -94,15 +94,17 @@ export default class TestMoveTaskMigration extends TestCase {
         });
 
         // Verify that the S3 tasks have moved
-        await assertPlanItem(user, caseInstance, taskS3Task1.id, 0).then(task => {
+        await assertPlanItem(user, caseInstance, taskS3Task1.id, 0).then(async task => {
             if (task.stageId !== casePlan.id) {
+                await CaseService.getCase(user, caseInstance).then(caseInstance => caseInstance.toConsole());
                 throw new Error(`Expected S3Task1 to have been moved to CasePlan level. Found stage ${task.stageId}`);
             }
         });
 
-        await assertPlanItem(user, caseInstance, taskS3Task2.id, 0).then(task => {
+        await assertPlanItem(user, caseInstance, taskS3Task2.id, 0).then(async task => {
             if (task.stageId !== stage0.id) {
-                throw new Error(`Expected S3Task1 to have been moved to CasePlan level. Found stage ${task.stageId}`);
+                await CaseService.getCase(user, caseInstance).then(caseInstance => caseInstance.toConsole());
+                throw new Error(`Expected S3Task2 to have been moved to Stage0. Found stage ${task.stageId}`);
             }
         });
 
@@ -143,7 +145,7 @@ export default class TestMoveTaskMigration extends TestCase {
                 throw new Error(`Expected Task_To_Drop milestone to be in Stage_0. Found ${item.stageId}`);
             }
         });
-        
+
         await CaseService.getCase(user, caseInstance).then(caseInstance => caseInstance.toConsole());
         this.readLine(`Forced recovery. Press ENTER to continue...`);
 
