@@ -16,8 +16,11 @@ export default class State {
     public static readonly Failed = new State('Failed');
     public static readonly Suspended = new State('Suspended');
     public static readonly Terminated = new State('Terminated');
+    public static readonly Assigned = new State('Assigned');
+    public static readonly Delegated = new State('Delegated');
+    public static readonly Unassigned = new State('Unassigned');
 
-    private static states = [State.Null, State.Active, State.Available, State.Closed, State.Completed, State.Disabled, State.Discarded, State.Enabled, State.Failed, State.Suspended, State.Terminated];
+    private static states = [State.Null, State.Active, State.Available, State.Closed, State.Completed, State.Disabled, State.Discarded, State.Enabled, State.Failed, State.Suspended, State.Terminated, State.Assigned, State.Delegated, State.Unassigned];
 
     public static of(value: string | State): State {
         if (value instanceof State) return value;
@@ -27,6 +30,13 @@ export default class State {
             }
         }
         throw new Error(`${value} is not a valid State`);
+    }
+
+    public toCMMN(): State {
+        if (this === State.Assigned || this === State.Delegated || this === State.Unassigned) {
+            return State.Active;
+        }
+        return this;
     }
 
     private constructor(public readonly value: string) {

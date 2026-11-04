@@ -21,8 +21,12 @@ export default class Transition {
     public static readonly Start = new Transition('start');
     public static readonly Suspend = new Transition('suspend');
     public static readonly Terminate = new Transition('terminate');
+    public static readonly Assign = new Transition('assign');
+    public static readonly Claim = new Transition('claim');
+    public static readonly Delegate = new Transition('delegate');
+    public static readonly Revoke = new Transition('revoke');
 
-    private static transitions = [Transition.Close, Transition.Complete, Transition.Create, Transition.Disable, Transition.Enable, Transition.Exit, Transition.Fault, Transition.ManualStart, Transition.None, Transition.Occur, Transition.ParentResume, Transition.ParentSuspend, Transition.ParentTerminate, Transition.Reactivate, Transition.Reenable, Transition.Resume, Transition.Start, Transition.Suspend, Transition.Terminate];
+    private static transitions = [Transition.Close, Transition.Complete, Transition.Create, Transition.Disable, Transition.Enable, Transition.Exit, Transition.Fault, Transition.ManualStart, Transition.None, Transition.Occur, Transition.ParentResume, Transition.ParentSuspend, Transition.ParentTerminate, Transition.Reactivate, Transition.Reenable, Transition.Resume, Transition.Start, Transition.Suspend, Transition.Terminate, Transition.Assign, Transition.Claim, Transition.Delegate, Transition.Revoke];
 
     public static of(value: string | Transition): Transition {
         if (value instanceof Transition) return value;
@@ -38,7 +42,7 @@ export default class Transition {
     }
 
     is(other: string | Transition | undefined | null): boolean {
-        if (! other) return false;
+        if (!other) return false;
         return this.value.toLowerCase() === other.toString().toLowerCase();
     }
 
