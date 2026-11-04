@@ -51,7 +51,7 @@ export async function assertCasePlan(user: User, caseId: Case | string, expected
         }
         // Get case details
         const freshCase = await tryGetCase();
-        if (freshCase && (!expectedState || State.of(freshCase.state).is(expectedState))) {
+        if (freshCase && (!expectedState || freshCase.state.is(expectedState))) {
             return freshCase;
         }
         throw new AsyncError(trace, `Did not find the case ${caseId} in state ${expectedState}`);

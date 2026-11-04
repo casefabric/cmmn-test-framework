@@ -50,7 +50,7 @@ export default class TestCaseParameterAPI extends TestCase {
         // Upon StartCase, the case input parameter should lead to a first instance of the task.
 
         // There should be 1 task "FileReactingTask"
-        if (caseInstance.planitems.filter(item => item.name === fileTaskName && State.Active.is(item.currentState)).length !== 1) {
+        if (caseInstance.planitems.filter(item => item.name === fileTaskName && item.currentState.isActive()).length !== 1) {
             throw new Error(`Expected 1 plan item "${fileTaskName}", but found ${caseInstance.planitems.filter(item => item.name === fileTaskName).length}`);
         }
 
@@ -62,7 +62,7 @@ export default class TestCaseParameterAPI extends TestCase {
         item.RootProperty1 = '2';
         await CaseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFileArray', item);
         await CaseService.getCase(user, caseInstance).then(instance => {
-            if (instance.findItems(fileTaskName).filter(item => State.Active.is(item.currentState)).length !== 2) {
+            if (instance.findItems(fileTaskName).filter(item => item.currentState.isActive()).length !== 2) {
                 throw new Error(`Expected 2 plan items "${fileTaskName}", but found ${instance.findItems(fileTaskName).length}`);
             }
         });
@@ -72,8 +72,8 @@ export default class TestCaseParameterAPI extends TestCase {
         item.RootProperty1 = '3';
         await CaseFileService.updateCaseFileItem(user, caseInstance, 'RootCaseFileArray', [item]);
         await CaseService.getCase(user, caseInstance).then(instance => {
-            if (instance.findItems(fileTaskName).filter(item => State.Active.is(item.currentState)).length !== 3) {
-                throw new Error(`Expected 3 plan items "${fileTaskName}", but found ${instance.findItems(fileTaskName).filter(item => State.Active.is(item.currentState)).length}`);
+            if (instance.findItems(fileTaskName).filter(item => item.currentState.isActive()).length !== 3) {
+                throw new Error(`Expected 3 plan items "${fileTaskName}", but found ${instance.findItems(fileTaskName).filter(item => item.currentState.isActive()).length}`);
             }
         });
 
@@ -85,8 +85,8 @@ export default class TestCaseParameterAPI extends TestCase {
         item.RootProperty1 = '4';
         await CaseFileService.updateCaseFileItem(user, caseInstance, 'RootCaseFileArray', [item]);
         await CaseService.getCase(user, caseInstance).then(instance => {
-            if (instance.findItems(fileTaskName).filter(item => State.Active.is(item.currentState)).length !== 4) {
-                throw new Error(`Expected 4 plan items "${fileTaskName}", but found ${instance.findItems(fileTaskName).filter(item => State.Active.is(item.currentState)).length}`);
+            if (instance.findItems(fileTaskName).filter(item => item.currentState.isActive()).length !== 4) {
+                throw new Error(`Expected 4 plan items "${fileTaskName}", but found ${instance.findItems(fileTaskName).filter(item => item.currentState.isActive()).length}`);
             }
         });
 
@@ -94,8 +94,8 @@ export default class TestCaseParameterAPI extends TestCase {
         item.RootProperty1 = '5';
         await CaseFileService.createCaseFileItem(user, caseInstance, 'RootCaseFileArray', item);
         await CaseService.getCase(user, caseInstance).then(instance => {
-            if (instance.findItems(fileTaskName).filter(item => State.Active.is(item.currentState)).length !== 5) {
-                throw new Error(`Expected 5 plan items "${fileTaskName}", but found ${instance.findItems(fileTaskName).filter(item => State.Active.is(item.currentState)).length}`);
+            if (instance.findItems(fileTaskName).filter(item => item.currentState.isActive()).length !== 5) {
+                throw new Error(`Expected 5 plan items "${fileTaskName}", but found ${instance.findItems(fileTaskName).filter(item => item.currentState.isActive()).length}`);
             }
         });
     }

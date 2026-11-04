@@ -36,7 +36,7 @@ export default class Case extends CMMNBaseClass {
         public id: string,
         public tenant: string,
         public caseName: string,
-        public state: string,
+        public state: State,
         public failures: number,
         public parentCaseId: string,
         public rootCaseId: string,
@@ -64,6 +64,7 @@ export default class Case extends CMMNBaseClass {
             console.log(`Created case instance with id: \t${this.caseInstanceId}`);
             this.id = this.caseInstanceId;
         }
+        if (this.state) this.state = State.of(String(this.state));
         addTypes(this.planitems, PlanItem);
         addType(this.team, CaseTeam);
     }
@@ -88,12 +89,12 @@ export default class Case extends CMMNBaseClass {
     assertPlanItem(planItemIdentifier: string, planItemIndex: number = -1, expectedState?: State, expectedTransition?: Transition): PlanItem {
         if (Config.TestCase.log) {
             const longestNameLength = Math.max(...this.planitems.map(item => item.name.length));
-            const longestState = Math.max(...this.planitems.map(item => item.currentState.length));
-            logger.debug(' Current Plan Items\n' + (this.planitems.map(item => ` ${item.name.padStart(longestNameLength)}.${item.index} ==> ${item.currentState.padEnd(longestState)} (id: ${item.id})`)).join('\n'));
+            const longestState = Math.max(...this.planitems.map(item => String(item.currentState).length));
+            logger.debug(' Current Plan Items\n' + (this.planitems.map(item => ` ${item.name.padStart(longestNameLength)}.${item.index} ==> ${String(item.currentState).padEnd(longestState)} (id: ${item.id})`)).join('\n'));
         }
         const nameFilter = (item: PlanItem): boolean => item.name === planItemIdentifier || item.id === planItemIdentifier;
         const indexFilter = (item: PlanItem): boolean => planItemIndex >= 0 ? item.index === planItemIndex : true;
-        const stateFilter = (item: PlanItem): boolean => expectedState ? State.of(item.currentState).is(expectedState) : true;
+        const stateFilter = (item: PlanItem): boolean => expectedState ? item.currentState.is(expectedState) : true;
         const transitionFilter = (item: PlanItem): boolean => expectedTransition ? Transition.of(item.transition).is(expectedTransition) : true;
 
         const matchers = this.planitems.filter(item => nameFilter(item) && indexFilter(item));

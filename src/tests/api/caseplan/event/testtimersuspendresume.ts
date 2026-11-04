@@ -120,11 +120,11 @@ export default class TestTimerSuspendResume extends TestCase {
             const latestCaseInstance = await CaseService.getCase(user, caseInstance);
             const timer = findPlanItem(latestCaseInstance, timerName);
             const task = findPlanItem(latestCaseInstance, taskName);
-            if (timer.currentState !== State.Completed.toString()) {
-                throw new Error(`${scenario.name}: timer did not yet complete`);
+            if (!timer?.currentState.isCompleted()) {
+                throw new Error(`${scenario.name}: timer did not yet complete, it is in state ${timer.currentState}`);
             }
-            if (task.currentState !== State.Active.toString()) {
-                throw new Error(`${scenario.name}: task should be active`);
+            if (!task?.currentState.isActive()) {
+                throw new Error(`${scenario.name}: task should be active, it is in state ${task.currentState}`);
             }
             return latestCaseInstance;
         });

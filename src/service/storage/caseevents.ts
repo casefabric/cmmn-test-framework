@@ -11,13 +11,14 @@ import CaseService from "../case/caseservice";
 import ActorEvents from "./actorevents";
 import PlanItemEvents from "./planitemevents";
 import ProcessEvents from "./processevents";
+import Transition from "../../cmmn/transition";
 
 /**
  * CaseEvents enables building a hierarchy of a case events with those from it's CaseTasks and ProcessTasks.
  */
 export default class CaseEvents extends PlanItemEvents {
     static from(user: User, caseInstance: Case): CaseEvents {
-        const fakedItem = new PlanItem(caseInstance.id, caseInstance.caseName, '', 'CaseTask', caseInstance.state, '', '', false, false, 0, caseInstance.lastModified, caseInstance.createdBy);
+        const fakedItem = new PlanItem(caseInstance.id, caseInstance.caseName, '', 'CaseTask', caseInstance.state, State.Null, Transition.Create, false, false, 0, caseInstance.lastModified, caseInstance.createdBy);
         return new CaseEvents(user, fakedItem);
     }
 
@@ -32,7 +33,7 @@ export default class CaseEvents extends PlanItemEvents {
         // reset state of children.
         this.cases = [];
         this.processes = [];
-        if (this.state.is(State.Available)) {
+        if (this.state.isAvailable()) {
             return; // no need to load more details, as the plan item is not yet active
         }
         const caseInstance = await assertCasePlan(this.user, this.id, undefined, trace);

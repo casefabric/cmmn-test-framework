@@ -48,25 +48,6 @@ export default class TestTimerInSubCase extends TestCase {
         await assertCasePlan(user, timerCase, State.Active);
         await caseHierarchy.load();
 
-        console.log("It is active with hierarchy:\n" + caseHierarchy    );
-return;
-        await PollUntilSuccess(async () => {
-            console.log(`Retrieving case ${caseInstance.id} again`)
-            const latestCaseInstance = await CaseService.getCase(user, caseInstance);
-            const task = latestCaseInstance.planitems.find(item => item.name === 'Task');
-            const timer = latestCaseInstance.planitems.find(item => item.name === 'After duration');
-
-            console.log(`Task ${task?.name} is in state ${task?.currentState}`)
-            console.log(`Timer ${timer?.name} is in state ${timer?.currentState}`)
-
-            if (timer?.currentState !== 'Completed') {
-                throw new Error('Timer did not yet complete');
-            }
-
-            if (task?.currentState === State.Available.toString()) {
-                throw new Error('Task should be active')
-            }
-        });
+        console.log("It is active with hierarchy:\n" + caseHierarchy);
     }
 }
-

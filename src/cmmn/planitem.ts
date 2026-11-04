@@ -1,4 +1,6 @@
 import CMMNBaseClass from "./cmmnbaseclass";
+import State from "./state";
+import Transition from "./transition";
 
 /**
  * JSON Wrapper for plan items in a case instance
@@ -24,15 +26,21 @@ export default class PlanItem extends CMMNBaseClass {
         public name: string,
         public stageId: string,
         public type: string,
-        public currentState: string,
-        public historyState: string,
-        public transition: string,
+        public currentState: State,
+        public historyState: State,
+        public transition: Transition,
         public isRequired: boolean,
         public isRepeating: boolean,
         public index: number,
         public lastModified: string,
         public modifiedBy: string
     ) { super() }
+
+    init_json() {
+        if (this.currentState) this.currentState = State.of(String(this.currentState));
+        if (this.historyState) this.historyState = State.of(String(this.historyState));
+        if (this.transition) this.transition = Transition.of(String(this.transition));
+    }
 
     toString() {
         return this.id;

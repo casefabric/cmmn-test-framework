@@ -34,7 +34,7 @@ export default class State {
 
     matches(item: PlanItem | undefined): boolean {
         if (!item) return false;
-        return this.is(item.currentState);        
+        return this.is(item.currentState);
     }
 
     is(other: string | State | undefined | null): boolean {
@@ -44,5 +44,45 @@ export default class State {
 
     toString() {
         return this.value;
+    }
+
+    isCompleted(): boolean {
+        return this.is(State.Completed);
+    }
+
+    isFailed(): boolean {
+        return this.is(State.Failed);
+    }
+
+    isActive(): boolean {
+        return this.is(State.Active);
+    }
+
+    isAvailable(): boolean {
+        return this.is(State.Available);
+    }
+
+    isEnabled(): boolean {
+        return this.is(State.Enabled);
+    }
+
+    isDisabled(): boolean {
+        return this.is(State.Disabled);
+    }
+
+    isTerminated(): boolean {
+        return this.is(State.Terminated);
+    }
+
+    isSuspended(): boolean {
+        return this.is(State.Suspended);
+    }
+
+    isClosed(): boolean {
+        return this.is(State.Closed);
+    }
+
+    isDiscarded(): boolean {
+        return this.is(State.Discarded);
     }
 }

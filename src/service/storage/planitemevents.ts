@@ -11,7 +11,7 @@ export default class PlanItemEvents extends ActorEvents {
 
     constructor(public user: User, item: PlanItem, public parentCase?: CaseEvents) {
         super(user, item.id, item.name);
-        this.state = State.of(item.currentState);
+        this.state = item.currentState;
     }
 
     async assertArchived(user: User = this.user, trace: Trace = new Trace()) {

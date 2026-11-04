@@ -38,11 +38,11 @@ export default class TestTimer extends TestCase {
             console.log(`Task ${task?.name} is in state ${task?.currentState}`)
             console.log(`Timer ${timer?.name} is in state ${timer?.currentState}`)
 
-            if (timer?.currentState !== 'Completed') {
+            if (!timer?.currentState.isCompleted()) {
                 throw new Error('Timer did not yet complete');
             }
 
-            if (task?.currentState === State.Available.toString()) {
+            if (!task?.currentState.isActive()) {
                 throw new Error('Task should be active')
             }
         });
