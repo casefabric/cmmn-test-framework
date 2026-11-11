@@ -35,9 +35,7 @@
                 <timerExpression id="_MuzRn_21">
                     <body><![CDATA[P2DT10S]]></body>
                 </timerExpression>
-                <planItemStartTrigger id="_MuzRn_20">
-                    <standardEvent/>
-                </planItemStartTrigger>
+                <planItemStartTrigger id="_MuzRn_20"/>
             </timerEvent>
             <milestone id="pi_ms__MuzRn_0" name="Case LifeTime achieved 2 days">
                 <entryCriterion id="crit__MuzRn_0">
@@ -48,6 +46,10 @@
             </milestone>
         </stage>
         <userEvent id="_MuzRn_33" name="Terminate Case"/>
+        <caseTask id="_MuzRn_62" name="Non Blocking HelloWorld" isBlocking="false" caseRef="helloworld.case">
+            <inputs id="_MuzRn_66" name="Greeting" bindingRef="Greeting"/>
+            <parameterMapping id="_MuzRn_63" sourceRef="_MuzRn_66" targetRef="csVQy_inCPs_0"/>
+        </caseTask>
     </casePlanModel>
     <caseRoles caseTeamRef="testteam.caseteam"/>
     <input id="_MuzRn_7" name="Greeting" bindingRef="Greeting"/>
