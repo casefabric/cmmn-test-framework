@@ -1,5 +1,6 @@
 'use strict';
 
+import Case from "../../../../cmmn/case";
 import Definitions from "../../../../cmmn/definitions/definitions";
 import PlanItem from "../../../../cmmn/planitem";
 import State from "../../../../cmmn/state";
@@ -54,6 +55,28 @@ export default class TestSubCase extends TestCase {
         const complexCase = await CaseService.getCase(sender, complexCaseTask!.id);
         const getlist_getdetails_Task = await assertPlanItem(sender, complexCase, 'getlist_getdetails', -1, State.Failed);
         const getListGetDetailsCase = await CaseService.getCase(sender, getlist_getdetails_Task!.id);
+
+        // The blocking complex case is a child of the parent case
+        this.assertCaseHierarchy(complexCase, caseInstance.id, caseInstance.id);
+
+        // The non-blocking complex case task completes as soon as its case is started.
+        // That case has no parent, but it does have the same root.
+        const nonBlockingComplexCaseTask = await assertPlanItem(sender, caseInstance, 'non blocking complexcase', -1, State.Completed);
+        this.addIdentifier(nonBlockingComplexCaseTask);
+        const nonBlockingComplexCase = await assertCasePlan(sender, nonBlockingComplexCaseTask.id);
+        this.assertCaseHierarchy(nonBlockingComplexCase, '', caseInstance.id);
+
+        // Like the blocking one, the non-blocking complex case fails because its getlist_getdetails subcase fails.
+        // But that failure must not reach the parent case: the task in the parent case remains completed.
+        await assertCasePlan(sender, nonBlockingComplexCase, State.Failed);
+        await assertPlanItem(sender, caseInstance, nonBlockingComplexCaseTask.name, nonBlockingComplexCaseTask.index, State.Completed);
+
+        // A non-blocking task one level deeper: the complex case starts HelloWorld without blocking.
+        // Also that case has no parent, and its root is still the top case.
+        const nonBlockingHelloWorldTask = await assertPlanItem(sender, complexCase, 'Non Blocking HelloWorld', -1, State.Completed);
+        this.addIdentifier(nonBlockingHelloWorldTask);
+        const nonBlockingHelloWorldCase = await assertCasePlan(sender, nonBlockingHelloWorldTask.id, State.Active);
+        this.assertCaseHierarchy(nonBlockingHelloWorldCase, '', caseInstance.id);
 
         // Update HTTPConfig case file item to have proper mock service port. This will make GetList task to succeed when the timer goes off.
         await CaseFileService.updateCaseFileItem(sender, getListGetDetailsCase, "HTTPConfig", { port: mockPort });
@@ -113,10 +136,27 @@ export default class TestSubCase extends TestCase {
         // Now terminate the complex case and check if the main case reaches completion.
         await CasePlanService.raiseEvent(sender, complexCase, 'Terminate Case');
 
-        // And now check parent case. It must be in failed state because issues in complex case
+        // And now check parent case. It completes, because the complex case is terminated.
         await assertCasePlan(sender, caseInstance, State.Completed);
+
+        // The non-blocking cases are not affected by the termination of the complex case and the completion of the parent case
+        await assertCasePlan(sender, nonBlockingHelloWorldCase, State.Active);
+        await assertCasePlan(sender, nonBlockingComplexCase, State.Failed);
 
         // Still, receiver should not be part of the parent case team
         await assertCaseTeamUser(sender, caseInstance, new CaseTeamUser(receiver, []), false);
+    }
+
+    /**
+     * Asserts the parent and root of a case. An empty expected parent means the case must not have a parent.
+     */
+    assertCaseHierarchy(caseInstance: Case, expectedParentId: string, expectedRootId: string) {
+        const parentId = caseInstance.parentCaseId || '';
+        if (parentId !== expectedParentId) {
+            throw new Error(`Case ${caseInstance.caseName} [${caseInstance.id}] should have parent '${expectedParentId}' but has '${parentId}'`);
+        }
+        if (caseInstance.rootCaseId !== expectedRootId) {
+            throw new Error(`Case ${caseInstance.caseName} [${caseInstance.id}] should have root '${expectedRootId}' but has '${caseInstance.rootCaseId}'`);
+        }
     }
 }

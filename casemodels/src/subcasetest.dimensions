@@ -13,7 +13,10 @@
             <Bounds x="230" y="140" width="25" height="40"/>
         </CMMNShape>
         <CMMNShape cmmnElementRef="_FKa3D_8">
-            <Bounds x="280" y="260" width="140" height="80"/>
+            <Bounds x="160" y="240" width="140" height="80"/>
+        </CMMNShape>
+        <CMMNShape id="_b85ZH_1" name="Shape_0" cmmnElementRef="_FKa3D_10">
+            <Bounds id="_b85ZH_0" name="Bounds_0" x="470" y="330" width="140" height="80"/>
         </CMMNShape>
         <CMMNEdge sourceCMMNElementRef="_FKa3D_1" targetCMMNElementRef="_FKa3D_2"/>
     </CMMNDiagram>
