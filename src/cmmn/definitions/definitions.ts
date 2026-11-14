@@ -4,6 +4,7 @@ import User from "../../user";
 import Trace from "../../util/async/trace";
 
 export default class Definitions {
+    public static readonly AiDeclarativeLead = new Definitions('ai/declarative_lead.xml');
     public static readonly BootstrapCaseFileEvents = new Definitions('bootstrap-casefile-events.xml');
     public static readonly Calculation = new Definitions('calculation.xml');
     public static readonly CaseFile = new Definitions('casefile.xml');

@@ -1,0 +1,96 @@
+<definitions xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne">
+    <caseFileItemDefinition name="lead_request" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="lead_request.type">
+        <property name="description" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="country" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    </caseFileItemDefinition>
+    <caseFileItemDefinition name="qualified_lead" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="qualified_lead.type">
+        <property name="name" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+        <property name="rating" type="http://www.omg.org/spec/CMMN/PropertyType/integer"/>
+        <property name="reason" type="http://www.omg.org/spec/CMMN/PropertyType/string"/>
+    </caseFileItemDefinition>
+    <caseFileItemDefinition name="ai_provenance" definitionType="http://www.omg.org/spec/CMMN/DefinitionType/Unspecified" id="ai_provenance.type"/>
+    <case id="declarative_lead.case" name="declarative_lead" expressionLanguage="spel">
+        <caseFileModel>
+            <caseFileItem id="LeadRequest" name="LeadRequest" multiplicity="ExactlyOne" definitionRef="lead_request.type"/>
+            <caseFileItem id="QualifiedLead" name="QualifiedLead" multiplicity="ExactlyOne" definitionRef="qualified_lead.type"/>
+            <caseFileItem id="AiMarker" name="AiMarker" multiplicity="ExactlyOne" definitionRef="ai_provenance.type"/>
+        </caseFileModel>
+        <casePlanModel id="cm_declarative_lead" name="declarative_lead" autoComplete="true">
+            <planItem id="pi_aitask" name="AiTask" definitionRef="pt_aitask"/>
+            <processTask id="pt_aitask" name="AiTask" isBlocking="true" processRef="declarative_lead.ai">
+                <inputs id="in_request" name="LeadRequest" bindingRef="LeadRequest"/>
+                <outputs id="out_lead" name="QualifiedLead" bindingRef="QualifiedLead"/>
+                <outputs id="out_marker" name="AiMarker" bindingRef="AiMarker"/>
+                <parameterMapping id="pm_1" sourceRef="in_request" targetRef="p_request"/>
+                <parameterMapping id="pm_2" sourceRef="p_lead" targetRef="out_lead"/>
+                <parameterMapping id="pm_3" sourceRef="p_marker" targetRef="out_marker"/>
+            </processTask>
+        </casePlanModel>
+        <input id="case_in" name="LeadRequest" bindingRef="LeadRequest"/>
+    </case>
+    <process name="declarative_lead" implementationType="http://www.omg.org/spec/CMMN/ProcessType/Unspecified" id="declarative_lead.ai">
+        <input id="p_request" name="request" typeRef="lead_request.type"/>
+        <output id="p_lead" name="lead" typeRef="qualified_lead.type"/>
+        <output id="p_marker" name="marker" typeRef="ai_provenance.type"/>
+        <extensionElements mustUnderstand="false">
+            <cafienne:implementation xmlns="http://www.omg.org/spec/CMMN/20151109/MODEL" xmlns:cafienne="org.cafienne" class="com.casefabric.ai.processtask.definition.AiCallDefinition" async="true">
+                <parameterMapping sourceRef="responsePayload" targetRef="lead"/>
+                <parameterMapping sourceRef="aiProvenance" targetRef="marker"/>
+                <budget actions="10" timeout="PT1M"/>
+                <agent name="LeadQualifier" version="1.0" description="Researches a company and qualifies it as a sales lead">
+                    <input type="LeadRequest">
+                        <property name="description">${request.description}</property>
+                        <property name="country">${request.country}</property>
+                    </input>
+                    <types>
+                        <type name="LeadRequest">
+                            <property name="description" type="string" required="true"/>
+                            <property name="country" type="string"/>
+                        </type>
+                        <type name="Lead" description="A company that may become a customer">
+                            <property name="name" type="string" required="true"/>
+                            <property name="website" type="anyURI"/>
+                        </type>
+                        <type name="Company" description="A company found for the request" parents="Lead">
+                            <property name="products" type="string" cardinality="list"/>
+                            <property name="address" type="Address"/>
+                        </type>
+                        <type name="Address">
+                            <property name="city" type="string" required="true"/>
+                            <property name="country" type="string" required="true"/>
+                        </type>
+                        <type name="CreditScore">
+                            <property name="score" type="integer" required="true"/>
+                        </type>
+                        <type name="QualifiedLead" definitionRef="qualified_lead.type"/>
+                    </types>
+                    <personas>
+                        <persona name="qualifier" role="Sales qualifier" goal="Decide quickly whether a company is worth contacting" backstory="Ten years of B2B sales experience"/>
+                    </personas>
+                    <conditions>
+                        <condition name="goodCredit">spel:creditScore.score >= 500</condition>
+                    </conditions>
+                    <actions>
+                        <llm name="findCompany" input="LeadRequest" output="Company" role="cheap" toolGroups="web" temperature="0.0">
+                            <prompt>
+                                Find the company described as: {{ leadRequest.description }}
+                                {% if leadRequest.country %}It is located in {{ leadRequest.country }}.{% endif %}
+                            </prompt>
+                        </llm>
+                        <llm name="checkCredit" input="Lead" output="CreditScore">
+                            <prompt>Estimate a credit score between 0 and 1000 for {{ lead.name }}.</prompt>
+                        </llm>
+                        <llm name="qualify" input="Company, CreditScore" output="QualifiedLead" role="qualifier" persona="qualifier">
+                            <pre>goodCredit</pre>
+                            <prompt>
+                                Qualify {{ company.name }} on a scale of 1 to 10.
+                                Products: {{ company.products | join(", ") }}. Credit score: {{ creditScore.score }}.
+                            </prompt>
+                        </llm>
+                    </actions>
+                    <goal name="LeadQualified" output="QualifiedLead" description="The company has been qualified"/>
+                </agent>
+            </cafienne:implementation>
+        </extensionElements>
+    </process>
+</definitions>

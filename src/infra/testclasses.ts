@@ -1,3 +1,5 @@
+import TestAiDeclarativeAgent from '../tests/ai/testaideclarativeagent';
+import TestAiSuspension from '../tests/ai/testaisuspension';
 
 import TestAnonymousStartCase from '../tests/api/anonymous/testanonymousstartcase';
 import TestNoAnonymousStartCase from '../tests/api/anonymous/testnoanonymousstartcase';
@@ -153,6 +155,8 @@ export default class TestClasses {
                     MigrationTests.forEach(addExplicitRunner);
                 } else if (name === 'plugins') {
                     PluginTests.forEach(addExplicitRunner);
+                } else if (name === 'ai') {
+                    AiTests.forEach(addExplicitRunner);
                 } else {
                     addExplicitRunner(this.getTestClass(name));
                 }
@@ -221,6 +225,14 @@ const MigrationTests: Array<Function> = [
     , TestExitCriteriaMigration
     , TestOnPartMigration
     , TestMoveTaskMigration
+];
+
+/**
+ * Tests of the AI image (cafienne/engine:latest-ai) with the OpenAI mock; not in the default run
+ */
+const AiTests: Array<Function> = [
+    TestAiDeclarativeAgent,
+    TestAiSuspension,
 ];
 
 const PluginTests: Array<Function> = [
@@ -308,6 +320,7 @@ const AllTests: Array<Function> = [
     , ...StorageTests
     , ...MigrationTests
     , ...PluginTests
+    , ...AiTests
     , TestRecovery
     , TestCompatibility
 ];
