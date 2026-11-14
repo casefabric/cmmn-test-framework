@@ -113,7 +113,8 @@ export default class CaseEngineService {
         }
 
         // Each time make sure we take the latest Authorization header from the user, or send no Authorization along
-        url = this.baseURL + (url.startsWith('/') ? url.substring(1) : url);
+        // A full URL goes to that node (for tests that must reach one node of a cluster); otherwise any configured node
+        url = /^https?:\/\//.test(url) ? url : this.baseURL + (url.startsWith('/') ? url.substring(1) : url);
 
         const myCallNumber = this.calls++;
         if (Config.CaseEngine.log.url) {

@@ -1,5 +1,6 @@
 import TestAiDeclarativeAgent from '../tests/ai/testaideclarativeagent';
 import TestAiSuspension from '../tests/ai/testaisuspension';
+import TestAiCluster from '../tests/ai/testaicluster';
 
 import TestAnonymousStartCase from '../tests/api/anonymous/testanonymousstartcase';
 import TestNoAnonymousStartCase from '../tests/api/anonymous/testnoanonymousstartcase';
@@ -157,6 +158,8 @@ export default class TestClasses {
                     PluginTests.forEach(addExplicitRunner);
                 } else if (name === 'ai') {
                     AiTests.forEach(addExplicitRunner);
+                } else if (name === 'aicluster') {
+                    AiClusterTests.forEach(addExplicitRunner);
                 } else {
                     addExplicitRunner(this.getTestClass(name));
                 }
@@ -233,6 +236,13 @@ const MigrationTests: Array<Function> = [
 const AiTests: Array<Function> = [
     TestAiDeclarativeAgent,
     TestAiSuspension,
+];
+
+/**
+ * Tests of a cluster of two AI nodes (-urls); not in the default run, nor in the ai group
+ */
+const AiClusterTests: Array<Function> = [
+    TestAiCluster,
 ];
 
 const PluginTests: Array<Function> = [
@@ -321,6 +331,7 @@ const AllTests: Array<Function> = [
     , ...MigrationTests
     , ...PluginTests
     , ...AiTests
+    , ...AiClusterTests
     , TestRecovery
     , TestCompatibility
 ];
