@@ -45,8 +45,8 @@ export default class TestCasePlanHistoryAPI extends TestCase {
         const firstPlanItem = this.getPlanItem(planItems, firstTaskName);
         const secondPlanItem = this.getPlanItem(planItems, secondTaskName);
 
-        await this.assertHistoryItems(caseInstance, firstPlanItem, 5);
-        await this.assertHistoryItems(caseInstance, secondPlanItem, 4);
+        await this.assertHistoryItems(caseInstance, firstPlanItem, 3);
+        await this.assertHistoryItems(caseInstance, secondPlanItem, 2);
 
         const firstTask = (await TaskService.getCaseTasks(user, caseInstance)).find(task => task.id === firstPlanItem.id);
         if (!firstTask) {
@@ -59,8 +59,8 @@ export default class TestCasePlanHistoryAPI extends TestCase {
         };
         await TaskService.completeTask(user, firstTask, taskOutput);
 
-        await this.assertHistoryItems(caseInstance, firstPlanItem, 6);
-        await this.assertHistoryItems(caseInstance, secondPlanItem, 5);
+        await this.assertHistoryItems(caseInstance, firstPlanItem, 4);
+        await this.assertHistoryItems(caseInstance, secondPlanItem, 3);
 
         // Length of case plan history should not have changed.
         await CaseHistoryService.getCasePlanHistory(user, caseInstance).then(casePlanHistory => {

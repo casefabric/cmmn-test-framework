@@ -36,6 +36,9 @@
         <CMMNShape cmmnElementRef="crit__MuzRn_1">
             <Bounds x="654" y="510" width="12" height="20"/>
         </CMMNShape>
+        <CMMNShape id="_UU9BX_1" name="Shape_0" cmmnElementRef="_MuzRn_62">
+            <Bounds id="_UU9BX_0" name="Bounds_0" x="660" y="120" width="140" height="80"/>
+        </CMMNShape>
         <CMMNEdge label="occur" sourceCMMNElementRef="pi_ue__MuzRn_0" targetCMMNElementRef="_MuzRn_14"/>
         <CMMNEdge label="occur" sourceCMMNElementRef="pi_tmr__MuzRn_0" targetCMMNElementRef="crit__MuzRn_0"/>
         <CMMNEdge sourceCMMNElementRef="_MuzRn_33" targetCMMNElementRef="crit__MuzRn_1"/>

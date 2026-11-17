@@ -13,6 +13,7 @@
             <parameterMapping id="_FKa3D_5" sourceRef="_FKa3D_4" targetRef="csVQy_inCPs_0"/>
         </caseTask>
         <caseTask id="_FKa3D_8" name="complexcase" isBlocking="true" caseRef="complexcase.case"/>
+        <caseTask id="_FKa3D_10" name="non blocking complexcase" isBlocking="false" caseRef="complexcase.case"/>
     </casePlanModel>
     <caseRoles/>
 </case>
