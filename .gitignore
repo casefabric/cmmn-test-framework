@@ -4,3 +4,4 @@ dist*
 docker/run*
 .metals*
 .vscode*
+.casefabric
